@@ -1,0 +1,22 @@
+.whats-color {
+    background-color: #25D366;
+    color: white;
+    height: 25px;
+    width: 100%;
+    align-items: center;
+    padding-left: 0.15rem;
+}
+
+.size {
+    width: 100px;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.iconSize {
+    font-size: 1.5em;
+}
+

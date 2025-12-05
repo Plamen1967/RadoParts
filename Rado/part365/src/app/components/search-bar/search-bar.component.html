@@ -1,0 +1,17 @@
+<div class="button-footer mb-1">
+    <div class="d-inline-flex justify-content-between mt-1 mb-1 pt-3 pb-3">
+        <div class="d-inline-flex">
+            <app-searchbutton class="me-1" (click)="submit()"></app-searchbutton>
+            <app-clearbutton (click)="clearFilter()"></app-clearbutton>
+        </div>
+    </div>
+    <form [formGroup]="sortForm">
+        <div class="pt-0 min100px flex-end ms-1 pb-3 pt-1">
+            <div class="d-inline-flexd-flex-inline bg-error flex-end">
+                <div class="flex-item">
+                    <app-select formControlName="orderBy" data-cy="orderBy" id="sortForm" label="{{ labels.SORTBY }}" [data]="sort"> </app-select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

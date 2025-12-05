@@ -1,0 +1,28 @@
+<div class="input-group w100 mb-2 mt-2 w-100">
+    <span class="input-group-text material-symbols-outlined ps-2 pe-2"> {{ prefix }} </span>
+    <input appAutofocus tabindex="0"
+        type="text"
+        id="{{control.name}}"
+        class="form-control"
+        placeholder="{{ placeHolder }}"
+        autocomplete="{{ control.name }}"
+        attr.aria-label="{{ placeHolder }}"
+        aria-describedby="basic-addon2"
+        [ngClass]="{ 'is-invalid': submitted && control.errors }"
+        [(ngModel)]="value"
+        (change)="change()" />
+</div>
+@if (submitted && control.errors) {
+    <div class="text-danger"  style="line-height: normal;">
+        @if (control.errors['required']) {
+            <div data-cy="userNameRequiredError">Въведи {{ placeHolder }}</div>
+        }
+        @else if (control.errors['pattern'] || control.errors['maxlength'] || control.errors['minlength']) {
+            <div>Телефоният номер трябва да се най-малко 10 цифри</div>
+        }
+        @else {
+            <div>Телефоният номер не е валиден</div>
+        }
+    </div>
+}
+

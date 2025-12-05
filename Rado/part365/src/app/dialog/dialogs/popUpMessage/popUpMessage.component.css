@@ -1,0 +1,54 @@
+.content {
+  padding: 6px 12px;
+  font-size: 1.2em;
+  border-radius: 8px;
+}
+
+.spinner {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  border: 2px solid;
+  border-color: red green blue black;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+.popup-container {
+  padding: 6px 12px;
+  background-color: #FFFFF0; /* #F5E6E8 #c7f9cc */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .dialog-container {
+    min-width: max(200px, 20vw);
+    max-width: max(300px, 20vw);
+}
+
+.title {
+    background-color: rgb(27, 27, 236);
+    color: white;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: 1.2em;
+    font-weight: 500;
+}
+
+.content {
+    padding: 6px 12px;
+    font-size: 1rem;
+    background-color: #FAF9F6;
+}
+.action-group {
+    display: flex;
+    justify-content: end;
+}

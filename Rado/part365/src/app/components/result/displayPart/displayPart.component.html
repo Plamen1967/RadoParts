@@ -1,0 +1,106 @@
+<div class="display-container">
+    <div class="row">
+        <app-adminpanel [itemId]="item.id" [approvedStatus]="part.approved" (updated)="updateStatus($event)"></app-adminpanel>
+    </div>
+    <div
+        class="d-flex text-dark mb-2 rounded container-style"
+        data-cy="partRow"
+        [ngClass]="{ blocked: approved === 2, approved: approved === 1, notApproved: approved === 0, normal: approved === -1, highlighted: isHeighligthed }">
+        @if (admin) {}
+        <div
+            class="pe-1"
+            (click)="view()"
+            [ngClass]="{ imageClass: !this.dealerWebPage, imageDealerWebPage: this.dealerWebPage }"
+            data-toggle="tooltip"
+            data-placement="top"
+            role="none"
+            title="Повече детайли за частта"
+            style="cursor: pointer">
+            <app-imagecomponent [dispayPartView]="part" [displayMain]="true" (imagesLoaded)="updateImages($event)" [height]="'100%'" [showNumberPhotos]="true" [width]="'100%'" role="none">
+            </app-imagecomponent>
+        </div>
+        <div class="detailsClass pe-0 flex-column justify-content-between" [ngClass]="{ detailsClass: !this.dealerWebPage, deatailsDealerWebPage: this.dealerWebPage }">
+            <div role="none">
+                @if (isPart) {
+                    <app-partview [part]="part" (click)="view()" [ngStyle]="{ cursor: 'pointer' }" (view)="view()"></app-partview>
+                }
+                @if (isTyre) {
+                    <app-tyreview [tyre]="part" (click)="view()" [ngStyle]="{ cursor: 'pointer' }" (view)="view()"></app-tyreview>
+                }
+                @if (part.year) {
+                    <small data-cy="year" class="d-inline">{{ part.year }}</small>
+                }
+                @if (part.description) {
+                    <div class="d-inline-flex">
+                        <div style="font-weight: bold; margin-right: 2px">Описание:</div>
+                        <small data-cy="year" class="d-inline">{{ part.description }}</small>
+                    </div>
+                }
+                <div class="d-flex align-items-center">
+                    <small data-cy="modifiedTime" class="d-inline">{{ labels.MODIFIEDTIME }} {{ part.modifiedTimeDesc }}</small>
+                </div>
+                @if (region) {
+                    <div class="row mt-1">
+                        <small data-cy="region" class="h6">{{ region }}</small>
+                    </div>
+                }
+                <div class="row">
+                    @if (part.price) {
+                        <div class="col-sm-5">
+                            <app-price [price]="part.price"></app-price>
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (showPhones) {
+                <div class="d-flex mb-1">
+                    <div class="row1 phone-distance">
+                        @if (phone1) {
+                            <div class="mb-1">
+                                <app-phone [phone]="phone1"></app-phone>
+                            </div>
+                        }
+                        @if (phone2) {
+                            <div>
+                                <app-phone [phone]="phone2"></app-phone>
+                            </div>
+                        }
+                    </div>
+                    <div class="row1">
+                        @if (viber) {
+                            <div class="mb-1">
+                                <app-viber [number]="viber"></app-viber>
+                            </div>
+                        }
+                        @if (whats) {
+                            <div>
+                                <app-whats [number]="whats"></app-whats>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (showFavourite) {
+            <div class="favouriteClass pe-1">
+                <app-favourite (unchecked)="removeFromCheckOut(part.id!)" [id]="part.id"></app-favourite>
+            </div>
+        }
+        @if (showDealer) {
+            <div class="dealerClass">
+                <div class="dealer-style">
+                    <app-dealer [sellerLogo]="part.sellerLogo" [dealer]="dealer" [companyName]="part.sellerName" [sellerWebPage]="sellerWebPage"></app-dealer>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row">
+        @if (canEdit) {
+            <div class="d-flex justify-content-end mb-2">
+                <button type="button" class="me-2 btn btn-info" (click)="change()">Промени</button>
+                <button type="button" class="btn btn-danger" id="part.id" (click)="onDelete(part)">Изтрий</button>
+            </div>
+        }
+    </div>
+</div>

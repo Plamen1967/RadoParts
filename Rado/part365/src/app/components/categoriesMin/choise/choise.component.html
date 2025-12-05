@@ -1,0 +1,7 @@
+@if (selectedItems) {
+    <div class="multiselection">
+        @for (item of selectedItems; track item.id) {
+            <app-selecteditem class="selected-item" [item]="item" (unSelectedId)="unSelected(item.id!)"></app-selecteditem>
+        }
+    </div>
+}

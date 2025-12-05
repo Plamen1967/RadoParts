@@ -1,0 +1,25 @@
+@if (dealer) {
+    <a href="{{ sellerWebPage }}" target="_blank">
+
+    <div
+        class="col-sm-4 company companyClass flex-column backgroundSize d-flex align-items-start justify-content-start  image-style"
+        data-placement="top"
+        style="height: 80%;"
+        title="Към страницата на дилъра">
+        <div class="h-100 d-flex justify-content-end w-100">
+            <div class="d-flex">
+            @if(sellerLogo) {
+                <img class="company2 dealer-image justify-content-end" loading="lazy" src="{{ sellerLogo }}" alt="" loading="lazy" />
+            }</div>
+    
+        </div>
+        <div class="d-flex justify-content-end w-100">
+            <div class="company-name">{{ companyName }}</div>
+        </div>
+    </div>
+    </a>
+} @else {
+    <div class="d-flex justify-content-end w-100">
+        <div class="company-name">Частно лице</div>
+    </div>
+}

@@ -1,0 +1,78 @@
+@if (arrows) {
+    <app-ngx-gallery-arrows
+        (onPrevClick)="showPrev()"
+        (onNextClick)="showNext()"
+        [prevDisabled]="!canShowPrev()"
+        [nextDisabled]="!canShowNext()"
+        [arrowPrevIcon]="arrowPrevIcon"
+        [arrowNextIcon]="arrowNextIcon"></app-ngx-gallery-arrows>
+}
+
+<div class="ngx-gallery-preview-top">
+    <div class="ngx-gallery-preview-icons">
+        @for (action of actions; track action) {
+            <app-ngx-gallery-action [icon]="action.icon" [disabled]="action.disabled!" [titleText]="action.titleText!" (onClick)="action.onClick($event, index)"></app-ngx-gallery-action>
+        }
+        @if (download && src) {
+            <a [href]="src" class="ngx-gallery-icon" aria-hidden="true" download>
+                <i class="ngx-gallery-icon-content {{ downloadIcon }}"></i>
+            </a>
+        }
+        @if (zoom) {
+            <app-ngx-gallery-action [icon]="zoomOutIcon" [disabled]="!canZoomOut()" (onClick)="zoomOut()"></app-ngx-gallery-action>
+        }
+        @if (zoom) {
+            <app-ngx-gallery-action [icon]="zoomInIcon" [disabled]="!canZoomIn()" (onClick)="zoomIn()"></app-ngx-gallery-action>
+        }
+        @if (rotate) {
+            <app-ngx-gallery-action [icon]="rotateLeftIcon" (onClick)="rotateLeft()"></app-ngx-gallery-action>
+        }
+        @if (rotate) {
+            <app-ngx-gallery-action [icon]="rotateRightIcon" (onClick)="rotateRight()"></app-ngx-gallery-action>
+        }
+        @if (fullscreen) {
+            <app-ngx-gallery-action [icon]="'ngx-gallery-fullscreen ' + fullscreenIcon" (onClick)="manageFullscreen()"></app-ngx-gallery-action>
+        }
+        <app-ngx-gallery-action [icon]="'ngx-gallery-close ' + closeIcon" (onClick)="close()"></app-ngx-gallery-action>
+    </div>
+</div>
+<div class="ngx-spinner-wrapper ngx-gallery-center" [class.ngx-gallery-active]="showSpinner">
+    <i class="ngx-gallery-icon ngx-gallery-spinner {{ spinnerIcon }}" aria-hidden="true"></i>
+</div>
+<div
+    class="ngx-gallery-preview-wrapper"
+    (click)="closeOnClick && close()"
+    (mouseup)="mouseUpHandler($event)"
+    (mousemove)="mouseMoveHandler($event)"
+    (touchend)="mouseUpHandler($event)"
+    (touchmove)="mouseMoveHandler($event)"
+    role="none">
+    <div class="ngx-gallery-preview-img-wrapper">
+        @if (src) {
+            <img
+                role="none"
+                alt="ngx-gallery-preview-image"
+                ,
+                #previewImage
+                class="ngx-gallery-preview-img ngx-gallery-center"
+                [src]="src"
+                (click)="$event.stopPropagation()"
+                (mouseenter)="imageMouseEnter()"
+                (mouseleave)="imageMouseLeave()"
+                (mousedown)="mouseDownHandler($event)"
+                (touchstart)="mouseDownHandler($event)"
+                [class.ngx-gallery-active]="!loading"
+                [class.animation]="animation"
+                [class.ngx-gallery-grab]="canDragOnZoom()"
+                [style.transform]="getTransform()"
+                [style.left]="positionLeft + 'px'"
+                [style.top]="positionTop + 'px'" />
+        }
+        @if (bullets) {
+            <app-ngx-gallery-bullets [count]="images?.length!" [active]="index" (onChange)="showAtIndex($event)"></app-ngx-gallery-bullets>
+        }
+    </div>
+    @if (showDescription && description) {
+        <div class="ngx-gallery-preview-text" [innerHTML]="description" (click)="$event.stopPropagation()" role="none"></div>
+    }
+</div>

@@ -1,0 +1,339 @@
+{
+  "make": "Nissan",
+  "models": [
+    {
+      "label": "100 NX",
+      "modifications": {
+        "100-nx-coupe": "100 NX Coupe (03.1990 - 01.1996)"
+      }
+    },
+    {
+      "label": "200 SX",
+      "modifications": {
+        "200-sx-coupe-i": "200 SX Coupe I (07.1988 - 12.1995)",
+        "200-sx-coupe-ii": "200 SX Coupe II (10.1993 - 12.1999)"
+      }
+    },
+    {
+      "label": "300 ZX",
+      "modifications": {
+        "300-zx-coupe-i": "300 ZX Coupe I (01.1984 - 10.1990)",
+        "300-zx-coupe-ii": "300 ZX Coupe II (09.1989 - 12.2000)"
+      }
+    },
+    {
+      "label": "350 Z",
+      "modifications": {
+        "350-z-coupe": "350 Z Coupe (09.2002 - 12.2009)",
+        "350-z-roadster": "350 Z Roadster (09.2002 - 12.2009)"
+      }
+    },
+    {
+      "label": "370 Z",
+      "modifications": {
+        "370-z-coupe": "370 Z Coupe (01.2009 - 05.2020)",
+        "370-z-roadster": "370 Z Roadster (01.2009 - 05.2020)"
+      }
+    },
+    {
+      "label": "Almera",
+      "modifications": {
+        "almera-i-hatchback": "Almera I Hatchback (07.1995 - 07.2001)",
+        "almera-i-sedan": "Almera I Sedan (07.1995 - 09.2000)",
+        "almera-ii-hatchback": "Almera II Hatchback (01.2000 - 12.2006)",
+        "almera-ii-sedan": "Almera II Sedan (06.2000 - 12.2006)",
+        "almera-tino": "Almera TINO (12.1998 - 02.2006)"
+      }
+    },
+    {
+      "label": "Altima",
+      "modifications": {
+        "altima-sedan-i": "Altima Sedan I (06.1993 - 09.2001)",
+        "altima-sedan-ii": "Altima Sedan II (08.2001 - 09.2006)",
+        "altima-sedan-iii": "Altima Sedan III (10.2006 - 05.2012)",
+        "altima-sedan-iv": "Altima Sedan IV (05.2012 - 12.2018)"
+      }
+    },
+    {
+      "label": "Armada",
+      "modifications": {
+        "armada-suv-i": "Armada SUV I (08.2003 - 12.2015)",
+        "armada-suv-ii": "Armada SUV II (05.2016 - ...)"
+      }
+    },
+    {
+      "label": "Bluebird",
+      "modifications": {
+        "bluebird-i-sedan": "Bluebird I Sedan (11.1983 - 05.1990)",
+        "bluebird-i-station-wagon": "Bluebird I Station Wagon (11.1983 - 12.1990)",
+        "bluebird-ii-hatchback": "Bluebird II Hatchback (12.1985 - 11.1992)",
+        "bluebird-ii-sedan": "Bluebird II Sedan (12.1985 - 12.1990)"
+      }
+    },
+    {
+      "label": "Cabstar",
+      "modifications": {
+        "cabstar-platform": "Cabstar Platform (01.1992 - 09.2011)"
+      }
+    },
+    {
+      "label": "Cherry",
+      "modifications": {
+        "cherry-iii-hatchback": "Cherry III Hatchback (04.1982 - 10.1987)"
+      }
+    },
+    {
+      "label": "GT-R",
+      "modifications": {
+        "gt-r-coupe": "GT-R Coupe (12.2007 - ...)"
+      }
+    },
+    {
+      "label": "JUKE",
+      "modifications": {
+        "juke-suv-i": "JUKE SUV I (06.2010 - 12.2019)",
+        "juke-suv-ii": "JUKE SUV II (08.2019 - ...)"
+      }
+    },
+    {
+      "label": "Kubistar",
+      "modifications": {
+        "kubistar-box": "Kubistar Box (08.2003 - ...)"
+      }
+    },
+    {
+      "label": "Laurel",
+      "modifications": {
+        "laurel-sedan": "Laurel Sedan (11.1984 - 06.1990)"
+      }
+    },
+    {
+      "label": "Leaf",
+      "modifications": {
+        "leaf-hatchback-i": "Leaf Hatchback I (11.2010 - 08.2017)",
+        "leaf-hatchback-ii": "Leaf Hatchback II (08.2017 - ...)"
+      }
+    },
+    {
+      "label": "Maxima",
+      "modifications": {
+        "maxima-ii-sedan": "Maxima II Sedan (10.1988 - 02.1995)",
+        "maxima-qx-sedan-a32": "Maxima QX Sedan (A32) (03.1994 - 08.2000)",
+        "maxima-qx-sedan-a33": "Maxima QX Sedan (A33) (04.1999 - 11.2003)",
+        "maxima-station-wagon": "Maxima Station Wagon (10.1997 - 03.2000)"
+      }
+    },
+    {
+      "label": "Micra",
+      "modifications": {
+        "micra-cabrio": "Micra Cabrio (08.2005 - 02.2010)",
+        "micra-i-hatchback": "Micra I Hatchback (12.1982 - 11.1992)",
+        "micra-ii-hatchback": "Micra II Hatchback (01.1992 - 02.2003)",
+        "micra-iii-hatchback": "Micra III Hatchback (01.2003 - 06.2010)",
+        "micra-iv-hatchback": "Micra IV Hatchback (05.2010 - 12.2016)",
+        "micra-v-hatchback": "Micra V Hatchback (12.2016 - ...)"
+      }
+    },
+    {
+      "label": "Murano",
+      "modifications": {
+        "murano-i-suv": "Murano I SUV (08.2003 - 09.2008)",
+        "murano-ii-suv": "Murano II SUV (10.2007 - 09.2014)",
+        "murano-iii-suv": "Murano III SUV (10.2014 - ...)"
+      }
+    },
+    {
+      "label": "Navara (NP300)",
+      "modifications": {
+        "navara-np300-pick-up-i": "Navara (NP300) Pick-up I (01.1997 - 10.2004)",
+        "navara-np300-pick-up-ii": "Navara (NP300) Pick-up II (10.2004 - 05.2014)",
+        "navara-np300-pick-up-iii": "Navara (NP300) Pick-up III (07.2014 - ...)"
+      }
+    },
+    {
+      "label": "Note",
+      "modifications": {
+        "note-minivan-i": "Note Minivan I (01.2005 - 06.2013)",
+        "note-minivan-ii": "Note Minivan II (09.2012 - ...)"
+      }
+    },
+    {
+      "label": "Pathfinder",
+      "modifications": {
+        "pathfinder-i-suv": "Pathfinder I SUV (07.1986 - 10.1995)",
+        "pathfinder-ii-suv": "Pathfinder II SUV (09.1995 - 07.2005)",
+        "pathfinder-iii-suv": "Pathfinder III SUV (01.2005 - 12.2012)",
+        "pathfinder-iv-suv": "Pathfinder IV SUV (09.2012 - ...)"
+      }
+    },
+    {
+      "label": "Patrol",
+      "modifications": {
+        "patrol-iii1-hardtop-k160": "Patrol III/1 Hardtop K160 (11.1979 - 02.1989)",
+        "patrol-iii1-station-wagon": "Patrol III/1 Station Wagon (11.1979 - 02.1989)",
+        "patrol-iii2-hardtop-k260": "Patrol III/2 Hardtop K260 (10.1984 - 04.1998)",
+        "patrol-iii2-station-wagon": "Patrol III/2 Station Wagon (08.1988 - 04.1998)",
+        "patrol-iv-gr-y60": "Patrol IV GR Y60 (01.1986 - 02.1998)",
+        "patrol-v-gr-wagon-y61": "Patrol V GR Wagon Y61 (06.1997 - 04.2010)"
+      }
+    },
+    {
+      "label": "Pixo",
+      "modifications": {
+        "pixo-hatchback": "Pixo Hatchback (03.2009 - 08.2013)"
+      }
+    },
+    {
+      "label": "Prairie",
+      "modifications": {
+        "prairie-minivan": "Prairie Minivan (12.1982 - 10.1988)",
+        "prairie-minivan-pro": "Prairie Minivan PRO (10.1988 - 07.1994)"
+      }
+    },
+    {
+      "label": "Primastar",
+      "modifications": {
+        "primastar-box-x83": "Primastar Box (X83) (09.2002 - ...)",
+        "primastar-bus-x83": "Primastar Bus (X83) (03.2001 - ...)"
+      }
+    },
+    {
+      "label": "Primera",
+      "modifications": {
+        "primera-hatchback-i": "Primera Hatchback I (06.1990 - 06.1996)",
+        "primera-hatchback-ii": "Primera Hatchback II (06.1996 - 07.2002)",
+        "primera-hatchback-iii": "Primera Hatchback III (01.2002 - 06.2007)",
+        "primera-sedan-i": "Primera Sedan I (06.1990 - 06.1996)",
+        "primera-sedan-ii": "Primera Sedan II (06.1996 - 12.2001)",
+        "primera-sedan-iii": "Primera Sedan III (01.2002 - 06.2007)",
+        "primera-traveller-i": "Primera Traveller I (07.1990 - 03.1998)",
+        "primera-traveller-ii": "Primera Traveller II (06.1996 - 01.2002)",
+        "primera-traveller-iii": "Primera Traveller III (01.2002 - 06.2007)"
+      }
+    },
+    {
+      "label": "Pulsar",
+      "modifications": {
+        "pulsar-hatchback": "Pulsar Hatchback (08.2012 - 12.2018)"
+      }
+    },
+    {
+      "label": "Qashqai",
+      "modifications": {
+        "qashqai-i-suv": "Qashqai I SUV (12.2006 - 04.2014)",
+        "qashqai-ii-suv": "Qashqai II SUV (11.2013 - ...)"
+      }
+    },
+    {
+      "label": "Rogue",
+      "modifications": {
+        "rogue-suv-i": "Rogue SUV I (01.2007 - 12.2013)",
+        "rogue-suv-ii": "Rogue SUV II (10.2013 - 06.2020)"
+      }
+    },
+    {
+      "label": "Sentra",
+      "modifications": {
+        "sentra-v-sedan": "Sentra V Sedan (01.2000 - 12.2006)"
+      }
+    },
+    {
+      "label": "Serena",
+      "modifications": {
+        "serena-minivan": "Serena Minivan (06.1991 - 09.2001)"
+      }
+    },
+    {
+      "label": "Silvia (S15)",
+      "modifications": {
+        "silvia-s15-coupe": "Silvia (S15) Coupe (09.1999 - 07.2006)"
+      }
+    },
+    {
+      "label": "Skyline",
+      "modifications": {
+        "skyline-coupe-r33": "Skyline Coupe R33 (07.1993 - 07.2000)",
+        "skyline-coupe-r34": "Skyline Coupe R34 (01.1998 - 02.2008)"
+      }
+    },
+    {
+      "label": "Stanza",
+      "modifications": {
+        "stanza-hatchback": "Stanza Hatchback (01.1986 - 12.1989)",
+        "stanza-sedan-i": "Stanza Sedan I (09.1985 - 12.1989)",
+        "stanza-sedan-ii": "Stanza Sedan II (09.1989 - 12.1992)"
+      }
+    },
+    {
+      "label": "Sunny",
+      "modifications": {
+        "sunny-i-coupe": "Sunny I Coupe (03.1982 - 08.1990)",
+        "sunny-i-sedan": "Sunny I Sedan (03.1982 - 12.1990)",
+        "sunny-i-traveller": "Sunny I Traveller (03.1982 - 08.1990)",
+        "sunny-ii-coupe": "Sunny II Coupe (06.1986 - 06.1991)",
+        "sunny-ii-hatchback": "Sunny II Hatchback (06.1986 - 09.1991)",
+        "sunny-ii-sedan": "Sunny II Sedan (06.1986 - 10.1991)",
+        "sunny-ii-traveller": "Sunny II Traveller (01.1986 - 06.1991)",
+        "sunny-iii-box": "Sunny III Box (11.1990 - 03.2000)",
+        "sunny-iii-hatchback": "Sunny III Hatchback (10.1990 - 07.1995)",
+        "sunny-iii-liftback": "Sunny III Liftback (10.1990 - 10.1995)",
+        "sunny-iii-sedan": "Sunny III Sedan (05.1990 - 12.1996)",
+        "sunny-iii-traveller": "Sunny III Traveller (11.1990 - 03.2000)"
+      }
+    },
+    {
+      "label": "Terrano",
+      "modifications": {
+        "terrano-i-suv": "Terrano I SUV (07.1986 - 02.1996)",
+        "terrano-ii-suv": "Terrano II SUV (10.1992 - 09.2007)"
+      }
+    },
+    {
+      "label": "Tiida",
+      "modifications": {
+        "tiida-hatchback": "Tiida Hatchback (05.2004 - 06.2013)",
+        "tiida-sedan": "Tiida Sedan (09.2004 - 12.2013)"
+      }
+    },
+    {
+      "label": "Titan",
+      "modifications": {
+        "titan-pick-up-i": "Titan Pick-up I (10.2003 - 11.2015)",
+        "titan-pick-up-ii": "Titan Pick-up II (09.2015 - ...)"
+      }
+    },
+    {
+      "label": "Urvan",
+      "modifications": {
+        "urvan-box": "Urvan Box (06.1986 - 05.1997)",
+        "urvan-bus": "Urvan Bus (06.1986 - 05.1997)"
+      }
+    },
+    {
+      "label": "Vanette",
+      "modifications": {
+        "vanette-box-i": "Vanette Box I (07.1981 - 06.1987)",
+        "vanette-box-ii": "Vanette Box II (10.1986 - 12.1995)",
+        "vanette-bus-i": "Vanette Bus I (06.1981 - 12.1987)",
+        "vanette-bus-ii": "Vanette Bus II (10.1986 - 12.1995)",
+        "vanette-cargo-box": "Vanette CARGO Box (09.1994 - 05.2002)",
+        "vanette-cargo-bus": "Vanette CARGO Bus (09.1994 - 05.2001)"
+      }
+    },
+    {
+      "label": "X-Trail",
+      "modifications": {
+        "x-trail-i-suv": "X-Trail I SUV (06.2001 - 01.2013)",
+        "x-trail-ii-suv": "X-Trail II SUV (03.2007 - 11.2018)",
+        "x-trail-iii-suv": "X-Trail III SUV (10.2013 - ...)"
+      }
+    },
+    {
+      "label": "Xterra",
+      "modifications": {
+        "xterra-suv-i": "Xterra SUV I (01.1999 - 07.2005)",
+        "xterra-suv-ii": "Xterra SUV II (01.2005 - 12.2015)"
+      }
+    }
+  ]
+}

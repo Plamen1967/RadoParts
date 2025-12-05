@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>d:\dist</_PublishTargetUrl>
+    <History>False|2024-11-29T20:53:24.8861409Z||;True|2023-02-15T14:14:45.4083980+00:00||;True|2021-07-09T20:31:48.8236481+01:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

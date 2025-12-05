@@ -1,0 +1,20 @@
+<div>
+    <form [formGroup]="categoryForm" [ngStyle]="{'background-color': '#f1f9ff'}" class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
+        <div class="col-sm-6">
+            <app-select formControlName="categoryId" data-cy="categoryId" label="{{labels.CATEGORY}}" displayProperty="categoryName" valueProperty="categoryId" [data]="categories">
+            </app-select>
+        </div>
+        <div class="col-sm-6">
+            <app-input formControlName="categoryName" placeHolder="{{labels.CATEGORY}}" label={{labels.CATEGORY}}>
+            </app-input>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <button class="btn btn-primary" [ngClass]="{'disabled': updateButton}" (click)="update()">{{buttonLabel}}</button>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-primary" [ngClass]="{'disabled': deleteButton}" (click)="delete()">{{labels.DELETE}}</button>
+            </div>
+        </div>
+    </form>
+</div>>

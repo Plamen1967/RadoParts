@@ -1,0 +1,15 @@
+<div>
+    <form [formGroup]="companyForm" [ngStyle]="{'background-color': '#f1f9ff'}" class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
+        <div class="col-sm-6">
+            <app-select formControlName="companyId" data-cy="companyId" label="{{labels.COMPANY}}" displayProperty="companyName" valueProperty="companyId" [data]="companies">
+            </app-select>
+        </div>
+        <div class="col-sm-6">
+            <app-input formControlName="companyName" placeHolder="{{labels.COMPANY}}" label={{labels.COMPANY}}>
+            </app-input>
+        </div>
+        <div>
+            <button class="btn btn-primary" (click)="update()">{{label}}</button>
+        </div>
+    </form>
+</div>>

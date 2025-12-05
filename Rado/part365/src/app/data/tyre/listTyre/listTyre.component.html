@@ -1,0 +1,179 @@
+<ng-container>
+    <div class="container">
+        @if (userCount$ | async; as userCount) {
+            @if (userCount && userCount.partCarCount + userCount.partBusCount) {
+                <app-listtitle [title]="'Гуми / Джанти'" [number]="getValue(userCount)"></app-listtitle>
+
+                <span class="count"></span>
+            }
+        }
+        <form [formGroup]="searchForm">
+            <div class="custom-flex">
+                <div class="ps-0 mt-2" [ngStyle]="{ display: 'flex' }">
+                    <app-radiogrouplist [style]="2" [radios]="radioTypes" formControlName="category"></app-radiogrouplist>
+                </div>
+            </div>
+            @if (displayTyre) {
+                <div class="tyre" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
+                    <h5>Гума</h5>
+                    <div class="row">
+                        <div class="col-sm-2 min250px">
+                            <div class="col-sm-3 min200px">
+                                <app-select
+                                    id="tyreCompanyId"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Изберете марката"
+                                    formControlName="tyreCompanyId"
+                                    data-cy="tyreCompanyId"
+                                    label="{{ labels.TYRE_PRODUCER }}"
+                                    [data]="tyreCompanies">
+                                </app-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 min200px">
+                            <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth"> </app-select>
+                        </div>
+                        <div class="col-sm-2 min200px">
+                            <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight"> </app-select>
+                        </div>
+                        <div class="col-sm-2 min200px">
+                            <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
+                        </div>
+                        <div class="col-sm-2 min200px">
+                            <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes"> </app-select>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (displayRim) {
+                <div class="rim" [ngClass]="{ show: displayRim, noShow: !displayRim }">
+                    <h5>Джанта</h5>
+                    <div class="row">
+                        <div class="max250px">
+                            <app-company-choise [itemType]="itemType" [userId]="userId!" [bus]="0" data-cy="companyId" [all]="true" formControlName="companyId"> </app-company-choise>
+                        </div>
+                        @if (this.companyId) {
+                            <div class="col-sm-5 control min300px">
+                                <app-model-choice
+                                    formControlName="modelId"
+                                    [userId]="userId"
+                                    [groupSelection]="false"
+                                    [all]="true"
+                                    [companyId]="companyId!"
+                                    [groupSelection]="false"
+                                    [multiselection]="false"
+                                    (onClose)="focus()">
+                                </app-model-choice>
+                            </div>
+                        }
+                        <div class="col-sm-3 control min200px">
+                            <app-select
+                                id="rimWidth"
+                                tooltip="'Широчина'"
+                                formControlName="rimWidth"
+                                data-cy="rimWidth"
+                                [type]="1"
+                                label="Широчина"
+                                displayProperty="text"
+                                valueProperty="value"
+                                [data]="rimWidth">
+                            </app-select>
+                        </div>
+                        <div class="col-sm-3 control min200px">
+                            <app-select
+                                id="rimMaterial"
+                                tooltip="'Материал'"
+                                formControlName="rimMaterial"
+                                data-cy="rimMaterial"
+                                [type]="1"
+                                label="Материал"
+                                displayProperty="text"
+                                valueProperty="value"
+                                [data]="rimMaterial">
+                            </app-select>
+                        </div>
+                        <div class="col-sm-3 control min200px">
+                            <app-select
+                                id="rimOffset"
+                                tooltip="''"
+                                formControlName="rimOffset"
+                                data-cy="rimOffset"
+                                [type]="1"
+                                label="Офсет"
+                                displayProperty="text"
+                                valueProperty="value"
+                                [data]="rimOffset">
+                            </app-select>
+                        </div>
+                        <div class="col-sm-3 control min200px">
+                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" formControlName="rimBoltCount" data-cy="rimBoltCount" [type]="1" label="Брой Болтове" [data]="rimBoltCount">
+                            </app-select>
+                        </div>
+                        <div class="col-sm-3 control min250px">
+                            <app-select
+                                id="rimBoltCount"
+                                tooltip="'Междуболтово разстояние'"
+                                formControlName="rimBoltDistance"
+                                data-cy="rimBoltDistance"
+                                [type]="1"
+                                label="Междуболтово разстояние"
+                                [data]="boltDistances">
+                            </app-select>
+                        </div>
+                        <div class="col-sm-3 control">
+                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" formControlName="rimCenter" data-cy="rimCenter" [type]="1" label="Център" [data]="rimCenters"> </app-select>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="max250px">
+                    <app-region formControlName="regionId"> </app-region>
+                </div>
+            </div>
+        </form>
+        <div class="d-flex mt-2 mb-2">
+            <button type="submit" #submit class="btn btnSearch me-2" data-cy="search" (click)="search()">{{ labels.SEARCH }}</button>
+            <button type="button" #submit class="btn btnSearch me-2" data-cy="search" (click)="clear()">Изчисти</button>
+            <div class="d-flex justify-content-start ms-2">
+                @if (selectedCategory === 3 || selectedCategory === 7) {
+                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(3)">Добави Гума</button>
+                }
+                @if (selectedCategory === 4 || selectedCategory === 7) {
+                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(4)">Добави Джанта</button>
+                }
+                @if (selectedCategory === 5 || selectedCategory === 7) {
+                    <button type="button" class="btn btnAdd" data-cy="addtyre" (click)="newTyre(5)">Добави Джанта с гума</button>
+                }
+            </div>
+        </div>
+        @if (loading) {
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Зареждане...
+            </button>
+        } @else {
+            <div class="mb-2">
+                <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
+            </div>
+            <div id="data-container">
+                @if (searching) {
+                    <h3>{{ noPartsMessage }}</h3>
+                } @else {
+                    @for (item of pageItems; track item.id) {
+                        <div id="{{ item.id }}" class="mb-2">
+                            <app-dealerview [allowUpdate]="true" [rimWithTyreView]="item" [mainPicture]="item.mainPicture" [allowUpdate]="true" (action)="actionItem($event)" [highlighted]="currentId">
+                            </app-dealerview>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="mt-2">
+                <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)"> </app-navigator>
+            </div>
+        }
+    </div>
+</ng-container>
+<app-gotop></app-gotop>

@@ -1,0 +1,38 @@
+<div class="container minSize mt-2">
+    @if (_user) {
+        <div id="top">
+            <div class="cardSide">
+                <app-userheader [user]="_user"></app-userheader>
+                @if (currentId) {
+                    @if (images && images.length) {
+                        <div class="mb-2">
+                            <app-image-carousel [previewButton]="false" [images]="images2"></app-image-carousel>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        @if (currentId) {
+            <div class="row">
+                <div class="show-radio">
+                    <div class="mb-1 d-flex justify-content-center w-100">
+                        <app-radiogrouplist [groupListDisplay]="'none'" [(ngModel)]="defaultType" [radios]="radios" (changeRadioGroup)="filterChange($event)"></app-radiogrouplist>
+                    </div>
+                </div>
+                <div class="show-list">
+                    <div class="d-flex justify-content-center w-100">
+                        <form [formGroup]="typeForm">
+                            <app-select [label]="'Избери категория'" formControlName="type" [data]="selectOption"></app-select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                @if (showParts) {
+                    <h5 class="text-center mt-2">Обяви на дилъра</h5>
+                }
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,146 @@
+{
+  "make": "Dodge",
+  "models": [
+    {
+      "label": "Avenger",
+      "modifications": {
+        "avenger-sedan": "Avenger Sedan (06.2007 - 12.2014)"
+      }
+    },
+    {
+      "label": "Caliber",
+      "modifications": {
+        "caliber-hatchback": "Caliber Hatchback (06.2006 - 12.2012)"
+      }
+    },
+    {
+      "label": "Caravan",
+      "modifications": {
+        "caravan-minivan-i": "Caravan Minivan I (09.1983 - 09.1990)",
+        "caravan-minivan-ii": "Caravan Minivan II (08.1990 - 08.1995)",
+        "caravan-minivan-iii": "Caravan Minivan III (01.1995 - 03.2001)",
+        "caravan-minivan-iv": "Caravan Minivan IV (02.2000 - 12.2007)",
+        "caravan-minivan-v": "Caravan Minivan V (01.2008 - ...)"
+      }
+    },
+    {
+      "label": "Challenger",
+      "modifications": {
+        "challenger-coupe": "Challenger Coupe (09.2007 - ...)"
+      }
+    },
+    {
+      "label": "Charger",
+      "modifications": {
+        "charger-hardtop-i": "Charger Hardtop I (09.1967 - 12.1970)",
+        "charger-hardtop-ii": "Charger Hardtop II (09.1970 - 12.1974)",
+        "charger-sedan-i": "Charger Sedan I (06.2005 - 12.2010)",
+        "charger-sedan-ii": "Charger Sedan II (01.2011 - 09.2014)",
+        "charger-sedan-iii": "Charger Sedan III (09.2014 - ...)"
+      }
+    },
+    {
+      "label": "Dart",
+      "modifications": {
+        "dart-sedan": "Dart Sedan (04.2012 - 12.2016)"
+      }
+    },
+    {
+      "label": "Durango",
+      "modifications": {
+        "durango-suv-i": "Durango SUV I (09.1997 - 12.2003)",
+        "durango-suv-ii": "Durango SUV II (09.2003 - 12.2010)",
+        "durango-suv-iii": "Durango SUV III (12.2010 - ...)"
+      }
+    },
+    {
+      "label": "Dynasty",
+      "modifications": {
+        "dynasty-sedan": "Dynasty Sedan (1988 - 1993)"
+      }
+    },
+    {
+      "label": "Journey",
+      "modifications": {
+        "journey-suv": "Journey SUV (06.2008 - 02.2020)"
+      }
+    },
+    {
+      "label": "Neon",
+      "modifications": {
+        "neon-coupe": "Neon Coupe (01.1994 - 09.1999)",
+        "neon-sedan-i": "Neon Sedan I (05.1994 - 08.1999)",
+        "neon-sedan-ii": "Neon Sedan II (08.1999 - 12.2006)"
+      }
+    },
+    {
+      "label": "Nitro",
+      "modifications": {
+        "nitro-suv": "Nitro SUV (09.2006 - 12.2012)"
+      }
+    },
+    {
+      "label": "RAM",
+      "modifications": {
+        "ram-4000-plarform": "RAM 4000 Plarform (01.2005 - ...)",
+        "ram-box": "RAM Box (08.1993 - 09.2003)",
+        "ram-pick-up-1500-i": "RAM Pick-up 1500 I (04.1991 - 08.2002)",
+        "ram-pick-up-1500-ii": "RAM Pick-up 1500 II (06.2001 - 09.2008)",
+        "ram-pick-up-1500-iii": "RAM Pick-up 1500 III (10.2008 - ...)",
+        "ram-pick-up-2500-i": "RAM Pick-up 2500 I (01.1993 - 12.2002)",
+        "ram-pick-up-2500-ii": "RAM Pick-up 2500 II (09.2001 - 12.2009)",
+        "ram-pick-up-2500-iii": "RAM Pick-up 2500 III (01.2008 - ...)",
+        "ram-van-i": "RAM Van I (10.1985 - 09.1993)",
+        "ram-van-ii": "RAM Van II (06.1995 - 10.2002)",
+        "ram-van-iii": "RAM Van III (03.2002 - 12.2005)"
+      }
+    },
+    {
+      "label": "Ramcharger",
+      "modifications": {
+        "ramcharger-suv-i": "Ramcharger SUV I (09.1974 - 12.1980)",
+        "ramcharger-suv-ii": "Ramcharger SUV II (09.1980 - 12.1996)",
+        "ramcharger-suv-iii": "Ramcharger SUV III (01.1999 - 12.2001)"
+      }
+    },
+    {
+      "label": "Shadow",
+      "modifications": {
+        "shadow-convertible": "Shadow Convertible (1990 - 1993)",
+        "shadow-hatchback": "Shadow Hatchback (1986 - 1994)",
+        "shadow-sedan": "Shadow Sedan (1986 - 1994)"
+      }
+    },
+    {
+      "label": "Spirit",
+      "modifications": {
+        "spirit-sedan": "Spirit Sedan (1989 - 1995)"
+      }
+    },
+    {
+      "label": "Stealth",
+      "modifications": {
+        "stealth-hatchback-coupe": "Stealth Hatchback Coupe (09.1990 - 12.1996)"
+      }
+    },
+    {
+      "label": "Stratus",
+      "modifications": {
+        "stratus-coupe": "Stratus Coupe (09.2000 - 12.2005)",
+        "stratus-sedan-i": "Stratus Sedan I (12.1994 - 04.2001)",
+        "stratus-sedan-ii": "Stratus Sedan II (10.2000 - 10.2006)"
+      }
+    },
+    {
+      "label": "Viper",
+      "modifications": {
+        "viper-cabrio-i": "Viper Cabrio I (10.1991 - 09.2002)",
+        "viper-cabrio-ii": "Viper Cabrio II (09.2002 - 12.2017)",
+        "viper-coupe-i": "Viper Coupe I (10.1991 - 09.2002)",
+        "viper-coupe-ii": "Viper Coupe II (01.2003 - 09.2007)",
+        "viper-coupe-iii": "Viper Coupe III (09.2007 - 12.2010)",
+        "viper-coupe-iv": "Viper Coupe IV (09.2012 - 12.2017)"
+      }
+    }
+  ]
+}

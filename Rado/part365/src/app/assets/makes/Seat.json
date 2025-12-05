@@ -1,0 +1,114 @@
+{
+  "make": "Seat",
+  "models": [
+    {
+      "label": "Alhambra",
+      "modifications": {
+        "alhambra-minivan-i": "Alhambra Minivan I (04.1996 - 03.2010)",
+        "alhambra-minivan-ii": "Alhambra Minivan II (06.2010 - ...)"
+      }
+    },
+    {
+      "label": "Altea",
+      "modifications": {
+        "altea-minivan": "Altea Minivan (03.2004 - 12.2015)",
+        "altea-xl-minivan": "Altea XL Minivan (10.2006 - 01.2016)"
+      }
+    },
+    {
+      "label": "Arona",
+      "modifications": {
+        "arona-suv": "Arona SUV (07.2017 - ...)"
+      }
+    },
+    {
+      "label": "Arosa",
+      "modifications": {
+        "arosa-hatchback": "Arosa Hatchback (05.1997 - 06.2004)"
+      }
+    },
+    {
+      "label": "Ateca",
+      "modifications": {
+        "ateca-suv": "Ateca SUV (04.2016 - ...)"
+      }
+    },
+    {
+      "label": "Cordoba",
+      "modifications": {
+        "cordoba-coupe": "Cordoba Coupe (06.1994 - 12.2002)",
+        "cordoba-sedan-i": "Cordoba Sedan I (02.1993 - 10.1999)",
+        "cordoba-sedan-ii": "Cordoba Sedan II (06.1999 - 10.2002)",
+        "cordoba-sedan-iii": "Cordoba Sedan III (09.2002 - 11.2009)",
+        "cordoba-vario-i": "Cordoba Vario I (08.1996 - 06.1999)",
+        "cordoba-vario-ii": "Cordoba Vario II (06.1999 - 12.2002)"
+      }
+    },
+    {
+      "label": "Exeo",
+      "modifications": {
+        "exeo-sedan": "Exeo Sedan (12.2008 - 05.2013)",
+        "exeo-st-combi": "Exeo ST (Combi) (05.2009 - 05.2013)"
+      }
+    },
+    {
+      "label": "Ibiza",
+      "modifications": {
+        "ibiza-i-hatchback": "Ibiza I Hatchback (06.1984 - 12.1993)",
+        "ibiza-ii-hatchback": "Ibiza II Hatchback (03.1993 - 05.2002)",
+        "ibiza-ii-hatchback-facelift": "Ibiza II Hatchback (Facelift) (08.1999 - 02.2002)",
+        "ibiza-iii-hatchback": "Ibiza III Hatchback (02.2002 - 11.2009)",
+        "ibiza-iv-hatchback": "Ibiza IV Hatchback (03.2008 - 03.2017)",
+        "ibiza-iv-sportcoupe": "Ibiza IV SPORTCOUPE (07.2008 - 12.2016)",
+        "ibiza-iv-st-combi": "Ibiza IV ST (Combi) (03.2010 - 07.2016)",
+        "ibiza-v-hatchback": "Ibiza V Hatchback (01.2017 - ...)"
+      }
+    },
+    {
+      "label": "Inca",
+      "modifications": {
+        "inca-pick-up-van": "Inca Pick-Up / Van (11.1995 - 06.2003)"
+      }
+    },
+    {
+      "label": "Leon",
+      "modifications": {
+        "leon-hatchback-i": "Leon Hatchback I (11.1999 - 06.2006)",
+        "leon-hatchback-ii": "Leon Hatchback II (05.2005 - 12.2012)",
+        "leon-hatchback-iii": "Leon Hatchback III (09.2012 - 06.2020)",
+        "leon-hatchback-iv": "Leon Hatchback IV (11.2019 - ...)",
+        "leon-sc-coupe": "Leon SC Coupe (01.2013 - 06.2020)",
+        "leon-sportstourer": "Leon Sportstourer (03.2020 - ...)",
+        "leon-st-wagon": "Leon ST Wagon (08.2013 - 06.2020)"
+      }
+    },
+    {
+      "label": "Marbella",
+      "modifications": {
+        "marbella-box": "Marbella Box (11.1986 - 12.1993)",
+        "marbella-hatchback": "Marbella Hatchback (08.1986 - 10.1998)"
+      }
+    },
+    {
+      "label": "Mii",
+      "modifications": {
+        "mii-hatchback": "Mii Hatchback (10.2011 - ...)"
+      }
+    },
+    {
+      "label": "Tarraco",
+      "modifications": {
+        "tarraco-suv": "Tarraco SUV (09.2018 - ...)"
+      }
+    },
+    {
+      "label": "Toledo",
+      "modifications": {
+        "toledo-i-hatchback": "Toledo I Hatchback (01.1991 - 10.1999)",
+        "toledo-ii-sedan": "Toledo II Sedan (10.1998 - 05.2006)",
+        "toledo-iii-hatchback": "Toledo III Hatchback (04.2004 - 05.2009)",
+        "toledo-iv-hatchback": "Toledo IV Hatchback (07.2012 - 04.2019)"
+      }
+    }
+  ]
+}

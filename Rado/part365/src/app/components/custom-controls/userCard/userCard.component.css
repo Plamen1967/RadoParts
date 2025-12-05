@@ -1,0 +1,66 @@
+.phoneColor {
+    background-color: teal;
+    color: white;
+}
+
+.sellerName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.userCard {
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+}
+
+.imageStyle {
+    width: 160px;
+    height: 100px;
+    background-size: contain-fit;
+}
+.row1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-right: 2px;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+
+.row1:first-of-type {
+    margin-right: 2px;
+}
+
+.companyClass {
+    padding-left: 2px;
+    padding-right: 0px;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.companySize {
+    width: 100%;
+    height: 100%;
+    background-position:  left top;
+}
+.company {
+    display: block;
+    height: 120px;
+    padding: 2px;
+}
+
+.companyMinClass {
+    display: none;
+    text-align: left;
+    padding: 2px;
+   
+}
+
+.background-image {
+    height: 120px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;}

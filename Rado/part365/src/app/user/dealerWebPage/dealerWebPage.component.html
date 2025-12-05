@@ -1,0 +1,19 @@
+<div style="min-height: 100vh">
+    <header style="display: flex; flex-direction: column;">
+        <div style="background-color: transparent; display: flex; justify-content: center; margin-bottom: 10px; margin-top: 10px">
+            <h4 class="title">Компания {{ user?.companyName }}</h4>
+        </div>
+        <nav class="menu">
+            <a [routerLink]="['./details']" [queryParams]="{ userId: userId }" class="menu-item" routerLinkActive="active-route">Начало</a>
+            <a [routerLink]="['./stock']" [queryParams]="{ userId: userId }" class="menu-item" routerLinkActive="active-route">Наличност</a>
+            <a [routerLink]="['./contact']" [queryParams]="{ userId: userId }" class="menu-item" routerLinkActive="active-route">За контакт</a>
+        </nav>
+    </header>
+    <section class="data-container">
+        <div class="leftPanel"></div>
+        <div>
+            <router-outlet></router-outlet>
+        </div>
+        <div class="rightPanel"></div>
+    </section>
+</div>

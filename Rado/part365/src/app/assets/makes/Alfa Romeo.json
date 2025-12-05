@@ -1,0 +1,125 @@
+{
+  "make": "Alfa Romeo",
+  "models": [
+    {
+      "label": "145",
+      "modifications": {
+        "145-hatchback": "145 Hatchback (07.1994 - 01.2001)"
+      }
+    },
+    {
+      "label": "146",
+      "modifications": {
+        "146-hatchback": "146 Hatchback (12.1994 - 01.2001)"
+      }
+    },
+    {
+      "label": "147",
+      "modifications": {
+        "147-hatchback": "147 Hatchback (2000-11-01 - 2010-03-01)"
+      }
+    },
+    {
+      "label": "155",
+      "modifications": {
+        "155-sedan": "155 Sedan (01.1992 - 12.1997)"
+      }
+    },
+    {
+      "label": "156",
+      "modifications": {
+        "156-sedan": "156 Sedan (09.1997 - 09.2005)",
+        "156-sportwagon": "156 Sportwagon (01.2000 - 05.2006)"
+      }
+    },
+    {
+      "label": "159",
+      "modifications": {
+        "159-sedan": "159 Sedan (09.2005 - 11.2011)",
+        "159-sportwagon": "159 Sportwagon (03.2006 - 11.2011)"
+      }
+    },
+    {
+      "label": "164",
+      "modifications": {
+        "164-sedan": "164 Sedan (01.1987 - 09.1998)"
+      }
+    },
+    {
+      "label": "166",
+      "modifications": {
+        "166-sedan": "166 Sedan (09.1998 - 06.2007)"
+      }
+    },
+    {
+      "label": "33",
+      "modifications": {
+        "33-hatchback": "33 Hatchback (01.1990 - 09.1994)",
+        "33-sportwagon": "33 Sportwagon (01.1990 - 09.1994)"
+      }
+    },
+    {
+      "label": "75",
+      "modifications": {
+        "75-sedan": "75 Sedan (05.1985 - 12.1992)"
+      }
+    },
+    {
+      "label": "Alfetta",
+      "modifications": {
+        "alfetta-gt-coupe": "Alfetta GT Coupe (01.1974 - 01.1986)",
+        "alfetta-sedan": "Alfetta Sedan (07.1974 - 12.1984)"
+      }
+    },
+    {
+      "label": "Brera",
+      "modifications": {
+        "brera-coupe": "Brera Coupe (01.2006 - 05.2011)"
+      }
+    },
+    {
+      "label": "Giulia",
+      "modifications": {
+        "giulia-gt-coupe": "Giulia GT Coupe (01.1962 - 12.1980)",
+        "giulia-sedan-i": "Giulia Sedan I (01.1962 - 03.1979)",
+        "giulia-sedan-ii": "Giulia Sedan II (10.2015 - 06.2020)"
+      }
+    },
+    {
+      "label": "Giulietta",
+      "modifications": {
+        "giulietta-hatchback": "Giulietta Hatchback (04.2010 - ...)"
+      }
+    },
+    {
+      "label": "GT",
+      "modifications": {
+        "gt-coupe": "GT Coupe (11.2003 - 09.2010)"
+      }
+    },
+    {
+      "label": "GTV",
+      "modifications": {
+        "gtv-coupe": "GTV Coupe (09.1994 - 10.2005)"
+      }
+    },
+    {
+      "label": "MiTo",
+      "modifications": {
+        "mito-hatchback": "MiTo Hatchback (09.2008 - ...)"
+      }
+    },
+    {
+      "label": "Spider",
+      "modifications": {
+        "spider-cabrio": "Spider Cabrio (03.1971 - 12.1993)"
+      }
+    },
+    {
+      "label": "Stelvio",
+      "modifications": {
+        "stelvio-suv": "Stelvio SUV (12.2016 - 06.2020)"
+      }
+    }
+  ]
+}

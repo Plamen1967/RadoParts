@@ -1,0 +1,53 @@
+<div class="d-flex w-100 d-flex justify-content-center">
+    <div class="w-100">
+        <div class="caption">
+            <div>{{ caption }}</div>
+        </div>
+        <div class="parentContainer w-100 m-auto d-flex justify-content-center mb-2">
+            <div class="vertical-nav">
+                <div class="top"></div>
+                <div class="bottom">
+                    <div class="d-flex justify-content-between m-2">
+                        @if (!showCategory) {
+                            <button class="btn btn-primary" (click)="showCategory = true">Назад</button>
+                        }
+                        <button class="btn btn-primary" (click)="goBack()">Отмени</button>
+                    </div>
+                    @if (showCategory) {
+                        @for (category of categories; track category.id) {
+                            <div class="menu" data-bs-toggle="collapse" aria-expanded="false" [attr.aria-controls]="category.id">
+                                <div class="category-style" (click)="onCategoryClick(category.id!)" role="none">
+                                    <div class="category-name">
+                                        <div><img class="category-image" src="../../../{{ category.imageName }}" alt="{{ category.imageName }}" />{{ category.name }}</div>
+                                        <div class="category-number-style" role="none">{{ category.count }}</div>
+                                    </div>
+                                </div>
+
+                                @if (category?.children?.length) {
+                                    <div class="array-style">
+                                        <div class="array-style-inside" (click)="onArrowClick($event, category.id!)" role="none">
+                                            <span class="material-symbols-outlined"> arrow_right_alt </span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    } @else {
+                        @for (child of category?.children; track child.value) {
+                            <div class="menu" data-bs-toggle="collapse" aria-expanded="false" (click)="onClick($event, child.value!)" role="none">
+                                <div class="category-style">
+                                    <div class="category-name">
+                                        <div role="none">
+                                            {{ child.text }}
+                                        </div>
+                                        <div class="category-number-style ms-2" role="none">{{ child.count }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

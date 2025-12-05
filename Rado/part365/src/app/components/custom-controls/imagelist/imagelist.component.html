@@ -1,0 +1,28 @@
+<div class="row align-items-start ms-1 me-1">
+    @if (UpdateFlag) {
+        <div class="col-sm-10 mt-1">
+            <app-upload [id]="id" [businessCard]="false" [addPicture]="" (uploadFinished)="addImage($event)" [multiple]="true"></app-upload>
+        </div>
+    }
+    @for (image of images; track image.imageId; let i = $index) {
+        <div class="col-sm-3 p-1" style="position: relative">
+            <img class="p-1 image" loading="lazy" src="{{ image.imageSrc }}" alt="" />
+            @if (UpdateFlag) {
+                <div class="mt-2">
+                    <button type="button" (click)="deleteImage(image)" class="btn-primary button-delete"><span class="material-symbols-outlined"> delete </span></button>
+                    <div>
+                        <input
+                            type="radio"
+                            class="ms-2 custom-control-input"
+                            [value]="image.imageId"
+                            (change)="setDefaultImage(image)"
+                            name="mainImageId"
+                            [(ngModel)]="mainImageId"
+                            id="{{ image.imageId }}" />
+                        <label class="custom-control-label p-2" for="{{ image.imageId }}">{{ labels.FIRST }}</label>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

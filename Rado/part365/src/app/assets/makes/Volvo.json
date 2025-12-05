@@ -1,0 +1,188 @@
+{
+  "make": "Volvo",
+  "models": [
+    {
+      "label": "240",
+      "modifications": {
+        "240-estate": "240 Estate (08.1974 - 12.1993)",
+        "240-sedan": "240 Sedan (08.1974 - 12.1993)"
+      }
+    },
+    {
+      "label": "260",
+      "modifications": {
+        "260-coupe": "260 Coupe (09.1975 - 12.1985)",
+        "260-estate": "260 Estate (07.1975 - 07.1982)",
+        "260-sedan": "260 Sedan (08.1974 - 07.1982)"
+      }
+    },
+    {
+      "label": "340-360",
+      "modifications": {
+        "340-360-hatchback": "340-360 Hatchback (08.1975 - 07.1991)",
+        "340-360-sedan": "340-360 Sedan (08.1979 - 07.1991)"
+      }
+    },
+    {
+      "label": "440",
+      "modifications": {
+        "440-hatchback": "440 Hatchback (08.1988 - 12.1996)"
+      }
+    },
+    {
+      "label": "460",
+      "modifications": {
+        "460-sedan": "460 Sedan (09.1988 - 07.1996)"
+      }
+    },
+    {
+      "label": "480",
+      "modifications": {
+        "480-coupe": "480 Coupe (04.1986 - 07.1996)"
+      }
+    },
+    {
+      "label": "740",
+      "modifications": {
+        "740-estate": "740 Estate (08.1984 - 08.1992)",
+        "740-sedan": "740 Sedan (04.1983 - 08.1992)"
+      }
+    },
+    {
+      "label": "850",
+      "modifications": {
+        "850-estate": "850 Estate (04.1992 - 10.1997)",
+        "850-sedan": "850 Sedan (06.1991 - 10.1997)"
+      }
+    },
+    {
+      "label": "940",
+      "modifications": {
+        "940-i-estate": "940 I Estate (08.1990 - 10.1995)",
+        "940-i-sedan": "940 I Sedan (08.1990 - 12.1994)",
+        "940-ii-estate": "940 II Estate (08.1994 - 10.1998)",
+        "940-ii-sedan": "940 II Sedan (08.1994 - 12.1998)"
+      }
+    },
+    {
+      "label": "960",
+      "modifications": {
+        "960-i-estate": "960 I Estate (08.1990 - 07.1994)",
+        "960-i-sedan": "960 I Sedan (08.1990 - 07.1994)",
+        "960-ii-estate": "960 II Estate (07.1994 - 12.1996)",
+        "960-ii-sedan": "960 II Sedan (07.1994 - 12.1996)"
+      }
+    },
+    {
+      "label": "C30",
+      "modifications": {
+        "c30-coupe": "C30 Coupe (09.2006 - 12.2013)"
+      }
+    },
+    {
+      "label": "C70",
+      "modifications": {
+        "c70-cabrio-i": "C70 Cabrio I (03.1998 - 10.2005)",
+        "c70-cabrio-ii": "C70 Cabrio II (03.2006 - 12.2013)",
+        "c70-coupe": "C70 Coupe (03.1997 - 09.2002)"
+      }
+    },
+    {
+      "label": "S40",
+      "modifications": {
+        "s40-i-sedan": "S40 I Sedan (07.1995 - 06.2004)",
+        "s40-ii-sedan": "S40 II Sedan (12.2003 - 12.2012)"
+      }
+    },
+    {
+      "label": "S60",
+      "modifications": {
+        "s60-i-sedan": "S60 I Sedan (07.2000 - 04.2010)",
+        "s60-ii-sedan": "S60 II Sedan (04.2010 - 02.2019)",
+        "s60-iii-sedan": "S60 III Sedan (02.2019 - ...)"
+      }
+    },
+    {
+      "label": "S70",
+      "modifications": {
+        "s70-sedan": "S70 Sedan (11.1996 - 11.2000)"
+      }
+    },
+    {
+      "label": "S80",
+      "modifications": {
+        "s80-i-sedan": "S80 I Sedan (05.1998 - 02.2008)",
+        "s80-ii-sedan": "S80 II Sedan (03.2006 - 12.2016)"
+      }
+    },
+    {
+      "label": "S90",
+      "modifications": {
+        "s90-i-sedan": "S90 I Sedan (11.1996 - 12.1998)",
+        "s90-ii-sedan": "S90 II Sedan (01.2016 - ...)"
+      }
+    },
+    {
+      "label": "V40",
+      "modifications": {
+        "v40-estate": "V40 Estate (07.1995 - 06.2004)",
+        "v40-hatchback": "V40 Hatchback (03.2012 - 12.2019)"
+      }
+    },
+    {
+      "label": "V50",
+      "modifications": {
+        "v50-estate": "V50 Estate (12.2003 - 12.2012)"
+      }
+    },
+    {
+      "label": "V60",
+      "modifications": {
+        "v60-i-estate": "V60 I Estate (07.2010 - 02.2018)",
+        "v60-ii-estate": "V60 II Estate (02.2018 - ...)"
+      }
+    },
+    {
+      "label": "V70",
+      "modifications": {
+        "v70-i-estate": "V70 I Estate (12.1995 - 12.2000)",
+        "v70-ii-estate": "V70 II Estate (11.1999 - 12.2008)",
+        "v70-iii-estate": "V70 III Estate (04.2007 - 07.2017)"
+      }
+    },
+    {
+      "label": "V90",
+      "modifications": {
+        "v90-i-estate": "V90 I Estate (11.1996 - 12.1998)",
+        "v90-ii-estate": "V90 II Estate (03.2016 - ...)"
+      }
+    },
+    {
+      "label": "XC40",
+      "modifications": {
+        "xc40-suv": "XC40 SUV (10.2017 - ...)"
+      }
+    },
+    {
+      "label": "XC60",
+      "modifications": {
+        "xc60-i-suv": "XC60 I SUV (05.2008 - 02.2017)",
+        "xc60-ii-suv": "XC60 II SUV (03.2017 - ...)"
+      }
+    },
+    {
+      "label": "XC70",
+      "modifications": {
+        "xc70-cross-country-i": "XC70 Cross Country I (10.1997 - 08.2007)",
+        "xc70-cross-country-ii": "XC70 Cross Country II (04.2007 - 12.2016)"
+      }
+    },
+    {
+      "label": "XC90",
+      "modifications": {
+        "xc90-i-suv": "XC90 I SUV (06.2002 - 01.2015)",
+        "xc90-ii-suv": "XC90 II SUV (09.2014 - ...)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+<div (click)="viewItem()" role="none">
+    <div >
+        <a class="row-style" data-toggle="tooltip" data-placement="top">
+            <small class="fw-bold" data-cy="carModel">{{ part.descriptionModel }}</small>
+        </a>
+    </div>
+    @if (part.positionDesc) {
+        <div >
+            <div class="row-style" data-toggle="tooltip" data-placement="top">
+                <small class="fw-bold" data-cy="position">{{ part.positionDesc }}</small>
+            </div>
+        </div>
+    }
+    @if (part.partNumber) {
+        <div >
+            <small data-cy="partNumber">Част №: {{ part.partNumber }}</small>
+        </div>
+    }
+    @if (line) {
+        <div style="line-height:1em">
+            <small data-cy="details">{{line}}</small>
+        </div>
+    }
+</div>

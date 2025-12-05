@@ -1,0 +1,31 @@
+<div class="container" style="position: relative">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" [ngStyle]="{ 'margin-right': previewButton ? '40px' : '0px' }">
+        <div class="carousel-inner">
+            @for (image of images; track image.medium; let idx = $index) {
+                <div class="carousel-item" [ngClass]="idx === 0 ? 'active' : ''">
+                    <img id="{{ idx }}" src="{{ image.small }}" class="d-block w-100" style="height: 260px; object-fit: contain" alt="..." (click)="preview(image)" role="none" />
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" style="color: black" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="material-symbols-outlined" style="color: black" aria-hidden="true"> arrow_back_ios</span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button id="next" class="carousel-control-next" type="button" style="color: black" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="material-symbols-outlined" aria-hidden="true" style="color: black">arrow_forward_ios</span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    @if (previewButton) {
+        <button class="preview" (click)="previewCurrent($event)" role="none"><span class="material-symbols-outlined"> zoom_in </span></button>
+    }
+    <!-- Thumbnails -->
+    <!-- <div class="carousel-indicators" style="margin-bottom: -20px">
+        @for (image of images; track image.medium; let idx = $index) {
+            <button type="button" data-mdb-button-init data-mdb-target="#carouselMDExample" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" style="width: 100px">
+                <img id="{{ idx }}" src="{{ image.small }}" class="d-block w-100" style="height: 260px; object-fit: contain" alt="..." (click)="preview(image)" role="none" />
+            </button>
+        }
+    </div> -->
+    <!-- Thumbnails -->
+</div>

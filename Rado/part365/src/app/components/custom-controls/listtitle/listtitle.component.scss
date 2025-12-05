@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+.title {
+    font-size: 1.2em;
+    background-color: blueviolet;
+    color: antiquewhite;
+    border-radius: 5px;
+
+}
+
+.count {
+    
+    border-radius: 50%;
+    background-color: rgb(236, 14, 88);
+    width: 24px;
+    padding: 1px 3px 3px 3px;
+    color: rgb(188, 228, 93);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;}
+
+    
+.mat-badge-content {
+    background: rgb(232, 107, 107);
+    color: white;
+    font-size: 0.6em;
+}

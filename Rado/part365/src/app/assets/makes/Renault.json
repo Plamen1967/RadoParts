@@ -1,0 +1,341 @@
+{
+  "make": "Renault",
+  "models": [
+    {
+      "label": "11",
+      "modifications": {
+        "11-box": "11 Box (03.1983 - 07.1989)",
+        "11-hatchback": "11 Hatchback (03.1983 - 03.1994)"
+      }
+    },
+    {
+      "label": "18",
+      "modifications": {
+        "18-box": "18 Box (05.1979 - 07.1986)",
+        "18-sedan": "18 Sedan (04.1978 - 11.1993)",
+        "18-variable": "18 Variable (02.1979 - 11.1993)"
+      }
+    },
+    {
+      "label": "19",
+      "modifications": {
+        "19-i-box": "19 I Box (01.1988 - 12.1992)",
+        "19-i-cabriolet": "19 I Cabriolet (07.1991 - 04.1992)",
+        "19-i-chamade": "19 I Chamade (01.1988 - 12.1992)",
+        "19-i-hatchback": "19 I Hatchback (01.1988 - 09.1994)",
+        "19-ii-box": "19 II Box (03.1992 - 12.1995)",
+        "19-ii-cabriolet": "19 II Cabriolet (04.1992 - 06.2001)",
+        "19-ii-chamade": "19 II Chamade (04.1992 - 08.2003)",
+        "19-ii-hatchback": "19 II Hatchback (01.1991 - 06.2001)"
+      }
+    },
+    {
+      "label": "21",
+      "modifications": {
+        "21-box": "21 Box (06.1986 - 04.1995)",
+        "21-hatchback": "21 Hatchback (07.1989 - 06.1994)",
+        "21-sedan": "21 Sedan (03.1986 - 07.1997)",
+        "21-station-wagon": "21 Station Wagon (03.1986 - 07.1997)"
+      }
+    },
+    {
+      "label": "25",
+      "modifications": {
+        "25-hatchback": "25 Hatchback (04.1984 - 12.1993)"
+      }
+    },
+    {
+      "label": "4",
+      "modifications": {
+        "4-box": "4 Box (09.1966 - 12.1993)",
+        "4-estate": "4 Estate (04.1962 - 12.1993)"
+      }
+    },
+    {
+      "label": "5",
+      "modifications": {
+        "5-box": "5 Box (01.1972 - 12.1985)",
+        "5-hatchback": "5 Hatchback (01.1972 - 12.1985)",
+        "5-super-5": "5 Super 5 (10.1984 - 12.1996)",
+        "5-super-5-box": "5 Super 5 Box (10.1984 - 12.1996)"
+      }
+    },
+    {
+      "label": "9",
+      "modifications": {
+        "9-sedan": "9 Sedan (09.1981 - 02.1997)"
+      }
+    },
+    {
+      "label": "Alaskan",
+      "modifications": {
+        "alaskan-pick-up": "Alaskan Pick-up (10.2016 - ...)"
+      }
+    },
+    {
+      "label": "Avantime",
+      "modifications": {
+        "avantime-minivan": "Avantime Minivan (09.2001 - 05.2003)"
+      }
+    },
+    {
+      "label": "Capture",
+      "modifications": {
+        "capture-suv-i": "Capture SUV I (06.2013 - 01.2020)",
+        "capture-suv-ii": "Capture SUV II (01.2020 - ...)"
+      }
+    },
+    {
+      "label": "Clio",
+      "modifications": {
+        "clio-i-box": "Clio I Box (01.1991 - 09.1998)",
+        "clio-i-hatchback": "Clio I Hatchback (05.1990 - 09.1998)",
+        "clio-ii-box": "Clio II Box (09.1998 - 09.2005)",
+        "clio-ii-hatchback": "Clio II Hatchback (09.1998 - 09.2005)",
+        "clio-iii-box": "Clio III Box (06.2005 - 12.2014)",
+        "clio-iii-grandtour": "Clio III Grandtour (02.2008 - 01.2013)",
+        "clio-iii-hatchback": "Clio III Hatchback (01.2005 - 12.2012)",
+        "clio-iv-box": "Clio IV Box (01.2014 - 06.2019)",
+        "clio-iv-grandtour": "Clio IV Grandtour (01.2013 - 06.2019)",
+        "clio-iv-hatchback": "Clio IV Hatchback (11.2012 - 06.2019)",
+        "clio-v-hatchback": "Clio V Hatchback (06.2019 - ...)"
+      }
+    },
+    {
+      "label": "Dauphine",
+      "modifications": {
+        "dauphine-sedan": "Dauphine Sedan (03.1956 - 03.1967)"
+      }
+    },
+    {
+      "label": "Espace",
+      "modifications": {
+        "espace-i-minivan": "Espace I Minivan (07.1984 - 12.1992)",
+        "espace-ii-minivan": "Espace II Minivan (01.1991 - 12.1996)",
+        "espace-iii-minivan": "Espace III Minivan (11.1996 - 10.2002)",
+        "espace-iv-minivan": "Espace IV Minivan (11.2002 - 02.2015)",
+        "espace-v-minivan": "Espace V Minivan (02.2015 - ...)"
+      }
+    },
+    {
+      "label": "Express",
+      "modifications": {
+        "express-box": "Express Box (07.1985 - 11.1998)",
+        "express-pick-up": "Express Pick Up (07.1995 - 10.1999)"
+      }
+    },
+    {
+      "label": "Fluence",
+      "modifications": {
+        "fluence-sedan": "Fluence Sedan (02.2010 - ...)"
+      }
+    },
+    {
+      "label": "Grand Scenic",
+      "modifications": {
+        "grand-scenic-ii-minivan": "Grand Scenic II Minivan (04.2004 - 06.2009)",
+        "grand-scenic-iii-minivan": "Grand Scenic III Minivan (02.2009 - 09.2016)",
+        "grand-scenic-iv-minivan": "Grand Scenic IV Minivan (09.2016 - ...)"
+      }
+    },
+    {
+      "label": "Kadjar",
+      "modifications": {
+        "kadjar-suv": "Kadjar SUV (06.2015 - ...)"
+      }
+    },
+    {
+      "label": "Kangoo",
+      "modifications": {
+        "kangoo-be-bop": "Kangoo Be Bop (02.2009 - ...)",
+        "kangoo-express-i": "Kangoo Express I (08.1997 - 02.2008)",
+        "kangoo-express-ii": "Kangoo Express II (02.2008 - ...)",
+        "kangoo-grand": "Kangoo GRAND (02.2008 - ...)",
+        "kangoo-van": "Kangoo Van (08.1997 - 02.2008)"
+      }
+    },
+    {
+      "label": "Koleos",
+      "modifications": {
+        "koleos-suv-i": "Koleos SUV I (09.2008 - 08.2016)",
+        "koleos-suv-ii": "Koleos SUV II (08.2016 - ...)"
+      }
+    },
+    {
+      "label": "Laguna",
+      "modifications": {
+        "laguna-coupe": "Laguna Coupe (07.2010 - ...)",
+        "laguna-i-grandtour": "Laguna I Grandtour (09.1995 - 03.2001)",
+        "laguna-i-hatchback": "Laguna I Hatchback (11.1993 - 08.2002)",
+        "laguna-ii-grandtour": "Laguna II Grandtour (03.2001 - 12.2007)",
+        "laguna-ii-hatchback": "Laguna II Hatchback (03.2001 - 12.2007)",
+        "laguna-iii-grandtour": "Laguna III Grandtour (10.2007 - 12.2015)",
+        "laguna-iii-hatchback": "Laguna III Hatchback (10.2007 - 12.2015)"
+      }
+    },
+    {
+      "label": "Latitude",
+      "modifications": {
+        "latitude-sedan": "Latitude Sedan (07.2010 - 03.2016)"
+      }
+    },
+    {
+      "label": "Magnum Truck",
+      "modifications": {
+        "magnum-truck-ae": "Magnum Truck AE (09.1990 - ...)",
+        "magnum-truck-dxi": "Magnum Truck DXi (10.2004 - ...)",
+        "magnum-truck-etech": "Magnum Truck E.TECH (05.2000 - ...)"
+      }
+    },
+    {
+      "label": "Mascot",
+      "modifications": {
+        "mascot-box": "Mascot Box (01.1999 - 06.2004)",
+        "mascot-platform": "Mascot Platform (01.1999 - 06.2005)"
+      }
+    },
+    {
+      "label": "Master",
+      "modifications": {
+        "master-i-box": "Master I Box (07.1980 - 07.1998)",
+        "master-i-bus": "Master I Bus (09.1980 - 07.1998)",
+        "master-i-platform": "Master I Platform (07.1980 - 07.1998)",
+        "master-ii-box": "Master II Box (07.1998 - 02.2010)",
+        "master-ii-bus": "Master II Bus (03.1998 - 02.2011)",
+        "master-ii-platform": "Master II Platform (07.1998 - 02.2010)",
+        "master-iii-box": "Master III Box (02.2010 - ...)",
+        "master-iii-bus": "Master III Bus (02.2011 - ...)",
+        "master-iii-platform": "Master III Platform (02.2010 - ...)"
+      }
+    },
+    {
+      "label": "Megane",
+      "modifications": {
+        "megane-cc-cabrio": "Megane CC Cabrio (06.2010 - 04.2016)",
+        "megane-i-cabriolet": "Megane I Cabriolet (10.1996 - 08.2003)",
+        "megane-i-classic-sedan": "Megane I Classic Sedan (09.1996 - 08.2003)",
+        "megane-i-coach": "Megane I Coach (03.1996 - 08.2003)",
+        "megane-i-grandtour": "Megane I Grandtour (03.1999 - 08.2003)",
+        "megane-i-hatchback": "Megane I Hatchback (08.1995 - 12.2004)",
+        "megane-ii-coupe-cabriolet": "Megane II Coupe-Cabriolet (09.2003 - 03.2010)",
+        "megane-ii-grandtour": "Megane II Grandtour (08.2003 - 08.2012)",
+        "megane-ii-hatchback": "Megane II Hatchback (07.2001 - 10.2012)",
+        "megane-ii-sedan": "Megane II Sedan (09.2003 - 12.2010)",
+        "megane-iii-coupe": "Megane III Coupe (11.2008 - 12.2015)",
+        "megane-iii-grandtour": "Megane III Grandtour (11.2008 - 04.2016)",
+        "megane-iii-hatchback": "Megane III Hatchback (11.2008 - 12.2015)",
+        "megane-iv-grandtour": "Megane IV Grandtour (04.2016 - ...)",
+        "megane-iv-hatchback": "Megane IV Hatchback (11.2015 - ...)",
+        "megane-iv-sedan": "Megane IV Sedan (10.2016 - ...)",
+        "megane-scenic": "Megane Scenic (10.1996 - 12.2001)"
+      }
+    },
+    {
+      "label": "Modus / Grand Modus",
+      "modifications": {
+        "modus-grand-modus-minivan": "Modus / Grand Modus Minivan (09.2004 - 09.2012)"
+      }
+    },
+    {
+      "label": "Rapid",
+      "modifications": {
+        "rapid-box": "Rapid Box (07.1985 - 07.2001)"
+      }
+    },
+    {
+      "label": "Safrane",
+      "modifications": {
+        "safrane-i-sedan": "Safrane I Sedan (04.1992 - 10.1997)",
+        "safrane-ii-sedan": "Safrane II Sedan (07.1996 - 12.2000)"
+      }
+    },
+    {
+      "label": "Scenic",
+      "modifications": {
+        "scenic-i-minivan": "Scenic I Minivan (09.1999 - 07.2010)",
+        "scenic-ii-grand-scenic": "Scenic II Grand Scenic (04.2004 - 06.2009)",
+        "scenic-ii-minivan": "Scenic II Minivan (06.2003 - 07.2010)",
+        "scenic-iii-grand-scenic": "Scenic III Grand Scenic (02.2009 - 09.2016)",
+        "scenic-iii-minivan": "Scenic III Minivan (02.2009 - 10.2016)",
+        "scenic-iv-grand-scenic": "Scenic IV Grand Scenic (09.2016 - ...)",
+        "scenic-iv-minivan": "Scenic IV Minivan (09.2016 - ...)"
+      }
+    },
+    {
+      "label": "Sport Spider",
+      "modifications": {
+        "sport-spider-cabrio": "Sport Spider Cabrio (03.1995 - 10.1999)"
+      }
+    },
+    {
+      "label": "Symbol",
+      "modifications": {
+        "symbol-sedan": "Symbol Sedan (02.1998 - 04.2008)"
+      }
+    },
+    {
+      "label": "Talisman",
+      "modifications": {
+        "talisman-grandtour": "Talisman Grandtour (03.2016 - ...)",
+        "talisman-sedan": "Talisman Sedan (06.2015 - ...)"
+      }
+    },
+    {
+      "label": "Thalia",
+      "modifications": {
+        "thalia-sedan-i": "Thalia Sedan I (02.1998 - 09.2008)",
+        "thalia-sedan-ii": "Thalia Sedan II (09.2008 - 06.2014)"
+      }
+    },
+    {
+      "label": "Trafic",
+      "modifications": {
+        "trafic-box": "Trafic (Box) (03.1980 - 04.1989)",
+        "trafic-bus": "Trafic (Bus) (03.1980 - 04.1989)",
+        "trafic-platform": "Trafic (Platform) (03.1980 - 04.1989)",
+        "trafic-i-box": "Trafic I Box (03.1989 - 12.2001)",
+        "trafic-i-bus": "Trafic I Bus (03.1989 - 03.2001)",
+        "trafic-i-platform": "Trafic I Platform (03.1989 - 03.2001)",
+        "trafic-ii-box": "Trafic II Box (03.2001 - 05.2014)",
+        "trafic-ii-bus": "Trafic II Bus (03.2001 - 05.2014)",
+        "trafic-ii-platform": "Trafic II Platform (03.2001 - 05.2014)",
+        "trafic-iii-box": "Trafic III Box (05.2014 - ...)",
+        "trafic-iii-bus": "Trafic III Bus (05.2014 - ...)",
+        "trafic-iii-platform": "Trafic III Platform (05.2014 - ...)"
+      }
+    },
+    {
+      "label": "Twingo",
+      "modifications": {
+        "twingo-i-box": "Twingo I Box (03.1993 - 06.2012)",
+        "twingo-i-hatchback": "Twingo I Hatchback (03.1993 - 10.2012)",
+        "twingo-ii-hatchback": "Twingo II Hatchback (03.2007 - 10.2014)",
+        "twingo-iii-hatchback": "Twingo III Hatchback (09.2014 - ...)"
+      }
+    },
+    {
+      "label": "Twizy",
+      "modifications": {
+        "twizy-quadricycle": "Twizy Quadricycle (04.2012 - ...)"
+      }
+    },
+    {
+      "label": "Vel Satis",
+      "modifications": {
+        "vel-satis-hatchback": "Vel Satis Hatchback (06.2002 - 07.2009)"
+      }
+    },
+    {
+      "label": "Wind",
+      "modifications": {
+        "wind-coupe": "Wind Coupe (07.2010 - ...)"
+      }
+    },
+    {
+      "label": "Zoe",
+      "modifications": {
+        "zoe-hatchback": "Zoe Hatchback (06.2012 - ...)"
+      }
+    }
+  ]
+}

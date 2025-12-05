@@ -1,0 +1,19 @@
+.show-text {
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .show-text {
+        display: none;
+    }
+}
+
+.cancel-button {
+    background-color: aliceblue;
+    color: black;
+    
+}
+
+.border-button {
+    border: 1px black solid;
+}

@@ -1,0 +1,42 @@
+<div class="ngx-gallery-thumbnails-wrapper ngx-gallery-thumbnail-size-{{ size }}">
+    <div class="ngx-gallery-thumbnails" [style.transform]="'translateX(' + thumbnailsLeft + ')'" [style.marginLeft]="thumbnailsMarginLeft">
+        @for (image of getImages(); track image; let i = $index) {
+            <a
+                [href]="hasLink(i) ? links![i] : '#'"
+                [target]="linkTarget"
+                class="ngx-gallery-thumbnail"
+                [style.background-size]="contain"
+                [style.background-image]="getSafeUrl(image)"
+                (click)="handleClick($event, i)"
+                [style.width]="getThumbnailWidth()"
+                [style.height]="getThumbnailHeight()"
+                [style.left]="getThumbnailLeft(i)"
+                [style.top]="getThumbnailTop(i)"
+                [ngClass]="{ 'ngx-gallery-active': i === selectedIndex, 'ngx-gallery-clickable': clickable }"
+                [attr.aria-label]="labels[i]">
+                <div class="ngx-gallery-icons-wrapper">
+                    <app-ngx-gallery-action
+                        *ngFor="let action of actions"
+                        [icon]="action.icon"
+                        [disabled]="action.disabled!"
+                        [titleText]="action.titleText!"
+                        (onClick)="action.onClick($event, i)"></app-ngx-gallery-action>
+                </div>
+                @if (remainingCount && remainingCountValue && i === rows! * columns! - 1) {
+                    <div class="ngx-gallery-remaining-count-overlay">
+                        <span class="ngx-gallery-remaining-count">+{{ remainingCountValue }}</span>
+                    </div>
+                }
+            </a>
+        }
+    </div>
+</div>
+@if (canShowArrows()) {
+    <app-ngx-gallery-arrows
+        (onPrevClick)="moveLeft()"
+        (onNextClick)="moveRight()"
+        [prevDisabled]="!canMoveLeft()"
+        [nextDisabled]="!canMoveRight()"
+        [arrowPrevIcon]="arrowPrevIcon"
+        [arrowNextIcon]="arrowNextIcon"></app-ngx-gallery-arrows>
+}

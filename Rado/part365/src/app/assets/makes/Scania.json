@@ -1,0 +1,11 @@
+{
+  "make": "Scania",
+  "models": [
+    {
+      "label": "4-series",
+      "modifications": {
+        "4-series-r124": "4-series R124 (05.1995 - ...)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "make": "Land Rover",
+  "models": [
+    {
+      "label": "Defender",
+      "modifications": {
+        "defender-cabrio": "Defender Cabrio (09.1990 - 02.2016)",
+        "defender-pick-up": "Defender Pick-up (10.1995 - 02.2016)",
+        "defender-station-wagon-i": "Defender Station Wagon I (05.1990 - 02.2016)",
+        "defender-station-wagon-ii": "Defender Station Wagon II (09.2019 - ...)"
+      }
+    },
+    {
+      "label": "Discovery",
+      "modifications": {
+        "discovery-i-suv": "Discovery I SUV (06.1989 - 10.1998)",
+        "discovery-ii-suv": "Discovery II SUV (11.1998 - 06.2004)",
+        "discovery-iii-suv": "Discovery III SUV (07.2004 - 09.2009)",
+        "discovery-iv-suv": "Discovery IV SUV (09.2009 - 09.2016)",
+        "discovery-sport": "Discovery Sport (12.2014 - ...)",
+        "discovery-v-suv": "Discovery V SUV (09.2016 - ...)"
+      }
+    },
+    {
+      "label": "Freelander",
+      "modifications": {
+        "freelander-soft-top-suv": "Freelander Soft Top SUV (02.1998 - 10.2006)",
+        "freelander-suv-i": "Freelander SUV I (02.1998 - 10.2006)",
+        "freelander-suv-ii": "Freelander SUV II (10.2006 - 10.2014)"
+      }
+    },
+    {
+      "label": "Range Rover",
+      "modifications": {
+        "range-rover-evoque-cabrio": "Range Rover Evoque Cabrio (02.2016 - ...)",
+        "range-rover-evoque-i": "Range Rover Evoque I (06.2011 - 12.2018)",
+        "range-rover-evoque-ii": "Range Rover Evoque II (12.2018 - ...)",
+        "range-rover-i-suv": "Range Rover I SUV (10.1969 - 04.1996)",
+        "range-rover-ii-suv": "Range Rover II SUV (07.1994 - 03.2002)",
+        "range-rover-iii-suv": "Range Rover III SUV (03.2002 - 08.2012)",
+        "range-rover-iv-suv": "Range Rover IV SUV (08.2012 - ...)",
+        "range-rover-sport-i": "Range Rover Sport I (02.2005 - 03.2013)",
+        "range-rover-sport-ii": "Range Rover Sport II (04.2013 - ...)",
+        "range-rover-velar": "Range Rover Velar (03.2017 - ...)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+.price {
+    color: blue;
+    font-size: larger;
+    font-weight: bolder;
+    min-width: 100px;
+    padding: 0px;
+}

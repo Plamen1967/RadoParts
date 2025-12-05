@@ -1,0 +1,13 @@
+@if (admin) {
+    <div lass="row">
+        <div class="col-sm-4 control">
+            <app-select id="user" formControlName="userId" data-cy="userName" label="{{ labels.USERNAME }}" [data]="users"> </app-select>
+        </div>
+        <div class="col-sm-3 control">
+            <app-select id="user" formControlName="searchType" data-cy="searchType" label="{{ labels.SELECTTYPEAD }}" [data]="searchTypes"> </app-select>
+        </div>
+        <div class="col-sm-3 control">
+            <app-select id="approved" formControlName="approved" data-cy="approvedType" label="{{ labels.APPROVEAD }}" [data]="approvedTypes"> </app-select>
+        </div>
+    </div>
+}

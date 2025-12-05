@@ -1,0 +1,5 @@
+<div class="d-flex flex-column m-0">
+    @for (line of lines; track line.label) {
+        <app-row class="background" [label]="line.label" [value]="line.value" [price]="line.price"></app-row>
+    }
+</div>

@@ -1,0 +1,100 @@
+.imageContainer
+{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+input {
+    border-radius: 30px;
+    color: blueviolet;
+}
+
+.input-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+input:checked~.input-button {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;}
+.image {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 200px;
+    min-width: 200px;
+    padding: 2px;
+    margin: 10px 5px;
+    border: 1px solid black;
+    box-shadow: 4px 4px 5px lightblue;
+    border-radius: 2px;
+}
+.imageSize {
+    display: flex;
+    position: relative;
+    object-fit: contain;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 80%;
+    padding: 2px;
+}
+.background-image {
+    display: flex;
+    position: relative;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 182px;
+    height: 130px
+}
+
+.deleteClass {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.minusClass {
+    height: inherit;
+    width: inherit;
+    border-radius: 50%;
+}
+
+.minusClass:hover {
+    background-color: lightblue;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+/* @media(max-width: 600px) {
+    .imageSize {
+        width: 140px;
+        height: 100px
+    }
+ }
+ @media(min-width: 601px) {
+    .imageSize {
+        width: 182px;
+        height: 130px
+    }
+ } */
+

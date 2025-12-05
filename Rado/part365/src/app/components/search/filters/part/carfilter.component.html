@@ -1,0 +1,173 @@
+<div class="layout">
+    <div class="categoryMax">
+        @if (showCategory) {
+            <app-categories id="categoriesElem" #categoriesElem [dropDowns]="dropDown" (selection)="onSelection($event)" data-cy="categories" class="categories"></app-categories>
+        }
+    </div>
+    <div class="w-100">
+        <form [formGroup]="filterForm" class="shadow mb-5 rounded card card-form-spec mb-2 homeForm">
+            <div class="mb-1 d-flex justify-content-center">
+                <app-radiogroup [radios]="radios" formControlName="bus" data-cy="bus" (changeRadioGroup)="changeBusCar()"></app-radiogroup>
+            </div>
+            <div class="mb-1">
+                <app-radiogrouplist [radios]="getRadios()" [all]="true" [style]="2" formControlName="itemType" data-cy="itemType"></app-radiogrouplist>
+            </div>
+            <div class="row mb-1">
+                @if (admin) {
+                    <div class="row">
+                        <div class="col-sm-4 control">
+                            <app-select
+                                id="user"
+                                formControlName="userId"
+                                data-cy="userName"
+                                label="{{ labels.USERNAME }}"
+                                valueProperty="value"
+                                [data]="users"
+                                (onClose)="focus()"
+                                displayProperty="text">
+                            </app-select>
+                        </div>
+                        <div class="col-sm-3 control">
+                            <app-select
+                                id="user"
+                                formControlName="itemType"
+                                data-cy="itemType"
+                                label="{{ labels.SELECTTYPEAD }}"
+                                valueProperty="id"
+                                [data]="itemTypes"
+                                (onClose)="focus()"
+                                displayProperty="value">
+                            </app-select>
+                        </div>
+                        <div class="col-sm-3 control">
+                            <app-select id="approved" formControlName="approved" data-cy="approvedType" label="{{ labels.APPROVEAD }}" [data]="approvedTypes" (onClose)="focus()"> </app-select>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div>
+                <div class="row">
+                    <div class="row">
+                        <div class="max450px">
+                            <app-searchinput
+                                [appToolTip]="'Търсене по номер на частта'"
+                                label="Търсене по номер на частта"
+                                formControlName="partNumber"
+                                placeHolder="{{ labels.PART_NUMBER }}"
+                                [border]="true"
+                                data-cy="partNumber"
+                                (search)="onSearchByNumber()">
+                            </app-searchinput>
+                        </div>
+                        <!-- <div class="border border-light min200px">
+                            <div class="select__margin padding-none">
+                                <div class="select__container margin-none">
+                                    <div class="select__field outline-none">
+                                        <div class="text-left">
+                                            <button type="button" class="btn btn-primary btn-sm" data-cy="searchByNumber" (click)="onSearchByNumber()">
+                                                {{ labels.SEARCH_BY_PART }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="row modell-1000px">
+                            <div class="col-sm-3 min200px max300px mb-1">
+                                <app-company-choise data-testid="companyId" [config]="{ bus: bus!, itemType: itemType! }" [showCount]="true" [all]="true" formControlName="companyId" data-cy="companyId"> </app-company-choise>
+                            </div>
+                            @if (companyId) {
+                                <div class="col-sm-3 min300px mb-1">
+                                    <app-model-choice
+                                        data-testid="modelId"
+                                        [all]="true"
+                                        formControlName="modelsId"
+                                        [itemType]="itemType!"
+                                        [companyId]="companyId!"
+                                        [multiselection]="true"
+                                        [showCount]="true"
+                                        data-cy="modelsId"
+                                        (onClose)="focus()">
+                                    </app-model-choice>
+                                </div>
+                            }
+                            @if (!bus && modelId) {
+                                <div class="col-sm-3 min300px mb-1">
+                                    <app-modification-choice
+                                        data-testid="modificationId"
+                                        [all]="true"
+                                        [itemType]="itemType!"
+                                        [modelsId]="modelId"
+                                        [multiselection]="true"
+                                        [showCount]="true"
+                                        formControlName="modificationsId"
+                                        data-cy="modificationsId"
+                                        (onClose)="focus()">
+                                        >
+                                    </app-modification-choice>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div [hidden]="extendedSearch" class="row mt-2">
+                    <div class="col-sm-8" (click)="extendedSearch_ = !extendedSearch_" aria-hidden="true">
+                        <span class="btn btn-sm extended ps-2 pe-5" data-cy="extendSearch"><i class="las la-angle-down me-2"></i>{{ labels.EXTENDED_SERARCH }}</span>
+                    </div>
+                </div>
+                @if (extendedSearch_) {
+                    <div>
+                        <div class="d-flex-column col-sm-7 me-2">
+                            <app-category-choise formControlName="categoriesId"> </app-category-choise>
+                            @if (categoriesId.length) {
+                                <div class="col-sm-10 mt-1 control">
+                                    <app-subcategory-choise formControlName="subCategoriesId" [categoriesId]="categoriesId"></app-subcategory-choise>
+                                </div>
+                            }
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 control" [ngStyle]="{ 'margin-top': '30px' }">
+                                <app-input formControlName="keyword" data-cy="keyword" placeHolder="{{ labels.KEYWORD }}" [keyword]="true" [small]="false"> </app-input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 control min200px">
+                                <app-select id="engineType" formControlName="engineType" data-cy="engineType" label="{{ labels.TYPE_ENGINE }}" [data]="engineTypes" (onClose)="focus()"> </app-select>
+                            </div>
+                            <div class="col-sm-3 control">
+                                <app-input formControlName="engineModel" data-cy="engineModel" label="{{ labels.CODE_ENGINE }}" (onClose)="focus()" placeHolder="{{ labels.CODE_ENGINE }}"> </app-input>
+                            </div>
+                            <div class="col-sm-2 control min150px">
+                                <app-input formControlName="powerBHP" data-cy="powerBHP" label="{{ labels.POWERBHP }}" (onClose)="focus()" placeHolder="К.С."> </app-input>
+                            </div>
+                            <div class="col-sm-4 control">
+                                <app-select id="gearboxType" formControlName="gearboxType" data-cy="gearboxType" label="{{ labels.TYPE_GEARBOX }}" [data]="gearBoxTypes" (onClose)="focus()">
+                                </app-select>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row mt-1">
+                    <div class="col-sm-3 max250px control">
+                        <app-region formControlName="regionId"></app-region>
+                    </div>
+                </div>
+                <div class="row ms-1 mt-1">
+                    <div class="col-sm-3 form-check control checkboxClass">
+                        <label class="form-check-label" for="hasImages">{{ labels.WITHIMAGES }}</label>
+                        <input type="checkbox" class="form-check-input" formControlName="hasImages" id="hasImages" data-cy="hasImages" />
+                    </div>
+                </div>
+            </div>
+            <div class="min150px row"> 
+                <app-search-bar formControlName="orderBy" (submitEvent)="submit()" (clearEvent)="clearFilter()"></app-search-bar>
+            </div>
+        </form>
+        @if (showCategory) {
+            <app-categoriesfooter [categories]="_dropDown" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>
+        }
+    </div>
+</div>

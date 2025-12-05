@@ -1,0 +1,94 @@
+@import "app/field-style.css";
+
+.input-2 {
+    position: relative;
+    width: 100%;
+  }
+  
+  .input-2 input {
+    height: 28px;
+    background: transparent;
+    border: 1px solid #373538;
+    border-radius: 4px;
+    outline: none;
+    padding-left: 8px;
+    width: 100%;
+    font-size: inherit;
+    font-family: inherit;
+    color: black;
+    transition: 0.3s;
+    font-size: 0.875rem;
+  }
+  
+  .input-2 input:focus {
+    border-color: #8f44fd;
+  }
+  
+  .input-2 input:focus ~ button {
+    background: #8f44fd;
+  }
+
+  .input-2 button:last-child {
+      border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .input-2 button:first-child {
+      border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    margin-right: 1px;
+    background-color: #8f44fd;
+    padding-top: 1px;
+  }
+
+  .input-2 button {
+    border: 0;
+    height: 100%;
+    background: #373538;
+    color: rgb(255 255 255 / 96%);
+    top: 50%;
+    display: grid;
+    place-items: center;
+    right: 0;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    justify-content: center;
+  }
+  
+  .input-2 button .material-symbols-outlined {
+    font-size: 15px;
+  }
+
+  .button-container {
+    position: absolute;
+    align-items: center;
+    right: 0px;
+    height: 100%;
+    align-items: center;
+  } 
+  
+  .input-2 .icon.hidden {
+    opacity: 0;
+  }
+  
+  .input-2 .spinner {
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    display: block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1.75px solid rgb(255 255 255 / 20%);
+    border-top-color: rgb(255 255 255 / 96%);
+    animation: spin 0.75s infinite linear;
+  }
+  
+  .input-2 .spinner.visible {
+    opacity: 1;
+  }
+  
+  

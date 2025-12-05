@@ -1,0 +1,21 @@
+﻿CREATE TABLE [dbo].[Tyres]
+(
+	[tyreId] BIGINT NOT NULL PRIMARY KEY DEFAULT 0, 
+    [tyreCompanyId] INT NOT NULL, 
+    [tyreWidth] INT NOT NULL, 
+    [tyreHeight] INT NOT NULL, 
+    [tyreRadius] INT NOT NULL, 
+    [tyreType] INT NOT NULL, 
+    [price] DECIMAL NOT NULL, 
+    [description] NVARCHAR(500) NOT NULL, 
+    [mainImageId] INT NOT NULL,
+    [mainPicture] NVARCHAR(200) NOT NULL DEFAULT '', 
+    [userId] INT NOT NULL, 
+    [approved] INT NOT NULL, 
+    [createdTime] BIGINT NOT NULL, 
+    [modifiedTime] BIGINT NOT NULL,
+    [deleted] INT NOT NULL DEFAULT 0, 
+    [regionId] INT NOT NULL DEFAULT 0, 
+    [count] INT NOT NULL DEFAULT 0, 
+    [month] INT NOT NULL DEFAULT 0, 
+    [year] INT NOT NULL DEFAULT 0)

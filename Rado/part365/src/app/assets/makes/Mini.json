@@ -1,0 +1,60 @@
+{
+  "make": "Mini",
+  "models": [
+    {
+      "label": "Cabrio",
+      "modifications": {
+        "cabrio-i-r52": "Cabrio I (R52) (07.2004 - 11.2007)",
+        "cabrio-ii-r57": "Cabrio II (R57) (11.2007 - 06.2015)",
+        "cabrio-iii-f57": "Cabrio III (F57) (11.2015 - ...)"
+      }
+    },
+    {
+      "label": "Clubman",
+      "modifications": {
+        "clubman-i-r55": "Clubman I (R55) (10.2007 - 06.2015)",
+        "clubman-ii-f54": "Clubman II (F54) (07.2015 - ...)"
+      }
+    },
+    {
+      "label": "Clubvan",
+      "modifications": {
+        "clubvan-r55": "Clubvan (R55) (12.2012 - 06.2014)"
+      }
+    },
+    {
+      "label": "Countryman",
+      "modifications": {
+        "countryman-i-r60": "Countryman I (R60) (06.2010 - 10.2016)",
+        "countryman-ii-f60": "Countryman II (F60) (10.2016 - ...)"
+      }
+    },
+    {
+      "label": "Coupe",
+      "modifications": {
+        "coup-r58": "Coupe (R58) (12.2010 - 05.2015)"
+      }
+    },
+    {
+      "label": "Hatchback",
+      "modifications": {
+        "hatchback-i-r50-r53": "Hatchback I (R50, R53) (06.2001 - 09.2006)",
+        "hatchback-ii-r56": "Hatchback II (R56) (09.2006 - 11.2013)",
+        "hatchback-iii-f56": "Hatchback III (F56) (12.2013 - ...)",
+        "hatchback-iv-f55": "Hatchback IV (F55) (07.2014 - ...)"
+      }
+    },
+    {
+      "label": "Paceman",
+      "modifications": {
+        "paceman-r61": "Paceman (R61) (04.2012 - 10.2016)"
+      }
+    },
+    {
+      "label": "Roadster",
+      "modifications": {
+        "roadster-r59": "Roadster (R59) (10.2011 - 04.2015)"
+      }
+    }
+  ]
+}

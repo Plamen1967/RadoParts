@@ -1,0 +1,88 @@
+{
+  "make": "Chevrolet",
+  "models": [
+    {
+      "label": "Aveo",
+      "modifications": {
+        "aveo-hatchback-i": "Aveo Hatchback I (02.2003 - 05.2008)",
+        "aveo-hatchback-ii": "Aveo Hatchback II (01.2007 - 12.2011)",
+        "aveo-hatchback-iii": "Aveo Hatchback III (03.2011 - ...)",
+        "aveo-sedan-i": "Aveo Sedan I (01.2003 - 12.2008)",
+        "aveo-sedan-ii": "Aveo Sedan II (05.2005 - 12.2011)",
+        "aveo-sedan-iii": "Aveo Sedan III (03.2011 - ...)"
+      }
+    },
+    {
+      "label": "Blazer",
+      "modifications": {
+        "blazer-suv-k5": "Blazer SUV K5 (09.1972 - 12.1991)",
+        "blazer-suv-s10": "Blazer SUV S10 (10.1993 - 09.2005)"
+      }
+    },
+    {
+      "label": "Captiva",
+      "modifications": {
+        "captiva-suv": "Captiva SUV (06.2006 - ...)"
+      }
+    },
+    {
+      "label": "Cavalier",
+      "modifications": {
+        "cavalier-cabrio": "Cavalier Cabrio (01.1988 - 12.1994)",
+        "cavalier-sedan": "Cavalier Sedan (01.1988 - 12.1994)"
+      }
+    },
+    {
+      "label": "Cruze",
+      "modifications": {
+        "cruze-sedan": "Cruze Sedan (05.2009 - ...)"
+      }
+    },
+    {
+      "label": "Epica",
+      "modifications": {
+        "epica-sedan": "Epica Sedan (01.2005 - ...)"
+      }
+    },
+    {
+      "label": "Kalos",
+      "modifications": {
+        "kalos-hatchback": "Kalos Hatchback (03.2005 - ...)",
+        "kalos-sedan": "Kalos Sedan (03.2005 - ...)"
+      }
+    },
+    {
+      "label": "Lacetti",
+      "modifications": {
+        "lacetti-hatchback": "Lacetti Hatchback (03.2003 - ...)",
+        "lacetti-sedan": "Lacetti Sedan (03.2003 - 03.2013)"
+      }
+    },
+    {
+      "label": "Lumina APV",
+      "modifications": {
+        "lumina-apv-minivan": "Lumina APV Minivan (09.1988 - 12.1996)"
+      }
+    },
+    {
+      "label": "Nubira",
+      "modifications": {
+        "nubira-sedan": "Nubira Sedan (01.2005 - ...)",
+        "nubira-station-wagon": "Nubira Station Wagon (01.2005 - ...)"
+      }
+    },
+    {
+      "label": "Spark",
+      "modifications": {
+        "spark-hatchback": "Spark Hatchback (05.2005 - ...)"
+      }
+    },
+    {
+      "label": "Spectrum",
+      "modifications": {
+        "spectrum-hatchback": "Spectrum Hatchback (09.1985 - 12.1990)",
+        "spectrum-sedan": "Spectrum Sedan (02.1988 - 12.1990)"
+      }
+    }
+  ]
+}

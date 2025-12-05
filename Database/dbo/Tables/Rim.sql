@@ -1,0 +1,22 @@
+﻿CREATE TABLE [dbo].[Rim]
+(
+	[rimId] BIGINT NOT NULL PRIMARY KEY,
+    [companyId] INT NOT NULL DEFAULT 0,
+    [modelId] INT NOT NULL DEFAULT 0,
+    [rimWidth] INT NOT NULL DEFAULT 0,
+    [rimMaterial]  INT NOT NULL DEFAULT 0,
+    [rimOffset] INT NOT NULL DEFAULT 0,
+    [rimBoltCount] INT NOT NULL DEFAULT 0,
+    [rimBoltDistance] INT NOT NULL DEFAULT 0,
+    [rimCenter] INT NOT NULL DEFAULT 0,
+    [price] DECIMAL NOT NULL DEFAULT 0, 
+    [description] NVARCHAR(500) NOT NULL DEFAULT '', 
+    [mainImageId] INT NOT NULL DEFAULT 0,
+    [mainPicture] NVARCHAR(200) NOT NULL DEFAULT '', 
+    [userId] INT NOT NULL DEFAULT 0, 
+    [approved] INT NOT NULL DEFAULT 0, 
+    [createdTime] BIGINT NOT NULL DEFAULT 0, 
+    [modifiedTime] BIGINT NOT NULL DEFAULT 0 ,
+    [deleted] INT NOT NULL DEFAULT 0, 
+    [count] NCHAR(10) NOT NULL DEFAULT 0
+)

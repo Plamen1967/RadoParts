@@ -1,0 +1,57 @@
+
+.dealer-image {
+    width: 100%;
+    object-fit: contain;
+    margin-left: auto;
+    margin-bottom: auto;
+}
+
+.imageSize {
+    height: 150px!important;
+    width: 200px!important;
+    object-fit: contain;
+}
+
+@media(max-width: 600px) {
+    .imageSize {
+        width: 140px!important;
+        height: 100px!important
+    }
+ }
+ @media(min-width: 601px) {
+    .imageSize {
+        width: 182px!important;
+        height: 130px!important
+    }
+ }
+ @media(min-width: 901px) {
+    .imageSize {
+    width: 320px!important;
+    height: 200px!important;
+}
+ }
+
+/* img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.datarow {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+
+.with-sizebar {
+    display: grid;
+    gap: 1rem
+}
+
+@media (mid-width: 760px) {
+    .with-sizebar {
+        gap: 3rem;
+        grid-template-columns: 300px 1fr;
+    }
+} */

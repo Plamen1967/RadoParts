@@ -1,0 +1,46 @@
+.companyClass {
+    padding-left: 2px;
+    padding-right: 0px;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+.image-style {
+    object-fit: scale-down;
+} 
+.companySize {
+    width: 100%;
+    background-position:  top right;
+    height: 100px;
+}
+.company {
+    display: block;
+    width: 100%;
+    padding: 2px;
+}
+
+.companyMinClass {
+    display: none;
+    text-align: left;
+    padding: 2px;
+   
+}
+
+.company-name {
+    margin: 0 5px;
+    font-size: 12px;
+    line-height: normal;
+    font-weight: 600;
+    text-align: end;
+    color: #11323b;
+}
+
+.dealer-image {
+    max-height: 100%;
+}
+.company-name:hover{
+   color: purple; 
+}
+@media(max-width: 640px) {
+}

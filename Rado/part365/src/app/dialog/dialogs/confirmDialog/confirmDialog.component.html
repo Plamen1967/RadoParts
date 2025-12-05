@@ -1,0 +1,12 @@
+<div class="dialog-container">
+  <div class="title">{{ data.title }}</div>
+  <div class="content">{{ data.content }}</div>
+  <mat-dialog-actions class="action-group">
+    @if(showCancelButton) {
+    <button mat-button [mat-dialog-close]="cancel" class="btn btn-light me-2">{{ data.cancelButtonName }}</button>
+    }
+    <button mat-button [mat-dialog-close]="ok" cdkFocusInitial class="btn btn-primary">
+      {{ data.okButtonName }}
+    </button>
+  </mat-dialog-actions>
+</div>

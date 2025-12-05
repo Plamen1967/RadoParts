@@ -1,0 +1,133 @@
+@if (!id) {
+    <div class="container">
+                @if (userCount$ | async; as userCount) {
+            @if (userCount && userCount.partCarCount + userCount.partBusCount) {
+               
+                <app-listtitle [title]="title" [number]="getValue(userCount)"></app-listtitle>
+
+                <span class="count"></span>
+            }
+        }
+        <div class="shadow p-2 rounded card card-form-spec mb-2">
+            <form [formGroup]="listForm">
+                <div class="row g-3">
+                    <div class="row g-2 mt-2">
+                        <div class="col-sm-2">
+                            <app-select formControlName="carId" label="{{ label }}" [data]="carsList" (onClose)="focus()"> </app-select>
+                        </div>
+                    </div>
+                    <div class="max300px">
+                        <app-company-choise [config]="{ itemType: itemType, userId: userId!, bus: bus }" [showCount]="true" [all]="true" formControlName="companyId"> </app-company-choise>
+                    </div>
+                    @if (companyId) {
+                        <div class="max300px">
+                            <app-model-choice
+                                formControlName="modelId"
+                                [itemType]="itemType"
+                                [all]="true"
+                                [userId]="userId!"
+                                [companyId]="companyId!"
+                                [groupSelection]="false"
+                                [multiselection]="false"
+                                [showCount]="true"
+                                (onClose)="focus()">
+                            </app-model-choice>
+                        </div>
+                        @if (!bus && modelId) {
+                            <div class="max350px">
+                                <app-modification-choice
+                                    [itemType]="itemType"
+                                    [userId]="userId!"
+                                    [modelsId]="modelId"
+                                    [all]="true"
+                                    [multiselection]="false"
+                                    formControlName="modificationId"
+                                    [showCount]="true"
+                                    (modifcationChange)="modificatioChanged($event)"
+                                    (onClose)="focus()">
+                                    >
+                                </app-modification-choice>
+                            </div>
+                        }
+                    }
+
+                    <div class="max150px">
+                        <app-year formControlName="year" [period]="{ yearFrom: yearFrom, yearTo: yearTo }"></app-year>
+                    </div>
+                </div>
+                <div class="d-flex flex-row mt-2">
+                    <div class="d-flex flex-row mb-2 me-2">
+                        <div class="me-2">
+                            <button type="submit" #submit class="btn btn-primary btn-sm" data-cy="search" (click)="search(undefined)">{{ labels.SEARCH }}</button>
+                        </div>
+                        <div>
+                            <button type="button" #submit class="btn btn-primary mb-2 btn-sm" data-cy="search" (click)="clearForm()">Изчисти филтъра</button>
+                        </div>
+                    </div>
+
+                    @if (bus) {
+                        <div>
+                            <button type="button" class="btn btn-success btn-sm" data-cy="addCar" (click)="addBus()">{{ labels.ADD }} {{ labels.BUS }}</button>
+                        </div>
+                    } @else {
+                        <div>
+                            <button type="button" class="btn btn-success btn-sm" data-cy="addCar" (click)="addCar()">{{ labels.ADD }} {{ labels.CAR }}</button>
+                        </div>
+                    }
+                </div>
+            </form>
+            @if (cars.length) {
+                @if (searched && numberPages > 1) {
+                    <app-navigator class="me-1" [numberPages]="numberPages!" [currentPage]="currentPage!" [hasSort]="false" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
+                }
+
+                @for (car of cars; track car.carId) {
+                    <div id="{{ car.carId }}" title="{{car.regNumber}}" class="item card" style="margin: 6px 0px;">
+                        <app-dealerview 
+                            [mainPicture]="car.mainPicture"
+                            [highlighted]="currentCarId"
+                            [carView]="car"
+                            [allowUpdate]="true"
+                            [showPart]="showParts"
+                            (action)="actionCar($event)"
+                            (addPartCarId)="addPart($event)">
+                        </app-dealerview>
+                    </div>
+                }
+
+                @if (searched && numberPages > 1) {
+                    <app-navigator class="me-1" [numberPages]="numberPages!" [currentPage]="currentPage!" [hasSort]="false" (moveToPage)="moveToPage($event)" > </app-navigator>
+                }
+            } @else {
+                @if (loading) {
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Зареждане на колите ...</span>
+                        </div>
+                    </div>
+                } @else {
+                    @if (loading !== undefined) {
+                        <div class="d-flex justify-content-center">
+                            <h4>Няма намерени коли</h4>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+} @else if (addCarFlag) {
+    <app-addcar [carId]="id" [bus]="0" [add]="addCarFlag" (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
+} @else if (addBusFlag) {
+    <app-addcar [carId]="id" [bus]="1" [add]="addCarFlag" (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
+} @else if (addPartFlag) {
+    <app-addpart [carId]="id" [bus]="bus" [add]="addPartFlag" (saved)="savedPart($event)" (noChange)="back($event)"></app-addpart>
+}
+@else if (updateCarFlag) {
+    <app-updatecar [id]="id" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
+}
+@else if (updateBusFlag) {
+    <app-updatecar [id]="id" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
+} @else if (updatePartFlag) {
+    <app-updatepart [id]="id" (saved)="savedPart($event)" (noChange)="back($event)"></app-updatepart>
+}
+<app-gotop></app-gotop>

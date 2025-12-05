@@ -1,0 +1,24 @@
+.noShow
+{
+    display: none;
+}
+
+.show 
+{
+    display: display-inline;
+}
+
+.title {
+    background-color: rebeccapurple;
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.position-buttons {
+    position: fixed;
+    bottom: 30px;
+    right: 0px;
+}

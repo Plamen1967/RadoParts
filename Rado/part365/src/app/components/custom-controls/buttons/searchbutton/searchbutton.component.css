@@ -1,0 +1,11 @@
+.search-button {
+    background-color: var(--search-button-background-color);
+    color: var(--search-button-color);
+}
+
+.buttonSize {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    max-width: 150px;
+}

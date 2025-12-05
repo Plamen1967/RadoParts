@@ -1,0 +1,13 @@
+.show-text {
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .show-text {
+        display: none;
+    }
+}
+
+.border-button {
+    border: 1px black solid;
+}

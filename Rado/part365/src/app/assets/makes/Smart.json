@@ -1,0 +1,48 @@
+{
+  "make": "Smart",
+  "models": [
+    {
+      "label": "Cabrio",
+      "modifications": {
+        "cabrio-450": "Cabrio 450 (03.2000 - 01.2004)"
+      }
+    },
+    {
+      "label": "City-Coupe",
+      "modifications": {
+        "city-coupe-450": "City-Coupe 450 (07.1998 - 01.2004)"
+      }
+    },
+    {
+      "label": "Crossblade",
+      "modifications": {
+        "crossblade-cabrio": "Crossblade Cabrio (06.2002 - 12.2003)"
+      }
+    },
+    {
+      "label": "Forfour",
+      "modifications": {
+        "forfour-hatchback-453": "Forfour Hatchback 453 (07.2014 - ...)",
+        "forfour-hatchback-454": "Forfour Hatchback 454 (01.2004 - 06.2006)"
+      }
+    },
+    {
+      "label": "Fortwo",
+      "modifications": {
+        "fortwo-cabrio-450": "Fortwo Cabrio 450 (01.2004 - 01.2007)",
+        "fortwo-cabrio-451": "Fortwo Cabrio 451 (01.2007 - 04.2014)",
+        "fortwo-cabrio-453": "Fortwo Cabrio 453 (09.2015 - ...)",
+        "fortwo-coupe-450": "Fortwo Coupe 450 (01.2004 - 02.2007)",
+        "fortwo-coupe-451": "Fortwo Coupe 451 (01.2007 - 04.2014)",
+        "fortwo-coupe-453": "Fortwo Coupe 453 (07.2014 - ...)"
+      }
+    },
+    {
+      "label": "Roadster",
+      "modifications": {
+        "roadster-cabrio": "Roadster Cabrio (04.2003 - 11.2005)",
+        "roadster-coupe": "Roadster Coupe (04.2003 - 11.2005)"
+      }
+    }
+  ]
+}

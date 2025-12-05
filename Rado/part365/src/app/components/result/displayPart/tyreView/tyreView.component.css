@@ -1,0 +1,224 @@
+.test:nth-child(odd) {
+    background-color: lavender;
+}
+
+.test:nth-child(even) {
+    background-color: ivory;
+}
+
+.phoneColor {
+    background-color: teal;
+    color: white;
+}
+
+.price {
+    color: blue;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+.companySize {
+    width: 8em;
+    height: 6em;
+}
+
+.imageDiv {
+    box-sizing: border-box;
+    float: left;
+    margin-bottom: 2px;
+    padding: 2px;
+    position: relative;
+}
+
+.image {
+    position: absolute;
+    top: 0px;
+    right: -10px;
+}
+
+
+.containerImage {
+    display: flex;
+    flex-flow: row;
+}
+
+.company {
+    display: block;
+}
+
+.companyRight {
+    display: none;
+}
+
+.alightRight {
+    float: left;
+}
+
+.paddingRow {
+    padding-right: 0.3rem !important;
+}
+
+
+.companyPadding {
+    padding-left: 2px;
+    padding-right: 0px;
+    cursor: pointer;
+}
+
+.company2 {
+    background-color: white;
+}
+
+.label {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.label:not(:first-of-type) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+@media(max-width: var(--bs-breakpoint-md)) {
+    .carImage {
+        width: 180px;
+        height: 150px
+    }
+
+    .favourite {
+        padding-right: 0px;
+        display: none;
+    }
+
+    .favouriteMobile {
+        padding-right: 2px;
+        display: block;
+    }
+
+    .companyRight {
+        display: block;
+    }
+
+    .companyMin {
+        width: 180px;
+        height: 150px;
+        display: block;
+    }
+
+    .companySize {
+        max-inline-size: 100%;
+        height: 4em;
+        cursor: pointer
+    }
+  
+    .width10
+    {
+        width: 10%;
+    }
+    
+    .width40
+    {
+        width: 40%;
+    }
+    .width40
+    {
+        width: 30%;
+        padding-right: 2px
+    }
+
+    .width50
+    {
+        width: 70%;
+    }
+
+    .image2 {
+        width: 220px;
+        height: 130px;
+    }
+    .company {
+        display: none;
+    }
+}
+
+@media(min-width: var(--bs-breakpoint-md)) {
+    .carImage {
+        width: 240px;
+        height: 200px
+    }
+
+    .favourite {
+        display: block;
+    }
+
+    .favouriteMobile {
+        display: none;
+    }
+
+    .companyRight {
+        display: none;
+    }
+
+    .companyMin {
+        display: none;
+    }
+
+    .company {
+        height: 100%;
+        display: block;
+
+    }
+    .companySize {
+        width: 16em;
+        height: 6em;
+        cursor: pointer
+    }
+    }
+
+    .padding6 {
+        padding-left: 6px;
+    }
+    
+
+.blocked 
+{
+    background-color:rgb(238, 52, 5)
+}   
+
+.notApproved 
+{
+    background-color:lightgreen;
+}    
+
+.approved 
+{
+    background-color: rgb(204, 255, 255)
+}    
+
+.highlighted {
+    background-color: beige; 
+}
+
+.normal {
+    background-color: rgb(204, 255, 255)
+}
+
+
+.description {
+    font-family: 'Helvetica Now Display',Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 18px;
+    text-align: left;
+}
+
+.details {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 2px;
+}

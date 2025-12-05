@@ -1,0 +1,56 @@
+{
+  "make": "MG",
+  "models": [
+    {
+      "label": "6",
+      "modifications": {
+        "6-hatchback": "6 Hatchback (11.2010 - 03.2017)",
+        "6-sedan": "6 Sedan (11.2010 - 03.2017)"
+      }
+    },
+    {
+      "label": "MG F",
+      "modifications": {
+        "mg-f-cabrio": "MG F Cabrio (03.1995 - 03.2002)"
+      }
+    },
+    {
+      "label": "RV8",
+      "modifications": {
+        "rv8-cabrio": "RV8 Cabrio (09.1992 - 12.1995)"
+      }
+    },
+    {
+      "label": "TF",
+      "modifications": {
+        "tf-cabrio": "TF Cabrio (03.2002 - 12.2009)"
+      }
+    },
+    {
+      "label": "X POWER",
+      "modifications": {
+        "x-power-coupe": "X POWER Coupe (01.2003 - 04.2008)"
+      }
+    },
+    {
+      "label": "ZR",
+      "modifications": {
+        "zr-hatchback": "ZR Hatchback (06.2001 - 04.2005)"
+      }
+    },
+    {
+      "label": "ZS",
+      "modifications": {
+        "zs-hatchback": "ZS Hatchback (04.2001 - 10.2005)",
+        "zs-sedan": "ZS Sedan (07.2001 - 04.2005)"
+      }
+    },
+    {
+      "label": "ZT",
+      "modifications": {
+        "zt-sedan": "ZT Sedan (06.2001 - 10.2005)",
+        "zt-zt-t": "ZT ZT-T (10.2001 - 10.2005)"
+      }
+    }
+  ]
+}

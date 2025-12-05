@@ -1,0 +1,85 @@
+.userInfo {
+    padding: 2px 5px 2px;
+    background-color: aquamarine;
+    border: black solid 1px;
+    box-shadow: 2px 2px lightgrey;
+    margin-bottom: 3px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.stats {
+    background-color: rgb(220, 230, 200);
+    width: 100%;
+    font: 200;
+    display: flex;
+    flex: 1 1 20%;
+}
+
+.max40 {
+    margin-top: 2px;
+    max-width: 40%;
+}
+
+.button-background-blue {
+    background-image: linear-gradient(135deg, #448deb 40%, #4a0ae0);
+}
+.button-background-red {
+    background-image: linear-gradient(135deg, #e99393 40%, #f20f0f);
+}
+
+.button-background-green {
+    background-image: linear-gradient(135deg, #66a1f0 40%, #680637);
+}
+
+.flexItem {
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-left: 2px;
+    margin-right: 2px;
+    max-width: 20%;
+    background-image: linear-gradient(135deg, #f34079 40%, #fc894d);
+}
+
+.line {
+    margin-left: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    padding-right: 0px;
+}
+.line:nth-child(odd) {
+    background-color: rgb(0, 255, 128);
+    color: black;
+}
+.line:nth-child(even) {
+    background-color: rgb(17, 156, 202);
+    color: yellow;
+}
+
+.flexItem:active {
+    background-color: blue;
+    color: white;
+    box-shadow: 2px 2px 5px #fc894d;
+}
+.flexItem:hover {
+    background-color: rgb(5, 188, 249);
+    color: yellow;
+    box-shadow: 2px 2px 5px #fc894d;
+}
+
+.details {
+    margin-top: 5px;
+    padding: 2px 5px 2px;
+    color: black;
+    background: linear-gradient(#f6a182, #a34cf4);
+    border: lightblue solid 1px;
+    border-radius: 5px;
+}
+
+.menuClass {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}

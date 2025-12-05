@@ -1,0 +1,16 @@
+@if (data_) {
+    <div class="select__margin">
+        <div class="select__container">
+            <div class="select__field">
+                <app-buttongroup [placeholder]="placeHolder" [clearBox]="clearBox" [selection]="_selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()"> </app-buttongroup>
+            </div>
+            <div class="select__label" [ngClass]="{ required: required }">
+                {{ label }}
+                <span *ngIf="label && required" class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
+            </div>
+            <div *ngIf="submitted && control.invalid" class="invalid-feedback d-block">
+                <small>{{ errorMessage }}</small>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,38 @@
+.text-right {
+    background-color: blue;
+    color: white;
+    border-radius: 2px;
+}
+
+.numberparts {
+    background-color: blue;
+    color: white;
+    border-radius: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+@media (max-width: 620) {
+    .numberparts {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+.title-car {
+    font-size: 1.2em;
+    background-color: blueviolet;
+    color: antiquewhite;
+    border-radius: 5px;
+}
+
+.custom-control-label {
+    font-size: 1.2em;
+}
+.custom-control-input {
+    margin-top: 2px;
+    margin-right: 8px;
+}
+
+.part-style {
+    cursor: pointer;
+}

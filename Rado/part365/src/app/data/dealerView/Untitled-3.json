@@ -1,0 +1,2534 @@
+{
+    "labels": {
+        "singular": "Service Hub Permissions",
+        "plural": "Service Hub Permissions"
+    },
+    "requiredProperties": [
+        "permission_id"
+    ],
+    "searchableProperties": [
+        "permission_id"
+    ],
+    "primaryDisplayProperty": "permission_id",
+    "secondaryDisplayProperties": [],
+    "description": "The ServiceHubPermissions Object allows for access permission to the Servicehub",
+    "archived": false,
+    "restorable": true,
+    "metaType": "PORTAL_SPECIFIC",
+    "id": "31814442",
+    "fullyQualifiedName": "p20000250_service_hub_permissions",
+    "createdAt": "2024-07-02T09:36:18.283Z",
+    "updatedAt": "2024-07-02T09:36:19.685Z",
+    "createdByUserId": 8658921,
+    "updatedByUserId": 8658921,
+    "objectTypeId": "2-31814442",
+    "properties": [
+        {
+            "updatedAt": "2024-11-25T11:05:19.557Z",
+            "createdAt": "2024-11-25T11:05:19.557Z",
+            "name": "aha_access",
+            "label": "Aha Ideas Portal Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:40:52.704Z",
+            "createdAt": "2024-07-02T09:40:52.704Z",
+            "name": "are_you_sure_",
+            "label": "Are you sure?",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-15T20:32:32.030Z",
+            "createdAt": "2024-07-02T09:43:16.739Z",
+            "name": "associated_company_last_name",
+            "label": "Company Name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-15T20:32:31.825Z",
+            "createdAt": "2024-07-02T09:41:58.640Z",
+            "name": "associated_contact_first_name",
+            "label": "First Name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-15T20:32:31.924Z",
+            "createdAt": "2024-07-02T09:42:38.154Z",
+            "name": "associated_contact_last_name",
+            "label": "Last Name",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:06:09.533Z",
+            "createdAt": "2024-11-25T11:06:09.533Z",
+            "name": "egress_access",
+            "label": "Egress Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:44:30.321Z",
+            "createdAt": "2024-07-02T09:44:30.321Z",
+            "name": "freshdesk_access",
+            "label": "Freshdesk Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_all_accessible_team_ids",
+            "label": "All teams",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "The team IDs, including the team hierarchy, of all default and custom owner properties for this record.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_all_assigned_business_unit_ids",
+            "label": "Business units",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "The business units this record is assigned to.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": false
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_all_owner_ids",
+            "label": "All owner IDs",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "Values of all default and custom owner properties for this record.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_all_team_ids",
+            "label": "All team IDs",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "The team IDs of all default and custom owner properties for this record.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_created_by_user_id",
+            "label": "Created by user ID",
+            "type": "number",
+            "fieldType": "number",
+            "description": "The user who created this record. This value is set automatically by HubSpot.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_createdate",
+            "label": "Object create date/time",
+            "type": "datetime",
+            "fieldType": "date",
+            "description": "The date and time at which this object was created. This value is automatically set by HubSpot and may not be modified.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:00.641Z",
+            "name": "hs_date_entered_205384111",
+            "label": "Date entered 'Pending (Service Hub Access)'",
+            "type": "datetime",
+            "fieldType": "calculation_read_time",
+            "description": "The date and time when the Service Hub Permissions entered the 'Pending' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:00.641Z",
+            "name": "hs_date_entered_205384112",
+            "label": "Date entered 'Approve (Service Hub Access)'",
+            "type": "datetime",
+            "fieldType": "calculation_read_time",
+            "description": "The date and time when the Service Hub Permissions entered the 'Approve' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:39.660Z",
+            "name": "hs_date_entered_205497735",
+            "label": "Date entered 'Reject (Service Hub Access)'",
+            "type": "datetime",
+            "fieldType": "calculation_read_time",
+            "description": "The date and time when the Service Hub Permissions entered the 'Reject' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:00.641Z",
+            "name": "hs_date_exited_205384111",
+            "label": "Date exited 'Pending (Service Hub Access)'",
+            "type": "datetime",
+            "fieldType": "calculation_read_time",
+            "description": "The date and time when the Service Hub Permissions exited the 'Pending' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:00.641Z",
+            "name": "hs_date_exited_205384112",
+            "label": "Date exited 'Approve (Service Hub Access)'",
+            "type": "datetime",
+            "fieldType": "calculation_read_time",
+            "description": "The date and time when the Service Hub Permissions exited the 'Approve' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:39.660Z",
+            "name": "hs_date_exited_205497735",
+            "label": "Date exited 'Reject (Service Hub Access)'",
+            "type": "datetime",
+            "fieldType": "calculation_read_time",
+            "description": "The date and time when the Service Hub Permissions exited the 'Reject' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_lastmodifieddate",
+            "label": "Object last modified date/time",
+            "type": "datetime",
+            "fieldType": "date",
+            "description": "Most recent timestamp of any property update for this object. This includes HubSpot internal properties, which can be visible or hidden. This property is updated automatically.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_merged_object_ids",
+            "label": "Merged record IDs",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "The list of record IDs that have been merged into this record. This value is set automatically by HubSpot.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_id",
+            "label": "Record ID",
+            "type": "number",
+            "fieldType": "number",
+            "description": "The unique ID for this record. This value is set automatically by HubSpot.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_source",
+            "label": "Record creation source",
+            "type": "string",
+            "fieldType": "text",
+            "description": "Raw internal PropertySource present in the RequestMeta when this record was created.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_source_detail_1",
+            "label": "Record source detail 1",
+            "type": "string",
+            "fieldType": "text",
+            "description": "First level of detail on how this record was created.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_source_detail_2",
+            "label": "Record source detail 2",
+            "type": "string",
+            "fieldType": "text",
+            "description": "Second level of detail on how this record was created.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_source_detail_3",
+            "label": "Record source detail 3",
+            "type": "string",
+            "fieldType": "text",
+            "description": "Third level of detail on how this record was created.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_source_id",
+            "label": "Record creation source ID",
+            "type": "string",
+            "fieldType": "text",
+            "description": "Raw internal sourceId present in the RequestMeta when this record was created.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_source_label",
+            "label": "Record source",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "How this record was created.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_object_source_user_id",
+            "label": "Record creation source user ID",
+            "type": "number",
+            "fieldType": "number",
+            "description": "Raw internal userId present in the RequestMeta when this record was created.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:36:18.603Z",
+            "createdAt": "2024-07-02T09:36:18.603Z",
+            "name": "hs_pinned_engagement_id",
+            "label": "Pinned Engagement ID",
+            "type": "number",
+            "fieldType": "number",
+            "description": "The object ID of the current pinned engagement. This will only be shown in the app if there is already an association to the engagement.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": false
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-07T21:15:51.508Z",
+            "createdAt": "2024-07-02T09:58:00.643Z",
+            "name": "hs_pipeline",
+            "label": "Service Hub Permissions pipeline",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "The pipeline of this Service Hub Permissions",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-07T21:15:51.835Z",
+            "createdAt": "2024-07-02T09:58:00.643Z",
+            "name": "hs_pipeline_stage",
+            "label": "Service Hub Permissions pipeline stage",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "The pipeline stage of this Service Hub Permissions",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_read_only",
+            "label": "Read only object",
+            "type": "bool",
+            "fieldType": "booleancheckbox",
+            "description": "Determines whether a record can be edited by a user.",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "True",
+                    "value": "true",
+                    "displayOrder": 0,
+                    "hidden": false
+                },
+                {
+                    "label": "False",
+                    "value": "false",
+                    "displayOrder": 1,
+                    "hidden": false
+                }
+            ],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_shared_team_ids",
+            "label": "Shared teams",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "Additional teams whose users can access the record based on their permissions. This can be set manually or through Workflows or APIs.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": false
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_shared_user_ids",
+            "label": "Shared users",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "Additional users that can access the record based on their permissions. This can be set manually or through Workflows and APIs.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": false
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:00.641Z",
+            "name": "hs_time_in_205384111",
+            "label": "Time in 'Pending (Service Hub Access)'",
+            "type": "number",
+            "fieldType": "calculation_read_time",
+            "description": "The total time in seconds spent by the Service Hub Permissions in the 'Pending' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:00.641Z",
+            "name": "hs_time_in_205384112",
+            "label": "Time in 'Approve (Service Hub Access)'",
+            "type": "number",
+            "fieldType": "calculation_read_time",
+            "description": "The total time in seconds spent by the Service Hub Permissions in the 'Approve' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:58:39.660Z",
+            "createdAt": "2024-07-02T09:58:39.660Z",
+            "name": "hs_time_in_205497735",
+            "label": "Time in 'Reject (Service Hub Access)'",
+            "type": "number",
+            "fieldType": "calculation_read_time",
+            "description": "The total time in seconds spent by the Service Hub Permissions in the 'Reject' stage, 'Service Hub Access' pipeline",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_unique_creation_key",
+            "label": "Unique creation key",
+            "type": "string",
+            "fieldType": "text",
+            "description": "Unique property used for idempotent creates",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": true,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_updated_by_user_id",
+            "label": "Updated by user ID",
+            "type": "number",
+            "fieldType": "number",
+            "description": "The user who last updated this record. This value is set automatically by HubSpot.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_user_ids_of_all_notification_followers",
+            "label": "User IDs of all notification followers",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "The user IDs of all users that have clicked follow within the object to opt-in to getting follow notifications",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_user_ids_of_all_notification_unfollowers",
+            "label": "User IDs of all notification unfollowers",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "The user IDs of all object owners that have clicked unfollow within the object to opt-out of getting follow notifications",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_user_ids_of_all_owners",
+            "label": "User IDs of all owners",
+            "type": "enumeration",
+            "fieldType": "checkbox",
+            "description": "The user IDs of all owners of this record.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hs_was_imported",
+            "label": "Performed in an import",
+            "type": "bool",
+            "fieldType": "booleancheckbox",
+            "description": "Object is part of an import",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "True",
+                    "value": "true",
+                    "displayOrder": 0,
+                    "hidden": false
+                },
+                {
+                    "label": "False",
+                    "value": "false",
+                    "displayOrder": 1,
+                    "hidden": false
+                }
+            ],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": true,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hubspot_owner_assigneddate",
+            "label": "Owner assigned date",
+            "type": "datetime",
+            "fieldType": "date",
+            "description": "The most recent timestamp of when an owner was assigned to this record. This value is set automatically by HubSpot.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hubspot_owner_id",
+            "label": "Owner",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "The owner of the object.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "referencedObjectType": "OWNER",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": false
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "name": "hubspot_team_id",
+            "label": "Owner's main team",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "The main team of the record owner. This value is set automatically by HubSpot.",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": true,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "hubspotDefined": true,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": true,
+                "readOnlyValue": true
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:05:46.174Z",
+            "createdAt": "2024-11-25T11:05:46.174Z",
+            "name": "lms_access",
+            "label": "Learning Management System Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:45:00.605Z",
+            "createdAt": "2024-07-02T09:45:00.605Z",
+            "name": "n5series_access",
+            "label": "5Series Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:07:52.584Z",
+            "createdAt": "2024-11-25T11:07:52.584Z",
+            "name": "n5series_help_documentation_access",
+            "label": "Quantios 5Series Help Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2025-01-06T08:43:38.171Z",
+            "createdAt": "2024-11-25T11:09:20.587Z",
+            "name": "n5series_portal_release_documentation",
+            "label": "Quantios 5Series Portal Release Documentation",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "51738054",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:07:36.862Z",
+            "createdAt": "2024-11-25T11:07:36.862Z",
+            "name": "n5series_release_documentation_access",
+            "label": "Quantios 5Series Release Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:45:27.996Z",
+            "createdAt": "2024-07-02T09:45:27.996Z",
+            "name": "navone_access",
+            "label": "NavOne Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:07:16.168Z",
+            "createdAt": "2024-11-25T11:07:16.168Z",
+            "name": "navone_help_documentation_access",
+            "label": "Quantios NavOne Help Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:09:06.729Z",
+            "createdAt": "2024-11-25T11:09:06.729Z",
+            "name": "navone_portal_release_documentation",
+            "label": "Quantios NavOne Portal Release Documentation",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:07:02.505Z",
+            "createdAt": "2024-11-25T11:07:02.505Z",
+            "name": "navone_release_documentation_access",
+            "label": "Quantios NavOne Release Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:45:51.965Z",
+            "createdAt": "2024-07-02T09:45:51.965Z",
+            "name": "other_products_access",
+            "label": "Other Products Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-15T20:32:31.707Z",
+            "createdAt": "2024-07-02T09:36:18.488Z",
+            "name": "permission_id",
+            "label": "Permission ID",
+            "type": "string",
+            "fieldType": "text",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": 0,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": true,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": false,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:46:13.714Z",
+            "createdAt": "2024-07-02T09:46:13.714Z",
+            "name": "quantios_core_access",
+            "label": "Quantios Core Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:06:42.376Z",
+            "createdAt": "2024-11-25T11:06:42.376Z",
+            "name": "quantios_core_help_documentation_access",
+            "label": "Quantios Core Help Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:06:27.145Z",
+            "createdAt": "2024-11-25T11:06:27.145Z",
+            "name": "quantios_core_release_documentation_access",
+            "label": "Quantios Core Release Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:54:16.163Z",
+            "createdAt": "2024-07-02T09:54:16.163Z",
+            "name": "quantios_efileconnect_access",
+            "label": "Quantios eFileConnect Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2025-01-14T15:17:32.407Z",
+            "createdAt": "2025-01-14T15:17:32.407Z",
+            "name": "quantios_efileconnect_documention_access",
+            "label": "Quantios eFileConnect Help Documention Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "description": "",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2025-01-14T15:19:06.447Z",
+            "createdAt": "2025-01-14T15:19:06.447Z",
+            "name": "quantios_efileconnect_release_access",
+            "label": "Quantios eFileConnect Release Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "description": "",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:54:34.373Z",
+            "createdAt": "2024-07-02T09:54:34.373Z",
+            "name": "quantios_engage_access",
+            "label": "Quantios Engage Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:08:52.979Z",
+            "createdAt": "2024-11-25T11:08:52.979Z",
+            "name": "quantios_g3_release_documentation",
+            "label": "Quantios G3 Release Documentation",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2025-01-16T09:51:51.939Z",
+            "createdAt": "2025-01-16T09:51:51.939Z",
+            "name": "quantios_jobstream_help_access",
+            "label": "Quantios Jobstream Help Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:08:13.644Z",
+            "createdAt": "2024-11-25T11:08:13.644Z",
+            "name": "quantios_jobstream_help_documentation",
+            "label": "Quantios Jobstream Help Documentation",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:08:23.320Z",
+            "createdAt": "2024-11-25T11:08:23.320Z",
+            "name": "quantios_jobstream_knowledge_base",
+            "label": "Quantios Jobstream Knowledge Base",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2025-01-16T09:52:45.923Z",
+            "createdAt": "2025-01-16T09:52:45.923Z",
+            "name": "quantios_jobstream_release_access",
+            "label": "Quantios Jobstream Release Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:08:06.036Z",
+            "createdAt": "2024-11-25T11:08:06.036Z",
+            "name": "quantios_jobstream_release_documentation",
+            "label": "Quantios Jobstream Release Documentation",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:54:50.279Z",
+            "createdAt": "2024-07-02T09:54:50.279Z",
+            "name": "quantios_portal_access",
+            "label": "Quantios Portal Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-11-25T11:08:44.089Z",
+            "createdAt": "2024-11-25T11:08:44.089Z",
+            "name": "quantios_quorum_help_documentation",
+            "label": "Quantios Quorum Help Documentation",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:55:15.744Z",
+            "createdAt": "2024-07-02T09:55:15.744Z",
+            "name": "quantios_vpoint_access",
+            "label": "Quantios vPoint Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2025-01-14T15:21:21.057Z",
+            "createdAt": "2025-01-14T15:21:21.057Z",
+            "name": "quantios_vpoint_help_documentation_access",
+            "label": "Quantios vPoint Help Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "description": "",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2025-01-14T15:22:08.390Z",
+            "createdAt": "2025-01-14T15:22:08.390Z",
+            "name": "quantios_vpoint_release_documentation_access",
+            "label": "Quantios vPoint Release Documentation Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "description": "",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:43:58.183Z",
+            "createdAt": "2024-07-02T09:43:58.183Z",
+            "name": "service_hub_access",
+            "label": "Service Hub Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T10:04:33.970Z",
+            "createdAt": "2024-07-02T10:04:33.970Z",
+            "name": "terms_accepted",
+            "label": "Terms Accepted",
+            "type": "date",
+            "fieldType": "date",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-02T09:56:02.728Z",
+            "createdAt": "2024-07-02T09:56:02.728Z",
+            "name": "tq_customer_hub_access",
+            "label": "TQ Customer Hub Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        },
+        {
+            "updatedAt": "2024-07-08T13:30:40.597Z",
+            "createdAt": "2024-07-08T13:30:40.597Z",
+            "name": "vp_customer_portal_access",
+            "label": "VP Support Portal Access",
+            "type": "enumeration",
+            "fieldType": "select",
+            "description": "",
+            "groupName": "service_hub_permissions_information",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "Yes",
+                    "displayOrder": 0,
+                    "hidden": false
+                }
+            ],
+            "createdUserId": "8658921",
+            "updatedUserId": "8658921",
+            "displayOrder": -1,
+            "calculated": false,
+            "externalOptions": false,
+            "archived": false,
+            "hasUniqueValue": false,
+            "hidden": false,
+            "showCurrencySymbol": false,
+            "modificationMetadata": {
+                "archivable": true,
+                "readOnlyDefinition": false,
+                "readOnlyValue": false
+            },
+            "formField": true,
+            "dataSensitivity": "non_sensitive"
+        }
+    ],
+    "associations": [
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-46",
+            "name": "note_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "89",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-46",
+            "toObjectTypeId": "2-31814442",
+            "name": "note_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "90",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-48",
+            "name": "call_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "83",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-48",
+            "toObjectTypeId": "2-31814442",
+            "name": "call_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "84",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-1",
+            "name": "contact_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": true,
+            "hasUserEnforcedMaxFromObjectIds": true,
+            "maxToObjectIds": 1,
+            "maxFromObjectIds": 1,
+            "id": "95",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-1",
+            "toObjectTypeId": "2-31814442",
+            "name": "contact_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": true,
+            "hasUserEnforcedMaxFromObjectIds": true,
+            "maxToObjectIds": 1,
+            "maxFromObjectIds": 1,
+            "id": "96",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-116",
+            "name": "postal_mail_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "93",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-116",
+            "toObjectTypeId": "2-31814442",
+            "name": "postal_mail_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "94",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-27",
+            "name": "service_hub_permissions_to_task",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "85",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-27",
+            "toObjectTypeId": "2-31814442",
+            "name": "service_hub_permissions_to_task",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "86",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-51",
+            "name": "conversation_session_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "91",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-51",
+            "toObjectTypeId": "2-31814442",
+            "name": "conversation_session_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "92",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-47",
+            "name": "meeting_event_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "79",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-47",
+            "toObjectTypeId": "2-31814442",
+            "name": "meeting_event_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "80",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-18",
+            "name": "communication_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "81",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-18",
+            "toObjectTypeId": "2-31814442",
+            "name": "communication_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "82",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "2-31814442",
+            "toObjectTypeId": "0-49",
+            "name": "email_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 50000,
+            "maxFromObjectIds": 10000,
+            "id": "87",
+            "createdAt": null,
+            "updatedAt": null
+        },
+        {
+            "fromObjectTypeId": "0-49",
+            "toObjectTypeId": "2-31814442",
+            "name": "email_to_service_hub_permissions",
+            "cardinality": "ONE_TO_MANY",
+            "inverseCardinality": "ONE_TO_MANY",
+            "hasUserEnforcedMaxToObjectIds": false,
+            "hasUserEnforcedMaxFromObjectIds": false,
+            "maxToObjectIds": 10000,
+            "maxFromObjectIds": 50000,
+            "id": "88",
+            "createdAt": null,
+            "updatedAt": null
+        }
+    ],
+    "name": "service_hub_permissions"
+}

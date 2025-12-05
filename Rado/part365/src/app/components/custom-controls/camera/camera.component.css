@@ -1,0 +1,23 @@
+.addImage {
+  width: 32px;
+  height: 32px;
+}
+
+.buttonAddImage {
+  border: 1px solid black;
+  background-color: lightgreen;
+}
+
+.buttonAddImage:hover {
+  background-color: lightskyblue;
+}
+
+  ul.links {
+    padding-bottom: 10px;
+  }
+
+  .addImage {
+    width: 32px;
+    height: 32px;
+    padding: 2px;
+}

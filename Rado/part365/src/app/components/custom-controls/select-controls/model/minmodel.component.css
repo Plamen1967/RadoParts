@@ -1,0 +1,268 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container-style {
+    display: flex;
+    flex-direction: column;
+    background-color: beige;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    box-shadow: 1px 1px 1px 1px lightgray;
+    min-width: min(90%, 400px);
+}
+
+/* body {
+    font-family: "Roboto", "sans-serif";
+    background-color: aquamarine;
+} */
+
+h2 {
+    margin: 16px;
+}
+
+.label-style {
+    color: red;
+    font-size: 1.1em;
+    padding-left: 2px;
+}
+
+.letter {
+    color: white!important;
+    background-color: rgb(168, 242, 190)!important;
+}
+
+.letter-style {
+   background-color: blue; 
+   border-radius: 2px;
+   border: 1px solid black;
+   width: 20px;
+   justify-content: center;
+   align-items: center;
+   display: flex;
+   cursor: pointer;
+}
+.selected-option {
+    color: white!important;
+    background-color: blueviolet!important;
+
+}
+
+.container {
+    margin-top: 100px;
+    padding: 32px;
+}
+
+.checked {
+    display: flex;
+    width: 24px;
+    align-items: center;
+}
+
+form {
+    position: relative;
+}
+
+.selected-letter {
+    color: white;
+    background-color: red;
+}
+
+.letters
+{
+    position: fixed;
+    color: black;
+    width: 100%;
+    background: rgb(200, 193, 193);
+}
+
+.select-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2px;
+    -webkit-overflow-scrolling:touch;
+   height: 80%;
+   max-height: 80%;
+} 
+
+.mat-dialog-content {
+    max-height: unset;
+    height: 90%;
+    width: 100%;
+    max-width: 750px;
+    background: transparent;
+}
+
+.select-box .options-container {
+    border: 1px solid lightgray;
+    background: rgb(200, 193, 193);
+    color: black;
+    border-radius: 0px;
+    order: 1;
+    z-index: 2;
+    width: 100%;
+    overflow-y: auto;
+    flex: unset;
+    background-color: transparent;
+}
+
+.select-box .letter-container {
+    border: 1px solid lightgray;
+    background: rgb(200, 193, 193);
+    color: black;
+    border-radius: 0px;
+    order: 1;
+    z-index: 2;
+    width: 100%;
+    background-color: transparent;
+}
+
+
+.display-style{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    width: 100%;
+}
+
+/* .option.group {
+    color: black;
+    background-color: lightgreen;
+} */
+.selected {
+    background: white;
+    border-radius: 0px;
+    font-weight: 400;
+    color: black;
+    position: relative;
+    order: 0;
+    font-size: 0.9em;
+    display: block;
+    font-family: var(--bs-body-font-family);
+    background-color: transparent;
+}
+
+.close-button {
+    margin-right: 30px;
+    height: 14px;
+    width: 14px;
+}
+.selected::after
+{
+    content: "";
+    color: black;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");    
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 16px 12px;
+    position: absolute;
+    height: 100%;
+    width: 16px;
+    right: 8px;
+    top: 0px;
+    transition: all 0.4s;
+}
+
+.selected.rotated::after
+{
+    transform: rotate(180deg);
+}
+
+.select-box .options-container.active {
+    max-height: 300px;
+    opacity: 1;
+    overflow: auto;
+    scroll-behavior: auto;
+}
+
+.notActive {
+    height: 0px!important;
+    border: 0px;
+    padding: 0px;
+}
+.select-box .options-container.notActive {
+    height: 0px;
+}
+.select-box .options-container.active + .selected::after {
+    transform: rotateX(180deg);
+    top: 0px
+}
+
+
+.option
+{
+    background-color: white;
+    display: block;
+    
+}
+
+.option.disable {
+    background-color: lightgray;
+}
+
+.input-style {
+    width: 100%;
+    height: 32px; ;
+}
+.select-box .option {
+    display: block;
+    cursor: pointer;
+    border-radius: 0px!important;
+    height: 30px;
+}
+
+.select-box .option {
+    display: flex;
+    padding: 2px; 
+    cursor: default;
+    align-items: center;
+}
+
+.select-box .selected {
+    cursor: default;
+}
+
+.select-box label {
+    cursor: default;
+}
+
+.select-box .option .radio {
+    display: none;
+}
+
+.select-box .options-container::-webkit-scrollbar {
+    width: 16px;
+    background-color: #0d141f;
+    border-radius: 0!important;
+}
+
+.select-box .options-container::-webkit-scrollbar-thumb {
+    background: rgb(55, 171, 210);
+    border-radius: 0!important;
+
+}
+
+.options-container {
+    overflow: auto;
+    scroll-behavior:auto;
+    border: 1px solid black;
+}
+
+.select-box .option:hover {
+    background-color: lightblue;
+}
+
+.option:hover
+{
+    background-color: lightblue;
+    color: black;
+}
+
+.multiselection {
+    margin-top: 2px;
+    display: flex;
+    flex-wrap: wrap;
+}

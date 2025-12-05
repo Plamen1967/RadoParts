@@ -1,0 +1,34 @@
+<div>
+    <form [formGroup]="modelForm" [ngStyle]="{'background-color': '#f1f9ff'}"
+        class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
+        <div class="col-sm-6">
+            <app-select formControlName="companyId" data-cy="companyId" label="{{labels.COMPANY}}"
+                displayProperty="companyName" valueProperty="companyId" [data]="companies">
+            </app-select>
+        </div>
+        <div class="col-sm-6">
+            <app-select formControlName="groupModelId" data-cy="groupModel" label="{{labels.GENERATION}}"
+                displayProperty="displayModelName" valueProperty="groupModelId" [data]="groupModels">
+            </app-select>
+        </div>
+        <div class="col-sm-6">
+            <app-select formControlName="modelId" data-cy="modelId" label="{{labels.MODEL}}"
+                displayProperty="displayModelName" valueProperty="modelId" [data]="models">
+            </app-select>
+        </div>
+        <div class="col-sm-6">
+            <app-input formControlName="modelName" placeHolder="{{labels.MODEL}}" label={{labels.MODEL}} >
+            </app-input>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <button class="btn btn-primary" [ngClass]="{'disabled': updateButton}"
+                    (click)="update()">{{buttonLabel}}</button>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-primary" [ngClass]="{'disabled': deleteButton}"
+                    (click)="delete()">{{labels.DELETE}}</button>
+            </div>
+        </div>
+    </form>
+</div>

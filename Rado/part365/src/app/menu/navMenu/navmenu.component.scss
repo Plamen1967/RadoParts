@@ -1,0 +1,575 @@
+@import 'bootstrap/scss/_functions.scss';
+@import 'bootstrap/scss/_variables.scss';
+@import 'bootstrap/scss/mixins/_breakpoints.scss';
+
+.active-link {
+    color: black;
+    border-bottom: 5px solid var(--active-borderbottom) !important;
+}
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 2pxs;
+    justify-content: space-between;
+}
+
+.user-banner {
+    width: 100%;
+    background-color: lightskyblue;
+    text-align: left;
+    color: white;
+    padding-left: 10px;
+}
+.background-image {
+    background-color: #cccccc;
+    height: 250px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background-image: url(/assets/logo.jpg);
+}
+
+.menu-checkbox {
+    display: none;
+}
+
+.menu-checkbox:hover {
+    .menu-test {
+        background-color: green;
+    }
+}
+.menu-checkbox:checked label {
+    background-color: green;
+}
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+html {
+    font-size: 14px;
+}
+
+.minSize {
+    display: none;
+}
+.noPadding {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    opacity: 0.9;
+    z-index: 300;
+}
+
+.dropbtn {
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.menu-color {
+    background-color: #4b16a0 !important;
+    color: yellow !important;
+}
+.menu-color:hover {
+    background-color: #4b16a0 !important;
+    color: white !important;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #4b16a0;
+    color: whitesmoke;
+    min-width: 140px;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.8);
+}
+
+.navbar-nav {
+    --bs-nav-link-padding-y: 0px;
+}
+.nav-item-shadow {
+    padding: 0px;
+}
+ul {
+    list-style-type: none;
+    padding: 2px;
+    margin: 0px;
+}
+.ulClass {
+    position: relative;
+    font-size: 1.25em;
+}
+
+.dropdown-content a {
+    text-decoration: none;
+    display: block;
+    background-color: #4b16a0;
+    color: whitesmoke;
+}
+
+ul a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+ul a:not(:last-of-type) {
+    border-bottom: 2px solid rgb(10, 127, 216);
+}
+.showDropMenu {
+    display: none;
+}
+
+.dropdown-content a:hover {
+    color: #ffbf00;
+    background-color: #2e86c1;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.show {
+    display: block;
+}
+.buttonMenu {
+    position: relative;
+    display: inline-block;
+}
+
+.buttonMenuItems {
+    position: absolute;
+    display: none;
+    animation: none;
+}
+
+.buttonMenu:hover {
+    .buttonMenuItems {
+        display: block;
+    }
+}
+
+.navbar-nav {
+    .nav-link {
+        color: white;
+        font-size: 1em;
+        text-wrap: nowrap;
+        padding-right: 3px;
+        padding-left: 3px;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+}
+
+.menuButton {
+    color: white;
+    background-color: rgb(187, 143, 206);
+    border-bottom: 5px solid whitesmoke;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+}
+.menuButton2 {
+    border-radius: 5px;
+    background-color: var(--menu-button-bgcolor);
+    border: 1ox solid black;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+    font-size: 10px;
+    display: block;
+    cursor: pointer;
+    border-bottom: 5px solid whitesmoke;
+}
+.menuButton3 {
+    color: white;
+    background-color: var(--menu-button-bgcolor);
+    border-bottom: 5px solid whitesmoke;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+}
+.menuButton2:hover,
+.menuButton3:hover,
+.menuButton:hover {
+    color: yellow;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 0.75;
+}
+
+.menuButtonLogin {
+    color: blue;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 0.75;
+}
+
+.menuButtonLogin:hover {
+    opacity: 0.5;
+}
+
+.brand {
+    color: rgb(103, 32, 225);
+}
+
+.brand:hover {
+    color: rgb(103, 32, 225);
+}
+.login {
+    color: black;
+}
+
+.box-shadow {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+div {
+    .dropdown-menu {
+        background-color: azure;
+        color: black;
+        cursor: pointer;
+    }
+}
+
+.addObjava {
+    border-bottom: 5px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+    color: yellow;
+    background-color: var(--menu-button-bgcolor);
+}
+.addObjava:hover {
+    background-color: blue;
+    color: white;
+}
+.checkout {
+    border-bottom: 5px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+    color: yellow;
+    background-color: var(--favoutite);
+}
+
+.login {
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+    opacity: 1;
+    color: rgb(81, 0, 255);
+    background-color: lightgreen;
+}
+
+div > .nav-link {
+    color: green;
+}
+
+a {
+    color: white;
+}
+
+.menu {
+    display: flex!important;
+    padding: 1px 6px;
+}
+
+.count {
+    border-radius: 50%;
+    background-color: rgb(236, 14, 88);
+    width: 24px;
+    padding: 1px 3px 3px 3px;
+    color: rgb(188, 228, 93);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;}
+.brandFontMin {
+    font-size: 2em;
+    font-weight: 600;
+    color: midnightblue;
+    font-style: italic;
+}
+
+.showMenuMin {
+    display: none;
+    z-index: 1;
+}
+
+.cursorPointer {
+    cursor: pointer;
+}
+.brandFont {
+    font-size: 4em;
+    font-weight: 600;
+    color: midnightblue;
+    font-style: italic;
+}
+
+nav {
+    background-color: rgb(45, 218, 231);
+}
+
+.buttonGap {
+    margin-right: 0px;
+    margin-bottom: 1px;
+}
+.header {
+    font-family: var(--bs-body-font-family);
+}
+
+.head {
+    display: none;
+    position: sticky;
+    background-color: lightblue;
+    border-radius: 5px;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+}
+.footer {
+    display: none;
+    position: fixed;
+    background-color: white;
+    padding: 10px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+}
+.footer-button {
+    font-size: 1.6em;
+    border: none;
+    background-color: white;
+}
+.space-evenly {
+    justify-content: space-evenly;
+    background-image: linear-gradient(rgb(63, 53, 242) 13%, rgb(39, 49, 224) 40%, rgb(22, 36, 109) 86%);
+}
+.marginTop {
+    margin-top: 0px;
+}
+
+.linkClass {
+    color: white;
+    border-radius: 3px;
+    min-width: 18%;
+}
+
+.linkClass:not(:last-of-type) {
+    border-right: 1px solid rgb(216, 210, 29);
+}
+
+.color1 {
+    background-color: darkblue;
+    color: white;
+}
+
+.color3 {
+    background-color: #3498db;
+    color: lightgreen;
+}
+
+.color4 {
+    background-color: #2874a6;
+    color: lightgreen;
+}
+
+.color5 {
+    background-color: #21618c;
+    color: #f9e79f;
+}
+
+.linkClass2 {
+    color: white;
+    border-radius: 3px;
+    min-width: 18%;
+    background-color: rgb(41, 182, 246);
+    cursor: pointer;
+}
+
+.homeLink {
+    color: white;
+    height: 40px;
+    padding-top: 6px !important;
+    font-size: 2.5em !important;
+    font-weight: 200 !important;
+    display: flex;
+}
+
+.showCompany {
+    display: block;
+    text-align: center;
+    justify-content: center;
+}
+
+.saved {
+    color: #ec7063;
+}
+
+.sizeSaved {
+    font-size: 2em;
+}
+
+.parent {
+    display: grid;
+    padding-bottom: 4px;
+    grid-template-columns: minmax(120px, 25%) minmax(80, 10%);
+}
+
+.noShow {
+    display: none;
+}
+
+.show {
+    display: block;
+    opacity: 0.99;
+}
+
+.show-menu {
+    display: block;
+    opacity: 0.99;
+}
+.homeLink::before {
+    content: '';
+    padding-top: 5px;
+    background: url(/images/png/home.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 30px;
+    display: block;
+    float: left;
+    align-items: center;
+    margin-right: 10px;
+}
+
+@include media-breakpoint-down(md) {
+    .showCompany {
+        display: none;
+    }
+    .marginTop {
+        margin-top: 70px;
+    }
+
+    .categories {
+        display: flex;
+    }
+    .head {
+        display: flex;
+    }
+    .footer {
+        font-size: 10em;
+        display: flex;
+        position: sticky;
+        padding: 6px;
+        bottom: 0;
+        left: 50%;
+        box-sizing: border-box;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .homeLink {
+        color: white;
+        height: 30px;
+        padding-top: 6px !important;
+        font-size: 1.4em !important;
+        font-weight: 600 !important;
+    }
+
+    .element {
+        display: inline-flex;
+        text-align: center;
+        padding: 2px;
+        cursor: pointer;
+    }
+    .text {
+        display: block;
+        clear: both;
+    }
+
+    .iconSize {
+        font-size: 2em;
+        display: flex;
+        align-items: center;
+    }
+    .icon {
+        height: 24px;
+        width: 24px;
+    }
+
+    .text-body-small-pale {
+        font-family: roboto, sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 18px;
+        display: inline-flex;
+        align-items: center;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    html {
+        font-size: 16px;
+    }
+}
+@include media-breakpoint-up(sm) {
+    .buttonGap {
+        margin-right: 2px;
+        margin-bottom: 0px;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .showMenu {
+        display: none;
+    }
+    .showMenuMin {
+        display: block;
+        opacity: 0.8;
+    }
+    .brandFont {
+        font-size: 2em;
+        font-weight: 600;
+        color: midnightblue;
+        font-style: italic;
+    }
+}

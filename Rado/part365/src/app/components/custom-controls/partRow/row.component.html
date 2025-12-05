@@ -1,0 +1,11 @@
+<div style="display: grid; grid-template-columns: 40% 60%; gap: 2px">
+    <div class="labelText">{{label}}</div>
+    @if(value) {
+        <div [ngClass]="{'price': price}">{{value}} 
+            @if(price) {
+                лв.
+            }
+        </div>
+    } 
+    <ng-content select=".param"></ng-content>
+</div>

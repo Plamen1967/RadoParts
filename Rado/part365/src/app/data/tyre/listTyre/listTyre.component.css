@@ -1,0 +1,27 @@
+.btnAdd
+{
+    background-color: rgb(100, 221, 23);
+    color: white;
+}
+
+
+.btnSearch {
+    background-color: blue;
+    color: white;
+}
+.noShow
+{
+    display: none;
+}
+
+.show 
+{
+    display: display-inline;
+}
+
+.title-car {
+    font-size: 1.2em;
+    background-color: blueviolet;
+    color: antiquewhite;
+    border-radius: 5px;
+}

@@ -1,0 +1,42 @@
+<form [formGroup]="modelForm">
+    @if (multiselection) {
+        <app-multiselection
+            id="modelId"
+            label="Модел"
+            formControlName="modelsId_int"
+            placeHolder="Избери модел"
+            [appToolTip]="'Избери модела'"
+            [groupSelection]="groupSelection"
+            [data]="models"
+            [showLetter]="showLetter"
+            [multiSelection]="multiselection"
+            [useLetter]="useLetter"
+            [useFilter]="useFilter"
+            [submitted]="submitted"
+            [showCount]="showCount"
+            [required]="required"
+            data-cy="modelsId"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            (onClose)="focus()">
+        </app-multiselection>
+    } @else {
+        <app-customselect
+            id="modelId"
+            formControlName="modelsId_int"
+            [data]="models"
+            label="Модел"
+            [groupSelection]="false"
+            [required]="required"
+            [placeHolder]="'Избери модел'"
+            [appToolTip]="'Избери модел'"
+            [useFilter]="useFilter"
+            [submitted]="submitted"
+            [showCount]="showCount"
+            data-cy="modelsId"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right">
+        </app-customselect>
+    }
+    <form></form>
+</form>

@@ -1,0 +1,13 @@
+
+@if(bus && part) {
+  <app-updatepart [displayPartView]="displayPartView" (saved)="savedEvent($event)" (noChange)="backEvent($event)"></app-updatepart>
+} @else if (part) {
+  <app-updatepart  [displayPartView]="displayPartView" (saved)="savedEvent($event)" (noChange)="backEvent($event)"></app-updatepart>
+} @else if (bus) {
+  <app-updatebus  [displayPartView]="displayPartView" (saved)="savedEvent($event)" (noChange)="backEvent($event)"></app-updatebus>
+} @else if (car) {
+  <app-updatecar  [displayPartView]="displayPartView" (saved)="savedEvent($event)" (noChange)="backEvent($event)"></app-updatecar>
+} @else if (tyre) {
+  <app-updatetyre  [displayPartView]="displayPartView" (saved)="savedEvent($event)" (noChange)="backEvent($event)"></app-updatetyre>
+}
+

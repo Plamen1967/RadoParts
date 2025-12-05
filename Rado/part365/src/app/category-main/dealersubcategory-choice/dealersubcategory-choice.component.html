@@ -1,0 +1,20 @@
+<form [formGroup]="dealerSubCategoryForm">
+    @if (dealerSubCategories && dealerSubCategories.length > 1) {
+        <app-customselect
+            id="dealerSubCategoriesId_int"
+            title="Избери Подкатегория Дилър"
+            placeHolder="Избери Подкатегория Дилър"
+            label="Избери Подкатегория Дилър"
+            formControlName="dealerSubCategoriesId_int"
+            [data]="dealerSubCategories"
+            [groupSelection]="false"
+            [required]="required"
+            [submitted]="submitted"
+            [appToolTip]="'Избери Подкатегория Дилър'"
+            data-cy="dealerSubCategoriesId"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right">
+        </app-customselect>
+    }
+    <form></form>
+</form>

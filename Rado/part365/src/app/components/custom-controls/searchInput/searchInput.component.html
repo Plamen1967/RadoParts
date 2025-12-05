@@ -1,0 +1,23 @@
+<div [ngClass]="{ select__margin: border }">
+    <div [ngClass]="{ select__container: border }">
+        <div class="select__label">
+            {{ label }}
+        </div>
+        <div [ngClass]="{ select__field: border }">
+            <div>
+                <div class="input-2 d-inline-flex">
+                    <input type="text" data-testid="search" [placeholder]="label" [(ngModel)]="filter" required (change)="filterChange($event)" (input)="filterChange($event)" />
+                    <div class="d-inline-flex button-container">
+                        <button type="button" (click)="onClearBox()" class="icon" [ngStyle]="{ display: clearBox ? 'block' : 'none' }" >
+                            <span class="material-symbols-outlined"> close </span>
+                        </button>
+                        <button type="button" (click)="onSearch()"  class="icon">
+                            <span class="icon material-symbols-outlined" role="none">search</span>
+                        </button>
+                        <span class="spinner"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

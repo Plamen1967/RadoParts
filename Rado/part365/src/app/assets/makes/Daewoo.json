@@ -1,0 +1,127 @@
+{
+  "make": "Daewoo",
+  "models": [
+    {
+      "label": "Damas",
+      "modifications": {
+        "damas-box": "Damas Box (1991 - 2004)",
+        "damas-bus": "Damas Bus (1991 - 2004)"
+      }
+    },
+    {
+      "label": "Espero",
+      "modifications": {
+        "espero-sedan": "Espero Sedan (10.1991 - 09.1999)"
+      }
+    },
+    {
+      "label": "Evanda",
+      "modifications": {
+        "evanda-sedan": "Evanda Sedan (08.2002 - 12.2006)"
+      }
+    },
+    {
+      "label": "Kalos",
+      "modifications": {
+        "kalos-hatchback": "Kalos Hatchback (09.2002 - 12.2006)",
+        "kalos-sedan": "Kalos Sedan (11.2002 - 12.2004)"
+      }
+    },
+    {
+      "label": "Korando",
+      "modifications": {
+        "korando-cabrio": "Korando Cabrio (02.1999 - 02.2010)",
+        "korando-suv": "Korando SUV (11.1998 - 02.2010)"
+      }
+    },
+    {
+      "label": "Lacetti",
+      "modifications": {
+        "lacetti-hatchback": "Lacetti Hatchback (02.2002 - 03.2009)"
+      }
+    },
+    {
+      "label": "Lanos",
+      "modifications": {
+        "lanos-hatchback": "Lanos Hatchback (05.1997 - 01.2004)",
+        "lanos-sedan": "Lanos Sedan (05.1997 - 04.2004)"
+      }
+    },
+    {
+      "label": "Leganza",
+      "modifications": {
+        "leganza-sedan": "Leganza Sedan (06.1997 - 04.2004)"
+      }
+    },
+    {
+      "label": "Magnus",
+      "modifications": {
+        "magnus-sedan": "Magnus Sedan (07.1999 - 01.2006)"
+      }
+    },
+    {
+      "label": "Matiz",
+      "modifications": {
+        "matiz-hatchback": "Matiz Hatchback (09.1998 - 01.2005)"
+      }
+    },
+    {
+      "label": "Musso",
+      "modifications": {
+        "musso-suv": "Musso SUV (07.1998 - 12.2005)"
+      }
+    },
+    {
+      "label": "Nexia",
+      "modifications": {
+        "nexia-hatchback": "Nexia Hatchback (02.1995 - 08.1997)",
+        "nexia-sedan": "Nexia Sedan (02.1995 - 06.2008)"
+      }
+    },
+    {
+      "label": "Nubira",
+      "modifications": {
+        "nubira-hatchback-i": "Nubira Hatchback I (04.1997 - 06.1999)",
+        "nubira-hatchback-ii": "Nubira Hatchback II (06.1999 - 07.2003)",
+        "nubira-sedan-i": "Nubira Sedan I (04.1997 - 06.1999)",
+        "nubira-sedan-ii": "Nubira Sedan II (06.1999 - 07.2002)",
+        "nubira-sedan-iii": "Nubira Sedan III (07.2003 - 06.2005)",
+        "nubira-station-wagon-i": "Nubira Station Wagon I (04.1997 - 06.1999)",
+        "nubira-station-wagon-ii": "Nubira Station Wagon II (06.1999 - 12.2002)",
+        "nubira-station-wagon-iii": "Nubira Station Wagon III (07.2003 - 06.2005)"
+      }
+    },
+    {
+      "label": "Prince",
+      "modifications": {
+        "prince-sedan": "Prince Sedan (08.1990 - 08.1999)"
+      }
+    },
+    {
+      "label": "Racer",
+      "modifications": {
+        "racer-hatchback": "Racer Hatchback (1986 - 2007)",
+        "racer-sedan": "Racer Sedan (1986 - 2007)"
+      }
+    },
+    {
+      "label": "Rezzo",
+      "modifications": {
+        "rezzo-minivan": "Rezzo Minivan (06.2000 - 06.2008)"
+      }
+    },
+    {
+      "label": "Tacuma",
+      "modifications": {
+        "tacuma-klau-u100": "Tacuma (KLAU, U100) (09.2000 - ...)",
+        "tacuma-minivan": "Tacuma Minivan (09.2000 - 11.2008)"
+      }
+    },
+    {
+      "label": "Tico",
+      "modifications": {
+        "tico-hatchback": "Tico Hatchback (02.1995 - 12.2000)"
+      }
+    }
+  ]
+}

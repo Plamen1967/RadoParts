@@ -1,0 +1,62 @@
+<div class="ms-1 mt-1 pe-2 image-cursor" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Покажи детайлите">
+    @if (displayMain) {
+        @if (image) {
+            <div>
+                <div class="image imageClass maxSize" matBadge="4" matBadgeOverlap="false">
+                    <img src="{{ image }}" loading="lazy" class="img-thumbnail imageSize" alt="" />
+                    @if (showDetails) {
+                        @if (showIcon) {
+                            <a class="small d-flex">{{ details }}</a>
+                        }
+                    }
+                    @if (showNumberPhotos && numberImages) {
+                        <div class="image-number">
+                            <span class="material-symbols-outlined image-icon"> photo_camera </span>
+                            <div class="image-text ps-2">{{ getNumberImages }}</div>
+                        </div>
+
+                        <!-- <div class="image-number-absolute">
+                            <span class="material-symbols-outlined image-icon"> photo_camera </span>
+                            <div class="image-text-absolute">{{ getOnlyNumbers }}</div>
+                        </div> -->
+                    }
+                </div>
+            </div>
+        } @else {
+            <img class="img-thumbnail imageSize" loading="lazy" src="assets/NoImage.jpg" style="margin-bottom: 5px" alt="no image" />
+        }
+    } @else {
+        @if (images.length) {
+            <div id="part{{ partId }}" class="carousel slide" data-ride="carousel">
+                <div class="carousel-indicators">
+                    @for (image of images; track image.url; let i = $index) {
+                        <button
+                            type="button"
+                            [attr.data-bs-target]="'#part' + partId"
+                            [attr.data-bs-slide-to]="i"
+                            [ngClass]="{ active: i === 0 }"
+                            aria-current="true"
+                            [attr.aria-label]="'Slide' + i"></button>
+                    }
+                </div>
+                <div class="carousel-inner">
+                    @for (image of images; track image.url; let i = $index) {
+                        <div class="carousel-item" [ngClass]="{ active: i === 0 }">
+                            <img class="d-block w-100" loading="lazy" [ngStyle]="{ height: height, width: width }" src="{{ image.medium }}" alt="First slide" />
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#part' + partId" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#part' + partId" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        } @else {
+            <img class="img-thumbnail imageSize maxSize" src="assets/NoImage.jpg" style="margin-bottom: 5px" alt="no image" />
+        }
+    }
+</div>

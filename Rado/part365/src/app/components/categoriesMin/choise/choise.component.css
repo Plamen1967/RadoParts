@@ -1,0 +1,9 @@
+.multiselection {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2px 0px;
+}
+
+.selected-item {
+    margin: 1px;
+}

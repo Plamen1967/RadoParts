@@ -1,0 +1,237 @@
+{
+  "make": "Honda",
+  "models": [
+    {
+      "label": "Accord",
+      "modifications": {
+        "accord-ii-hatchback": "Accord II Hatchback (09.1983 - 10.1985)",
+        "accord-ii-sedan": "Accord II Sedan (09.1983 - 10.1985)",
+        "accord-iii-aerodeck": "Accord III Aerodeck (11.1985 - 12.1989)",
+        "accord-iii-sedan": "Accord III Sedan (11.1985 - 12.1989)",
+        "accord-iv-aerodeck": "Accord IV Aerodeck (01.1991 - 12.1993)",
+        "accord-iv-coupe": "Accord IV Coupe (09.1989 - 12.1993)",
+        "accord-iv-sedan": "Accord IV Sedan (11.1989 - 10.1993)",
+        "accord-v-aerodeck": "Accord V Aerodeck (09.1993 - 02.1998)",
+        "accord-v-coupe": "Accord V Coupe (09.1993 - 12.1998)",
+        "accord-v-sedan": "Accord V Sedan (06.1992 - 12.1997)",
+        "accord-vi-coupe": "Accord VI Coupe (12.1997 - 06.2003)",
+        "accord-vi-hatchback": "Accord VI Hatchback (12.1999 - 12.2002)",
+        "accord-vi-sedan": "Accord VI Sedan (03.1997 - 12.2003)",
+        "accord-vii-sedan": "Accord VII Sedan (01.2003 - 09. 2012)",
+        "accord-vii-tourer": "Accord VII Tourer (04.2003 - 05.2008)",
+        "accord-viii-sedan": "Accord VIII Sedan (04.2008 - 06.2015)",
+        "accord-viii-tourer": "Accord VIII Tourer (07.2008 - ...)"
+      }
+    },
+    {
+      "label": "Civic",
+      "modifications": {
+        "civic-i-shuttle": "Civic I Shuttle (08.1983 - 12.1987)",
+        "civic-ii-country": "Civic II Country (01.1979 - 12.1983)",
+        "civic-ii-hatchback": "Civic II Hatchback (01.1978 - 12.1983)",
+        "civic-ii-shuttle": "Civic II Shuttle (01.1988 - 02.1995)",
+        "civic-iii-hatchback": "Civic III Hatchback (10.1983 - 10.1987)",
+        "civic-iii-sedan": "Civic III Sedan (10.1983 - 10.1987)",
+        "civic-iv-hatchback": "Civic IV Hatchback (09.1987 - 10.1993)",
+        "civic-iv-sedan": "Civic IV Sedan (09.1987 - 10.1993)",
+        "civic-ix-hatchback": "Civic IX Hatchback (02.2012 - 09.2015)",
+        "civic-ix-sedan": "Civic IX Sedan (09.2011 - 09.2015)",
+        "civic-ix-tourer": "Civic IX Tourer (01.2014 - ...)",
+        "civic-v-coupe": "Civic V Coupe (08.1993 - 03.1996)",
+        "civic-v-hatchback": "Civic V Hatchback (10.1991 - 11.1995)",
+        "civic-v-sedan": "Civic V Sedan (10.1991 - 12.1995)",
+        "civic-vi-aerodeck": "Civic VI Aerodeck (04.1998 - 02.2001)",
+        "civic-vi-coupe": "Civic VI Coupe (03.1996 - 12.2000)",
+        "civic-vi-fastback": "Civic VI Fastback (09.1994 - 02.2001)",
+        "civic-vi-hatchback": "Civic VI Hatchback (10.1995 - 02.2001)",
+        "civic-vi-sedan": "Civic VI Sedan (06.1995 - 03.2001)",
+        "civic-vii-coupe": "Civic VII Coupe (02.2001 - 12.2005)",
+        "civic-vii-hatchback": "Civic VII Hatchback (03.1999 - 02.2006)",
+        "civic-vii-sedan": "Civic VII Sedan (12.2000 - 04.2006)",
+        "civic-viii-hatchback": "Civic VIII Hatchback (09.2005 - 09.2011)",
+        "civic-viii-sedan": "Civic VIII Sedan (09.2005 - 09.2011)",
+        "civic-x-hatchback": "Civic X Hatchback (09.2016 - ...)",
+        "civic-x-sedan": "Civic X Sedan (09.2015 - ...)"
+      }
+    },
+    {
+      "label": "Concerto",
+      "modifications": {
+        "concerto-hatchback": "Concerto Hatchback (08.1989 - 10.1996)",
+        "concerto-sedan": "Concerto Sedan (08.1989 - 05.1995)"
+      }
+    },
+    {
+      "label": "CR-V",
+      "modifications": {
+        "cr-v-i-suv": "CR-V I SUV (10.1995 - 02.2002)",
+        "cr-v-ii-suv": "CR-V II SUV (09.2001 - 09.2006)",
+        "cr-v-iii-suv": "CR-V III SUV (06.2006 - 01.2012)",
+        "cr-v-iv-suv": "CR-V IV SUV (01.2012 - 12.2016)",
+        "cr-v-v-suv": "CR-V V SUV (12.2016 - ...)"
+      }
+    },
+    {
+      "label": "CR-Z",
+      "modifications": {
+        "cr-z-coupe": "CR-Z Coupe (06.2010 - 12.2016)"
+      }
+    },
+    {
+      "label": "Crosstour",
+      "modifications": {
+        "crosstour-hatchback": "Crosstour Hatchback (09.2009 - ...)"
+      }
+    },
+    {
+      "label": "CRX",
+      "modifications": {
+        "crx-i-coupe": "CRX I Coupe (10.1983 - 10.1987)",
+        "crx-ii-coupe": "CRX II Coupe (10.1987 - 02.1992)",
+        "crx-iii-coupe": "CRX III Coupe (03.1992 - 12.1998)"
+      }
+    },
+    {
+      "label": "Element",
+      "modifications": {
+        "element-suv": "Element SUV (07.2002 - 12.2011)"
+      }
+    },
+    {
+      "label": "Fit",
+      "modifications": {
+        "fit-hatchback-i": "Fit Hatchback I (03.2002 - 12.2008)",
+        "fit-hatchback-ii": "Fit Hatchback II (10.2007 - 09.2013)",
+        "fit-hatchback-iii": "Fit Hatchback III (09.2013 - 01.2020)"
+      }
+    },
+    {
+      "label": "FR-V",
+      "modifications": {
+        "fr-v-minivan": "FR-V Minivan (08.2004 - 10.2011)"
+      }
+    },
+    {
+      "label": "HR-V",
+      "modifications": {
+        "hr-v-suv-i": "HR-V SUV I (03.1999 - 11.2014)",
+        "hr-v-suv-ii": "HR-V SUV II (11.2014 - ...)"
+      }
+    },
+    {
+      "label": "Insight",
+      "modifications": {
+        "insight-hatchback-i": "Insight Hatchback I (04.2000 - 12.2006)",
+        "insight-hatchback-ii": "Insight Hatchback II (04.2009 - 01.2015)"
+      }
+    },
+    {
+      "label": "Integra",
+      "modifications": {
+        "integra-coupe-i": "Integra Coupe I (07.1993 - 11.2001)",
+        "integra-coupe-ii": "Integra Coupe II (08.2001 - 06.2006)"
+      }
+    },
+    {
+      "label": "Jazz",
+      "modifications": {
+        "jazz-i-hatchback": "Jazz I Hatchback (10.1983 - 10.1986)",
+        "jazz-ii-hatchback": "Jazz II Hatchback (03.2002 - 12.2008)",
+        "jazz-iii-hatchback": "Jazz III Hatchback (10.2007 - 09.2013)",
+        "jazz-iv-hatchback": "Jazz IV Hatchback (09.2013 - 02.2020)",
+        "jazz-v-hatchback": "Jazz V Hatchback (02.2020 - ...)"
+      }
+    },
+    {
+      "label": "Legend",
+      "modifications": {
+        "legend-coupe-i": "Legend Coupe I (10.1987 - 03.1991)",
+        "legend-coupe-ii": "Legend Coupe II (01.1991 - 03.1996)",
+        "legend-sedan-i": "Legend Sedan I (01.1986 - 03.1991)",
+        "legend-sedan-ii": "Legend Sedan II (01.1991 - 03.1996)",
+        "legend-sedan-iii": "Legend Sedan III (02.1996 - 09.2004)",
+        "legend-sedan-iv": "Legend Sedan IV (10.2004 - 12.2013)",
+        "legend-sedan-v": "Legend Sedan V (11.2014 - ...)"
+      }
+    },
+    {
+      "label": "Logo",
+      "modifications": {
+        "logo-hatchback": "Logo Hatchback (03.1999 - 03.2002)"
+      }
+    },
+    {
+      "label": "NSX",
+      "modifications": {
+        "nsx-cabrio": "NSX Cabrio (03.1994 - 09.2005)",
+        "nsx-coupe-i": "NSX Coupe I (06.1990 - 09.2005)",
+        "nsx-coupe-ii": "NSX Coupe II (06.2016 - ...)"
+      }
+    },
+    {
+      "label": "Odyssey",
+      "modifications": {
+        "odyssey-minivan-i": "Odyssey Minivan I (10.1995 - 12.1999)",
+        "odyssey-minivan-ii": "Odyssey Minivan II (09.1998 - ...)",
+        "odyssey-minivan-iii": "Odyssey Minivan III (08.2010 - ...)",
+        "odyssey-minivan-iv": "Odyssey Minivan IV (12.2013 - ...)",
+        "odyssey-minivan-v": "Odyssey Minivan V (09.2017 - ...)"
+      }
+    },
+    {
+      "label": "Passport",
+      "modifications": {
+        "passport-suv": "Passport SUV (09.1993 - 03.2002)"
+      }
+    },
+    {
+      "label": "Pilot",
+      "modifications": {
+        "pilot-suv-i": "Pilot SUV I (09.2002 - 07.2008)",
+        "pilot-suv-ii": "Pilot SUV II (09.2008 - 07.2015)",
+        "pilot-suv-iii": "Pilot SUV III (07.2015 - ...)"
+      }
+    },
+    {
+      "label": "Prelude",
+      "modifications": {
+        "prelude-ii-coupe": "Prelude II Coupe (01.1983 - 09.1987)",
+        "prelude-iii-coupe": "Prelude III Coupe (04.1986 - 01.1992)",
+        "prelude-iv-coupe": "Prelude IV Coupe (12.1991 - 02.1997)",
+        "prelude-v-coupe": "Prelude V Coupe (10.1996 - 04.2001)"
+      }
+    },
+    {
+      "label": "Quintet",
+      "modifications": {
+        "quintet-hatchback": "Quintet Hatchback (02.1980 - 12.1984)"
+      }
+    },
+    {
+      "label": "Ridgeline",
+      "modifications": {
+        "ridgeline-pick-up-i": "Ridgeline Pick-up I (03.2005 - 12.2014)",
+        "ridgeline-pick-up-ii": "Ridgeline Pick-up II (07.2016 - ...)"
+      }
+    },
+    {
+      "label": "S2000",
+      "modifications": {
+        "s2000-roadster": "S2000 Roadster (03.1999 - 12.2009)"
+      }
+    },
+    {
+      "label": "Shuttle",
+      "modifications": {
+        "shuttle-minivan-i": "Shuttle Minivan I (06.1994 - 06.2004)",
+        "shuttle-minivan-ii": "Shuttle Minivan II ( - ...)"
+      }
+    },
+    {
+      "label": "Stream",
+      "modifications": {
+        "stream-minivan": "Stream Minivan (10.2000 - 12.2006)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+.custom-container .mat-mdc-dialog-surface {
+   border-radius: 10px!important;
+}
+
+.custom-container .mat-mdc-dialog-container {
+    border-radius: 10px!important;
+    border-color: red!important;
+}
+
+.custom-container .mat-mdc-dialog-inner-container {
+    border-color: red!important;
+}

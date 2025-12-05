@@ -1,0 +1,59 @@
+<div class="container mt-2">
+    <div style="background: 'none'">
+        @if (numberPages && numberPages > 1) {
+            <div class="mobile">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="text-center row parent" [ngStyle]="{ left: '0px', 'background-color': 'transparent', 'flex-wrap': 'nowrap' }">
+                        <button #previousButton tooltip="'Предишна страница'" type="button" class="btn btn-primary" [disabled]="currentPage < 2" (click)="previousPage()">
+                            <span class="material-symbols-outlined arrow-font"> arrow_back </span>
+                        </button>
+                        <div></div>
+                        <div class="d-flex align-items-center">
+                            <select class="ms-2 me-2" [(ngModel)]="currentPageSelected" (change)="pageChange()">
+                                @for (item of pages; track item; let i = $index) {
+                                    <option value="{{ i + 1 }}">{{ i + 1 }}</option>
+                                }
+                            </select>
+                            <div>от {{ numberPages }}</div>
+                        </div>
+                        <div></div>
+                        <button type="button" tooltip="'Следваща страница'" [ngStyle]="{ right: '0px' }" class="btn btn-primary" [disabled]="currentPage === numberPages" (click)="nextPage()">
+                            <span class="material-symbols-outlined arrow-font"> arrow_forward </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="noMobile">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="text-center" [ngStyle]="{ 'background-color': 'transparent' }">
+                        <button #previousButton tooltip="'Предишна страница'" type="button" class="btn btn-primary" [hidden]="currentPage < 2" (click)="previousPage()">
+                            <span class="material-symbols-outlined arrow-font"> arrow_back </span>
+                        </button>
+                        @for (item of arrayPages; track item) {
+                            <button
+                                class="ms-1 me-1 pe-1 ps-1 btn-sm btn btnSize"
+                                [ngClass]="{ 'btn-primary': currentPage !== item, 'border-primary': currentPage === item, 'btn-light': currentPage === item }"
+                                (click)="click(item)">
+                                {{ item }}
+                            </button>
+                        }
+                        <button type="button" tooltip="'Следваща страница'" class="btn btn-primary" [hidden]="currentPage === numberPages" (click)="nextPage()">
+                            <span class="material-symbols-outlined arrow-font"> arrow_forward </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (hasSort) {
+            <div class="mb-1 mt-2" [ngStyle]="{ padding: '0px', display: 'flex', 'justify-content': 'flex-end' }">
+                <div>
+                    <div class="row">
+                        <div class="mb-1 d-flex justify-content-center">
+                            <app-radiogrouplist [label]="'Сортирай'" [(ngModel)]="sortByValue" [radios]="radios" (change)="sortData()"></app-radiogrouplist>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

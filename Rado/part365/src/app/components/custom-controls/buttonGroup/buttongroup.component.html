@@ -1,0 +1,18 @@
+<div class="selected shadow form-select-sm d-flex justify-content-between" [ngStyle]="{ 'background-color': clearBox ? 'var(--filled)' : 'white' }">
+    @if (!useFilter) {
+        <div class="selection" data-testid="selection" (click)="onClickSelect($event)" role="presentation">{{ selection }}</div>
+    } @else {
+        <input #filterElem type="text" data-testid="filter" [ngModel]="filter" [ngModelOptions]="{ standalone: true }" class="selection" placeholder="{{ placeholder }}" (ngModelChange)="onFilterChanged($event)" />
+    }
+    <div class="button-group">
+        @if (clearBox) {
+            <div class="close-button" data-testid="clear" data-toggle="tooltip" data-placement="top" title="Изчисти избора" role="presentation" (click)="onClear($event)">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16" height="16" viewBox="0 0 50 50">
+                    <path
+                        d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"></path>
+                </svg>
+            </div>
+        }
+        <div class="selected-button" data-testid="select" [ngClass]="{ rotated: active }" (click)="onClickSelect($event)" role="presentation"></div>
+    </div>
+</div>

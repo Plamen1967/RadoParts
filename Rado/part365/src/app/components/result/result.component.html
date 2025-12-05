@@ -1,0 +1,70 @@
+@if (loading) {
+    <div class="d-flex justify-content-center">
+        <h4>Зареждане на резултатите</h4>
+    </div>
+} @else if (updateId) {
+    <app-updateadd [displayPartView]="updateItem" (saved)="savedEvent($event)" (noChange)="backEvent($event)"></app-updateadd>
+} @else {
+    @if (hasParts) {
+        <div style="display: grid; grid-template-columns: auto auto auto">
+            <div></div>
+            <div class="top col-sm-12 col-md-10" style="max-width: 920px; justify-content: center;display: flex;">
+                <div class="rowCar" id="top">
+                    <div class="d-flex justify-content-center text-center mb-1 mt-1 filter-button">
+                        @if (!userId) {
+                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goBack()">{{ labels.GOHOME }}</button>
+                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goSearch()">{{ labels.TOSEARCH }}</button>
+                        }
+                    </div>
+                    <app-navigator
+                        class="me-1"
+                        [hasSort]="hasSort"
+                        [numberPages]="numberPages!"
+                        [currentPage]="currentPage!"
+                        [sortByValue]="sortType!"
+                        (moveToPage)="moveToPage($event)"
+                        (sortBy)="sortData($event)">
+                    </app-navigator>
+
+                    <div class="mt-1" id="top">
+                        <div class="row">
+                            @for (part of parts; track part.id; let i = $index) {
+                                <div id="{{ part.id }}">
+                                    <app-displaypart
+                                        [showDealer]="showDealer"
+                                        [showPhones]="showPhones"
+                                        [part]="part"
+                                        (action)="action($event)"
+                                        [highlighted]="gethighlighted()"
+                                        [allowUpdate]="false"
+                                        [showFavourite]="showFavourite"
+                                        (filterByDealer)="filterByDealer($event)">
+                                    </app-displaypart>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (numberPages! > 1) {
+                        <app-navigator [numberPages]="numberPages!" [currentPage]="currentPage!" (moveToPage)="moveToPage($event)"> </app-navigator>
+                    }
+
+                    @if (!userId) {
+                        <div class="d-flex justify-content-center text-center mb-1 mt-1">
+                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goBack()">{{ labels.GOHOME }}</button>
+                            <button type="button" class="button btn-primary btn-sm active button-style" (click)="goSearch()">{{ labels.TOSEARCH }}</button>
+                        </div>
+                    }
+                </div>
+
+                <app-gotop></app-gotop>
+            </div>
+            <div></div>
+        </div>
+    } @else {
+        <div class="d-flex justify-content-center">
+            <h4>Няма намерени обяви</h4>
+        </div>
+    }
+}
+<app-topbar></app-topbar>

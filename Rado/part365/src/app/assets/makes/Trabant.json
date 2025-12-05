@@ -1,0 +1,12 @@
+{
+  "make": "Trabant",
+  "models": [
+    {
+      "label": "P 601",
+      "modifications": {
+        "p-601-sedan": "P 601 Sedan (01.1966 - 04.1990)",
+        "p-601-universal": "P 601 Universal (01.1966 - 04.1990)"
+      }
+    }
+  ]
+}

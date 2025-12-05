@@ -1,0 +1,136 @@
+@media (max-width: 900px) {
+    .galary {
+        width: 100%;
+    }
+    .details {
+        width: 100%;
+    }
+}
+
+div .item:nth-child(odd) {
+    background-color: #fafaf9;
+}
+div .item:nth-child(even) {
+    background-color: #8ec5ff;
+}
+
+.viewContainer {
+    min-width: min(100%, 400px);
+}
+.description {
+    --bs-gutter-x: 0px;
+}
+.button-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.border-container {
+    border: 1px solid lightgray;
+    border-radius: 10px;
+}
+
+.transparant {
+    background-color: transparent;
+}
+.buttonSize {
+    height: 36px;
+    width: 36px;
+    display: inline-flex;
+    justify-content: center;
+}
+.position-relative {
+    display: flex;
+    justify-content: end;
+}
+
+.top-link {
+    transition: all 0.25s ease-in-out;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: inline-flex;
+
+    background-color: paleturquoise;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin: 0 3em 3em 0;
+    border-radius: 50%;
+    padding: 0.25em;
+    width: 40px;
+    height: 40px;
+}
+
+.col75 {
+    width: 75%;
+}
+
+.price {
+    color: blue;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.saved {
+    color: #ec7063;
+}
+
+.unSaved {
+    color: #ec7063;
+}
+
+.itemContainer {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: antiquewhite;
+}
+
+.description {
+    min-width: min(100%, 400px);
+    flex-grow: 1;
+    padding: 2px;
+}
+
+.dealer {
+    min-width: 260px;
+    flex-grow: 1;
+}
+
+@media (max-width: 600px) {
+    .col75 {
+        width: 100%;
+    }
+
+    .description {
+        width: 100%;
+    }
+
+    .itemContainer {
+        width: 100%;
+    }
+
+    .dealer {
+        width: 100%;
+    }
+}
+
+.data-container {
+    display: grid;
+}
+
+.leftPanel,
+.righPanel {
+    width: 0px;
+}
+
+@media (min-width: 760px) {
+    .data-container {
+        grid-template-columns: 1fr 8fr 1fr;
+    }
+    .leftPanel,
+    .righPanel {
+        width: auto;
+    }
+}

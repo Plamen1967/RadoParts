@@ -1,0 +1,26 @@
+@if (isCameraExist) {
+    <div style="text-align: center; display: flex; flex-direction: column;">
+        @if (showWebcam) {
+            <webcam [height]="200" [width]="300" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" [switchCamera]="nextWebcamObservable" (initError)="handleInitError($event)">
+            </webcam>
+            <div>
+                @if (mobile) {
+                    <button (click)="takeSnapshot()" class="button btn mt-1 ms-2 mb-1 buttonAddImage ">
+                        <img class="addImage" src="images/svg/take-shot.svg" alt="" />
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    @if (errors.length > 0) {
+        <h4>Error Messages:</h4>
+        @for (error of errors; track error.message) {
+            <ul>
+                <li>{{ error | json }}</li>
+            </ul>
+        }
+    }
+} @else {
+    <div>Camera device not available</div>
+}

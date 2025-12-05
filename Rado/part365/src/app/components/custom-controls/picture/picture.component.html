@@ -1,0 +1,40 @@
+@if (updateFlag && moreImages) {
+    <div class="col-sm-10">
+        <app-upload [id]="id" [businessCard]="" [addPicture]=""></app-upload>
+    </div>
+}
+
+<div>
+    <div class="imageContainer">
+        @for (image of images; track image.imageId; let i = $index) {
+            <div class="image">
+                @if (image.imageSrc) {
+                    <img class="imageSize" src="{{ image.imageMinSrc }}" alt="" />
+                } @else if (image.imageData) {
+                    <img class="imageSize" src="{{ image.imageData }}" alt="" />
+                }
+                <div class="deleteClass" (click)="deleteImageDlg(image)" role="none">
+                    <img class="minusClass" src="assets/images/png/close.png" alt="" />
+                    @if (updateFlag) {
+                        <div class="mt-2 mb-2">
+                            <!-- <button type="button" (click)="deleteImage(image)" class="btn btn-primary">{{labels.DELETE}}</button> -->
+                        </div>
+                    }
+                </div>
+                @if (mainImageFlag) {
+                    <div>
+                        <input
+                            type="radio"
+                            class="ms-2 custom-control-input"
+                            [value]="image.imageId"
+                            [(ngModel)]="currentMainImageId"
+                            (ngModelChange)="onChange(image.imageId!)"
+                            id="defaultUnchecked" />
+                        <!-- <div class="input-button"></div> -->
+                        <label class="custom-control-label p-2" for="defaultUnchecked">{{ labels.FIRST }}</label>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

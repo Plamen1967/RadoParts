@@ -1,0 +1,23 @@
+<div>
+    @if (itemType === 5) {
+        <h5>Джанта с гума</h5>
+    }
+    <app-datarow label="Брой" data-cy="model" value="{{ item.count }}"> </app-datarow>
+    @if (isRim) {
+        <div class="label">Джанта - {{ companyName }}</div>
+        <app-datarow label="Марка" data-cy="model" value="{{ item.companyName }}"> </app-datarow>
+        <app-datarow label="Модел" data-cy="model" value="{{ item.modelName }}"> </app-datarow>
+        <app-datarow label="{{ labels.TYRE_WIDTH }}" data-cy="model" value="{{ item.rimWidthName }}"> </app-datarow>
+        <app-datarow label="Материал" data-cy="model" value="{{ item.rimMaterialName }}"> </app-datarow>
+        <app-datarow label="{{ labels.TYRE_RADIUS }}" data-cy="model" value="{{ item.rimOffsetName }}"> </app-datarow>
+        <app-datarow label="Брой Болтове" data-cy="model" value="{{ item.rimBoltCountName }}"> </app-datarow>
+        <app-datarow label="Болтове разстояние" data-cy="model" value="{{ item.rimBoltDistanceName }}"> </app-datarow>
+        <app-datarow label="Център" data-cy="model" value="{{ item.rimCenterName }}"> </app-datarow>
+    }
+    @if (isTyre) {
+        <div class="mt-1 label">Гума</div>
+        <app-datarow label="{{ labels.TYRE_PRODUCER }}" data-cy="model" value="{{ item.tyreCompanyName }}"> </app-datarow>
+        <app-datarow label="Размер" data-cy="model" value="{{ size }}"> </app-datarow>
+        <app-datarow label="{{ labels.TYRE_TYPE }}" data-cy="model" value="{{ item.tyreTypeName }}"> </app-datarow>
+    }
+</div>

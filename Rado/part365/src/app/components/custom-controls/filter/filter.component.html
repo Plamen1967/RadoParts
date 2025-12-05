@@ -1,0 +1,36 @@
+<form (submit)="close()" style="height: 100%">
+    <mat-dialog-content>
+        <div class="d-inline-flex justify-content-center m-2 w-100" mat-dialog-title>
+            <div class="title">{{ placeHolder }}</div>
+        </div>
+        <div class="container-style">
+            <div class="select-box" #selectBox>
+                <div class="options-container d-flex" style="flex-direction: column">
+                    @for (item of data; track item.id) {
+                        <div
+                            role="none"
+                            id="Item{{ item.id }}"
+                            class="option d-flex justify-content-end"
+                            style="cursor: pointer; padding: 2px; flex-direction: row; width: auto; flex-wrap: wrap; border: 1px solid black; border-radius: 2px; margin-bottom: 2px;"
+                            (click)="clickItem($event, item)">
+                            <div class="d-flex justify-content-start flex-column flex-grow-1">
+                                @for (description of item.keywords; track description[0]) {
+                                    <div class="description">
+                                        <label class="label me-2" for="{{ description[0] }}">{{ description[0] }}: </label>
+                                        <strong class="me-2 ">{{ description[1] }}</strong>
+                                    </div>
+                                }
+                            </div>
+                            <div class="arrow">
+                                <span class="material-symbols-outlined"> arrow_forward_ios </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button mat-button mat-dialog-close class="button-cancel button-style">Откажи</button>
+            </div>
+        </div>
+    </mat-dialog-content>
+</form>

@@ -1,0 +1,115 @@
+{
+  "make": "Lada",
+  "models": [
+    {
+      "label": "110",
+      "modifications": {
+        "110-sedan": "110 Sedan (01.1995 - 12.2012)"
+      }
+    },
+    {
+      "label": "111",
+      "modifications": {
+        "111-combi": "111 Combi (01.1995 - 02.2009)"
+      }
+    },
+    {
+      "label": "112",
+      "modifications": {
+        "112-hatchback": "112 Hatchback (01.1995 - 12.2011)"
+      }
+    },
+    {
+      "label": "1200-1500",
+      "modifications": {
+        "1200-1500-combi": "1200-1500 Combi (09.1973 - 06.1985)"
+      }
+    },
+    {
+      "label": "1200-1600",
+      "modifications": {
+        "1200-1600-sedan": "1200-1600 Sedan (01.1970 - 02.1993)"
+      }
+    },
+    {
+      "label": "2107",
+      "modifications": {
+        "2107-sedan": "2107 Sedan (09.1983 - 05.2012)"
+      }
+    },
+    {
+      "label": "Granta",
+      "modifications": {
+        "granta-hatchback": "Granta Hatchback (05.2014 - ...)",
+        "granta-sedan": "Granta Sedan (10.2011 - ...)"
+      }
+    },
+    {
+      "label": "Kalina",
+      "modifications": {
+        "kalina-combi-i": "Kalina Combi I (10.2004 - 12.2013)",
+        "kalina-combi-ii": "Kalina Combi II (05.2013 - 09.2018)",
+        "kalina-hatchback-i": "Kalina Hatchback I (10.2004 - 12.2013)",
+        "kalina-hatchback-ii": "Kalina Hatchback II (05.2013 - 09.2019)",
+        "kalina-sedan": "Kalina Sedan (10.2004 - 12.2013)"
+      }
+    },
+    {
+      "label": "Largus",
+      "modifications": {
+        "largus-box": "Largus Box (03.2012 - ...)",
+        "largus-combi": "Largus Combi (03.2012 - ...)"
+      }
+    },
+    {
+      "label": "Nadeschda",
+      "modifications": {
+        "nadeschda-minivan": "Nadeschda Minivan (12.1997 - 12.2006)"
+      }
+    },
+    {
+      "label": "Niva",
+      "modifications": {
+        "niva-suv-i": "Niva SUV I (12.1976 - ...)",
+        "niva-suv-ii": "Niva SUV II (09.2002 - ...)"
+      }
+    },
+    {
+      "label": "Nova",
+      "modifications": {
+        "nova-combi": "Nova Combi (09.1985 - 04.2012)",
+        "nova-sedan": "Nova Sedan (05.1981 - 04.2012)"
+      }
+    },
+    {
+      "label": "Oka",
+      "modifications": {
+        "oka-hatchback": "Oka Hatchback (02.1988 - 12.2008)"
+      }
+    },
+    {
+      "label": "Priora",
+      "modifications": {
+        "priora-combi": "Priora Combi (05.2009 - 12.2015)",
+        "priora-hatchback": "Priora Hatchback (02.2008 - 12.2015)",
+        "priora-sedan": "Priora Sedan (04.2007 - 07.2018)"
+      }
+    },
+    {
+      "label": "Samara",
+      "modifications": {
+        "samara-cabrio": "Samara Cabrio (01.1986 - 12.2012)",
+        "samara-hatchback-i": "Samara Hatchback I (01.1986 - 12.2013)",
+        "samara-hatchback-ii": "Samara Hatchback II (03.1997 - 12.2013)",
+        "samara-sedan": "Samara Sedan (09.1987 - 12.2013)"
+      }
+    },
+    {
+      "label": "Vesta",
+      "modifications": {
+        "vesta-sedan": "Vesta Sedan (11.2015 - ...)",
+        "vesta-station-wagon": "Vesta Station Wagon (11.2015 - ...)"
+      }
+    }
+  ]
+}

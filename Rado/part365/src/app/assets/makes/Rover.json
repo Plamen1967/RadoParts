@@ -1,0 +1,83 @@
+{
+  "make": "Rover",
+  "models": [
+    {
+      "label": "100",
+      "modifications": {
+        "100-cabrio": "100 Cabrio (04.1994 - 12.1998)",
+        "100-metro": "100 METRO (11.1989 - 12.1998)"
+      }
+    },
+    {
+      "label": "200",
+      "modifications": {
+        "200-cabrio": "200 Cabrio (04.1990 - 11.1999)",
+        "200-coupe": "200 Coupe (10.1992 - 06.1999)",
+        "200-hatchback-i": "200 Hatchback I (10.1989 - 10.1995)",
+        "200-hatchback-ii": "200 Hatchback II (11.1995 - 03.2000)",
+        "200-sedan": "200 Sedan (03.1985 - 09.1989)"
+      }
+    },
+    {
+      "label": "25",
+      "modifications": {
+        "25-hatchback": "25 Hatchback (09.1999 - 06.2006)"
+      }
+    },
+    {
+      "label": "400",
+      "modifications": {
+        "400-hatchback": "400 Hatchback (05.1995 - 03.2000)",
+        "400-sedan-i": "400 Sedan I (04.1990 - 04.1995)",
+        "400-sedan-ii": "400 Sedan II (05.1995 - 03.2000)",
+        "400-tourer": "400 Tourer (09.1993 - 11.1998)"
+      }
+    },
+    {
+      "label": "45",
+      "modifications": {
+        "45-hatchback": "45 Hatchback (02.2000 - 05.2005)",
+        "45-sedan": "45 Sedan (02.2000 - 05.2005)"
+      }
+    },
+    {
+      "label": "600",
+      "modifications": {
+        "600-sedan": "600 Sedan (08.1993 - 10.2000)"
+      }
+    },
+    {
+      "label": "75",
+      "modifications": {
+        "75-sedan": "75 Sedan (02.1999 - 05.2005)",
+        "75-tourer": "75 Tourer (08.2001 - 05.2006)"
+      }
+    },
+    {
+      "label": "800",
+      "modifications": {
+        "800-coupe": "800 Coupe (08.1992 - 02.1999)",
+        "800-hatchback": "800 Hatchback (10.1986 - 02.1999)",
+        "800-sedan": "800 Sedan (10.1986 - 02.1999)"
+      }
+    },
+    {
+      "label": "CityRover",
+      "modifications": {
+        "cityrover-hatchback": "CityRover Hatchback (09.2003 - 12.2005)"
+      }
+    },
+    {
+      "label": "Maestro",
+      "modifications": {
+        "maestro-hatchback": "Maestro Hatchback (09.1990 - 01.1995)"
+      }
+    },
+    {
+      "label": "StreetWise",
+      "modifications": {
+        "streetwise-hatchback": "StreetWise Hatchback (08.2003 - 05.2005)"
+      }
+    }
+  ]
+}

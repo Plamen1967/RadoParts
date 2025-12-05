@@ -1,0 +1,111 @@
+{
+  "make": "Lexus",
+  "models": [
+    {
+      "label": "CT",
+      "modifications": {
+        "ct-hatchback": "CT Hatchback (12.2010 - ...)"
+      }
+    },
+    {
+      "label": "ES",
+      "modifications": {
+        "es-sedan-i": "ES Sedan I (09.1989 - 12.1997)",
+        "es-sedan-ii": "ES Sedan II (10.1996 - 06.2008)",
+        "es-sedan-iii": "ES Sedan III (03.2006 - 06.2012)",
+        "es-sedan-iv": "ES Sedan IV (06.2012 - 06.2018)",
+        "es-sedan-v": "ES Sedan V (07.2018 - ...)"
+      }
+    },
+    {
+      "label": "GS",
+      "modifications": {
+        "gs-sedan-i": "GS Sedan I (03.1993 - 08.1997)",
+        "gs-sedan-ii": "GS Sedan II (08.1997 - 03.2005)",
+        "gs-sedan-iii": "GS Sedan III (04.2005 - 11.2011)",
+        "gs-sedan-iv": "GS Sedan IV (09.2011 - 01.2020)"
+      }
+    },
+    {
+      "label": "GX",
+      "modifications": {
+        "gx-suv-i": "GX SUV I (11.2001 - 11.2009)",
+        "gx-suv-ii": "GX SUV II (11.2009 - ...)"
+      }
+    },
+    {
+      "label": "IS",
+      "modifications": {
+        "is-cabrio": "IS Cabrio (04.2009 - ...)",
+        "is-i-sedan": "IS I Sedan (04.1999 - 07.2005)",
+        "is-ii-sedan": "IS II Sedan (10.2005 - 04.2013)",
+        "is-iii-sedan": "IS III Sedan (04.2013 - ...)",
+        "is-sportcross": "IS SportCross (10.2001 - 10.2005)"
+      }
+    },
+    {
+      "label": "LC",
+      "modifications": {
+        "lc-coupe": "LC Coupe (11.2016 - ...)"
+      }
+    },
+    {
+      "label": "LFA",
+      "modifications": {
+        "lfa-coupe": "LFA Coupe (12.2010 - 11.2012)"
+      }
+    },
+    {
+      "label": "LS",
+      "modifications": {
+        "ls-sedan-i": "LS Sedan I (09.1989 - 12.1995)",
+        "ls-sedan-ii": "LS Sedan II (10.1994 - 12.2000)",
+        "ls-sedan-iii": "LS Sedan III (08.2000 - 08.2006)",
+        "ls-sedan-iv": "LS Sedan IV (04.2006 - 10.2017)",
+        "ls-sedan-v": "LS Sedan V (10.2007 - ...)"
+      }
+    },
+    {
+      "label": "LX",
+      "modifications": {
+        "lx-suv-i": "LX SUV I (09.1995 - 12.1997)",
+        "lx-suv-ii": "LX SUV II (09.1997 - 03.2008)",
+        "lx-suv-iii": "LX SUV III (08.2007 - ...)"
+      }
+    },
+    {
+      "label": "NX",
+      "modifications": {
+        "nx-suv": "NX SUV (07.2014 - ...)"
+      }
+    },
+    {
+      "label": "RC",
+      "modifications": {
+        "rc-coupe": "RC Coupe (08.2014 - ...)"
+      }
+    },
+    {
+      "label": "RX",
+      "modifications": {
+        "rx-suv-i": "RX SUV I (01.1998 - 05.2003)",
+        "rx-suv-ii": "RX SUV II (02.2003 - 12.2008)",
+        "rx-suv-iii": "RX SUV III (12.2008 - 10.2015)",
+        "rx-suv-iv": "RX SUV IV (10.2015 - ...)"
+      }
+    },
+    {
+      "label": "SC",
+      "modifications": {
+        "sc-cabrio": "SC Cabrio (01.2001 - 07.2010)",
+        "sc-coupe": "SC Coupe (08.1991 - 07.2000)"
+      }
+    },
+    {
+      "label": "UX",
+      "modifications": {
+        "ux-suv": "UX SUV (10.2018 - ...)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "make": "Mazda",
+  "models": [
+    {
+      "label": "121",
+      "modifications": {
+        "121-i-hatchback": "121 I Hatchback (03.1987 - 11.1990)",
+        "121-ii-sedan": "121 II Sedan (11.1990 - 05.1997)",
+        "121-iii-hatchback": "121 III Hatchback (03.1996 - 04.2003)"
+      }
+    },
+    {
+      "label": "2",
+      "modifications": {
+        "2-hatchback-i": "2 Hatchback I (02.2003 - 06.2007)",
+        "2-hatchback-ii": "2 Hatchback II (10.2007 - 06.2015)",
+        "2-hatchback-iii": "2 Hatchback III (11.2014 - ...)"
+      }
+    },
+    {
+      "label": "3",
+      "modifications": {
+        "3-hatchback-i": "3 Hatchback I (10.2003 - 12.2009)",
+        "3-hatchback-ii": "3 Hatchback II (12.2008 - 09.2014)",
+        "3-hatchback-iii": "3 Hatchback III (07.2013 - 11.2018)",
+        "3-hatchback-iv": "3 Hatchback IV (11.2018 - ...)",
+        "3-sedan-i": "3 Sedan I (09.1999 - 06.2009)",
+        "3-sedan-ii": "3 Sedan II (12.2008 - 12.2014)",
+        "3-sedan-iii": "3 Sedan III (09.2013 - 11.2018)",
+        "3-sedan-iv": "3 Sedan IV (11.2018 - ...)"
+      }
+    },
+    {
+      "label": "323",
+      "modifications": {
+        "323-c-iv-hatchback": "323 C IV Hatchback (06.1989 - 09.2000)",
+        "323-c-v-hatchback": "323 C V Hatchback (08.1994 - 09.2001)",
+        "323-f-iv-hatchback": "323 F IV Hatchback (04.1987 - 10.1994)",
+        "323-f-v-hatchback": "323 F V Hatchback (07.1994 - 09.1998)",
+        "323-f-vi-hatchback": "323 F VI Hatchback (09.1998 - 05.2004)",
+        "323-i-station-wagon": "323 I Station Wagon (05.1978 - 05.1986)",
+        "323-ii-hatchback": "323 II Hatchback (06.1980 - 10.1989)",
+        "323-ii-sedan": "323 II Sedan (10.1980 - 10.1989)",
+        "323-iii-hatchback": "323 III Hatchback (08.1985 - 08.1993)",
+        "323-iii-sedan": "323 III Sedan (08.1985 - 11.1991)",
+        "323-iii-station-wagon": "323 III Station Wagon (01.1986 - 10.1998)",
+        "323-p-v-hatchback": "323 P V Hatchback (10.1996 - 09.1998)",
+        "323-s-iv-sedan": "323 S IV Sedan (06.1989 - 10.1994)",
+        "323-s-v-sedan": "323 S V Sedan (09.1992 - 12.2003)",
+        "323-s-vi-sedan": "323 S VI Sedan (05.1998 - 05.2004)"
+      }
+    },
+    {
+      "label": "5",
+      "modifications": {
+        "5-minivan-i": "5 Minivan I (02.2005 - 12.2010)",
+        "5-minivan-ii": "5 Minivan II (06.2010 - 02.2018)"
+      }
+    },
+    {
+      "label": "6",
+      "modifications": {
+        "6-hatchback-i": "6 Hatchback I (08.2002 - 12.2008)",
+        "6-hatchback-ii": "6 Hatchback II (08.2007 - 07.2013)",
+        "6-sedan-i": "6 Sedan I (06.2002 - 12.2008)",
+        "6-sedan-ii": "6 Sedan II (08.2007 - 12.2013)",
+        "6-sedan-iii": "6 Sedan III (12.2012 - ...)",
+        "6-station-wagon-i": "6 Station Wagon I (08.2002 - 12.2007)",
+        "6-station-wagon-ii": "6 Station Wagon II (08.2007 - 07.2013)",
+        "6-station-wagon-iii": "6 Station Wagon III (12.2012 - ...)"
+      }
+    },
+    {
+      "label": "626",
+      "modifications": {
+        "626-ii-coupe": "626 II Coupe (09.1982 - 10.1987)",
+        "626-ii-hatchback": "626 II Hatchback (11.1982 - 10.1987)",
+        "626-ii-sedan": "626 II Sedan (11.1982 - 10.1987)",
+        "626-iii-coupe": "626 III Coupe (06.1987 - 05.1992)",
+        "626-iii-hatchback": "626 III Hatchback (06.1987 - 05.1992)",
+        "626-iii-sedan": "626 III Sedan (06.1987 - 05.1992)",
+        "626-iii-station-wagon": "626 III Station Wagon (09.1987 - 09.1997)",
+        "626-iv-hatchback": "626 IV Hatchback (08.1991 - 04.1997)",
+        "626-iv-sedan": "626 IV Sedan (08.1991 - 06.1997)",
+        "626-v-hatchback": "626 V Hatchback (05.1997 - 10.2002)",
+        "626-v-sedan": "626 V Sedan (05.1997 - 10.2002)",
+        "626-v-station-wagon": "626 V Station Wagon (01.1998 - 10.2002)"
+      }
+    },
+    {
+      "label": "B-Series",
+      "modifications": {
+        "b-series-pick-up-i": "B-Series Pick-up I (01.1985 - 12.1999)",
+        "b-series-pick-up-ii": "B-Series Pick-up II (11.1998 - 12.2008)"
+      }
+    },
+    {
+      "label": "BT-50",
+      "modifications": {
+        "bt-50-pick-up": "BT-50 Pick-up (08.2006 - 12.2015)"
+      }
+    },
+    {
+      "label": "CX-3",
+      "modifications": {
+        "cx-3-suv": "CX-3 SUV (01.2015 - ...)"
+      }
+    },
+    {
+      "label": "CX-30",
+      "modifications": {
+        "cx-30-suv": "CX-30 SUV (04.2019 - ...)"
+      }
+    },
+    {
+      "label": "CX-5",
+      "modifications": {
+        "cx-5-suv-i": "CX-5 SUV I (11.2011 - 02.2017)",
+        "cx-5-suv-ii": "CX-5 SUV II (11.2016 - ...)"
+      }
+    },
+    {
+      "label": "CX-7",
+      "modifications": {
+        "cx-7-suv": "CX-7 SUV (06.2006 - 12.2014)"
+      }
+    },
+    {
+      "label": "CX-9",
+      "modifications": {
+        "cx-9-suv-i": "CX-9 SUV I (09.2006 - 12.2015)",
+        "cx-9-suv-ii": "CX-9 SUV II (06.2016 - ...)"
+      }
+    },
+    {
+      "label": "Demio",
+      "modifications": {
+        "demio-hatchback": "Demio Hatchback (10.1996 - 07.2003)"
+      }
+    },
+    {
+      "label": "E-Serie",
+      "modifications": {
+        "e-serie-platform": "E-Serie Platform (01.1983 - 07.1999)"
+      }
+    },
+    {
+      "label": "MPV",
+      "modifications": {
+        "mpv-i-minivan": "MPV I Minivan (09.1988 - 09.1999)",
+        "mpv-ii-minivan": "MPV II Minivan (08.1999 - 02.2006)"
+      }
+    },
+    {
+      "label": "MX-3",
+      "modifications": {
+        "mx-3-coupe": "MX-3 Coupe (07.1991 - 10.1997)"
+      }
+    },
+    {
+      "label": "MX-5",
+      "modifications": {
+        "mx-5-cabrio-i": "MX-5 Cabrio I (09.1989 - 04.1998)",
+        "mx-5-cabrio-ii": "MX-5 Cabrio II (01.1998 - 10.2005)",
+        "mx-5-cabrio-iii": "MX-5 Cabrio III (03.2005 - 12.2014)",
+        "mx-5-cabrio-iv": "MX-5 Cabrio IV (04.2015 - 12.2019)"
+      }
+    },
+    {
+      "label": "MX-6",
+      "modifications": {
+        "mx-6-coupe": "MX-6 Coupe (07.1991 - 02.1997)"
+      }
+    },
+    {
+      "label": "Premacy",
+      "modifications": {
+        "premacy-minivan": "Premacy Minivan (07.1999 - 03.2005)"
+      }
+    },
+    {
+      "label": "RX-7",
+      "modifications": {
+        "rx-7-i-coupe": "RX-7 I Coupe (03.1978 - 03.1986)",
+        "rx-7-ii-cabrio": "RX-7 II Cabrio (01.1988 - 01.1992)",
+        "rx-7-ii-coupe": "RX-7 II Coupe (11.1985 - 12.1991)",
+        "rx-7-iii-coupe": "RX-7 III Coupe (07.1992 - 08.2002)"
+      }
+    },
+    {
+      "label": "RX-8",
+      "modifications": {
+        "rx-8-coupe": "RX-8 Coupe (10.2003 - 06.2012)"
+      }
+    },
+    {
+      "label": "Tribute",
+      "modifications": {
+        "tribute-suv": "Tribute SUV (03.2000 - 05.2008)"
+      }
+    },
+    {
+      "label": "Xedos 6",
+      "modifications": {
+        "xedos-6-sedan": "Xedos 6 Sedan (01.1992 - 10.1999)"
+      }
+    },
+    {
+      "label": "Xedos 9",
+      "modifications": {
+        "xedos-9-sedan": "Xedos 9 Sedan (07.1993 - 09.2002)"
+      }
+    }
+  ]
+}

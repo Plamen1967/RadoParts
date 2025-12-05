@@ -1,0 +1,361 @@
+{
+  "make": "Toyota",
+  "models": [
+    {
+      "label": "4 Runner",
+      "modifications": {
+        "4-runner-suv": "4 Runner SUV (07.1984 - 10.1989)",
+        "4-runner-suv-i": "4 Runner SUV I (08.1987 - 03.1996)",
+        "4-runner-suv-ii": "4 Runner SUV II (11.1995 - 07.2003)",
+        "4-runner-suv-iii": "4 Runner SUV III (08.2002 - 12.2009)",
+        "4-runner-suv-iv": "4 Runner SUV IV (03.2009 - ...)"
+      }
+    },
+    {
+      "label": "Alphard/Vellfire",
+      "modifications": {
+        "alphardvellfire-minivan-i": "Alphard/Vellfire Minivan I (04.2008 - 12.2014)",
+        "alphardvellfire-minivan-ii": "Alphard/Vellfire Minivan II (02.2015 - ...)"
+      }
+    },
+    {
+      "label": "Auris",
+      "modifications": {
+        "auris-hatchback-i": "Auris Hatchback I (10.2006 - 09.2012)",
+        "auris-hatchback-ii": "Auris Hatchback II (10.2012 - 12.2018)",
+        "auris-touring-sports": "Auris Touring Sports (07.2013 - 12.2018)"
+      }
+    },
+    {
+      "label": "Avensis",
+      "modifications": {
+        "avensis-i-liftback": "Avensis I Liftback (09.1997 - 02.2003)",
+        "avensis-i-sedan": "Avensis I Sedan (09.1997 - 02.2003)",
+        "avensis-i-station-wagon": "Avensis I Station Wagon (09.1997 - 02.2003)",
+        "avensis-ii-liftback": "Avensis II Liftback (04.2003 - 11.2008)",
+        "avensis-ii-sedan": "Avensis II Sedan (04.2003 - 11.2008)",
+        "avensis-ii-station-wagon": "Avensis II Station Wagon (04.2003 - 11.2008)",
+        "avensis-iii-sedan": "Avensis III Sedan (11.2008 - 10.2018)",
+        "avensis-iii-station-wagon": "Avensis III Station Wagon (02.2009 - 10.2018)",
+        "avensis-verso": "Avensis Verso (08.2001 - 11.2009)"
+      }
+    },
+    {
+      "label": "Aygo",
+      "modifications": {
+        "aygo-hatchback": "Aygo Hatchback (02.2005 - 05.2014)",
+        "aygo-hatchback-ii": "Aygo Hatchback II (05.2014 - ...)"
+      }
+    },
+    {
+      "label": "C-HR",
+      "modifications": {
+        "c-hr-suv": "C-HR SUV (10.2016 - ...)"
+      }
+    },
+    {
+      "label": "Camry",
+      "modifications": {
+        "camry-sedan-i": "Camry Sedan I (10.1986 - 02.1993)",
+        "camry-sedan-ii": "Camry Sedan II (06.1991 - 09.1997)",
+        "camry-sedan-iii": "Camry Sedan III (08.1996 - 09.2002)",
+        "camry-sedan-iv": "Camry Sedan IV (08.2001 - 11.2006)",
+        "camry-sedan-v": "Camry Sedan V (01.2006 - 12.2014)",
+        "camry-sedan-vi": "Camry Sedan VI (06.2017 - ...)",
+        "camry-station-wagon-i": "Camry Station Wagon I (11.1986 - 06.1991)",
+        "camry-station-wagon-ii": "Camry Station Wagon II (06.1991 - 08.1997)"
+      }
+    },
+    {
+      "label": "Carina",
+      "modifications": {
+        "carina-e-hatchback": "Carina E Hatchback (04.1992 - 09.1997)",
+        "carina-e-sedan": "Carina E Sedan (04.1992 - 09.1997)",
+        "carina-e-sportswagon": "Carina E Sportswagon (02.1992 - 09.1997)",
+        "carina-ii-hatchback": "Carina II Hatchback (12.1987 - 06.1992)",
+        "carina-ii-sedan": "Carina II Sedan (12.1987 - 06.1992)",
+        "carina-ii-station-wagon": "Carina II Station Wagon (12.1987 - 04.1992)"
+      }
+    },
+    {
+      "label": "Celica",
+      "modifications": {
+        "celica-i-coupe": "Celica I Coupe (08.1981 - 12.1985)",
+        "celica-i-supra": "Celica I Supra (08.1981 - 12.1985)",
+        "celica-ii-cabrio": "Celica II Cabrio (08.1985 - 08.1989)",
+        "celica-ii-coupe": "Celica II Coupe (09.1985 - 08.1989)",
+        "celica-ii-hatchback": "Celica II Hatchback (08.1985 - 12.1989)",
+        "celica-iii-cabrio": "Celica III Cabrio (10.1989 - 11.1993)",
+        "celica-iii-coupe": "Celica III Coupe (09.1989 - 11.1993)",
+        "celica-iv-cabrio": "Celica IV Cabrio (11.1993 - 08.1999)",
+        "celica-iv-coupe": "Celica IV Coupe (11.1993 - 11.1999)",
+        "celica-v-coupe": "Celica V Coupe (08.1999 - 09.2005)"
+      }
+    },
+    {
+      "label": "Corolla",
+      "modifications": {
+        "corolla-e09-compact": "Corolla E09 Compact (05.1987 - 10.1995)",
+        "corolla-e09-hatchback": "Corolla E09 Hatchback (05.1987 - 09.1994)",
+        "corolla-e09-liftback": "Corolla E09 Liftback (07.1987 - 10.1995)",
+        "corolla-e09-sedan": "Corolla E09 Sedan (05.1987 - 09.1994)",
+        "corolla-e09-station-wagon": "Corolla E09 Station Wagon (12.1987 - 12.1992)",
+        "corolla-e10-compact": "Corolla E10 Compact (05.1992 - 11.1999)",
+        "corolla-e10-hatchback": "Corolla E10 Hatchback (06.1991 - 11.1999)",
+        "corolla-e10-liftback": "Corolla E10 Liftback (05.1992 - 04.1997)",
+        "corolla-e10-sedan": "Corolla E10 Sedan (06.1991 - 11.1999)",
+        "corolla-e10-station-wagon": "Corolla E10 Station Wagon (05.1992 - 04.1997)",
+        "corolla-e11-compact": "Corolla E11 Compact (04.1997 - 01.2002)",
+        "corolla-e11-hatchback": "Corolla E11 Hatchback (06.1995 - 06.2002)",
+        "corolla-e11-liftback": "Corolla E11 Liftback (04.1997 - 01.2002)",
+        "corolla-e11-sedan": "Corolla E11 Sedan (04.1997 - 06.2002)",
+        "corolla-e11-station-wagon": "Corolla E11 Station Wagon (04.1997 - 10.2001)",
+        "corolla-e12-hatchback": "Corolla E12 Hatchback (11.2001 - 02.2007)",
+        "corolla-e12-sedan": "Corolla E12 Sedan (03.2001 - 03.2008)",
+        "corolla-e12-station-wagon": "Corolla E12 Station Wagon (12.2001 - 02.2007)",
+        "corolla-e15-sedan": "Corolla E15 Sedan (11.2006 - 05.2012)",
+        "corolla-e18-sedan": "Corolla E18 Sedan (06.2013 - 05.2019)",
+        "corolla-e21-hatchback": "Corolla E21 Hatchback (10.2018 - ...)",
+        "corolla-e21-sedan": "Corolla E21 Sedan (01.2019 - ...)",
+        "corolla-e21-station-wagon": "Corolla E21 Station Wagon (02.2019 - ...)",
+        "corolla-verso-i": "Corolla Verso I (09.2001 - 05.2004)",
+        "corolla-verso-ii": "Corolla Verso II (03.2004 - 04.2009)"
+      }
+    },
+    {
+      "label": "Crown",
+      "modifications": {
+        "crown-sedan": "Crown Sedan (09.1979 - 97.1987)"
+      }
+    },
+    {
+      "label": "Dyna",
+      "modifications": {
+        "dyna-100-platform-i": "Dyna 100 Platform I (08.1985 - 04.1995)",
+        "dyna-100-platform-ii": "Dyna 100 Platform II (05.1995 - 07.2001)",
+        "dyna-150-platform-i": "Dyna 150 Platform I (08.1985 - 08.1988)",
+        "dyna-150-platform-ii": "Dyna 150 Platform II (08.1988 - 06.1995)",
+        "dyna-150-platform-iii": "Dyna 150 Platform III (05.1995 - 07.2001)",
+        "dyna-200-platform-i": "Dyna 200 Platform I (01.1985 - 05.1995)",
+        "dyna-200-platform-ii": "Dyna 200 Platform II (06.1995 - 07.2001)",
+        "dyna-bus-i": "Dyna Bus I (08.1977 - 08.1987)",
+        "dyna-bus-ii": "Dyna Bus II (08.1987 - 07.2001)",
+        "dyna-bus-iii": "Dyna Bus III (07.2001 - ...)",
+        "dyna-platform-i": "Dyna Platform I (08.1977 - 05.1995)",
+        "dyna-platform-ii": "Dyna Platform II (08.1985 - 05.1995)",
+        "dyna-platform-iii": "Dyna Platform III (07.2001 - ...)"
+      }
+    },
+    {
+      "label": "Echo",
+      "modifications": {
+        "echo-hatchback": "Echo Hatchback (08.1999 - 10.2005)",
+        "echo-sedan": "Echo Sedan (04.1999 - 10.2005)"
+      }
+    },
+    {
+      "label": "FJ Cruiser",
+      "modifications": {
+        "fj-cruiser-suv": "FJ Cruiser SUV (06.2005 - 01.2018)"
+      }
+    },
+    {
+      "label": "GT 86",
+      "modifications": {
+        "gt-86-coupe": "GT 86 Coupe (03.2012 - ...)"
+      }
+    },
+    {
+      "label": "Hiace",
+      "modifications": {
+        "hiace-ii-pick-up": "Hiace II Pick-up (02.1977 - 07.1985)",
+        "hiace-iii-box": "Hiace III Box (08.1989 - 08.2004)",
+        "hiace-iii-bus": "Hiace III Bus (08.1989 - 08.2004)",
+        "hiace-iii-platform": "Hiace III Platform (08.1985 - 04.1995)",
+        "hiace-iv-box": "Hiace IV Box (08.1995 - 12.2012)",
+        "hiace-iv-bus": "Hiace IV Bus (08.1995 - 12.2012)",
+        "hiace-iv-platform": "Hiace IV Platform (08.1995 - 08.2006)",
+        "hiace-v-box": "Hiace V Box (06.2004 - 05.2019)",
+        "hiace-v-bus": "Hiace V Bus (08.2004 - 05.2019)"
+      }
+    },
+    {
+      "label": "Highlander",
+      "modifications": {
+        "highlander-suv-i": "Highlander SUV I (06.2000 - 05.2007)",
+        "highlander-suv-ii": "Highlander SUV II (05.2007 - 03.2013)",
+        "highlander-suv-iii": "Highlander SUV III (03.2013 - ...)"
+      }
+    },
+    {
+      "label": "Hilux",
+      "modifications": {
+        "hilux-surf": "Hilux (SURF) (08.1988 - 11.1998)",
+        "hilux-ii-pick-up": "Hilux II Pick Up (08.1983 - 07.2005)",
+        "hilux-iii-pick-up": "Hilux III Pick Up (08.1994 - 03.2006)",
+        "hilux-iv-pick-up": "Hilux IV Pick Up (08.2004 - 05.2015)",
+        "hilux-v-pick-up": "Hilux V Pick Up (05.2015 - ...)"
+      }
+    },
+    {
+      "label": "IQ",
+      "modifications": {
+        "iq-hatchback": "IQ Hatchback (11.2008 - 12.2015)"
+      }
+    },
+    {
+      "label": "Land Cruiser",
+      "modifications": {
+        "land-cruiser-j100": "Land Cruiser J100 (01.1998 - 07.2008)",
+        "land-cruiser-j120": "Land Cruiser J120 (09.2002 - 12.2010)",
+        "land-cruiser-j150": "Land Cruiser J150 (07.2009 - ...)",
+        "land-cruiser-j200": "Land Cruiser J200 (08.2007 - ...)",
+        "land-cruiser-j80": "Land Cruiser J80 (01.1990 - 11.1999)",
+        "land-cruiser-j90": "Land Cruiser J90 (04.1995 - 12.2012)",
+        "land-cruiser-suv": "Land Cruiser SUV (08.03.1984 - 08.2001)",
+        "land-cruiser-suv-hardtop": "Land Cruiser SUV Hardtop (11.1984 - 08.2001)"
+      }
+    },
+    {
+      "label": "LiteAce",
+      "modifications": {
+        "liteace-box-i": "LiteAce Box I (10.1979 - 10.1986)",
+        "liteace-box-ii": "LiteAce Box II (01.1983 - 04.1998)",
+        "liteace-box-iii": "LiteAce Box III (01.1992 - 01.1995)",
+        "liteace-bus-i": "LiteAce Bus I (10.1985 - 01.1992)",
+        "liteace-bus-ii": "LiteAce Bus II (01.1992 - 01.1998)",
+        "liteace-wagon": "LiteAce Wagon (10.1979 - 09.1985)"
+      }
+    },
+    {
+      "label": "Mirai",
+      "modifications": {
+        "mirai-sedan": "Mirai Sedan (10.2014 - ...)"
+      }
+    },
+    {
+      "label": "MR2",
+      "modifications": {
+        "mr2-cabrio": "MR2 Cabrio (10.1999 - 06.2007)",
+        "mr2-coupe-i": "MR2 Coupe I (06.1984 - 06.1990)",
+        "mr2-coupe-ii": "MR2 Coupe II (12.1989 - 05.2000)"
+      }
+    },
+    {
+      "label": "Paseo",
+      "modifications": {
+        "paseo-cabrio": "Paseo Cabrio (10.1996 - 01.1998)",
+        "paseo-coupe": "Paseo Coupe (08.1995 - 12.1999)"
+      }
+    },
+    {
+      "label": "Picnic",
+      "modifications": {
+        "picnic-minivan": "Picnic Minivan (05.1996 - 12.2001)"
+      }
+    },
+    {
+      "label": "Previa",
+      "modifications": {
+        "previa-minivan-i": "Previa Minivan I (05.1990 - 08.2000)",
+        "previa-minivan-ii": "Previa Minivan II (02.2000 - 02.2006)"
+      }
+    },
+    {
+      "label": "Prius",
+      "modifications": {
+        "prius-i-sedan": "Prius I Sedan (05.2000 - 01.2004)",
+        "prius-ii-hatchback": "Prius II Hatchback (09.2003 - 12.2009)",
+        "prius-iii-hatchback": "Prius III Hatchback (06.2008 - 09.2015)",
+        "prius-iv-c": "Prius IV C (09.2011 - 01.2020)",
+        "prius-iv-plus": "Prius IV PLUS (05.2011 - 01.2016)",
+        "prius-v-hatchback": "Prius V Hatchback (09.2015 - ...)",
+        "prius-v-phv": "Prius V PHV (01.2016 - ...)"
+      }
+    },
+    {
+      "label": "RAV4",
+      "modifications": {
+        "rav4-i-suv": "RAV4 I SUV (01.1994 - 09.2000)",
+        "rav4-i-suv-cabrio": "RAV4 I SUV Cabrio (12.1997 - 06.2000)",
+        "rav4-ii-suv": "RAV4 II SUV (06.2000 - 11.2005)",
+        "rav4-iii-suv": "RAV4 III SUV (06.2005 - 12.2013)",
+        "rav4-iv-suv": "RAV4 IV SUV (12.2012 - 12.2018)",
+        "rav4-v-suv": "RAV4 V SUV (12.2018 - ...)"
+      }
+    },
+    {
+      "label": "Sequoia",
+      "modifications": {
+        "sequoia-suv-i": "Sequoia SUV I (05.2000 - 11.2007)",
+        "sequoia-suv-ii": "Sequoia SUV II (11.2007 - ...)"
+      }
+    },
+    {
+      "label": "Sienna",
+      "modifications": {
+        "sienna-minivan": "Sienna Minivan (01.2010 - ...)"
+      }
+    },
+    {
+      "label": "Starlet",
+      "modifications": {
+        "starlet-hatchback-i": "Starlet Hatchback I (02.1978 - 12.1984)",
+        "starlet-hatchback-ii": "Starlet Hatchback II (10.1984 - 12.1989)",
+        "starlet-hatchback-iii": "Starlet Hatchback III (12.1989 - 03.1996)",
+        "starlet-wagon": "Starlet Wagon (02.1978 - 12.1984)"
+      }
+    },
+    {
+      "label": "Supra",
+      "modifications": {
+        "supra-coupe-i": "Supra Coupe I (01.1986 - 05.1993)",
+        "supra-coupe-ii": "Supra Coupe II (05.1993 - 07.2002)",
+        "supra-coupe-iii": "Supra Coupe III (03.2019 - ...)"
+      }
+    },
+    {
+      "label": "Tacoma",
+      "modifications": {
+        "tacoma-pick-up-i": "Tacoma Pick-up I (09.1994 - 12.2004)",
+        "tacoma-pick-up-ii": "Tacoma Pick-up II (09.2004 - 09.2015)",
+        "tacoma-pick-up-iii": "Tacoma Pick-up III (09.2015 - ...)"
+      }
+    },
+    {
+      "label": "Tundra",
+      "modifications": {
+        "tundra-pick-up-i": "Tundra Pick-up I (02.1999 - 11.2006)",
+        "tundra-pick-up-ii": "Tundra Pick-up II (11.2006 - ...)"
+      }
+    },
+    {
+      "label": "Urban Cruiser",
+      "modifications": {
+        "urban-cruiser-suv": "Urban Cruiser SUV (07.2007 - 03.2016)"
+      }
+    },
+    {
+      "label": "Venza",
+      "modifications": {
+        "venza-combi": "Venza Combi (11.2008 - 03.2016)"
+      }
+    },
+    {
+      "label": "Verso",
+      "modifications": {
+        "verso-minivan": "Verso Minivan (04.2009 - 08.2018)",
+        "verso-s": "Verso S (11.2010 - 10.2016)"
+      }
+    },
+    {
+      "label": "Yaris",
+      "modifications": {
+        "yaris-hatchback-i": "Yaris Hatchback I (01.1999 - 12.2005)",
+        "yaris-hatchback-ii": "Yaris Hatchback II (01.2005 - 12.2014)",
+        "yaris-hatchback-iii": "Yaris Hatchback III (10.2012 - ...)",
+        "yaris-verso": "Yaris Verso (08.1999 - 09.2005)"
+      }
+    }
+  ]
+}

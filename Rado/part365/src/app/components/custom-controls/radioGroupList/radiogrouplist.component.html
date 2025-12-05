@@ -1,0 +1,38 @@
+<div class="grouplist">
+    <div class="radio-group" #radioGroup>
+        @if (label) {
+            <span class="radio-label me-2 align-items-center mt-1">{{ label }} :</span>
+        }
+
+        <!-- <div class="select-option d-flex w-auto justify-content-center">
+            <select>
+                @for (radio of _radios; track radio.id) {
+                    <option [value]="radio.id" id="{{ controlName }}{{ radio.id }}" [(ngModel)]="_value" (click)="click(radio.id!)"></option>
+                }
+            </select>
+        </div> -->
+        <div class="tags">
+            <!-- /*[ngStyle]="{'display': groupListDisplay?groupListDisplay:false, 'flex-wrap': 'wrap', 'justify-content': 'center'}"*/ -->
+            @for (radio of _radios; track radio.id) {
+                @if (radio.count || all) {
+                    <div class="radio-button" [ngClass]="{ style1: style === 1, style2: style === 2 }">
+                        <input type="radio" [value]="radio.id" id="{{ controlName }}{{ radio.id }}" [(ngModel)]="_value" />
+                        <label class="radio-label" for="{{ controlName }}{{ radio.id }}" (click)="click(radio.id!)" role="none"
+                            >{{ radio.label }}
+                            @if (radio.count) {
+                                <div class="number">{{ radio.count }}</div>
+                            }
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="selectlist">
+    @if (label) {
+        <span class="radio-label me-2 align-items-center mt-1">{{ label }} :</span>
+    }
+    <!-- [ngStyle]="{'display': groupListDisplay === 'flex'?'none': 'block'}"     -->
+    <app-select-base [data]="selection" [initialValue]="_value" (changeOption)="click($event)"></app-select-base>
+</div>

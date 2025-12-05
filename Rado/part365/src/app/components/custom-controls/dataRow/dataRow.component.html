@@ -1,0 +1,16 @@
+@if (value && value.length) {
+    <div class="parent line">
+        <div data-cy="label" class="labelText small col-sm-6">{{ label }}</div>
+        <div class="small fontWeight">
+            @if (price) {
+                <div class="param">
+                    <div class="price">{{ value }} лв.</div>
+                </div>
+            }
+            @else {
+            {{ value }}
+            }
+            <ng-content select=".param"></ng-content>
+        </div>
+    </div>
+}

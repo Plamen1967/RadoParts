@@ -1,0 +1,145 @@
+.advert {
+    height: 200px;
+    background-color: lightyellow    
+}
+
+.layout {
+    display: inline-flex;
+    width: 100%;
+}
+
+.noShow
+{
+    display: none;
+}
+
+.show 
+{
+    display: display-inline;
+}
+
+.button-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+.flex-item {
+    justify-content: flex-end;
+}
+
+.buttonSize {
+    font-size: 1.2em;
+    max-width: 150px;
+}
+
+.min120px {
+    min-width: 110px;
+}
+.search-button {
+    background-color: var(--search-button-background-color);
+    color: var(--search-button-color);
+}
+
+.clear-button {
+    background-color: var(--clear-button-bgcolor);
+    color: var(--clear-button-color);
+}
+
+
+
+.form-background {
+    background-color: #8fc6f09d;
+    padding: 3px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(129, 217, 213);
+}
+.btn-search {
+    background-image: linear-gradient(135deg, #4649f0 40%, #2a0ec4);
+    color:  whitesmoke;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgb(153, 63, 51, 0.75);
+    margin-bottom: 2px;
+}
+
+.btn-clear {
+    background-image: linear-gradient(135deg, #ee7b2e 40%, #9c4307);
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgb(153, 63, 51, 0.75);
+    margin-bottom: 2px;
+}
+
+
+.custom-flex {
+    display: inline-flex;
+    
+}
+
+.marginLeft{
+    margin-left: 200px;
+}
+
+.marginLeft {
+    padding: 6px;
+    margin-left: 0px;
+}
+
+.categoryMax {
+    width: 350px;
+}
+
+
+@media(max-width: 900px) {
+    .filterForm {
+        width: 100%;
+    }
+    .marginLeft {
+        padding: 6px;
+        margin-left: 0px;
+    }
+}
+
+@media(max-width: 1200px) {
+    .control {
+        width: 100%;
+    }
+}
+
+
+@media(max-width: 900px) {
+    .categories {
+        width: 100%;
+    }
+
+    .background-image {
+        display: none;
+    }
+
+    .homeForm {
+        width: 100%;
+    }
+}
+
+@media(max-width: 1200px) {
+    .control {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 900px) {
+    .small-screen {
+        display: block;
+    }
+    .normal-screen {
+        display: none;
+    }
+    .categoryMax {
+        display: none;
+    }
+}
+        

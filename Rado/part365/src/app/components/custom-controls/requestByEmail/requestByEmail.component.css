@@ -1,0 +1,8 @@
+.catchaRow 
+{
+    --bs-gutter-x: 0px;
+}
+
+.card-header {
+    background-color: aquamarine;
+}

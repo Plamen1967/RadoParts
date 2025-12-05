@@ -1,0 +1,260 @@
+{
+  "make": "Kia",
+  "models": [
+    {
+      "label": "Avella",
+      "modifications": {
+        "avella-hatchback": "Avella Hatchback (11.1995 - 12.2001)",
+        "avella-sedan": "Avella Sedan (11.1995 - 12.2001)"
+      }
+    },
+    {
+      "label": "Besta",
+      "modifications": {
+        "besta-box": "Besta Box (01.1993 - 12.2003)",
+        "besta-bus": "Besta Bus (07.1992 - 12.2003)"
+      }
+    },
+    {
+      "label": "Cadenza",
+      "modifications": {
+        "cadenza-sedan": "Cadenza Sedan (01.2010 - 12.2016)"
+      }
+    },
+    {
+      "label": "Carens",
+      "modifications": {
+        "carens-i-minivan": "Carens I Minivan (06.1999 - 10.2002)",
+        "carens-ii-minivan": "Carens II Minivan (07.2002 - 05.2006)",
+        "carens-iii-minivan": "Carens III Minivan (05.2006 - 03.2013)",
+        "carens-iv-minivan": "Carens IV Minivan (03.2013 - 12.2019)"
+      }
+    },
+    {
+      "label": "Carnival",
+      "modifications": {
+        "carnival-i-minivan": "Carnival I Minivan (06.1998 - 10.2001)",
+        "carnival-ii-minivan": "Carnival II Minivan (01.1999 - 09.2007)",
+        "carnival-iii-minivan": "Carnival III Minivan (09.2005 - 04.2014)",
+        "carnival-iv-minivan": "Carnival IV Minivan (09.2014 - 06.2020)"
+      }
+    },
+    {
+      "label": "Cee'd",
+      "modifications": {
+        "ceed-hatchback-i": "Cee'd Hatchback I (12.2006 - 12.2012)",
+        "ceed-hatchback-ii": "Cee'd Hatchback II (05.2012 - 03.2018)",
+        "ceed-hatchback-iii": "Cee'd Hatchback III (03.2018 - ...)",
+        "ceed-pro-ceed-i": "Cee'd Pro Cee'd I (02.2008 - 02.2013)",
+        "ceed-pro-ceed-ii": "Cee'd Pro Cee'd II (03.2013 - 03.2018)",
+        "ceed-sportswagon-i": "Cee'd Sportswagon I (09.2007 - 12.2012)",
+        "ceed-sportwagon-ii": "Cee'd Sportwagon II (09.2012 - 03.2018)",
+        "ceed-sportwagon-iii": "Cee'd Sportwagon III (03.2018 - ...)"
+      }
+    },
+    {
+      "label": "Cerato",
+      "modifications": {
+        "cerato-hatchback-i": "Cerato Hatchback I (03.2004 - 12.2009)",
+        "cerato-koup-i": "Cerato KOUP I (01.2009 - 12.2013)",
+        "cerato-koup-ii": "Cerato KOUP II (12.2013 - ...)",
+        "cerato-sedan-i": "Cerato Sedan I (04.2004 - 12.2009)",
+        "cerato-sedan-ii": "Cerato Sedan II (01.2009 - 09.2012)",
+        "cerato-sedan-iii": "Cerato Sedan III (09.2012 - ...)"
+      }
+    },
+    {
+      "label": "Clarus",
+      "modifications": {
+        "clarus-estate": "Clarus Estate (05.1998 - 11.2001)",
+        "clarus-sedan": "Clarus Sedan (07.1996 - 11.2001)"
+      }
+    },
+    {
+      "label": "Joice",
+      "modifications": {
+        "joice-minivan": "Joice Minivan (02.2000 - 06.2003)"
+      }
+    },
+    {
+      "label": "K2500",
+      "modifications": {
+        "k2500-van-platform": "K2500 Van / Platform (06.2001 - ...)"
+      }
+    },
+    {
+      "label": "K2700",
+      "modifications": {
+        "k2700-van-platform": "K2700 Van / Platform (10.1999 - ...)",
+        "k2700-van-platform-ii": "K2700 Van / Platform II (01.2004 - ...)"
+      }
+    },
+    {
+      "label": "K2900",
+      "modifications": {
+        "k2900-van-platform": "K2900 Van / Platform (01.2008 - ...)"
+      }
+    },
+    {
+      "label": "Magentis",
+      "modifications": {
+        "magentis-sedan-i": "Magentis Sedan I (05.2001 - 01.2006)",
+        "magentis-sedan-ii": "Magentis Sedan II (10.2005 - 12.2010)"
+      }
+    },
+    {
+      "label": "Mohave",
+      "modifications": {
+        "mohave-suv": "Mohave SUV (11.2007 - 12.2009)"
+      }
+    },
+    {
+      "label": "Niro",
+      "modifications": {
+        "niro-suv": "Niro SUV (09.2016 - ...)"
+      }
+    },
+    {
+      "label": "Opirus",
+      "modifications": {
+        "opirus-sedan": "Opirus Sedan (09.2003 - 12.2012)"
+      }
+    },
+    {
+      "label": "Optima",
+      "modifications": {
+        "optima-sedan-i": "Optima Sedan I (05.2001 - 10.2005)",
+        "optima-sedan-ii": "Optima Sedan II (10.2005 - 01.2010)",
+        "optima-sedan-iii": "Optima Sedan III (01.2010 - 09.2015)",
+        "optima-sedan-iv": "Optima Sedan IV (09.2015 - 12.2019)",
+        "optima-sportswagon": "Optima Sportswagon (09.2016 - ...)"
+      }
+    },
+    {
+      "label": "Picanto",
+      "modifications": {
+        "picanto-hatchback-i": "Picanto Hatchback I (04.2004 - 05.2011)",
+        "picanto-hatchback-ii": "Picanto Hatchback II (05.2011 - 03.2017)",
+        "picanto-hatchback-iii": "Picanto Hatchback III (03.2017 - ...)"
+      }
+    },
+    {
+      "label": "Pregio",
+      "modifications": {
+        "pregio-box": "Pregio Box (10.1997 - ...)",
+        "pregio-bus": "Pregio Bus (08.1995 - 04.2010)"
+      }
+    },
+    {
+      "label": "Pride",
+      "modifications": {
+        "pride-estate": "Pride Estate (08.1998 - 05.2001)",
+        "pride-hatchback": "Pride Hatchback (01.1990 - 12.2011)"
+      }
+    },
+    {
+      "label": "Retona",
+      "modifications": {
+        "retona-suv": "Retona SUV (06.1999 - 12.2001)"
+      }
+    },
+    {
+      "label": "Rio",
+      "modifications": {
+        "rio-i-estate": "Rio I Estate (07.2000 - 04.2006)",
+        "rio-i-sedan": "Rio I Sedan (07.2000 - 04.2006)",
+        "rio-ii-hatchback": "Rio II Hatchback (03.2005 - 12.2011)",
+        "rio-ii-sedan": "Rio II Sedan (03.2005 - 12.2011)",
+        "rio-iii-hatchback": "Rio III Hatchback (09.2011 - 01.2017)",
+        "rio-iii-sedan": "Rio III Sedan (09.2010 - 01.2017)",
+        "rio-iv-hatchback": "Rio IV Hatchback (01.2017 - ...)",
+        "rio-iv-sedan": "Rio IV Sedan (01.2017 - ...)"
+      }
+    },
+    {
+      "label": "Sedona",
+      "modifications": {
+        "sedona-minivan-i": "Sedona Minivan I (06.1998 - 10.2001)",
+        "sedona-minivan-ii": "Sedona Minivan II (01.1999 - 09.2005)",
+        "sedona-minivan-iii": "Sedona Minivan III (09.2005 - 09.2014)",
+        "sedona-minivan-iv": "Sedona Minivan IV (09.2014 - 06.2020)"
+      }
+    },
+    {
+      "label": "Sephia",
+      "modifications": {
+        "sephia-hatchback": "Sephia Hatchback (01.1995 - 10.1997)",
+        "sephia-hatchback-ii": "Sephia Hatchback II (10.1997 - 12.2001)",
+        "sephia-sedan-i": "Sephia Sedan I (01.1992 - 05.2000)",
+        "sephia-sedan-ii": "Sephia Sedan II (09.1993 - 10.1997)"
+      }
+    },
+    {
+      "label": "Shuma",
+      "modifications": {
+        "shuma-hatchback-i": "Shuma Hatchback I (09.1996 - 12.2001)",
+        "shuma-hatchback-ii": "Shuma Hatchback II (05.2001 - 08.2004)",
+        "shuma-sedan-i": "Shuma Sedan I (03.1996 - 10.2001)",
+        "shuma-sedan-ii": "Shuma Sedan II (05.2001 - 05.2004)"
+      }
+    },
+    {
+      "label": "Sorento",
+      "modifications": {
+        "sorento-i-suv": "Sorento I SUV (08.2002 - 12.2009)",
+        "sorento-ii-suv": "Sorento II SUV (11.2009 - 03.2015)",
+        "sorento-iii-suv": "Sorento III SUV (01.2015 - 12.2019)"
+      }
+    },
+    {
+      "label": "Soul",
+      "modifications": {
+        "soul-suv-i": "Soul SUV I (01.2009 - 03.2014)",
+        "soul-suv-ii": "Soul SUV II (02.2014 - 01.2019)",
+        "soul-suv-iii": "Soul SUV III (01.2019 - ...)"
+      }
+    },
+    {
+      "label": "Sportage",
+      "modifications": {
+        "sportage-suv-i": "Sportage SUV I (04.1994 - 04.2005)",
+        "sportage-suv-ii": "Sportage SUV II (09.2004 - 10.2010)",
+        "sportage-suv-iii": "Sportage SUV III (09.2009 - 12.2015)",
+        "sportage-suv-iv": "Sportage SUV IV (09.2015 - ...)"
+      }
+    },
+    {
+      "label": "Stinger",
+      "modifications": {
+        "stinger-sedan": "Stinger Sedan (06.2017 - ...)"
+      }
+    },
+    {
+      "label": "Stonic",
+      "modifications": {
+        "stonic-suv": "Stonic SUV (07.2017 - ...)"
+      }
+    },
+    {
+      "label": "Towner",
+      "modifications": {
+        "towner-bus": "Towner Bus (06.1986 - 06.1990)",
+        "towner-bus-ii": "Towner Bus II (06.1993 - 01.1999)",
+        "towner-platform": "Towner Platform (06.1986 - 10.1990)",
+        "towner-platform-ii": "Towner Platform II (06.1993 - 01.1999)"
+      }
+    },
+    {
+      "label": "Venga",
+      "modifications": {
+        "venga-hatchback": "Venga Hatchback (02.2010 - 01.2020)"
+      }
+    },
+    {
+      "label": "XCeed",
+      "modifications": {
+        "xceed-hatchback": "XCeed Hatchback (06.2019 - ...)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "make": "Saab",
+  "models": [
+    {
+      "label": "9-3",
+      "modifications": {
+        "9-3-cabrio-i": "9-3 Cabrio I (02.1998 - 08.2003)",
+        "9-3-cabrio-ii": "9-3 Cabrio II (08.2003 - 02.2015)",
+        "9-3-estate": "9-3 Estate (03.2005 - 02.2015)",
+        "9-3-hatchback": "9-3 Hatchback (02.1998 - 08.2003)",
+        "9-3-sedan": "9-3 Sedan (09.2002 - 02.2015)"
+      }
+    },
+    {
+      "label": "9-3x",
+      "modifications": {
+        "9-3x-estate": "9-3x Estate (02.2009 - 12.2012)"
+      }
+    },
+    {
+      "label": "9-5",
+      "modifications": {
+        "9-5-estate": "9-5 Estate (10.1998 - 12.2009)",
+        "9-5-sedan-i": "9-5 Sedan I (09.1997 - 12.2009)",
+        "9-5-sedan-ii": "9-5 Sedan II (01.2010 - 01.2012)"
+      }
+    },
+    {
+      "label": "9-7x",
+      "modifications": {
+        "9-7x-suv": "9-7x SUV (06.2004 - 07.2012)"
+      }
+    },
+    {
+      "label": "900",
+      "modifications": {
+        "900-i-cabrio": "900 I Cabrio (10.1985 - 06.1994)",
+        "900-i-combi-coupe": "900 I Combi Coupe (06.1978 - 06.1994)",
+        "900-i-sedan": "900 I Sedan (01.1979 - 12.1993)",
+        "900-ii-cabrio": "900 II Cabrio (09.1993 - 02.1998)",
+        "900-ii-coupe": "900 II Coupe (12.1993 - 02.1998)",
+        "900-ii-hatchback": "900 II Hatchback (07.1993 - 02.1998)"
+      }
+    },
+    {
+      "label": "9000",
+      "modifications": {
+        "9000-hatchback": "9000 Hatchback (09.1984 - 12.1998)",
+        "9000-sedan": "9000 Sedan (04.1985 - 12.1998)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+<div [ngClass]="{ select__margin: border }">
+    <div [ngClass]="{ select__container: border }">
+        <div [ngClass]="{ select__field: border }">
+            <textarea class="form-control" rows="{{ rows }}" placeholder="{{ placeHolder }}" maxlength="length" [(ngModel)]="inputValue" id="{{contolName}}" (input)="onTextChange()"></textarea>
+            @if (submitted && control.invalid) {
+                <div class="invalid-feedback d-block">
+                    <small>{{ errorMessage }}</small>
+                </div>
+            }
+            <div class="select__label" [ngClass]="{ required: required }">
+                {{ label }}
+                @if (label && required) {
+                    <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
+                }
+            </div>
+            @if (submitted && control.invalid) {
+                <div class="invalid-feedback d-block">
+                    <small>{{ errorMessage }}</small>
+                </div>
+            }
+        </div>
+    </div>
+</div>

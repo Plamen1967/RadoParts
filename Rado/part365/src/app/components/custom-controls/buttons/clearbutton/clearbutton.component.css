@@ -1,0 +1,11 @@
+.clear-button {
+    background-color: var(--clear-button-bgcolor);
+    color: var(--clear-button-color);
+}
+
+.buttonSize {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    max-width: 150px;
+}

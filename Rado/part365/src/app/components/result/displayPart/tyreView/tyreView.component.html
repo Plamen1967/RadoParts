@@ -1,0 +1,38 @@
+@if (itemType === 5) {
+    <a class="label">Джанта с гума</a>
+    <div class="description mt-1"><strong class="me-1">Брой:</strong>{{ count }}</div>
+}
+@if (itemType === 3 || itemType === 5) {
+    @if (itemType === 3) {
+        <a class="label">Гума</a>
+        <div class="description mt-1"><strong class="me-1">Брой:</strong>{{ count }}</div>
+    } @else {
+        <div class="label">Гума</div>
+    }
+    @if (item) {
+        <div class="details">
+            @if (tyreLine) {
+                <div style="line-height: 1em">
+                    <small data-cy="details">{{ tyreLine }}</small>
+                </div>
+            }
+        </div>
+    }
+}
+@if (itemType === 4 || itemType === 5) {
+    @if (itemType === 4) {
+        <a class="label">Джанта - {{ companyName }}</a>
+        <div class="description mt-1"><strong class="me-1">Брой:</strong>{{ count }}</div>
+    } @else {
+        <div class="label">Джанта - {{ companyName }}</div>
+    }
+    @if (item) {
+        <div class="details">
+            @if (rimLine) {
+                <div style="line-height: 1em">
+                    <small data-cy="details">{{ rimLine }}</small>
+                </div>
+            }
+        </div>
+    }
+}

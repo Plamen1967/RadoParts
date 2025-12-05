@@ -1,0 +1,33 @@
+.upload{
+    font-weight:bold;
+    color:#28a745;
+    margin-left: 15px;
+    line-height: 36px;
+}
+
+.addImage {
+    width: 48px;
+    height: 48px;
+}
+
+.buttonAddImage {
+    border: 1px solid black;
+    background-color: lightgreen;
+    box-shadow: 2px 2px 2px 2px rgba(46, 229, 157, 0.4);
+}
+
+.buttonAddImage:active {
+    background-color: green;
+}
+
+.buttonAddImage:hover {
+    background-color: lightskyblue;
+    box-shadow: 2px 2px 2px 2px rgba(229, 46, 95, 0.4);
+}
+
+@media (max-width: var(--bs-breakpoint-sd)) {
+    .showLabel {
+        display: none;
+    }
+    
+}

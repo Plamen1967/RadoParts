@@ -1,0 +1,15 @@
+.phoneColor {
+    background-color: teal;
+    color: white;
+    height: 25px;
+    width: 100%;
+    align-items: center;
+}
+
+.size {
+    width: 160px;
+}
+
+.phoneSize {
+    font-size: 1.2em;
+}

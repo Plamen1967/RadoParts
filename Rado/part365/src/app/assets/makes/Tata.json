@@ -1,0 +1,54 @@
+{
+  "make": "Tata",
+  "models": [
+    {
+      "label": "Aria",
+      "modifications": {
+        "aria-minivan": "Aria Minivan (10.2010 - 12.2017)"
+      }
+    },
+    {
+      "label": "Indica",
+      "modifications": {
+        "indica-hatchback": "Indica Hatchback (06.1998 - 12.2008)",
+        "indica-vista": "Indica VISTA (08.2008 - 12.2015)"
+      }
+    },
+    {
+      "label": "Indigo",
+      "modifications": {
+        "indigo-sedan": "Indigo Sedan (01.2003 - 12.2018)"
+      }
+    },
+    {
+      "label": "Indigo Marina",
+      "modifications": {
+        "indigo-marina-combi": "Indigo Marina Combi (01.2003 - 02.2012)"
+      }
+    },
+    {
+      "label": "Safari",
+      "modifications": {
+        "safari-suv": "Safari SUV (04.1998 - 01.2020)"
+      }
+    },
+    {
+      "label": "Sierra",
+      "modifications": {
+        "sierra-suv": "Sierra SUV (08.1991 - 12.2002)"
+      }
+    },
+    {
+      "label": "Telcoline",
+      "modifications": {
+        "telcoline-pick-up": "Telcoline Pick-up (02.1999 - 12.2011)"
+      }
+    },
+    {
+      "label": "Xenon",
+      "modifications": {
+        "xenon-pick-up": "Xenon Pick-up (03.2006 - ...)"
+      }
+    }
+  ]
+}

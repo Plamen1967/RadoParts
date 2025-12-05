@@ -1,0 +1,79 @@
+<form (submit)="close()" style="height: 100%; display: flex; justify-content: center;">
+    <mat-dialog-content>
+        <div class="d-inline-flex justify-content-center m-2 w-100" mat-dialog-title>
+            <div class="title">{{ placeHolder }}</div>
+        </div>
+        <div class="mb-1 d-flex justify-content-center">
+            <app-radiogroup [radios]="radios" [value]="0" (panelClosed)="changed($event)"></app-radiogroup>
+        </div>
+        <div class="container-style">
+            <div class="d-flex justify-content-between">
+                <button class="button-style button-clear me-4" mat-button type="button" (click)="clearSelection()">Изчисти</button>
+                <div>
+                    @if (this.multiSelection) {
+                        <button type="submit" mat-button [mat-dialog-close]="value" class="button-ok button-style" (click)="close()">Потвърди</button>
+                    }
+                </div>
+                <button mat-button mat-dialog-close class="button-cancel button-style">Откажи</button>
+            </div>
+            @if(found?.length) {
+            @if (selections.length && multiSelection) {
+                <div class="multiselection">
+                    <app-choise [selectedItems]="selectedValues" (deleteSelection)="deleteSelection($event)"></app-choise>
+                </div>
+            }
+            <div class="select-box" #selectBox>
+                @if (useLetter) {
+                    <div class="letter-container d-inline-flex">
+                        @for (letter of firstLetters; track letter) {
+                            <div
+                                id="Item{{ letter }}"
+                                role="none"
+                                class="mb-1 me-1 letter-style"
+                                [ngClass]="{ letter: letter !== this.letterSelected, 'selected-letter': letter === this.letterSelected }"
+                                (click)="clickLetter($event, letter)">
+                                {{ letter }}
+                            </div>
+                        }
+                    </div>
+                }
+                @if (_useFilter) {
+                    <app-searchinput (filterChanged)="filterChange($event)" style="background-color: white"></app-searchinput>
+                }
+                <div class="options-container">
+                    @for (item of _data; track index()) {
+                        @if (item.showItem) {
+                            <div
+                                role="none"
+                                id="Item{{ item.description }}"
+                                class="option form-select-sm"
+                                [ngClass]="{ group: item.group, disable: !item.isSelectable, letter: false, 'selected-option': item.isSelected }"
+                                (click)="clickItem($event, item)">
+                                <div class="display-style">
+                                    <label class="label" [ngClass]="{ disable: !item.isSelectable }" for="{{ item.id }}">{{ item.description }}</label>
+                                    @if (item.count && !item.group && showCount) {
+                                        <div class="label">{{ item.count }}</div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            }
+            @else {
+                <div class="flex w-100 justify-content-center">
+                    <div>Няма намерени данни</div>
+                </div>
+            }
+            <div class="d-flex justify-content-between">
+                <div>
+                    @if (this.multiSelection) {
+                        <button type="submit" mat-button [mat-dialog-close]="value" class="button-ok button-style" (click)="close()">Потвърди</button>
+                    }
+                </div>
+                <button mat-button mat-dialog-close class="button-cancel button-style">Откажи</button>
+            </div>
+        </div>
+    </mat-dialog-content>
+</form>

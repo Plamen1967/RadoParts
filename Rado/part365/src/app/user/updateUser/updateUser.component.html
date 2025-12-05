@@ -1,0 +1,170 @@
+<div class="container">
+    <h2 class="text-center">Актуализация за данните</h2>
+
+    <div class="gap-2 d-flex justify-content-md-end">
+        <a (click)="view()" role="none" class="btn adButton halfSizeButton heightButton">Всичките мои обяви</a>
+        <button [disabled]="loading" class="btn btn-primary halfSizeButton heightButton" (click)="updatePassword()">
+            @if (loading) {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            {{ labels.CHANGEPASSWORD }}
+        </button>
+        <button [disabled]="loading" class="btn deleteBtn halfSizeButton heightButton" (click)="onDeleteUserDialog()">
+            @if (loading) {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            Изтрий Акаунт
+        </button>
+        <button class="btn logoutBtn halfSizeButton heightButton" (click)="onLogout()">
+            @if (loading) {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            <i class="las la-sign-out-alt pe-2"></i>{{ labels.LOGOUT }}
+        </button>
+    </div>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-sm-3">
+                <app-input formControlName="userName" label="{{ labels.USERNAME }}" placeHolder="{{ labels.USERNAME }}" [required]="true" [submitted]="submitted"> </app-input>
+            </div>
+            <div class="col-sm-6 mt-4">
+                @if (isDealer) {
+                    <div class="btn dealerBtn" (click)="userPrivate()" role="none">Стани частно лице</div>
+                }
+                @if (isUser) {
+                    <div class="btn dealerBtn" (click)="userDealer()" role="none">Стани дилър</div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            @if (isDealer) {
+                <div class="col-sm-4">
+                    <app-input formControlName="companyName" label="{{ labels.COMPANYNAME }} {{ companyRequired }}" placeHolder="{{ labels.COMPANYNAME }}" [submitted]="submitted" [required]="true">
+                    </app-input>
+                </div>
+                @if (submitted && f['companyName'].errors) {
+                    <div class="invalid-feedback">
+                        @if (f['companyName'].errors['required']) {
+                            <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
+                        }
+                    </div>
+                }
+            } @else {
+                <div class="col-sm-3">
+                    <app-input formControlName="firstName" label="{{ labels.FIRSTNAME }}" placeHolder="{{ labels.FIRSTNAME }}" [submitted]="submitted" [required]="true"> </app-input>
+                    @if (submitted && f['firstName'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['firstName'].errors['required']) {
+                                <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="col-sm-3">
+                    <app-input formControlName="lastName" label="{{ labels.LASTNAME }}" placeHolder="{{ labels.LASTNAME }}" [submitted]="submitted"> </app-input>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="regions" [submitted]="submitted" [required]="true"> </app-select>
+                @if (submitted && f['regionId'].errors) {
+                    <div class="invalid-feedback">
+                        @if (f['regionId'].errors['min']) {
+                            <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="col-sm-3">
+                <app-input formControlName="address" label="{{ labels.ADDRESS }}" placeHolder="{{ labels.ADDRESS }}" [submitted]="submitted"> </app-input>
+                @if (submitted && f['address'].errors) {
+                    <div class="invalid-feedback">
+                        @if (f['address'].errors['required']) {
+                            <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="col-sm-2">
+                <app-input formControlName="city" label="{{ labels.CITY }}" placeHolder="{{ labels.CITY }}" [submitted]="submitted"> </app-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <app-input formControlName="phone" label="{{ labels.PHONE }}" (keypress)="keyPress($event)" [required]="true" placeHolder="{{ labels.PHONE }}" [submitted]="submitted"> </app-input>
+            </div>
+            <div class="col-sm-2">
+                <app-input formControlName="phone2" label="{{ labels.PHONE2 }}" (keypress)="keyPress($event)" placeHolder="{{ labels.PHONE2 }}" [submitted]="submitted"> </app-input>
+            </div>
+            <div class="col-sm-2">
+                <app-input formControlName="viber" label="{{ labels.VIBER }}" (keypress)="keyPress($event)" placeHolder="{{ labels.VIBER }}" [submitted]="submitted"> </app-input>
+            </div>
+            <div class="col-sm-2">
+                <app-input formControlName="whats" label="{{ labels.WHATS }}" (keypress)="keyPress($event)" placeHolder="{{ labels.WHATS }}" [submitted]="submitted"> </app-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <app-input formControlName="email" label="{{ labels.EMAIL }}" placeHolder="{{ labels.EMAIL }}" [required]="true" [submitted]="submitted"> </app-input>
+            </div>
+
+            @if (dealer) {
+                <div class="col-sm-3">
+                    <app-input
+                        formControlName="webPage"
+                        label="{{ labels.WEBPAGE }}"
+                        placeHolder="{{ labels.WEBPAGE }}"
+                        [submitted]="submitted"
+                        [suffix]="'.radoparts.com'"
+                        [id]="'webPage'"
+                        [prefix]="'https://'">
+                    </app-input>
+                </div>
+            }
+        </div>
+        <app-input formControlName="imageId" [ngStyle]="{ display: 'none' }"> </app-input>
+
+        @if (isDealer) {
+            <div class="row">
+                <app-textarea formControlName="description" placeHolder="{{ labels.DESCRIPTIONCOMPANY }}"></app-textarea>
+            </div>
+        }
+
+        @if (submitted && error) {
+            <div class="text-danger">
+                <div data-cy="errorMessage">{{ error }}</div>
+            </div>
+        }
+
+        @if (isDealer) {
+            @if (!businessCardimage) {
+                <div class="row">
+                    <app-upload [userId]="userId" [multiple]="false" [businessCard]="true" [businessCard]="true" [addPicture]="" (uploadFinished)="addBusinessCard($event)"> </app-upload>
+                </div>
+            } @else {
+                <div class="imageSize backgroundSize img-thumbnails business-card" [style.background-image]="'url(' + businessCardimage.imageSrc + ')'"></div>
+                <button class="btn btn-primary mt-1 mb-1" (click)="deleteBusinessCard()">Изтрий Бизнес Карта</button>
+            }
+            <div class="row">
+                <h5>Качете Вашите фирмени снимки</h5>
+            </div>
+            <div class="row">
+                <app-upload [userId]="userId" [multiple]="true" [businessCard]="false" (uploadFinished)="imagesAdded($event)" [camera]="true" [addPicture]="'Качете снимка'"> </app-upload>
+            </div>
+            <div class="row mt-2">
+                <app-picture [id]="userId" [images]="images" [updateFlag]="true" [mainImageFlag]="false"></app-picture>
+            </div>
+        }
+    </form>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button [disabled]="loading" class="btn saveButton" (click)="onSubmit()">
+            @if (loading) {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            {{ labels.SAVE }}
+        </button>
+        <button class="btn returnButton" (click)="onCancelChanges()">Откажи промените</button>
+    </div>
+</div>

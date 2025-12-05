@@ -1,0 +1,55 @@
+﻿CREATE PROCEDURE [dbo].[PartsUpd]
+    @partId            BIGINT,
+    @carId             BIGINT,
+    @modelId           INT,
+    @modificationId    INT,
+    @dealerSubCategoryId    INT,
+    @description       NVARCHAR (500),
+    @partNumber        NVARCHAR (50),
+    @price             DECIMAL (18),
+    @leftRightPosition INT,
+    @frontBackPosition INT,
+    @engineType        INT,
+    @engineModel       NVARCHAR (50),
+    @year              INT,
+    @powerkWh          INT,
+    @powerBHP          INT,
+    @userId            INT,
+    @millage            INT,
+    @regionId          INT,
+    @gearboxType       INT,
+    @modifiedTime      BIGINT,
+    @dealerSubCategoryName  NVARCHAR(50),
+    @mainPicture            NVARCHAR(200),
+    @mainImageId        INT,
+    @approved           INT
+
+AS
+
+	UPDATE [Parts] SET 
+     carId              = @carId,
+     modelId            = @modelId,
+     modificationId     = @modificationId,
+     dealerSubCategoryId = @dealerSubCategoryId,
+     description        = RTRIM(@description),
+     partNumber         = RTRIM(@partNumber),
+     price              = @price,
+     leftRightPosition  = @leftRightPosition,
+     frontBackPosition  = @frontBackPosition,
+     engineType         = @engineType,
+     engineModel        = RTRIM(@engineModel),
+     year               = @year,
+     powerkWh           = @powerkWh,
+     powerBHP           = @powerBHP,
+     millage             = @millage,
+     regionId           = @regionId,
+     gearboxType        = @gearboxType,
+     modifiedTime       = @modifiedTime,
+     dealerSubCategoryName = @dealerSubCategoryName,
+     mainPicture        = @mainPicture,
+     approved           = @approved,
+     mainImageId        = @mainImageId,
+     keyword            = LOWER(CONCAT(@partNumber, @description, @dealerSubCategoryName))
+  WHERE partId       = @partId AND userId = @userId
+
+RETURN @@ROWCOUNT

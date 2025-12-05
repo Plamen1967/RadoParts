@@ -1,0 +1,43 @@
+.detailsClass {
+    width: 40%;
+    order: 2;
+   display: flex;
+}
+
+.dealerClass {
+    order: 4;
+    width: 30%    
+}
+
+
+.imageClass {
+    display: flex;
+    flex-wrap: wrap;
+    width: 30%;
+    cursor: pointer;
+    order: 1;
+}
+
+@media(max-width: 576px) {
+    .imageClass {
+        order: 1;
+        width: 50%;
+    }
+
+    .favouriteClass {
+        order: 2;
+    }
+
+    .detailsClass {
+        width: 100%;
+        order: 4;
+        padding: 2px;
+        margin-left: 5px;
+    }
+
+    .dealerClass {
+        order: 3;
+        width: 40%;
+
+    }
+}

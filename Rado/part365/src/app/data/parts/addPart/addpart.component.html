@@ -1,0 +1,277 @@
+<div class="container">
+    @if (saving) {
+        <div>
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" data-cy="spiiner" role="status" aria-hidden="true"></span>
+                Saving...
+            </button>
+        </div>
+    } @else {
+        <div class="title">Част</div>
+        <form [formGroup]="addPartForm">
+            @if (seller) {
+                <div class="shadow rounded card card-form-spec">
+                    @if (newPart) {
+                        <div class="d-inline-flex align-items-center">
+                            <div class="mt-2" [ngClass]="{ noDisplay: carId }">
+                                <div class="form-check form-check-inline">
+                                    <input id="PartForCar" type="radio" class="custom-control-input" data-cy="car" [value]="true" name="partForCar" formControlName="partForCar" />
+                                    <label class="custom-control-label" for="PartForCar">Част за {{ choice }}</label>
+                                </div>
+                                @if (partForCar) {
+                                    <div class="ms-2 d-inline-flex align-items-center min250px">
+                                        <div class="min250px">
+                                            <app-select
+                                                id="car"
+                                                label="Избери {{ choice }}"
+                                                formControlName="carId"
+                                                hint="Избери {{ choice }}"
+                                                data-cy="carReference"
+                                                [data]="cars"
+                                                [required]="true"
+                                                (changeOption)="onCarChange($event)"
+                                                [submitted]="submitted"
+                                                (onClose)="focus($event)">
+                                            </app-select>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="form-check form-check-inline">
+                                    <input id="NoCar" type="radio" class="custom-control-input" data-cy="part" [value]="false" name="partForCar" formControlName="partForCar" />
+                                    <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (partForCar && car && carId) {
+                        <div class="mt-2 p-2 d-inline-flex fs-5 text justify-content-center" style="background-color: aqua; width: 100%">
+                            <div class="d-flex justify-content-center" style="text-align: center">{{ description }}</div>
+                        </div>
+                    }
+                </div>
+            }
+            <div class="card p-2 mt-2" style="background-color: honeydew">
+                @if (!partForCar) {
+                    <div>
+                        <div class="row g-3">
+                            <div class="row mb-1">
+                                <div class="row modell-1000px">
+                                    <div class="col-sm-2 min300px">
+                                        <app-company-choise [bus]="bus" [all]="true" [required]="true" [submitted]="submitted" formControlName="companyId" data-cy="companyid"> </app-company-choise>
+                                    </div>
+                                    @if (companyId) {
+                                        <div class="col-sm-2 min350px">
+                                            <app-model-choice
+                                                formControlName="modelId"
+                                                [all]="true"
+                                                [required]="true"
+                                                [companyId]="companyId!"
+                                                [groupSelection]="false"
+                                                [multiselection]="false"
+                                                [submitted]="submitted"
+                                                (onClose)="focus($event)">
+                                            </app-model-choice>
+                                        </div>
+                                        @if (!bus && modelId) {
+                                            <div class="col-sm-3 min350px">
+                                                <app-modification-choice
+                                                    [modelsId]="modelId"
+                                                    [all]="true"
+                                                    [required]="true"
+                                                    [multiselection]="false"
+                                                    formControlName="modificationId"
+                                                    (modifcationChange)="modificatioChanged($event)"
+                                                    data-cy="modificationId"
+                                                    [submitted]="submitted"
+                                                    (onClose)="focus($event)">
+                                                    >
+                                                </app-modification-choice>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="col-sm-2 min200px">
+                                        <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" [submitted]="submitted" (onClose)="focus($event)"> </app-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-1">
+                            <div class="col-sm-2">
+                                <app-input formControlName="vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" data-cy="vin" [submitted]="submitted"> </app-input>
+                            </div>
+                            <div class="col-sm-2">
+                                <app-input
+                                    formControlName="powerBHP"
+                                    type="number"
+                                    label="{{ labels.POWERBHP }}"
+                                    placeHolder="{{ labels.POWERBHP }}"
+                                    [submitted]="submitted"
+                                    data-cy="powerBHP"
+                                    (change)="powerBHPChanged()">
+                                </app-input>
+                            </div>
+                            <div class="col-sm-2">
+                                <app-input
+                                    formControlName="powerkWh"
+                                    type="number"
+                                    label="{{ labels.POWERKWH }}"
+                                    placeHolder="{{ labels.POWERKWH }}"
+                                    [submitted]="submitted"
+                                    data-cy="powerkWh"
+                                    (change)="powerkWhChanged()">
+                                </app-input>
+                            </div>
+                            <div class="col-sm-2">
+                                <app-input formControlName="millage" type="number" label="{{ labels.MILLAGE }}" data-cy="millage" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted">
+                                </app-input>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-sm-2">
+                                <app-select
+                                    formControlName="engineType"
+                                    label="{{ labels.TYPE_ENGINE }}"
+                                    [submitted]="submitted"
+                                    data-cy="engineType"
+                                    [data]="staticSelectionService.EngineType"
+                                    (onClose)="focus($event)">
+                                </app-select>
+                            </div>
+                            <div class="col-sm-2">
+                                <app-input
+                                    formControlName="engineModel"
+                                    label="{{ labels.CODE_ENGINE }}"
+                                    data-cy="engineModel"
+                                    placeHolder="{{ labels.CODE_ENGINE }}"
+                                    [submitted]="submitted"
+                                    (onClose)="focus($event)">
+                                </app-input>
+                            </div>
+                            <div class="col-sm-2">
+                                <app-select
+                                    formControlName="gearboxType"
+                                    label="{{ labels.TYPE_GEARBOX }}"
+                                    data-cy="gearboxType"
+                                    [submitted]="submitted"
+                                    [data]="staticSelectionService.GearboxType"
+                                    (onClose)="focus($event)">
+                                </app-select>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-sm-2">
+                                <app-select
+                                    formControlName="regionId"
+                                    label="{{ labels.REGION }}"
+                                    [submitted]="submitted"
+                                    data-cy="region"
+                                    [data]="staticSelectionService.Region"
+                                    (onClose)="focus($event)">
+                                </app-select>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-sm-2 min350px">
+                        <app-category-choise
+                            id="categoryId"
+                            [appToolTip]="'Избери категория'"
+                            formControlName="categoryId"
+                            data-cy="categoryId"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Избери категория"
+                            [required]="true"
+                            [multiselection]="false"
+                            [submitted]="submitted"
+                            placeHolder="Избери категория">
+                        </app-category-choise>
+                    </div>
+                    @if (categoryId) {
+                        <div class="col-sm-2 min350px">
+                            <app-dealersubcategory-choice
+                                [categoryId]="categoryId!"
+                                formControlName="dealerSubCategoryId"
+                                data-cy="dealerSubCategoryId"
+                                title="{{ labels.DEALERSUBCATEGORY }}"
+                                [required]="true"
+                                [multiselection]="false"
+                                [submitted]="submitted"
+                                (dealerSubCategoryChanged)="dealerSubCategoryIdChanged($event)"
+                                (onClose)="focus($event)">
+                            </app-dealersubcategory-choice>
+                        </div>
+                        @if (dealerSubCategoryId) {
+                            <div class="col-sm-2 min350px">
+                                <app-input
+                                    formControlName="dealerSubCategoryName"
+                                    label="{{ labels.DEALERSUBCATEGORYHELP }}"
+                                    data-cy="dealerSubCategoryName"
+                                    [submitted]="submitted"
+                                    [required]="true"
+                                    placeHolder="{{ labels.DEALERSUBCATEGORYHELP }}">
+                                </app-input>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 min350px">
+                        <app-input formControlName="partNumber" label="{{ labels.PART_NUMBER }}" [submitted]="submitted" data-cy="partNumber" placeHolder="{{ labels.PART_NUMBER }}"> </app-input>
+                    </div>
+                </div>
+                <div class="row form-floating">
+                    <app-textarea formControlName="description" data-cy="description" placeHolder="{{ labels.PART_DETAILS }}" [submitted]="submitted"></app-textarea>
+                </div>
+                <div class="card mt-1">
+                    <div class="card-header">
+                        Позиция
+                        <div class="d-flex justify-content-between flex-wrap" style="font-size: 1em">
+                            <div class="d-inline-flex justify-content-between">
+                                <div class="d-inline-flex pe-2">
+                                    <input id="NoneLR" type="radio" class="custom-control-input" [value]="0" data-cy="positionLRNone" name="leftRightPosition" formControlName="leftRightPosition" />
+                                    <label class="ps-2" for="NoneLR">{{ labels.NO_MATER }}</label>
+                                </div>
+                                <div class="d-inline-flex pe-2">
+                                    <input id="Left" type="radio" class="custom-control-input" [value]="1" data-cy="positionLRLeft" name="leftRightPosition" formControlName="leftRightPosition" />
+                                    <label class="ps-2" for="Left">{{ labels.LEFT }}</label>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <input id="Right" type="radio" class="custom-control-input" [value]="2" data-cy="positionLRRight" name="leftRightPosition" formControlName="leftRightPosition" />
+                                    <label class="ps-2" for="Right">{{ labels.RIGHT }}</label>
+                                </div>
+                            </div>
+                            <div class="d-inline-flex justify-content-between">
+                                <div class="d-inline-flex pe-2">
+                                    <input id="NoneFB" type="radio" class="custom-control-input" [value]="0" data-cy="positionFBNone" name="frontBackPosition" formControlName="frontBackPosition" />
+                                    <label class="ps-2" for="NoneFB">{{ labels.NO_MATER }}</label>
+                                </div>
+                                <div class="d-inline-flex pe-2">
+                                    <input id="Front" type="radio" class="custom-control-input" [value]="1" data-cy="positionFBFront" name="frontBackPosition" formControlName="frontBackPosition" />
+                                    <label class="ps-2" for="Front">{{ labels.FRONT }}</label>
+                                </div>
+                                <div class="d-inline-flex">
+                                    <input id="Back" type="radio" class="custom-control-input" [value]="2" data-cy="positionFBBack" name="frontBackPosition" formControlName="frontBackPosition" />
+                                    <label class="ps-2" for="Back">{{ labels.BACK }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="d-inline">
+                    <app-input formControlName="price" placeHolder="{{ labels.PRICE }}" [price]="true" [submitted]="submitted" data-cy="price" [inline]="false" [required]="true"></app-input>
+                </div>
+            </div>
+        </form>
+    }
+    <div class="row mt-3" style="position: relative">
+        <app-imagelist [id]="partId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+        <div class="d-inline-flex justify-content-end position-buttons w-auto">
+            <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+        </div>
+    </div>
+</div>

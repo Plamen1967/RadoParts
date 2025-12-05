@@ -1,0 +1,31 @@
+.paddingClass
+{
+    padding-left: 2px;
+}
+
+.positionEnd
+{
+    padding: 2px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+.favoirite
+{
+    font-size: 1.8em ;
+    font-weight: bold;
+    border: none;
+    background-color: transparent;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.saved {
+    color: var(--favoutite)  ;
+}
+
+.unSaved {
+    color: var(--favoutite);
+}

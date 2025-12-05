@@ -1,0 +1,21 @@
+.rowCar {
+    width: 100%;
+}
+
+@media(max-width: var(--bs-breakpoint-sm)) {
+    .rowCar {
+        width: 100%;
+    }
+ }
+
+ @media(max-width: var(--bs-breakpoint-lg)) {
+    .rowCar {
+        width: 100%;
+    }
+ }
+
+ @media(min-width: 1001px) {
+    .rowCar {
+        width: 75%;
+    }
+ }

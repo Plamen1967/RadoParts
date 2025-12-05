@@ -1,0 +1,268 @@
+{
+  "make": "Hyundai",
+  "models": [
+    {
+      "label": "Accent",
+      "modifications": {
+        "accent-i-hatchback": "Accent I Hatchback (10.1994 - 01.2000)",
+        "accent-i-sedan": "Accent I Sedan (10.1994 - 01.2000)",
+        "accent-ii-hatchback": "Accent II Hatchback (09.1999 - 11.2005)",
+        "accent-ii-sedan": "Accent II Sedan (09.1999 - 12.2006)",
+        "accent-iii-hatchback": "Accent III Hatchback (11.2005 - 11.2010)",
+        "accent-iii-sedan": "Accent III Sedan (11.2005 - 11.2010)",
+        "accent-iv-hatchback": "Accent IV Hatchback (11.2010 - 01.2017)",
+        "accent-iv-sedan": "Accent IV Sedan (08.2010 - 01.2017)",
+        "accent-v-sedan": "Accent V Sedan (01.2017 - ...)"
+      }
+    },
+    {
+      "label": "Atos",
+      "modifications": {
+        "atos-hatchback": "Atos Hatchback (02.1998 - ...)",
+        "atos-prime": "Atos Prime (08.1999 - ...)"
+      }
+    },
+    {
+      "label": "Coupe",
+      "modifications": {
+        "coupe-coupe-facelift": "Coupe Coupe Facelift (08.1999 - 04.2002)",
+        "coupe-coupe-i": "Coupe Coupe I (06.1996 - 04.2002)",
+        "coupe-coupe-ii": "Coupe Coupe II (08.2001 - 08.2009)"
+      }
+    },
+    {
+      "label": "Elantra",
+      "modifications": {
+        "elantra-coupe": "Elantra Coupe (09.2012 - ...)",
+        "elantra-hatchback": "Elantra Hatchback (06.2000 - 07.2006)",
+        "elantra-sedan-i": "Elantra Sedan I (06.1995 - 10.2000)",
+        "elantra-sedan-ii": "Elantra Sedan II (06.2000 - 07.2006)",
+        "elantra-sedan-iii": "Elantra Sedan III (11.2005 - 12.2011)",
+        "elantra-sedan-iv": "Elantra Sedan IV (08.2010 - 09.2015)",
+        "elantra-sedan-v": "Elantra Sedan V (09.2015 - ...)",
+        "elantra-wagon": "Elantra Wagon (02.1996 - 10.2000)"
+      }
+    },
+    {
+      "label": "Equus",
+      "modifications": {
+        "equus-sedan-i": "Equus Sedan I (10.1999 - 03.2009)",
+        "equus-sedan-ii": "Equus Sedan II (03.2009 - 12.2016)"
+      }
+    },
+    {
+      "label": "Galloper",
+      "modifications": {
+        "galloper-suv-i": "Galloper SUV I (09.1991 - 07.1998)",
+        "galloper-suv-ii": "Galloper SUV II (02.1997 - 12.2003)"
+      }
+    },
+    {
+      "label": "Genesis",
+      "modifications": {
+        "genesis-coupe": "Genesis Coupe (01.2008 - 12.2015)",
+        "genesis-sedan-i": "Genesis Sedan I (01.2008 - 12.2015)",
+        "genesis-sedan-ii": "Genesis Sedan II (03.2014 - ...)"
+      }
+    },
+    {
+      "label": "Getz",
+      "modifications": {
+        "getz-hatchback": "Getz Hatchback (08.2002 - ...)"
+      }
+    },
+    {
+      "label": "Grandeur",
+      "modifications": {
+        "grandeur-sedan-i": "Grandeur Sedan I (12.1998 - 12.2005)",
+        "grandeur-sedan-ii": "Grandeur Sedan II (06.2003 - 06.2012)",
+        "grandeur-sedan-iii": "Grandeur Sedan III (01.2011 - 12.2016)"
+      }
+    },
+    {
+      "label": "H-1",
+      "modifications": {
+        "h-1-box": "H-1 Box (10.1997 - 12.2007)",
+        "h-1-cargo": "H-1 Cargo (09.2007 - ...)",
+        "h-1-platform": "H-1 Platform (06.2000 - 10.2005)",
+        "h-1-starex": "H-1 Starex (06.1997 - 12.2007)",
+        "h-1-travel": "H-1 Travel (09.2007 - ...)"
+      }
+    },
+    {
+      "label": "H100",
+      "modifications": {
+        "h100-box": "H100 Box (07.1993 - 12.2004)",
+        "h100-bus": "H100 Bus (07.1993 - 10.2004)",
+        "h100-platform-i": "H100 Platform I (07.1993 - 08.1998)",
+        "h100-platform-ii": "H100 Platform II (01.2004 - ...)"
+      }
+    },
+    {
+      "label": "H350",
+      "modifications": {
+        "h350-box": "H350 Box (04.2015 - ...)",
+        "h350-bus": "H350 Bus (04.2015 - ...)",
+        "h350-platform": "H350 Platform (04.2015 - ...)"
+      }
+    },
+    {
+      "label": "i10",
+      "modifications": {
+        "i10-hatchback-i": "i10 Hatchback I (10.2007 - 12.2013)",
+        "i10-hatchback-ii": "i10 Hatchback II (08.2013 - 12.2019)",
+        "i10-hatchback-iii": "i10 Hatchback III (09.2019 - ...)",
+        "i10-sedan": "i10 Sedan (12.2013 - 12.2019)"
+      }
+    },
+    {
+      "label": "i20",
+      "modifications": {
+        "i20-active": "i20 ACTIVE (09.2015 - 12.2019)",
+        "i20-coupe": "i20 Coupe (05.2015 - 12.2019)",
+        "i20-hatchback-i": "i20 Hatchback I (08.2008 - 12.2014)",
+        "i20-hatchback-ii": "i20 Hatchback II (11.2014 - 12.2019)"
+      }
+    },
+    {
+      "label": "i30",
+      "modifications": {
+        "i30-combi-i": "i30 Combi I (10.2007 - 06.2012)",
+        "i30-combi-ii": "i30 Combi II (06.2012 - 12.2017)",
+        "i30-combi-iii": "i30 Combi III (03.2017 - ...)",
+        "i30-coupe": "i30 Coupe (05.2013 - ...)",
+        "i30-hatchback-i": "i30 Hatchback I (10.2007 - 11.2011)",
+        "i30-hatchback-ii": "i30 Hatchback II (06.2011 - 12.2016)",
+        "i30-hatchback-iii": "i30 Hatchback III (11.2016 - ...)"
+      }
+    },
+    {
+      "label": "i40",
+      "modifications": {
+        "i40-sedan": "i40 Sedan (03.2012 - ...)",
+        "i40-station-wagon": "i40 Station Wagon (07.2011 - ...)"
+      }
+    },
+    {
+      "label": "IONIQ",
+      "modifications": {
+        "ioniq-hatchback": "IONIQ Hatchback (03.2016 - ...)"
+      }
+    },
+    {
+      "label": "ix20",
+      "modifications": {
+        "ix20-hatchback": "ix20 Hatchback (11.2010 - 05.2019)"
+      }
+    },
+    {
+      "label": "ix35",
+      "modifications": {
+        "ix35-suv": "ix35 SUV (09.2009 - 03.2015)"
+      }
+    },
+    {
+      "label": "ix55",
+      "modifications": {
+        "ix55-suv": "ix55 SUV (09.2006 - 12.2012)"
+      }
+    },
+    {
+      "label": "Kona",
+      "modifications": {
+        "kona-suv": "Kona SUV (06.2017 - ...)"
+      }
+    },
+    {
+      "label": "Lantra",
+      "modifications": {
+        "lantra-i-sedan": "Lantra I Sedan (10.1990 - 11.1995)",
+        "lantra-ii-sedan": "Lantra II Sedan (06.1995 - 10.2000)",
+        "lantra-ii-wagon": "Lantra II Wagon (02.1996 - 10.2000)"
+      }
+    },
+    {
+      "label": "Matrix",
+      "modifications": {
+        "matrix-minivan": "Matrix Minivan (06.2001 - 08.2010)"
+      }
+    },
+    {
+      "label": "Pony",
+      "modifications": {
+        "pony-ii-hatchback": "Pony II Hatchback (10.1989 - 01.1995)",
+        "pony-ii-sedan": "Pony II Sedan (09.1989 - 01.1995)"
+      }
+    },
+    {
+      "label": "S Coupe",
+      "modifications": {
+        "s-coupe-coupe": "S Coupe Coupe (02.1990 - 05.1996)"
+      }
+    },
+    {
+      "label": "Santa Fe",
+      "modifications": {
+        "santa-fe-i-suv": "Santa Fe I SUV (11.2000 - 03.2006)",
+        "santa-fe-ii-suv": "Santa Fe II SUV (10.2005 - 12.2012)",
+        "santa-fe-iii-suv": "Santa Fe III SUV (09.2012 - 12.2018)",
+        "santa-fe-iv-suv": "Santa Fe IV SUV (02.2018 - ...)"
+      }
+    },
+    {
+      "label": "Santamo",
+      "modifications": {
+        "santamo-van": "Santamo Van (10.1998 - 12.2002)"
+      }
+    },
+    {
+      "label": "Sonata",
+      "modifications": {
+        "sonata-ii-sedan": "Sonata II Sedan (09.1988 - 10.1993)",
+        "sonata-iii-sedan": "Sonata III Sedan (05.1993 - 08.1998)",
+        "sonata-iv-sedan": "Sonata IV Sedan (03.1998 - 12.2005)",
+        "sonata-v-sedan": "Sonata V Sedan (01.2005 - 12.2010)",
+        "sonata-vi-sedan": "Sonata VI Sedan (01.2009 - 12.2015)",
+        "sonata-vii-sedan": "Sonata VII Sedan (09.2014 - ...)"
+      }
+    },
+    {
+      "label": "Terracan",
+      "modifications": {
+        "terracan-suv": "Terracan SUV (06.2001 - 12.2008)"
+      }
+    },
+    {
+      "label": "Tiburon",
+      "modifications": {
+        "tiburon-coupe": "Tiburon Coupe (01.2001 - 12.2008)"
+      }
+    },
+    {
+      "label": "Trajet",
+      "modifications": {
+        "trajet-minivan": "Trajet Minivan (03.2000 - 07.2008)"
+      }
+    },
+    {
+      "label": "Tucson",
+      "modifications": {
+        "tucson-suv-i": "Tucson SUV I (06.2004 - 11.2010)",
+        "tucson-suv-ii": "Tucson SUV II (08.2009 - 10.2015)",
+        "tucson-suv-iii": "Tucson SUV III (05.2015 - ...)"
+      }
+    },
+    {
+      "label": "Veloster",
+      "modifications": {
+        "veloster-coupe": "Veloster Coupe (03.2011 - 12.2017)"
+      }
+    },
+    {
+      "label": "XG",
+      "modifications": {
+        "xg-sedan": "XG Sedan (12.1998 - 12.2005)"
+      }
+    }
+  ]
+}

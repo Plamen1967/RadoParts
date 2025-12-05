@@ -1,0 +1,89 @@
+// legend {
+//     background-color: #000;
+//     color: #fff;
+//     padding: 3px 6px;
+// }
+
+.position-buttons {
+    position: fixed;
+    bottom: 30px;
+    right: 0px;
+}
+.card-form-spec 
+{
+    background-color:#c1f0f2;
+}
+
+.description-car {
+    font-weight: 600;
+}
+.customer-legend:before {
+    left: 100px;
+}
+
+.noDisplay {
+    display: none!important;
+}
+fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 0.5em 0.5em 0.5em !important;
+}
+
+legend.scheduler-border {
+    font-size: 0.8em !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 5px;
+    border-bottom: none;
+}
+.custom-control-label {
+    font-size: 1.2em;
+}
+.custom-control-input {
+    margin-top: 2px;
+    margin-right: 8px;
+}
+.close {
+    background-image: url(https://bit.ly/29QeT21);
+    background-repeat: no-repeat;
+    bottom: 418px;
+    display: none;
+    height: 32px;
+    left: 462px;
+    margin-top: -32px;
+    position: relative;
+    width: 32px;
+}
+input[type=radio] {
+    width: 15px;
+    height: 15px;
+}
+.expand {
+    bottom: 125px;
+    margin-left: -32px;
+    margin-right: 16px;
+    pointer-events: none;
+    position: relative;
+}
+
+#wrapper {
+    margin: auto;
+    padding: 10px;
+    text-align: center;
+    width: 500px;
+}
+
+.img-thumbnail {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.title {
+    background-color: rebeccapurple;
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+

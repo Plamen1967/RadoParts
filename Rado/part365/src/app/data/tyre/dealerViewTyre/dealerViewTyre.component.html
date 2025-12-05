@@ -1,0 +1,27 @@
+@if (item_) {
+    <div class="tyre-card card">
+        @if (item_.isRim && item_.isTyre) {
+            <div class="rim-with-tyre-header header">Джанта с гума</div>
+        }
+        @if (item_.isRim) {
+            <div class="tyre-header header">Джанта  {{ item_.companyName}} {{ item_.modelName}}</div>
+
+            @for (tag of item_.rimTagsMap; track tag[1]) {
+                @if (tag[1]) {
+                    <app-datarow class="item_" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
+                }
+            }
+        }
+        @if (item_.isTyre) {
+            <div class="tyre-header header">Гума</div>
+
+            @for (tag of item_.tyreTagsMap; track tag[1]) {
+                @if (tag[1]) {
+                    <app-datarow class="item_" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
+                }
+            }
+        }
+
+        <app-row class="background" [label]="'Цена'" [value]="item_.price?.toString()" [price]="true"></app-row>
+    </div>
+}

@@ -1,0 +1,50 @@
+<form>
+  <div class="selected form-select-sm d-flex justify-content-between" [ngClass]="{'rotated':active}">
+    <div  class="selection" (click)="clickSelect($event)">{{_selection}}</div>
+    <div class="button-group">
+      <div class="close-button" data-toggle="tooltip" data-placement="top" title="Изчисти избора" *ngIf="clearBox"
+        (click)="clear($event)">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16" height="16" viewBox="0 0 50 50">
+          <path
+            d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z">
+          </path>
+        </svg>
+      </div>
+      <div class="selected-button" [ngClass]="{'rotate':active}" (click)="clickSelect($event)">
+      </div>
+    </div>
+  </div>
+  <div *ngIf="submitted" class="invalid-feedback d-block">
+    <small>{{errorMessage}}</small>
+  </div>
+  <div class="select-box shadow" #selectBox>
+    <input *ngIf="useFilter" id='Input' #filterElem type="text" (ngModelChange)="filterChange($event)" name="filter"
+      value="filter" [ngClass]="{'filter':true, 'active': active, 'notActive':!active}" [ngModel]="filter"
+      [ngModelOptions]="{standalone: true}">
+
+    <div class="options-container col-sm-5" #optionsContainer [ngClass]="{'active': active, 'notActive':!active}">
+      <ng-container *ngFor="let item of _data">
+
+        <div *ngIf="item.showItem" id="Item{{item.display}}" class="option form-select-sm" [ngClass]="{'group': item.group, 
+                                'disable': item.isElementDisabled, 'letter': item.isLetter,
+                                'selected-option': item.isSelected}" (click)="clickItem($event, item)"
+          [disabled]="item.elementDisabled">
+          <ng-container *ngIf="item.isLetter">
+            <div class="d-inline-flex">
+              <ng-container *ngFor="let letter of item[displayProperty]">
+                <div class="me-1 letter-style" (click)="clickLetter($event, letter, item)">{{letter}}</div>
+              </ng-container>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!item.isLetter">
+            <!-- <input type="radio" class="radio" id="{{item[valueProperty]}}" name="category"
+              [disabled]="item.isElementDisabled"> -->
+            <div class="display-style">
+              <label class="label" for="{{item[valueProperty]}}">{{item.display}}</label>
+              <div class="label" *ngIf="item.count">{{item.count}}</div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>

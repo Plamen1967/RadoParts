@@ -1,0 +1,191 @@
+@if (!updatedItem) {
+    <div class="data-container">
+        <div class="leftPanel"></div>
+        <div class="mt-2">
+            <ng-container>
+                <div id="top">
+                    <div class="text-dark mb-3 viewContainer p-0" [ngStyle]="{ display: displayValue }">
+                        <!--  -->
+                        @if (showNavigation && this.dataManager) {
+                            <div class="button-top">
+                                <div class="row">
+                                    <div class="my-3 transparant">
+                                        <div class="text-center">
+                                            <button
+                                                mat-raised-button
+                                                matTooltip="Предишен"
+                                                matTooltipPosition="above"
+                                                type="button"
+                                                [ngStyle]="{ opacity: first ? '0' : '100' }"
+                                                class="btn btn-primary buttonSize me-2"
+                                                (click)="previousElem()">
+                                                <span class="material-icons"> west </span>
+                                            </button>
+                                            @if (!last) {
+                                                <button type="button" class="btn btn-primary buttonSize ms-2" mat-raised-button matTooltip="Следващ" matTooltipPosition="above" (click)="nextElem()">
+                                                    <span class="material-icons"> east </span>
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div lass="mt-2 mt-5 me-2">
+                                    <div class="d-grid gap-2 d-md-block text-center">
+                                        <button type="button" class="btn btn-primary active me-2" (click)="goBack()"><i class="las la-reply"></i> Назад</button>
+                                        @if (displayButton) {
+                                            <button type="button" class="btn btn-primary active me-2" (click)="goSearch()"><i class="las la-filter me-1"></i>{{ labels.TOSEARCH }}</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (item) {
+                            <div class="itemContainer">
+                                <div class="description col-sm-6 border-container">
+                                    <div class="position-relative">
+                                        @if (showFavourite) {
+                                            <app-favourite [id]="item.id"></app-favourite>
+                                        }
+                                    </div>
+                                    <div class="d-flex m-2" style="width: 100%; height: 260px; justify-content: center">
+                                        @if (images2 && images2.length) {
+                                            <app-image-carousel [images]="images2" style="width: 100%; height: inherit"> </app-image-carousel>
+                                        } @else {
+                                            @if (!this.loadingPictures) {
+                                                <div style="width: '260px'; height: '260px'">
+                                                    <img
+                                                        loading="lazy"
+                                                        src="assets/NoImage.jpg"
+                                                        [ngStyle]="{ 'object-fit': 'contain', 'max-width': '100%', height: '100%', overflow: 'hidden' }"
+                                                        alt="" />
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="description ps-2 me-2">
+                                        <app-datarow class="item" label="{{ labels.DETAILS }}" value="{{ item.descriptionModel }}"> </app-datarow>
+
+                                        @for (tag of item.partTagsMap; track tag[1]) {
+                                            @if (tag[1]) {
+                                                <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
+                                            }
+                                        }
+                                        @if (item.isRim && item.isTyre) {
+                                            <h5>Джанта с гума</h5>
+                                        }
+
+                                        @if (item.isRim) {
+                                            <div class="label">Джанта - {{ item.companyName }}</div>
+
+                                            @for (tag of item.rimTagsMap; track tag[1]) {
+                                                @if (tag[1]) {
+                                                    <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
+                                                }
+                                            }
+                                        }
+                                        @if (item.isTyre) {
+                                            <div class="mt-1 label">Гума</div>
+
+                                            @for (tag of item.tyreTagsMap; track tag[1]) {
+                                                @if (tag[1]) {
+                                                    <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
+                                                }
+                                            }
+                                        }
+                                        <!-- @if (isPart) {
+                                    <app-partdetailview [part]="item"></app-partdetailview>
+                                }
+                                @if (isTyre) {
+                                    <app-tyredetailview [tyre]="item"></app-tyredetailview>
+                                } -->
+                                        @if (item.year) {
+                                            <app-datarow class="item" label="{{ labels.YEAR }}" value="{{ item.year }}"></app-datarow>
+                                        }
+                                        <app-datarow class="item" label="{{ labels.MODIFIEDTIME }}" value="{{ item.modifiedTimeDesc }}"></app-datarow>
+                                        @if (item.price) {
+                                            <app-datarow class="item" label="{{ labels.PRICE }}" data-cy="price" [price]="true" value="{{ price }}"> </app-datarow>
+                                        }
+                                        @if (phones && !isMobile) {
+                                            <app-datarow label="{{ labels.PHONE }}">
+                                                <div class="param col-sm-7">
+                                                    <ng-template [ngIf]="phone1">
+                                                        <div>
+                                                            <small data-cy="sellerName" class="me-2"><i class="las la-phone-volume"></i> {{ phone1 }} </small>
+                                                        </div>
+                                                    </ng-template>
+                                                    <ng-template [ngIf]="phone2">
+                                                        <div>
+                                                            <small data-cy="sellerName"
+                                                                ><i class="las la-phone-volume"></i>
+                                                                {{ phone2 }}
+                                                            </small>
+                                                        </div>
+                                                    </ng-template>
+                                                </div>
+                                            </app-datarow>
+                                        }
+                                    </div>
+                                    @if (canEdit) {
+                                        <div class="d-flex justify-content-end mb-2 mt-2">
+                                            <button type="button" class="me-2 btn btn-info" (click)="change()">Промени</button>
+                                            <button type="button" class="btn btn-danger" id="part.id" (click)="onDelete()">Изтрий</button>
+                                        </div>
+                                    }
+
+                                    <div lass="mt-2 mt-5 me-2">
+                                        <div class="d-grid gap-2 d-md-block text-center">
+                                            <button type="button" class="btn btn-primary active me-2" (click)="goBack()"><i class="las la-reply"></i> Назад</button>
+                                            @if (displayButton) {
+                                                <button type="button" class="btn btn-primary active me-2" (click)="goSearch()"><i class="las la-filter me-1"></i>{{ labels.TOSEARCH }}</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dealer col-sm-3">
+                                    <div class="mt-2">
+                                        <app-usercard [viewItem]="item"></app-usercard>
+                                    </div>
+                                    @if (showRequestEmail && !sent) {
+                                        <app-requestbyemail [id]="item.id!" [itemType]="item.itemType" (messageSent)="sent = true"> </app-requestbyemail>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="rightPanel"></div>
+    </div>
+} @else {
+    <app-updateadd [displayPartView]="updatedItem" (saved)="savedEvent($event)" (back)="backEvent()"></app-updateadd>
+}
+
+<ng-template #loadingTemp>
+    <div>Loading</div>
+</ng-template>
+<a class="top-link" [ngClass]="{ show: scrollToTopFlag }" id="js-top" (click)="moveToTop()" role="none">
+    <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 128 128" style="enable-background: new 0 0 128 128" xml:space="preserve">
+        <style>
+            .st0 {
+                display: none;
+            }
+
+            .st1 {
+                display: inline;
+            }
+
+            .st2 {
+                fill: #0a0a0a;
+            }
+        </style>
+        <g id="row2_1_">
+            <g id="_x34__3_">
+                <path
+                    class="st2"
+                    d="M64 .3C28.7.3 0 28.8 0 64s28.7 63.7 64 63.7 64-28.5 64-63.7S99.3.3 64 .3zm0 121C32.2 121.3 6.4 95.7 6.4 64 6.4 32.3 32.2 6.7 64 6.7s57.6 25.7 57.6 57.3c0 31.7-25.8 57.3-57.6 57.3zM38.4 58.9V66c0 2.2 1.8 3.9 3.9 3.9l15.3-12.2v28.7c0 2.2 2.3 3.2 4.4 3.2h4c2.2 0 3.9-1.8 3.9-3.9V57.2l15.8 12.7c2.2 0 3.9-1.8 3.9-3.9v-7.1L64 32.2 38.4 58.9z"
+                    id="up" />
+            </g>
+        </g>
+    </svg>
+</a>

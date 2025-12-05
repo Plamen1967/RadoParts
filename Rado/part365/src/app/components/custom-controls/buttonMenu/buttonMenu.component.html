@@ -1,0 +1,10 @@
+@if (menuOptions?.length) {
+    <div class="menu">
+        <button class="menuBtn">...</button>
+        <div class="menu-content">
+            @for (menu of menuOptions; track menu.menuId) {
+                <a (click)="menuSelected(menu.menuId)" role="none">{{ menu.menu }}</a>
+            }
+        </div>
+    </div>
+}

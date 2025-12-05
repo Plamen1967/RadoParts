@@ -1,0 +1,37 @@
+<form [formGroup]="categoryForm">
+    @if (multiselection) {
+        <app-multiselection
+        [required]="required"
+        id="categoriesId_int"
+        label="Избери категория"
+        formControlName="categoriesId_int"
+        placeHolder="Избери категория"
+        [submitted]="submitted"
+        [appToolTip]="'Избери категория'"
+            [data]="categories"
+            [multiSelection]="multiselection"
+            data-cy="categoriesId"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="Избери категория"
+            >
+        </app-multiselection>
+    } @else {
+        <app-customselect
+        [required]="required"
+        [submitted]="submitted"
+        id="categoriesId_int"
+        title="Избери категория"
+            placeHolder="Избери категория"
+            label="Избери категория"
+            formControlName="categoriesId_int"
+            [data]="categories"
+            [groupSelection]="false"
+            [appToolTip]="'Избери категория'"
+            data-cy="categoriesId"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right">
+        </app-customselect>
+    }
+    <form></form>
+</form>

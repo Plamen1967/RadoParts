@@ -1,0 +1,47 @@
+<div [ngClass]="{ select__margin: border }">
+    <div [ngClass]="{ select__container: border }">
+        <div [ngClass]="{ select__field: border }">
+            <div class="input-group d-inline-flex align-items-center">
+                @if (prefix) {
+                    <span id="id" [ngStyle]="{ 'background-color': 'lightgray' }" class="ps-1 pe-1 form-control-sm">{{ prefix }}</span>
+                }
+                <input
+                    [type]="number ? 'number' : 'text'"
+                    autocomplete="{{ autocomplete }}"
+                    placeholder="{{ placeHolder }}"
+                    pattern="{{ pattern }}"
+                    min="0"
+                    max="20"
+                    step="1"
+                    [(ngModel)]="inputValue"
+                    class="form-control shadow active"
+                    [ngClass]="{ keywordClass: keyword === true, 'is-invalid': submitted && control.invalid, currency: price, 'form-control': true, 'form-control-sm': small, active: true }"
+                    (change)="onChangeEvent()"
+                    (input)="inputFunc()"
+                    id="{{ contolName }}"
+                    aria-describedby="id" />
+
+                @if (price) {
+                    <span class="currency" [ngClass]="{ 'form-control-sm': small === true, 'form-control': small === undefined }">лв</span>
+                    @if (required) {
+                        <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '1px' }">*</span>
+                    }
+                }
+                @if (suffix) {
+                    <span id="id" [ngStyle]="{ 'background-color': 'lightgray' }" class="ps-1 pe-1 form-control-sm">{{ suffix }}</span>
+                }
+            </div>
+            <div class="select__label" [ngClass]="{ required: required }">
+                {{ label }}
+                @if (label && required) {
+                    <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
+                }
+            </div>
+        </div>
+        @if (submitted && control.invalid) {
+            <div class="invalid-feedback d-block">
+                <small>{{ errorMessage }}</small>
+            </div>
+        }
+    </div>
+</div>

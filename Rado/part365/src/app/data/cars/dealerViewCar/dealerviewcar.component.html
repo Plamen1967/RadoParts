@@ -1,0 +1,20 @@
+@if (carView) {
+    <div class="d-flex flex-column row m-0 pe-2">
+        @for (line of lines; track line.label) {
+            <app-row class="background" [label]="line.label" [value]="line.value" [price]="line.price"></app-row>
+        }
+            <!-- <app-row class="background"[label]="'Име на кола'" [value]="carView.regNumber"></app-row>
+            @if (carView.powerBHP) {
+                <app-row class="background"[label]="labels.POWERBHP" [value]="carView.powerBHP.toString()"></app-row>
+            }
+            @if (carView.description) {
+                <app-row class="background" [label]="labels.DESCRIPTION_CAR" [value]="carView.description"></app-row>
+            }
+            @if (carView.countParts) {
+                <app-row class="background" [label]="labels.PARTCOUNTS" [value]="carView.countParts.toString()"></app-row>
+            }
+            @if (carView.numberImages) {
+                <app-row class="background" [label]="'Брой снимки'" [value]="carView.numberImages.toString()"></app-row>
+            } -->
+            </div>
+}

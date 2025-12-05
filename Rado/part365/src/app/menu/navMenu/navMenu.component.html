@@ -1,0 +1,352 @@
+@if (!userId) {
+    <header id="header" class="header">
+        <div class="background-image" [ngClass]="{ show: displayBanner, noShow: !displayBanner }"></div>
+        <ng-template [ngIf]="isParts365" [ngIfElse]="radopartsMin">
+            <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin me-2">
+                <div class="menuColor header container parent" [ngStyle]="{ 'text-align': 'center', 'justify-content': 'center' }">
+                    <div>
+                        <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">Parts</div>
+                        <div class="brandFontMin" [ngStyle]="{ color: 'green' }">365</div>
+                    </div>
+                    <div></div>
+                    <div
+                        class="navbar-nav me-auto nav-item"
+                        [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
+                        [routerLinkActive]="['link-active']"
+                        [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
+                    </div>
+                </div>
+            </nav>
+        </ng-template>
+        <nav class="navbar navbar-expand-sm navbar-dark noPadding d-flex" #header>
+            <div class="container showMenu menu" [ngStyle]="{ 'max-width': '100%', width: '100%', 'justify-content': 'center' }">
+                <ng-template [ngIf]="isParts365" [ngIfElse]="radoparts">
+                    <a class="navbar-brand menuItem brand brandFont">Parts365.bg</a>
+                </ng-template>
+                <!-- <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button> -->
+                <div class="navbar-collapse collapse" ngClass="{ show: isExpanded }" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+                            <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @if (!admin) {
+                            <li>
+                                <a
+                                    id="id"
+                                    data-cy="loggedUser"
+                                    class="nav-link addObjava cursorPointer"
+                                    href="#"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    routerLink="/data/addNew"
+                                    routerLinkActive="active-link">
+                                    Добави обява
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link buttonGap checkout" routerLink="/checkout" routerLinkActive="active-link" data-toggle="tooltip" data-placement="top" title="Запази обяви">
+                                    {{ checkout }}
+                                    <!-- <div style="color: red; height: 12px; width: 12px;">
+                                        @if (localStorageItems) {
+                                            <span class="material-symbols-outlined" >
+                                                favorite
+                                                </span>
+                                        } @else {
+                                            <span class="material-icons" > favorite_border </span>                                    }
+                                        </div> -->
+                                </a>
+                            </li>
+                            @if (logged) {
+                                @if (seller) {
+                                    <li>
+                                        <a class="nav-link menuButton2" (click)="cars()" routerLink="/data/cars" routerLinkActive="active-link" data-cy="carsUrl" role="presentation">
+                                            Коли
+                                        @if (userCount$ | async; as userCount) {
+                                            @if (userCount && userCount.carCount) {
+                                                <span class="count">{{ userCount.carCount }}</span>
+                                            }
+                                        }
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link menuButton2" data-cy="cars" routerLink="/data/bus" (click)="bus()" routerLinkActive="active-link" role="presentation">
+                                            Бусове
+                                        @if (userCount$ | async; as userCount) {
+                                            @if (userCount && userCount.busCount) {
+                                                <span class="count">{{ userCount.busCount }}</span>
+                                            }
+                                        }
+                                        </a>
+                                    </li>
+                                }
+                                <li>
+                                    <a class="nav-link menuButton2" data-cy="parts" routerLink="/data/parts" (click)="parts()" routerLinkActive="active-link" role="presentation"
+                                        >Части
+                                        @if (userCount$ | async; as userCount) {
+
+                                        @if (userCount && userCount.partCarCount + userCount.partBusCount) {
+                                            <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
+                                        }
+                                    }
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-item nav-link menuButton2" data-cy="tyres" routerLink="/data/tyres" (click)="tyres()" routerLinkActive="active-link" role="presentation"
+                                        >Гуми/Джанти
+                                        @if (userCount$ | async; as userCount) {
+                                        @if (userCount && (userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount)) {
+                                            <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
+                                        }
+                                    }
+                                    </a>
+                                </li>
+                            }
+                        }
+                        @if (logged) {
+                            @if (admin) {
+                                <li class="nav-item dropdown">
+                                    <a
+                                        id="admin"
+                                        data-cy="loggedUser"
+                                        [ngStyle]="{ color: 'white' }"
+                                        class="nav-link dropdown-toggle"
+                                        href="#"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        {{ exitName }}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="admin">
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/category']">{{ labels.CATEGORY }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/subcategory']">{{ labels.SUBCATEGORY }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/dealersubcategory']">{{ labels.DEALERSUBCATEGORY }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/company']">{{ labels.COMPANY }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/company']" [queryParams]="{ bus: '1' }">Бус {{ labels.COMPANY }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/model']">{{ labels.MODEL }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/modification']">{{ labels.MODIFICATION }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/admin/users']">{{ labels.USERS }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark text-dark" (click)="logout()" role="none">Изход</a>
+                                    </ul>
+                                </li>
+                            } @else {
+                                <li class="nav-item dropdown">
+                                    <div data-bs-toggle="dropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center">
+                                        <span class="material-symbols-outlined"> person </span>
+
+                                        <a id="admin" data-cy="loggedUser" [ngStyle]="{ color: 'white' }" href="#" role="button" aria-expanded="false"> <i class="las la-user"></i>{{ exitName }} </a>
+                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="admin">
+                                        <a class="dropdown-item nav-link navbar-dark menu-color" [routerLink]="['/user/userdetails']">{{ labels.DETAILS }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark menu-color" (click)="updatePassword()" role="none">{{ labels.UPDATEPASSWORD }}</a>
+                                        <a class="dropdown-item nav-link navbar-dark menu-color" (click)="logout()" role="none">Изход</a>
+                                    </ul>
+                                </li>
+                            }
+                        } @else {
+                            <li class="nav-item">
+                                @if (!logged) {
+                                    @if (dialogLogin) {
+                                        <a
+                                            data-cy="login"
+                                            class="login nav-link menuButton menuButtonLogin"
+                                            [ngStyle]="{ color: 'white', 'background-color': 'blue' }"
+                                            (click)="login()"
+                                            role="presentation"
+                                            ><i class="las la-user"></i> Вход/Регистрация</a
+                                        >
+                                    } @else {
+                                        <a class="login nav-link menuButton menuButtonLogin" role="presentation" [ngStyle]="{ color: 'white', 'background-color': 'blue' }" [routerLink]="['/login']"
+                                            >Вход/Регистрация</a
+                                        >
+                                    }
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="head space-evenly">
+                @if (!logged) {
+                    <a class="linkClass color2" [routerLink]="['/data/addNew']">
+                        <div class="element">
+                            <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
+                        </div>
+                    </a>
+                } @else {
+                    <div class="dropdown linkClass color2" (click)="addMenu('advert')" role="presentation">
+                        <div class="element">
+                            <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
+                        </div>
+                        <li class="dropdown-content" id="advert" (click)="removeMenu('advert')" role="presentation">
+                            <ul aria-labelledby="admin" class="ulClass" [ngStyle]="{ 'z-index': '2' }">
+                                <ng-container *ngIf="logged && seller && !admin">
+                                    <a [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави Кола</a>
+                                </ng-container>
+                                <ng-container *ngIf="logged && seller && !admin">
+                                    <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }">Добави Бус</a>
+                                </ng-container>
+                                <a (click)="addPart()" role="presentation">Добави част за кола</a>
+                                <ng-container *ngIf="logged && !admin">
+                                    <a (click)="addPart(1)" role="presentation">Добави част за бус</a>
+                                    <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }">Добави Гума/Джанта</a>
+                                </ng-container>
+                            </ul>
+                        </li>
+                    </div>
+                }
+                @if (logged) {
+                    <div class="dropdown linkClass color2" (click)="addMenu('changeAdvert')" role="presentation">
+                        <div class="element">
+                            <span class="text text-body-small-pale">Моите обяви<i class="las la-newspaper iconSize"></i></span>
+                        </div>
+                        <li class="dropdown-content" [ngStyle]="{ 'min-width': '150px' }" id="changeAdvert" (click)="removeMenu('changeAdvert')" role="presentation">
+                            <ul aria-labelledby="admin" class="ulClass">
+                                @if (seller) {
+                                    <a (click)="cars()" role="presentation" class="menu"
+                                        >Коли
+                                        @if (userCount$ | async; as userCount) {
+                                            @if (userCount?.carCount) {
+                                                <span class="count">{{ userCount.carCount }}</span>
+                                            }
+                                        }
+                                    </a>
+                                    <a (click)="bus()" role="presentation" class="menu"
+                                        >Бус
+                                        @if (userCount$ | async; as userCount) {
+                                            @if (userCount?.busCount) {
+                                                <span class="count">{{ userCount.busCount }}</span>
+                                            }
+                                        }
+                                    </a>
+                                }
+                                <a (click)="parts()" role="presentation" class="menu"
+                                    >Части
+                                    @if (userCount$ | async; as userCount) {
+                                        @if (userCount && userCount.partCarCount + userCount.partBusCount) {
+                                            <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
+                                        }
+                                    }
+                                </a>
+                                @if (seller) {
+                                    <a (click)="tyres()" role="presentation" class="menu"
+                                        >Гуми/Джанти
+                                        @if (userCount$ | async; as userCount) {
+                                            @if (userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {
+                                                <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
+                                            }
+                                        }
+                                    </a>
+                                }
+                            </ul>
+                        </li>
+                    </div>
+                }
+                <div [routerLink]="['/checkout']" class="linkClass color2" style="background-color: var(--favoutite) !important" (click)="removeMenu('0')" role="presentation">
+                    <div class="element">
+                        <span class="text text-body-small-pale"
+                            >{{ checkout }}
+                            @if (count) {
+                                <i class="ms-1 la-star las saved sizeSaved"></i>
+                            } @else {
+                                <i class="ms-1 la-star lar saved sizeSaved"></i>
+                            }
+                        </span>
+                    </div>
+                </div>
+
+                @if (!logged) {
+                    @if (dialogLogin) {
+                        <div class="linkClass color2" (click)="login()" role="presentation">
+                            <div class="element">
+                                <span class="text text-body-small-pale">Вход/Регистрация <i class="las la-user iconSize"></i></span>
+                            </div>
+                        </div>
+                    } @else {
+                        <div class="linkClass color2" role="presentation">
+                            <div class="element">
+                                <a [routerLink]="['/login']" [queryParams]="{ ad: 'new' }">Вход/Регистрация</a>
+                            </div>
+                        </div>
+                    }
+                } @else {
+                    <div class="dropdown linkClass color2" (click)="addMenu('user')" role="presentation">
+                        <div class="element">
+                            <span class="text text-body-small-pale">{{ exitName }}<i class="las la-user iconSize"></i></span>
+                        </div>
+                        <li class="dropdown-content" [ngStyle]="{ 'min-width': '100px', right: '0px' }" id="user" (click)="removeMenu('user')" role="presentation">
+                            <ul aria-labelledby="admin" class="ulClass" role="presentation">
+                                <a (click)="details()" role="presentation">Детайли</a>
+                                <a (click)="updatePassword()" role="presentation">{{ labels.UPDATEPASSWORD }}</a>
+                                <a (click)="logout()" role="presentation">Изход</a>
+                            </ul>
+                        </li>
+                    </div>
+                }
+                <!-- <a *ng1If="logged" class="linkClass" (click)="logout()">
+              <div class="element">
+                  <span class="icon"><i class="las la-sign-out-alt iconSize"></i></span>
+                  <span class="text text-body-small-pale">Изход</span>
+              </div>
+          </a> -->
+            </div>
+        </nav>
+    </header>
+} @else {
+    @if (!userPage) {
+        <div>
+            <header class="user-banner d-flex flex-wrap align-items-center w-100">
+                <app-companyheader style="width: 100%" [userCompanyName]="userCompanyName"></app-companyheader>
+            </header>
+        </div>
+    }
+}
+
+<ng-template #radopartsMin>
+    <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin">
+        <div class="parent">
+            <div class="menuColor container showCompany">
+                <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">
+                    {{ companyName }}
+                </div>
+            </div>
+            <div
+                class="navbar-nav me-auto nav-item d-flex"
+                [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
+                [routerLinkActive]="['link-active']"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
+            </div>
+        </div>
+    </nav>
+</ng-template>
+
+<ng-template #radoparts>
+    <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenu">
+        <div class="menuColor container" [ngStyle]="{ height: '4em', 'text-align': 'center', 'justify-content': 'center' }">
+            <div class="brandFont" [ngStyle]="{ color: 'blue' }">
+                {{ companyName }}
+            </div>
+        </div>
+    </nav>
+</ng-template>
+
+<ng-template #menuCanvas>
+    <!-- <div class="menu-test">
+      <input type="checkbox" id="menu" class="menu-checkbox">
+      <label for="menu"><span class="navbar-toggler-icon"></span>
+      </label>
+  </div> -->
+</ng-template>

@@ -1,0 +1,42 @@
+<form [formGroup]="  modificationForm">
+
+@if (multiselection) {
+  <app-multiselection
+      id="modificationId"
+      label="Модификация"
+      placeHolder="Избери модификация"
+      formControlName="modificationsId_int"
+ 
+      [appToolTip]="'Избери модификация'"
+      [groupSelection]="false"
+      [data]="modifications"
+      [showLetter]="false"
+      [multiSelection]="multiselection"
+      [useLetter]="false"
+      [useFilter]="useFilter"
+      data-cy="modificationId"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right"
+      [required]="required"
+      [submitted]="submitted"
+      [showCount]="showCount"
+      (onClose)="focus()">
+  </app-multiselection>
+} @else {
+  <app-customselect
+      id="modificationId"
+      [data]="modifications"
+      formControlName="modificationsId_int"
+      label="Модификация"
+      [placeHolder]="'Избери модификация'"
+      [appToolTip]="'Избери модификация'"
+      [useFilter]="useFilter"
+      data-cy="modificationId"
+      [required]="required"
+      [submitted]="submitted"
+      [showCount]="showCount"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right">
+  </app-customselect>
+}
+</form>

@@ -1,0 +1,27 @@
+@if (viewPart.descriptionModel) {
+    <app-datarow label="{{ labels.DETAILS }}" value="{{ viewPart.descriptionModel }}"> </app-datarow>
+}
+@if(viewPart.partNumber) {
+    <app-datarow label="{{ labels.PART_NUMBER }}" value="{{ viewPart.partNumber }}"></app-datarow>
+}
+@if(viewPart.vin) {
+    <app-datarow label="{{ labels.VIN }}" value="{{ viewPart.vin }}"></app-datarow>
+}
+@if(viewPart.engineType) {
+    <app-datarow label="{{ labels.TYPE_ENGINE }}" value="{{ viewPart.engineTypeDesc }}"></app-datarow>
+}
+@if(viewPart.engineModel) {
+    <app-datarow label="{{ labels.CODE_ENGINE }}" value="{{ viewPart.engineModel }}"></app-datarow>
+}
+@if(viewPart.gearboxType) {
+    <app-datarow label="{{ labels.TYPE_GEARBOX }}" value="{{ viewPart.gearboxDesc }}"></app-datarow>
+}
+@if(viewPart.positionDesc) {
+    <app-datarow label="{{ labels.POSITION }}" value="{{ viewPart.positionDesc }}"></app-datarow>
+}
+@if(viewPart.millage) {
+    <app-datarow label="{{ labels.MILLAGE }}" value="{{ viewPart.millage }}"></app-datarow>
+}
+@if(viewPart.categoryName && viewPart.carId === 0) {
+    <app-datarow label="{{ labels.CATEGORY }} / {{ labels.SUBCATEGORY }}" value="{{ viewPart.categoryName }}"> </app-datarow>
+}

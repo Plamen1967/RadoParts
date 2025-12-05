@@ -1,0 +1,11 @@
+<div class="zoom-style">
+    <button class="close-button" (click)="closeDialog()"><span class="material-symbols-outlined">close</span></button>
+    <lib-ngx-image-zoom
+        style="width: 100%; height: auto; max-height: 400px"
+        [thumbImage]="myThumbnail"
+        [fullImage]="myFullresImage"
+        [magnification]="3"
+        [lensWidth]="150"
+        [lensHeight]="150"
+        [zoomMode]="'toggle'"></lib-ngx-image-zoom>
+</div>

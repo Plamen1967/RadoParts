@@ -1,0 +1,28 @@
+@if (!error) {
+    <div>
+        @if (loading) {
+            <div>
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Checking...
+                </button>
+            </div>
+        } @else {
+            <h4>Вашият акаунт е успешно активиран.</h4>
+        }
+    </div>
+} @else {
+    <h4>Активационият код {{ activationCode }} не валиден.</h4>
+}
+<ng-template #messageUserActivated>
+    <h4>Вашият акаунт е успешно активиран.</h4>
+</ng-template>
+
+<ng-template #errorTest let-c="close" let-modal>
+    <div class="modal-body">
+        <p>Моля попълнете задължителните полета</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+    </div>
+</ng-template>

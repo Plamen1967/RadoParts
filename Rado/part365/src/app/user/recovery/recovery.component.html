@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <div class="card col-sm-4 ms-auto me-auto">
+            <h4 class="card-header text-center">
+                <div class="text-center">{{ title }}</div>
+            </h4>
+            @if (account) {
+                <div class="text-center mt-2">
+                    <h6>Потребител: {{ account }}</h6>
+                </div>
+            }
+            <div class="card-body" style="background-color: aliceblue">
+                <form [formGroup]="recoveryForm" (ngSubmit)="onSubmit()" autocomplete="none">
+                    <div [ngStyle]="{ display: id ? 'none' : 'block' }">
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text"><i class="las la-user"></i></span>
+                            <input
+                                type="text"
+                                autocomplete="nope"
+                                value=""
+                                formControlName="userName"
+                                class="form-control"
+                                placeholder="{{ labels.USERNAME }}"
+                                [ngClass]="{ 'is-invalid': submitted && f['userName'].errors }" />
+                            @if (submitted && f['userName'].errors) {
+                                <div class="invalid-feedback">
+                                    @if (f['userName'].errors['required']) {
+                                        <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div [ngStyle]="{ display: id ? 'block' : 'none' }">
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text"><i class="las la-lock"></i></span>
+                            <input
+                                formControlName="password"
+                                type="{{ type }}"
+                                class="form-control"
+                                placeholder="{{ labels.PASSWORD }}"
+                                autocomplete="{{ autocomplete }}"
+                                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                            <span class="input-group-text"><i class="las" [ngClass]="{ 'la-eye': showFlag, 'la-eye-slash': !showFlag }" (click)="show()" role="none"></i></span>
+                            @if (submitted && f['password'].errors) {
+                                <div class="invalid-feedback">
+                                    @if (f['password'].errors['required']) {
+                                        <div data-cy="passwordRequired">{{ labels.PASSWORDREQUIRED }}</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text"><i class="las la-lock"></i></span>
+                            <input
+                                formControlName="confirmPassword"
+                                type="{{ type2 }}"
+                                class="form-control"
+                                placeholder="{{ labels.PASSWORD2 }}"
+                                autocomplete="{{ autocomplete }}"
+                                [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" />
+                            <span class="input-group-text"><i class="las" [ngClass]="{ 'la-eye': showFlag2, 'la-eye-slash': !showFlag2 }" (click)="show2()" role="none"></i></span>
+                            @if (submitted && f['confirmPassword'].errors) {
+                                <div class="invalid-feedback">
+                                    @if (f['confirmPassword'].errors['required']) {
+                                        <div data-cy="passwordRequired2">{{ labels.PASSWORDREQUIRED }}</div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="row justify-content-between ps-5 pe-5">
+                        <button type="submit" class="btn btn-primary col-sm-4" data-cy="ok" (click)="onOk()">Ok</button>
+                        <button class="btn btn-secondary col-sm-4" (click)="cancel()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #recoveryUserDialog id="recoveryUserDialog">
+    <header>{{ labels.MESSAGE }}</header>
+    <content>{{ labels.RECOVERYUSER }}</content>
+</ng-template>
+
+<!-- <confirm-dialog #test id="test">
+  <header>{{labels.WARNING}}</header>
+  <content>{{message}}</content>
+</confirm-dialog> -->
+
+<ng-template #xxx> </ng-template>

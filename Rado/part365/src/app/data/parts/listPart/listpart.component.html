@@ -1,0 +1,150 @@
+@if (!id) {
+    <div class="container">
+        @if (userCount$ | async; as userCount) {
+            @if (userCount && userCount.partCarCount + userCount.partBusCount) {
+               
+                <app-listtitle [title]="'Части'" [number]="getValue(userCount)"></app-listtitle>
+
+                <span class="count"></span>
+            }
+        }
+        <div [ngStyle]="{ 'background-color': '#f1f9ff' }" class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
+            <form [formGroup]="searchForm">
+                <div class="mb-3"></div>
+                <div class="d-inline-flex justify-content-between">
+                    <div class="d-inline-flex pe-2">
+                        <input id="car" type="radio" class="custom-control-input" [value]="0" data-cy="car" name="bus" formControlName="bus" />
+                        <label class="custom-control-label ps-2" for="car">{{ labels.CAR }}</label>
+                    </div>
+                    <div class="d-inline-flex pe-2">
+                        <input id="бус" type="radio" class="custom-control-input" [value]="1" data-cy="bus" name="bus" formControlName="bus" />
+                        <label class="custom-control-label ps-2" for="bus">{{ labels.BUS }}</label>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="max300px">
+                        <app-company-choise
+                            [config]="{ itemType: itemType, userId: userId!, bus: bus }"
+                            [showCount]="true"
+                            [all]="true"
+                            data-cy="companyId"
+                            formControlName="companyId"
+                            (numbers)="(numberOfParts)">
+                        </app-company-choise>
+                    </div>
+                    @if (companyId) {
+                        <div class="max300px">
+                            <app-model-choice
+                                formControlName="modelId"
+                                [itemType]="itemType"
+                                [userId]="userId!"
+                                [all]="true"
+                                [showCount]="true"
+                                [companyId]="companyId!"
+                                [groupSelection]="false"
+                                [multiselection]="false"
+                                data-cy="modelId"
+                                (onClose)="focus()">
+                            </app-model-choice>
+                        </div>
+                    }
+
+                    @if (!bus && modelId) {
+                        <div class="max350px">
+                            <app-modification-choice
+                                [itemType]="itemType"
+                                [userId]="userId!"
+                                [all]="true"
+                                [modelsId]="modelId"
+                                [multiselection]="false"
+                                formControlName="modificationId"
+                                (modifcationChange)="modificatioChanged($event)"
+                                data-cy="modificationId"
+                                (onClose)="focus()">
+                                >
+                            </app-modification-choice>
+                        </div>
+                    }
+                    <div class="col-sm-2">
+                        <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" (onClose)="focus()"> </app-select>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-sm-2 min350px">
+                        <app-category-choise
+                            id="categoryId"
+                            [appToolTip]="'Избери категория'"
+                            formControlName="categoryId"
+                            data-cy="categoryId"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Избери категория"
+                            [multiselection]="false"
+                            placeHolder="Избери категория">
+                        </app-category-choise>
+                    </div>
+                    @if (categoriesId && categoriesId.length) {
+                        <div class="col-sm-2 min350px">
+                            <app-subcategory-choise formControlName="subCategoryId" [categoriesId]="categoriesId!" [multiselection]="false" data-cy="subCategoryId" title="{{ labels.SUBCATEGORY }}">
+                            </app-subcategory-choise>
+                        </div>
+                    }
+                </div>
+                <div class="row mt-1">
+                    <div class="col-sm-3">
+                        <app-input formControlName="partNumber" placeHolder="{{ labels.PART_NUMBER }}" data-cy="partNumber"> </app-input>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="d-flex">
+                        <div class="d-flex me-2">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-sm me-2" data-cy="search" (click)="onSubmit()" #submit>{{ labels.SEARCH }}</button>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-sm" data-cy="clear" (click)="clear()" #submit>Изчисти филтъра</button>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div>
+                                <button class="btn btn-success btn-sm" data-cy="addPart" (click)="addPart()" #submit>{{ labels.ADD }} {{ labels.PART }}</button>
+                            </div>
+                            @if (!seller) {}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        @if (loading) {
+            <div>
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" data-cy="spinner" role="status" aria-hidden="true"></span>
+                    Зареждане...
+                </button>
+            </div>
+        } @else {
+            @if (parts) {
+                <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
+                @if (parts!.length) {
+                    @for (part of parts; track part.partId) {
+                        <div id="{{ part.partId }}" class="part-style">
+                            <app-dealerview
+                                [mainPicture]="part.mainPicture"
+                                [allowUpdate]="true"
+                                [partView]="part"
+                                (action)="actionPart($event)"
+                                data-cy="part.companyName"
+                                [highlighted]="currentId"></app-dealerview>
+                        </div>
+                    }
+                } @else {
+                    <h3>Части не са намерени</h3>
+                }
+                <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)"> </app-navigator>
+            }
+        }
+    </div>
+} @else {
+    <app-addpart [partId]="id" [bus]="bus" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+}
+<app-gotop></app-gotop>

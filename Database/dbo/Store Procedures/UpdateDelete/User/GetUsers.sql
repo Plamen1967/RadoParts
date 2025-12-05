@@ -1,0 +1,5 @@
+﻿CREATE PROCEDURE [dbo].[GetUsers]
+AS
+	SELECT * from [User]
+
+RETURN @@ROWCOUNT

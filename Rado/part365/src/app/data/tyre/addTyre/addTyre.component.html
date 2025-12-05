@@ -1,0 +1,230 @@
+<div class="container">
+    @if (saving) {
+        <div>
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Saving...
+            </button>
+        </div>
+    }
+    <div class="title">Гума/Джанта</div>
+    <form [formGroup]="addForm" class="p-2" style="background-color: rgb(11, 245, 233)">
+        <div class="custom-flex">
+            <div [ngClass]="{ show: params?.ad, noShow: !params?.ad }">
+                <div class="custom-flex">
+                    <div class="ps-0" [ngStyle]="{ display: 'flex' }">
+                        <app-radiogrouplist [style]="2" [radios]="radioTypes" formControlName="itemType"></app-radiogrouplist>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tyre mb-2" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
+            <h5>Гума</h5>
+            <div class="row">
+                <div class="col-sm-2 min150px">
+                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" [submitted]="submitted" [required]="true" data-cy="tyreWidth" [data]="tyreWidth" (onClose)="focus($event)">
+                    </app-select>
+                </div>
+                <div class="col-sm-2 min200px">
+                    <app-select
+                        formControlName="tyreHeight"
+                        label="{{ labels.TYRE_HEIGHT }}"
+                        [submitted]="submitted"
+                        [required]="true"
+                        data-cy="tyreHeight"
+                        [data]="tyreHeight"
+                        (onClose)="focus($event)">
+                    </app-select>
+                </div>
+                <div class="col-sm-2 min150px">
+                    <app-select
+                        formControlName="tyreRadius"
+                        label="{{ labels.TYRE_RADIUS }}"
+                        [submitted]="submitted"
+                        [required]="true"
+                        data-cy="tyreRadius"
+                        [data]="tyreRadius"
+                        (onClose)="focus($event)">
+                    </app-select>
+                </div>
+                @if (itemType === 3) {
+                    <div class="col-sm-1 min150px">
+                        <app-input formControlName="count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [required]="true"></app-input>
+                    </div>
+                }
+                <div class="col-sm-2 min150px">
+                    <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" [submitted]="submitted" data-cy="tyreType" [data]="tyreTypes" (onClose)="focus($event)" [required]="true">
+                    </app-select>
+                </div>
+                <div class="col-sm-3 min200px">
+                    <app-select
+                        id="tyreCompanyId"
+                        formControlName="tyreCompanyId"
+                        data-cy="tyreCompanyId"
+                        label="{{ labels.TYRE_PRODUCER }}"
+                        [data]="tyreProducers"
+                        [submitted]="submitted"
+                        (onClose)="focus($event)"
+                        [required]="false">
+                    </app-select>
+                </div>
+            </div>
+        </div>
+        @if (itemType === 3 || itemType === 5) {
+            <div class="row mb-2">
+                <div class="d-inline-flex align-items-end">
+                    <div class="col-sm-1 control min50px max100px me-2">
+                        <app-select id="month" tooltip="'Mесец DOT'" formControlName="monthDOT" data-cy="month" label="DOT" [data]="months" (onClose)="focus($event)" [submitted]="submitted">
+                        </app-select>
+                    </div>
+                    <div class="col-sm-1 control min50px max100px">
+                        <app-select id="year" formControlName="yearDOT" data-cy="year" [data]="years" (onClose)="focus($event)" [submitted]="submitted"> </app-select>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="rim mb-2" [ngClass]="{ show: displayRim, noShow: !displayRim }">
+            <h5>Джанта</h5>
+            <div class="row">
+                <div class="col-sm-4 control max250px">
+                    <app-company-choise id="companyId" [showCount]="false" formControlName="companyId" data-cy="companyId" [all]="true" (onClose)="focus($event)" [required]="true">
+                    </app-company-choise>
+                </div>
+                @if (this.companyId) {
+                    <div class="col-sm-5 control min300px">
+                        <app-model-choice formControlName="modelId" [showCount]="false" [groupSelection]="false" [all]="true" [companyId]="companyId!" [groupSelection]="false" [multiselection]="false">
+                        </app-model-choice>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                @if (itemType === 4) {
+                    <div class="col-sm-2 min150px">
+                        <app-select
+                            formControlName="tyreRadius"
+                            label="{{ labels.TYRE_RADIUS }}"
+                            [submitted]="submitted"
+                            [required]="true"
+                            data-cy="tyreRadius"
+                            [data]="tyreRadius"
+                            (onClose)="focus($event)">
+                        </app-select>
+                    </div>
+                }
+                <div class="col-sm-3 control min250px">
+                    <app-select
+                        id="rimMaterial"
+                        tooltip="'Материал'"
+                        formControlName="rimMaterial"
+                        data-cy="rimMaterial"
+                        label="Материал"
+                        displayProperty="text"
+                        valueProperty="value"
+                        [data]="rimMaterial"
+                        (onClose)="focus($event)"
+                        [submitted]="submitted">
+                    </app-select>
+                </div>
+                <div class="col-sm-3 control min250px">
+                    <app-select
+                        id="rimOffset"
+                        tooltip="''"
+                        formControlName="rimOffset"
+                        data-cy="rimOffset"
+                        label="Офсет"
+                        displayProperty="text"
+                        valueProperty="value"
+                        [data]="rimOffset"
+                        (onClose)="focus($event)"
+                        [submitted]="submitted">
+                    </app-select>
+                </div>
+                <div class="col-sm-3 control min150px">
+                    <app-select
+                        id="rimBoltCount"
+                        tooltip="'Брой Болтове'"
+                        formControlName="rimBoltCount"
+                        data-cy="rimBoltCount"
+                        label="Брой Болтове"
+                        [data]="rimBoltCount"
+                        (onClose)="focus($event)"
+                        [required]="true"
+                        [submitted]="submitted">
+                    </app-select>
+                </div>
+                <div class="col-sm-3 control min250px">
+                    <app-select
+                        id="rimBoltCount"
+                        tooltip="'Междуболтово разстояние'"
+                        formControlName="rimBoltDistance"
+                        data-cy="rimBoltDistance"
+                        label="Междуболтово разстояние"
+                        [data]="rimBoltDistances"
+                        (onClose)="focus($event)"
+                        [submitted]="submitted">
+                    </app-select>
+                </div>
+                <div class="col-sm-3 control min150px">
+                    <app-select
+                        id="rimBoltCount"
+                        tooltip="'Брой Болтове'"
+                        formControlName="rimCenter"
+                        data-cy="rimCenter"
+                        label="Център"
+                        [data]="rimCenters"
+                        (onClose)="focus($event)"
+                        [submitted]="submitted">
+                    </app-select>
+                </div>
+                @if (itemType !== 3) {
+                    <div class="col-sm-1 min150px">
+                        <app-input formControlName="count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [required]="true"></app-input>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" data-cy="region" [data]="regions" (onClose)="focus($event)" [submitted]="submitted">
+                </app-select>
+            </div>
+        </div>
+        <div class="row form-floating mb-2">
+            <app-textarea formControlName="description" placeHolder="{{ labels.PART_DETAILS }}" data-cy="description" [submitted]="submitted"> </app-textarea>
+        </div>
+        <div class="row g-3">
+            <div class="d-inline">
+                <app-input
+                    formControlName="price"
+                    placeHolder="{{ labels.PRICE }}"
+                    [price]="true"
+                    [submitted]="submitted"
+                    label="{{ labels.PRICE }}"
+                    data-cy="price"
+                    [inline]="false"
+                    [required]="true"></app-input>
+            </div>
+        </div>
+        <app-imagelist [id]="itemId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+
+        <div class="d-inline-flex justify-content-end">
+            <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+        </div>
+    </form>
+</div>
+
+<!-- <div class="row mt-3">
+  <ng-container *ng1If="UpdateFlag">
+      <div class="col-sm-10">
+          <app-upload [partId]="itemId" [businessCard]="false" [addPicture]="'Добави снимка'" [multiple]="true" (uploadFinished)="imageAdded($event)"></app-upload>
+      </div>
+  </ng-container>
+  <div class="col-sm-2 ms-auto">
+      <ng-container *ng1If="UpdateFlag && allowanceNotReached">
+          <button type="submit" #submit data-cy="save" class="btn btn-primary ms-auto me-2" data-cy="save" (click)="onSubmit()">{{ labels.SAVE }}</button>
+      </ng-container>
+      <button type="button" data-cy="back" (click)="goBack()" data-cy="back" class="btn btn-primary">{{ labels.GOBACK }}</button>
+  </div>
+</div>
+<app-imagelist [UpdateFlag]="true" [mainImageId]="mainImageId" [images]="images" (defaultImageEvent)="defaultImageChanged($event)" (deleteImageEvent)="deleteImage($event)"></app-imagelist>
+ -->

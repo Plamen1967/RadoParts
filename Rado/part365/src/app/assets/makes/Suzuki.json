@@ -1,0 +1,147 @@
+{
+  "make": "Suzuki",
+  "models": [
+    {
+      "label": "Alto",
+      "modifications": {
+        "alto-hatchback-i": "Alto Hatchback I (03.1979 - 08.1984)",
+        "alto-hatchback-ii": "Alto Hatchback II (09.1984 - 12.1988)",
+        "alto-hatchback-iii": "Alto Hatchback III (12.1988 - 08.1994)",
+        "alto-hatchback-iv": "Alto Hatchback IV (11.1993 - 09.1998)",
+        "alto-hatchback-v": "Alto Hatchback V (10.1998 - 08.2004)",
+        "alto-hatchback-vi": "Alto Hatchback VI (09.2004 - 12.2008)",
+        "alto-hatchback-vii": "Alto Hatchback VII (01.2009 - 11.2014)",
+        "alto-hatchback-viii": "Alto Hatchback VIII (12.2014 - ...)"
+      }
+    },
+    {
+      "label": "Baleno",
+      "modifications": {
+        "baleno-hatchback-i": "Baleno Hatchback I (03.1995 - 05.2002)",
+        "baleno-hatchback-ii": "Baleno Hatchback II (02.2016 - ...)",
+        "baleno-sedan": "Baleno Sedan (03.1995 - 12.2009)",
+        "baleno-wagon": "Baleno Wagon (08.1996 - 04.2005)"
+      }
+    },
+    {
+      "label": "Carry",
+      "modifications": {
+        "carry-box-i": "Carry Box I (10.1995 - 03.1999)",
+        "carry-box-ii": "Carry Box II (02.1999 - 07.2005)"
+      }
+    },
+    {
+      "label": "Celerio",
+      "modifications": {
+        "celerio-hatchback": "Celerio Hatchback (02.2014 - ...)"
+      }
+    },
+    {
+      "label": "Grand Vitara",
+      "modifications": {
+        "grand-vitara-i-suv": "Grand Vitara I SUV (03.1998 - 08.2006)",
+        "grand-vitara-i-suv-cabrio": "Grand Vitara I SUV Cabrio (03.1998 - 09.2005)",
+        "grand-vitara-ii-suv": "Grand Vitara II SUV (04.2005 - 08.2015)"
+      }
+    },
+    {
+      "label": "Ignis",
+      "modifications": {
+        "ignis-i-hatchback": "Ignis I Hatchback (10.2000 - 12.2005)",
+        "ignis-ii-hatchback": "Ignis II Hatchback (08.2003 - 12.2007)",
+        "ignis-iii-hatchback": "Ignis III Hatchback (10.2016 - ...)"
+      }
+    },
+    {
+      "label": "Jimny",
+      "modifications": {
+        "jimny-suv-i": "Jimny SUV I (01.1981 - 12.1998)",
+        "jimny-suv-ii": "Jimny SUV II (07.1998 - 07.2018)",
+        "jimny-suv-ii-cabrio": "Jimny SUV II Cabrio (01.1998 - 07.2018)",
+        "jimny-suv-iii": "Jimny SUV III (07.2018 - ...)"
+      }
+    },
+    {
+      "label": "Kizashi",
+      "modifications": {
+        "kizashi-sedan": "Kizashi Sedan (10.2010 - 12.2016)"
+      }
+    },
+    {
+      "label": "Liana",
+      "modifications": {
+        "liana-hatchback": "Liana Hatchback (07.2001 - 12.2007)",
+        "liana-sedan": "Liana Sedan (10.2001 - 12.2007)"
+      }
+    },
+    {
+      "label": "Maruti",
+      "modifications": {
+        "maruti-hatchback": "Maruti Hatchback (02.1983 - 12.2013)"
+      }
+    },
+    {
+      "label": "Samurai",
+      "modifications": {
+        "samurai-mini-suv": "Samurai mini SUV (09.1984 - 12.2004)",
+        "samurai-mini-suv-cabrio": "Samurai mini SUV Cabrio (04.1988 - 12.2004)"
+      }
+    },
+    {
+      "label": "Splash",
+      "modifications": {
+        "splash-hatchback": "Splash Hatchback (01.2008 - 12.2014)"
+      }
+    },
+    {
+      "label": "Swift",
+      "modifications": {
+        "swift-cabrio": "Swift Cabrio (09.1991 - 10.1996)",
+        "swift-i-hatchback": "Swift I Hatchback (10.1983 - 12.1989)",
+        "swift-ii-hatchback": "Swift II Hatchback (03.1989 - 12.2005)",
+        "swift-ii-sedan": "Swift II Sedan (03.1989 - 05.2001)",
+        "swift-iii-hatchback": "Swift III Hatchback (02.2005 - 10.2010)",
+        "swift-iv-hatchback": "Swift IV Hatchback (10.2010 - 05.2017)",
+        "swift-v-hatchback": "Swift V Hatchback (01.2017 - ...)"
+      }
+    },
+    {
+      "label": "SX4",
+      "modifications": {
+        "sx4-hatchback": "SX4 Hatchback (06.2006 - 12.2013)",
+        "sx4-s-cross": "SX4 S Cross (08.2013 - ...)",
+        "sx4-sedan": "SX4 Sedan (10.2007 - 12.2013)"
+      }
+    },
+    {
+      "label": "Vitara",
+      "modifications": {
+        "vitara-suv-i": "Vitara SUV I (07.1988 - 12.1998)",
+        "vitara-suv-i-cabrio": "Vitara SUV I Cabrio (07.1988 - 10.2002)",
+        "vitara-suv-ii": "Vitara SUV II (12.2003 - 12.2005)",
+        "vitara-suv-ii-cabrio": "Vitara SUV II Cabrio (12.2003 - 12.2005)",
+        "vitara-suv-iii": "Vitara SUV III (02.2015 - ...)"
+      }
+    },
+    {
+      "label": "Wagon R",
+      "modifications": {
+        "wagon-r--minivan-i": "Wagon R + Minivan I (10.1997 - 05.2000)",
+        "wagon-r--minivan-ii": "Wagon R + Minivan II (05.2000 - 11.2007)",
+        "wagon-r-hatchback": "Wagon R Hatchback (07.2003 - 08.2005)"
+      }
+    },
+    {
+      "label": "X-90",
+      "modifications": {
+        "x-90-coupe": "X-90 Coupe (09.1995 - 12.1997)"
+      }
+    },
+    {
+      "label": "XL-7",
+      "modifications": {
+        "xl-7-suv": "XL-7 SUV (09.2006 - 12.2009)"
+      }
+    }
+  ]
+}

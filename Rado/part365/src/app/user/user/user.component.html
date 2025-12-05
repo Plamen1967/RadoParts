@@ -1,0 +1,88 @@
+<div>
+    <form [formGroup]="userForm" [ngStyle]="{'background-color': '#f1f9ff'}" class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
+        <div class="col-sm-6">
+            <!-- <app-select formControlName="users" data-cy="users" label="{{labels.USER}}" displayProperty="userName" valueProperty="userId" [data]="users">
+            </app-select> -->
+        </div>
+       
+        <div class="row">
+            @if(dealer()) {
+                <div class="col-sm-2">
+                    <app-input formControlName="companyName" label="{{labels.COMPANYNAME}}" placeHolder="{{labels.COMPANYNAME}}" [submitted]="submitted">
+                    </app-input>
+                </div>
+
+            } @else {
+                <div class="col-sm-2">
+                    <app-input formControlName="firstName" label="{{labels.FIRSTNAME}}" placeHolder="{{labels.FIRSTNAME}}" [submitted]="submitted">
+                    </app-input>
+                </div>
+                <div class="col-sm-2">
+                    <app-input formControlName="fatherName" label="{{labels.FATHERNAME}}" placeHolder="{{labels.FATHERNAME}}" [submitted]="submitted">
+                    </app-input>
+                </div>
+                <div class="col-sm-2">
+                    <app-input formControlName="lastName" label="{{labels.LASTNAME}}" placeHolder="{{labels.LASTNAME}}" [submitted]="submitted">
+                    </app-input>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-sm-1">
+                <app-input formControlName="streetNumber" label="{{labels.STREETNUMBER}}" placeHolder="{{labels.STREETNUMBER}}" [submitted]="submitted">
+                </app-input>
+            </div>
+            <div class="col-sm-2">
+                <app-input formControlName="street" label="{{labels.STREET}}" placeHolder="{{labels.STREET}}" [submitted]="submitted">
+                </app-input>
+            </div>
+            <div class="col-sm-1">
+                <app-input formControlName="floor" label="{{labels.FLOOR}}" placeHolder="{{labels.FLOOR}}" [submitted]="submitted">
+                </app-input>
+            </div>
+            <div class="col-sm-2">
+                <app-input formControlName="appartment" label="{{labels.APPARTMENT}}" placeHolder="{{labels.APPARTMENT}}" [submitted]="submitted">
+                </app-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <app-input formControlName="city" label="{{labels.CITY}}" placeHolder="{{labels.CITY}}" [submitted]="submitted">
+                </app-input>
+            </div>
+            <div class="col-sm-2">
+                <app-select formControlName="regionId" label="{{labels.REGION}}" [submitted]="submitted" [data]="regions">
+                </app-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <app-input formControlName="phone" label="{{labels.PHONE}}" placeHolder="{{labels.PHONE}}" [submitted]="submitted">
+                </app-input>
+            </div>
+            <div class="col-sm-2">
+                <app-input formControlName="phone2" label="{{labels.PHONE2}}" placeHolder="{{labels.PHONE2}}" [submitted]="submitted">
+                </app-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <app-input formControlName="email" label="{{labels.EMAIL}}" placeHolder="{{labels.EMAIL}}" [submitted]="submitted">
+                </app-input>
+            </div>
+            <div class="col-sm-4">
+                <app-input formControlName="webPage" label="{{labels.WEBPAGE}}" placeHolder="{{labels.WEBPAGE}}" [submitted]="submitted">
+                </app-input>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button class="btn saveButton g-3" (click)="update()">
+                {{labels.SAVE}}
+            </button>
+            <button [disabled]="!loggedUser" class="btn btn-primary g-3" (click)="recoveryPassword()">
+                {{labels.RECOVERPASSWORD}}
+            </button>
+        </div>
+    </form>
+</div>>

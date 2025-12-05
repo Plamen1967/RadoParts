@@ -1,0 +1,17 @@
+<form [formGroup]="companyForm">
+    <app-customselect
+        data-testid="customer-selectid"
+        id="companyId"
+        label="Марка"
+        [appToolTip]="'Избери марката'"
+        [placeHolder]="'Избери марка'"
+        formControlName="companyId_int"
+        [select]="companyId"
+        data-cy="companyId"
+        [useFilter]="true"
+        [required]="required"
+        [submitted]="submitted"
+        [data]="companies"
+        [showCount]="showCount">
+    </app-customselect>
+</form>

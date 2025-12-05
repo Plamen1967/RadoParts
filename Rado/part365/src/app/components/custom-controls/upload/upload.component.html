@@ -1,0 +1,43 @@
+<div class="row" style="margin-bottom: 15px">
+    <div>
+        @if (multiple) {
+            <input type="file" #file placeholder="Choose file" style="display: none" (change)="uploadFile($event)" multiple accept="image/png, image/jpeg" />
+            <button type="button" class="btn me-2 mt-1 mb-1 d-inline-flex buttonAddImage" (click)="cameraOn = false; file.click()">
+                <span class="material-symbols-outlined me-2"> cloud_upload</span>
+                <div >{{ addPicture }}</div>
+            </button>
+            @if (camera) {
+                <button type="button" class="btn mt-1 mb-1 buttonAddImage d-inline-flex" (click)="cameraClick()">
+                    <span class="material-symbols-outlined me-2">add_a_photo</span>
+                    <div>Направи снимка</div>
+                </button>
+            }
+        } @else {
+            <input type="file" #file placeholder="Choose file" style="display: none" (change)="uploadFile($event)" accept="image/png, image/jpeg" />
+            <button type="button" class="btn btn-success mt-1 mb-1" (click)="file.click()">{{ buttonMessage }}</button>
+        }
+        <!-- " -->
+    </div>
+    <div class="col-md-4">
+        @if (progress > 0 && progress < 100) {
+            <span class="upload"> {{ progress }}% </span>
+        }
+        @if (message) {
+            <span class="upload">
+                {{ message }}
+            </span>
+        }
+    </div>
+</div>
+
+@if (cameraOn) {
+    <app-camera (getPicture)="handleImage($event)"></app-camera>
+}
+
+<!-- <div class="webcam-image" *ng1If="webcamImage">
+  <img [src]="webcamImage.imageAsDataUrl" />
+</div> -->
+
+<!-- <input type="file" #file placeholder="Choose file"  style="display:none;" multiple>  -->
+<!-- (change)="uploadFile(file.files)" -->
+<!-- <button type="button" class="btn me-2 mt-1 mb-1 buttonAddImage" (click)="cameraOn=false;file.click()"><img class="addImage" src="images/svg/addPicture.svg" alt=""> {{addPicture}} </button> -->

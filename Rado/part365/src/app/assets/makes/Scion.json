@@ -1,0 +1,11 @@
+{
+  "make": "Scion",
+  "models": [
+    {
+      "label": "xA",
+      "modifications": {
+        "xa-hatchback": "xA Hatchback (2004 - 2006)"
+      }
+    }
+  ]
+}

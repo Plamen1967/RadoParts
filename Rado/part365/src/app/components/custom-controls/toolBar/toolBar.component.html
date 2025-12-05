@@ -1,0 +1,10 @@
+<div class="hstack gap-1 p-1 d-inline-flex justify-content-end">
+    @if (cancel) {
+        <app-cancelbutton [label]="cancelName" (cancelEvent)="clickCancel()"></app-cancelbutton>
+    }
+    @if (save) {
+        <app-savebutton class="me-2" [changed]="changed" [label]="saveName" (saveEvent)="clickSave()"></app-savebutton>
+    }
+
+
+</div>

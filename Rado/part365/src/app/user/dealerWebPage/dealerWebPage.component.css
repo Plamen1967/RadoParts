@@ -1,0 +1,55 @@
+.data-container {
+    display: grid;
+    /* background-image: url('/assets/backgroud-company.JPG'); */
+}
+.active-route {
+    background-color: blueviolet;
+    color: yellow!important;
+    border-radius: 2px;
+}
+.leftPanel,
+.righPanel {
+    width: 0px;
+}
+
+.title {
+    font-style: italic;
+}
+
+@media (min-width: 760px) {
+    .data-container {
+        grid-template-columns: 1fr 8fr 1fr;
+    }
+    .leftPanel,
+    .righPanel {
+        width: auto;
+    }
+}
+
+body {
+    background-color: rgb(239, 180, 188);
+}
+
+.menu {
+    background-color: rgb(123, 123, 236);
+    color: white;
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    padding: 4px 12px;
+    color: white;
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.menu-item:not(:last-child) {
+    border-right: 1px solid black;
+}

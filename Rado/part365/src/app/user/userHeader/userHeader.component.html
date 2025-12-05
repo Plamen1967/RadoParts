@@ -1,0 +1,66 @@
+<div class="flexItem companyDetails dataClass ps-2 pe-2">
+    <div class="flexItem">
+        <div class="row p-0 m-0 w-100" style="align-items: center">
+            <div class="companyFont fw-bold d-flex justify-content-center">{{ user.companyName }}</div>
+        </div>
+        @if (businessCardimage && businessCardimage.imageSrc) {
+            <div class="details mb-2">
+                <div class="flexItem">
+                    <div class="container-description">
+                        <p class="description">
+                            {{ description }}
+                            @if (region) {
+                                <br>
+                                {{ labels.REGION }}: {{ region }} 
+                            }
+                            @if (user.address) {
+                            <br>
+                                Адрес: {{ user.address }} {{ user.city }} 
+                            }
+                    
+                            @if (businessCardimage && businessCardimage.imageSrc) {
+                                <img class="height-max businessCard" src="{{ businessCardimage.imageSrc }}" alt="busness card" />
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (phones?.length) {
+            <div class="d-flex mb-1 w-100 mt-1 mb-2 justify-content-center">
+                <div class="row1 phone-distance">
+                    @if (phone1) {
+                        <div class="mb-1">
+                            <app-phone [phone]="phone1"></app-phone>
+                        </div>
+                    }
+                    @if (phone2) {
+                        <div>
+                            <app-phone [phone]="phone2"></app-phone>
+                        </div>
+                    }
+                </div>
+                <div class="row1">
+                    @if (viber) {
+                        <div class="mb-1">
+                            <app-viber [number]="viber"></app-viber>
+                        </div>
+                    }
+                    @if (whats) {
+                        <div>
+                            <app-whats [number]="whats"></app-whats>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        <!-- @if (user.webPage) {
+            <app-datarow label="{{ labels.WEBPAGE }}">
+                <div class="param">
+                    <app-webpage [webPage]="user.webPage"></app-webpage>
+                </div>
+            </app-datarow>
+        } -->
+    </div>
+</div>

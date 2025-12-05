@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ImageTest": {
+      "commandName": "Project",
+      "commandLineArgs": "audio.png",
+      "workingDirectory": "D:\\test\\images"
+    }
+  }
+}

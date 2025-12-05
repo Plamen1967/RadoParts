@@ -1,0 +1,15 @@
+<div [ngClass]="{ paddingClass: positionEnd === 1 ? true : false, positionEnd: positionEnd === 0 ? true : false }" [ngClass]="{ 'min-width': '1.8em' }" role="none">
+    @if (isSaved) {
+        <div>
+            <button data-toggle="tooltip" data-placement="top" title="Отмени запазена обява" class="favoirite saved" (click)="unsave()">
+                <span class="material-icons"> favorite </span>
+            </button>
+        </div>
+    } @else {
+        <div>
+            <button data-toggle="tooltip" data-placement="top" title="Запази обява" class="favoirite unSaved" (click)="save()">
+                <span class="material-icons"> favorite_border </span>
+            </button>
+        </div>
+    }
+</div>

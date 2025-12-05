@@ -1,0 +1,50 @@
+.close-button {
+    height: 16px;
+    width: 16px;
+}
+.selection {
+    flex-grow: 1;
+    border: none;
+    padding: none;
+}
+
+.selected {
+    align-items: center;
+    background: white;
+    border-radius: 0px;
+    color: black;
+    position: relative;
+    order: 0;
+    display: block;
+    height: 28px;
+}
+
+.button-group {
+    display: inline-flex;
+    justify-content: flex-end;
+}
+
+.selected-button
+{
+    content: "";
+    color: black;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");    
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 16px 12px;
+    width: 26px;
+    padding-left: 2px;
+    padding-right: 2px;
+    height: 24px;
+}
+
+.rotated
+{
+    border-radius: 10px;
+    border: 2px solid red;
+    transition: all 0.4s;
+    transform: rotate(180deg);
+    font-weight: bold;
+}
+
+

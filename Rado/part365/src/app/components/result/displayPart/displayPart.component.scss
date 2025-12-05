@@ -1,0 +1,241 @@
+
+.display-container 
+{
+    border-radius: 25px;
+    padding: 4px;
+}
+
+small {
+    margin-bottom: 0px ;
+}
+.cdpljr {
+    display: flex;
+    -webkit-box-align: center;
+    position: absolute;
+    z-index: 1;
+    flex-flow: wrap;
+    align-items: flex-start;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(36, 45, 61, 0.72);
+    color: rgb(255, 255, 255);
+    top: 16px;
+    left: 16px;
+}
+.dealer-style {
+    height: 120px;
+    padding: 3px;
+}
+
+.containerClass {
+    margin-top: 2px;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    padding-right: 2px;
+}
+
+.container-style {
+    border: 1px solid lightgray;
+    box-shadow: 2px 2px lightgray;
+    position: relative;
+    min-height: 210px;
+    background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(209, 214, 255, 1) 36%, rgba(100, 149, 237, 1) 100%);
+}
+
+
+
+.favouriteClass {
+    display: block;
+    min-width: 1.8em;
+    order: 3;
+}
+
+
+.imageSize {
+    object-fit: contain ;
+}
+.favouriteMinClass {
+    padding-top: 5px;
+    display: none;
+    justify-content: center;
+}
+
+.favoriteClass {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 10px;
+    padding-right: 2px;
+}
+
+.blocked {
+    background-color: rgb(238, 52, 5)
+}
+
+.notApproved {
+    background-color: lightgreen;
+}
+
+.approved {
+    background-color: rgb(204, 255, 255)
+}
+
+.highlighted {
+    background-color: beige;
+    border: 2px solid red;
+}
+
+.normal {
+    background-image: linear-gradient(135deg, white 40%, #2467e4);
+}
+
+
+.imageDealerWebPage {
+    width: 100%;
+}
+
+.deatailsDealerWebPage {
+    width: 100%;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+
+
+.imageDiv {
+    box-sizing: border-box;
+    float: left;
+    margin-bottom: 2px;
+    padding: 2px;
+    position: relative;
+}
+
+.image {
+    position: absolute;
+    top: 0px;
+    right: -10px;
+}
+
+
+.alightRight {
+    float: left;
+}
+
+.paddingRow {
+    padding-right: 0.3rem !important;
+    position: relative;
+}
+
+
+.custom-flex {
+    display: flex;
+    flex-flow: wrap;
+
+}
+
+.custom-flex>* {
+    flex-grow: 1;
+    flex-basis: 33%;
+}
+
+.custom-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.company2 {
+    background-color: white;
+}
+
+.padding6 {
+    padding-left: 6px;
+}
+
+
+.companyClass {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2px;
+}
+
+
+.detailsMinClass {
+    display: none;
+    width: 40%;
+    min-width: 250px
+}
+
+.minClass {
+    padding-right: 2px;
+}
+
+@media(min-width: 1220px) {
+    .companySize {
+        width: 12em;
+        height: 9m;
+    }
+}
+
+.container-style {
+    cursor: pointer;
+}
+
+.phone-distance {
+    margin-right: 10px;
+}
+@media(min-width: 900px) {
+    .phone-distance {
+        margin-right: 30px;
+    }
+}
+@media(max-width: 480px) {
+    .row1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-right: 2px;
+        padding-left: 0px;
+        margin-left: 0px;
+    }
+
+    .row1:first-of-type {
+        margin-right: 2px;
+    }
+    .minClass {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .container-style {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+
+    .favouriteClass {
+        order: 2;
+    }
+
+    .detailsMinClass {
+        display: block;
+        width: 60%;
+    }
+
+}
+
+@media(min-width: 760px) {
+    
+.imageDealerWebPage {
+    width: 40%;
+}
+
+.deatailsDealerWebPage {
+    width: 60%;
+}
+}

@@ -1,0 +1,38 @@
+.zoom-style {
+    width: 100%; 
+    height: auto;
+    max-height: 400px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 60px 20px 20px 20px;
+    position: relative;
+    margin-top: 40px;
+}
+
+.close-button {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    border-radius: 5px;
+    background-color: blue;
+    color: white;
+
+}
+.ngxImageZoomContainer {
+    margin-top: 20px;
+    width: 100%!important;
+    height: auto;
+    max-height: 400px;
+}
+
+.ngxImageZoomThumbnail {
+    max-height: inherit!important;
+}
+lib-ngx-image-zoom {
+    width: 100%!important;
+}
+

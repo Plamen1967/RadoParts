@@ -1,0 +1,34 @@
+<form [formGroup]="requestByEmail" autocomplete="on">
+    <div class="card">
+        <div class="card-header">Запитване по е-майл</div>
+        <div class="card-body" [ngStyle]="{ 'background-color': 'lightblue' }">
+            <div class="form-outline mb-1">
+                <app-input [border]="false" formControlName="name" autocomplete="name" type="text" placeHolder="{{ labels.NAME }}" [submitted]="submitted!"> </app-input>
+            </div>
+            <div class="mb-1">
+                <app-textarea [border]="false" formControlName="request" [rows]="5" placeHolder="{{ labels.REQUEST }}" [submitted]="submitted"> </app-textarea>
+            </div>
+            <app-input [border]="false" formControlName="email" autocomplete="email" type="email" placeHolder="{{ labels.EMAIL }}" [submitted]="submitted!"> </app-input>
+            <div class="form-check">
+                <input formControlName="sendCopy" class="form-check-input me-2" type="checkbox" value="" id="form4Example4" checked />
+                <label class="form-check-label" for="form4Example4">Изпрати копие </label>
+            </div>
+        </div>
+        @if (imageData) {
+            <div class="row catchaRow">
+                <div class="col-sm-6 pe-0" [ngStyle]="{ height: 'inherit' }">
+                    <app-catcha [imageData]="imageData"></app-catcha>
+                </div>
+                <div class="col-sm-6 ps-0">
+                    <app-input formControlName="catcha" [border]="false" type="text" placeHolder="{{ labels.CATCHA }}" [submitted]="submitted"> </app-input>
+                </div>
+            </div>
+        }
+
+        <div class="card-footer">
+            <div>
+                <button type="button" class="btn btn-primary" (click)="sendRequest()">Изпрати</button>
+            </div>
+        </div>
+    </div>
+</form>

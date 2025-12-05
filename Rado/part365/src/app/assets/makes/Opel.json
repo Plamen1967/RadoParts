@@ -1,0 +1,319 @@
+{
+  "make": "Opel",
+  "models": [
+    {
+      "label": "Adam",
+      "modifications": {
+        "adam-hatchback": "Adam Hatchback (10.2012 - 02.2019)"
+      }
+    },
+    {
+      "label": "Agila",
+      "modifications": {
+        "agila-a-hatchback": "Agila A Hatchback (09.2000 - 12.2007)",
+        "agila-b-hatchback": "Agila B Hatchback (04.2008 - 10.2014)"
+      }
+    },
+    {
+      "label": "Ampera",
+      "modifications": {
+        "ampera-hatchback": "Ampera Hatchback (11.2011 - 03.2015)",
+        "ampera-hatchback-e": "Ampera Hatchback E (05.2017 - 03.2019)"
+      }
+    },
+    {
+      "label": "Antara",
+      "modifications": {
+        "antara-suv": "Antara SUV (05.2006 - 03.2015)"
+      }
+    },
+    {
+      "label": "Arena",
+      "modifications": {
+        "arena-box": "Arena Box (01.1997 - 12.2001)",
+        "arena-bus": "Arena Bus (01.1997 - 12.2001)"
+      }
+    },
+    {
+      "label": "Ascona",
+      "modifications": {
+        "ascona-b-sedan": "Ascona B Sedan (09.1975 - 08.1981)",
+        "ascona-c-hatchback": "Ascona C Hatchback (09.1981 - 08.1988)",
+        "ascona-c-sedan": "Ascona C Sedan (09.1981 - 10.1988)"
+      }
+    },
+    {
+      "label": "Astra",
+      "modifications": {
+        "astra-f-cabrio": "Astra F Cabrio (03.1993 - 03.2001)",
+        "astra-f-classic-estate": "Astra F Classic Estate (01.1998 - 01.2005)",
+        "astra-f-classic-hatchback": "Astra F Classic Hatchback (01.1998 - 08.2002)",
+        "astra-f-classic-sedan": "Astra F Classic Sedan (01.1998 - 08.2002)",
+        "astra-f-estate": "Astra F Estate (09.1991 - 01.1998)",
+        "astra-f-hatchback": "Astra F Hatchback (09.1991 - 01.1998)",
+        "astra-f-sedan": "Astra F Sedan (09.1991 - 09.1998)",
+        "astra-f-van": "Astra F Van (10.1991 - 01.1999)",
+        "astra-g-box": "Astra G Box (01.1999 - 04.2005)",
+        "astra-g-cabrio": "Astra G Cabrio (03.2001 - 10.2005)",
+        "astra-g-coupe": "Astra G Coupe (03.2000 - 05.2005)",
+        "astra-g-estate": "Astra G Estate (02.1998 - 12.2009)",
+        "astra-g-hatchback": "Astra G Hatchback (02.1998 - 12.2009)",
+        "astra-g-sedan": "Astra G Sedan (09.1998 - 12.2009)",
+        "astra-h-box": "Astra H Box (02.2004 - 12.2013)",
+        "astra-h-estate": "Astra H Estate (08.2004 - 05.2014)",
+        "astra-h-gtc": "Astra H GTC (03.2005 - 10.2010)",
+        "astra-h-hatchback": "Astra H Hatchback (01.2004 - 05.2014)",
+        "astra-h-sedan": "Astra H Sedan (02.2007 - 05.2014)",
+        "astra-h-twintop": "Astra H TwinTop (09.2005 - 10.2010)",
+        "astra-j-gtc": "Astra J GTC (10.2011 - ...)",
+        "astra-j-hatchback": "Astra J Hatchback (12.2009 - 10.2015)",
+        "astra-j-sedan": "Astra J Sedan (06.2012 - 10.2015)",
+        "astra-j-sports-tourer": "Astra J Sports Tourer (10.2010 - 10.2015)",
+        "astra-k-hatchback": "Astra K Hatchback (06.2015 - ...)",
+        "astra-k-sports-tourer": "Astra K Sports Tourer (11.2015 - ...)"
+      }
+    },
+    {
+      "label": "Calibra",
+      "modifications": {
+        "calibra-a-coupe": "Calibra A Coupe (08.1989 - 07.1997)"
+      }
+    },
+    {
+      "label": "Campo",
+      "modifications": {
+        "campo-pick-up": "Campo Pick-up (08.1987 - 06.2002)"
+      }
+    },
+    {
+      "label": "Cascada",
+      "modifications": {
+        "cascada-cabrio": "Cascada Cabrio (03.2013 - 04.2019)"
+      }
+    },
+    {
+      "label": "Combo",
+      "modifications": {
+        "combo-box-i": "Combo Box I (07.1994 - 10.2001)",
+        "combo-box-ii": "Combo Box II (02.2012 - 06.2018)",
+        "combo-box-iii": "Combo Box III (06.2018 - ...)",
+        "combo-boxcombi": "Combo Box/Combi (10.2001 - 02.2012)",
+        "combo-combitour": "Combo Combi/Tour (02.2012 - 06.2018)",
+        "combo-life": "Combo Life (06.2018 - ...)",
+        "combo-tour": "Combo Tour (10.2001 - 12.2011)"
+      }
+    },
+    {
+      "label": "Corsa",
+      "modifications": {
+        "corsa-a-box": "Corsa A Box (02.1986 - 09.1994)",
+        "corsa-a-hatchback": "Corsa A Hatchback (09.1982 - 03.1993)",
+        "corsa-a-sedan": "Corsa A Sedan (09.1982 - 03.1993)",
+        "corsa-b-box": "Corsa B Box (08.1994 - 12.2001)",
+        "corsa-b-estate": "Corsa B Estate (04.1998 - 12.2002)",
+        "corsa-b-hatchback": "Corsa B Hatchback (03.1993 - 12.2002)",
+        "corsa-c-box": "Corsa C Box (09.2000 - 12.2012)",
+        "corsa-c-hatchback": "Corsa C Hatchback (09.2000 - 12.2009)",
+        "corsa-d-hatchback": "Corsa D Hatchback (07.2006 - 08.2014)",
+        "corsa-d-van": "Corsa D Van (07.2006 - 08.2014)",
+        "corsa-e-hatchback": "Corsa E Hatchback (09.2014 - 01.2019)",
+        "corsa-e-van": "Corsa E Van (09.2014 - 01.2019)",
+        "corsa-f-hatchback": "Corsa F Hatchback (07.2019 - ...)"
+      }
+    },
+    {
+      "label": "Crossland X",
+      "modifications": {
+        "crossland-x-suv": "Crossland X SUV (03.2017 - ...)"
+      }
+    },
+    {
+      "label": "Frontera",
+      "modifications": {
+        "frontera-a-sport-suv": "Frontera A Sport SUV (03.1992 - 10.1998)",
+        "frontera-a-suv": "Frontera A SUV (03.1992 - 10.1998)",
+        "frontera-b-suv": "Frontera B SUV (10.1998 - 02.2004)"
+      }
+    },
+    {
+      "label": "Grandland X",
+      "modifications": {
+        "grandland-x-suv": "Grandland X SUV (06.2017 - ...)"
+      }
+    },
+    {
+      "label": "GT",
+      "modifications": {
+        "gt-cabrio": "GT Cabrio (06.2007 - 12.2011)"
+      }
+    },
+    {
+      "label": "Insignia",
+      "modifications": {
+        "insignia-a-country-tourer": "Insignia A Country Tourer (07.2008 - 03.2017)",
+        "insignia-a-hatchback": "Insignia A Hatchback (07.2008 - 03.2017)",
+        "insignia-a-sedan": "Insignia A Sedan (07.2008 - 03.2017)",
+        "insignia-a-sports-tourer": "Insignia A Sports Tourer (07.2008 - 03.2017)",
+        "insignia-b-country-tourer": "Insignia B Country Tourer (06.2017 - ...)",
+        "insignia-b-grand-sport": "Insignia B Grand Sport (03.2017 - ...)",
+        "insignia-b-sports-tourer": "Insignia B Sports Tourer (03.2017 - ...)"
+      }
+    },
+    {
+      "label": "Kadett",
+      "modifications": {
+        "kadett-d-estate": "Kadett D Estate (08.1979 - 08.1984)",
+        "kadett-d-hatchback": "Kadett D Hatchback (08.1979 - 08.1984)",
+        "kadett-d-sedan": "Kadett D Sedan (08.1979 - 08.1984)",
+        "kadett-e-box": "Kadett E Box (08.1984 - 09.1993)",
+        "kadett-e-cabrio": "Kadett E Cabrio (10.1986 - 02.1993)",
+        "kadett-e-combo": "Kadett E Combo (01.1986 - 07.1994)",
+        "kadett-e-estate": "Kadett E Estate (09.1984 - 08.1991)",
+        "kadett-e-hatchback": "Kadett E Hatchback (09.1984 - 08.1991)",
+        "kadett-e-sedan": "Kadett E Sedan (09.1984 - 12.1993)"
+      }
+    },
+    {
+      "label": "Kapitan",
+      "modifications": {
+        "kapitan-a-sedan": "Kapitan A Sedan (03.1964 - 12.1968)",
+        "kapitan-sedan": "Kapitan Sedan (05.1955 - 12.1958)"
+      }
+    },
+    {
+      "label": "Karl",
+      "modifications": {
+        "karl-hatchback": "Karl Hatchback (01.2015 - 03.2019)"
+      }
+    },
+    {
+      "label": "Manta",
+      "modifications": {
+        "manta-b-coupe": "Manta B Coupe (09.1975 - 08.1988)",
+        "manta-b-hatchback": "Manta B Hatchback (09.1975 - 08.1988)"
+      }
+    },
+    {
+      "label": "Meriva",
+      "modifications": {
+        "meriva-a-minivan": "Meriva A Minivan (05.2003 - 05.2010)",
+        "meriva-b-minivan": "Meriva B Minivan (06.2010 - 03.2017)"
+      }
+    },
+    {
+      "label": "Mokka",
+      "modifications": {
+        "mokka-suv-i": "Mokka SUV I (06.2012 - 06.2020)"
+      }
+    },
+    {
+      "label": "Monterey",
+      "modifications": {
+        "monterey-suv-i": "Monterey SUV I (08.1991 - 07.1998)",
+        "monterey-suv-ii": "Monterey SUV II (07.1998 - 08.1999)"
+      }
+    },
+    {
+      "label": "Monza",
+      "modifications": {
+        "monza-coupe": "Monza Coupe (02.1978 - 08.1986)"
+      }
+    },
+    {
+      "label": "Movano",
+      "modifications": {
+        "movano-b-box": "Movano B Box (05.2010 - ...)",
+        "movano-b-bus": "Movano B Bus (12.2010 - ...)",
+        "movano-b-platform": "Movano B Platform (05.2010 - ...)",
+        "movano-box": "Movano Box (01.1999 - 04.2010)",
+        "movano-combi": "Movano Combi (07.1998 - 04.2010)",
+        "movano-platform": "Movano Platform (07.1998 - 04.2010)"
+      }
+    },
+    {
+      "label": "Omega",
+      "modifications": {
+        "omega-a-estate": "Omega A Estate (09.1986 - 05.1994)",
+        "omega-a-sedan": "Omega A Sedan (09.1986 - 05.1994)",
+        "omega-b-estate": "Omega B Estate (03.1994 - 07.2003)",
+        "omega-b-sedan": "Omega B Sedan (03.1994 - 07.2003)"
+      }
+    },
+    {
+      "label": "Rekord",
+      "modifications": {
+        "rekord-e-estate": "Rekord E Estate (08.1977 - 08.1986)",
+        "rekord-e-sedan": "Rekord E Sedan (08.1977 - 08.1986)"
+      }
+    },
+    {
+      "label": "Senator",
+      "modifications": {
+        "senator-a-sedan": "Senator A Sedan (02.1978 - 08.1987)",
+        "senator-b-sedan": "Senator B Sedan (09.1987 - 09.1993)"
+      }
+    },
+    {
+      "label": "Signum",
+      "modifications": {
+        "signum-hatchback": "Signum Hatchback (05.2003 - 12.2008)"
+      }
+    },
+    {
+      "label": "Sintra",
+      "modifications": {
+        "sintra-minivan": "Sintra Minivan (11.1996 - 04.1999)"
+      }
+    },
+    {
+      "label": "Speedster",
+      "modifications": {
+        "speedster-cabrio": "Speedster Cabrio (06.2000 - 08.2006)"
+      }
+    },
+    {
+      "label": "Tigra",
+      "modifications": {
+        "tigra-coupe": "Tigra Coupe (07.1994 - 12.2000)",
+        "tigra-twin-top": "Tigra Twin Top (06.2004 - 12.2010)"
+      }
+    },
+    {
+      "label": "Vectra",
+      "modifications": {
+        "vectra-a-hatchback": "Vectra A Hatchback (04.1988 - 11.1995)",
+        "vectra-a-sedan": "Vectra A Sedan (08.1988 - 11.1995)",
+        "vectra-b-estate": "Vectra B Estate (11.1996 - 07.2003)",
+        "vectra-b-hatchback": "Vectra B Hatchback (10.1995 - 07.2003)",
+        "vectra-b-sedan": "Vectra B Sedan (09.1995 - 04.2002)",
+        "vectra-c-estate": "Vectra C Estate (10.2003 - 01.2009)",
+        "vectra-c-gts": "Vectra C GTS (08.2002 - 01.2009)",
+        "vectra-c-sedan": "Vectra C Sedan (04.2002 - 01.2009)"
+      }
+    },
+    {
+      "label": "Vivaro",
+      "modifications": {
+        "vivaro-a-box": "Vivaro A Box (08.2001 - 06.2014)",
+        "vivaro-a-combi": "Vivaro A Combi (08.2001 - 06.2014)",
+        "vivaro-a-platform": "Vivaro A Platform (01.2006 - 06.2014)",
+        "vivaro-b-box": "Vivaro B Box (06.2014 - 03.2019)",
+        "vivaro-b-combi": "Vivaro B Combi (06.2014 - 03.2019)",
+        "vivaro-b-platform": "Vivaro B Platform (06.2014 - 03.2019)",
+        "vivaro-c-box": "Vivaro C Box (03.2019 - ...)",
+        "vivaro-c-combi": "Vivaro C Combi (03.2019 - ...)",
+        "vivaro-c-platform": "Vivaro C Platform (03.2019 - ...)"
+      }
+    },
+    {
+      "label": "Zafira",
+      "modifications": {
+        "zafira-a-minivan": "Zafira A Minivan (04.1999 - 06.2005)",
+        "zafira-b-minivan": "Zafira B Minivan (07.2005 - 14.2015)",
+        "zafira-b-van": "Zafira B Van (07.2005 - 04.2015)",
+        "zafira-c-tourer": "Zafira C Tourer (10.2011 - 03.2019)",
+        "zafira-life": "Zafira Life (03.2019 - ...)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "make": "GAZ",
+  "models": [
+    {
+      "label": "GAZelle",
+      "modifications": {
+        "gazelle-box": "GAZelle Box (10.1993 - 12.2002)",
+        "gazelle-bus": "GAZelle Bus (10.1993 - 12.2002)",
+        "gazelle-platform": "GAZelle Platform (10.1993 - 12.2002)"
+      }
+    },
+    {
+      "label": "Volga",
+      "modifications": {
+        "volga-2401-2410": "Volga (2401, 2410) (01.1970 - 01.1993)",
+        "volga-combi-2401-2410": "Volga Combi (2401, 2410) (02.1972 - 02.1993)"
+      }
+    }
+  ]
+}

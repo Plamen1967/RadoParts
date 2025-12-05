@@ -1,0 +1,107 @@
+{
+  "make": "Daihatsu",
+  "models": [
+    {
+      "label": "Applause",
+      "modifications": {
+        "applause-hatchback-i": "Applause Hatchback I (06.1989 - 07.1997)",
+        "applause-hatchback-ii": "Applause Hatchback II (07.1997 - 05.2000)"
+      }
+    },
+    {
+      "label": "Charade",
+      "modifications": {
+        "charade-ii-hatchback": "Charade II Hatchback (01.1983 - 05.1987)",
+        "charade-iii-hatchback": "Charade III Hatchback (01.1987 - 07.1993)",
+        "charade-iv-hatchback": "Charade IV Hatchback (01.1993 - 09.2000)",
+        "charade-iv-sedan": "Charade IV Sedan (03.1993 - 12.2000)",
+        "charade-v-hatchback": "Charade V Hatchback (05.2011 - 09.2013)"
+      }
+    },
+    {
+      "label": "Copen",
+      "modifications": {
+        "copen-coupe": "Copen Coupe (03.2002 - 09.2012)"
+      }
+    },
+    {
+      "label": "Cuore",
+      "modifications": {
+        "cuore-i-hatchback": "Cuore I Hatchback (08.1980 - 09.1985)",
+        "cuore-ii-hatchback": "Cuore II Hatchback (09.1985 - 12.1990)",
+        "cuore-iii-hatchback": "Cuore III Hatchback (08.1990 - 04.1995)",
+        "cuore-iv-hatchback": "Cuore IV Hatchback (08.1994 - 12.1999)",
+        "cuore-v-hatchback": "Cuore V Hatchback (10.1998 - 05.2003)",
+        "cuore-vi-hatchback": "Cuore VI Hatchback (03.2003 - 12.2006)",
+        "cuore-vii-hatchback": "Cuore VII Hatchback (12.2006 - 03.2018)"
+      }
+    },
+    {
+      "label": "Feroza",
+      "modifications": {
+        "feroza-hard-top-suv": "Feroza Hard Top SUV (10.1988 - 12.1999)",
+        "feroza-soft-top-suv": "Feroza Soft Top SUV (10.1988 - 12.1999)"
+      }
+    },
+    {
+      "label": "Gran Move",
+      "modifications": {
+        "gran-move-minivan": "Gran Move Minivan (10.1996 - 08.2002)"
+      }
+    },
+    {
+      "label": "HiJet",
+      "modifications": {
+        "hijet-box-i": "HiJet Box I (06.1986 - 10.1990)",
+        "hijet-box-ii": "HiJet Box II (10.1991 - 05.1998)",
+        "hijet-bus-i": "HiJet Bus I (06.1986 - 06.1990)",
+        "hijet-bus-ii": "HiJet Bus II (06.1993 - 01.1999)"
+      }
+    },
+    {
+      "label": "Materia",
+      "modifications": {
+        "materia-hatchback": "Materia Hatchback (10.2006 - 01.2013)"
+      }
+    },
+    {
+      "label": "Move",
+      "modifications": {
+        "move-minivan": "Move Minivan (06.1994 - 09.2002)"
+      }
+    },
+    {
+      "label": "Rocky",
+      "modifications": {
+        "rocky-hard-top": "Rocky Hard Top (06.1984 - 12.1998)",
+        "rocky-soft-top": "Rocky Soft Top (02.1985 - 12.1998)"
+      }
+    },
+    {
+      "label": "Sirion",
+      "modifications": {
+        "sirion-hatchback-i": "Sirion Hatchback I (04.1998 - 04.2005)",
+        "sirion-hatchback-ii": "Sirion Hatchback II (01.2005 - 07.2011)"
+      }
+    },
+    {
+      "label": "Terios",
+      "modifications": {
+        "terios-suv-i": "Terios SUV I (05.1997 - 10.2006)",
+        "terios-suv-ii": "Terios SUV II (11.2005 - 11.2017)"
+      }
+    },
+    {
+      "label": "Trevis",
+      "modifications": {
+        "trevis-hatchback": "Trevis Hatchback (06.2006 - 03.2009)"
+      }
+    },
+    {
+      "label": "YRV",
+      "modifications": {
+        "yrv-minivan": "YRV Minivan (08.2000 - 09.2005)"
+      }
+    }
+  ]
+}

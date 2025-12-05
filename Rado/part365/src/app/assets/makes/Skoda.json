@@ -1,0 +1,124 @@
+{
+  "make": "Skoda",
+  "models": [
+    {
+      "label": "105, 120",
+      "modifications": {
+        "105-120-sedan-742": "105, 120 Sedan 742 (08.1976 - 12.1990)",
+        "105-120-sedan-744": "105, 120 Sedan 744 (02.1983 - 12.1990)"
+      }
+    },
+    {
+      "label": "130",
+      "modifications": {
+        "130-sedan": "130 Sedan (02.1985 - 10.1991)"
+      }
+    },
+    {
+      "label": "CitiGo",
+      "modifications": {
+        "citigo-hatchback": "CitiGo Hatchback (10.2011 - ...)"
+      }
+    },
+    {
+      "label": "Fabia",
+      "modifications": {
+        "fabia-i-combi": "Fabia I Combi (04.2000 - 12.2007)",
+        "fabia-i-hatchback": "Fabia I Hatchback (08.1999 - 03.2008)",
+        "fabia-i-praktik": "Fabia I Praktik (01.2000 - 12.2007)",
+        "fabia-i-sedan": "Fabia I Sedan (10.1999 - 12.2007)",
+        "fabia-ii-combi": "Fabia II Combi (10.2007 - 12.2014)",
+        "fabia-ii-hatchback": "Fabia II Hatchback (12.2006 - 12.2014)",
+        "fabia-iii-combi": "Fabia III Combi (10.2014 - ...)",
+        "fabia-iii-hatchback": "Fabia III Hatchback (08.2014 - ...)"
+      }
+    },
+    {
+      "label": "Favorit",
+      "modifications": {
+        "favorit-forman": "Favorit Forman (06.1988 - 06.1995)",
+        "favorit-hatchback": "Favorit Hatchback (05.1989 - 09.1994)",
+        "favorit-pick-up": "Favorit Pick Up (06.1992 - 06.1997)"
+      }
+    },
+    {
+      "label": "Felicia",
+      "modifications": {
+        "felicia-i-combi": "Felicia I Combi (07.1995 - 03.1998)",
+        "felicia-i-hatchback": "Felicia I Hatchback (10.1994 - 03.1998)",
+        "felicia-i-pick-up-fun": "Felicia I Pick-Up FUN (10.1995 - 04.2002)",
+        "felicia-ii-combi": "Felicia II Combi (01.1998 - 06.2001)",
+        "felicia-ii-hatchback": "Felicia II Hatchback (01.1998 - 06.2001)"
+      }
+    },
+    {
+      "label": "Kamiq",
+      "modifications": {
+        "kamiq-suv": "Kamiq SUV (07.2019 - ...)"
+      }
+    },
+    {
+      "label": "Karoq",
+      "modifications": {
+        "karoq-suv": "Karoq SUV (07.2017 - ...)"
+      }
+    },
+    {
+      "label": "Kodiaq",
+      "modifications": {
+        "kodiaq-suv": "Kodiaq SUV (10.2016 - ...)"
+      }
+    },
+    {
+      "label": "Octavia",
+      "modifications": {
+        "octavia-i-combi": "Octavia I Combi (07.1998 - 12.2010)",
+        "octavia-i-hatchback": "Octavia I Hatchback (09.1996 - 12.2010)",
+        "octavia-ii-combi": "Octavia II Combi (02.2004 - 06.2013)",
+        "octavia-ii-hatchback": "Octavia II Hatchback (02.2004 - 06.2013)",
+        "octavia-iii-combi": "Octavia III Combi (11.2012 - 02.2020)",
+        "octavia-iii-hatchback": "Octavia III Hatchback (11.2012 - 02.2020)",
+        "octavia-iv-combi": "Octavia IV Combi (11.2019 - ...)",
+        "octavia-iv-sedan": "Octavia IV Sedan (01.2020 - ...)"
+      }
+    },
+    {
+      "label": "Rapid",
+      "modifications": {
+        "rapid-coupe-120130140": "Rapid Coupe 120,130,140 (02.1983 - 10.1991)",
+        "rapid-hatchback": "Rapid Hatchback (02.2012 - ...)",
+        "rapid-sedan": "Rapid Sedan (07.2012 - ...)",
+        "rapid-spaceback": "Rapid Spaceback (07.2012 - ...)"
+      }
+    },
+    {
+      "label": "Roomster",
+      "modifications": {
+        "roomster-minivan": "Roomster Minivan (03.2006 - 05.2015)",
+        "roomster-praktik": "Roomster Praktik (03.2007 - 05.2015)"
+      }
+    },
+    {
+      "label": "Scala",
+      "modifications": {
+        "scala-hatchback": "Scala Hatchback (02.2019 - ...)"
+      }
+    },
+    {
+      "label": "Superb",
+      "modifications": {
+        "superb-i-sedan": "Superb I Sedan (12.2001 - 03.2008)",
+        "superb-ii-combi": "Superb II Combi (10.2009 - 05.2015)",
+        "superb-ii-sedan": "Superb II Sedan (03.2008 - 05.2015)",
+        "superb-iii-combi": "Superb III Combi (03.2015 - ...)",
+        "superb-iii-sedan": "Superb III Sedan (03.2015 - ...)"
+      }
+    },
+    {
+      "label": "Yeti",
+      "modifications": {
+        "yeti-suv": "Yeti SUV (05.2009 - 12.2017)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,399 @@
+{
+  "make": "Mercedes-benz",
+  "models": [
+    {
+      "label": "123",
+      "modifications": {
+        "123-coupe": "123 Coupe (03.1977 - 12.1985)",
+        "123-estate": "123 Estate (09.1977 - 12.1986)",
+        "123-sedan": "123 Sedan (01.1976 - 12.1985)"
+      }
+    },
+    {
+      "label": "124",
+      "modifications": {
+        "124-cabrio": "124 Cabrio (09.1991 - 06.1993)",
+        "124-coupe": "124 Coupe (03.1987 - 05.1993)",
+        "124-estate": "124 Estate (09.1985 - 07.1993)",
+        "124-sedan": "124 Sedan (12.1984 - 06.1993)"
+      }
+    },
+    {
+      "label": "190",
+      "modifications": {
+        "190-sedan-w201": "190 Sedan W201 (10.1982 - 08.1993)"
+      }
+    },
+    {
+      "label": "A-Class",
+      "modifications": {
+        "a-class-hatchback-w168": "A-Class Hatchback  W168 (07.1997 - 08.2004)",
+        "a-class-hatchback-w169": "A-Class Hatchback W169 (09.2004 - 06.2012)",
+        "a-class-hatchback-w176": "A-Class Hatchback W176 (06.2012 - 05.2018)",
+        "a-class-hatchback-w177": "A-Class Hatchback W177 (03.2018 - ...)",
+        "a-class-sedan": "A-Class Sedan (09.2018 - ...)"
+      }
+    },
+    {
+      "label": "AMG Class",
+      "modifications": {
+        "amg-class-gt-coupe-c190": "AMG Class GT Coupe (C190) (10.2014 - ...)",
+        "amg-class-gt-coupe-x290": "AMG Class GT Coupe (X290) (07.2018 - ...)",
+        "amg-class-gt-roadster-r190": "AMG Class GT Roadster (R190) (11.2016 - ...)"
+      }
+    },
+    {
+      "label": "Atego",
+      "modifications": {
+        "atego-truck": "Atego Truck (01.1998 - 10.2004)"
+      }
+    },
+    {
+      "label": "Axor",
+      "modifications": {
+        "axor-truck": "Axor Truck (09.2001 - 10.2004)"
+      }
+    },
+    {
+      "label": "B-Class",
+      "modifications": {
+        "b-class-hatchback-i": "B-Class Hatchback I (03.2005 - 11.2011)",
+        "b-class-hatchback-ii": "B-Class Hatchback II (10.2011 - 12.2018)",
+        "b-class-hatchback-iii": "B-Class Hatchback III (12.2018 - ...)"
+      }
+    },
+    {
+      "label": "C-Class",
+      "modifications": {
+        "c-class-cabrio-a205": "C-Class Cabrio (A205) (06.2016 - ...)",
+        "c-class-coupe-c204": "C-Class Coupe (C204) (06.2011 - 10.2015)",
+        "c-class-coupe-c205": "C-Class Coupe (C205) (10.2015 - ...)",
+        "c-class-coupe-cl203": "C-Class Coupe (CL203) (03.2001 - 06.2007)",
+        "c-class-estate-s202": "C-Class Estate (S202) (06.1996 - 03.2001)",
+        "c-class-estate-s203": "C-Class Estate (S203) (03.2001 - 08.2007)",
+        "c-class-estate-s204": "C-Class Estate (S204) (08.2007 - 08.2014)",
+        "c-class-estate-s205": "C-Class Estate (S205) (09.2014 - ...)",
+        "c-class-sedan-w202": "C-Class Sedan (W202) (03.1993 - 05.2000)",
+        "c-class-sedan-w203": "C-Class Sedan (W203) (05.2000 - 08.2007)",
+        "c-class-sedan-w204": "C-Class Sedan (W204) (01.2007 - 01.2014)",
+        "c-class-sedan-w205": "C-Class Sedan (W205) (07.2013 - ...)"
+      }
+    },
+    {
+      "label": "CITAN",
+      "modifications": {
+        "citan-box": "CITAN Box (11.2012 - ...)",
+        "citan-combi": "CITAN Combi (11.2012 - ...)",
+        "citan-mixto": "CITAN Mixto (11.2012 - ...)"
+      }
+    },
+    {
+      "label": "CLA-Class",
+      "modifications": {
+        "cla-class-coupe-c117": "CLA-Class Coupe (C117) (01.2013 - 03.2019)",
+        "cla-class-sedan-c118": "CLA-Class Sedan (C118) (03.2019 - ...)",
+        "cla-class-shooting-brake-x117": "CLA-Class Shooting Brake (X117) (01.2015 - 03.2019)",
+        "cla-class-shooting-brake-x118": "CLA-Class Shooting Brake (X118) (06.2019 - ...)"
+      }
+    },
+    {
+      "label": "CLC-Class",
+      "modifications": {
+        "clc-class-coupe-cl203": "CLC-Class Coupe (CL203) (05.2008 - 06.2011)"
+      }
+    },
+    {
+      "label": "CLK-Class",
+      "modifications": {
+        "clk-class-cabrio-a208": "CLK-Class Cabrio (A208) (03.1998 - 03.2002)",
+        "clk-class-cabrio-a209": "CLK-Class Cabrio (A209) (02.2003 - 03.2010)",
+        "clk-class-coupe-c208": "CLK-Class Coupe (C208) (06.1997 - 09.2002)",
+        "clk-class-coupe-c209": "CLK-Class Coupe (C209) (06.2002 - 05.2009)"
+      }
+    },
+    {
+      "label": "CLS-Class",
+      "modifications": {
+        "cls-class-sedan-257": "CLS-Class Sedan (257) (12.2017 - ...)",
+        "cls-class-sedan-c218": "CLS-Class Sedan (C218) (01.2011 - 12.2017)",
+        "cls-class-sedan-c219": "CLS-Class Sedan (C219) (10.2004 - 02.2011)",
+        "cls-class-shooting-brake-x218": "CLS-Class Shooting Brake (X218) (10.2012 - 12.2017)"
+      }
+    },
+    {
+      "label": "E-Class",
+      "modifications": {
+        "e-class-all-tettain-s213": "E-Class All-Tettain (S213) (01.2017 - ...)",
+        "e-class-cabrio-a124": "E-Class Cabrio (A124) (05.1993 - 03.1998)",
+        "e-class-cabrio-a207": "E-Class Cabrio (A207) (01.2010 - 12.2016)",
+        "e-class-cabrio-a238": "E-Class Cabrio (A238) (06.2017 - ...)",
+        "e-class-coupe-c124": "E-Class Coupe (C124) (06.1993 - 06.1997)",
+        "e-class-coupe-c207": "E-Class Coupe (C207) (01.2009 - 12.2016)",
+        "e-class-coupe-c238": "E-Class Coupe (C238) (12.2016 - ...)",
+        "e-class-estate-s124": "E-Class Estate (S124) (06.1993 - 06.1996)",
+        "e-class-estate-s210": "E-Class Estate (S210) (06.1996 - 03.2003)",
+        "e-class-estate-s211": "E-Class Estate (S211) (03.2003 - 07.2009)",
+        "e-class-estate-s212": "E-Class Estate (S212) (08.2009 - 12.2016)",
+        "e-class-estate-s213": "E-Class Estate (S213) (07.2016 - ...)",
+        "e-class-sedan-w124": "E-Class Sedan (W124) (06.1993 - 12.1995)",
+        "e-class-sedan-w210": "E-Class Sedan (W210) (06.1995 - 08.2003)",
+        "e-class-sedan-w211": "E-Class Sedan (W211) (03.2002 - 03.2009)",
+        "e-class-sedan-w212": "E-Class Sedan (W212) (01.2009 - 12.2016)",
+        "e-class-sedan-w213": "E-Class Sedan (W213) (01.2016 - ...)"
+      }
+    },
+    {
+      "label": "EQC",
+      "modifications": {
+        "eqc-suv": "EQC SUV (05.2019 - ...)"
+      }
+    },
+    {
+      "label": "G-Class",
+      "modifications": {
+        "g-class-cabrio-w460": "G-Class Cabrio (W460) (03.1979 - 08.1993)",
+        "g-class-cabrio-w463": "G-Class Cabrio (W463) (09.1989 - 01.2018)",
+        "g-class-suv-w460": "G-Class SUV (W460) (03.1979 - 08.1993)",
+        "g-class-suv-w461": "G-Class SUV (W461) (09.1989 - 01.2018)",
+        "g-class-suv-w463": "G-Class SUV (W463) (01.2018 - ...)"
+      }
+    },
+    {
+      "label": "GL-Class",
+      "modifications": {
+        "gl-class-suv-x164": "GL-Class SUV (X164) (09.2006 - 12.2012)",
+        "gl-class-suv-x166": "GL-Class SUV (X166) (07.2012 - 12.2015)"
+      }
+    },
+    {
+      "label": "GLA Class",
+      "modifications": {
+        "gla-class-suv-h247": "GLA Class SUV (H247) (02.2020 - ...)",
+        "gla-class-suv-x156": "GLA Class SUV (X156) (12.2013 - 02.2020)"
+      }
+    },
+    {
+      "label": "GLB Class",
+      "modifications": {
+        "glb-class-suv-x247": "GLB Class SUV (X247) (08.2019 - ...)"
+      }
+    },
+    {
+      "label": "GLC Class",
+      "modifications": {
+        "glc-class-coupe-c253": "GLC Class Coupe (C253) (06.2016 - ...)",
+        "glc-class-suv-x253": "GLC Class SUV (X253) (06.2015 - ...)"
+      }
+    },
+    {
+      "label": "GLE Class",
+      "modifications": {
+        "gle-class-coupe-c167": "GLE Class Coupe (C167) (11.2019 - ...)",
+        "gle-class-coupe-c292": "GLE Class Coupe (C292) (03.2015 - 10.2019)",
+        "gle-class-suv-w166": "GLE Class SUV (W166) (04.2015 - 10.2018)",
+        "gle-class-suv-w167": "GLE Class SUV (W167) (10.2018 - ...)"
+      }
+    },
+    {
+      "label": "GLK Class",
+      "modifications": {
+        "glk-class-suv-x204": "GLK Class SUV (X204) (06.2008 - 12.2015)"
+      }
+    },
+    {
+      "label": "GLS Class",
+      "modifications": {
+        "gls-class-suv-x166": "GLS Class SUV (X166) (11.2015 - 04.2019)",
+        "gls-class-suv-x167": "GLS Class SUV (X167) (04.2019 - ...)"
+      }
+    },
+    {
+      "label": "M-Class",
+      "modifications": {
+        "m-class-suv-w163": "M-Class SUV (W163) (02.1998 - 06.2005)",
+        "m-class-suv-w164": "M-Class SUV (W164) (07.2005 - 12.2012)",
+        "m-class-suv-w166": "M-Class SUV (W166) (06.2011 - 12.2015)"
+      }
+    },
+    {
+      "label": "MB100",
+      "modifications": {
+        "mb100-box-631": "MB100 Box (631) (02.1988 - 04.1996)",
+        "mb100-bus-631": "MB100 Bus (631) (02.1988 - 04.1996)",
+        "mb100-platform-631": "MB100 Platform (631) (02.1988 - 02.1996)"
+      }
+    },
+    {
+      "label": "R-Class",
+      "modifications": {
+        "r-class-minivan-w251-v251": "R-Class Minivan (W251, V251) (08.2005 - 10.2017)"
+      }
+    },
+    {
+      "label": "S-Class",
+      "modifications": {
+        "s-class-cabrio-a217": "S-Class Cabrio (A217) (12.2015 - ...)",
+        "s-class-coupe-c126": "S-Class Coupe (C126) (08.1980 - 06.1991)",
+        "s-class-coupe-c140": "S-Class Coupe (C140) (07.1992 - 02.1999)",
+        "s-class-coupe-c215": "S-Class Coupe (C215) (03.1999 - 08.2006)",
+        "s-class-coupe-c216": "S-Class Coupe (C216) (05.2006 - 12.2013)",
+        "s-class-coupe-c217": "S-Class Coupe (C217) (04.2014 - ...)",
+        "s-class-sedan-w108-w109": "S-Class Sedan (W108, W109) (01.1966 - 08.1972)",
+        "s-class-sedan-w116": "S-Class Sedan (W116) (08.1972 - 07.1980)",
+        "s-class-sedan-w126": "S-Class Sedan (W126) (10.1979 - 06.1991)",
+        "s-class-sedan-w140": "S-Class Sedan (W140) (02.1991 - 10.1998)",
+        "s-class-sedan-w220": "S-Class Sedan (W220) (10.1998 - 08.2005)",
+        "s-class-sedan-w221": "S-Class Sedan (W221) (09.2005 - 12.2013)",
+        "s-class-sedan-w222": "S-Class Sedan (W222) (05.2013 - ...)"
+      }
+    },
+    {
+      "label": "SL-Class",
+      "modifications": {
+        "sl-class-cabrio-r107": "SL-Class Cabrio (R107) (05.1971 - 12.1989)",
+        "sl-class-cabrio-r129": "SL-Class Cabrio (R129) (03.1989 - 12.2001)",
+        "sl-class-cabrio-r230": "SL-Class Cabrio (R230) (10.2001 - 01.2012)",
+        "sl-class-cabrio-r231": "SL-Class Cabrio (R231) (01.2012 - ...)"
+      }
+    },
+    {
+      "label": "SLC Class",
+      "modifications": {
+        "slc-class-roadster-r172": "SLC Class Roadster (R172) (01.2016 - ...)"
+      }
+    },
+    {
+      "label": "SLK-Class",
+      "modifications": {
+        "slk-class-cabrio-r170": "SLK-Class Cabrio (R170) (04.1996 - 04.2004)",
+        "slk-class-cabrio-r171": "SLK-Class Cabrio (R171) (03.2004 - 02.2011)",
+        "slk-class-cabrio-r172": "SLK-Class Cabrio (R172) (01.2011 - ...)"
+      }
+    },
+    {
+      "label": "SLR Class",
+      "modifications": {
+        "slr-class-coupe-r199": "SLR Class Coupe (R199) (04.2004 - 01.2009)",
+        "slr-class-roadster-r199": "SLR Class Roadster (R199) (10.2006 - 01.2009)"
+      }
+    },
+    {
+      "label": "SLS Class",
+      "modifications": {
+        "sls-class-amg-c197": "SLS Class AMG (C197) (03.2010 - 04.2015)",
+        "sls-class-amg-roadster-r197": "SLS Class AMG Roadster (R197) (06.2011 - 04.2015)"
+      }
+    },
+    {
+      "label": "Sprinter",
+      "modifications": {
+        "sprinter-2-t-box-901-902": "Sprinter 2-t Box (901, 902) (01.1995 - 05.2006)",
+        "sprinter-2-t-bus-901-902": "Sprinter 2-t Bus (901, 902) (01.1995 - 05.2006)",
+        "sprinter-2-t-platform-901-902": "Sprinter 2-t Platform (901, 902) (01.1995 - 05.2006)",
+        "sprinter-35-t-box-906": "Sprinter 3,5-t Box (906) (06.2006 - 02.2018)",
+        "sprinter-35-t-box-907-910": "Sprinter 3,5-t Box (907, 910) (02.2018 - ...)",
+        "sprinter-35-t-bus-906": "Sprinter 3,5-t Bus (906) (06.2006 - 02.2018)",
+        "sprinter-35-t-platform-906": "Sprinter 3,5-t Platform (906) (06.2006 - 02.2018)",
+        "sprinter-35-t-platform-907-910": "Sprinter 3,5-t Platform (907, 910) (02.2018 - ...)",
+        "sprinter-35-t-tourer-bus-907": "Sprinter 3,5-t Tourer Bus (907) (02.2018 - ...)",
+        "sprinter-3-t-box-903": "Sprinter 3-t Box (903) (01.1995 - 05.2006)",
+        "sprinter-3-t-box-906": "Sprinter 3-t Box (906) (06.2006 - 02.2018)",
+        "sprinter-3-t-box-910": "Sprinter 3-t Box (910) (02.2018 - ...)",
+        "sprinter-3-t-bus-903": "Sprinter 3-t Bus (903) (01.1995 - 05.2006)",
+        "sprinter-3-t-bus-906": "Sprinter 3-t Bus (906) (06.2006 - 02.2018)",
+        "sprinter-3-t-platform-903": "Sprinter 3-t Platform (903) (01.1995 - 05.2006)",
+        "sprinter-3-t-platform-906": "Sprinter 3-t Platform (906) (06.2006 - 02.2018)",
+        "sprinter-3-t-platform-910-907": "Sprinter 3-t Platform (910, 907) (02.2018 - ...)",
+        "sprinter-3-t-tourer-bus-907": "Sprinter 3-t Tourer Bus (907) (02.2018 - ...)",
+        "sprinter-46-t-box-906": "Sprinter 4,6-t Box (906) (06.2006 - 02.2018)",
+        "sprinter-46-t-platform-906": "Sprinter 4,6-t Platform (906) (06.2006 - 02.2018)",
+        "sprinter-4-t-box-904": "Sprinter 4-t Box (904) (02.1996 - 05.2006)",
+        "sprinter-4-t-box-907-910": "Sprinter 4-t Box (907, 910) (02.2018 - ...)",
+        "sprinter-4-t-bus-904": "Sprinter 4-t Bus (904) (02.1996 - 05.2006)",
+        "sprinter-4-t-platform-904": "Sprinter 4-t Platform (904) (02.1996 - 05.2006)",
+        "sprinter-4-t-platform-907-910": "Sprinter 4-t Platform (907, 910) (02.2018 - ...)",
+        "sprinter-5-t-box-906": "Sprinter 5-t Box (906) (06.2006 - 02.2018)",
+        "sprinter-5-t-box-907": "Sprinter 5-t Box (907) (02.2018 - ...)",
+        "sprinter-5-t-platform-905": "Sprinter 5-t Platform (905) (04.2001 - 05.2006)",
+        "sprinter-5-t-platform-906": "Sprinter 5-t Platform (906) (06.2006 - 02.2018)",
+        "sprinter-5-t-platform-907": "Sprinter 5-t Platform (907) (02.2018 - ...)"
+      }
+    },
+    {
+      "label": "T1",
+      "modifications": {
+        "t1-box-601": "T1 Box (601) (05.1977 - 02.1996)",
+        "t1-box-602": "T1 Box (602) (10.1982 - 02.1996)",
+        "t1-bus-601": "T1 Bus (601) (05.1977 - 02.1996)",
+        "t1-bus-602": "T1 Bus (602) (04.1977 - 02.1996)",
+        "t1-platform-601": "T1 Platform (601) (01.1977 - 02.1996)",
+        "t1-platform-602": "T1 Platform (602) (01.1977 - 02.1996)",
+        "t1-t1tn-boxcombi": "T1 T1/TN Box/Combi (07.1981 - 06.1995)",
+        "t1-t1tn-platform": "T1 T1/TN Platform (07.1981 - 06.1995)"
+      }
+    },
+    {
+      "label": "T2",
+      "modifications": {
+        "t2-t2l-boxcombi": "T2 T2/L Box/Combi (01.1968 - 12.1988)",
+        "t2-t2l-platform": "T2 T2/L Platform (01.1968 - 12.1988)",
+        "t2-t2ln1-boxcombi": "T2 T2/LN1 Box/combi (04.1986 - 12.1994)",
+        "t2-t2ln1-bus": "T2 T2/LN1 Bus (07.1987 - 12.1992)",
+        "t2-t2ln1-platform": "T2 T2/LN1 Platform (04.1986 - 12.1994)"
+      }
+    },
+    {
+      "label": "V Class",
+      "modifications": {
+        "v-class-minivan-i": "V Class Minivan I (02.1996 - 07.2003)",
+        "v-class-minivan-ii": "V Class Minivan II (09.2003 - 03.2014)",
+        "v-class-minivan-iii": "V Class Minivan III (03.2014 - ...)"
+      }
+    },
+    {
+      "label": "Vaneo",
+      "modifications": {
+        "vaneo-minivan": "Vaneo Minivan (02.2002 - 07.2005)"
+      }
+    },
+    {
+      "label": "Vario",
+      "modifications": {
+        "vario-boxcombi": "Vario Box/Combi (09.1996 - 12.2013)",
+        "vario-bus": "Vario Bus (09.1996 - 12.2013)",
+        "vario-platform": "Vario Platform (09.1996 - 12.2013)"
+      }
+    },
+    {
+      "label": "Vito",
+      "modifications": {
+        "vito-box-638": "Vito Box (638) (03.1997 - 07.2003)",
+        "vito-box-639": "Vito Box (639) (09.2003 - 12.2014)",
+        "vito-box-w447": "Vito Box (W447) (10.2014 - ...)",
+        "vito-bus-638": "Vito Bus (638) (02.1996 - 07.2003)",
+        "vito-bus-639": "Vito Bus (639) (09.2003 - 12.2014)",
+        "vito-mixto": "Vito Mixto (10.2014 - ...)",
+        "vito-tourer": "Vito Tourer (10.2014 - ...)"
+      }
+    },
+    {
+      "label": "W114",
+      "modifications": {
+        "w114-coupe": "W114 Coupe (04.1969 - 02.1977)",
+        "w114-sedan": "W114 Sedan (01.1968 - 11.1976)"
+      }
+    },
+    {
+      "label": "W115",
+      "modifications": {
+        "w115-sedan": "W115 Sedan (01.1968 - 01.1977)"
+      }
+    },
+    {
+      "label": "X Class",
+      "modifications": {
+        "x-class-pick-up": "X Class Pick-up (09.2017 - ...)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+:root {
+  --tooltip-bgcolor: #d0e1f9; 
+  /* // #31a9b8; */
+  --tooltip-color: black;
+}
+
+.tooltip-container{
+    height: 30px;
+    top: -20px;
+    position: absolute;
+    right: -20px;
+    /* top: 318.323px; */
+    /* left: 23.3333px; */
+    text-wrap: none;
+    color: var(--tooltip-color);
+    background-color: var(--tooltip-bgcolor);
+    padding: 2px 4px;
+    align-items: center;
+    border-radius: 4px; 
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    flex-wrap: nowrap;
+    /* transform: translate(-50%, -30%);
+    animation: tooltip-slide 0.18s ease-out 0.5s;
+    animation-fill-mode: forwards; */
+  }
+
+  @keyframes tooltip-slide {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -30%);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+  

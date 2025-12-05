@@ -1,0 +1,60 @@
+<div class="ps-1 userCard">
+    @if (viewItem_?.dealer) {
+        <a href="{{ sellerWebPage }}" target="_blank">
+            <div class="m-0 row company" data-placement="top" title="Към страницата на дилъра" role="none">
+                @if (sellerLogo) {
+                    <div class="background-image p-2 me-1" [style.background-image]="'url(' + sellerLogo + ')'"></div>
+                }
+            </div>
+        </a>
+        <div class="row">
+            <div class="sellerName col-sm-12">
+                <h5>{{ sellerName }}</h5>
+            </div>
+        </div>
+    } @else {
+        <div class="row">
+            <div class="sellerName col-sm-12">
+                <h5>{{ sellerName }}</h5>
+            </div>
+        </div>
+    }
+    <div class="p-2 mt-2 row">
+        <div class="d-flex mb-1">
+            <div class="row1 phone-distance">
+                @if (phone1) {
+                    <div class="mb-1">
+                        <app-phone [phone]="phone1"></app-phone>
+                    </div>
+                }
+                @if (phone2) {
+                    <div>
+                        <app-phone [phone]="phone2"></app-phone>
+                    </div>
+                }
+            </div>
+            <div class="row1">
+                @if (viber) {
+                    <div class="mb-1">
+                        <app-viber [number]="viber"></app-viber>
+                    </div>
+                }
+                @if (whats) {
+                    <div>
+                        <app-whats [number]="whats"></app-whats>
+                    </div>
+                }
+            </div>
+        </div>
+        @if (city) {
+            <app-datarow label="{{ labels.ADDRESS_TITLE }}" value="{{ city }}"></app-datarow>
+        }
+        @if (sellerWebPage) {
+            <app-datarow label="{{ labels.WEBPAGE }}">
+                <div class="param col-sm-6">
+                    <a href="{{ sellerWebPage }}" target="_blank">{{ sellerWebPage }}</a>
+                </div>
+            </app-datarow>
+        }
+    </div>
+</div>

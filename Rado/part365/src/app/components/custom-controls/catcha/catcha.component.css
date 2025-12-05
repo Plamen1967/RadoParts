@@ -1,0 +1,7 @@
+.catcha {
+    border: 1px solid lightgray;
+    height: 30px;
+    width: 100%;
+    object-fit: fill;
+}
+

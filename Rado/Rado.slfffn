@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rado", "Rado.csproj", "{DDFB8040-3ED4-BDC1-0CAF-BD845AFA932E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDFB8040-3ED4-BDC1-0CAF-BD845AFA932E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDFB8040-3ED4-BDC1-0CAF-BD845AFA932E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDFB8040-3ED4-BDC1-0CAF-BD845AFA932E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDFB8040-3ED4-BDC1-0CAF-BD845AFA932E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0DAD6B3-3B53-497E-83B7-F184BDF5E80A}
+	EndGlobalSection
+EndGlobal

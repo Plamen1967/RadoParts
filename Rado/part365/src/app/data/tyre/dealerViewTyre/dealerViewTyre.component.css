@@ -1,0 +1,58 @@
+.tyre-item {
+    padding: 2px;
+    border-radius: 5px;
+    border: 1px solid black;
+    box-shadow: 1px 1px 1px 1px rgb(32, 23, 32);
+    padding-bottom: 5px;
+    min-width: 175px;
+}
+
+.tyre-card {
+    border: 1px solid lightblue;
+    border-radius: 10px;
+}
+.count {
+    display: none;
+}
+
+.count:first-of-type {
+    display: block;
+}
+
+.background:nth-child(odd) {
+    background-color: #f5f5f5;
+}
+
+.background:nth-child(even) {
+    background-color: #F0F8FF;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    color: white;
+    padding: 4px 0px;
+    margin: 2px 0px;
+
+
+}
+.rim-with-tyre-header
+{
+    font-size: 1.2rem;
+    background-color: #74BDE0;
+    color: black;
+}
+
+.rim-header, .tyre-header {
+    font-size: 1.1rem;
+    background-color: #3B7197;
+}
+
+.container 
+{
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 50%;
+    flex-direction: row;
+}

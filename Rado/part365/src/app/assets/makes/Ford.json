@@ -1,0 +1,287 @@
+{
+  "make": "Ford",
+  "models": [
+    {
+      "label": "B-Max",
+      "modifications": {
+        "b-max-minivan": "B-Max Minivan (10.2012 - 09.2017)"
+      }
+    },
+    {
+      "label": "C-Max",
+      "modifications": {
+        "c-max-grand": "C-Max GRAND (12.2010 - 05.2016)",
+        "c-max-minivan-i": "C-Max Minivan I (02.2007 - 09.2010)",
+        "c-max-minivan-ii": "C-Max Minivan II (04.2010 - 09.2019)"
+      }
+    },
+    {
+      "label": "Cougar",
+      "modifications": {
+        "cougar-coupe": "Cougar Coupe (08.1998 - 12.2001)"
+      }
+    },
+    {
+      "label": "Courier",
+      "modifications": {
+        "courier-box-i": "Courier Box I (07.1991 - 02.1996)",
+        "courier-box-ii": "Courier Box II (02.1996 - ...)",
+        "courier-box-iii": "Courier Box III (05.1998 - ...)"
+      }
+    },
+    {
+      "label": "ECOSPORT",
+      "modifications": {
+        "ecosport-suv-i": "ECOSPORT SUV I (01.2003 - 09.2011)",
+        "ecosport-suv-ii": "ECOSPORT SUV II (09.2011 - ...)"
+      }
+    },
+    {
+      "label": "Escort",
+      "modifications": {
+        "escort-81-express": "Escort '81 Express (01.1981 - 02.1986)",
+        "escort-86-express": "Escort '86 Express (02.1986 - 07.1990)",
+        "escort-91-express": "Escort '91 Express (07.1990 - 12.1994)",
+        "escort-95-box": "Escort '95 Box (01.1995 - 06.2001)",
+        "escort-classic": "Escort Classic (10.1998 - 07.2000)",
+        "escort-classic-turnier": "Escort Classic Turnier (02.1999 - 07.2000)",
+        "escort-iii-cabrio": "Escort III Cabrio (09.1983 - 12.1985)",
+        "escort-iii-estate": "Escort III Estate (09.1980 - 12.1985)",
+        "escort-iii-hatchback": "Escort III Hatchback (09.1980 - 07.1986)",
+        "escort-iv-cabrio": "Escort IV Cabrio (01.1986 - 07.1990)",
+        "escort-iv-estate": "Escort IV Estate (10.1985 - 10.1990)",
+        "escort-iv-hatchback": "Escort IV Hatchback (10.1985 - 10.1990)",
+        "escort-v-cabrio": "Escort V Cabrio (07.1990 - 12.1992)",
+        "escort-v-estate": "Escort V Estate (07.1990 - 12.1992)",
+        "escort-v-hatchback": "Escort V Hatchback (07.1990 - 12.1992)",
+        "escort-vi-cabrio": "Escort VI Cabrio (12.1992 - 01.1995)",
+        "escort-vi-estate": "Escort VI Estate (09.1992 - 01.1995)",
+        "escort-vi-hatchback": "Escort VI Hatchback (09.1992 - 01.1995)",
+        "escort-vi-sedan": "Escort VI Sedan (08.1993 - 01.1995)",
+        "escort-vii-cabrio": "Escort VII Cabrio (02.1995 - 08.2000)",
+        "escort-vii-estate": "Escort VII Estate (01.1995 - 02.1999)",
+        "escort-vii-hatchback": "Escort VII Hatchback (01.1995 - 08.2002)",
+        "escort-vii-sedan": "Escort VII Sedan (01.1995 - 02.1999)"
+      }
+    },
+    {
+      "label": "Explorer",
+      "modifications": {
+        "explorer-suv-i": "Explorer SUV I (10.1990 - 12.1994)",
+        "explorer-suv-ii": "Explorer SUV II (09.1994 - 12.2001)"
+      }
+    },
+    {
+      "label": "Fiesta",
+      "modifications": {
+        "fiesta-box-i": "Fiesta Box I (05.1976 - 11.1986)",
+        "fiesta-box-ii": "Fiesta Box II (03.1983 - 12.1995)",
+        "fiesta-box-iii": "Fiesta Box III (04.1989 - 02.1996)",
+        "fiesta-box-iv": "Fiesta Box IV (02.1996 - 08.2003)",
+        "fiesta-box-v": "Fiesta Box V (05.1998 - 08.2003)",
+        "fiesta-i-hatchback": "Fiesta I Hatchback (05.1976 - 08.1983)",
+        "fiesta-ii-hatchback": "Fiesta II Hatchback (09.1983 - 11.1989)",
+        "fiesta-iii-hatchback": "Fiesta III Hatchback (01.1989 - 01.1997)",
+        "fiesta-iv-hatchback": "Fiesta IV Hatchback (08.1995 - 09.2002)",
+        "fiesta-v-hatchback": "Fiesta V Hatchback (11.2001 - 03.2010)",
+        "fiesta-v-van": "Fiesta V Van (10.2003 - 09.2009)",
+        "fiesta-vi-hatchback": "Fiesta VI Hatchback (06.2008 - 05.2017)",
+        "fiesta-vi-van": "Fiesta VI Van (01.2009 - ...)",
+        "fiesta-vii-hatchback": "Fiesta VII Hatchback (05.2017 - ...)"
+      }
+    },
+    {
+      "label": "Focus",
+      "modifications": {
+        "focus-c-max": "Focus C-Max (10.2003 - 03.2007)",
+        "focus-i-estate": "Focus I Estate (02.1999 - 12.2007)",
+        "focus-i-hatchback": "Focus I Hatchback (10.1998 - 12.2007)",
+        "focus-i-sedan": "Focus I Sedan (02.1999 - 12.2007)",
+        "focus-ii-cabrio": "Focus II Cabrio (10.2006 - 09.2010)",
+        "focus-ii-estate": "Focus II Estate (07.2004 - 09.2012)",
+        "focus-ii-hatchback": "Focus II Hatchback (07.2004 - 09.2012)",
+        "focus-ii-sedan": "Focus II Sedan (04.2005 - 09.2012)",
+        "focus-iii-estate": "Focus III Estate (07.2010 - 09.2018)",
+        "focus-iii-hatchback": "Focus III Hatchback (07.2010 - 01.2018)",
+        "focus-iii-sedan": "Focus III Sedan (07.2010 - 09.2018)",
+        "focus-iv-estate": "Focus IV Estate (09.2018 - ...)",
+        "focus-iv-hatchback": "Focus IV Hatchback (01.2018 - ...)",
+        "focus-iv-sedan": "Focus IV Sedan (11.2018 - ...)"
+      }
+    },
+    {
+      "label": "Fusion",
+      "modifications": {
+        "fusion-hatchback": "Fusion Hatchback (08.2002 - 12.2012)"
+      }
+    },
+    {
+      "label": "Galaxy",
+      "modifications": {
+        "galaxy-minivan-i": "Galaxy Minivan I (03.1995 - 05.2006)",
+        "galaxy-minivan-ii": "Galaxy Minivan II (05.2006 - 06.2016)",
+        "galaxy-minivan-iii": "Galaxy Minivan III (01.2015 - ...)"
+      }
+    },
+    {
+      "label": "Granada",
+      "modifications": {
+        "granada-estate": "Granada Estate (08.1977 - 08.1985)",
+        "granada-sedan": "Granada Sedan (08.1977 - 08.1985)"
+      }
+    },
+    {
+      "label": "Ka",
+      "modifications": {
+        "ka-hatchback": "Ka Hatchback + (08.2014 - ...)",
+        "ka-hatchback-i": "Ka Hatchback I (09.1996 - 11.2008)",
+        "ka-hatchback-ii": "Ka Hatchback II (10.2008 - 08.2014)",
+        "ka-sedan": "Ka Sedan + (08.2014 - ...)",
+        "ka-van": "Ka Van (05.2002 - 05.2005)"
+      }
+    },
+    {
+      "label": "Kuga",
+      "modifications": {
+        "kuga-suv-i": "Kuga SUV I (02.2008 - 11.2012)",
+        "kuga-suv-ii": "Kuga SUV II (05.2012 - 10.2019)",
+        "kuga-suv-iii": "Kuga SUV III (07.2019 - ...)"
+      }
+    },
+    {
+      "label": "Maverick",
+      "modifications": {
+        "maverick-suv-i": "Maverick SUV I (02.1993 - 04.1998)",
+        "maverick-suv-ii": "Maverick SUV II (02.2001 - 12.2007)"
+      }
+    },
+    {
+      "label": "Mondeo",
+      "modifications": {
+        "mondeo-i-hatchback": "Mondeo I Hatchback (02.1993 - 08.1996)",
+        "mondeo-i-sedan": "Mondeo I Sedan (02.1993 - 08.1996)",
+        "mondeo-i-turnier": "Mondeo I Turnier (01.1993 - 08.1996)",
+        "mondeo-ii-hatchback": "Mondeo II Hatchback (08.1996 - 09.2000)",
+        "mondeo-ii-sedan": "Mondeo II Sedan (08.1996 - 09.2000)",
+        "mondeo-ii-turnier": "Mondeo II Turnier (08.1996 - 09.2000)",
+        "mondeo-iii-hatchback": "Mondeo III Hatchback (10.2000 - 03.2007)",
+        "mondeo-iii-sedan": "Mondeo III Sedan (10.2000 - 03.2007)",
+        "mondeo-iii-turnier": "Mondeo III Turnier (10.2000 - 03.2007)",
+        "mondeo-iv-hatchback": "Mondeo IV Hatchback (03.2007 - 01.2015)",
+        "mondeo-iv-sedan": "Mondeo IV Sedan (03.2007 - 01.2015)",
+        "mondeo-iv-turnier": "Mondeo IV Turnier (03.2007 - 01.2015)",
+        "mondeo-v-hatchback": "Mondeo V Hatchback (09.2014 - ...)",
+        "mondeo-v-sedan": "Mondeo V Sedan (09.2012 - ...)",
+        "mondeo-v-turnier": "Mondeo V Turnier (09.2014 - ...)"
+      }
+    },
+    {
+      "label": "Orion",
+      "modifications": {
+        "orion-i-sedan": "Orion I Sedan (07.1983 - 03.1986)",
+        "orion-ii-sedan": "Orion II Sedan (12.1985 - 07.1990)",
+        "orion-iii-sedan": "Orion III Sedan (07.1990 - 09.1996)"
+      }
+    },
+    {
+      "label": "Probe",
+      "modifications": {
+        "probe-coupe-i": "Probe Coupe I (08.1988 - 07.1993)",
+        "probe-coupe-ii": "Probe Coupe II (09.1992 - 03.1998)"
+      }
+    },
+    {
+      "label": "Puma",
+      "modifications": {
+        "puma-coupe": "Puma Coupe (03.1997 - 06.2002)",
+        "puma-suv": "Puma SUV (09.2019 - ...)"
+      }
+    },
+    {
+      "label": "Ranger",
+      "modifications": {
+        "ranger-pick-up-i": "Ranger Pick-up I (04.1997 - 06.2009)",
+        "ranger-pick-up-ii": "Ranger Pick-up II (01.2005 - 07.2012)",
+        "ranger-pick-up-iii": "Ranger Pick-up III (04.2011 - 10.2018)"
+      }
+    },
+    {
+      "label": "S-Max",
+      "modifications": {
+        "s-max-minivan-i": "S-Max Minivan I (05.2006 - 12.2014)",
+        "s-max-minivan-ii": "S-Max Minivan II (01.2015 - ...)"
+      }
+    },
+    {
+      "label": "Scorpio",
+      "modifications": {
+        "scorpio-i-estate": "Scorpio I Estate (05.1988 - 09.1994)",
+        "scorpio-i-hatchback": "Scorpio I Hatchback (04.1985 - 09.1994)",
+        "scorpio-i-sedan": "Scorpio I Sedan (01.1986 - 12.1994)",
+        "scorpio-ii-estate": "Scorpio II Estate (10.1994 - 08.1998)",
+        "scorpio-ii-sedan": "Scorpio II Sedan (10.1994 - 08.1998)"
+      }
+    },
+    {
+      "label": "Sierra",
+      "modifications": {
+        "sierra-estate-i": "Sierra Estate I (08.1982 - 12.1986)",
+        "sierra-estate-ii": "Sierra Estate II (01.1987 - 02.1993)",
+        "sierra-hatchback-i": "Sierra Hatchback I (08.1982 - 02.1987)",
+        "sierra-hatchback-ii": "Sierra Hatchback II (01.1987 - 03.1993)",
+        "sierra-sedan": "Sierra Sedan (01.1987 - 02.1993)"
+      }
+    },
+    {
+      "label": "Street KA",
+      "modifications": {
+        "street-ka-cabrio": "Street KA Cabrio (02.2003 - 07.2005)"
+      }
+    },
+    {
+      "label": "Tourneo",
+      "modifications": {
+        "tourneo-connect": "Tourneo Connect (06.2002 - 12.2013)",
+        "tourneo-courier-kombi": "Tourneo Courier Kombi (02.2014 - ...)",
+        "tourneo-custom": "Tourneo CUSTOM (04.2012 - ...)",
+        "tourneo-grand-connect": "Tourneo GRAND connect (09.2013 - ...)"
+      }
+    },
+    {
+      "label": "Transit",
+      "modifications": {
+        "transit-box-i": "Transit Box I (01.1977 - 10.1986)",
+        "transit-box-ii": "Transit Box II (09.1985 - 09.1992)",
+        "transit-box-iii": "Transit Box III (05.1991 - 06.1994)",
+        "transit-box-iv": "Transit Box IV (06.1994 - 07.2000)",
+        "transit-box-v": "Transit Box V (01.2000 - 05.2006)",
+        "transit-box-vi": "Transit Box VI (04.2006 - 12.2014)",
+        "transit-box-vii": "Transit Box VII (08.2013 - ...)",
+        "transit-bus-i": "Transit Bus I (11.1977 - 10.1986)",
+        "transit-bus-ii": "Transit Bus II (10.1985 - 09.1992)",
+        "transit-bus-iii": "Transit Bus III (01.1991 - 09.1994)",
+        "transit-bus-iv": "Transit Bus IV (06.1994 - 07.2000)",
+        "transit-bus-v": "Transit Bus V (01.2000 - 05.2006)",
+        "transit-bus-vi": "Transit Bus VI (04.2006 - 12.2014)",
+        "transit-bus-vii": "Transit Bus VII (08.2013 - ...)",
+        "transit-connect": "Transit Connect (06.2002 - 12.2013)",
+        "transit-connect-box": "Transit Connect Box (02.2013 - ...)",
+        "transit-connect-kombi": "Transit Connect Kombi (02.2013 - ...)",
+        "transit-courier-box": "Transit Courier Box (02.2014 - ...)",
+        "transit-courier-kombi": "Transit Courier Kombi (02.2014 - ...)",
+        "transit-custom-box": "Transit Custom Box (04.2012 - ...)",
+        "transit-custom-bus": "Transit Custom Bus (04.2012 - ...)",
+        "transit-platform-i": "Transit Platform I (11.1977 - 10.1986)",
+        "transit-platform-ii": "Transit Platform II (10.1985 - 09.1992)",
+        "transit-platform-iii": "Transit Platform III (04.1991 - 08.1994)",
+        "transit-platform-iv": "Transit Platform IV (08.1994 - 07.2000)",
+        "transit-platform-v": "Transit Platform V (01.2000 - 05.2006)",
+        "transit-platform-vi": "Transit Platform VI (04.2006 - 12.2014)",
+        "transit-platfrom-vii": "Transit Platfrom VII (08.2013 - ...)",
+        "transit-tourneo-i": "Transit Tourneo I (08.1994 - 12.2000)",
+        "transit-tourneo-ii": "Transit Tourneo II (06.2000 - 03.2006)",
+        "transit-tourneo-iii": "Transit Tourneo III (07.2006 - 08.2014)"
+      }
+    }
+  ]
+}

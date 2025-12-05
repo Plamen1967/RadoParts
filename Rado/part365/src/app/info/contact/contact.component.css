@@ -1,0 +1,30 @@
+.title
+{
+    font-size: medium;
+}
+.text-body-white {
+    color: #fff;
+    font-family: roboto,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 22px;
+}
+
+.title-medium-dark {
+    color: #1c2d3a;
+    font-family: 'exo 2',sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 32px;
+}
+
+.title-medium-dark {
+    color: #1c2d3a;
+    font-family: 'exo 2',sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    /* letter-spacing: 0; */
+    line-height: 32px;
+}

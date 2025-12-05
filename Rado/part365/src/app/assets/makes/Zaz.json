@@ -1,0 +1,12 @@
+{
+  "make": "Zaz",
+  "models": [
+    {
+      "label": "Tavria",
+      "modifications": {
+        "tavria-1102": "Tavria (1102) (01.1987 - 12.1997)",
+        "tavria-nova-1102": "Tavria Nova (1102) (01.1998 - 12.2007)"
+      }
+    }
+  ]
+}

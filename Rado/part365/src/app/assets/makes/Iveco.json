@@ -1,0 +1,49 @@
+{
+  "make": "Iveco",
+  "models": [
+    {
+      "label": "Daily",
+      "modifications": {
+        "daily-ii-box": "Daily II Box (01.1989 - 05.1999)",
+        "daily-ii-bus": "Daily II Bus (01.1989 - 05.1999)",
+        "daily-ii-platform": "Daily II Platform (01.1989 - 05.1999)",
+        "daily-iii-box": "Daily III Box (11.1997 - 07.2007)",
+        "daily-iii-bus": "Daily III Bus (05.1999 - 05.2006)",
+        "daily-iii-platform": "Daily III Platform (05.1999 - 04.2006)",
+        "daily-iv-box": "Daily IV Box (05.2006 - 03.2012)",
+        "daily-iv-bus": "Daily IV Bus (05.2006 - 08.2011)",
+        "daily-iv-platform": "Daily IV Platform (05.2006 - 03.2012)",
+        "daily-line": "Daily LINE (06.2014 - ...)",
+        "daily-v-box": "Daily V Box (09.2011 - 02.2014)",
+        "daily-v-platform": "Daily V Platform (09.2011 - 02.2014)",
+        "daily-vi-box": "Daily VI Box (03.2014 - ...)",
+        "daily-vi-bus": "Daily VI Bus (03.2014 - ...)",
+        "daily-vi-platform": "Daily VI Platform (03.2014 - ...)"
+      }
+    },
+    {
+      "label": "EuroCargo",
+      "modifications": {
+        "eurocargo-truck-i-iii": "EuroCargo Truck I-III (01.1991 - 09.2015)"
+      }
+    },
+    {
+      "label": "EuroTech",
+      "modifications": {
+        "eurotech-truck": "EuroTech Truck (01.1992 - ...)"
+      }
+    },
+    {
+      "label": "S-Way",
+      "modifications": {
+        "s-way-truck": "S-Way Truck (07.2019 - ...)"
+      }
+    },
+    {
+      "label": "Stralis",
+      "modifications": {
+        "stralis-truck": "Stralis Truck (02.2002 - ...)"
+      }
+    }
+  ]
+}

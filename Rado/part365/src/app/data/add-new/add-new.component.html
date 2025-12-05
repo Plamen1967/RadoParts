@@ -1,0 +1,23 @@
+<div>
+    @if (seller) {
+        <div class="row mt-3">
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-primary button-style col-sm-2 me-2 p-2" (click)="addCar()">Добавете Кола</button>
+                <button type="button" class="btn btn-primary button-style col-sm-2 p-2" (click)="addBus()">Добавете Бус</button>
+            </div>
+        </div>
+    }
+    <div class="row mt-3">
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-primary button-style col-sm-2 me-2" (click)="addCarPart()">Добавете Част за кола</button>
+            @if (seller) {
+                <button type="button" class="btn btn-primary button-style col-sm-2 me-2" (click)="addBusPart()">Добавете Част за бус</button>
+            }
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-primary button-style col-sm-2" (click)="addTyre()">Добавете Джанта/Гума</button>
+        </div>
+    </div>
+</div>

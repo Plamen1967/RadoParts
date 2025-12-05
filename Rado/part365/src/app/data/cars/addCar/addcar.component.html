@@ -1,0 +1,102 @@
+<div class="container">
+    @if (saving) {
+        <div>
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Saving...
+            </button>
+        </div>
+    } @else {
+        <div>
+            <div class="title">Кола на части</div>
+        </div>
+        <div class="card p-2" style="background-color: khaki">
+            <form [formGroup]="addCarForm">
+                <div class="row g-3">
+                    <div class="col-sm-2 min200px">
+                        <app-company-choise testId="companyId" [submitted]="submitted" [required]="true" [userId]="userId" [bus]="bus!" [all]="true" formControlName="companyId"> </app-company-choise>
+                    </div>
+                    @if (companyId) {
+                        <div class="col-sm-2 min300px">
+                            <app-model-choice
+                                [required]="true"
+                                formControlName="modelId"
+                                [userId]="userId"
+                                [groupSelection]="false"
+                                [all]="true"
+                                [submitted]="submitted"
+                                [companyId]="companyId!"
+                                [groupSelection]="false"
+                                [multiselection]="false"
+                                (onClose)="focus()">
+                            </app-model-choice>
+                        </div>
+                        @if (!bus && modelId) {
+                            <div class="col-sm-3 min300px">
+                                <app-modification-choice
+                                    [required]="true"
+                                    [modelsId]="modelId"
+                                    [userId]="userId"
+                                    [all]="true"
+                                    [multiselection]="false"
+                                    [submitted]="submitted"
+                                    formControlName="modificationId"
+                                    (modifcationChange)="modificatioChanged($event)"
+                                    (onClose)="focus()">
+                                    >
+                                </app-modification-choice>
+                            </div>
+                            <div class="col-sm-2 min150px">
+                                <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" [submitted]="submitted" (onClose)="focus()"> </app-select>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <app-input formControlName="regNumber" label="{{ label }}" placeHolder="{{ label }}" [submitted]="submitted" [required]="true"> </app-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <app-input formControlName="vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" [submitted]="submitted"> </app-input>
+                    </div>
+                    <div class="col-sm-3">
+                        <app-input formControlName="powerBHP" type="number" label="{{ labels.POWERBHP }}" placeHolder="{{ labels.POWERBHP }}" [submitted]="submitted" (change)="powerBHPChanged()">
+                        </app-input>
+                    </div>
+                    <div class="col-sm-3">
+                        <app-input formControlName="powerkWh" type="number" label="{{ labels.POWERKWH }}" placeHolder="{{ labels.POWERKWH }}" [submitted]="submitted" (change)="powerkWhChanged()">
+                        </app-input>
+                    </div>
+                    <div class="col-sm-2">
+                        <app-input formControlName="millage" type="number" label="{{ labels.MILLAGE }}" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted"> </app-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <app-select formControlName="engineType" label="{{ labels.TYPE_ENGINE }}" [submitted]="submitted" [data]="staticSelectionService.EngineType"> </app-select>
+                    </div>
+                    <div class="col-sm-3">
+                        <app-input formControlName="engineModel" label="{{ labels.CODE_ENGINE }}" placeHolder="{{ labels.CODE_ENGINE }}" [submitted]="submitted"> </app-input>
+                    </div>
+                    <div class="col-sm-3">
+                        <app-select formControlName="gearboxType" label="{{ labels.TYPE_GEARBOX }}" [submitted]="submitted" [data]="staticSelectionService.GearboxType"> </app-select>
+                    </div>
+                    <div class="col-sm-3">
+                        <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="staticSelectionService.Region"> </app-select>
+                    </div>
+                </div>
+                <div class="row form-floating mt-2">
+                    <app-textarea formControlName="description" label="{{ labels.DESCRIPTION_CAR }}" placeHolder="{{ labels.DESCRIPTION_CAR }}" [submitted]="submitted"> </app-textarea>
+                </div>
+            </form>
+        </div>
+    }
+    <div class="row mt-3" style="position: relative">
+        <app-imagelist [id]="carId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+        <div class="d-inline-flex justify-content-end position-buttons w-100">
+            <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="UpdateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+        </div>
+    </div>
+</div>

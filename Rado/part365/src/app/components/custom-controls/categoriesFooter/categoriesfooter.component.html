@@ -1,0 +1,19 @@
+<div class="containerFlex text-center" [hidden]="hideFilter">
+    @for(category of categories; track category.id; let i = $index) {
+        @if(category.count) {
+            <button style="width: 150px; " class="m-1 category" (click)="categorySelected(category.id!)">
+                <div class="count"><div class="number">{{category.count}}</div></div>
+                <div class="mb-1">
+                    <input id="{{ 'categoryId' + i }}" class=".d-none" type="hidden" value="{{ category.id }}" />
+                    <div>
+                        <img class="image-style" src="{{ category.imageName }}" alt="{{ category.imageName }}" />
+                    </div>
+                    <div class="categoryMessage">
+                        <div class="message">{{ categoryMessage(category.name) }}</div>
+                        <!-- <div class="number">{{category.count}}</div> -->
+                    </div>
+                </div>
+            </button>
+        }
+    }
+</div>

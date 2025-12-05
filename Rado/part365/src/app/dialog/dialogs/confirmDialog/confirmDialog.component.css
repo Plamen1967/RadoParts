@@ -1,0 +1,24 @@
+.dialog-container {
+    min-width: max(200px, 20vw);
+    max-width: max(300px, 20vw);
+}
+
+.title {
+    background-color: rgb(27, 27, 236);
+    color: white;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: 1.2em;
+    font-weight: 500;
+}
+
+.content {
+    padding: 6px 12px;
+    background-color: #FAF9F6;
+}
+.action-group {
+    display: flex;
+    justify-content: end;
+}

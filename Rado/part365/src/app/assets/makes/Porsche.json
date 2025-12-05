@@ -1,0 +1,111 @@
+{
+  "make": "Porsche",
+  "models": [
+    {
+      "label": "911",
+      "modifications": {
+        "911-cabrio-i": "911 Cabrio I (08.1982 - 08.1989)",
+        "911-cabrio-ii-964": "911 Cabrio II (964) (05.1989 - 06.1994)",
+        "911-cabrio-iii-933": "911 Cabrio III (933) (07.1994 - 12.1997)",
+        "911-cabrio-iv-996": "911 Cabrio IV (996) (02.1998 - 08.2005)",
+        "911-cabrio-v-997": "911 Cabrio V (997) (04.2005 - 12.2012)",
+        "911-cabrio-vi-991": "911 Cabrio VI (991) (03.2012 - 11.2018)",
+        "911-cabrio-vii-992": "911 Cabrio VII (992) (01.2019 - ...)",
+        "911-coupe-i": "911 Coupe I (01.1963 - 11.1990)",
+        "911-coupe-ii-964": "911 Coupe II (964) (12.1988 - 09.1993)",
+        "911-coupe-iii-993": "911 Coupe III (993) (10.1993 - 09.1997)",
+        "911-coupe-iv-966": "911 Coupe IV (966) (09.1997 - 09.2005)",
+        "911-coupe-v-997": "911 Coupe V (997) (07.2004 - 12.2012)",
+        "911-coupe-vi-991": "911 Coupe VI (991) (12.2011 - 11.2018)",
+        "911-coupe-vii-992": "911 Coupe VII (992) (11.2018 - ...)",
+        "911-speedster-i-964": "911 Speedster I (964) (08.1992 - 06.1994)",
+        "911-speedster-ii-997": "911 Speedster II (997) (08.2010 - 05.2011)",
+        "911-speedster-iii-991": "911 Speedster III (991) (06.2018 - ...)",
+        "911-targa-i": "911 Targa I (11.1964 - 11.1990)",
+        "911-targa-ii-964": "911 Targa II (964) (12.1988 - 09.1993)",
+        "911-targa-iii-993": "911 Targa III (993) (01.1994 - 09.1997)",
+        "911-targa-iv-996": "911 Targa IV (996) (12.2001 - 08.2005)",
+        "911-targa-v-997": "911 Targa V (997) (07.2006 - 12.2012)",
+        "911-targa-vi-991": "911 Targa VI (991) (05.2014 - 11.2018)"
+      }
+    },
+    {
+      "label": "918 Spyder",
+      "modifications": {
+        "918-spyder-coupe": "918 Spyder Coupe (11.2013 - 06.2015)"
+      }
+    },
+    {
+      "label": "924",
+      "modifications": {
+        "924-coupe": "924 Coupe (11.1975 - 08.1989)"
+      }
+    },
+    {
+      "label": "944",
+      "modifications": {
+        "944-cabrio": "944 Cabrio (12.1988 - 07.1991)",
+        "944-coupe": "944 Coupe (06.1981 - 07.1991)"
+      }
+    },
+    {
+      "label": "968",
+      "modifications": {
+        "968-cabrio": "968 Cabrio (06.1991 - 11.1995)",
+        "968-coupe": "968 Coupe (06.1991 - 11.1995)"
+      }
+    },
+    {
+      "label": "Boxster",
+      "modifications": {
+        "boxster-cabrio-i": "Boxster Cabrio I (09.1996 - 12.2004)",
+        "boxster-cabrio-ii": "Boxster Cabrio II (11.2004 - 12.2013)",
+        "boxster-cabrio-iii": "Boxster Cabrio III (04.2012 - 04.2016)",
+        "boxster-cabrio-iv-718": "Boxster Cabrio IV (718) (04.2016 - ...)"
+      }
+    },
+    {
+      "label": "Carrera GT",
+      "modifications": {
+        "carrera-gt-roadster": "Carrera GT Roadster (07.2003 - 12.2006)"
+      }
+    },
+    {
+      "label": "Cayenne",
+      "modifications": {
+        "cayenne-coupe": "Cayenne Coupe (01.2019 - ...)",
+        "cayenne-suv-i": "Cayenne SUV I (09.2002 - 09.2010)",
+        "cayenne-suv-ii": "Cayenne SUV II (06.2010 - 05.2017)",
+        "cayenne-suv-iii": "Cayenne SUV III (05.2017 - ...)"
+      }
+    },
+    {
+      "label": "Cayman",
+      "modifications": {
+        "cayman-coupe-i": "Cayman Coupe I (11.2005 - 12.2013)",
+        "cayman-coupe-ii": "Cayman Coupe II (03.2013 - 04.2016)",
+        "cayman-coupe-iii-718": "Cayman Coupe III (718) (04.2016 - ...)"
+      }
+    },
+    {
+      "label": "Macan",
+      "modifications": {
+        "macan-suv": "Macan SUV (02.2014 - ...)"
+      }
+    },
+    {
+      "label": "Panamera",
+      "modifications": {
+        "panamera-hatchback-i": "Panamera Hatchback I (03.2009 - 12.2017)",
+        "panamera-hatchback-ii": "Panamera Hatchback II (05.2016 - ...)",
+        "panamera-sport-turismo": "Panamera Sport Turismo (05.2017 - ...)"
+      }
+    },
+    {
+      "label": "Taycan",
+      "modifications": {
+        "taycan-sedan": "Taycan Sedan (05.2019 - ...)"
+      }
+    }
+  ]
+}

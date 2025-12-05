@@ -1,0 +1,17 @@
+.price {
+    color: blue;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.labelText {
+    color: black;
+}
+
+.small {
+    font-weight: 600;
+}
+
+.border-style {
+    border-bottom: .5px solid black;
+}

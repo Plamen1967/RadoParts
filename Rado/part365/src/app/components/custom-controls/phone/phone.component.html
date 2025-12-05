@@ -1,0 +1,14 @@
+@if (phone) {
+    <div>
+        @if (isMobile) {
+            <div class="size">
+                <a href="{{ refPhone }}" class="d-flex btn phoneColor me-2 btn-sm">
+                    <i class="las la-phone-volume me-2 phoneSize"></i>
+                    {{ phone }}
+                </a>
+            </div>
+        } @else {
+            <small data-cy="sellerName" class="d-flex btn phoneColor me-1 btn-sm"><i class="las la-phone-volume me-1"></i> {{ phone }} </small>
+        }
+    </div>
+}

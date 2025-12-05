@@ -1,0 +1,22 @@
+<!-- <div class="categoryMin categories" #categoriesElem id='categoriesMinElem'>
+  <app-categoriesmin></app-categoriesmin>
+</div>
+
+<button class="btn btn-primary" (click)="login()">Login</button>
+<router-outlet /> -->
+
+<div [ngClass]="{'main-class':true}" class="main-style">
+  <div class="main">
+
+    @if (!dealerWebaPage)  {
+      <app-nav-menu style="display:block;width:100%"></app-nav-menu>
+    }
+
+      <div class="componentPadding">
+          <router-outlet (activate)="onActivate($event, outlet)" #outlet></router-outlet>
+      </div>
+  </div>
+  <div class="footer">
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,0 +1,167 @@
+@import 'bootstrap/scss/_functions.scss';
+@import 'bootstrap/scss/_variables.scss';
+@import 'bootstrap/scss/mixins/_breakpoints.scss';
+
+input {
+    display: none;
+}
+label {
+    white-space: nowrap;
+    font-size: 1rem;
+    line-height: 1.3333333333;
+    font-variation-settings: 'wght' 400;
+    font-family:
+        'ATVFabriga',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Helvetica,
+        Arial,
+        sans-serif !important;
+}
+
+.radio-item [type='radio']:checked ~ label {
+    border-color: #524eee;
+}
+
+input:checked + label,
+input + label {
+    transition: background-color 1s;
+    margin-bottom: 5px;
+    height: 30px;
+}
+.radio-group,
+input + label {
+    border-radius: 10px;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+body {
+    box-sizing: border-box;
+}
+
+input + label {
+    padding: 6px;
+    width: inherit;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    /* border: 1px solid black; */
+}
+input:checked + label {
+    border: 2px solid #00ced1;
+    padding: 5px;
+}
+
+.style1 > input + label {
+    display: flex;
+    /* border: 1px solid black; */
+}
+.style1 > input:checked + label {
+    color: white;
+    border: 2px solid #00ced1;
+    background-color: #00ced1;
+    border-bottom: 2px solid red;
+    padding: 5px;
+}
+
+.radio-button {
+    box-sizing: border-box;
+    display: block;
+    cursor: pointer;
+}
+
+.radio-label {
+    background-color: rgba(194, 223, 241, 0.4);
+    border-radius: 5px;
+    border: 1px solid lightcyan;
+}
+
+.radio-button + .radio-button {
+    margin-left: 3px;
+}
+
+.style2 > input + label {
+    border-radius: 0px;
+    border-bottom: 2px solid white;
+    padding: 10px 10px 10px 10px;
+}
+.style2 > input:checked + label {
+    color: lightcyan;
+    border: 0px;
+
+    border-bottom: 5px solid var(--active-borderbottom);
+    border-radius: 5px;
+    background-color: var(--active-bgcolor);
+    /* #FF69B4; #AA96DA #FFFFD2*/
+    transition: border-bottom 0.5s;
+    font-weight: 500;
+}
+
+.style2 > input:not(checked) + label {
+    color: black;
+    border: 0px;
+    border-bottom: 2px solid rgb(197, 198, 226);
+    border-radius: 5px;
+    background-color: #ece2e7;
+    /* #FF69B4; #AA96DA #FFFFD2*/
+    transition: border-bottom 0.5s;
+    font-weight: 500;
+}
+.selectlist {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.select-option {
+    display: block;
+}
+
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.number {
+    background-color: rgb(237, 14, 237);
+    color: white;
+    border-radius: 50%;
+    padding: 0 5px;
+    margin: 0 2px;
+    min-width: 1.4rem;
+    justify-content: center;
+    display: flex;
+}
+
+.selectlist {
+    display: block;
+}
+
+.grouplist {
+    display: none;
+    flex-flow: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (min-width: 360px) {
+    .selectlist {
+        display: none;
+    }
+
+    .grouplist {
+        display: flex;
+    }
+}

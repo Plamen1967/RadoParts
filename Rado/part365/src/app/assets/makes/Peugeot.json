@@ -1,0 +1,337 @@
+{
+  "make": "Peugeot",
+  "models": [
+    {
+      "label": "1007",
+      "modifications": {
+        "1007-hatchback": "1007 Hatchback (04.2005 - 12.2009)"
+      }
+    },
+    {
+      "label": "104",
+      "modifications": {
+        "104-coupe": "104 Coupe (09.1973 - 06.1988)",
+        "104-hatchback": "104 Hatchback (10.1972 - 06.1988)"
+      }
+    },
+    {
+      "label": "106",
+      "modifications": {
+        "106-i-hatchback": "106 I Hatchback (08.1991 - 04.1996)",
+        "106-ii-hatchback": "106 II Hatchback (04.1996 - 05.2005)",
+        "106-van": "106 Van (08.1991 - 03.2001)"
+      }
+    },
+    {
+      "label": "107",
+      "modifications": {
+        "107-hatchback": "107 Hatchback (06.2005 - 05.2014)"
+      }
+    },
+    {
+      "label": "108",
+      "modifications": {
+        "108-hatchback": "108 Hatchback (05.2014 - ...)"
+      }
+    },
+    {
+      "label": "2008",
+      "modifications": {
+        "2008-suv-i": "2008 SUV I (03.2013 - 08.2019)",
+        "2008-suv-ii": "2008 SUV II (08.2019 - ...)"
+      }
+    },
+    {
+      "label": "204",
+      "modifications": {
+        "204-break": "204 Break (01.1967 - 10.1977)",
+        "204-cabrio": "204 Cabrio (01.1967 - 10.1970)",
+        "204-coupe": "204 Coupe (07.1967 - 05.1970)",
+        "204-sedan": "204 Sedan (10.1965 - 12.1977)"
+      }
+    },
+    {
+      "label": "205",
+      "modifications": {
+        "205-box-i": "205 Box I (02.1983 - 07.1990)",
+        "205-box-ii": "205 Box II (03.1990 - 05.1997)",
+        "205-i-cabrio": "205 I Cabrio (04.1986 - 12.1994)",
+        "205-i-hatchback": "205 I Hatchback (02.1983 - 10.1987)",
+        "205-ii-hatchback": "205 II Hatchback (01.1987 - 09.1998)"
+      }
+    },
+    {
+      "label": "206",
+      "modifications": {
+        "206--hatchback": "206 + Hatchback (01.2009 - 08.2013)",
+        "206-cc-cabrio": "206 CC Cabrio (09.2000 - 12.2008)",
+        "206-hatchback": "206 Hatchback (08.1998 - 12.2012)",
+        "206-sedan": "206 Sedan (03.2007 - ...)",
+        "206-station-wagon": "206 Station Wagon (07.2002 - ...)",
+        "206-van": "206 Van (04.1999 - 03.2009)"
+      }
+    },
+    {
+      "label": "207",
+      "modifications": {
+        "207-cc-cabrio": "207 CC Cabrio (02.2007 - 01.2015)",
+        "207-hatchback": "207 Hatchback (02.2006 - 12.2015)",
+        "207-station-wagon": "207 Station Wagon (02.2007 - 12.2013)",
+        "207-van": "207 Van (04.2006 - ...)"
+      }
+    },
+    {
+      "label": "208",
+      "modifications": {
+        "208-box": "208 Box (10.2012 - 06.2019)",
+        "208-hatchback-i": "208 Hatchback I (03.2012 - 06.2019)",
+        "208-hatchback-ii": "208 Hatchback II (06.2019 - ...)"
+      }
+    },
+    {
+      "label": "3008",
+      "modifications": {
+        "3008-minivan": "3008 Minivan (06.2009 - 12.2017)",
+        "3008-suv": "3008 SUV (05.2016 - ...)"
+      }
+    },
+    {
+      "label": "301",
+      "modifications": {
+        "301-sedan": "301 Sedan (11.2012 - ...)"
+      }
+    },
+    {
+      "label": "305",
+      "modifications": {
+        "305-i-break": "305 I Break (08.1980 - 09.1982)",
+        "305-i-sedan": "305 I Sedan (11.1977 - 09.1982)",
+        "305-ii-break": "305 II Break (10.1982 - 07.1990)",
+        "305-ii-sedan": "305 II Sedan (10.1982 - 07.1990)"
+      }
+    },
+    {
+      "label": "306",
+      "modifications": {
+        "306-break": "306 Break (06.1994 - 04.2002)",
+        "306-cabrio": "306 Cabrio (03.1994 - 04.2002)",
+        "306-hatchback": "306 Hatchback (01.1993 - 10.2003)",
+        "306-sedan": "306 Sedan (04.1993 - 10.2003)",
+        "306-van": "306 Van (07.1993 - 08.2002)"
+      }
+    },
+    {
+      "label": "307",
+      "modifications": {
+        "307-break": "307 Break (03.2002 - 12.2009)",
+        "307-cc-cabrio": "307 CC Cabrio (03.2003 - 06.2009)",
+        "307-hatchback": "307 Hatchback (08.2000 - 12.2012)",
+        "307-station-wagon": "307 Station Wagon (03.2002 - 12.2009)"
+      }
+    },
+    {
+      "label": "308",
+      "modifications": {
+        "308-cc-cabrio": "308 CC Cabrio (02.2009 - 12.2015)",
+        "308-hatchback-i": "308 Hatchback I (09.2007 - 12.2016)",
+        "308-hatchback-ii": "308 Hatchback II (09.2013 - ...)",
+        "308-station-wagon-i": "308 Station Wagon I (09.2007 - 10.2014)",
+        "308-station-wagon-ii": "308 Station Wagon II (03.2014 - ...)"
+      }
+    },
+    {
+      "label": "309",
+      "modifications": {
+        "309-i-hatchback": "309 I Hatchback (10.1985 - 12.1989)",
+        "309-ii-hatchback": "309 II Hatchback (07.1989 - 12.1993)"
+      }
+    },
+    {
+      "label": "4007",
+      "modifications": {
+        "4007-suv": "4007 SUV (02.2007 - 03.2013)"
+      }
+    },
+    {
+      "label": "4008",
+      "modifications": {
+        "4008-suv": "4008 SUV (05.2012 - ...)"
+      }
+    },
+    {
+      "label": "404",
+      "modifications": {
+        "404-cabrio": "404 Cabrio (04.1963 - 12.1968)",
+        "404-sedan": "404 Sedan (04.1963 - 12.1971)"
+      }
+    },
+    {
+      "label": "405",
+      "modifications": {
+        "405-i-break": "405 I Break (06.1987 - 08.1992)",
+        "405-i-sedan": "405 I Sedan (01.1987 - 12.1993)",
+        "405-ii-break": "405 II Break (08.1992 - 10.1996)",
+        "405-ii-sedan": "405 II Sedan (01.1992 - 11.1999)"
+      }
+    },
+    {
+      "label": "406",
+      "modifications": {
+        "406-break": "406 Break (10.1996 - 10.2004)",
+        "406-coupe": "406 Coupe (03.1997 - 12.2004)",
+        "406-sedan": "406 Sedan (08.1995 - 01.2005)"
+      }
+    },
+    {
+      "label": "407",
+      "modifications": {
+        "407-coupe": "407 Coupe (10.2005 - 12.2011)",
+        "407-sedan": "407 Sedan (02.2004 - 12.2011)",
+        "407-station-wagon": "407 Station Wagon (05.2004 - 12.2011)"
+      }
+    },
+    {
+      "label": "5008",
+      "modifications": {
+        "5008-minivan": "5008 Minivan (06.2009 - 03.2017)",
+        "5008-suv": "5008 SUV (12.2016 - ...)"
+      }
+    },
+    {
+      "label": "505",
+      "modifications": {
+        "505-break": "505 Break (04.1982 - 12.1993)",
+        "505-sedan": "505 Sedan (05.1979 - 09.1995)"
+      }
+    },
+    {
+      "label": "508",
+      "modifications": {
+        "508-sedan-i": "508 Sedan I (11.2010 - 12.2018)",
+        "508-sedan-ii": "508 Sedan II (09.2018 - ...)",
+        "508-station-wagon-i": "508 Station Wagon I (11.2010 - 12.2018)",
+        "508-station-wagon-ii": "508 Station Wagon II (09.2018 - ...)"
+      }
+    },
+    {
+      "label": "604",
+      "modifications": {
+        "604-sedan": "604 Sedan (09.1975 - 07.1987)"
+      }
+    },
+    {
+      "label": "605",
+      "modifications": {
+        "605-sedan": "605 Sedan (06.1989 - 09.1999)"
+      }
+    },
+    {
+      "label": "607",
+      "modifications": {
+        "607-sedan": "607 Sedan (01.2000 - 07.2010)"
+      }
+    },
+    {
+      "label": "806",
+      "modifications": {
+        "806-minivan": "806 Minivan (06.1994 - 08.2002)"
+      }
+    },
+    {
+      "label": "807",
+      "modifications": {
+        "807-minivan": "807 Minivan (06.2002 - ...)"
+      }
+    },
+    {
+      "label": "Bipper",
+      "modifications": {
+        "bipper-box": "Bipper Box (02.2008 - ...)",
+        "bipper-tepee": "Bipper Tepee (04.2008 - ...)"
+      }
+    },
+    {
+      "label": "Boxer",
+      "modifications": {
+        "boxer-box-i": "Boxer Box I (03.1994 - 08.2005)",
+        "boxer-box-ii": "Boxer Box II (12.2001 - 04.2006)",
+        "boxer-box-iii": "Boxer Box III (04.2006 - ...)",
+        "boxer-bus-i": "Boxer Bus I (03.1994 - 04.2002)",
+        "boxer-bus-ii": "Boxer Bus II (12.2001 - 04.2006)",
+        "boxer-bus-iii": "Boxer Bus III (09.2005 - ...)",
+        "boxer-platform-i": "Boxer Platform I (03.1994 - 04.2002)",
+        "boxer-platform-ii": "Boxer Platform II (12.2001 - 04.2006)",
+        "boxer-platform-iii": "Boxer Platform III (04.2006 - ...)"
+      }
+    },
+    {
+      "label": "Expert",
+      "modifications": {
+        "expert-box-i": "Expert Box I (07.1995 - 03.2008)",
+        "expert-box-ii": "Expert Box II (01.2007 - 04.2016)",
+        "expert-box-iii": "Expert Box III (04.2016 - ...)",
+        "expert-bus-i": "Expert Bus I (10.1995 - 12.2006)",
+        "expert-bus-ii-tepee": "Expert Bus II Tepee (01.2007 - 04.2016)",
+        "expert-bus-iii": "Expert Bus III (04.2016 - ...)",
+        "expert-platform-i": "Expert Platform I (12.1995 - 12.2006)",
+        "expert-platform-ii": "Expert Platform II (01.2007 - 04.2016)",
+        "expert-platform-iii": "Expert Platform III (04.2016 - ...)"
+      }
+    },
+    {
+      "label": "iOn",
+      "modifications": {
+        "ion-hatchback": "iOn Hatchback (11.2010 - 03.2015)"
+      }
+    },
+    {
+      "label": "J5",
+      "modifications": {
+        "j5-box-i": "J5 Box I (09.1981 - 09.1990)",
+        "j5-box-ii": "J5 Box II (09.1990 - 03.1994)",
+        "j5-bus-i": "J5 Bus I (09.1981 - 09.1990)",
+        "j5-bus-ii": "J5 Bus II (09.1990 - 02.1994)",
+        "j5-platform-i": "J5 Platform I (09.1981 - 09.1990)",
+        "j5-platform-ii": "J5 Platform II (09.1990 - 02.1994)"
+      }
+    },
+    {
+      "label": "J9",
+      "modifications": {
+        "j9-box": "J9 Box (03.1980 - 06.1987)",
+        "j9-bus": "J9 Bus (03.1980 - 06.1987)",
+        "j9-platform": "J9 Platform (03.1980 - 06.1987)"
+      }
+    },
+    {
+      "label": "Partner",
+      "modifications": {
+        "partner-box-i": "Partner Box I (04.1996 - 12.2015)",
+        "partner-box-ii": "Partner Box II (04.2008 - 06.2018)",
+        "partner-box-iii": "Partner Box III (09.2018 - ...)",
+        "partner-combispace": "Partner Combispace (05.1996 - 12.2015)",
+        "partner-platform-i": "Partner Platform I (03.1997 - 07.2008)",
+        "partner-platform-ii": "Partner Platform II (01.2009 - 08.2018)",
+        "partner-tepee": "Partner Tepee (04.2008 - 08.2018)"
+      }
+    },
+    {
+      "label": "RCZ",
+      "modifications": {
+        "rcz-coupe": "RCZ Coupe (03.2010 - 12.2015)"
+      }
+    },
+    {
+      "label": "Rifter",
+      "modifications": {
+        "rifter-minivan": "Rifter Minivan (09.2018 - ...)"
+      }
+    },
+    {
+      "label": "Traveller",
+      "modifications": {
+        "traveller-bus": "Traveller Bus (04.2016 - ...)"
+      }
+    }
+  ]
+}

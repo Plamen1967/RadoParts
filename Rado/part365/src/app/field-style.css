@@ -1,0 +1,35 @@
+.select__margin {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+}
+.select__container
+{
+    position:relative; 
+    padding-top: 6px; 
+    margin-top: 4px;
+}
+
+.select__field {
+    font-size: 1rem;
+    outline: 1px solid purple;
+    border-radius: 0.25rem;
+    color: var(--secondary);
+    padding: 0.35rem;
+    padding-top: 0.45rem;
+    border: none;
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  .select__label {
+      position: absolute;
+      top: -0.725rem;
+      padding: 0 0.2rem;
+      background-color: #B2FFFF;
+      display: block;
+      font-size: 0.725rem;
+      border-radius: 5px;
+      left: 0.6rem;
+      color: #0E2138;
+      transition: 0.3s;
+  }

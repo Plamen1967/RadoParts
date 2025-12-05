@@ -1,0 +1,10 @@
+<div class="radio-group mb-2" #radioGroup>
+    @for (radio of _radios; track radio.id) {
+        <div>
+            <div class="radio-button">
+                <input type="radio" [value]="radio.id" name="{{ controlName }}" [(ngModel)]="_value" id="{{ controlName }}{{ radio.id }}" (change)="click($event, radio.id!)" />
+                <label class="radio-label" for="{{ controlName }}{{ radio.id }}">{{ radio.label }}</label>
+            </div>
+        </div>
+    }
+</div>

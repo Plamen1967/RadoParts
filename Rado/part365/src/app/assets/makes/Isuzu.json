@@ -1,0 +1,55 @@
+{
+  "make": "Isuzu",
+  "models": [
+    {
+      "label": "Amigo",
+      "modifications": {
+        "amigo-suv-cabrio": "Amigo SUV Cabrio (09.1988 - 12.2000)"
+      }
+    },
+    {
+      "label": "Ascender",
+      "modifications": {
+        "ascender-suv": "Ascender SUV (06.2002 - 12.2008)"
+      }
+    },
+    {
+      "label": "D-Max",
+      "modifications": {
+        "d-max-pick-up-i": "D-Max Pick-up I (05.2002 - 10.2012)",
+        "d-max-pick-up-ii": "D-Max Pick-up II (06.2012 - 10.2019)"
+      }
+    },
+    {
+      "label": "KB",
+      "modifications": {
+        "kb-pick-up-i": "KB Pick-up I (01.1972 - 12.1980)",
+        "kb-pick-up-ii": "KB Pick-up II (01.1980 - 12.1990)",
+        "kb-pick-up-iii": "KB Pick-up III (12.1990 - 09.2003)",
+        "kb-pick-up-iv": "KB Pick-up IV (07.2002 - ...)"
+      }
+    },
+    {
+      "label": "MIDI",
+      "modifications": {
+        "midi-box": "MIDI Box (06.1988 - 07.1996)",
+        "midi-bus": "MIDI Bus (06.1988 - 07.1996)",
+        "midi-van": "MIDI Van (06.1988 - 07.1996)"
+      }
+    },
+    {
+      "label": "Trooper",
+      "modifications": {
+        "trooper-suv-i": "Trooper SUV I (01.1983 - 12.1991)",
+        "trooper-suv-ii": "Trooper SUV II (08.1991 - 04.2000)",
+        "trooper-suv-iii": "Trooper SUV III (05.1998 - 08.2004)"
+      }
+    },
+    {
+      "label": "VehiCROSS",
+      "modifications": {
+        "vehicross-suv": "VehiCROSS SUV (04.1997 - 12.2001)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "make": "Jeep",
+  "models": [
+    {
+      "label": "Cherokee",
+      "modifications": {
+        "cherokee-suv-ii": "Cherokee SUV II (09.1983 - 09.2001)",
+        "cherokee-suv-iii": "Cherokee SUV III (09.2001 - 01.2008)",
+        "cherokee-suv-iv": "Cherokee SUV IV (09.2007 - 06.2013)",
+        "cherokee-suv-v": "Cherokee SUV V (06.2013 - 12.2018)"
+      }
+    },
+    {
+      "label": "Commander",
+      "modifications": {
+        "commander-suv": "Commander SUV (09.2005 - 12.2010)"
+      }
+    },
+    {
+      "label": "Compass",
+      "modifications": {
+        "compass-suv-i": "Compass SUV I (08.2006 - 01.2016)",
+        "compass-suv-ii": "Compass SUV II (01.2016 - ...)"
+      }
+    },
+    {
+      "label": "Grand Cherokee",
+      "modifications": {
+        "grand-cherokee-suv-i": "Grand Cherokee SUV I (09.1991 - 04.1999)",
+        "grand-cherokee-suv-ii": "Grand Cherokee SUV II (09.1998 - 09.2005)",
+        "grand-cherokee-suv-iii": "Grand Cherokee SUV III (10.2004 - 10.2011)",
+        "grand-cherokee-suv-iv": "Grand Cherokee SUV IV (06.2010 - ...)"
+      }
+    },
+    {
+      "label": "Patriot",
+      "modifications": {
+        "patriot-suv": "Patriot SUV (02.2007 - 12.2017)"
+      }
+    },
+    {
+      "label": "Renegade",
+      "modifications": {
+        "renegade-suv": "Renegade SUV (07.2014 - ...)"
+      }
+    },
+    {
+      "label": "Wrangler",
+      "modifications": {
+        "wrangler-suv-i": "Wrangler SUV I (08.1986 - 08.1996)",
+        "wrangler-suv-ii": "Wrangler SUV II (08.1996 - 12.2008)",
+        "wrangler-suv-iii": "Wrangler SUV III (06.2006 - 11.2017)",
+        "wrangler-suv-iv": "Wrangler SUV IV (11.2017 - ...)"
+      }
+    }
+  ]
+}

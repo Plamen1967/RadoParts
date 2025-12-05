@@ -1,0 +1,171 @@
+{
+  "make": "Mitsubishi",
+  "models": [
+    {
+      "label": "3000 GT",
+      "modifications": {
+        "3000-gt-coupe": "3000 GT Coupe (06.1989 - 08.2000)"
+      }
+    },
+    {
+      "label": "ASX",
+      "modifications": {
+        "asx-suv": "ASX SUV (11.2009 - ...)"
+      }
+    },
+    {
+      "label": "Carisma",
+      "modifications": {
+        "carisma-hatchback": "Carisma Hatchback (07.1995 - 06.2006)",
+        "carisma-sedan": "Carisma Sedan (09.1996 - 06.2006)"
+      }
+    },
+    {
+      "label": "Colt",
+      "modifications": {
+        "colt-czc-cabrio": "Colt CZC Cabrio (05.2006 - 07.2009)",
+        "colt-ii-hatchback": "Colt II Hatchback (10.1982 - 04.1988)",
+        "colt-iii-hatchback": "Colt III Hatchback (10.1986 - 05.1992)",
+        "colt-iv-hatchback": "Colt IV Hatchback (03.1992 - 04.1996)",
+        "colt-v-hatchback": "Colt V Hatchback (09.1995 - 09.2003)",
+        "colt-vi-hatchback": "Colt VI Hatchback (10.2002 - 06.2012)"
+      }
+    },
+    {
+      "label": "Eclipse",
+      "modifications": {
+        "eclipse-cross": "Eclipse CROSS (10.2017 - ...)",
+        "eclipse-i-coupe": "Eclipse I Coupe (12.1989 - 12.1995)",
+        "eclipse-ii-cabrio": "Eclipse II Cabrio (04.1994 - 04.1999)",
+        "eclipse-ii-coupe": "Eclipse II Coupe (04.1994 - 04.1999)",
+        "eclipse-iii-cabrio": "Eclipse III Cabrio (05.1999 - 12.2005)",
+        "eclipse-iii-coupe": "Eclipse III Coupe (04.1999 - 12.2005)",
+        "eclipse-iv-cabrio": "Eclipse IV Cabrio (04.2005 - 12.2012)",
+        "eclipse-iv-coupe": "Eclipse IV Coupe (04.2005 - 12.2012)"
+      }
+    },
+    {
+      "label": "FTO",
+      "modifications": {
+        "fto-coupe": "FTO Coupe (09.1994 - 07.2001)"
+      }
+    },
+    {
+      "label": "Galant",
+      "modifications": {
+        "galant-iii-sedan": "Galant III Sedan (10.1983 - 04.1990)",
+        "galant-iv-hatchback": "Galant IV Hatchback (10.1988 - 12.1992)",
+        "galant-iv-sedan": "Galant IV Sedan (11.1987 - 03.1993)",
+        "galant-v-hatchback": "Galant V Hatchback (11.1992 - 10.1996)",
+        "galant-v-sedan": "Galant V Sedan (11.1992 - 12.1998)",
+        "galant-vi-estate": "Galant VI Estate (09.1996 - 10.2003)",
+        "galant-vi-sedan": "Galant VI Sedan (09.1996 - 10.2004)",
+        "galant-vii-sedan": "Galant VII Sedan (10.2003 - 12.2012)"
+      }
+    },
+    {
+      "label": "Grandis",
+      "modifications": {
+        "grandis-minivan": "Grandis Minivan (03.2003 - 12.2011)"
+      }
+    },
+    {
+      "label": "I-MiEV",
+      "modifications": {
+        "i-miev-hatchback": "I-MiEV Hatchback (01.2006 - 03.2015)"
+      }
+    },
+    {
+      "label": "L200",
+      "modifications": {
+        "l200-pick-up-i": "L200 Pick-up I (01.1986 - 10.1996)",
+        "l200-pick-up-ii": "L200 Pick-up II (01.1996 - 12.2007)",
+        "l200-pick-up-iii": "L200 Pick-up III (01.2004 - 12.2016)",
+        "l200-pick-up-iv": "L200 Pick-up IV (11.2014 - ...)"
+      }
+    },
+    {
+      "label": "L300",
+      "modifications": {
+        "l300-box-i": "L300 Box I (02.1980 - 02.1987)",
+        "l300-box-ii": "L300 Box II (11.1986 - 09.2013)",
+        "l300-bus-i": "L300 Bus I (05.1980 - 02.1987)",
+        "l300-bus-ii": "L300 Bus II (11.1986 - 12.2013)",
+        "l300-platform-i": "L300 Platform I (05.1980 - ...)",
+        "l300-platform-ii": "L300 Platform II (04.1994 - 04.2000)"
+      }
+    },
+    {
+      "label": "L400",
+      "modifications": {
+        "l400-box": "L400 Box (06.1996 - 04.2007)",
+        "l400-space-gear-bus": "L400 SPACE GEAR Bus (06.1994 - 04.2007)"
+      }
+    },
+    {
+      "label": "Lancer",
+      "modifications": {
+        "lancer-iii-sedan": "Lancer III Sedan (11.1983 - 06.1990)",
+        "lancer-iii-station-wagon": "Lancer III Station Wagon (09.1985 - 08.1992)",
+        "lancer-iv-hatchback": "Lancer IV Hatchback (04.1988 - 05.1994)",
+        "lancer-iv-sedan": "Lancer IV Sedan (04.1988 - 09.1992)",
+        "lancer-v-sedan": "Lancer V Sedan (06.1992 - 12.1996)",
+        "lancer-v-station-wagon": "Lancer V Station Wagon (06.1992 - 10.2003)",
+        "lancer-vi-sedan": "Lancer VI Sedan (09.1995 - 08.2003)",
+        "lancer-vii-sedan": "Lancer VII Sedan (03.2000 - 09.2007)",
+        "lancer-vii-station-wagon": "Lancer VII Station Wagon (09.2003 - 10.2008)",
+        "lancer-viii-sedan": "Lancer VIII Sedan (03.2007 - 08.2017)",
+        "lancer-viii-sportback": "Lancer VIII Sportback (10.2007 - 08.2017)"
+      }
+    },
+    {
+      "label": "Outlander",
+      "modifications": {
+        "outlander-i-suv": "Outlander I SUV (03.2001 - 12.2006)",
+        "outlander-ii-suv": "Outlander II SUV (11.2006 - 12.2012)",
+        "outlander-iii-suv": "Outlander III SUV (08.2012 - 03.2019)"
+      }
+    },
+    {
+      "label": "Pajero",
+      "modifications": {
+        "pajero-classic": "Pajero CLASSIC (06.2002 - ...)",
+        "pajero-i-canvas-top": "Pajero I Canvas Top (12.1982 - 11.1990)",
+        "pajero-i-suv": "Pajero I SUV (04.1982 - 12.1991)",
+        "pajero-ii-canvas-top": "Pajero II Canvas Top (12.1990 - 04.2000)",
+        "pajero-ii-suv": "Pajero II SUV (12.1990 - 10.1999)",
+        "pajero-iii-suv": "Pajero III SUV (01.1999 - 01.2007)",
+        "pajero-iv-suv": "Pajero IV SUV (11.2006 - ...)",
+        "pajero-pinin": "Pajero PININ (03.1999 - 06.2007)",
+        "pajero-sport": "Pajero Sport (07.1996 - 11.2008)"
+      }
+    },
+    {
+      "label": "Space Gear / Delica",
+      "modifications": {
+        "space-gear-delica-van": "Space Gear / Delica Van (01.1994 - 01.2007)"
+      }
+    },
+    {
+      "label": "Space Runner",
+      "modifications": {
+        "space-runner-minivan-i": "Space Runner Minivan I (10.1991 - 08.1999)",
+        "space-runner-minivan-ii": "Space Runner Minivan II (08.1999 - 08.2002)"
+      }
+    },
+    {
+      "label": "Space Star",
+      "modifications": {
+        "space-star-minivan": "Space Star Minivan (06.1998 - 12.2004)"
+      }
+    },
+    {
+      "label": "Space Wagon",
+      "modifications": {
+        "space-wagon-minivan-i": "Space Wagon Minivan I (01.1984 - 01.1992)",
+        "space-wagon-minivan-ii": "Space Wagon Minivan II (05.1991 - 11.1998)",
+        "space-wagon-minivan-iii": "Space Wagon Minivan III (10.1998 - 12.2004)"
+      }
+    }
+  ]
+}

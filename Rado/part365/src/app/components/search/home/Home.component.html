@@ -1,0 +1,71 @@
+<div class="marginTop col-sm-12 col-md-10 col-lg-9">
+    <div class="marquee">
+        <p>
+            <b>{{ message }}</b>
+        </p>
+    </div>
+    <div class="card w-100">
+        <div class="d-flex" style="justify-content: flex-end">
+            <div class="d-flex justify-content-center" style="width: 100%">
+                <button class="btn btn-primary carClass tabClass" [ngClass]="{ active: showParts }" (click)="typeClick(1)"><img class="tabSvg" src="images/svg/part.svg" alt="" />Части</button>
+                <button class="btn btn-primary tyreClass tabClass" [ngClass]="{ active: !showParts }" (click)="typeClick(2)"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Гуми</button>
+            </div>
+            <div class="d-flex justify-content-end" [appToolTip]="'Последни търсения'">
+                <button class="btn btn-primary button-style w-auto d-flex justify-content-center align-items-center" (click)="showFilter()" role="none">
+                    <div class="searchtext d-inline-flex">Последни <span class="ms-2 material-symbols-outlined" style="justify-items: center"> search </span></div>
+                </button>
+            </div>
+        </div>
+
+        <div style="max-width: 100%">
+            @if (showParts) {
+                <app-carfilter (dropDownItems)="changeDropdown($event)"></app-carfilter>
+            } @else if (showTyres) {
+                <app-tyrefilter></app-tyrefilter>
+            }
+        </div>
+    </div>
+
+    <div class="footer space-evenly test">
+        @if (!admin) {
+            @if (showCategory) {
+                <div [appToolTip]="'Категории'" class="linkClass categoryElement ps-2 pe-2">
+                    <div name="categories" #categoryButton (click)="clickCategory($event)" role="presentation">
+                        <div class="element conversation align-items-center">
+                            <span class="material-symbols-outlined"> list_alt </span>
+                            <span class="text text-body-small-pale"> Категории </span>
+                        </div>
+                    </div>
+                </div>
+                <a routerLink="/info/contact" [appToolTip]="'Контакт'" class="linkClass">
+                    <div class="element conversation">
+                        <span class="material-symbols-outlined"> call_log </span>
+                        <span class="text text-body-small-pale">Контакти</span>
+                    </div>
+                </a>
+            }
+        }
+
+        @if (admin) {
+            <a [routerLink]="['/users']" name="users" [appToolTip]="'Потребители'" class="linkClass">
+                <div class="element conversation">
+                    <span class="icon"><i class="las la-user iconSize"></i></span>
+                    <span class="text text-body-small-pale"> Потребители </span>
+                </div>
+            </a>
+            <a [routerLink]="['/model']" name="users" [appToolTip]="'Модели'" class="linkClass">
+                <div class="element conversation">
+                    <span class="icon"><i class="las la-list iconSize"></i></span>
+                    <span class="text text-body-small-pale"> Модели </span>
+                </div>
+            </a>
+            <a [routerLink]="['/modification']" name="modification" [appToolTip]="'Модификации'" class="linkClass">
+                <div class="element conversation">
+                    <span class="icon"><i class="las la-list iconSize"></i></span>
+                    <span class="text text-body-small-pale"> Модификации </span>
+                </div>
+            </a>
+        }
+    </div>
+    <app-gotop></app-gotop>
+</div>

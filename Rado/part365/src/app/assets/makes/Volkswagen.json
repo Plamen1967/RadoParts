@@ -1,0 +1,292 @@
+{
+  "make": "Volkswagen",
+  "models": [
+    {
+      "label": "Amarok",
+      "modifications": {
+        "amarok-double-cab": "Amarok Double Cab (09.2010 - ...)",
+        "amarok-pick-up": "Amarok Pick-up (09.2011 - ...)"
+      }
+    },
+    {
+      "label": "Arteon",
+      "modifications": {
+        "arteon-fastback": "Arteon Fastback (04.2017 - ...)"
+      }
+    },
+    {
+      "label": "Beetle",
+      "modifications": {
+        "beetle-cabrio": "Beetle Cabrio (12.2011 - 07.2019)",
+        "beetle-coupe": "Beetle Coupe (04.2011 - 07.2019)"
+      }
+    },
+    {
+      "label": "Bora",
+      "modifications": {
+        "bora-sedan": "Bora Sedan (10.1998 - 12.2013)",
+        "bora-variant": "Bora Variant (05.1999 - 05.2005)"
+      }
+    },
+    {
+      "label": "Caddy",
+      "modifications": {
+        "caddy-alltrack": "Caddy ALLTrack (05.2015 - ...)",
+        "caddy-alltrack-box": "Caddy ALLTrack Box (05.2015 - ...)",
+        "caddy-ii-box": "Caddy II Box (11.1995 - 01.2004)",
+        "caddy-ii-estate": "Caddy II Estate (11.1995 - 01.2004)",
+        "caddy-ii-pick-up": "Caddy II Pick-Up (06.1996 - 12.2000)",
+        "caddy-iii-box": "Caddy III Box (03.2004 - 05.2015)",
+        "caddy-iii-estate": "Caddy III Estate (03.2004 - 05.2015)",
+        "caddy-iv-box": "Caddy IV Box (05.2015 - ...)",
+        "caddy-iv-estate": "Caddy IV Estate (05,2015 - ...)"
+      }
+    },
+    {
+      "label": "Corrado",
+      "modifications": {
+        "corrado-coupe": "Corrado Coupe (08.1987 - 12.1995)"
+      }
+    },
+    {
+      "label": "Crafter",
+      "modifications": {
+        "crafter-30-35-bus": "Crafter 30-35 Bus (04.2006 - 12.2016)",
+        "crafter-30-50-box": "Crafter 30-50 Box (04.2006 - 12.2016)",
+        "crafter-30-50-platform": "Crafter 30-50 Platform (04.2006 - 12.2016)",
+        "crafter-box": "Crafter Box (09.2016 - ...)",
+        "crafter-bus": "Crafter Bus (09.2016 - ...)",
+        "crafter-platform": "Crafter Platform (11.2016 - ...)"
+      }
+    },
+    {
+      "label": "Eos",
+      "modifications": {
+        "eos-cabrio": "Eos Cabrio (03.2006 - 08.2015)"
+      }
+    },
+    {
+      "label": "Fox",
+      "modifications": {
+        "fox-hatchback": "Fox Hatchback (08.2003 - 10.2015)",
+        "fox-sedan": "Fox Sedan (01.1987 - 12.1993)"
+      }
+    },
+    {
+      "label": "Golf",
+      "modifications": {
+        "golf-i-cabriolet": "Golf I Cabriolet (01.1979 - 08.1993)",
+        "golf-i-hatchback": "Golf I Hatchback (04.1974 - 12.1985)",
+        "golf-ii-hatchback": "Golf II Hatchback (08.1983 - 12.1992)",
+        "golf-iii-cabriolet": "Golf III Cabriolet (07.1993 - 05.1998)",
+        "golf-iii-hatchback": "Golf III Hatchback (08.1991 - 07.1998)",
+        "golf-iii-variant": "Golf III Variant (07.1993 - 04.1999)",
+        "golf-iv-cabriolet": "Golf IV Cabriolet (06.1998 - 06.2002)",
+        "golf-iv-hatchback": "Golf IV Hatchback (08.1997 - 06.2005)",
+        "golf-iv-variant": "Golf IV Variant (05.1999 - 06.2006)",
+        "golf-plus": "Golf Plus (01.2005 - 12.2013)",
+        "golf-v-hatchback": "Golf V Hatchback (10.2003 - 02.2009)",
+        "golf-v-variant": "Golf V Variant (06.2007 - 07.2009)",
+        "golf-vi-cabriolet": "Golf VI Cabriolet (03.2011 - 05.2016)",
+        "golf-vi-hatchback": "Golf VI Hatchback (10.2008 - 02.2014)",
+        "golf-vi-variant": "Golf VI Variant (07.2009 - 07.2014)",
+        "golf-vii-alltrack": "Golf VII ALLTrack (12.2014 - 07.2019)",
+        "golf-vii-hatchback": "Golf VII Hatchback (08.2012 - 12.2019)",
+        "golf-vii-sportsvan": "Golf VII Sportsvan (02.2014 - 07.2019)",
+        "golf-vii-variant": "Golf VII Variant (04.2013 - 12.2019)",
+        "golf-viii-hatchback": "Golf VIII Hatchback (07.2019 - ...)"
+      }
+    },
+    {
+      "label": "Jetta",
+      "modifications": {
+        "jetta-ii-sedan": "Jetta II Sedan (08.1983 - 12.1992)",
+        "jetta-iv-sedan": "Jetta IV Sedan (07.1999 - 12.2005)",
+        "jetta-v-iii-sedan": "Jetta V III Sedan (09.2004 - 10.2010)",
+        "jetta-vi-iv-sedan": "Jetta VI IV Sedan (01.2008 - 01.2019)"
+      }
+    },
+    {
+      "label": "Kaefer (Beetle)",
+      "modifications": {
+        "kaefer-beetle-cabrio": "Kaefer (Beetle) Cabrio (07.1949 - 03.1981)",
+        "kaefer-beetle-sedan": "Kaefer (Beetle) Sedan (12.1947 - 08.2003)"
+      }
+    },
+    {
+      "label": "LT",
+      "modifications": {
+        "lt-28-35-i-box": "LT 28-35 I Box (04.1975 - 06.1996)",
+        "lt-28-35-i-bus": "LT 28-35 I Bus (04.1975 - 06.1996)",
+        "lt-28-35-i-platform": "LT 28-35 I Platform (04.1975 - 06.1996)",
+        "lt-28-35-ii-bus": "LT 28-35 II Bus (04.1996 - 07.2006)",
+        "lt-28-46-ii-box": "LT 28-46 II Box (04.1996 - 07.2006)",
+        "lt-28-46-ii-platform": "LT 28-46 II Platform (04.1996 - 07.2006)",
+        "lt-40-55-i-box": "LT 40-55 I Box (04.1975 - 06.1996)",
+        "lt-40-55-i-platform": "LT 40-55 I Platform (04.1975 - 06.1996)"
+      }
+    },
+    {
+      "label": "Lupo",
+      "modifications": {
+        "lupo-hatchback": "Lupo Hatchback (09.1998 - 07.2005)"
+      }
+    },
+    {
+      "label": "New Beetle",
+      "modifications": {
+        "new-beetle-cabriolet": "New Beetle Cabriolet (09.2002 - 12.2011)",
+        "new-beetle-hatchback": "New Beetle Hatchback (01.1998 - 09.2010)"
+      }
+    },
+    {
+      "label": "Passat",
+      "modifications": {
+        "passat-i-hatchback-b2": "Passat I Hatchback B2 (11.1979 - 06.1989)",
+        "passat-i-sedan-b2": "Passat I Sedan B2 (05.1982 - 06.1989)",
+        "passat-i-variant-b2": "Passat I Variant B2 (08.1980 - 06.1989)",
+        "passat-ii-sedan-b3-b4": "Passat II Sedan B3, B4 (02.1988 - 12.1997)",
+        "passat-ii-variant-b3-b4": "Passat II Variant B3, B4 (02.1988 - 06.1997)",
+        "passat-iii-sedan-b5": "Passat III Sedan B5 (08.1996 - 12.2001)",
+        "passat-iii-variant-b5": "Passat III Variant B5 (05.1997 - 12.2001)",
+        "passat-iv-sedan-b55": "Passat IV Sedan B5.5 (10.2000 - 12.2005)",
+        "passat-iv-variant-b55": "Passat IV Variant B5.5 (09.2000 - 08.2005)",
+        "passat-v-cc": "Passat V CC (05.2008 - 01.2012)",
+        "passat-v-sedan-b6": "Passat V Sedan B6 (03.2005 - 12.2010)",
+        "passat-v-variant-b6": "Passat V Variant B6 (08.2005 - 11.2011)",
+        "passat-vi-alltrack": "Passat VI ALLTrack (01.2012 - 12.2014)",
+        "passat-vi-sedan-b7": "Passat VI Sedan B7 (08.2010 - 12.2014)",
+        "passat-vi-variant-b7": "Passat VI Variant B7 (08.2010 - 12.2015)",
+        "passat-vii-alltrack": "Passat VII ALLTrack (05.2015 - 12.2019)",
+        "passat-vii-sedan": "Passat VII Sedan (08.2014 - 12.2019)",
+        "passat-vii-variant": "Passat VII Variant (08.2014 - 12.2019)"
+      }
+    },
+    {
+      "label": "Phaeton",
+      "modifications": {
+        "phaeton-sedan": "Phaeton Sedan (04.2002 - 03.2016)"
+      }
+    },
+    {
+      "label": "Polo",
+      "modifications": {
+        "polo-box-i": "Polo Box I (08.1992 - 07.1994)",
+        "polo-box-ii": "Polo Box II (09.1994 - 12.1999)",
+        "polo-classic-i": "Polo Classic I (01.1985 - 09.1994)",
+        "polo-classic-ii": "Polo Classic II (11.1995 - 07.2006)",
+        "polo-coupe": "Polo Coupe (10.1981 - 09.1994)",
+        "polo-hatchback-i": "Polo Hatchback I (10.1981 - 09.1994)",
+        "polo-hatchback-ii": "Polo Hatchback II (10.1994 - 10.1999)",
+        "polo-hatchback-iii": "Polo Hatchback III (10.1999 - 10.2001)",
+        "polo-hatchback-iv": "Polo Hatchback IV (10.2001 - 12.2005)",
+        "polo-hatchback-v": "Polo Hatchback V (01.2005 - 12.2009)",
+        "polo-hatchback-vi": "Polo Hatchback VI (06.2009 - 05.2017)",
+        "polo-hatchback-vii": "Polo Hatchback VII (06.2017 - ...)",
+        "polo-sedan-i": "Polo Sedan I (09.2002 - 07.2009)",
+        "polo-sedan-ii": "Polo Sedan II (05.2009 - 07.2017)",
+        "polo-variant": "Polo Variant (04.1997 - 09.2001)"
+      }
+    },
+    {
+      "label": "Routan",
+      "modifications": {
+        "routan-minivan": "Routan Minivan (09.2008 - 12.2013)"
+      }
+    },
+    {
+      "label": "Santana",
+      "modifications": {
+        "santana-sedan": "Santana Sedan (08.1981 - 12.1985)"
+      }
+    },
+    {
+      "label": "Scirocco",
+      "modifications": {
+        "scirocco-coupe-i": "Scirocco Coupe I (08.1980 - 07.1992)",
+        "scirocco-coupe-ii": "Scirocco Coupe II (05.2008 - 11.2017)"
+      }
+    },
+    {
+      "label": "Sharan",
+      "modifications": {
+        "sharan-minivan-i": "Sharan Minivan I (05.1995 - 03.2010)",
+        "sharan-minivan-ii": "Sharan Minivan II (05.2010 - ...)"
+      }
+    },
+    {
+      "label": "T-Cross",
+      "modifications": {
+        "t-cross-suv": "T-Cross SUV (12.2018 - ...)"
+      }
+    },
+    {
+      "label": "T-Roc",
+      "modifications": {
+        "t-roc-cabrio": "T-Roc Cabrio (12.2019 - ...)",
+        "t-roc-suv": "T-Roc SUV (07.2017 - ...)"
+      }
+    },
+    {
+      "label": "Taro",
+      "modifications": {
+        "taro-pick-up": "Taro Pick-up (04.1989 - 03.1997)"
+      }
+    },
+    {
+      "label": "Tiguan",
+      "modifications": {
+        "tiguan-suv-i": "Tiguan SUV I (09.2007 - 07.2018)",
+        "tiguan-suv-ii": "Tiguan SUV II (01.2016 - ...)"
+      }
+    },
+    {
+      "label": "Touareg",
+      "modifications": {
+        "touareg-suv-i": "Touareg SUV I (10.2002 - 01.2013)",
+        "touareg-suv-ii": "Touareg SUV II (01.2010 - 03.2018)",
+        "touareg-suv-iii": "Touareg SUV III (11.2017 - ...)"
+      }
+    },
+    {
+      "label": "Touran",
+      "modifications": {
+        "touran-minivan-i": "Touran Minivan I (02.2003 - 05.2010)",
+        "touran-minivan-ii": "Touran Minivan II (05.2010 - 05.2015)",
+        "touran-minivan-iii": "Touran Minivan III (05.2015 - ...)"
+      }
+    },
+    {
+      "label": "Transporter",
+      "modifications": {
+        "transporter-iii-box": "Transporter III Box (05.1979 - 12.1992)",
+        "transporter-iii-bus": "Transporter III Bus (05.1979 - 07.1992)",
+        "transporter-iii-platform": "Transporter III Platform (05.1979 - 12.1992)",
+        "transporter-iv-box": "Transporter IV Box (07.1990 - 04.2003)",
+        "transporter-iv-bus": "Transporter IV Bus (09.1990 - 04.2003)",
+        "transporter-iv-platform": "Transporter IV Platform (07.1990 - 04.2003)",
+        "transporter-v-box": "Transporter V Box (04.2003 - 08.2015)",
+        "transporter-v-bus": "Transporter V Bus (04.2003 - 08.2015)",
+        "transporter-v-multivan": "Transporter V Multivan (04.2003 - 08.2015)",
+        "transporter-v-platform": "Transporter V Platform (04.2003 - 08.2015)",
+        "transporter-vi-box": "Transporter VI Box (04.2015 - ...)",
+        "transporter-vi-bus": "Transporter VI Bus (04.2015 - ...)",
+        "transporter-vi-multivan": "Transporter VI Multivan (04.2015 - ...)",
+        "transporter-vi-platform": "Transporter VI Platform (04.2015 - ...)"
+      }
+    },
+    {
+      "label": "Up",
+      "modifications": {
+        "up-hatchback": "Up Hatchback (08.2011 - ...)",
+        "up-load": "Up Load (12.2014 - ...)"
+      }
+    },
+    {
+      "label": "Vento",
+      "modifications": {
+        "vento-sedan": "Vento Sedan (11.1991 - 09.1998)"
+      }
+    }
+  ]
+}

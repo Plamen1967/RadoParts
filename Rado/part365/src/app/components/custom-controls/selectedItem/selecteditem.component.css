@@ -1,0 +1,50 @@
+.selected-item {
+    color: blue;
+    background-color: whitesmoke;
+    margin-left: 1px;
+    border: 1px solid blue;
+    border-radius: 12px;
+    margin-right: 2px;
+    font-size: 0.875rem;
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+    margin-right: 2px;
+    padding: 2px 4px 2px 4px;
+    line-height: 1.3;
+    background-color: white;
+    align-items: center;
+    cursor: pointer;
+}
+
+.selected-item:hover {
+    color: whitesmoke;
+    background-color: #FF00FF;
+}
+.close-button {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    padding: 1px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.svg-style {
+    border: 1px solid blue;
+    border-radius: 8px;
+    padding: 1px;
+}
+
+.close-button:hover {
+    fill: black;
+}
+
+.icon {
+    font-weight: 200;
+    padding-right: 0px;
+}
+
+.icon:hover {
+   color: inherit;
+   background-color: inherit;
+}

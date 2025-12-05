@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{632a391f-2f3b-4066-8104-e397d5ff2bad}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath />
+    <RootNamespace>Database</RootNamespace>
+    <AssemblyName>Database</AssemblyName>
+    <ModelCollation>1049,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>Cyrillic_General_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Store Procedures" />
+    <Folder Include="dbo\Store Procedures\SupportScripts" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Cars" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Parts" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\User" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Checkout" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Modification" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Model" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Admin" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Company" />
+    <Folder Include="dbo\Indexes" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Messages" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Images" />
+    <Folder Include="dbo\Store Procedures\NewFolder1\" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\GroupModel" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Tyre" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\BusinessCard" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\FilterPart" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\Rim" />
+    <Folder Include="dbo\Store Procedures\UpdateDelete\RimWithTyre" />
+    <Folder Include="dbo\Number" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Cars.sql" />
+    <Build Include="dbo\Tables\Companies.sql" />
+    <Build Include="dbo\Tables\v1_Models.sql" />
+    <Build Include="dbo\Tables\Parts.sql" />
+    <Build Include="dbo\Tables\Categories.sql" />
+    <Build Include="dbo\Tables\SubCategories.sql" />
+    <Build Include="dbo\Tables\Years.sql" />
+    <Build Include="dbo\Views\YearView.sql" />
+    <Build Include="dbo\Views\ModelView.sql" />
+    <Build Include="dbo\Views\CarView.sql" />
+    <Build Include="dbo\Views\PartView.sql" />
+    <Build Include="dbo\Views\AllCarView.sql" />
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\AuditTrail.sql" />
+    <Build Include="dbo\Tables\Checkout.sql" />
+    <Build Include="dbo\Tables\Modifications.sql" />
+    <Build Include="dbo\Store Procedures\PartsPerModel.sql" />
+    <Build Include="dbo\Store Procedures\SupportScripts\ImportanceUpd.sql" />
+    <Build Include="dbo\Store Procedures\SupportScripts\CategoryImageUpdate.sql" />
+    <Build Include="dbo\Store Procedures\CategoryPartView.sql" />
+    <Build Include="dbo\Store Procedures\CategoryView.sql" />
+    <Build Include="dbo\Tables\Region.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CarsDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CarsIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CarsUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartsDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartsIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartsUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Checkout\CheckoutDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Checkout\CheckoutIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Model\ModelIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\PasswordUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\GetUsers.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\GetNumberPartsPerUser.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\GetNextId.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartPerCar.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartsPerCar.sql" />
+    <Build Include="dbo\Tables\DealerSubCategory.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\CategoryUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\CategoryIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\SubCategoryIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\SubCategoryUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\DealerSubCategoryIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\DealerSubCategoryUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\DealerSubCategoryAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Model\ModelUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Modification\ModificationAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\SubCategoryDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\DealerSubCategoryDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\CategoryDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\CategoryAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\SubCategoryAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Model\ModelDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Model\ModelAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Modification\ModificationDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Modification\ModificationIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Modification\ModificationUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Company\CompanyIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Company\CompanyUpd_1.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Company\CompanyAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\RecoverPassword.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserAll.sql" />
+    <Build Include="dbo\Tables\Images.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\UpdateMainPicturePart.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\UpdateMainPictureCar.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartsAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartsByIds.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CarsByIds.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\GetMainPicture.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CarsAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartByNumberAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\IdView.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserActivate.sql" />
+    <Build Include="dbo\Tables\Exception.sql" />
+    <Build Include="dbo\Store Procedures\LogMessage.sql" />
+    <Build Include="dbo\Indexes\CarsModelId.sql" />
+    <Build Include="dbo\Tables\Messages.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Messages\MessageIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Messages\UserMessagesAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Messages\MarkReadUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Messages\MessageDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\GetNexrUserID.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserUnlock.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserBlock.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserWrongLogging.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserRecovery.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserLock.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserLogin.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\AdminUserActivate.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\AdminUserUnLock.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserToDealer.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserToPrivate.sql" />
+    <Build Include="dbo\Tables\ImageData.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Images\ImageDataIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Images\ImageDataAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Images\ImageDataMainImage.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Images\ImageDataCount.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Images\ImageDataDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Images\GetMainImage.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\GetUserId.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Images\ImageDataById.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\GetUserByActivationCode.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserUpdateBusinessCard.sql" />
+    <Build Include="dbo\Tables\Models.sql" />
+    <Build Include="dbo\Tables\v1_Company.sql" />
+    <Build Include="dbo\Tables\v1_Modifications.sql" />
+    <Build Include="dbo\Tables\GroupModel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\GroupModel\GroupModelIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Model\GroupModelAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Modification\ModificationData.sql" />
+    <Build Include="dbo\Views\PartFilterView.sql" />
+    <Build Include="dbo\Indexes\PartsModification.sql" />
+    <Build Include="dbo\Indexes\ModificationIndexes.sql" />
+    <Build Include="dbo\Tables\Tyres.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\TyreById.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\TyreIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\TyreDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\TyreUpd.sql" />
+    <Build Include="dbo\Views\ModificationView.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CarById.sql" />
+    <Build Include="dbo\Indexes\PartsDeletedIndex.sql" />
+    <Build Include="dbo\Indexes\CarsDeletedIndex.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Parts\PartsById.sql" />
+    <Build Include="dbo\Store Procedures\CheckIds.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\GetNumberPartsByCarId.sql" />
+    <Build Include="dbo\Tables\FilterPart.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\FilterPart\FilterPartIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\FilterPart\GetFilterById.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Checkout\CheckoutItemsParts.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Checkout\CheckoutItemsCars.sql" />
+    <Build Include="dbo\Tables\BusinessCard.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\BusinessCard\BussnessCardIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\BusinessCard\BusinessCardDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\BusinessCard\BussnessCardGet.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserSuspend.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\UserUnSuspend.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\User\GetUserCount.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\ApproveAd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreById.sql" />
+    <Build Include="dbo\Tables\Rim.sql" />
+    <Build Include="dbo\Tables\RimWithTyre.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimDel.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimById.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreIns.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreUpd.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreDel.sql" />
+    <Build Include="dbo\Views\RimView.sql" />
+    <Build Include="dbo\Views\RimWithTyreView.sql" />
+    <Build Include="dbo\Views\TyreView.sql" />
+    <Build Include="dbo\Tables\Details.sql" />
+    <Build Include="dbo\Store Procedures\GetItemType.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Admin\UserStats.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Company\ComponyBusAll.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\CountTyres.sql" />
+    <Build Include="dbo\Views\ModificationPartCountView.sql" />
+    <Build Include="dbo\Views\ModificationCarCountView.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CheckUnique.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\Cars\ValidateCarName.sql" />
+    <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\UpdateMainPictureTyre.sql" />
+    <Build Include="dbo\Number\NumberParts.sql" />
+    <Build Include="dbo\Views\SubcategoryView.sql" />
+    <Build Include="dbo\Number\NumberCars.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Database.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Database.publish.xml" />
+    <None Include="Database.publish2.xml" />
+    <None Include="dbo\Number\NumberCarParts.sql" />
+  </ItemGroup>
+</Project>

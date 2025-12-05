@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row">
+    <div class="form-floating ms-3 mb-3 col-sm-3">
+      <input type="text" class="form-control ps-4" [(ngModel)]="search" id="floatingInput" placeholder="Търси"
+        (keyup)="filterChanged()">
+      <label for="floatingInput" class="ps-5" style="margin-left: 10px;">Търси</label>
+    </div>
+  </div>
+  @for (user of users; track user.userId) {
+    <app-userinfo [user]="user" (deleteUser)="deleteUser($event)" [selected]="selected" (selectUser)="selectUser($event)"></app-userinfo>
+  }
+</div>
+

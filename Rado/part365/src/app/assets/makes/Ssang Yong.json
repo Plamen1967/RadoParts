@@ -1,0 +1,72 @@
+{
+  "make": "Ssang Yong",
+  "models": [
+    {
+      "label": "Actyon",
+      "modifications": {
+        "actyon-sports-i": "Actyon SPORTS I (11.2005 - 10.2012)",
+        "actyon-sports-ii": "Actyon SPORTS II (01.2012 - ...)",
+        "actyon-suv-i": "Actyon SUV I (11.2005 - 08.2012)",
+        "actyon-suv-ii": "Actyon SUV II (08.2012 - ...)"
+      }
+    },
+    {
+      "label": "Chairman",
+      "modifications": {
+        "chairman-h-sedan": "Chairman H Sedan (07.1997 - 02.2014)"
+      }
+    },
+    {
+      "label": "Korando",
+      "modifications": {
+        "korando-family": "Korando Family (06.1993 - 05.1997)",
+        "korando-mini-suv": "Korando mini SUV (12.1996 - 11.2006)",
+        "korando-mini-suv-cabrio": "Korando mini SUV Cabrio (12.1996 - 11.2006)",
+        "korando-sport": "Korando SPORT (10.2012 - 01.2019)",
+        "korando-suv-i": "Korando SUV I (07.2010 - 01.2019)",
+        "korando-suv-ii": "Korando SUV II (02.2019 - ...)"
+      }
+    },
+    {
+      "label": "Kyron",
+      "modifications": {
+        "kyron-suv": "Kyron SUV (05.2005 - 06.2014)"
+      }
+    },
+    {
+      "label": "Musso",
+      "modifications": {
+        "musso-pick-up": "Musso Pick-up (01.2018 - ...)",
+        "musso-sports": "Musso SPORTS (08.2002 - 05.2005)",
+        "musso-suv": "Musso SUV (01.1993 - 09.2007)"
+      }
+    },
+    {
+      "label": "Rexton",
+      "modifications": {
+        "rexton-suv-i": "Rexton SUV I (04.2002 - 07.2012)",
+        "rexton-suv-ii": "Rexton SUV II (07.2012 - 07.2017)",
+        "rexton-suv-iii": "Rexton SUV III (07.2017 - ...)"
+      }
+    },
+    {
+      "label": "Rodius",
+      "modifications": {
+        "rodius-minivan-i": "Rodius Minivan I (05.2005 - 06.2013)",
+        "rodius-minivan-ii": "Rodius Minivan II (06.2013 - ...)"
+      }
+    },
+    {
+      "label": "Tivoli",
+      "modifications": {
+        "tivoli-suv": "Tivoli SUV (01.2015 - ...)"
+      }
+    },
+    {
+      "label": "XLV",
+      "modifications": {
+        "xlv-suv": "XLV SUV (04.2016 - ...)"
+      }
+    }
+  ]
+}

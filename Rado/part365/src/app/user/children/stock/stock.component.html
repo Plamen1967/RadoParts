@@ -1,0 +1,20 @@
+<div class="data-container">
+    @if (!currentId) {
+        <div [ngStyle]="{ display: currentId ? 'none' : 'block' }" class="container">
+            <app-radiogrouplist [groupListDisplay]="'none'" [(ngModel)]="defaultType" [radios]="displayRatio" (changeRadioGroup)="filterChange($event)"></app-radiogrouplist>
+            @if (loaded) {
+                <app-result
+                    [userId]="userId"
+                    [hasSort]="false"
+                    [showFavourite]="false"
+                    [currentId]="currentId"
+                    [itemType]="itemType"
+                    [showPhones]="false"
+                    [showDealer]="false"
+                    (viewPart)="viewPart($event)"></app-result>
+            }
+        </div>
+    } @else {
+        <app-userviewpart (back)="back($event)" (changeNext)="next($event)" (changePrev)="prev($event)"></app-userviewpart>
+    }
+</div>

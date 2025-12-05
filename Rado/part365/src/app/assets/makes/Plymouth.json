@@ -1,0 +1,17 @@
+{
+  "make": "Plymouth",
+  "models": [
+    {
+      "label": "Breeze",
+      "modifications": {
+        "breeze-sedan": "Breeze Sedan (12.1995 - 04.2001)"
+      }
+    },
+    {
+      "label": "Voyager",
+      "modifications": {
+        "voyager-iii-ns": "Voyager III (NS) (01.1995 - 03.2001)"
+      }
+    }
+  ]
+}

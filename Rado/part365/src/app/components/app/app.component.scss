@@ -1,0 +1,30 @@
+@import "bootstrap/scss/_functions.scss";
+@import "bootstrap/scss/_variables.scss";
+@import "bootstrap/scss/mixins/_breakpoints.scss";
+.componentPadding
+{
+    padding: 0px 10px;
+}
+
+@include media-breakpoint-down(sm)
+{
+    .componentPadding
+    {
+        padding: 0px 0px;
+    }
+}    
+
+.main-style {
+    display: flex;
+    flex-direction: column;
+    max-width: 100vw;
+}
+.footer {
+    margin: auto 0; 
+    width: 100%;;
+    margin-bottom: 0px;}
+
+.main {
+    min-height: 80vh;
+}
+

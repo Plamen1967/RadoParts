@@ -1,0 +1,17 @@
+{
+  "make": "UAZ",
+  "models": [
+    {
+      "label": "452",
+      "modifications": {
+        "452-bus": "452 Bus (08.1966 - ...)"
+      }
+    },
+    {
+      "label": "469",
+      "modifications": {
+        "469-b": "469 B (08.1971 - ...)"
+      }
+    }
+  ]
+}

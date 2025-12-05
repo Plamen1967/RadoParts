@@ -1,0 +1,35 @@
+<div class="container">
+    @if (currentId) {
+        <app-userviewpart (back)="back()" (changeNext)="(false)" (changePrev)="(false)"></app-userviewpart>
+    } @else {
+        @if (loading) {
+        } @else {
+            @if (parts && parts.length) {
+                <div class="rowCar">
+                    @if (!loading) {
+                        <div class="container mt-3">
+                            <div class="mt-2 mb-2 text-center">
+                                <button class="btn btn-success" (click)="clear()">Изчисти запазени</button>
+                            </div>
+                            <div class="row">
+                                @for (part of parts; track part.id; let i = $index) {
+                                    <div id="{{ part.id }}">
+                                        <app-displaypart (checkoutUpdated)="update()" [allowUpdate]="false" [part]="part" (action)="action($event)" [highlighted]="+heigligthed!" [allowUpdate]="false" [showDealer]="true">
+                                        </app-displaypart>
+                                    </div>
+                                }
+                            </div>
+                            <div class="mt-2 mb-2 text-center">
+                                <button class="btn btn-success" (click)="clear()">Изчисти запазени</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            } @else {
+                <div class="d-flex justify-content-center">
+                    <h6>Няма запазени обяви</h6>
+                </div>
+            }
+        }
+    }
+</div>

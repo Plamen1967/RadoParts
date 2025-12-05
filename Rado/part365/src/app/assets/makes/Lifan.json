@@ -1,0 +1,12 @@
+{
+  "make": "Lifan",
+  "models": [
+    {
+      "label": "520",
+      "modifications": {
+        "520-hatchback": "520 Hatchback (01.2006 - 12.2012)",
+        "520-sedan": "520 Sedan (01.2006 - 12.2012)"
+      }
+    }
+  ]
+}

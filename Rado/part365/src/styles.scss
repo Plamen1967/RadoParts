@@ -1,0 +1,268 @@
+@import 'styles/image.css';
+@import 'styles/displayPart.css';
+@import 'styles/tooltip.css';
+
+.ngxImageZoomThumbnail {
+    width: inherit !important;
+    height: inherit !important;
+    max-height: inherit !important;
+}
+.ngxImageZoomContainer {
+    width: inherit !important;
+    height: inherit !important;
+    max-height: inherit !important;
+    cursor: zoom-in;
+}
+
+lib-ngx-image-zoom img {
+    object-fit: contain;
+}
+.zoom .mat-mdc-dialog-surface {
+    background-color: #d6eaf8;
+}
+:root {
+    --bs-breakpoint-xs: 0;
+    --bs-breakpoint-sm: 576px;
+    --bs-breakpoint-md: 768px;
+    --bs-breakpoint-lg: 992px;
+    --bs-breakpoint-xl: 1200px;
+    --bs-breakpoint-xxl: 1400px;
+    --search-button-color: #f0fff0;
+    --search-button-background-color: #2a52be;
+    --back-button-color: #f0fff0;
+    --back-button-background-color: #ffffff;
+    --cancel-button-color: white;
+    --cancel-button-bgcolor: #ff0000;
+    --clear-button-color: white;
+    --clear-button-bgcolor: #3d8d7a;
+    --ok-button-color: #f0fff0;
+    --ok-button-bgcolor: #2a52be;
+    --active-borderbottom: red;
+    --active-bgcolor: rgb(96, 46, 222);
+    --favoutite: #ec7063;
+    --menu-button-bgcolor: rgb(136, 78, 160);
+    --title-bgcolor: blueviolet;
+    --title-color: antiquewhite;
+    --toast-bgcolor: rgb(181, 47, 47);
+    --toast-color: whitesmoke;
+}
+
+:root {
+    --bs-breakpoint-xs: 0;
+    --bs-breakpoint-sm: 576px;
+    --bs-breakpoint-md: 768px;
+    --bs-breakpoint-lg: 992px;
+    --bs-breakpoint-xl: 1200px;
+    --bs-breakpoint-xxl: 1400px;
+}
+@import 'styles/tooltip.css';
+
+/* You can add global styles to this file, and also import other style files */
+.categoryMin {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    left: 0px;
+    cursor: pointer;
+    max-width: 600px;
+    position: absolute;
+    bottom: 60px;
+    max-height: 70vh;
+    z-index: 600;
+}
+
+html,
+body {
+    height: 100%;
+    background-color: #f9f6ee !important;
+}
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.test:nth-child(odd) {
+    background-color: lavender;
+}
+
+.test:nth-child(even) {
+    background-color: ivory;
+}
+
+// #confirmDialog {
+//     border-radius: 5px!important;
+//     & .mat-mdc-dialog-surface {
+//         border-radius: 10px!important;
+//     }
+//     & .mat-mdc-dialog-content {
+//         padding: 10px;
+//     }
+//     & .mat-mdc-dialog-actions {
+//         margin: 0px!important;
+//         padding: 8px;
+//     }
+//     & .confirm-header {
+//         background-color: #ff00fb !important;
+//         color: white !important;
+//         display: flex;
+//         justify-content: center;
+//         font-size: 15px;
+//         height: 15px;
+//         padding: 8px;
+//         align-items: center;
+//         margin: 0px
+//     }
+//     & .content {
+//         background-color: aquamarine;
+//         display: flex;
+//         justify-content: center;
+//     }
+//     &
+//         .border-style {
+//             border-radius: 5px;
+// }
+
+.hovering {
+    background-color: #ff495d;
+    color: white;
+    display: block;
+    padding: 1em;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 50%;
+    translate: -50% calc((100% + 1em) * -1);
+}
+
+.min100px {
+    min-width: 100px;
+}
+
+.min125px {
+    min-width: 125px;
+}
+
+.min150px {
+    min-width: 150px;
+}
+
+.min175px {
+    min-width: 175px;
+}
+
+.min250px {
+    min-width: 250px;
+}
+
+.min300px {
+    min-width: 300px;
+}
+
+.min50px {
+    min-width: 50px;
+}
+.min75px {
+    min-width: 75px;
+}
+
+.min110px {
+    min-width: 110px;
+}
+
+.min150px {
+    min-width: 150px;
+}
+
+.min200px {
+    min-width: 200px;
+}
+
+.min300px {
+    min-width: 300px;
+}
+
+.min350px {
+    min-width: 300px;
+}
+
+.max100px {
+    max-width: 100px;
+}
+
+.max150px {
+    max-width: 150px !important;
+}
+
+.max200px {
+    max-width: 200px !important;
+}
+
+.max250px {
+    max-width: 250px !important;
+}
+
+.max300px {
+    max-width: 300px !important;
+}
+
+.max350px {
+    max-width: 350px !important;
+}
+
+.max400px {
+    max-width: 400px !important;
+}
+
+.max450px {
+    max-width: 400px !important;
+}
+
+.user-color {
+    background-color: #cce8d5!important;
+}
+.toast-style {
+    display: flex;
+    color: var(--toast-color);
+    background-color: var(--toast-bgcolor)!important;
+
+    .mat-mdc-snackbar-surface {
+        color: var(--toast-color);
+    background-color: var(--toast-bgcolor)!important;
+    }
+
+    .mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
+        color: var(--toast-color);
+    background-color: var(--toast-bgcolor)!important;
+    }
+    .mat-mdc-simple-snack-bar {
+        color: var(--toast-color);
+    background-color: var(--toast-bgcolor)!important;
+    }
+
+}
+
+.custom-container{
+    position: relative!important;
+    margin: auto!important;
+ }
+
+ @media (max-width: 750px) {
+  .custom-container {
+  }  
+ }
+
+.toast-style  .mat-mdc-button {
+        // background-color: #6654da;
+        // color: white!important;
+        background-color:#FFF5EE;
+        color:blue!important;
+        border: 1px solid black;
+        padding: 5px 10px;
+    }
+
+.custom-container  .mat-mdc-dialog-surface {
+        width: 100%!important;
+        max-height: 100%!important;
+        border-radius: 4px!important;
+        border: 2px;
+    }
+

@@ -1,0 +1,45 @@
+
+   .noMobile
+   {
+       display: block;
+       margin-top: 6px;
+   }
+
+   .arrow-font {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+   }
+
+   .mobile
+   {
+       display: none;
+   }
+
+   .sizeButton
+   {
+    width: minmax(40px, 10%);
+   }
+@media screen and (min-width: 0px) and (max-width: 740px)
+{
+    .noMobile
+    {
+        display: none;
+    }
+
+    .mobile
+    {
+        display: block;
+    }
+}
+
+.parent
+{
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(40px, 10%) auto 150px auto minmax(40px, 10%);
+}
+
+.btnSize {
+    width: 30px;
+}

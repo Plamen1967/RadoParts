@@ -1,0 +1,139 @@
+import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, Self } from '@angular/core'
+import { ControlValueAccessor, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { MatDialog } from '@angular/material/dialog'
+import { CompanyComponent } from '../select-controls/company/company.component'
+import { ErrorService } from '@services/error.service'
+import { NgClass, NgStyle } from '@angular/common'
+import { ButtonGroupComponent } from '../buttonGroup/buttongroup.component'
+import { OptionItem } from '@model/optionitem'
+import { BaseControl } from '../baseControl'
+import { AlertService } from '@services/alert.service'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+
+@Component({
+    standalone: true,
+    selector: 'app-customselect',
+    templateUrl: './customSelect.component.html',
+    styleUrls: ['./customSelect.component.css'],
+    imports: [NgClass, NgStyle, ButtonGroupComponent,ReactiveFormsModule]
+})
+export class CustomSelectComponent extends BaseControl<number> implements OnInit, ControlValueAccessor {
+
+    selectedValue?: number
+    letterItem = undefined
+    _selection?: string
+    data_: OptionItem[] = []
+    clearBox?: boolean;
+    loaded = false;
+   
+    @Output() changeOption: EventEmitter<number> = new EventEmitter<number>()
+    @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
+
+    @Input() groupSelection = false
+    @Input() set data(data_:  OptionItem[]) {
+        this.data_ = [...data_];
+
+        if (this.groupDisabled) {
+            this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
+        }
+        this._selection = this.data_?.find((item) => item.id === this.value)?.description ?? this.placeHolder
+        if (this.data_ && this.data_.length) 
+            this.loaded = true;
+    }
+    @Input() tooltip?: string
+    @Input() label = "";
+    @Input() hint?: string
+    @Input() showLetter?: boolean
+    @Input() letter?: boolean
+    @Input() required?: boolean
+    @Input() submitted?: boolean
+    @Input() showAll = true
+    @Input() groupDisabled = false
+    @Input() useFilter = false
+    @Input() multiSelection = false
+    @Input() placeHolder?: string
+    @Input() showCount?: boolean = true;
+    @Input() set select(value: number) {
+        this.writeValue(value);
+    };
+    constructor(
+        @Self() control: NgControl,
+        public dialog: MatDialog,
+        errorService: ErrorService,
+        el: ElementRef,
+        private alertService: AlertService,
+                private destroyRef: DestroyRef
+    ) {
+        super(control, errorService, el)
+    }
+
+    ngOnInit() {
+        this._selection = this.placeHolder
+    }
+
+
+    override get errorMessage() {
+        return this.errorService.getMessage(this.label, this.control.errors);
+      }
+    
+    //#region ValueAccessor
+    override writeValue(value: number): void {
+        this.value = value
+        this.clearBox = value ? true : false
+        this._selection = this.data_?.find((item) => item.id === value)?.description ?? this.placeHolder
+        this.changeOption.emit(value)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    markAsTouched() {}
+
+    change(value?: number) {
+        if (!value) value = 0;
+        this.value = value;
+        if (this.value) this.value = +this.value;
+        this.clearBox = value ? true : false
+        this._selection = this.data_?.find((item) => item.id == +value!)?.description ?? this.placeHolder
+        if (this.onChange) this.onChange(+value!);
+        this.changeOption.emit(value!);
+    }
+
+    clickSelect() {
+        const dialogRef = this.dialog.open(CompanyComponent, {
+            height: '100%',
+            width: '100%',
+            panelClass: 'custom-container',
+            data: {
+                data: this.data_,
+                userFilter: this.useFilter ?? false,
+                groupSelection: this.groupSelection ?? true,
+                value: this.value,
+                multiSelection: this.multiSelection,
+                groupDisabled: this.groupDisabled,
+                placeHolder: this.placeHolder,
+                showCount: this.showCount,
+                useFilter: true,
+                label: ''
+            },
+        })
+        dialogRef.afterClosed()
+                .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((result) => {
+            if (result) this.change(result)
+            this.alertService.info(`Dialog result: ${result}`)
+        })
+    }
+
+    clear() {
+        this._selection = this.placeHolder
+        this.change(undefined)
+    }
+    override get contolName(): string {
+        return this.control.name?.toString() ?? this.placeHolder ?? this.label ?? 'Избери';
+    }
+
+    updataData() {
+        // TODO
+        return;
+    }
+    //#endregion
+}

@@ -1,0 +1,111 @@
+@if (!currentPartId) {
+    <div [ngStyle]="{ 'background-color': '#f1f9ff' }" class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
+        <form [formGroup]="searchForm">
+            <div class="mb-3"></div>
+            <div class="row g-3">
+                <div class="col-sm-2">
+                    <app-select formControlName="companyId" label="{{ labels.COMPANY }}" displayProperty="companyName" valueProperty="companyId" [data]="companies"> </app-select>
+                </div>
+                <div class="col-sm-2">
+                    <app-select formControlName="modelId" label="{{ labels.MODEL }}" displayProperty="modelName" valueProperty="modelId" [data]="models"></app-select>
+                </div>
+                <div class="col-sm-3">
+                    <app-select formControlName="modificationId" label="{{ labels.MODIFICATION }}" displayProperty="modificationName" valueProperty="modificationId" [data]="modifications">
+                    </app-select>
+                </div>
+                <div class="col-sm-2">
+                    <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years"> </app-select>
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col-sm-3">
+                    <app-select formControlName="carId" label="{{ labels.REFERNCE_CAR }}" displayProperty="reference" valueProperty="carId" [data]="carsList"> </app-select>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-sm-3">
+                    <app-select
+                        formControlName="categoryId"
+                        label="{{ labels.CATEGORY }}"
+                        hint="{{ labels.SUBCATEGORY }}"
+                        [valueProperty]="'categoryId'"
+                        [displayProperty]="'categoryName'"
+                        [data]="categories">
+                    </app-select>
+                </div>
+                <div class="col-sm-3">
+                    <app-select
+                        formControlName="subCategoryId"
+                        label="{{ labels.SUBCATEGORY }}"
+                        hint="{{ labels.SUBCATEGORY }}"
+                        [valueProperty]="'subCategoryId'"
+                        [displayProperty]="'subCategoryName'"
+                        [data]="subCategories">
+                    </app-select>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-sm-3">
+                    <app-input formControlName="partNumber" placeHolder="{{ labels.PART_NUMBER }}"> </app-input>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-2 g-3">
+                    <app-button [submit]="true" text="{{ labels.SEARCH }}" data-cy="search" icon="las la-search" (click)="onSubmit()"></app-button>
+                </div>
+                <div class="col-sm-2 g-3">
+                    <app-button text="{{ labels.ADD }} {{ labels.PART }}" data-cy="addPart" (click)="addPart()"> </app-button>
+                </div>
+                <div class="col-sm-5 g-3"></div>
+                @if (!seller) {
+                    <div class="container text-right col-sm-3 g-3">
+                        <div class="d-inline">
+                            <span>{{ labels.NUMBERPARTS }} {{ numberOfParts }}</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+    @if (searched && numberPages > 1) {
+        <div class="mb-2">
+            <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)"> </app-navigator>
+        </div>
+
+        <!-- <div class="d-flex align-items-center justify-content-center col-sm-9" id="top">
+            <div class="text-center" [ngStyle]="{ 'background-color': 'transparent' }">
+                <button type="button" class="btn btn-primary" [hidden]="currentPage < 2" (click)="previousPage()"><i class="las la-arrow-left"></i></button>
+                @for (item of [].constructor(numberPages); track item; let i = $index) {
+                    <button
+                        class="ms-2 me-2 btn-sm btn"
+                        [ngClass]="{ 'btn-primary': currentPage !== i + 1, 'border-primary': currentPage === i + 1, 'btn-light': currentPage === i + 1 }"
+                        (click)="click(i)">
+                        {{ i + 1 }}
+                    </button>
+                }
+                <button type="button" class="btn btn-primary" [hidden]="currentPage === numberPages" (click)="nextPage()"><i class="las la-arrow-right"></i></button>
+            </div>
+        </div> -->
+    }
+    @for (part of parts; track part.partId) {
+        <div id="{{ part.partId }}">
+            <app-rowPartDealer [part]="part" (action)="actionPart($event)" [highlighted]="part.id === currentId" [allowUpdate]="user"></app-rowPartDealer>
+        </div>
+    }
+    @if (searched && numberPages > 1) {
+        <div class="mt-2">
+            <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)"> </app-navigator>
+        </div>
+    <!-- <div class="col-sm-9 mt-2">
+            <div class="text-center" [ngStyle]="{ 'background-color': 'transparent' }">
+                <button type="button" class="btn btn-primary" [hidden]="currentPage < 2" (click)="previousPage()"><i class="las la-arrow-left"></i></button>
+                @for (item of [].constructor(numberPages); rack: item; let i = $index) {
+                    <button class="ms-2 me-2 btn-sm btn-primary btn" (click)="click(i)">{{ i + 1 }}</button>
+                }
+                <button type="button" class="btn btn-primary" [hidden]="currentPage === numberPages" (click)="nextPage()"><i class="las la-arrow-right"></i></button>
+            </div>
+        </div> -->
+    }
+} @else {
+    <app-addPart [viewPartId]="currentPartId" [mode]="modeType" (back)="refreshPart($event)"> </app-addPart>
+}

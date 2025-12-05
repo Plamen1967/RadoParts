@@ -1,0 +1,54 @@
+@if (dropDowns.length) {
+    <div class="container">
+        <ul class="vertical-nav" #category>
+            @for (dropdown of dropDowns; track dropdown.id) {
+                <li #menu role="none" (mouseover)="clearDisplay()" (focus)="focus()" (dblclick)="onCategoryClick($event, dropdown.id!)" (click)="onCategoryClick($event, dropdown.id!)">
+                    <div class="parent menu">
+                        <a>
+                            <img src="../../../{{ dropdown.imageName }}" alt="{{ dropdown.imageName }}" />
+                            {{ dropdown.name }}
+                        </a>
+                        <div class="category-number-style menu">{{ dropdown.count }}</div>
+                    </div>
+                    <ul class="sub-menu" #subMenu>
+                        @for (child of dropdown.children; track child.value) {
+                            <li (click)="onClick($event, child.value!)" role="none" class="d-inline-flex justify-content-between">
+                                <div class="subitem">{{ child.text }}</div>
+                                <div class="category-number-style menu">{{ child.count }}</div>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+} @else {
+    <div [ngStyle]="{ width: '250px', float: 'left', height: '200px', 'margin-left': '2rem' }"></div>
+}
+<!-- <ng-container *ng1For="let dropdown of dropDowns; let i=index">
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img [ngStyle]="{'width':'20px', 'height':'20px'}"
+                src="../../../images/categories/{{dropdown.imageName}}" alt="{{dropdown.imageName}}">
+            {{dropdown.name}}
+        </button>
+        <div class="dropdown-menu">
+            <ng-container *ng1For="let child of dropdown.children">
+                <a class="dropdown-item" href="#" (click)="onClick(child.value)">{{child.text}}</a>
+            </ng-container>>
+        </div>
+    </div>
+</ng-container> -->
+
+<!-- <div class="btn-group dropright">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Dropright
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+    </div>
+</div> -->

@@ -1,0 +1,78 @@
+{
+  "make": "Jaguar",
+  "models": [
+    {
+      "label": "E-Pace",
+      "modifications": {
+        "e-pace-suv": "E-Pace SUV (09.2017 - ...)"
+      }
+    },
+    {
+      "label": "F-Pace",
+      "modifications": {
+        "f-pace-suv": "F-Pace SUV (09.2015 - ...)"
+      }
+    },
+    {
+      "label": "F-Type",
+      "modifications": {
+        "f-type-cabrio": "F-Type Cabrio (10.2012 - ...)",
+        "f-type-coupe": "F-Type Coupe (09.2013 - ...)"
+      }
+    },
+    {
+      "label": "I-Pace",
+      "modifications": {
+        "i-pace-suv": "I-Pace SUV (02.2018 - ...)"
+      }
+    },
+    {
+      "label": "S-Type",
+      "modifications": {
+        "s-type-sedan": "S-Type Sedan (01.1999 - 11.2009)"
+      }
+    },
+    {
+      "label": "X-Type",
+      "modifications": {
+        "x-type-estate": "X-Type Estate (11.2003 - 12.2009)",
+        "x-type-sedan": "X-Type Sedan (06.2001 - 11.2009)"
+      }
+    },
+    {
+      "label": "XE",
+      "modifications": {
+        "xe-sedan": "XE Sedan (03.2015 - ...)"
+      }
+    },
+    {
+      "label": "XF",
+      "modifications": {
+        "xf-sedan-i": "XF Sedan I (03.2008 - 04.2015)",
+        "xf-sedan-ii": "XF Sedan II (05.2015 - ...)",
+        "xf-sportbrake-i": "XF Sportbrake I (09.2012 - 04.2014)",
+        "xf-sportbrake-ii": "XF Sportbrake II (07.2017 - ...)"
+      }
+    },
+    {
+      "label": "XJ",
+      "modifications": {
+        "xj-sedan-i": "XJ Sedan I (07.1968 - 02.1993)",
+        "xj-sedan-ii": "XJ Sedan II (10.1986 - 11.1994)",
+        "xj-sedan-iii": "XJ Sedan III (09.1994 - 07.1997)",
+        "xj-sedan-iv": "XJ Sedan IV (09.1996 - 05.2003)",
+        "xj-sedan-v": "XJ Sedan V (03.2003 - 03.2009)",
+        "xj-sedan-vi": "XJ Sedan VI (10.2009 - 12.2019)"
+      }
+    },
+    {
+      "label": "XK",
+      "modifications": {
+        "xk-8-convertible": "XK 8 Convertible (03.1996 - 07.2005)",
+        "xk-8-coupe": "XK 8 Coupe (03.1996 - 07.2005)",
+        "xk-convertible": "XK Convertible (03.2006 - 07.2014)",
+        "xk-coupe": "XK Coupe (03.2006 - 07.2014)"
+      }
+    }
+  ]
+}
