@@ -102,7 +102,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
 
     @HostListener('click',)
     onclick() {
-        // this.view();
+        this.view();
     }
 
     galleryOptions: NgxGalleryOptions[] = [

@@ -135,7 +135,7 @@
                                     <div lass="mt-2 mt-5 me-2">
                                         <div class="d-grid gap-2 d-md-block text-center">
                                             <button type="button" class="btn btn-primary active me-2" (click)="goBack()"><i class="las la-reply"></i> Назад</button>
-                                            @if (displayButton) {
+                                            @if (displayButton && !checkout) {
                                                 <button type="button" class="btn btn-primary active me-2" (click)="goSearch()"><i class="las la-filter me-1"></i>{{ labels.TOSEARCH }}</button>
                                             }
                                         </div>

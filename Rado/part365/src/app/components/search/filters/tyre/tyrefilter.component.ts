@@ -10,7 +10,6 @@ import { SelectComponent } from '@components/custom-controls/select-controls/sel
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { HomeComponent } from '@components/search/home/Home.component'
-import { getModelAll } from '@model/company-model-modification/model'
 import { CountTyres } from '@model/countTyres'
 import { ItemType } from '@model/enum/itemType.enum'
 import { SearchBy } from '@model/enum/searchBy.enum'
@@ -32,6 +31,7 @@ import { SearchBarComponent } from '@components/search-bar/search-bar.component'
 import { CategoriesComponent } from '@components/custom-controls/categories/categories.component'
 import { Dropdown } from '@model/dropDown'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'
+import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
 
 @Component({
     standalone: true,
@@ -50,6 +50,7 @@ import { CategorySubcategory } from '@model/category-subcategory/categorySubCate
         CompanyChoiseComponent,
         SearchBarComponent,
         CategoriesComponent,
+        ModelChoiceComponent
     ],
 })
 export class TyreFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -89,6 +90,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     rimMaterial?: SelectOption[]
     rimWidth?: SelectOption[]
     regions?: SelectOption[]
+    companyId?: number;
 
     countTyres?: CountTyres
     categoriesFooter: Dropdown[] = [
@@ -154,12 +156,15 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
             orderBy: [0],
             hasImages: [false],
         })
+
+
         this.initialState = this.filterForm.value
         delete this.initialState.itemType
     }
     ngAfterViewInit(): void {
         this.filterForm.controls['itemType'].valueChanges.subscribe((f) => this.itemTypeChanged(f))
-
+        this.filterForm.controls['companyId'].valueChanges.subscribe((companyId) => this.onCompanyChange(companyId))
+        
         if (this.itemType) {
             this.filterForm.patchValue({ itemType: ItemType.AllTyre })
             this.itemTypeChanged(ItemType.AllTyre)
@@ -273,12 +278,13 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     }
 
     onCompanyChange(companyId: number) {
-        this.modelService.fetchByCompanyId(companyId).subscribe((res) => {
-            res.unshift(getModelAll())
-            this.models = res.map((model) => {
-                return { value: model.modelId!, text: model.modelName }
-            })
-        })
+        this.companyId = companyId;
+        // this.modelService.fetchByCompanyId(companyId).subscribe((res) => {
+        //     res.unshift(getModelAll())
+        //     this.models = res.map((model) => {
+        //         return { value: model.modelId!, text: model.modelName }
+        //     })
+        // })
     }
     onSelection(event: CategorySubcategory) {
         console.log(`${event.categoryId}`)

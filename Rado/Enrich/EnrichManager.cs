@@ -3,6 +3,7 @@ using Models.Enums;
 using Models.Helper;
 using Models.Models;
 using Models.Models.Authentication;
+using Models.Models.Utility;
 using Rado.Datasets;
 using Rado.Enums;
 using Rado.Models;
@@ -156,6 +157,12 @@ namespace Rado.Enrich
                 var result = ImageManager.GetMainImageAsync(rimWithTyreView.rimWithTyreId); ;
                 result.Wait();
                 rimWithTyreView.mainImageData = result.Result;
+                if (rimWithTyreView.mainImageData != null)
+                {
+                    LoggerUtil.Warning($"RimWithTyre {rimWithTyreView.rimWithTyreId} has images but does not have default image. User {rimWithTyreView.userId}");
+                    rimWithTyreView.mainImageId = rimWithTyreView.mainImageData.imageId;
+                    rimWithTyreView.mainPicture = ImageManager.GenerateImageHRef(rimWithTyreView.rimWithTyreId, rimWithTyreView.mainImageId, true);
+                }
             }
 
             var imageResult = ImageManager.GetNumberImages(rimWithTyreView.rimWithTyreId);

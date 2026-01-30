@@ -47,7 +47,12 @@ export class PartViewComponent extends HelperComponent {
         else return false;
       });
 
-      const list = items.map(item => `${item[1]}`);
+      const list = items.map(item => {
+        if (item[0] === "VIN") {
+          return `VIN: ${item[1]}`;
+        }
+        return `${item[1]}`;
+      });
       const test = list.join(', ')
       return test;
     }

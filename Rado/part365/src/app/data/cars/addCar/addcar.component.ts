@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
 import { UpdateEnum } from '@model/enum/update.enum'
@@ -66,6 +66,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     userId = 0
     query = 0
     bus_ = 0
+    ad = "";
     images: ImageData[] = []
     inialValue: undefined
     _displayPartView?: DisplayPartView
@@ -101,6 +102,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         private activatedRoute: ActivatedRoute,
         private nextIdService: NextIdService,
         formBuilder: FormBuilder,
+        private router: Router,
         private confirmService: ConfirmServiceService,
         private homeService: HomeService,
         private loggerService: LoggerService,
@@ -135,6 +137,17 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         this.formInitialValues = this.addCarForm.value
         this.userId = this.loggedUser?.userId ?? 0
         goTop()
+    }
+
+    ngOnInit() {
+        this.activatedRoute.queryParamMap.subscribe((param) => {
+            const id = param.get('id')
+            const query = param.get('query')
+            if (id) this.carId = +id
+            if (query) this.query = +query
+            this.ad = param.get('ad') ? param.get('ad')! : "";
+            this.loadCar()
+        })
     }
 
     ngAfterViewInit(): void {
@@ -195,17 +208,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             if (reuslt === OKCancelOption.OK) {
                 this.goBack()
             }
-        })
-    }
-
-    ngOnInit() {
-        this.activatedRoute.queryParamMap.subscribe((param) => {
-            const id = param.get('id')
-            const query = param.get('query')
-            if (id) this.carId = +id
-            if (query) this.query = +query
-
-            this.loadCar()
         })
     }
 
@@ -370,7 +372,15 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
                         this.homeService.updateDisplayPartView(val)
                         this.submitted = false
                         this.saved.emit(val.id)
-                        this.goBack()
+                        if (this.ad)  {
+                            this.carService.currentCarId = val.id;
+                            if (this.bus) {
+                                this.router.navigate(['/data/bus'])
+                            } else {
+                                this.router.navigate(['/data/cars'])
+                            }
+                        }  else    
+                          this.goBack()
                     })
                     // const title = 'Съобщение'
                     // this.popupService.openWithTimeout(title, content, 2000).subscribe(() => {

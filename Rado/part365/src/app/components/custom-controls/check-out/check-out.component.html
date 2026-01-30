@@ -1,6 +1,6 @@
 <div class="container">
     @if (currentId) {
-        <app-userviewpart (back)="back()" (changeNext)="(false)" (changePrev)="(false)"></app-userviewpart>
+        <app-userviewpart (back)="back()" (changeNext)="(false)" (changePrev)="(false)" [checkout]="true"></app-userviewpart>
     } @else {
         @if (loading) {
         } @else {

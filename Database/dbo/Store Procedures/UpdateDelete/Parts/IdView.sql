@@ -15,7 +15,7 @@ AS
 		deleted = 0 
 	UNION
 	SELECT 
-		RimWithTyreId
+		rimWithTyreId
 	FROM 
 		RimWithTyre
 	WHERE

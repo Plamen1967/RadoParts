@@ -78,19 +78,12 @@
                         <app-company-choise [itemType]="itemType" [userId]="userId!" [bus]="0" data-cy="companyId" [all]="true" formControlName="companyId"> </app-company-choise>
                     </div>
                 </div>
-                <div class="col-sm-4 control">
-                    <app-select
-                        id="modelId"
-                        [appToolTip]="'Избери модела'"
-                        formControlName="modelId"
-                        data-cy="modelId"
-                        label="{{ labels.MODEL }}"
-                        displayProperty="displayModelName"
-                        valueProperty="modelId"
-                        [data]="models"
-                        (onClose)="focus()">
-                    </app-select>
-                </div>
+                @if (companyId) {
+                    <div class="col-sm-3 min300px mb-1">
+                        <app-model-choice formControlName="modelId" [showCount]="false" [groupSelection]="false" [all]="true" [companyId]="companyId!" [groupSelection]="false" [multiselection]="false">
+                        </app-model-choice>
+                    </div>
+                }
                 <div class="col-sm-3 control">
                     <app-select
                         id="rimWidth"

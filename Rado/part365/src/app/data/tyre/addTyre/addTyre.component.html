@@ -57,15 +57,7 @@
                     </app-select>
                 </div>
                 <div class="col-sm-3 min200px">
-                    <app-select
-                        id="tyreCompanyId"
-                        formControlName="tyreCompanyId"
-                        data-cy="tyreCompanyId"
-                        label="{{ labels.TYRE_PRODUCER }}"
-                        [data]="tyreProducers"
-                        [submitted]="submitted"
-                        (onClose)="focus($event)"
-                        [required]="false">
+                    <app-select  id="tyreCompanyId" formControlName="tyreCompanyId" data-cy="tyreCompanyId" label="{{ labels.TYRE_PRODUCER }}" [data]="tyreProducers"  [submitted]="submitted" (onClose)="focus($event)"  [required]="false">
                     </app-select>
                 </div>
             </div>

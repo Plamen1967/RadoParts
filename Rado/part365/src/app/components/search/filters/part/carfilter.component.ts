@@ -565,7 +565,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
                     this.loadingService.close()
                     this.popupService.openWithTimeout('Съобщение', 'Няма намерени обяви!', 5000)
                 } else if (dataManager.filterData.length === 100) {
-                    this.popupService.openWithTimeout('Съобщение', 'Филтъра Ви връща повече от 100 части. Само първите 100 ще се покажат', 500000).subscribe(() => {
+                    this.popupService.openWithTimeout('Съобщение', 'Филтъра Ви връща повече от 100 части. Само първите 100 ще се покажат', 2000).subscribe(() => {
                         this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
                     })
                 } else {

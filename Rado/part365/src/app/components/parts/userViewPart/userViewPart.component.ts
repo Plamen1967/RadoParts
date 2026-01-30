@@ -91,6 +91,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     @Input() id!: number
     @Input() userId!: number
     @Input() query!: number
+    @Input() checkout?: boolean
     @Input() set currentViewId(value: number) {
         this.id = value
         this.fetchPart()
@@ -179,9 +180,6 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
             if (params['id']) this.id = +params['id']
             if (params['userId']) this.userId = +params['userId']
             if (params['currentId']) this.id = +params['currentId']
-            // if (params.get('id')) {
-            //     this.highlighted = +params['id']
-            // }
 
             if (params['updateId']) {
                 this.updateId = +params['updateId']
@@ -662,6 +660,11 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         if (this.dataManager) {
             this.dataManager.currentId = this.item?.id ?? 0
             this.dataManager.displayFilter = false
+        }
+        if (this.query) {
+            this.router.navigate([`/results/`], { queryParams: { query: this.query, id: this.item?.id } })
+            this.back.emit(this.query)
+            return
         }
         this.back.emit(undefined);
     }

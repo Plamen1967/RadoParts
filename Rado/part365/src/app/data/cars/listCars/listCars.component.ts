@@ -189,6 +189,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             this.updateCarFlag = params.get('updateCar') ? true : false
             this.updateBusFlag = params.get('updateBus') ? true : false
             this.updatePartFlag = params.get('updatePart') ? true : false
+            this.currentPartId = params.get('currentPartId') ? +params.get('currentPartId')! : undefined
             this.title = this.bus ? 'Бусове' : 'Коли'
             if (this.bus) this.itemType = ItemType.OnlyBus
             else this.itemType = ItemType.OnlyCar
@@ -290,6 +291,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.currentPartId = undefined
     }
     updateCar(carId: number) {
+        this.currentCarId = carId;
         if (this.bus) this.router.navigate(['/data/bus'], { queryParams: { updateBus: true, carId: carId } })
         else this.router.navigate(['/data/cars'], { queryParams: { updateCar: true, carId: carId } })
     }
@@ -426,7 +428,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                 next: (res) => {
                     this.updateData(res)
 
-                    this.currentCarId = this.carService.currentCarId
                     if (this.currentCarId) goToPosition(this.currentCarId)
                     this.updateCars = true
                     this.loading = false
@@ -472,14 +473,20 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.searched = true
         this.allCars = [...res]
         this.numberPages = Math.ceil(this.allCars.length / 10)
+        console.log('Current car id before update data', this.carService.currentCarId)
         if (this.carService.currentCarId) {
             const index = this.allCars.findIndex((item) => item.carId === this.carService.currentCarId)
-            this.currentPage = this.numberPages = Math.ceil(index / 10) + 1
+            const page = Math.floor(index / 10) + 1;
+            this.currentPage = this.numberPages = page; 
+            this.currentCarId = this.carService.currentCarId
+            this.carService.currentCarId = undefined
         } else {
             this.currentPage = 1
         }
         this.cars = [...this.getPageData()]
-        goToPosition(this.carService.currentCarId)
+        console.log('Current car id after update data', this.currentCarId)
+        if (this.currentCarId)
+            goToPosition(this.currentCarId!.toString())
     }
 
     //#endregion

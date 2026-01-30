@@ -32,6 +32,22 @@ namespace Utility
                 }
             }
         }
+        static public void Warning(string warning)
+        {
+            lock (userLock)
+            {
+                try
+                {
+                    LogToFile("Warning");
+                    LogToFile(warning);
+                }
+                catch (Exception exception)
+                {
+                    LogFunctionInfo("LogInfo");
+                    LogException(exception.Message);
+                }
+            }
+        }
         static public void Log(Exception exception)
         {
             lock (userLock)
@@ -39,7 +55,7 @@ namespace Utility
                 try
                 {
                     LogToFile(exception.Message);
-                    LogToFile(exception.StackTrace);
+                    LogToFile(message: exception.StackTrace);
                 }
                 catch (Exception exception2)
                 {
@@ -86,8 +102,11 @@ namespace Utility
             }
         }
 
-        private static void LogToFile(string message)
+        private static void LogToFile(string? message)
         {
+            if (message == null)
+                return;
+
             lock (userLock)
             {
                 string logFileName = string.Format("Log_{0}_{1}_{2}.log", DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);

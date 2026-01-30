@@ -34,6 +34,7 @@ import { goToPosition } from '@app/functions/functions';
 export class DealerViewComponent extends HelperComponent implements OnInit, AfterViewInit {
     parts: PartView[] = [];
     showParts = false
+    highlighted_?: number;
     mode: UpdateEnum = UpdateEnum.View
     currentPartId?: number
     _carView?: CarView;
@@ -47,7 +48,10 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
     @Input() allowUpdate = false
     @Input() rimWithTyreView?: DisplayPartView;
     @Input() mainPicture?: string;
-    @Input() highlighted?: number;
+    @Input() set highlighted(value: number | undefined) {
+        this.highlighted_ = value;
+        console.log("Dealer view set highlighted", this.highlighted_, this.id);
+    }
     @Input() showPart!: boolean;
     @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
     @Output() addPartCarId: EventEmitter<number> = new EventEmitter<number>()
@@ -71,7 +75,8 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
         if (this.carView) this.id = this.carView.carId!;
         else if (this.partView) this.id = this.partView.partId!;
         else if (this.rimWithTyreView) this.id = this.rimWithTyreView.id!;
-        this.isHighlighted = (this.highlighted == this.id);
+        this.isHighlighted = (this.highlighted_ == this.id);
+        console.log("Dealer view init", this.isHighlighted, this.id, this.highlighted_);    
     }
     //#endregion
 
