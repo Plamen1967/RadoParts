@@ -1,6 +1,6 @@
 //#region import
-import { DOCUMENT, NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, Inject, OnInit, Renderer2 } from '@angular/core'
+import { NgClass, NgStyle } from '@angular/common'
+import { AfterViewInit, Component, inject, Inject, OnInit, Renderer2, DOCUMENT } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'

@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common'
-import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, QueryList, Renderer2, ViewChildren, OnDestroy, AfterViewInit, DestroyRef } from '@angular/core'
+
+import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, QueryList, Renderer2, ViewChildren, OnDestroy, AfterViewInit, DestroyRef, DOCUMENT } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'

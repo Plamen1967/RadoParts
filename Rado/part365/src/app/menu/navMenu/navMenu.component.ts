@@ -1,5 +1,5 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, Inject } from '@angular/core';
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, Inject, DOCUMENT } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CONSTANT } from '@app/constant/globalLabels';
 import { HelperComponent } from '@components/custom-controls/helper/helper.component';
@@ -8,7 +8,7 @@ import { CarService } from '@services/car.service';
 import { CheckOutService } from '@services/checkOut.service';
 import { LocalStorageService } from '@services/storage/localStorage.service';
 import { UserService } from '@services/user.service';
-import { AsyncPipe, DOCUMENT, NgClass, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf, NgStyle } from '@angular/common';
 import { CompanyHeaderComponent } from '@components/header-footer/companyHeader/companyHeader.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '@app/user/login/login.component';

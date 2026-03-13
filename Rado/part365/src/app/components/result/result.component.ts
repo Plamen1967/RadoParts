@@ -1,6 +1,6 @@
 //#region import
-import { DOCUMENT } from '@angular/common'
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
+
+import { AfterViewInit, Component, DestroyRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, DOCUMENT } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
 import { NavigatorComponent } from '@components/result/navigator/navigator.component'

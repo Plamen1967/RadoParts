@@ -1,7 +1,7 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, DOCUMENT } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { AsyncPipe, DOCUMENT, ViewportScroller } from '@angular/common'
+import { AsyncPipe, ViewportScroller } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { SelectOption } from '@model/selectOption'
 import { UpdateEnum } from '@model/enum/update.enum'
