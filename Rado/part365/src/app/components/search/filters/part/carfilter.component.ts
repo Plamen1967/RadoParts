@@ -58,6 +58,7 @@ import { StaticSelectionService } from '@services/staticSelection.service'
 //#endregion
 //#region @Component
 @Component({
+    standalone: true,
     selector: 'app-carfilter',
     templateUrl: './carfilter.component.html',
     styleUrls: ['./carfilter.component.css'],
