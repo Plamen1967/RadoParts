@@ -34,7 +34,7 @@ export class CONSTANT {
      public static readonly GOBACK = "Назад"
      public static readonly GOHOME = "Начало"
      public static readonly KEYWORDS = "Търси"
-     public static readonly CURRENCY = "лв."
+     public static readonly CURRENCY = "EURO"
      public static readonly CLEARFILTER = "Изчисти"
      public static readonly EXTENDED_SERARCH = "Разширено търсене"
      public static readonly MINIMUM_SERARCH = "Минимално търсене"
@@ -99,6 +99,7 @@ export class CONSTANT {
      public static readonly QUESTION = "Подсказваща дума";
      public static readonly UPDATEPASSWORD = "Промяна на парола";
      public static readonly DETAILS = "Детайли";
+     public static readonly MESSAGES = "Съобщения";
      public static readonly PASSWОRDNOTSAME = "Потвърдената парола е различна";
      public static readonly NUMBERPARTS = "Общ брой на части: "
      public static readonly ONLYPARTS = "Само части";
@@ -167,4 +168,6 @@ export class CONSTANT {
      public static readonly RECOVERYALREADYACTIVATED = "Този акаунт е вече активиран"
      public static readonly RECOVERYMESSAGE = "Потр. име, телефон или е-майл"
      public static readonly WHATS = "Whats";
+static LEFT_RIGHT: "Ляво/Дясно";
+static FRONT_BACK: "Предно/Задно";
 }

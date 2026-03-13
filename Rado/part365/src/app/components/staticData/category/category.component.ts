@@ -29,6 +29,7 @@ export default class CategoryComponent extends HelperComponent implements OnInit
       categoryId: ['', [Validators.required]],
       categoryName: ['', [Validators.required]]
     })
+    this.formGroup = this.categoryForm;
   }
   ngAfterViewInit(): void {
     this.categoryForm.controls['categoryId'].valueChanges.subscribe(f => this.select(f))
@@ -96,10 +97,6 @@ export default class CategoryComponent extends HelperComponent implements OnInit
 
   get deleteButton() {
     return !this.categoryId;
-  }
-
-  get controls() {
-    return this.categoryForm.controls
   }
 
   get updateButton() {

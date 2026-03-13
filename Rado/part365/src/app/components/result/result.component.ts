@@ -134,7 +134,13 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                 })
             } else if (params.query) {
                 this.query = +params.query
-                this.page = +(params.page ?? 1)
+                this.dataManager = this.homeService.getDataManager(+this.query)                
+                
+                if (params.page) this.page = +params.page
+                else if (this.dataManager?.currentPage)
+                    this.page = this.dataManager.currentPage
+                else
+                     this.page = 1
                 this.results()
             } else if (params.userId) {
                 this.userId = params.userId

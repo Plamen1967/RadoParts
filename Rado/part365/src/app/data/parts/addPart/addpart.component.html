@@ -8,7 +8,7 @@
         </div>
     } @else {
         <div class="title">Част</div>
-        <form [formGroup]="addPartForm">
+        <form [formGroup]="addPartForm" autocomplete="off">
             @if (seller) {
                 <div class="shadow rounded card card-form-spec">
                     @if (newPart) {
@@ -226,11 +226,20 @@
                     <app-textarea formControlName="description" data-cy="description" placeHolder="{{ labels.PART_DETAILS }}" [submitted]="submitted"></app-textarea>
                 </div>
                 <div class="card mt-1">
-                    <div class="card-header">
+                    <div class="card-header" style="background-color: honeydew; font-size: 1.2em; border: 1px solid purple;">
                         Позиция
-                        <div class="d-flex justify-content-between flex-wrap" style="font-size: 1em">
-                            <div class="d-inline-flex justify-content-between">
-                                <div class="d-inline-flex pe-2">
+                        <div class="d-flex flex-wrap g-2" style="font-size: 1em">
+                            <div class="d-inline-flex justify-content-between me-2">
+                                <app-select
+                                    formControlName="leftRightPosition"
+                                    label="{{ labels.LEFT_RIGHT }}"
+                                    [submitted]="submitted"
+                                    data-cy="region"
+                                    [data]="staticSelectionService.LeftRight"
+                                    (onClose)="focus($event)">
+                                </app-select>
+
+                                <!-- <div class="d-inline-flex pe-2">
                                     <input id="NoneLR" type="radio" class="custom-control-input" [value]="0" data-cy="positionLRNone" name="leftRightPosition" formControlName="leftRightPosition" />
                                     <label class="ps-2" for="NoneLR">{{ labels.NO_MATER }}</label>
                                 </div>
@@ -241,10 +250,18 @@
                                 <div class="d-inline-flex">
                                     <input id="Right" type="radio" class="custom-control-input" [value]="2" data-cy="positionLRRight" name="leftRightPosition" formControlName="leftRightPosition" />
                                     <label class="ps-2" for="Right">{{ labels.RIGHT }}</label>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="d-inline-flex justify-content-between">
-                                <div class="d-inline-flex pe-2">
+                                <app-select
+                                    formControlName="frontBackPosition"
+                                    label="{{ labels.FRONT_BACK }}"
+                                    [submitted]="submitted"
+                                    data-cy="region"
+                                    [data]="staticSelectionService.FrontBack"
+                                    (onClose)="focus($event)">
+                                </app-select>
+                                <!-- <div class="d-inline-flex pe-2">
                                     <input id="NoneFB" type="radio" class="custom-control-input" [value]="0" data-cy="positionFBNone" name="frontBackPosition" formControlName="frontBackPosition" />
                                     <label class="ps-2" for="NoneFB">{{ labels.NO_MATER }}</label>
                                 </div>
@@ -255,23 +272,29 @@
                                 <div class="d-inline-flex">
                                     <input id="Back" type="radio" class="custom-control-input" [value]="2" data-cy="positionFBBack" name="frontBackPosition" formControlName="frontBackPosition" />
                                     <label class="ps-2" for="Back">{{ labels.BACK }}</label>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row g-3">
-                <div class="d-inline">
+                <div class="d-inline ms-2">
                     <app-input formControlName="price" placeHolder="{{ labels.PRICE }}" [price]="true" [submitted]="submitted" data-cy="price" [inline]="false" [required]="true"></app-input>
                 </div>
             </div>
         </form>
     }
-    <div class="row mt-3" style="position: relative">
+        <div class="row mt-3" style="position: relative">
+            <app-imagelist [id]="partId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+            <div class="d-inline-flex justify-content-end position-buttons w-100">
+                <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+            </div>
+        </div>
+    <!-- <div class="row mt-3" style="position: relative">
         <app-imagelist [id]="partId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
         <div class="d-inline-flex justify-content-end position-buttons w-auto">
             <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
         </div>
-    </div>
+    </div> -->
 </div>

@@ -233,7 +233,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             subCategoriesId: [''],
             selectedCategories: formBuilder.array([]),
         })
-
+        this.formGroup = this.filterForm
         this.startState = this.filterForm.value
     }
     //#endregion
@@ -615,10 +615,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion
 
     //#region get functions
-    get controls() {
-        return this.filterForm.controls
-    }
-
     get admin() {
         return this.authenticationService.admin
     }

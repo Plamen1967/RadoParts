@@ -7,7 +7,6 @@ import { ItemType } from '@model/enum/itemType.enum'
 import { UpdateEnum } from '@model/enum/update.enum'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { InfoLine } from '@model/infoLine'
-import { RowComponent } from '@components/custom-controls/partRow/row.component'
 import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.component'
 
 @Component({
@@ -15,7 +14,7 @@ import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.co
     selector: 'app-dealerviewtyre',
     templateUrl: './dealerViewTyre.component.html',
     styleUrls: ['./dealerViewTyre.component.css'],
-    imports: [RowComponent, DataRowComponent],
+    imports: [DataRowComponent],
 })
 export class DealerViewTyreComponent extends HelperComponent implements OnInit{
     id?: number
@@ -74,9 +73,7 @@ export class DealerViewTyreComponent extends HelperComponent implements OnInit{
         if (this.isRim) this.generateRimLine()
 
         if (this.item_.description) this.lines.push({ label: this.labels.DESCRIPTION, value: this.item_.description, price: false })
-
         this.lines.push({ label: this.labels.REGION, value: this.item_.regionName, price: false })
-        this.lines.push({ label: this.labels.PRICE, value: this.item_.price, price: true })
     }
 
     generateTyreLine() {

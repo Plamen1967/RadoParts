@@ -2,9 +2,12 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Rado.Datasets;
-using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Rado.Models;
+using Utility.Authorization;
+using Rado.Authorization;
+using Microsoft.AspNetCore.Http;
+using Utility;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,6 +26,7 @@ namespace Rado.Controllers.Admin
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetUserMessages")]
         public async Task<IEnumerable<Message>> GetUserMessages()
         {
@@ -50,6 +54,15 @@ namespace Rado.Controllers.Admin
         //{
         //    return await AdminDbSet.UpdateModel(value);
         //}
+        [HttpPost]
+        [AllowAnonymous]
+        [EnableCors("testingApp")]
+        [Route("GenerateMessage")]
+        public async Task<ActionResult<string>> GenerateMessageAsync()
+        {
+            return await MailManager.GenerateMessageAsync();
+        }
+
 
         [HttpPost]
         [AllowAnonymous]

@@ -57,11 +57,10 @@ export default class UserComponent extends HelperComponent implements AfterViewI
             email: ['', [Validators.required]],
             webPage: [''],
         })
+
+        this.formGroup = this.userForm
     }
 
-    get controls() {
-        return this.userForm.controls
-    }
 
     ngAfterViewInit(): void {
         this.controls['users'].valueChanges.subscribe((userId) => {

@@ -58,11 +58,11 @@ import { DisplayPartView } from '@model/displayPartView'
     ],
 })
 export default class AddTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
-    @HostListener('window:keydown.esc', ['$event'])
+    @HostListener('window:keydown.esc')
     handleKeyDownEscape() {
         this.cancel()
     }
-    @HostListener('window:keydown.enter', ['$event'])
+    @HostListener('window:keydown.enter')
     handleKeyDownEnter() {
         this.onSubmit()
     }
@@ -107,7 +107,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     months = Array.from({ length: 53 }, (value, index) => {
         return { value: index + 1, text: (index + 1).toString() }
     })
-    currentYear = new Date().getFullYear()
+
     years = Array.from({ length: this.currentYear - 2000 }, (value, index) => {
         return { value: index + 1, text: (index + 1).toString().padStart(2, '0') }
     })
@@ -450,10 +450,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         // if (nextControl) nextControl.focus()
     }
 
-    get changed() {
-        return JSON.stringify(this.initValue) !== JSON.stringify(this.addForm.value)
-    }
-
     cancel() {
         if (this.changed) {
             this.changeMessage()
@@ -474,6 +470,9 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
             const value = { id: this.params.id, viewPartId: this.params.viewId, query: this.params.query, userId: this.params.userId, page: 1 }
             this.pathService.navigate(value)
+        }
+        else {
+            history.back();
         }
     }
 

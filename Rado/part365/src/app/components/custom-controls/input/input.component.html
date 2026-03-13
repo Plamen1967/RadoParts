@@ -19,10 +19,12 @@
                     (change)="onChangeEvent()"
                     (input)="inputFunc()"
                     id="{{ contolName }}"
-                    aria-describedby="id" />
+                    aria-describedby="id" 
+                    (focus)="onFocus()"
+                    (blur)="onBlur()">
 
                 @if (price) {
-                    <span class="currency" [ngClass]="{ 'form-control-sm': small === true, 'form-control': small === undefined }">лв</span>
+                    <span class="currency" [ngClass]="{ 'form-control-sm': small === true, 'form-control': small === undefined }">EURO</span>
                     @if (required) {
                         <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '1px' }">*</span>
                     }

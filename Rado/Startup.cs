@@ -41,6 +41,7 @@ namespace Rado
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "part365/dist/part365/browser";
+                MailManager.TemplateFolder = $"{configuration.RootPath}/assets/Templates";
             });
             // , 
             services.AddCors(options => options.AddPolicy(

@@ -1,0 +1,29 @@
+<div class="d-inline-flex flex-row w-100">
+    <div style="margin: auto"></div>
+    <div class="col-sm-12 col-md-10 col-lg-6">
+        <div class="d-inline-flex flex-row w-100 justify-content-between mb-3">
+            <select>
+                <option value="all">All Messages</option>
+                <option value="unread">Unread Messages</option>
+                <option value="read">Read Messages</option>
+            </select>
+            <select>
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+            </select>
+        </div>
+        @for (message of messages; track message.id) {
+            <div class="message-style">
+                <div class="title">
+                    <strong>{{ message.message }}</strong>
+                </div>
+                <div>
+                </div>
+                <div>
+                    <em>{{ message.messageDateString }}</em>
+                </div>
+            </div>
+        }
+    </div>
+    <div style="margin: auto"></div>
+</div>

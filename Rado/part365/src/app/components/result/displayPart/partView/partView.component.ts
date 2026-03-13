@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { HelperComponent } from '@components/custom-controls/helper/helper.component';
 import { DisplayPartView } from '@model/displayPartView';
 import { StaticSelectionService } from '@services/staticSelection.service';
@@ -8,6 +8,7 @@ import { StaticSelectionService } from '@services/staticSelection.service';
   selector: 'app-partview',
   templateUrl: './partView.component.html',
   styleUrls: ['./partView.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: []
 })
 export class PartViewComponent extends HelperComponent {

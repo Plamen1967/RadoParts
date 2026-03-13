@@ -8,7 +8,7 @@
         </div>
     }
     <div class="title">Гума/Джанта</div>
-    <form [formGroup]="addForm" class="p-2" style="background-color: rgb(11, 245, 233)">
+    <form [formGroup]="addForm" class="p-2" style="background-color: rgb(11, 245, 233)" autocomplete="off">
         <div class="custom-flex">
             <div [ngClass]="{ show: params?.ad, noShow: !params?.ad }">
                 <div class="custom-flex">
@@ -57,7 +57,15 @@
                     </app-select>
                 </div>
                 <div class="col-sm-3 min200px">
-                    <app-select  id="tyreCompanyId" formControlName="tyreCompanyId" data-cy="tyreCompanyId" label="{{ labels.TYRE_PRODUCER }}" [data]="tyreProducers"  [submitted]="submitted" (onClose)="focus($event)"  [required]="false">
+                    <app-select
+                        id="tyreCompanyId"
+                        formControlName="tyreCompanyId"
+                        data-cy="tyreCompanyId"
+                        label="{{ labels.TYRE_PRODUCER }}"
+                        [data]="tyreProducers"
+                        [submitted]="submitted"
+                        (onClose)="focus($event)"
+                        [required]="false">
                     </app-select>
                 </div>
             </div>
@@ -84,7 +92,14 @@
                 </div>
                 @if (this.companyId) {
                     <div class="col-sm-5 control min300px">
-                        <app-model-choice formControlName="modelId" [showCount]="false" [groupSelection]="false" [all]="true" [companyId]="companyId!" [groupSelection]="false" [multiselection]="false">
+                        <app-model-choice
+                            formControlName="modelId"
+                            [showCount]="false"
+                            [groupSelection]="false"
+                            [all]="true"
+                            [companyId]="companyId!"
+                            [groupSelection]="false"
+                            [multiselection]="false">
                         </app-model-choice>
                     </div>
                 }
@@ -197,10 +212,15 @@
                     [required]="true"></app-input>
             </div>
         </div>
-        <app-imagelist [id]="itemId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
 
-        <div class="d-inline-flex justify-content-end">
+        <!-- <div class="d-inline-flex justify-content-end">
             <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+        </div> -->
+        <div class="row mt-3" style="position: relative">
+            <app-imagelist [id]="itemId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+            <div class="d-inline-flex justify-content-end position-buttons w-100">
+                <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+            </div>
         </div>
     </form>
 </div>

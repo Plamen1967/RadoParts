@@ -10,6 +10,6 @@ import { Component, Input } from '@angular/core';
 export class PriceComponent {
 
   @Input() price?: number;
-  currency = "лв";
+  currency = "EURO";
 
 }

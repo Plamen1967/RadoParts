@@ -11,7 +11,7 @@
             <div class="title">Кола на части</div>
         </div>
         <div class="card p-2" style="background-color: khaki">
-            <form [formGroup]="addCarForm">
+            <form [formGroup]="addCarForm" autocomplete="off">
                 <div class="row g-3">
                     <div class="col-sm-2 min200px">
                         <app-company-choise testId="companyId" [submitted]="submitted" [required]="true" [userId]="userId" [bus]="bus!" [all]="true" formControlName="companyId"> </app-company-choise>
@@ -96,7 +96,7 @@
     <div class="row mt-3" style="position: relative">
         <app-imagelist [id]="carId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
         <div class="d-inline-flex justify-content-end position-buttons w-100">
-            <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="UpdateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+            <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="UpdateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
         </div>
     </div>
 </div>

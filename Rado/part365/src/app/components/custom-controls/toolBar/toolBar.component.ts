@@ -18,7 +18,7 @@ export class ToolBarComponent extends HelperComponent {
   @Input({required: true}) canCancel?: boolean;
   @Input() saveName = this.labels.SAVE;
   @Input() cancelName = this.labels.CANCEL;
-  @Input() changed = false;
+  @Input() isChanged = false;
   @Output() save = new EventEmitter()
   @Output() cancel = new EventEmitter()
 

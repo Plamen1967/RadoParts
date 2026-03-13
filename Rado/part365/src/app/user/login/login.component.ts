@@ -96,6 +96,8 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
             contract: [false, Validators.requiredTrue],
         })
 
+        this.formGroup = this.loginForm
+
         if (this.authenticationService.currentUserValue) {
             this.router.navigate(['/'])
         }
@@ -139,9 +141,6 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
         }, 1000)
     }
 
-    get controls() {
-        return this.loginForm.controls
-    }
 
     onUserNameChange() {
         this.controls['password'].setValue('')

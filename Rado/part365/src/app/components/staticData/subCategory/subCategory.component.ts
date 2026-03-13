@@ -37,12 +37,10 @@ export default class SubCategoryComponent extends HelperComponent implements Aft
       subCategoryName: ['', Validators.required]
     })
 
+    this.formGroup = this.subCategoryForm;
     this.categoryService.fetch().subscribe(res => this.categories = res)
   }
 
-  get controls() {
-    return this.subCategoryForm.controls;
-  }
   ngAfterViewInit(): void {
     this.controls['categoryId'].valueChanges.subscribe(f => this.categoryChanged(f))
     this.controls['subCategoryId'].valueChanges.subscribe(f => this.subCategoryChanged(f))

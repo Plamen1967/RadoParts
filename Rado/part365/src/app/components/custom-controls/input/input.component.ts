@@ -52,8 +52,22 @@ export class InputComponent extends BaseControl<string> {
     }
 
     inputFunc() {
-        if (this.onChange)
-            this.onChange(this.inputValue!);
+        if (this.onChange) this.onChange(this.inputValue!)
         return
+    }
+
+    onFocus() {
+        if (this.price) {
+            if (this.inputValue?.toString() == '0') {
+                this.inputValue = ''
+            }
+        }
+    }
+    onBlur() {
+        if (this.price) {
+            if (this.inputValue?.toString() == '') {
+                this.inputValue = '0'
+            }
+        }
     }
 }

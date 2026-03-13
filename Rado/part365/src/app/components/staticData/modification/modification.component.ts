@@ -53,6 +53,8 @@ export default class ModificationComponent extends HelperComponent implements Af
             yearFrom: [2000],
             yearTo: [2001],
         })
+        
+        this.formGroup = this.modificationForm
 
         const result: SelectOption[] = []
         for (let i = 1950; i <= 2022; i++) {
@@ -67,10 +69,6 @@ export default class ModificationComponent extends HelperComponent implements Af
     get buttonLabel() {
         if (this.modificationId) return this.labels.UPDATE
         else return this.labels.ADDMODIFICATION
-    }
-
-    get controls() {
-        return this.modificationForm.controls
     }
 
     ngAfterViewInit(): void {

@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -45,6 +45,7 @@ import { PathService } from '@services/path.service'
     selector: 'app-displaypart',
     templateUrl: './displayPart.component.html',
     styleUrls: ['./displayPart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
     PhoneComponent,
     DealerComponent,

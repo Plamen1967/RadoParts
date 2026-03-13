@@ -4,10 +4,9 @@
 //     padding: 3px 6px;
 // }
 
+
 .position-buttons {
-    position: fixed;
-    bottom: 30px;
-    right: 0px;
+    justify-content: end;
 }
 .card-form-spec 
 {
@@ -87,3 +86,10 @@ input[type=radio] {
     justify-items: center;
 }
 
+@media (max-width: 730px) {
+    .position-buttons {
+        position: fixed;
+        bottom: 30px;
+        right: 0px;
+    }
+}

@@ -8,23 +8,6 @@
     left: 0;
 } */
 
-.image-number-absolute {
-    padding: 1px;
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background-color: #f900ff;
-    color: white;
-    display: inline-flex;
-    border-radius: 5px;
-    font-size: 10px;
-    line-height: unset;
-}
-.image-text-absolute {
-    padding-left: 1px;
-    font-size: 10px;
-}
-
 .img-thumbnail {
     height: unset;
 }
@@ -37,11 +20,6 @@
     padding-left: 2px;
     font-size: 14px;
     line-height: normal;
-}
-
-.image-icon-absolute {
-    line-height: unset;
-    font-size: 16px;
 }
 
 .image-icon {

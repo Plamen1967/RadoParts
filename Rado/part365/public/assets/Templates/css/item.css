@@ -1,0 +1,134 @@
+* {
+  box-sizing: border-box;
+  font-size: 0.9rem;
+}
+
+body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    min-width: 450px;
+}
+
+#item-container {
+  border: 1px solid black;
+  background-color: whitesmoke;
+  display: flex; 
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 6px 6px 6px rgba(211, 246, 252, 0.40);
+}
+/*#region Title*/
+
+.item-title {
+  font-size: 1rem;
+  background-color: blue;
+  color: white;
+  padding: 2px 4px;
+  width: 100%;
+}
+
+.item-title-link {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: white;
+  padding: 2px 4px;
+  width: 100%;
+}
+
+/*#endregion  RegionName*/
+
+/*#region Content */
+
+.item-content {
+  background-color: lightgray;
+  display: inline-flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+  height: 250px;
+}
+
+.item-image {
+  height: 240px;
+  max-width: 100%;
+  justify-content: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-right: 2px;
+}
+
+img {
+  box-sizing: border-box;
+  object-fit: contain;
+  width: 150px;
+  min-width: 150px;
+  height: 90%;
+}
+
+.image-number {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(17, 170, 221);
+  color: white;
+  border-radius: 5px;
+  align-items: center;
+  height: 10%;
+  width: 100%;
+}
+
+
+.item-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  height: 100%;
+  width: 100%;
+}
+
+.tag:nth-child(odd) {
+  background-color: lightblue;
+}
+
+.tag:nth-child(even) {
+  background-color: rgb(216, 241, 216);
+}
+
+.tag {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: start;
+  padding: 2px 4px;
+}
+
+.item-dealer {
+  font-size: 0.9m;
+  padding: 2px 4px;
+  display: flex;
+  justify-content: end;
+  align-items: start;
+}
+
+/*#endregion Content */
+
+a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+.image-details {
+  display: flex;
+  position: relative;
+  padding: 10px 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  background-color: lightcoral;
+  justify-content: left;
+}

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DisplayPartView } from '@model/displayPartView'
 import { ItemType } from '@model/enum/itemType.enum'
@@ -9,6 +9,7 @@ import { StaticSelectionService } from '@services/staticSelection.service'
     selector: 'app-tyreview',
     templateUrl: './tyreView.component.html',
     styleUrls: ['./tyreView.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [],
 })
 export class TyreViewComponent extends HelperComponent implements OnInit {

@@ -213,10 +213,9 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
         this.todos$.subscribe((res) => {
             this.updateData(res.data!)
-            goToPosition('data-container')
             this.loading = false
             if (res.data?.length == 0) {
-                this.resultMessage = 'Няма намерени гуми/джанти'
+                this.resultMessage = 'Няма намерени обяви'
             }
         })
     }

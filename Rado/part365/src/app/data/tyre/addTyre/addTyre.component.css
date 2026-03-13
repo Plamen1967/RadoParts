@@ -17,8 +17,15 @@
     justify-items: center;
 }
 
+
 .position-buttons {
-    position: fixed;
-    bottom: 30px;
-    right: 0px;
+    justify-content: end;
+}
+
+@media (max-width: 730px) {
+    .position-buttons {
+        position: fixed;
+        bottom: 30px;
+        right: 0px;
+    }
 }

@@ -2,8 +2,14 @@
     <div [ngClass]="{ card: true, highlighted: isHighlighted, showPart: showParts === true }" style="background-color: inherit; border: inherit; border-radius: 8px">
         <div class="d-flex flex-row part-row">
             <div class="data w-100">
-                <div class="image-order image-style">
+                <div class="image-order image-style" style="position: relative;">
                     <app-imagecomponent [showImage]="mainPicture!" [displayMain]="true" class="image-component"></app-imagecomponent>
+                    @if(getOnlyNumbers) {
+                        <div class="image-number-absolute">
+                            <span class="material-symbols-outlined image-icon"> photo_camera </span>
+                            <div class="image-text-absolute">{{ getOnlyNumbers }}</div>
+                        </div>
+                    }
                 </div>
                 <div class="info-order w-100 mt-1 mb-1">
                     @if (partView) {

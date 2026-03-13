@@ -6,6 +6,7 @@ import { CheckOutComponent } from '@components/custom-controls/check-out/check-o
 import { UserViewPartComponent } from '@components/parts/userViewPart/userViewPart.component'
 import { ResultComponent } from '@components/result/result.component'
 import { HomeComponent } from '@components/search/home/Home.component'
+
 const runGuardsAndResolvers: RunGuardsAndResolvers = 'paramsOrQueryParamsChange'
 
 export const routes: Routes = [
@@ -190,6 +191,11 @@ export const routes: Routes = [
     { 
         path: 'user/userdetails', 
         loadComponent: () => import('./../components/custom-controls/admin/updateUser/updateUser.component'),
+        canActivate: [AuthGuard] 
+    },
+    { 
+        path: 'user/messages', 
+        loadComponent: () => import('./../messages/list-message/list-message.component'),
         canActivate: [AuthGuard] 
     },
     { path: '', redirectTo: '/home', pathMatch: 'full'},

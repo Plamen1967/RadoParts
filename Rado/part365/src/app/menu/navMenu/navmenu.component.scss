@@ -297,7 +297,7 @@ a {
 }
 
 .menu {
-    display: flex!important;
+    display: flex !important;
     padding: 1px 6px;
 }
 
@@ -305,11 +305,11 @@ a {
     border-radius: 50%;
     background-color: rgb(236, 14, 88);
     width: 24px;
-    padding: 1px 3px 3px 3px;
     color: rgb(188, 228, 93);
     display: inline-flex;
     align-items: center;
-    justify-content: center;}
+    justify-content: center;
+}
 .brandFontMin {
     font-size: 2em;
     font-weight: 600;
@@ -476,7 +476,7 @@ nav {
     margin-right: 10px;
 }
 
-@include media-breakpoint-down(md) {
+@media (max-width: 900px) {
     .showCompany {
         display: none;
     }
@@ -543,25 +543,6 @@ nav {
         padding-top: 5px;
         padding-bottom: 5px;
     }
-
-            .menu-nav {
-                display: flex !important;
-                flex-basis: auto;    }
-}
-
-@include media-breakpoint-up(md) {
-    html {
-        font-size: 16px;
-    }
-}
-@include media-breakpoint-up(sm) {
-    .buttonGap {
-        margin-right: 2px;
-        margin-bottom: 0px;
-    }
-}
-
-@include media-breakpoint-down(md) {
     .showMenu {
         display: none;
     }
@@ -577,8 +558,25 @@ nav {
     }
 }
 
-@media  (max-width: 767.98px) {
-            .menu-nav {
-                display: none !important;
-            }
+@include media-breakpoint-up(md) {
+    html {
+        font-size: 16px;
+    }
+}
+@include media-breakpoint-up(sm) {
+    .buttonGap {
+        margin-right: 2px;
+        margin-bottom: 0px;
+    }
+}
+
+
+.menu-nav {
+    display: flex !important;
+    flex-basis: auto;
+}
+@media (max-width: 900px) {
+    .menu-nav {
+        display: none !important;
+    }
 }

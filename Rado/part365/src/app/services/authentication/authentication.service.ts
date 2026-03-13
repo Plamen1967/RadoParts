@@ -41,7 +41,7 @@ export class AuthenticationService {
           .pipe(map(user => {
             localStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
-            this.userCountService.refresh();
+            this.userCountService.fetchUserCount();
             return user;
           }));
   }
@@ -65,7 +65,7 @@ export class AuthenticationService {
 logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(undefined);
-    this.userCountService.fetchUserCount();
+    this.userCountService.clearUserCount();
   }
 
   get user() {

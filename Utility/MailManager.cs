@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Settings;
 using System.ComponentModel;
 using System.Net;
@@ -13,6 +14,7 @@ namespace Utility
         static public string emailPassword = "Email_2020";
         static private int Port = 587;
         static public bool SendEmails = false;
+        static public string TemplateFolder = String.Empty;
 
         public static void NewUserEmail(string email, string subject, string body)
         {
@@ -21,6 +23,11 @@ namespace Utility
 
         public static void SendRequestForInfo(string email, string subject, string requestForInfo)
         {
+            string file = $"{TemplateFolder}/index.html";
+            using (StreamReader sr = new StreamReader(file))
+            {
+                string line = sr.ReadToEnd();
+            }
             string message = @"<!DOCTYPE html>
 <html lang='en'>
   <head>
@@ -228,6 +235,19 @@ namespace Utility
                     </html>";
 
             NewUserEmail(userEmail, action, html);
+        }
+
+        public static async Task<ActionResult<string>> GenerateMessageAsync()
+        {
+            string dir = Directory.GetCurrentDirectory();
+
+            using (StreamReader sr = new StreamReader($"{dir}/mail/templates/showdetails.html"))
+            {
+                dir = await sr.ReadToEndAsync();
+
+            }
+
+            return dir;
         }
     }
 }

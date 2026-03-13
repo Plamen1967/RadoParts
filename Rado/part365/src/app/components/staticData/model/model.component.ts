@@ -46,6 +46,7 @@ export default class ModelComponent extends HelperComponent implements AfterView
             modelName: ['', Validators.required],
         })
 
+        this.formGroup = this.modelForm
         this.companyService.fetchCompanies().subscribe((res) => {
             this.companies = res.map((company) => {
                 return {
@@ -56,9 +57,6 @@ export default class ModelComponent extends HelperComponent implements AfterView
         })
     }
 
-    get controls() {
-        return this.modelForm.controls
-    }
     ngAfterViewInit(): void {
         this.controls['companyId'].valueChanges.subscribe((f) => this.companyIdChanged(f))
         this.controls['groupModelId'].valueChanges.subscribe((f) => this.groupModelIdChanged(f))

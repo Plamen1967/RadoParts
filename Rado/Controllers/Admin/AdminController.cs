@@ -110,9 +110,10 @@ namespace Rado.Controllers.Admin
 
         [HttpGet]
         [Route("getUserCount")]
-        public async Task<UserCount> GetUserCount([FromQuery]int id)
+        public async Task<UserCount> GetUserCount()
         {
-            return await UserDbSet.GetUserCountAsync(id);
+
+            return await UserDbSet.GetUserCountAsync(UserId);
         }
 
 

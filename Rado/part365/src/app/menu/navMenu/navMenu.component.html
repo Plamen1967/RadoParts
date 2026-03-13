@@ -34,7 +34,7 @@
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button> -->
-                <div class="navbar-collapse collapse menu-nav" ngClass="{ show: isExpanded }" id="navbarNavDropdown">
+                <div class="navbar-collapse collapse menu-nav" [ngClass]="{ show: isExpanded }" id="navbarNavDropdown">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
                             <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
@@ -44,11 +44,9 @@
                         @if (!admin) {
                             <li>
                                 <a
-                                    id="id"
-                                    data-cy="loggedUser"
+                                    data-cy="addAdvert"
                                     class="nav-link addObjava cursorPointer"
                                     href="#"
-                                    role="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                     routerLink="/data/addNew"
@@ -74,21 +72,21 @@
                                     <li>
                                         <a class="nav-link menuButton2" (click)="cars()" routerLink="/data/cars" routerLinkActive="active-link" data-cy="carsUrl" role="presentation">
                                             Коли
-                                        @if (userCount$ | async; as userCount) {
-                                            @if (userCount && userCount.carCount) {
-                                                <span class="count">{{ userCount.carCount }}</span>
+                                            @if (userCount$ | async; as userCount) {
+                                                @if (userCount && userCount.carCount) {
+                                                    <span class="count">{{ userCount.carCount }}</span>
+                                                }
                                             }
-                                        }
                                         </a>
                                     </li>
                                     <li>
                                         <a class="nav-link menuButton2" data-cy="cars" routerLink="/data/bus" (click)="bus()" routerLinkActive="active-link" role="presentation">
                                             Бусове
-                                        @if (userCount$ | async; as userCount) {
-                                            @if (userCount && userCount.busCount) {
-                                                <span class="count">{{ userCount.busCount }}</span>
+                                            @if (userCount$ | async; as userCount) {
+                                                @if (userCount && userCount.busCount) {
+                                                    <span class="count">{{ userCount.busCount }}</span>
+                                                }
                                             }
-                                        }
                                         </a>
                                     </li>
                                 }
@@ -96,21 +94,20 @@
                                     <a class="nav-link menuButton2" data-cy="parts" routerLink="/data/parts" (click)="parts()" routerLinkActive="active-link" role="presentation"
                                         >Части
                                         @if (userCount$ | async; as userCount) {
-
-                                        @if (userCount && userCount.partCarCount + userCount.partBusCount) {
-                                            <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
+                                            @if (userCount && userCount.partCarCount + userCount.partBusCount) {
+                                                <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
+                                            }
                                         }
-                                    }
                                     </a>
                                 </li>
                                 <li>
                                     <a class="nav-item nav-link menuButton2" data-cy="tyres" routerLink="/data/tyres" (click)="tyres()" routerLinkActive="active-link" role="presentation"
                                         >Гуми/Джанти
                                         @if (userCount$ | async; as userCount) {
-                                        @if (userCount && (userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount)) {
-                                            <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
+                                            @if (userCount && userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {
+                                                <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
+                                            }
                                         }
-                                    }
                                     </a>
                                 </li>
                             }
@@ -149,6 +146,7 @@
                                         <a id="admin" data-cy="loggedUser" [ngStyle]="{ color: 'white' }" href="#" role="button" aria-expanded="false"> <i class="las la-user"></i>{{ exitName }} </a>
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="admin">
+                                        <a class="dropdown-item nav-link navbar-dark menu-color" [routerLink]="['/user/messages']">{{ labels.MESSAGES }}</a>
                                         <a class="dropdown-item nav-link navbar-dark menu-color" [routerLink]="['/user/userdetails']">{{ labels.DETAILS }}</a>
                                         <a class="dropdown-item nav-link navbar-dark menu-color" (click)="updatePassword()" role="none">{{ labels.UPDATEPASSWORD }}</a>
                                         <a class="dropdown-item nav-link navbar-dark menu-color" (click)="logout()" role="none">Изход</a>
@@ -212,7 +210,7 @@
                         <div class="element">
                             <span class="text text-body-small-pale">Моите обяви<i class="las la-newspaper iconSize"></i></span>
                         </div>
-                        <li class="dropdown-content" [ngStyle]="{ 'min-width': '150px' }" id="changeAdvert" (click)="removeMenu('changeAdvert')" role="presentation">
+                        <li class="dropdown-content" [ngStyle]="{ 'min-width': '180px' }" id="changeAdvert" (click)="removeMenu('changeAdvert')" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass">
                                 @if (seller) {
                                     <a (click)="cars()" role="presentation" class="menu"

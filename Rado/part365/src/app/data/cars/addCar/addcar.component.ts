@@ -1,3 +1,4 @@
+//#region imports
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -31,7 +32,9 @@ import { DisplayPartView } from '@model/displayPartView'
 import { ImageData } from '@model/imageData'
 import { goTop } from '@app/functions/functions'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
+//#endregion
 
+//#region metadata
 @Component({
     standalone: true,
     selector: 'app-addcar',
@@ -39,7 +42,10 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
     styleUrls: ['./addcar.component.scss'],
     imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent],
 })
+//#endregion
 export default class AddCarComponent extends HelperComponent implements OnInit, AfterViewInit {
+    label!: string
+    //#region host listeners
     @HostListener('window:keydown.esc')
     handleKeyDownEscape() {
         this.cancel()
@@ -48,7 +54,9 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     handleKeyDownEnter() {
         this.onSubmit()
     }
+    //#endregion
 
+    //#region properties
     submitElement?: ElementRef<HTMLInputElement>
     public addCarForm: FormGroup
     car?: CarView
@@ -66,10 +74,12 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     userId = 0
     query = 0
     bus_ = 0
-    ad = "";
+    ad = false;
     images: ImageData[] = []
-    inialValue: undefined
     _displayPartView?: DisplayPartView
+    //#endregion
+
+    //#region inputs and outputs
     @Input() set bus(value: number | undefined) {
         this.bus_ = value ?? 0
         this.onBusChange(this.bus_)
@@ -80,6 +90,10 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     @Input() carId?: number
+    @Input() add = false
+    @Input() update = false
+    @Input() mode: UpdateEnum = UpdateEnum.New
+
     @Input() set displayPartView(value: DisplayPartView) {
         this._displayPartView = value
         if (this._displayPartView) {
@@ -88,11 +102,9 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.loadCar()
         }
     }
-    @Input() add = false
-    @Input() update = false
-    @Input() mode: UpdateEnum = UpdateEnum.New
     @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
     @Output() saved: EventEmitter<number> = new EventEmitter<number>()
+    //#endregion
 
     constructor(
         public modelService: ModelService,
@@ -125,15 +137,18 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             engineType: [0],
             engineModel: [''],
             gearboxType: [0],
-            regionId: [-1],
+            regionId: [this.regionId],
             mainImageId: [''],
         })
 
+        this.formGroup = this.addCarForm;
         this.yearTo = this.currentYear
         this.setYears()
         this.addCarForm.controls['companyId'].valueChanges.subscribe((f) => this.onCompanyChange(f))
         this.addCarForm.controls['modelId'].valueChanges.subscribe((f) => this.onModelChange(f))
-        this.addCarForm.controls['modificationId'].valueChanges.subscribe((f) => this.onModificationChange(f))
+        this.addCarForm.valueChanges.subscribe(() => {
+            this.clearZeros()
+        })
         this.formInitialValues = this.addCarForm.value
         this.userId = this.loggedUser?.userId ?? 0
         goTop()
@@ -141,56 +156,19 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     ngOnInit() {
         this.activatedRoute.queryParamMap.subscribe((param) => {
-            const id = param.get('id')
-            const query = param.get('query')
-            if (id) this.carId = +id
-            if (query) this.query = +query
-            this.ad = param.get('ad') ? param.get('ad')! : "";
+            this.parseQueryParams(param)
+            this.carId = this.queryParams.id ? this.queryParams.id : undefined
+            if (this.queryParams.query) this.query = +this.queryParams.query
+            this.ad = this.queryParams.ad ? this.queryParams.ad : false    
             this.loadCar()
         })
     }
 
     ngAfterViewInit(): void {
-        this.addCarForm.patchValue({ regionId: this.regionId })
-        document.querySelector('body')?.scrollTo(0, 0)
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'instant',
-        })
+        this.goTop();
         return
     }
-
-    focus() {
-        this.submitElement?.nativeElement.focus()
-    }
-
-    onBusChange(f: number) {
-        if (f) {
-            this.addCarForm.controls['modificationId'].clearValidators()
-            this.addCarForm.controls['modificationId'].updateValueAndValidity()
-        } else {
-            this.addCarForm.controls['modificationId'].setValidators([Validators.required])
-        }
-    }
-
-    clearZeros() {
-        if (!this.car) return
-
-        if (this.car.powerBHP === 0) this.car.powerBHP = undefined
-        if (this.car.powerkWh === 0) this.car.powerkWh = undefined
-        if (this.car.millage === 0) this.car.millage = undefined
-        if (this.car.price === 0) this.car.price = undefined
-    }
-
-    get label() {
-        return this.bus ? 'Име на бус' : 'Име на кола'
-    }
-
-    get changed() {
-        return JSON.stringify(this.inialValue) !== JSON.stringify(this.addCarForm.value)
-    }
-
+    //#endregion actions
     cancel() {
         if (this.changed) {
             this.changeMessage()
@@ -203,128 +181,13 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         history.back()
     }
 
-    changeMessage() {
-        this.confirmService.OKCancel(CONSTANT.MESSAGE, 'Потвърдете, че искате да отмeните промените').subscribe((reuslt) => {
-            if (reuslt === OKCancelOption.OK) {
-                this.goBack()
-            }
-        })
-    }
-
-    loadCar() {
-        if (this.car) return
-
-        if (!this.carId) {
-            this.mode = UpdateEnum.New
-        }
-        if (this.update) {
-            this.mode = UpdateEnum.Update
-        }
-        if (this.carId && this.mode == UpdateEnum.Update) {
-            this.carService.fetchCar(this.carId).subscribe({
-                next: (res) => {
-                    this.car = res
-                    this.mainImageId = this.car.mainImageId
-                    this.clearZeros()
-                    this.addCarForm.patchValue(this.car)
-                    this.inialValue = this.addCarForm.value
-                    this.bus = this.car.bus
-                    this.mode = UpdateEnum.Update
-                },
-                error: (error) => {
-                    this.loggerService.logError(error)
-                    this.showMessageNotFound()
-                },
-                complete: () => {
-                    return
-                },
-            })
-        } else {
-            this.addCarForm.patchValue({ regionId: this.regionId })
-            this.nextIdService.getNextId().subscribe({
-                next: (id) => {
-                    this.carId = id
-                },
-                error: (error) => {
-                    this.loggerService.logError(error)
-                    this.popupService.openWithTimeout('Съобщение', 'Нова кола не може да бъде добавена!', 2000).subscribe(() => {
-                        this.goBack()
-                    })
-                },
-                complete: () => {
-                    return
-                },
-            })
-        }
-    }
-    defaultImageChanged(imageId: number) {
-        this.addCarForm.patchValue({ mainImageId: imageId })
-    }
-
-    get currentYear() {
-        const currentDate = new Date()
-        return currentDate.getUTCFullYear()
-    }
-
-    get action() {
-        if (this.mode == UpdateEnum.Update) {
-            return this.labels.UPDATE
-        } else {
-            return this.labels.SAVE
-        }
-    }
-
-    get controls() {
-        return this.addCarForm.controls
-    }
-
-    onCompanyChange(companyId: number) {
-        this.companyId = companyId
-    }
-
-    onModelChange(modelId: number) {
-        this.modelId = modelId
-    }
-
-    modificatioChanged(modification: Modification) {
-        this.yearFrom = modification?.yearFrom ?? this.labels.YEAR_START
-        this.yearTo = modification?.yearTo ?? 2025
-        this.setYears()
-    }
-
-    setYears() {
-        const result: SelectOption[] = []
-        for (let i = this.yearFrom; i <= this.yearTo; i++) {
-            result.push({ value: i, text: i.toString() })
-        }
-        this.years = result
-    }
-
-    powerkWhChanged() {
-        this.calculateBHP(this.addCarForm.controls['powerkWh'].value)
-    }
-
-    powerBHPChanged() {
-        this.calculatekWh(this.addCarForm.controls['powerBHP'].value)
-    }
-
-    calculateBHP(value: number) {
-        const newValue = Math.ceil(Number(value) * this.labels.KWH_TO_BHP)
-        if (newValue != this.addCarForm.controls['powerBHP'].value) this.addCarForm.controls['powerBHP'].setValue(newValue)
-    }
-
-    calculatekWh(value: number) {
-        const newValue = Math.floor(Number(value) / this.labels.KWH_TO_BHP)
-        if (newValue != this.addCarForm.controls['powerkWh'].value) this.addCarForm.controls['powerkWh'].setValue(newValue)
-    }
-
     onSubmit() {
         this.submitted = true
         if (!this.addCarForm.valid) {
             this.toastService.show('Моля попълнете задължителната информация')
-            //this.confirmService.OK('Съобщение', 'Моля попълнете задължителната информация', 'Ok')
             return
         }
+
         if (this.mode == UpdateEnum.New) {
             this.carService.checkForUniqueness(this.addCarForm.value.regNumber, this.bus ?? 0).subscribe({
                 next: (res) => {
@@ -345,56 +208,191 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.addCar()
         }
     }
+    //#endregion
 
-    addCar() {
-        const carUpdated: Car = Object.assign({}, this.addCarForm.value)
-        carUpdated.carId = this.carId
-        carUpdated.bus = this.bus
-        carUpdated.userId = this.userId
-        this.saving = true
-        this.carService
-            .addUpdateCar(carUpdated, this.mode)
-            .pipe()
-            .subscribe({
-                next: (val) => {
-                    this.carService.currentCarId = val.id
-                    this.saving = false
-                    const type = this.bus ? 'Буса' : 'Колата'
-                    const mode = this.mode === UpdateEnum.Update ? 'записана' : 'добавена'
-                    const content = `${type} е успешно ${mode}`
-                    this.carService.currentCarId = val.carId
-                    this.userCountService.refresh()
-                    const snackBarRef = this.toastService.showToast(content, 1)
-                    snackBarRef.afterDismissed().subscribe(() => {
-                        Object.keys(this.addCarForm.controls).forEach((key) => {
-                            this.addCarForm.controls[key].setErrors(null)
-                        })
-                        this.homeService.updateDisplayPartView(val)
-                        this.submitted = false
-                        this.saved.emit(val.id)
-                        if (this.ad)  {
-                            this.carService.currentCarId = val.id;
-                            if (this.bus) {
-                                this.router.navigate(['/data/bus'])
-                            } else {
-                                this.router.navigate(['/data/cars'])
-                            }
-                        }  else    
-                          this.goBack()
-                    })
-                    // const title = 'Съобщение'
-                    // this.popupService.openWithTimeout(title, content, 2000).subscribe(() => {
-                    // })
+    //#endregion events
+    onBusChange(f: number) {
+        if (f) {
+            this.addCarForm.controls['modificationId'].clearValidators()
+            this.addCarForm.controls['modificationId'].updateValueAndValidity()
+        } else {
+            this.addCarForm.controls['modificationId'].setValidators([Validators.required])
+        }
+        this.label = this.bus ? 'Име на бус' : 'Име на кола'
+    }
+
+    onCompanyChange(companyId: number) {
+        this.companyId = companyId
+    }
+
+    onModelChange(modelId: number) {
+        this.modelId = modelId
+    }
+
+    defaultImageChanged(imageId: number) {
+        this.addCarForm.patchValue({ mainImageId: imageId })
+    }
+
+    powerkWhChanged() {
+        this.calculateBHP(this.addCarForm.controls['powerkWh'].value)
+    }
+
+    powerBHPChanged() {
+        this.calculatekWh(this.addCarForm.controls['powerBHP'].value)
+    }
+
+    modificatioChanged(modification: Modification) {
+        this.yearFrom = modification?.yearFrom ?? this.labels.YEAR_START
+        this.yearTo = modification?.yearTo ?? 2025
+        this.setYears()
+    }
+    //#endregion
+
+    focus() {
+        this.submitElement?.nativeElement.focus()
+    }
+
+    clearZeros() {
+        if (!this.car) return
+
+        if (this.car.powerBHP === 0) this.car.powerBHP = undefined
+        if (this.car.powerkWh === 0) this.car.powerkWh = undefined
+        if (this.car.millage === 0) this.car.millage = undefined
+        if (this.car.price === 0) this.car.price = undefined
+
+        if (this.addCarForm.controls['powerBHP'].value === 0) this.addCarForm.controls['powerBHP'].setValue(undefined)
+        if (this.addCarForm.controls['powerkWh'].value === 0) this.addCarForm.controls['powerkWh'].setValue(undefined)
+        if (this.addCarForm.controls['millage'].value === 0) this.addCarForm.controls['millage'].setValue(undefined)
+        if (this.addCarForm.controls['price'].value === 0) this.addCarForm.controls['price'].setValue(undefined)
+    }
+
+
+    changeMessage() {
+        this.confirmService.OKCancel(CONSTANT.MESSAGE, 'Потвърдете, че искате да отмeните промените').subscribe((reuslt) => {
+            if (reuslt === OKCancelOption.OK) {
+                this.goBack()
+            }
+        })
+    }
+
+    loadCar() {
+        if (!this.carId) {
+            this.mode = UpdateEnum.New
+        }
+        if (this.update) {
+            this.mode = UpdateEnum.Update
+        }
+        if (this.carId && this.mode == UpdateEnum.Update) {
+            this.carService.fetchCar(this.carId).subscribe({
+                next: (res) => {
+                    this.car = { ...res }
+                    this.carId = this.car.carId
+                    this.mainImageId = this.car.mainImageId
+                    this.bus = this.car.bus
+                    this.mode = UpdateEnum.Update
+
+                    this.clearZeros()
+                    this.addCarForm.patchValue(this.car)
+                    this.inialValue = this.addCarForm.value
                 },
                 error: (error) => {
-                    this.popupService.openWithTimeout('Съобщение', error.error.message, 2000)
-                    this.saving = false
-                    console.log(error)
+                    this.loggerService.logError(error)
+                    this.showMessageNotFound()
                 },
                 complete: () => {
                     return
                 },
             })
+        } else {
+            this.nextIdService.getNextId().subscribe({
+                next: (id) => {
+                    this.carId = id
+                },
+                error: (error) => {
+                    this.loggerService.logError(error)
+                    this.popupService.openWithTimeout('Съобщение', 'Нова кола не може да бъде добавена!', 2000).subscribe(() => {
+                        this.goBack()
+                    })
+                },
+                complete: () => {
+                    return
+                },
+            })
+        }
+    }
+    get action() {
+        if (this.mode == UpdateEnum.Update) {
+            return this.labels.UPDATE
+        } else {
+            return this.labels.SAVE
+        }
+    }
+
+    setYears() {
+        const result: SelectOption[] = []
+        for (let i = this.yearFrom; i <= this.yearTo; i++) {
+            result.push({ value: i, text: i.toString() })
+        }
+        this.years = result
+    }
+
+    calculateBHP(value: number) {
+        const newValue = Math.ceil(Number(value) * this.labels.KWH_TO_BHP)
+        if (newValue != this.addCarForm.controls['powerBHP'].value) this.addCarForm.controls['powerBHP'].setValue(newValue)
+    }
+
+    calculatekWh(value: number) {
+        const newValue = Math.floor(Number(value) / this.labels.KWH_TO_BHP)
+        if (newValue != this.addCarForm.controls['powerkWh'].value) this.addCarForm.controls['powerkWh'].setValue(newValue)
+    }
+
+    addCar() {
+        const carUpdated: Car = Object.assign(this.addCarForm.value, {bus: this.bus, carId: this.carId, userId: this.userId})
+        this.saving = true
+        this.carService.addUpdateCar(carUpdated, this.mode).subscribe({
+            next: (val) => {
+                this.carSaved(val)
+            },
+            error: (error) => {
+                this.popupService.openWithTimeout('Съобщение', error.error.message, 2000)
+                this.saving = false
+                this.loggerService.logError(error)
+                console.log(error)
+            },
+            complete: () => {
+                return
+            },
+        })
+    }
+
+    carSaved(val: DisplayPartView) {
+        this.carService.currentCarId = val.id
+        this.saving = false
+        const type = this.bus ? 'Буса' : 'Колата'
+        const mode = this.mode === UpdateEnum.Update ? 'записана' : 'добавена'
+        const content = `${type} е успешно ${mode}`
+        this.carService.currentCarId = val.carId
+        this.userCountService.refresh()
+        const snackBarRef = this.toastService.showToast(content, 1)
+        snackBarRef.afterDismissed().subscribe(() => {
+            Object.keys(this.addCarForm.controls).forEach((key) => {
+                this.addCarForm.controls[key].setErrors(null)
+            })
+            this.homeService.updateDisplayPartView(val)
+            this.submitted = false
+            this.saved.emit(val.id)
+            if (this.ad) {
+                this.carService.currentCarId = val.id
+                if (this.bus) {
+                    this.router.navigate(['/data/bus'])
+                } else {
+                    this.router.navigate(['/data/cars'])
+                }
+            } else this.goBack()
+        })
+        // const title = 'Съобщение'
+        // this.popupService.openWithTimeout(title, content, 2000).subscribe(() => {
+        // })
     }
 
     get UpdateFlag() {
@@ -404,11 +402,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     get allowBack() {
         return this.mode === UpdateEnum.Update
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onModificationChange(modificationId: number) {
-        return
     }
 
     showMessageNotFound() {

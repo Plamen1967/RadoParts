@@ -44,30 +44,30 @@
             </div>
 
             <div class="row" [ngClass]="{ show: displayAll, noShow: !displayAll }">
-                <div class="col-sm-2 min150px">
+                <div class="col-3 col-md-3 col-lg-2 min140px">
                     <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onClose)="focus()"> </app-select>
                 </div>
-                <div class="col-sm-2 min150px">
+                <div class="col-3 col-md-3 col-lg-2 min140px">
                     <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onClose)="focus()"> </app-select>
                 </div>
-                <div class="col-sm-2 min150px">
+                <div class="col-3 col-md-3 col-lg-2 min140px">
                     <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onClose)="focus()"> </app-select>
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
-                <div class="col-sm-2 min150px">
+                <div class="col-3 col-md-3 col-lg-2 min140px">
                     <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onClose)="focus()"> </app-select>
                 </div>
-                <div class="col-sm-2 min150px">
+                <div class="col-3 col-md-3 col-lg-2 min140px">
                     <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onClose)="focus()"> </app-select>
                 </div>
-                <div class="col-sm-2 min150px">
+                <div class="col-3 col-md-3 col-lg-2 min140px">
                     <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onClose)="focus()"> </app-select>
                 </div>
-                <div class="col-sm-2 min150px">
+                <div class="col-3 col-md-3 col-lg-2 min140px">
                     <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes" (onClose)="focus()"> </app-select>
                 </div>
-                <div class="col-sm-3 min200px">
+                <div class="col-6 col-md-4 col-lg-3 min200px">
                     <app-customselect formControlName="tyreCompanyId" [useFilter]="true" label="{{ labels.TYRE_PRODUCER }}" data-cy="tyreCompanyId" [data]="tyreProducers" (onClose)="focus()">
                     </app-customselect>
                 </div>
@@ -84,7 +84,7 @@
                         </app-model-choice>
                     </div>
                 }
-                <div class="col-sm-3 control">
+                <div class="col-3 col-md-3 col-lg-2 min140px ">
                     <app-select
                         id="rimWidth"
                         [appToolTip]="'Широчина'"
@@ -97,7 +97,7 @@
                         (onClose)="focus()">
                     </app-select>
                 </div>
-                <div class="col-sm-3 control">
+                <div class="col-3 col-md-3 col-lg-2 min140px ">
                     <app-select
                         id="rimMaterial"
                         [appToolTip]="'Материал'"
@@ -110,7 +110,7 @@
                         (onClose)="focus()">
                     </app-select>
                 </div>
-                <div class="col-sm-3 control">
+                <div class="col-3 col-md-3 col-lg-2 min140px ">
                     <app-select
                         id="rimOffset"
                         [appToolTip]="''"

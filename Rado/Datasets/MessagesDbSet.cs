@@ -122,6 +122,13 @@ public class MessagesDbSet
             message += $"<p> <span style='font-weight: bold;'>Съобщение: </span> {emailMessage.request} </p>";
             message += $"<a href='mailto:{emailMessage.email}'>Отговори</a>";
 
+            Message messageNew = new Message();
+            messageNew.message = message;
+            messageNew.receiveUserId = userId;
+            messageNew.msgDate = DateTime.Now.Millisecond;
+
+            MessagesDbSet.AddMessage(messageNew);
+
             MessageGenerator messageGenerator = new MessageGenerator();
 
             message = messageGenerator.GenerateMessage(displayPartView, emailMessage);

@@ -4,7 +4,7 @@
             <div class="rim-with-tyre-header header">Джанта с гума</div>
         }
         @if (item_.isRim) {
-            <div class="tyre-header header">Джанта  {{ item_.companyName}} {{ item_.modelName}}</div>
+            <div class="tyre-header header">Джанта {{ item_.companyName }} {{ item_.modelName }}</div>
 
             @for (tag of item_.rimTagsMap; track tag[1]) {
                 @if (tag[1]) {
@@ -22,6 +22,9 @@
             }
         }
 
-        <app-row class="background" [label]="'Цена'" [value]="item_.price?.toString()" [price]="true"></app-row>
+        @for (tag of lines; track lines.indexOf(tag)) {
+            <app-datarow class="item_" label="{{ tag.label }}" value="{{ tag.value }}"></app-datarow>
+        }
+        <app-datarow class="background" label="Цена" [value]="item_.price?.toString()" [price]="true"></app-datarow>
     </div>
 }

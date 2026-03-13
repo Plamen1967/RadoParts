@@ -196,7 +196,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                     this.authenticationService.currentUserValue.regionId = this.userForm.value.regionId
                 }
                 this.userService.getUserById(this.userId!).subscribe((user) => {
-                    globalStaticData.addUserImage(this.userId!, user.imageData!)
+                    globalStaticData.addUserImage(this.userId!, user.busimessCard!)
                 })
 
                 let message: string

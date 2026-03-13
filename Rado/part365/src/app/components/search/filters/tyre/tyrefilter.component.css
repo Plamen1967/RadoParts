@@ -18,6 +18,11 @@
     display: display-inline;
 }
 
+input[type="checkbox"] {
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+  }
+
 .button-footer {
     display: flex;
     align-items: center;

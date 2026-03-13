@@ -10,7 +10,7 @@ export class StaticSelectionService {
         return [
             { value: 0, text: 'Без значение' },
             { value: 1, text: 'Ляво' },
-            { value: 2, text: 'Ляво' },
+            { value: 2, text: 'Дясно' },
         ]
     }
 

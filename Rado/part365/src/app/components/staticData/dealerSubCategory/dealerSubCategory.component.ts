@@ -44,6 +44,8 @@ export default class DealerSubCategoryComponent extends HelperComponent implemen
       dealerSubCategoryName: ['', Validators.required]
     })
 
+    this.formGroup = this.dealerSubCategoryForm;
+     
     this.categoryService.fetch().subscribe(res => 
       this.categories = res.map(category => { return {
         value: category.categoryId, text: category.categoryName
@@ -130,9 +132,6 @@ export default class DealerSubCategoryComponent extends HelperComponent implemen
     return true;
   }
 
-  get controls() {
-    return this.dealerSubCategoryForm.controls;
-  }
   
   ngAfterViewInit(): void {
     this.controls['categoryId'].valueChanges.subscribe(categoryId => this.categoryIdChanged(categoryId))

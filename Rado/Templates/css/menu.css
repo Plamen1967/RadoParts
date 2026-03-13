@@ -1,0 +1,70 @@
+.nav-list
+{
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+li {
+    list-style-type: none;
+    display: block;
+    padding: 10px;
+}
+
+ul > div {
+    padding: 10px;
+}
+.submenu {
+    left: 0px;
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+.dropdown-button {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px;
+}   
+
+.submenu a {
+    padding: 10px;
+    background-color: tomato;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+}
+
+.dropdown-button:hover {
+    background-color: lightgray;
+}
+
+.dropdown-button:hover .submenu {
+    background-color: lightgray;
+    display: flex;
+    transition: height 1s ease;
+}
+
+@keyframes myAnimation {
+  from {height: 0%;}
+  to {height: 100%;}
+}
+
+li:hover {
+    background-color: lightgray;
+
+}
+
+div > a:hover {
+    color: white;
+    background-color: green;
+    font-weight: bold;
+}

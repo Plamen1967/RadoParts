@@ -45,6 +45,7 @@ import { LoggerService } from '@services/authentication/logger.service'
 import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { NgClass } from '@angular/common'
+import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 //#endregion
 //#region component
 @Component({
@@ -164,7 +165,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         private route: ActivatedRoute,
         private loggerService: LoggerService,
         public popupService: PopUpServiceService,
-        private userCountService: UserCountService
+        private userCountService: UserCountService,
+        private toastService: ToastService
+        
         //#endregion
     ) {
         super()
@@ -497,10 +500,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         })
     }
 
-    get changed() {
-        return JSON.stringify(this.initialState) !== JSON.stringify(this.addPartForm.value)
-    }
-
     changeMessage() {
         this.confirmService.OKCancel(CONSTANT.MESSAGE, 'Потвърдете, че искате да отмeните промените').subscribe((reuslt) => {
             if (reuslt === OKCancelOption.OK) {
@@ -543,7 +542,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                     this.homeService.updateItem(part.id!, part)
                 } else this.message = 'Частта е добавена'
                 this.userCountService.fetchUserCount()
-                this.popupService.openWithTimeout(CONSTANT.MESSAGE, this.message!, 2000).subscribe(() => {
+                const snackBarRef = this.toastService.showToast(this.message!, 1)
+
+                snackBarRef.afterDismissed().subscribe(() => {
                     if (this.mode === UpdateEnum.New) {
                         this.images = []
                         this.submitted = false

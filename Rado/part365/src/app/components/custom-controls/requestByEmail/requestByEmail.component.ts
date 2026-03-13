@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ItemType } from '@model/enum/itemType.enum'
 import { ImageService } from '@services/image.service'
-import { MessageService } from '@services/message.service'
+import { MessageService } from '@app/messages/service/messageService';
 import { NgStyle } from '@angular/common'
 import { InputComponent } from '../input/input.component'
 import { TextAreaComponent } from '../textArea/textArea.component'

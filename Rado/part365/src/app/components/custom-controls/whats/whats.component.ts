@@ -9,7 +9,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   imports: []
 })
 export class WhatsComponent {
-
+ // <a href="https://wa.me/1234567890?text=hello" target="_blank">Chat on WhatsApp</a>
   constructor(private sanitizer:DomSanitizer) { }
   @Input() number?: string;
 
