@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'app-topbar',
-  templateUrl: './topBar.component.html',
-  styleUrls: ['./topBar.component.css'],
-  imports: []
+    selector: 'app-topbar',
+    templateUrl: './topBar.component.html',
+    styleUrls: ['./topBar.component.css'],
+    imports: []
 })
 export class TopBarComponent{
 

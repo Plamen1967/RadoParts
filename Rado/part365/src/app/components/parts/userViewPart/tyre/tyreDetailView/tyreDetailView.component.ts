@@ -5,11 +5,10 @@ import { DisplayPartView } from '@model/displayPartView';
 import { ItemType } from '@model/enum/itemType.enum';
 
 @Component({
-  standalone: true,
-  selector: 'app-tyredetailview',
-  templateUrl: './tyreDetailView.component.html',
-  styleUrls: ['./tyreDetailView.component.css'],
-  imports: [DataRowComponent]
+    selector: 'app-tyredetailview',
+    templateUrl: './tyreDetailView.component.html',
+    styleUrls: ['./tyreDetailView.component.css'],
+    imports: [DataRowComponent]
 })
 export class TyreDetailViewComponent extends HelperComponent {
 

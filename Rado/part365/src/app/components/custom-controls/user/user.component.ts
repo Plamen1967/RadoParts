@@ -7,11 +7,10 @@ import { NgClass } from '@angular/common';
 import { AutofocusDirective } from '@app/directive/autofocus.directive';
 
 @Component({
-  standalone: true,
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css'],
-  imports: [AutofocusDirective, NgClass, FormsModule]
+    selector: 'app-user',
+    templateUrl: './user.component.html',
+    styleUrls: ['./user.component.css'],
+    imports: [AutofocusDirective, NgClass, FormsModule]
 })
 export class UserComponent  extends BaseControl<string>  {
 

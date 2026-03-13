@@ -14,11 +14,10 @@ import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 
 @Component({
-    standalone: true,
     selector: 'app-administration',
     templateUrl: './administration.component.html',
     styleUrls: ['./administration.component.css'],
-    imports: [UserInfoComponent, FormsModule],
+    imports: [UserInfoComponent, FormsModule]
 })
 export default class AdministrationComponent extends HelperComponent implements OnInit {
     constructor(

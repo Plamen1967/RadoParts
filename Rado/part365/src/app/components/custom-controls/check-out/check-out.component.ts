@@ -18,11 +18,10 @@ import { LocalStorageService } from '@services/storage/localStorage.service'
 import { noop } from 'rxjs'
 
 @Component({
-    standalone: true,
     selector: 'app-check-out',
     templateUrl: './check-out.component.html',
     styleUrls: ['./check-out.component.css'],
-    imports: [DisplayPartComponent, UserViewPartComponent],
+    imports: [DisplayPartComponent, UserViewPartComponent]
 })
 export class CheckOutComponent extends HelperComponent implements OnInit {
     parts?: DisplayPartView[]

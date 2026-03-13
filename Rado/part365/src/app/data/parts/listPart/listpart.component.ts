@@ -50,7 +50,6 @@ import { LoggerService } from '@services/authentication/logger.service'
 import { UserCount } from '@model/userCount'
 
 @Component({
-    standalone: true,
     selector: 'app-listpart',
     templateUrl: './listpart.component.html',
     styleUrls: ['./listpart.component.scss'],
@@ -72,7 +71,7 @@ import { UserCount } from '@model/userCount'
         SubcategoryChoiseComponent,
         ListTitleComponent,
         AsyncPipe
-    ],
+    ]
 })
 
 //#endregion

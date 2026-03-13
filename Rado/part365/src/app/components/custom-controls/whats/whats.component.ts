@@ -2,11 +2,10 @@ import { Component, Input } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
-  standalone: true,
-  selector: 'app-whats',
-  templateUrl: './whats.component.html',
-  styleUrls: ['./whats.component.css'],
-  imports: []
+    selector: 'app-whats',
+    templateUrl: './whats.component.html',
+    styleUrls: ['./whats.component.css'],
+    imports: []
 })
 export class WhatsComponent {
  // <a href="https://wa.me/1234567890?text=hello" target="_blank">Chat on WhatsApp</a>

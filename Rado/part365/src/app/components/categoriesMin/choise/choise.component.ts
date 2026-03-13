@@ -4,11 +4,10 @@ import { SelectedItemComponent } from '@components/custom-controls/selectedItem/
 import { SelectionItem } from '@model/selectionItem';
 
 @Component({
-  standalone: true,
-  selector: 'app-choise',
-  templateUrl: './choise.component.html',
-  styleUrls: ['./choise.component.css'],
-  imports: [NgFor, NgIf, SelectedItemComponent]
+    selector: 'app-choise',
+    templateUrl: './choise.component.html',
+    styleUrls: ['./choise.component.css'],
+    imports: [NgFor, NgIf, SelectedItemComponent]
 })
 export class ChoiseComponent {
 

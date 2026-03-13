@@ -13,10 +13,9 @@ import { UserCountService } from '@services/userCount.service'
 
 @Component({
     selector: 'app-root',
-    standalone: true,
     imports: [RouterOutlet, FooterComponent, NavMenuComponent, NgClass, RouterModule, CommonModule],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.scss',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
     title = 'part365'

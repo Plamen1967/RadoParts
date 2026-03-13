@@ -4,11 +4,10 @@ import { UpdateEnum } from '@model/enum/update.enum';
 import { DisplayPartView } from '@model/displayPartView';
 
 @Component({
-  standalone: true,
-  selector: 'app-updatepart',
-  templateUrl: './updatepart.component.html',
-  styleUrls: ['./updatepart.component.css'],
-  imports: [AddPartComponent]
+    selector: 'app-updatepart',
+    templateUrl: './updatepart.component.html',
+    styleUrls: ['./updatepart.component.css'],
+    imports: [AddPartComponent]
 })
 export default class UpdatePartComponent {
 

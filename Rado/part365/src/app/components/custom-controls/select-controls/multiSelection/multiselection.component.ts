@@ -11,11 +11,10 @@ import { CompanyComponent } from '../company/company.component'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 @Component({
-    standalone: true,
     selector: 'app-multiselection',
     templateUrl: './multiselection.component.html',
     styleUrls: ['./multiselection.component.css'],
-    imports: [ButtonGroupComponent, NgClass, NgStyle, ChoiseComponent],
+    imports: [ButtonGroupComponent, NgClass, NgStyle, ChoiseComponent]
 })
 export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
     @ViewChild('minGroup') minGroup?: ElementRef<HTMLInputElement>

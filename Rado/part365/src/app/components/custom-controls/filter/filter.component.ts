@@ -6,11 +6,10 @@ import { SelectionItem } from '@model/selectionItem';
 import { SaveSearchService } from '@services/saveSearch.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-filter',
-  templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.css'],
-  imports: [ MatDialogContent, MatDialogClose]
+    selector: 'app-filter',
+    templateUrl: './filter.component.html',
+    styleUrls: ['./filter.component.css'],
+    imports: [MatDialogContent, MatDialogClose]
 })
 export class FilterComponent implements OnInit {
     //#region members

@@ -5,11 +5,10 @@ import { ErrorService } from '@services/error.service'
 import { NgClass, NgStyle } from '@angular/common'
 
 @Component({
-    standalone: true,
     selector: 'app-input',
     templateUrl: './input.component.html',
     styleUrls: ['./input.component.scss'],
-    imports: [NgStyle, NgClass, FormsModule],
+    imports: [NgStyle, NgClass, FormsModule]
 })
 export class InputComponent extends BaseControl<string> {
     @Input() label?: string

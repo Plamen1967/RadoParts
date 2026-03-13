@@ -3,11 +3,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  standalone: true,
-  selector: 'app-buttongroup',
-  templateUrl: './buttongroup.component.html',
-  styleUrls: ['./buttongroup.component.css'],
-  imports: [NgClass, FormsModule, NgStyle]
+    selector: 'app-buttongroup',
+    templateUrl: './buttongroup.component.html',
+    styleUrls: ['./buttongroup.component.css'],
+    imports: [NgClass, FormsModule, NgStyle]
 })
 
 export class ButtonGroupComponent {

@@ -6,11 +6,10 @@ import { SelectOption } from '@model/selectOption'
 import { SelectBaseComponent } from '../select-controls/select/select-base/select-base.component'
 
 @Component({
-    standalone: true,
     selector: 'app-radiogrouplist',
     templateUrl: './radiogrouplist.component.html',
     styleUrls: ['./radiogrouplist.component.scss'],
-    imports: [NgClass, FormsModule, ReactiveFormsModule, SelectBaseComponent],
+    imports: [NgClass, FormsModule, ReactiveFormsModule, SelectBaseComponent]
 })
 export class RadioGroupListComponent implements OnInit, ControlValueAccessor, AfterViewInit {
     id?: number

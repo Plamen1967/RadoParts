@@ -2,11 +2,10 @@ import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
-  standalone: true,
-selector: 'app-row',
-  templateUrl: './row.component.html',
-  styleUrls: ['./row.component.css'],
-  imports:[ NgClass]
+    selector: 'app-row',
+    templateUrl: './row.component.html',
+    styleUrls: ['./row.component.css'],
+    imports: [NgClass]
 })
 export class RowComponent {
 

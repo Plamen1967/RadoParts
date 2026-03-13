@@ -25,11 +25,10 @@ import { UserCountService } from '@services/userCount.service';
 
 //#region component
 @Component({
-  standalone: true,
-  imports: [NgStyle, NgClass, RouterLinkActive, RouterLink, NgIf, CompanyHeaderComponent, AsyncPipe],
-  selector: 'app-nav-menu',
-  templateUrl: 'navmenu.component.html',
-  styleUrls: ['navmenu.component.scss'],
+    imports: [NgStyle, NgClass, RouterLinkActive, RouterLink, NgIf, CompanyHeaderComponent, AsyncPipe],
+    selector: 'app-nav-menu',
+    templateUrl: 'navmenu.component.html',
+    styleUrls: ['navmenu.component.scss']
 })
 //#endregion
 

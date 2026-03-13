@@ -49,25 +49,24 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 //#endregion
 //#region component
 @Component({
-    standalone: true,
     selector: 'app-addpart',
     templateUrl: './addpart.component.html',
     styleUrls: ['./addpart.component.scss'],
     imports: [
-    ImageListComponent,
-    ReactiveFormsModule,
-    TextAreaComponent,
-    SelectComponent,
-    InputComponent,
-    TooltipDirective,
-    CompanyChoiseComponent,
-    ModelChoiceComponent,
-    ModificationChoiceComponent,
-    CategoryChoiseComponent,
-    DealersubcategoryChoiceComponent,
-    ToolBarComponent,
-    NgClass
-],
+        ImageListComponent,
+        ReactiveFormsModule,
+        TextAreaComponent,
+        SelectComponent,
+        InputComponent,
+        TooltipDirective,
+        CompanyChoiseComponent,
+        ModelChoiceComponent,
+        ModificationChoiceComponent,
+        CategoryChoiseComponent,
+        DealersubcategoryChoiceComponent,
+        ToolBarComponent,
+        NgClass
+    ]
 })
 //#endregion
 export default class AddPartComponent extends HelperComponent implements AfterViewInit, OnInit, OnDestroy {

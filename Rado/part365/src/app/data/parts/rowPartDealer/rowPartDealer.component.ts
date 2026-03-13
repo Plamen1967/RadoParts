@@ -13,11 +13,10 @@ import { Router } from '@angular/router';
 import { InfoLine } from '@model/infoLine';
 
 @Component({
-  standalone: true,
-  selector: 'app-rowpartdealer',
-  templateUrl: './rowPartDealer.component.html',
-  styleUrls: ['./rowPartDealer.component.css'],
-  imports: [RowComponent]
+    selector: 'app-rowpartdealer',
+    templateUrl: './rowPartDealer.component.html',
+    styleUrls: ['./rowPartDealer.component.css'],
+    imports: [RowComponent]
 })
 //#endregion
 export class RowPartDealerComponent extends HelperComponent {

@@ -24,11 +24,10 @@ import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { goToPosition } from '@app/functions/functions'
 
 @Component({
-    standalone: true,
     selector: 'app-dealerview',
     templateUrl: './dealerview.component.html',
     styleUrls: ['./dealerview.component.css'],
-    imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent],
+    imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent]
 })
 export class DealerViewComponent extends HelperComponent implements OnInit, AfterViewInit {
     parts: PartView[] = []

@@ -43,7 +43,6 @@ import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
 
 @Component({
-    standalone: true,
     selector: 'app-listtyre',
     templateUrl: './listTyre.component.html',
     styleUrls: ['./listTyre.component.css'],
@@ -62,7 +61,7 @@ import { UserCount } from '@model/userCount'
         CompanyChoiseComponent,
         ListTitleComponent,
         RegionComponent,
-    ],
+    ]
 })
 export default class ListTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
     searchForm: FormGroup

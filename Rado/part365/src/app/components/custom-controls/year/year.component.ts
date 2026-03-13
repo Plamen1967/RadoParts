@@ -8,11 +8,10 @@ import { HelperComponent } from '../helper/helper.component'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 @Component({
-    standalone: true,
     selector: 'app-year',
     templateUrl: './year.component.html',
     styleUrls: ['./year.component.css'],
-    imports: [ReactiveFormsModule, SelectComponent],
+    imports: [ReactiveFormsModule, SelectComponent]
 })
 export class YearComponent extends HelperComponent implements ControlValueAccessor, AfterViewInit, OnInit {
     isDisabled = false

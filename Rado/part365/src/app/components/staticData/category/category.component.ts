@@ -9,11 +9,10 @@ import { AdminService } from '@services/admin.service';
 import { CategoryService } from '@services/category-subcategory/category.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css'],
-  imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent, NgClass]
+    selector: 'app-category',
+    templateUrl: './category.component.html',
+    styleUrls: ['./category.component.css'],
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent, NgClass]
 })
 export default class CategoryComponent extends HelperComponent implements OnInit, AfterViewInit {
 

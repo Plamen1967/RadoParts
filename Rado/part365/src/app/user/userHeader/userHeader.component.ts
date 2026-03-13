@@ -11,11 +11,10 @@ import { PhoneComponent } from '@components/custom-controls/phone/phone.componen
 
 
 @Component({
-    standalone: true,
     selector: 'app-userheader',
     templateUrl: './userHeader.component.html',
     styleUrls: ['./userHeader.component.css'],
-    imports: [ViberComponent, PhoneComponent, WhatsComponent],
+    imports: [ViberComponent, PhoneComponent, WhatsComponent]
 })
 export class UserHeaderComponent extends HelperComponent implements OnInit{
   @Input({required: true}) user!: UserView;

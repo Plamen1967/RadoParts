@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-menu-min',
-  templateUrl: './menu-min.component.html',
-  styleUrls: ['./menu-min.component.css']
+    selector: 'app-menu-min',
+    templateUrl: './menu-min.component.html',
+    styleUrls: ['./menu-min.component.css'],
+    standalone: false
 })
 export class MenuMinComponent implements OnInit {
 

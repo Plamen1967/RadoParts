@@ -5,7 +5,6 @@ import { BaseControl } from '../baseControl'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { NgClass } from '@angular/common'
 @Component({
-    standalone: true,
     selector: 'app-inputpassword',
     templateUrl: './inputpassword.component.html',
     styleUrls: ['./inputpassword.component.css'],

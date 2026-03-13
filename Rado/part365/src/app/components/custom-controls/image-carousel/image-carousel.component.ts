@@ -5,12 +5,11 @@ import { ZoomComponent } from '../zoom/zoom/zoom.component'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 
 @Component({
-    standalone: true,
     selector: 'app-image-carousel',
     templateUrl: './image-carousel.component.html',
     styleUrls: ['./image-carousel.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgClass, NgStyle],
+    imports: [NgClass, NgStyle]
 })
 export class ImageCarouselComponent implements AfterContentInit {
     constructor(private matDialog: MatDialog) {}

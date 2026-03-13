@@ -7,11 +7,10 @@ import { StaticSelectionService } from '@services/staticSelection.service'
 import { RadioGroupListComponent } from '../../custom-controls/radioGroupList/radiogrouplist.component'
 
 @Component({
-    standalone: true,
     selector: 'app-navigator',
     templateUrl: './navigator.component.html',
     styleUrls: ['./navigator.component.css'],
-    imports: [NgStyle, NgClass, FormsModule, RadioGroupListComponent],
+    imports: [NgStyle, NgClass, FormsModule, RadioGroupListComponent]
 })
 export class NavigatorComponent implements OnInit {
     @Input() currentPage = 1

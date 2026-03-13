@@ -24,11 +24,10 @@ import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 @Component({
-    standalone: true,
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
-    imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule],
+    imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule]
 })
 export default class UpdateUserComponent extends HelperComponent implements OnInit, AfterViewInit {
     unamePattern = '^[a-z0-9_-]{8,15}$'

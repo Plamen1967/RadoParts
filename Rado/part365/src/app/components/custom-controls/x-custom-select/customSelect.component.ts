@@ -11,11 +11,10 @@ import { AlertService } from '@services/alert.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 @Component({
-    standalone: true,
     selector: 'app-customselect',
     templateUrl: './customSelect.component.html',
     styleUrls: ['./customSelect.component.css'],
-    imports: [NgClass, NgStyle, ButtonGroupComponent,ReactiveFormsModule]
+    imports: [NgClass, NgStyle, ButtonGroupComponent, ReactiveFormsModule]
 })
 export class CustomSelectComponent extends BaseControl<number> implements OnInit, ControlValueAccessor {
 

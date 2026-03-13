@@ -16,11 +16,10 @@ import { ConfirmServiceService } from '@app/dialog/services/confirmService.servi
 //#endregion
 
 @Component({
-    standalone: true,
     imports: [UserComponent, FormsModule, ReactiveFormsModule, NgClass, RouterLink, NgStyle, InputPasswordComponent],
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
+    styleUrls: ['./login.component.css']
 })
 export class LoginComponent extends HelperComponent implements OnInit, AfterViewInit {
     showLoginFlag = false

@@ -9,11 +9,10 @@ import { SelectOption } from '@model/selectOption'
 import { StaticSelectionService } from '@services/staticSelection.service'
 
 @Component({
-    standalone: true,
     selector: 'app-search-bar',
     templateUrl: './search-bar.component.html',
     styleUrls: ['./search-bar.component.css'],
-    imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule],
+    imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule]
 })
 export class SearchBarComponent extends HelperComponent implements ControlValueAccessor {
     sort?: SelectOption[]

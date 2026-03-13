@@ -4,11 +4,10 @@ import { Component, Input } from '@angular/core';
 import { MenuOption } from '@model/menuOption';
 
 @Component({
-  standalone: true,
-  selector: 'app-buttonmenu',
-  templateUrl: './buttonMenu.component.html',
-  styleUrls: ['./buttonMenu.component.css'],
-  imports: [NgFor, NgIf]
+    selector: 'app-buttonmenu',
+    templateUrl: './buttonMenu.component.html',
+    styleUrls: ['./buttonMenu.component.css'],
+    imports: [NgFor, NgIf]
 })
 export class ButtonMenuComponent{
 

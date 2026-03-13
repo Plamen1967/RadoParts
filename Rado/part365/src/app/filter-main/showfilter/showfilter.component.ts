@@ -3,9 +3,10 @@ import { Filter } from '@model/filters/filter';
 import { SaveSearchService } from '@services/saveSearch.service';
 
 @Component({
-  selector: 'app-showfilter',
-  templateUrl: './showfilter.component.html',
-  styleUrls: ['./showfilter.component.css']
+    selector: 'app-showfilter',
+    templateUrl: './showfilter.component.html',
+    styleUrls: ['./showfilter.component.css'],
+    standalone: false
 })
 export class ShowfilterComponent implements OnInit {
 

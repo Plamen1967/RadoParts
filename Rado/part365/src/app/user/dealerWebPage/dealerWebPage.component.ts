@@ -12,11 +12,10 @@ import { UserView } from '@model/userView'
 import { DataManager } from '@model/dataManager'
 
 @Component({
-    standalone: true,
     selector: 'app-dealerwebpage',
     templateUrl: './dealerWebPage.component.html',
     styleUrls: ['./dealerWebPage.component.css'],
-    imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive],
+    imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive]
 })
 export class DealerWebPageComponent implements OnInit, AfterViewInit {
     @Input() userId = 0

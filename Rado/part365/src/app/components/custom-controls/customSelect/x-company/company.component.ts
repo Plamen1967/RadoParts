@@ -9,11 +9,10 @@ import { FormsModule } from '@angular/forms';
 import { DialogData } from '@model/dialogData';
 import { InternalValue } from '@model/internalValue';
 @Component({
-  standalone: true,
-  selector: 'app-company',
-  templateUrl: './company.component.html',
-  styleUrls: ['./company.component.css'],
-  imports: [NgIf, NgClass, FormsModule, NgFor, MatDialogContent, MatDialogClose]
+    selector: 'app-company',
+    templateUrl: './company.component.html',
+    styleUrls: ['./company.component.css'],
+    imports: [NgIf, NgClass, FormsModule, NgFor, MatDialogContent, MatDialogClose]
 })
 export class CompanyComponent extends SelectBase implements OnInit {
 

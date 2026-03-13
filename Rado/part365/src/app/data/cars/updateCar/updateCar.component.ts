@@ -4,11 +4,10 @@ import  AddCarComponent  from '../addCar/addcar.component';
 import { DisplayPartView } from '@model/displayPartView';
 
 @Component({
-  standalone: true,
-  selector: 'app-updatecar',
-  templateUrl: './updateCar.component.html',
-  styleUrls: ['./updateCar.component.css'],
-  imports: [AddCarComponent]
+    selector: 'app-updatecar',
+    templateUrl: './updateCar.component.html',
+    styleUrls: ['./updateCar.component.css'],
+    imports: [AddCarComponent]
 })
 export default class UpdateCarComponent {
 

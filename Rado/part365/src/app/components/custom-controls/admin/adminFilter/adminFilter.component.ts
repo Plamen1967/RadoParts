@@ -5,11 +5,10 @@ import { HelperComponent } from '@components/custom-controls/helper/helper.compo
 import { SelectOption } from '@model/selectOption';
 
 @Component({
-  standalone: true,
-  selector: 'app-adminfilter',
-  templateUrl: './adminFilter.component.html',
-  styleUrls: ['./adminFilter.component.css'],
-  imports: [NgIf, SelectComponent]
+    selector: 'app-adminfilter',
+    templateUrl: './adminFilter.component.html',
+    styleUrls: ['./adminFilter.component.css'],
+    imports: [NgIf, SelectComponent]
 })
 export class AdminFilterComponent extends HelperComponent {
   users: SelectOption[] = [];

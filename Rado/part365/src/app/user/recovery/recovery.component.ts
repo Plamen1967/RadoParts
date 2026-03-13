@@ -7,11 +7,10 @@ import { ModalService } from '@services/dialog-api/modal.service';
 import { UserService } from '@services/user.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-recovery',
-  templateUrl: './recovery.component.html',
-  styleUrls: ['./recovery.component.css'],
-  imports: [ReactiveFormsModule, NgStyle, NgClass]
+    selector: 'app-recovery',
+    templateUrl: './recovery.component.html',
+    styleUrls: ['./recovery.component.css'],
+    imports: [ReactiveFormsModule, NgStyle, NgClass]
 })
 export default class RecoveryComponent extends HelperComponent implements OnInit {
 

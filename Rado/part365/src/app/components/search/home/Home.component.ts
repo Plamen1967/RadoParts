@@ -37,11 +37,10 @@ import { QueryParam } from '@model/queryParam'
 
 //#region component declaration
 @Component({
-    standalone: true,
     selector: 'app-home',
     templateUrl: './Home.component.html',
     styleUrls: ['./Home.component.css'],
-    imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, TooltipDirective, GoTopComponent],
+    imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, TooltipDirective, GoTopComponent]
 })
 
 //#endregion

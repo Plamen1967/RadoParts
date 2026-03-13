@@ -16,11 +16,10 @@ import { UserService } from '@services/user.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 @Component({
-    standalone: true,
     selector: 'app-usercard',
     templateUrl: './userCard.component.html',
     styleUrls: ['./userCard.component.css'],
-    imports: [PhoneComponent, DataRowComponent, ViberComponent, WhatsComponent],
+    imports: [PhoneComponent, DataRowComponent, ViberComponent, WhatsComponent]
 })
 export class UserCardComponent extends HelperComponent {
     @Input() set viewItem(value: DisplayPartView) {

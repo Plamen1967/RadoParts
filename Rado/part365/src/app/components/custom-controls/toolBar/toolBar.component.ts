@@ -4,11 +4,10 @@ import { SaveButtonComponent } from '../buttons/saveButton/saveButton.component'
 import { CancelButtonComponent } from '../buttons/cancelButton/cancelButton.component';
 
 @Component({
-  standalone: true,
-  selector: 'app-toolbar',
-  templateUrl: './toolBar.component.html',
-  styleUrls: ['./toolBar.component.css'],
-  imports: [SaveButtonComponent,CancelButtonComponent]
+    selector: 'app-toolbar',
+    templateUrl: './toolBar.component.html',
+    styleUrls: ['./toolBar.component.css'],
+    imports: [SaveButtonComponent, CancelButtonComponent]
 })
 export class ToolBarComponent extends HelperComponent {
 

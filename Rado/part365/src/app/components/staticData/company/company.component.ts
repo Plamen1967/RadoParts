@@ -12,11 +12,10 @@ import { CompanyService } from '@services/company-model-modification/company.ser
 import { SelectOption } from '@model/selectOption'
 
 @Component({
-    standalone: true,
     selector: 'app-company',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent],
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent]
 })
 export default class CompanyComponent extends HelperComponent implements OnInit, AfterViewInit {
     companyForm: FormGroup

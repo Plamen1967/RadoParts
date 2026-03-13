@@ -6,7 +6,6 @@ import { BaseControl } from '../../baseControl'
 import { SelectBaseComponent } from "./select-base/select-base.component";
 
 @Component({
-    standalone: true,
     selector: 'app-select',
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.css'],

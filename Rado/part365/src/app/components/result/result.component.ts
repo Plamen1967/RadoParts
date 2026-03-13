@@ -32,11 +32,10 @@ import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
 //#endregion
 
 @Component({
-    standalone: true,
     selector: 'app-result',
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss'],
-    imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent],
+    imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent]
 })
 export class ResultComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() id!: number

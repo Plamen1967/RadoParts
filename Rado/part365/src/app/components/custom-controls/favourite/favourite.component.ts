@@ -4,11 +4,10 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service';
 import { LocalStorageService } from '@services/storage/localStorage.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-favourite',
-  templateUrl: './favourite.component.html',
-  styleUrls: ['./favourite.component.css'],
-  imports: [NgClass]
+    selector: 'app-favourite',
+    templateUrl: './favourite.component.html',
+    styleUrls: ['./favourite.component.css'],
+    imports: [NgClass]
 })
 export class FavouriteComponent implements OnInit {
    @HostListener('click', ["$event"])

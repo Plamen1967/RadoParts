@@ -13,11 +13,10 @@ import { ConfirmServiceService } from '@app/dialog/services/confirmService.servi
 import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
 
 @Component({
-    standalone: true,
     selector: 'app-model',
     templateUrl: './model.component.html',
     styleUrls: ['./model.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
+    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass]
 })
 export default class ModelComponent extends HelperComponent implements AfterViewInit {
     modelForm: FormGroup

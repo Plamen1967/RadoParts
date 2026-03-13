@@ -2,11 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SelectionItem } from '@model/selectionItem';
 
 @Component({
-  standalone: true,
-  selector: 'app-selecteditem',
-  templateUrl: './selecteditem.component.html',
-  styleUrls: ['./selecteditem.component.css'],
-  imports: []
+    selector: 'app-selecteditem',
+    templateUrl: './selecteditem.component.html',
+    styleUrls: ['./selecteditem.component.css'],
+    imports: []
 })
 export class SelectedItemComponent {
 

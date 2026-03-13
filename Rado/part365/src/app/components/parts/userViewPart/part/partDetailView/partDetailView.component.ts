@@ -5,11 +5,10 @@ import { DisplayPartView } from '@model/displayPartView'
 import { StaticSelectionService } from '@services/staticSelection.service'
 
 @Component({
-    standalone: true,
     selector: 'app-partdetailview',
     templateUrl: './partDetailView.component.html',
     styleUrls: ['./partDetailView.component.css'],
-    imports: [DataRowComponent],
+    imports: [DataRowComponent]
 })
 export class PartDetailViewComponent extends HelperComponent {
     @Input() set part(value: DisplayPartView) {

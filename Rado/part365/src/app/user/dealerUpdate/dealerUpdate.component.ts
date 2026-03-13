@@ -11,11 +11,10 @@ import { QueryParam } from '@model/queryParam'
 import UpdateUserComponent from '@components/custom-controls/admin/updateUser/updateUser.component'
 
 @Component({
-    standalone: true,
     selector: 'app-dealerupdate',
     templateUrl: './dealerUpdate.component.html',
     styleUrls: ['./dealerUpdate.component.css'],
-    imports: [UpdateUserComponent],
+    imports: [UpdateUserComponent]
 })
 export default class DealerUpdateComponent implements OnInit {
     constructor(

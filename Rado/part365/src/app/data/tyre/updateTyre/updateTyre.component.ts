@@ -4,11 +4,10 @@ import AddTyreComponent from '../addTyre/addTyre.component';
 import { DisplayPartView } from '@model/displayPartView';
 
 @Component({
-  standalone: true,
-  selector: 'app-updatetyre',
-  templateUrl: './updateTyre.component.html',
-  styleUrls: ['./updateTyre.component.css'],
-  imports: [AddTyreComponent]
+    selector: 'app-updatetyre',
+    templateUrl: './updateTyre.component.html',
+    styleUrls: ['./updateTyre.component.css'],
+    imports: [AddTyreComponent]
 })
 export default class UpdateTyreComponent {
 

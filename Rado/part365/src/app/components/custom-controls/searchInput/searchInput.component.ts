@@ -5,11 +5,10 @@ import { BaseControl } from '../baseControl'
 import { ErrorService } from '@services/error.service'
 
 @Component({
-    standalone: true,
     selector: 'app-searchinput',
     templateUrl: './searchInput.component.html',
     styleUrls: ['./searchInput.component.css'],
-    imports: [FormsModule, NgStyle, NgClass],
+    imports: [FormsModule, NgStyle, NgClass]
 })
 export class SearchInputComponent extends BaseControl<string> {
     filter?: string

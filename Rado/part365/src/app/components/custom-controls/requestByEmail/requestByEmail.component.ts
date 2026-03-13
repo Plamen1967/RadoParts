@@ -15,11 +15,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { Catcha } from '@model/catcha'
 
 @Component({
-    standalone: true,
     selector: 'app-requestbyemail',
     templateUrl: './requestByEmail.component.html',
     styleUrls: ['./requestByEmail.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, InputComponent, TextAreaComponent, CatchaComponent],
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, TextAreaComponent, CatchaComponent]
 })
 //#endregion
 export class RequestByEmailComponent extends HelperComponent implements OnInit {

@@ -14,11 +14,10 @@ import { StaticSelectionService } from '@services/staticSelection.service'
 import { UserService } from '@services/user.service'
 
 @Component({
-    standalone: true,
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css'],
-    imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent],
+    imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent]
 })
 export default class UserComponent extends HelperComponent implements AfterViewInit {
     users?: User[]

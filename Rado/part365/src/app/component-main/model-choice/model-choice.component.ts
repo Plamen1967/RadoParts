@@ -10,11 +10,10 @@ import { ModelService } from '@services/company-model-modification/model.service
 import { ErrorService } from '@services/error.service'
 
 @Component({
-    standalone: true,
     selector: 'app-model-choice',
     templateUrl: './model-choice.component.html',
     styleUrls: ['./model-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule]
 })
 export class ModelChoiceComponent implements ControlValueAccessor, OnInit, AfterViewInit {
     modelForm: FormGroup

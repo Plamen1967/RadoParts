@@ -5,11 +5,10 @@ import { Dropdown } from '@model/dropDown';
 
 
 @Component({
-  standalone: true,
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css'],
-  imports: [NgStyle]
+    selector: 'app-categories',
+    templateUrl: './categories.component.html',
+    styleUrls: ['./categories.component.css'],
+    imports: [NgStyle]
 })
 export class CategoriesComponent {
 

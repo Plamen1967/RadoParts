@@ -5,11 +5,10 @@ import { ModalService } from '@services/dialog-api/modal.service';
 import { UserService } from '@services/user.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-activation',
-  templateUrl: './activation.component.html',
-  styleUrls: ['./activation.component.css'],
-  imports: []
+    selector: 'app-activation',
+    templateUrl: './activation.component.html',
+    styleUrls: ['./activation.component.css'],
+    imports: []
 })
 export default class ActivationComponent implements OnDestroy, AfterViewInit {
 

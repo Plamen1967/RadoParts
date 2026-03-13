@@ -7,11 +7,12 @@ import {
 } from "@angular/core";
 
 @Directive({
-  selector: "[appTrackHover]",
-  host: {
-    "(pointerenter)": "this.showHoverMessage()",
-    "(pointerleave)": "this.removeHoverMessage()",
-  },
+    selector: "[appTrackHover]",
+    host: {
+        "(pointerenter)": "this.showHoverMessage()",
+        "(pointerleave)": "this.removeHoverMessage()",
+    },
+    standalone: false
 })
 export class TrackHoverDirective {
   private elementRef = inject(ElementRef<HTMLElement>);

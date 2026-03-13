@@ -34,12 +34,11 @@ import { SearchBy } from '@model/enum/searchBy.enum'
 import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
 import { LoggerService } from '@services/authentication/logger.service'
 @Component({
-    standalone: true,
     selector: 'app-userviewpart',
     templateUrl: './userViewPart.component.html',
     styleUrls: ['./userViewPart.component.css'],
     // changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, DataRowComponent, FavouriteComponent, NgStyle, RequestByEmailComponent, UserCardComponent, NgClass, ImageCarouselComponent, UpdateAddComponent],
+    imports: [NgIf, DataRowComponent, FavouriteComponent, NgStyle, RequestByEmailComponent, UserCardComponent, NgClass, ImageCarouselComponent, UpdateAddComponent]
 })
 export class UserViewPartComponent extends HelperComponent implements OnInit, AfterViewInit {
     item?: DisplayPartView

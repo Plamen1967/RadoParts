@@ -12,11 +12,10 @@ import { RadioButton } from '@model/radioButton'
 import { RadioGroupComponent } from '@components/custom-controls/radioGroup/radiogroup.component'
 
 @Component({
-    standalone: true,
     selector: 'app-company',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    imports: [NgClass, FormsModule, MatDialogContent, MatDialogClose, SearchInputComponent, ChoiseComponent, RadioGroupComponent, ReactiveFormsModule],
+    imports: [NgClass, FormsModule, MatDialogContent, MatDialogClose, SearchInputComponent, ChoiseComponent, RadioGroupComponent, ReactiveFormsModule]
 })
 //#endregion
 export class CompanyComponent extends SelectBase implements OnInit {

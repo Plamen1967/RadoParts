@@ -34,7 +34,6 @@ import { CategorySubcategory } from '@model/category-subcategory/categorySubCate
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
 
 @Component({
-    standalone: true,
     selector: 'app-tyrefilter',
     templateUrl: './tyrefilter.component.html',
     styleUrls: ['./tyrefilter.component.css'],
@@ -51,7 +50,7 @@ import { ModelChoiceComponent } from '@app/component-main/model-choice/model-cho
         SearchBarComponent,
         CategoriesComponent,
         ModelChoiceComponent
-    ],
+    ]
 })
 export class TyreFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
     categories = [

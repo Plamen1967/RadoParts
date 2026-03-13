@@ -10,11 +10,10 @@ import { InfoLine } from '@model/infoLine'
 import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.component'
 
 @Component({
-    standalone: true,
     selector: 'app-dealerviewtyre',
     templateUrl: './dealerViewTyre.component.html',
     styleUrls: ['./dealerViewTyre.component.css'],
-    imports: [DataRowComponent],
+    imports: [DataRowComponent]
 })
 export class DealerViewTyreComponent extends HelperComponent implements OnInit{
     id?: number

@@ -5,11 +5,10 @@ import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
 import { LoadinData } from '@model/loadinData';
 
 @Component({
-  standalone: true,
-  selector: 'app-loading-dialog',
-  templateUrl: './loading-dialog.component.html',
-  imports: [MatProgressSpinnerModule, MatDialogModule, MatButtonModule],
-  styleUrls: ['./loading-dialog.component.css']
+    selector: 'app-loading-dialog',
+    templateUrl: './loading-dialog.component.html',
+    imports: [MatProgressSpinnerModule, MatDialogModule, MatButtonModule],
+    styleUrls: ['./loading-dialog.component.css']
 })
 export class LoadingDialogComponent {
   message = "Зареждане на данните";

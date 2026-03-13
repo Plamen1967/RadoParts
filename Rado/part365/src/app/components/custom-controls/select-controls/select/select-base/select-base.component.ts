@@ -5,11 +5,10 @@ import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
 
 @Component({
-    standalone: true,
     selector: 'app-select-base',
     templateUrl: './select-base.component.html',
     styleUrls: ['./select-base.component.css'],
-    imports: [FormsModule, NgClass, NgStyle],
+    imports: [FormsModule, NgClass, NgStyle]
 })
 export class SelectBaseComponent {
     value?: number

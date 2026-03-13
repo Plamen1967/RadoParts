@@ -58,7 +58,6 @@ import { StaticSelectionService } from '@services/staticSelection.service'
 //#endregion
 //#region @Component
 @Component({
-    standalone: true,
     selector: 'app-carfilter',
     templateUrl: './carfilter.component.html',
     styleUrls: ['./carfilter.component.css'],
@@ -80,7 +79,7 @@ import { StaticSelectionService } from '@services/staticSelection.service'
         CategoryChoiseComponent,
         SubcategoryChoiseComponent,
         SearchBarComponent,
-    ],
+    ]
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {

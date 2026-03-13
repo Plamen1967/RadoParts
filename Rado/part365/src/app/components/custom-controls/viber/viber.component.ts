@@ -2,11 +2,10 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
-  standalone: true,
-  selector: 'app-viber',
-  templateUrl: './viber.component.html',
-  styleUrls: ['./viber.component.css'],
-  imports: []
+    selector: 'app-viber',
+    templateUrl: './viber.component.html',
+    styleUrls: ['./viber.component.css'],
+    imports: []
 })
 export class ViberComponent implements OnInit {
 

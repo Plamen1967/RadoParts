@@ -12,11 +12,10 @@ import { ErrorService } from '@services/error.service'
 import { switchMap } from 'rxjs'
 
 @Component({
-    standalone: true,
     selector: 'app-company-choise',
     templateUrl: './company-choise.component.html',
     styleUrls: ['./company-choise.component.css'],
-    imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule]
 })
 export class CompanyChoiseComponent implements ControlValueAccessor, AfterViewInit, OnInit {
     companies: OptionItem[] = []

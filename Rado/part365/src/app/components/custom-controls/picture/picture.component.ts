@@ -11,11 +11,10 @@ import { AlertService } from '@services/alert.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 @Component({
-    standalone: true,
     selector: 'app-picture',
     templateUrl: './picture.component.html',
     styleUrls: ['./picture.component.css'],
-    imports: [UploadComponent, FormsModule],
+    imports: [UploadComponent, FormsModule]
 })
 export class PictureComponent extends HelperComponent {
     @Input() updateFlag?: boolean

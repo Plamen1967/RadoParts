@@ -12,11 +12,10 @@ import { SubCategoryService } from '@services/category-subcategory/subCategory.s
 import { SelectOption } from '@model/selectOption';
 
 @Component({
-  standalone: true,
-  selector: 'app-dealersubcategory',
-  templateUrl: './dealerSubCategory.component.html',
-  styleUrls: ['./dealerSubCategory.component.css'],
-  imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass]
+    selector: 'app-dealersubcategory',
+    templateUrl: './dealerSubCategory.component.html',
+    styleUrls: ['./dealerSubCategory.component.css'],
+    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass]
 })
 export default class DealerSubCategoryComponent extends HelperComponent implements AfterViewInit {
 

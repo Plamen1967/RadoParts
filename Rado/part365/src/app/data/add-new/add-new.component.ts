@@ -3,11 +3,10 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication/authentication.service';
 
 @Component({
-  standalone: true,
-  imports: [],
-  selector: 'app-addnew',
-  templateUrl: './add-new.component.html',
-  styleUrls: ['./add-new.component.css']
+    imports: [],
+    selector: 'app-addnew',
+    templateUrl: './add-new.component.html',
+    styleUrls: ['./add-new.component.css']
 })
 export default class AddNewComponent implements OnInit{
 

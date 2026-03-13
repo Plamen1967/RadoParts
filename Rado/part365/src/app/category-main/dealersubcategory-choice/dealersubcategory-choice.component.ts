@@ -9,11 +9,10 @@ import { DealerSubCategoryService } from '@services/category-subcategory/dealerS
 import { ErrorService } from '@services/error.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-dealersubcategory-choice',
-  templateUrl: './dealersubcategory-choice.component.html',
-  styleUrls: ['./dealersubcategory-choice.component.css'],
-  imports: [TooltipDirective, CustomSelectComponent, ReactiveFormsModule]
+    selector: 'app-dealersubcategory-choice',
+    templateUrl: './dealersubcategory-choice.component.html',
+    styleUrls: ['./dealersubcategory-choice.component.css'],
+    imports: [TooltipDirective, CustomSelectComponent, ReactiveFormsModule]
 })
 export class DealersubcategoryChoiceComponent implements ControlValueAccessor, AfterViewInit {
     dealerSubCategoryForm: FormGroup

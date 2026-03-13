@@ -25,11 +25,10 @@ import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { globalStaticData } from '@model/staticData'
 
 @Component({
-    standalone: true,
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
-    imports: [UploadComponent, PictureComponent, NgStyle, TextAreaComponent, InputComponent, ReactiveFormsModule, SelectComponent],
+    imports: [UploadComponent, PictureComponent, NgStyle, TextAreaComponent, InputComponent, ReactiveFormsModule, SelectComponent]
 })
 export class UpdateUserComponent extends HelperComponent implements OnInit, AfterViewInit {
     unamePattern = '^[a-z0-9_-]{8,15}$'

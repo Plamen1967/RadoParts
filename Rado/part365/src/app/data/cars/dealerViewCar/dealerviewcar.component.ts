@@ -20,11 +20,10 @@ import { LoggerService } from '@services/authentication/logger.service'
 //#endregion
 //#region component
 @Component({
-    standalone: true,
     selector: 'app-dealerviewcar',
     templateUrl: './dealerviewcar.component.html',
     styleUrls: ['./dealerviewcar.component.css'],
-    imports: [RowComponent],
+    imports: [RowComponent]
 })
 //#endregion
 export class DealerViewCarComponent extends HelperComponent implements OnInit {

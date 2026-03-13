@@ -9,11 +9,10 @@ import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 @Component({
-    standalone: true,
     selector: 'app-region',
     templateUrl: './region.component.html',
     styleUrls: ['./region.component.css'],
-    imports: [SelectComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [SelectComponent, TooltipDirective, ReactiveFormsModule]
 })
 export class RegionComponent extends HelperComponent implements ControlValueAccessor, AfterViewInit, OnInit {
     isDisabled = false

@@ -13,11 +13,10 @@ import { ErrorService } from '@services/error.service'
 //#endregion
 //#region component
 @Component({
-    standalone: true,
     selector: 'app-upload',
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.css'],
-    imports: [CameraComponent],
+    imports: [CameraComponent]
 })
 //#endregion
 export class UploadComponent extends HelperComponent implements OnInit {

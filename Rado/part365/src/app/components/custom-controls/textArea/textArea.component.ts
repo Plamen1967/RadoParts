@@ -5,12 +5,10 @@ import { ErrorService } from '@services/error.service';
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
-  standalone: true,
-  selector: 'app-textarea',
-  templateUrl: './textArea.component.html',
-  styleUrls: ['./textArea.component.css'],
-  imports: [NgClass, NgStyle, FormsModule]
-
+    selector: 'app-textarea',
+    templateUrl: './textArea.component.html',
+    styleUrls: ['./textArea.component.css'],
+    imports: [NgClass, NgStyle, FormsModule]
 })
 export class TextAreaComponent extends BaseControl<string> {
   @Input() label?: string;

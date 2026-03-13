@@ -17,11 +17,10 @@ import { convertImage } from '@app/functions/functions';
 import { DealerWebPageComponent } from '@app/user/dealerWebPage/dealerWebPage.component';
 
 @Component({
-  standalone: true,
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css'],
-  imports: [ImageCarouselComponent]
+    selector: 'app-details',
+    templateUrl: './details.component.html',
+    styleUrls: ['./details.component.css'],
+    imports: [ImageCarouselComponent]
 })
 export default class DetailsComponent implements OnInit {
 

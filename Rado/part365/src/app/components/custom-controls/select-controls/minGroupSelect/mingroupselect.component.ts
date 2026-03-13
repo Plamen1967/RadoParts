@@ -9,11 +9,10 @@ import { BaseControl } from '@components/custom-controls/baseControl'
 import { ErrorService } from '@services/error.service'
 
 @Component({
-    standalone: true,
     selector: 'app-mingroupselect',
     templateUrl: './mingroupselect.component.html',
     styleUrls: ['./mingroupselect.component.css'],
-    imports: [],
+    imports: []
 })
 
 //#endregion

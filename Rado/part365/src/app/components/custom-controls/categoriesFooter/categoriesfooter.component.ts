@@ -2,11 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Dropdown } from '@model/dropDown';
 
 @Component({
-  standalone: true,
-  selector: 'app-categoriesfooter',
-  templateUrl: './categoriesfooter.component.html',
-  styleUrls: ['./categoriesfooter.component.scss'],
-  imports: []
+    selector: 'app-categoriesfooter',
+    templateUrl: './categoriesfooter.component.html',
+    styleUrls: ['./categoriesfooter.component.scss'],
+    imports: []
 })
 export class CategoriesFooterComponent {
 

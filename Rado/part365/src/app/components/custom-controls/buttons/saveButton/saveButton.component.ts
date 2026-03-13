@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'app-savebutton',
-  templateUrl: './saveButton.component.html',
-  styleUrls: ['./saveButton.component.css'],
-  imports: []
+    selector: 'app-savebutton',
+    templateUrl: './saveButton.component.html',
+    styleUrls: ['./saveButton.component.css'],
+    imports: []
 })
 export class SaveButtonComponent {
 

@@ -12,12 +12,11 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatBadgeModule } from '@angular/material/badge'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 @Component({
-    standalone: true,
     selector: 'app-imagecomponent',
     templateUrl: './image.component.html',
     styleUrls: ['./image.component.css'],
     imports: [NgStyle, NgClass],
-    providers: [NgxGalleryHelperService, MatBadgeModule, MatIconModule, MatButtonModule],
+    providers: [NgxGalleryHelperService, MatBadgeModule, MatIconModule, MatButtonModule]
 })
 export class ImageComponent {
     

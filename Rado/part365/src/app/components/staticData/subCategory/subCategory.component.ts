@@ -10,12 +10,10 @@ import { CategoryService } from '@services/category-subcategory/category.service
 import { SubCategoryService } from '@services/category-subcategory/subCategory.service';
 import { SelectOption } from '@model/selectOption';
 @Component({
-  standalone: true,
-  selector: 'app-subcategory',
-  templateUrl: './subCategory.component.html',
-  styleUrls: ['./subCategory.component.css'],
-  imports: [ReactiveFormsModule, InputComponent, NgStyle, SelectComponent, NgClass]
-
+    selector: 'app-subcategory',
+    templateUrl: './subCategory.component.html',
+    styleUrls: ['./subCategory.component.css'],
+    imports: [ReactiveFormsModule, InputComponent, NgStyle, SelectComponent, NgClass]
 })
 export default class SubCategoryComponent extends HelperComponent implements AfterViewInit {
 

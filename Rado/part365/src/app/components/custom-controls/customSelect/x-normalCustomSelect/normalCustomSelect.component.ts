@@ -4,9 +4,10 @@ import { ErrorService } from '@services/ErrorService/error.service';
 import { SelectBase } from '../../selectBase';
 
 @Component({
-  selector: 'app-normalCustomSelect',
-  templateUrl: './normalCustomSelect.component.html',
-  styleUrls: ['./normalCustomSelect.component.css']
+    selector: 'app-normalCustomSelect',
+    templateUrl: './normalCustomSelect.component.html',
+    styleUrls: ['./normalCustomSelect.component.css'],
+    standalone: false
 })
 
 export class NormalCustomSelectComponent extends SelectBase implements OnInit, AfterViewInit {

@@ -30,11 +30,10 @@ import { convertImage, goTop, goToPosition } from '@app/functions/functions'
 //#region component
 
 @Component({
-    standalone: true,
     selector: 'app-userhomepage',
     templateUrl: './userHomePage.component.html',
     styleUrls: ['./userHomePage.component.css'],
-    imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent],
+    imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent]
 })
 //#endregion
 export class UserHomePageComponent extends HelperComponent implements OnInit, AfterViewInit {

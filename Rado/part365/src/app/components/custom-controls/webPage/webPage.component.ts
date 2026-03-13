@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'app-webpage',
-  templateUrl: './webPage.component.html',
-  styleUrls: ['./webPage.component.css'],
-  imports: []
+    selector: 'app-webpage',
+    templateUrl: './webPage.component.html',
+    styleUrls: ['./webPage.component.css'],
+    imports: []
 })
 export class WebPageComponent{
 

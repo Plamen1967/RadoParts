@@ -4,12 +4,11 @@ import { DisplayPartView } from '@model/displayPartView';
 import { StaticSelectionService } from '@services/staticSelection.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-partview',
-  templateUrl: './partView.component.html',
-  styleUrls: ['./partView.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: []
+    selector: 'app-partview',
+    templateUrl: './partView.component.html',
+    styleUrls: ['./partView.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: []
 })
 export class PartViewComponent extends HelperComponent {
 

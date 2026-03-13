@@ -3,11 +3,10 @@ import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 
 @Component({
-    standalone: true,
     selector: 'app-radiogroup',
     templateUrl: './radiogroup.component.html',
     styleUrls: ['./radiogroup.component.css'],
-    imports: [FormsModule],
+    imports: [FormsModule]
 })
 export class RadioGroupComponent implements ControlValueAccessor, AfterViewInit {
     _radios: RadioButton[] = []

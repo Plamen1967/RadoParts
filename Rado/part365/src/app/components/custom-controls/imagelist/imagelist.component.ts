@@ -11,11 +11,10 @@ import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 
 @Component({
-    standalone: true,
     selector: 'app-imagelist',
     templateUrl: './imagelist.component.html',
     styleUrls: ['./imagelist.component.css'],
-    imports: [FormsModule, UploadComponent],
+    imports: [FormsModule, UploadComponent]
 })
 export class ImageListComponent extends HelperComponent implements OnInit {
     mainImageId?: number

@@ -4,11 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  standalone: true,
-  imports: [NgStyle, MatDialogActions, MatDialogContent, MatButton, MatDialogClose],
-  selector: 'app-confirmation',
-  templateUrl: './confirmation.component.html',
-  styleUrls: ['./confirmation.component.css']
+    imports: [NgStyle, MatDialogActions, MatDialogContent, MatButton, MatDialogClose],
+    selector: 'app-confirmation',
+    templateUrl: './confirmation.component.html',
+    styleUrls: ['./confirmation.component.css']
 })
 export class ConfirmationComponent implements OnInit{
   data = inject(MAT_DIALOG_DATA);

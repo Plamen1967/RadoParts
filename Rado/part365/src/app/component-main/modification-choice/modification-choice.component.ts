@@ -12,11 +12,10 @@ import { ModificationService } from '@services/company-model-modification/modifi
 import { ErrorService } from '@services/error.service'
 
 @Component({
-    standalone: true,
     selector: 'app-modification-choice',
     templateUrl: './modification-choice.component.html',
     styleUrls: ['./modification-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule]
 })
 export class ModificationChoiceComponent implements ControlValueAccessor {
     modifications: OptionItem[] = []

@@ -41,7 +41,6 @@ import { UserCount } from '@model/userCount'
 //#endregion
 //#region component
 @Component({
-    standalone: true,
     selector: 'app-listcars',
     templateUrl: './listcars.component.html',
     styleUrls: ['./listCars.component.css'],
@@ -61,7 +60,7 @@ import { UserCount } from '@model/userCount'
         UpdateCarComponent,
         UpdatePartComponent,
         AsyncPipe
-    ],
+    ]
 })
 
 // interface ListCarParam {

@@ -39,7 +39,6 @@ import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 
 @Component({
-    standalone: true,
     selector: 'app-addtyre',
     templateUrl: './addTyre.component.html',
     styleUrls: ['./addTyre.component.css'],
@@ -55,7 +54,7 @@ import { DisplayPartView } from '@model/displayPartView'
         CompanyChoiseComponent,
         ModelChoiceComponent,
         ToolBarComponent,
-    ],
+    ]
 })
 export default class AddTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
     @HostListener('window:keydown.esc')

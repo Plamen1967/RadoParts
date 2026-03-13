@@ -22,11 +22,10 @@ import { SearchPartService } from '@services/searchPart.service'
 import { UserService } from '@services/user.service'
 
 @Component({
-    standalone: true,
     selector: 'app-stock',
     templateUrl: './stock.component.html',
     styleUrls: ['./stock.component.css'],
-    imports: [NgStyle, RadioGroupListComponent, FormsModule, ResultComponent, UserViewPartComponent],
+    imports: [NgStyle, RadioGroupListComponent, FormsModule, ResultComponent, UserViewPartComponent]
 })
 export default class StockComponent implements OnInit {
     userId = 0

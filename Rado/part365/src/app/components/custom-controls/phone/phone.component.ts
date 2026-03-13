@@ -2,11 +2,10 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { isMobile } from '@app/functions/functions';
 
 @Component({
-  standalone: true,
-  selector: 'app-phone',
-  templateUrl: './phone.component.html',
-  styleUrls: ['./phone.component.css'],
-  imports: []
+    selector: 'app-phone',
+    templateUrl: './phone.component.html',
+    styleUrls: ['./phone.component.css'],
+    imports: []
 })
 export class PhoneComponent implements OnInit {
    @HostListener('click', ["$event"])

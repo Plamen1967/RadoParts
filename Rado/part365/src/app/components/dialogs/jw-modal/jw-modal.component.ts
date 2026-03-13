@@ -2,10 +2,9 @@ import { Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy } fr
 import { ModalService } from '@services/dialog-api/modal.service';
 
 
-@Component({ 
-    standalone: true,
-    selector: 'app-jw-modal', 
-    templateUrl: 'jw-modal.component.html', 
+@Component({
+    selector: 'app-jw-modal',
+    templateUrl: 'jw-modal.component.html',
     styleUrls: ['jw-modal.component.css'],
     encapsulation: ViewEncapsulation.None,
     imports: []

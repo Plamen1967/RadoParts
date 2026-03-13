@@ -5,11 +5,10 @@ import { WebcamImage, WebcamInitError, WebcamModule, WebcamUtil } from 'ngx-webc
 import { Observable, Subject } from 'rxjs';
 
 @Component({
-  standalone: true,
-  selector: 'app-camera',
-  templateUrl: './camera.component.html',
-  styleUrls: ['./camera.component.css'],
-  imports: [WebcamModule, JsonPipe]
+    selector: 'app-camera',
+    templateUrl: './camera.component.html',
+    styleUrls: ['./camera.component.css'],
+    imports: [WebcamModule, JsonPipe]
 })
 export class CameraComponent implements OnInit {
   @Output() getPicture = new EventEmitter<WebcamImage>();

@@ -8,10 +8,9 @@ import { ItemType } from '@model/enum/itemType.enum'
 
 @Component({
     selector: 'app-updateadd',
-    standalone: true,
     templateUrl: './updateadd.component.html',
     styleUrls: ['./updateadd.component.css'],
-    imports: [UpdateCarComponent, UpdateBusComponent, UpdatePartComponent, UpdateTyreComponent],
+    imports: [UpdateCarComponent, UpdateBusComponent, UpdatePartComponent, UpdateTyreComponent]
 })
 export class UpdateAddComponent implements OnInit {
     @Input() displayPartView?: DisplayPartView

@@ -3,11 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 @Component({
-  standalone: true,
-  selector: 'app-zoom',
-  templateUrl: './zoom.component.html',
-  styleUrls: ['./zoom.component.css'],
-  imports: [NgxImageZoomModule]
+    selector: 'app-zoom',
+    templateUrl: './zoom.component.html',
+    styleUrls: ['./zoom.component.css'],
+    imports: [NgxImageZoomModule]
 })
 export class ZoomComponent {
 

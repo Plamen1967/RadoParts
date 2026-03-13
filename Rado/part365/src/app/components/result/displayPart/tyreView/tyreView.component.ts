@@ -5,12 +5,11 @@ import { ItemType } from '@model/enum/itemType.enum'
 import { StaticSelectionService } from '@services/staticSelection.service'
 
 @Component({
-    standalone: true,
     selector: 'app-tyreview',
     templateUrl: './tyreView.component.html',
     styleUrls: ['./tyreView.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [],
+    imports: []
 })
 export class TyreViewComponent extends HelperComponent implements OnInit {
     @Input() set tyre(value: DisplayPartView) {

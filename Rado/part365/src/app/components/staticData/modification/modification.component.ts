@@ -14,11 +14,10 @@ import { ConfirmServiceService } from '@app/dialog/services/confirmService.servi
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 
 @Component({
-    standalone: true,
     selector: 'app-modification',
     templateUrl: './modification.component.html',
     styleUrls: ['./modification.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
+    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass]
 })
 export default class ModificationComponent extends HelperComponent implements AfterViewInit {
     modificationForm: FormGroup

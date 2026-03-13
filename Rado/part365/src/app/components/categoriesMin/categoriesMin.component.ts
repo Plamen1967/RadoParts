@@ -7,7 +7,6 @@ import { Dropdown } from '@model/dropDown'
 import { CategoryService } from '@services/category-subcategory/category.service'
 
 @Component({
-    standalone: true,
     selector: 'app-categoriesmin',
     host: {
         click: 'clickInside()',
@@ -15,7 +14,7 @@ import { CategoryService } from '@services/category-subcategory/category.service
     },
     imports: [],
     templateUrl: './categoriesMin.component.html',
-    styleUrls: ['./categoriesMin.component.css'],
+    styleUrls: ['./categoriesMin.component.css']
 })
 export class CategoriesMinComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChildren('sub-menu', { read: ElementRef }) subMenuChildren?: QueryList<ElementRef>

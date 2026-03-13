@@ -1,12 +1,10 @@
 import { Component, HostListener, Input } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'app-dealer',
-  templateUrl: './dealer.component.html',
-  styleUrls: ['./dealer.component.css'],
-  imports: []
-
+    selector: 'app-dealer',
+    templateUrl: './dealer.component.html',
+    styleUrls: ['./dealer.component.css'],
+    imports: []
 })
 export class DealerComponent{
 

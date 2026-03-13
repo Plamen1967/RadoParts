@@ -10,11 +10,10 @@ import { CategoryService } from '@services/category-subcategory/category.service
 import { ErrorService } from '@services/error.service'
 
 @Component({
-    standalone: true,
     selector: 'app-category-choise',
     templateUrl: './category-choise.component.html',
     styleUrls: ['./category-choise.component.css'],
-    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
+    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule]
 })
 export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
     categoryForm: FormGroup

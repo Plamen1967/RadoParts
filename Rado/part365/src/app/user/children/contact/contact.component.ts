@@ -5,11 +5,10 @@ import { User } from '@model/user';
 import { UserService } from '@services/user.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css'],
-  imports: [UserHeaderComponent]
+    selector: 'app-contact',
+    templateUrl: './contact.component.html',
+    styleUrls: ['./contact.component.css'],
+    imports: [UserHeaderComponent]
 })
 export default class ContactComponent implements OnInit {
 

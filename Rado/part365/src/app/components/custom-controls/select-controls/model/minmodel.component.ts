@@ -12,11 +12,10 @@ import { DialogData } from '@model/dialogData'
 //#endregion
 //#region @Component
 @Component({
-    standalone: true,
     selector: 'app-model',
     templateUrl: './minmodel.component.html',
     styleUrls: ['./minmodel.component.css'],
-    imports: [NgIf, NgFor, MatDialogContent, ChoiseComponent, MatDialogClose, NgClass, SearchInputComponent],
+    imports: [NgIf, NgFor, MatDialogContent, ChoiseComponent, MatDialogClose, NgClass, SearchInputComponent]
 })
 //#endregion
 export class MinModelComponent extends SelectBase implements OnInit {

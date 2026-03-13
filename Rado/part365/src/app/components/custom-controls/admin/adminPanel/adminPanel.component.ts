@@ -8,11 +8,10 @@ import { AdminService } from '@services/admin.service'
 import { AuthenticationService } from '@services/authentication/authentication.service'
 
 @Component({
-    standalone: true,
     selector: 'app-adminpanel',
     templateUrl: './adminPanel.component.html',
     styleUrls: ['./adminPanel.component.css'],
-    imports: [SelectComponent, FormsModule],
+    imports: [SelectComponent, FormsModule]
 })
 export class AdminPanelComponent {
     @Input() itemId?: number

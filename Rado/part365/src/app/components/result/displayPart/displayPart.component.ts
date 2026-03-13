@@ -41,25 +41,24 @@ import { PathService } from '@services/path.service'
 //#endregion
 //#region component
 @Component({
-    standalone: true,
     selector: 'app-displaypart',
     templateUrl: './displayPart.component.html',
     styleUrls: ['./displayPart.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-    PhoneComponent,
-    DealerComponent,
-    FavouriteComponent,
-    WhatsComponent,
-    NgClass,
-    AdminPanelComponent,
-    ImageComponent,
-    ViberComponent,
-    PriceComponent,
-    PartViewComponent,
-    TyreViewComponent,
-    NgStyle
-],
+        PhoneComponent,
+        DealerComponent,
+        FavouriteComponent,
+        WhatsComponent,
+        NgClass,
+        AdminPanelComponent,
+        ImageComponent,
+        ViberComponent,
+        PriceComponent,
+        PartViewComponent,
+        TyreViewComponent,
+        NgStyle
+    ]
 })
 
   

@@ -7,11 +7,10 @@ import { AdminService } from '@services/admin.service';
 import { ModalService } from '@services/dialog-api/modal.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-password',
-  templateUrl: './password.component.html',
-  styleUrls: ['./password.component.css'],
-  imports: [NgClass, ReactiveFormsModule, NgStyle]
+    selector: 'app-password',
+    templateUrl: './password.component.html',
+    styleUrls: ['./password.component.css'],
+    imports: [NgClass, ReactiveFormsModule, NgStyle]
 })
 export default class PasswordComponent extends HelperComponent implements OnInit {
 

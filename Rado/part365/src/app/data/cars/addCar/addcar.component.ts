@@ -36,11 +36,10 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 
 //#region metadata
 @Component({
-    standalone: true,
     selector: 'app-addcar',
     templateUrl: './addcar.component.html',
     styleUrls: ['./addcar.component.scss'],
-    imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent],
+    imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent]
 })
 //#endregion
 export default class AddCarComponent extends HelperComponent implements OnInit, AfterViewInit {

@@ -10,11 +10,10 @@ import { SubCategoryService } from '@services/category-subcategory/subCategory.s
 import { ErrorService } from '@services/error.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-subcategory-choise',
-  templateUrl: './subcategory-choise.component.html',
-  styleUrls: ['./subcategory-choise.component.css'],
-    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
+    selector: 'app-subcategory-choise',
+    templateUrl: './subcategory-choise.component.html',
+    styleUrls: ['./subcategory-choise.component.css'],
+    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule]
 })
 export class SubcategoryChoiseComponent implements ControlValueAccessor, OnInit, AfterViewInit {
     subCategoryForm: FormGroup

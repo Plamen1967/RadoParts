@@ -2,11 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { HelperComponent } from '@components/helper.old/helper.component'
 
 @Component({
-    standalone: true,
     selector: 'app-cancelbutton',
     templateUrl: './cancelButton.component.html',
     styleUrls: ['./cancelButton.component.css'],
-    imports: [],
+    imports: []
 })
 export class CancelButtonComponent extends HelperComponent {
     @Input() label = this.labels.SAVE
