@@ -4,19 +4,45 @@
 
 <button class="btn btn-primary" (click)="login()">Login</button>
 <router-outlet /> -->
+ <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="isMobile() ? 56 : 0">
+    <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'over'" [fixedInViewport]="isMobile()" fixedTopGap="56">
+        <mat-nav-list style="position: relative; padding-top: 30px;"  (click)="toggleMenu()" >
+          <span class="material-symbols-outlined menu-burger" role="none"> close </span>
+            <a [routerLink]="['/data/addNew']" (click)="toggleMenu()" >
+                <div class="linkClass" role="none">
+                    <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
+                </div>
+            </a>
+            <div [routerLink]="['/checkout']" class="linkClass" style="background-color: var(--favoutite) !important" role="presentation">
+                <div class="element" (click)="toggleMenu()" role="none">
+                    <span class="text text-body-small-pale" (click)="toggleMenu()" role="none">
+                        {{ checkout }}
+                        @if (count) {
+                            <i class="ms-1 la-star las saved sizeSaved"></i>
+                        } @else {
+                            <i class="ms-1 la-star lar saved sizeSaved"></i>
+                        }
+                    </span>
+                </div>
+            </div>
 
-<div [ngClass]="{'main-class':true}" class="main-style">
-  <div class="main">
+        </mat-nav-list>
+    </mat-sidenav>
 
-    @if (!dealerWebaPage)  {
-      <app-nav-menu style="display:block;width:100%"></app-nav-menu>
-    }
+    <mat-sidenav-content>
+        <div [ngClass]="{ 'main-class': true }" class="main-style">
+            <div class="main">
+                @if (!dealerWebaPage) {
+                    <app-nav-menu style="display: block; width: 100%"></app-nav-menu>
+                }
 
-      <div class="componentPadding">
-          <router-outlet (activate)="onActivate($event, outlet)" #outlet></router-outlet>
-      </div>
-  </div>
-  <div class="footer">
-    <app-footer></app-footer>
-  </div>
-</div>
+                <div class="componentPadding">
+                    <router-outlet (activate)="onActivate($event, outlet)" #outlet></router-outlet>
+                </div>
+            </div>
+            <div class="footer">
+                <app-footer></app-footer>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

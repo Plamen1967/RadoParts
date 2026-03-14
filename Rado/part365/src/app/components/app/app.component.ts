@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component } from '@angular/core'
+import { Component, OnDestroy, ViewChild, inject, signal } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { RouterOutlet } from '@angular/router'
 import { NavMenuComponent } from '@app/menu/navMenu/navMenu.component'
@@ -10,24 +10,46 @@ import { PathService } from '@services/path.service'
 import { RouterModule } from '@angular/router'
 import { CommonModule } from '@angular/common'
 import { UserCountService } from '@services/userCount.service'
+import {MatListModule} from '@angular/material/list';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MediaMatcher} from '@angular/cdk/layout';
+import { MenuService } from '@services/Menu.service';
+import { effect, untracked } from '@angular/core';
+import { CONSTANT } from '@app/constant/globalLabels'
+import { LocalStorageService } from '@services/storage/localStorage.service'
+
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, FooterComponent, NavMenuComponent, NgClass, RouterModule, CommonModule],
+    imports: [RouterOutlet, FooterComponent, NavMenuComponent, NgClass, RouterModule, CommonModule,MatIconModule, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy  {
+toggleMenu() {
+this.menuService.showMenu.set(false);
+}
     title = 'part365'
     opened = false
-
+     protected readonly fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
+  protected readonly isMobile = signal(true);
+    public menuService: MenuService;
+  private readonly _mobileQuery: MediaQueryList;
+  private readonly _mobileQueryListener: () => void;
+    @ViewChild('snav') snav: any;
     constructor(
         private dialog: MatDialog,
         private pathService: PathService,
         private userService: UserCountService,
         private loggerService: LoggerService,
-        public authenticationService: AuthenticationService
+        public authenticationService: AuthenticationService,
+        private localStorage: LocalStorageService,
+
     ) {
+        this.menuService = inject(MenuService);
         if (authenticationService.currentToken) {
             this.authenticationService.validateToken().subscribe({
                 next: () => {
@@ -41,16 +63,39 @@ export class AppComponent {
             })
         }
 
+        effect(() => {
+            const showMenu = this.menuService.showMenu()
+            untracked(() => this.snav.toggle())
+            console.log('toggle test')
+        })
+
         const link = document.createElement('meta')
         link.setAttribute('name', 'viewport')
         link.setAttribute('content', 'width=device-width, initial-scale=1.0')
         document.getElementsByTagName('head')[0].appendChild(link)
+        const media = inject(MediaMatcher);
+
+        this._mobileQuery = media.matchMedia('(max-width: 0px)');
+        this.isMobile.set(this._mobileQuery.matches);
+        this._mobileQueryListener = () => this.isMobile.set(this._mobileQuery.matches);
+        this._mobileQuery.addEventListener('change', this._mobileQueryListener);        
     }
 
     get dealerWebaPage() {
         if (this.pathService.userPage) return true
         return false
     }
+    get count() {
+        return this.localStorage.items
+    }
+
+  ngOnDestroy(): void {
+    this._mobileQuery.removeEventListener('change', this._mobileQueryListener);
+  }
+    get checkout() {
+        return `${CONSTANT.SAVED} ${this.localStorage.items}`
+    }
+
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onActivate(e: unknown, outlet: any) {

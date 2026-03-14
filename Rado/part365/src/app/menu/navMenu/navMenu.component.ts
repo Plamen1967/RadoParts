@@ -21,11 +21,35 @@ import { PathService } from '@services/path.service'
 import { UserCount } from '@model/userCount'
 import { Observable } from 'rxjs'
 import { UserCountService } from '@services/userCount.service'
+import { MatButtonModule } from '@angular/material/button'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatInputModule } from '@angular/material/input'
+import { MediaMatcher } from '@angular/cdk/layout'
+import { inject, signal } from '@angular/core'
+import {MatIconModule} from '@angular/material/icon';
+import { MenuService } from '@services/Menu.service';
 //#endregion
 
 //#region component
 @Component({
-    imports: [NgStyle, NgClass, RouterLinkActive, RouterLink, CompanyHeaderComponent, AsyncPipe],
+    imports: [
+        NgStyle,
+        NgClass,
+        RouterLinkActive,
+        RouterLink,
+        CompanyHeaderComponent,
+        AsyncPipe,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+    ],
     selector: 'app-nav-menu',
     templateUrl: 'navmenu.component.html',
     styleUrls: ['navmenu.component.scss'],
@@ -40,8 +64,16 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
     userCompanyName?: string = ''
     dialogLogin = false
     userPage = true
+    protected readonly isMobile = signal(true)
+
+    private readonly _mobileQuery: MediaQueryList
+    private readonly _mobileQueryListener: () => void
+
     @ViewChild('header', { read: ElementRef }) header?: ElementRef
+    @ViewChild('mySidenav', { read: ElementRef }) myElement?: ElementRef
     userCount$: Observable<UserCount | undefined>
+    menuService: MenuService;
+    document!: Document
 
     constructor(
         private router: Router,
@@ -54,23 +86,28 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
         public pathService: PathService,
         private activatedRoute: ActivatedRoute,
         private userCountService: UserCountService,
-        @Inject(DOCUMENT) private document: Document,
-
         private matDialog: MatDialog,
         private confirmService: ConfirmServiceService,
         public staticSelectionService: StaticSelectionService
     ) {
         super()
+        this.document = Inject(DOCUMENT)
+        this.menuService = inject(MenuService);
         checkOutService.checkout.subscribe(() => this.checkoutUpdate())
         userService.userPage.subscribe((userId) => {
             this.userId = userId
         })
         this.userPage = this.pathService.userPage
         this.userCount$ = this.userCountService.userCount$
+        const media = inject(MediaMatcher)
+
+        this._mobileQuery = media.matchMedia('(max-width: 600px)')
+        this.isMobile.set(this._mobileQuery.matches)
+        this._mobileQueryListener = () => this.isMobile.set(this._mobileQuery.matches)
+        this._mobileQuery.addEventListener('change', this._mobileQueryListener)
     }
     ngOnDestroy(): void {
-        throw 'TODO'
-        //this.confirmationService.close()
+        this._mobileQuery.removeEventListener('change', this._mobileQueryListener)
     }
 
     get localStorageItems() {
@@ -89,10 +126,17 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
         })
     }
 
+    showSideMenu() {
+        this.menuService.showMenu.set(!this.menuService.showMenu())
+    }
+    
     collapse() {
         this.isExpanded = false
     }
 
+    toggleSideMenu() {
+
+    }
     toggle() {
         this.isExpanded = !this.isExpanded
     }
@@ -249,5 +293,14 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
     rimWithTyre() {
         this.router.navigate(['/data/rimWithtyres'])
         this.carService.resetCurrentId()
+    }
+
+    //#region side menu
+    openNav() {
+        if (this.myElement != null) this.myElement.nativeElement.style.width = '250px'
+    }
+
+    closeNav() {
+        if (this.myElement != null) this.myElement.nativeElement.style.width = '0'
     }
 }

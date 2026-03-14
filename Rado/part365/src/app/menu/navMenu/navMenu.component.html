@@ -1,5 +1,9 @@
 @if (!userId) {
     <header id="header" class="header">
+        <!-- <mat-toolbar class="example-toolbar">
+            <button matIconButton (click)="toggleSideMenu()"><mat-icon>menu</mat-icon></button>
+            <h1 class="example-app-name">Responsive App</h1>
+        </mat-toolbar> -->
         <div class="background-image" [ngClass]="{ show: displayBanner, noShow: !displayBanner }"></div>
         @if (isParts365) {
             <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin me-2">
@@ -34,6 +38,7 @@
                         <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
                     </div>
                 </div>
+                <span class="material-symbols-outlined menu-burger side-menu-button" (click)="showSideMenu()" role="none"> menu </span>
             </nav>
         }
         <nav class="navbar navbar-expand-sm navbar-dark noPadding d-flex" #header>
@@ -49,16 +54,6 @@
                         </div>
                     </nav>
                 }
-                <!-- <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button> -->
                 <div class="navbar-collapse collapse menu-nav" [ngClass]="{ show: isExpanded }" id="navbarNavDropdown">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
@@ -82,14 +77,6 @@
                             <li>
                                 <a class="nav-link buttonGap checkout" routerLink="/checkout" routerLinkActive="active-link" data-toggle="tooltip" data-placement="top" title="Запази обяви">
                                     {{ checkout }}
-                                    <!-- <div style="color: red; height: 12px; width: 12px;">
-                @if (localStorageItems) {
-                  <span class="material-symbols-outlined" >
-                    favorite
-                  </span>
-                } @else {
-                  <span class="material-icons" > favorite_border </span>                                    }
-                </div> -->
                                 </a>
                             </li>
                             @if (logged) {

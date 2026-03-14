@@ -25,12 +25,7 @@
                             }
                         ],
                         "styles": ["@angular/material/prebuilt-themes/azure-blue.css", "src/styles.scss", "./node_modules/bootstrap/dist/css/bootstrap.css", "src/mat-style.css"],
-                        "scripts": ["node_modules/@popperjs/core/dist/umd/popper.min.js", "node_modules/bootstrap/dist/js/bootstrap.bundle.js"],
-                        // "stylePreprocessorOptions": {
-                        //     "sass": {
-                        //         "silenceDeprecations": ["mixed-decls", "color-functions", "global-builtin", "import"]
-                        //     }
-                        // }
+                        "scripts": ["node_modules/@popperjs/core/dist/umd/popper.min.js", "node_modules/bootstrap/dist/js/bootstrap.bundle.js"]
                     },
                     "configurations": {
                         "production": {

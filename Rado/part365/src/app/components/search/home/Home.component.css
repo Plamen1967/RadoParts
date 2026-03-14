@@ -309,3 +309,9 @@ marquee {
     100% { transform: translate(-100%, 0); }
 }
 
+@media (max-width: 768px) {
+    .marquee {
+        display: none;
+    }
+    
+}

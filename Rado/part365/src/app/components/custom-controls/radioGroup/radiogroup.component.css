@@ -19,7 +19,7 @@ input+label
 .radio-group,
 input+label {
     border-radius: 8px;
-    height: 42px;
+    height: 36px;
 }
 
 .radio-group {

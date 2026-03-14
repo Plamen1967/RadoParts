@@ -143,13 +143,13 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         { label: 'Бус', id: 1 },
     ]
     carRadios: RadioButton[] = [
-        { label: 'Всички обяви', id: ItemType.AllCarAndPart },
+        { label: 'Всички', id: ItemType.AllCarAndPart },
         { label: 'Коли на части', id: ItemType.OnlyCar },
         { label: 'Само части', id: ItemType.CarPart },
     ]
 
     busRadios: RadioButton[] = [
-        { label: 'Всички обяви', id: ItemType.AllBusAndPart },
+        { label: 'Всички', id: ItemType.AllBusAndPart },
         { label: 'Бусове на части', id: ItemType.OnlyBus },
         { label: 'Само части', id: ItemType.BusPart },
     ]
