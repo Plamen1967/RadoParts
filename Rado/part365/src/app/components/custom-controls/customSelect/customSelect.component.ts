@@ -3,7 +3,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from './x-company/company.component'
 import { ErrorService } from '@services/error.service'
-import { NgClass, NgIf, NgStyle } from '@angular/common'
+import { NgClass, NgStyle } from '@angular/common'
 import { ButtonGroupComponent } from '../buttonGroup/buttongroup.component'
 import { OptionItem } from '@model/optionitem'
 import { BaseControl } from '../baseControl'
@@ -13,25 +13,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-customselect',
     templateUrl: './customSelect.component.html',
     styleUrls: ['./customSelect.component.css'],
-    imports: [NgClass, NgStyle, ButtonGroupComponent, NgIf]
+    imports: [NgClass, NgStyle, ButtonGroupComponent],
 })
 export class CustomSelectComponent extends BaseControl<number> implements OnInit, ControlValueAccessor, AfterViewInit {
-
     selectedValue?: number
     letterItem = undefined
     _selection?: string
     data_: OptionItem[] = []
-    clearBox?: boolean;
+    clearBox?: boolean
 
-   
     @Output() changeOption: EventEmitter<number> = new EventEmitter<number>()
     @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
     @Input() displayProperty = 'text'
     @Input() valueProperty = 'value'
     @Input() countProperty = 'count'
     @Input() groupSelection = false
-    @Input() set data(data_:  OptionItem[]) {
-        this.data_ = [...data_];
+    @Input() set data(data_: OptionItem[]) {
+        this.data_ = [...data_]
 
         if (this.groupDisabled) {
             this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
@@ -55,7 +53,7 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
         public dialog: MatDialog,
         errorService: ErrorService,
         el: ElementRef,
-                private destroyRef: DestroyRef
+        private destroyRef: DestroyRef
     ) {
         super(control, errorService, el)
     }
@@ -82,11 +80,11 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
     change(value?: number) {
         this.clearBox = value ? true : false
         this._selection = this.data_?.find((item) => item.id === value)?.description ?? this.placeHolder
-        if (this.onChange) this.onChange(value!);
+        if (this.onChange) this.onChange(value!)
     }
 
     clickSelect() {
-        if (!this.data_) return;
+        if (!this.data_) return
         const dialogRef = this.dialog.open(CompanyComponent, {
             height: '100%',
             width: '100%',
@@ -101,12 +99,13 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
                 placeHolder: this.placeHolder,
             },
         })
-        dialogRef.afterClosed()
-                .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((result) => {
-            if (result) this.change(result)
-            console.log(`Dialog result: ${result}`)
-        })
+        dialogRef
+            .afterClosed()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((result) => {
+                if (result) this.change(result)
+                console.log(`Dialog result: ${result}`)
+            })
     }
 
     clear() {
@@ -114,12 +113,12 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
         this.change(undefined)
     }
     override get contolName(): string {
-        return this.control.name?.toString() ?? this.placeHolder ?? this.label ?? 'Избери';
+        return this.control.name?.toString() ?? this.placeHolder ?? this.label ?? 'Избери'
     }
 
     updateData() {
         // TODO
-        return;
+        return
     }
     //#endregion
 }

@@ -10,7 +10,7 @@ import { ImageService } from '@services/image.service'
 import { LocalStorageService } from '@services/storage/localStorage.service'
 import { HomeService } from '@services/home.service'
 import { SearchPartService } from '@services/searchPart.service'
-import { NgClass, NgIf, NgStyle } from '@angular/common'
+import { NgClass, NgStyle } from '@angular/common'
 import { TyreService } from '@services/tyre/tyre.service'
 import { PartServiceService } from '@services/part/partService.service'
 import { CarService } from '@services/car.service'
@@ -38,7 +38,7 @@ import { LoggerService } from '@services/authentication/logger.service'
     templateUrl: './userViewPart.component.html',
     styleUrls: ['./userViewPart.component.css'],
     // changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgIf, DataRowComponent, FavouriteComponent, NgStyle, RequestByEmailComponent, UserCardComponent, NgClass, ImageCarouselComponent, UpdateAddComponent]
+    imports: [DataRowComponent, FavouriteComponent, NgStyle, RequestByEmailComponent, UserCardComponent, NgClass, ImageCarouselComponent, UpdateAddComponent],
 })
 export class UserViewPartComponent extends HelperComponent implements OnInit, AfterViewInit {
     item?: DisplayPartView
@@ -665,7 +665,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
             this.back.emit(this.query)
             return
         }
-        this.back.emit(undefined);
+        this.back.emit(undefined)
     }
     backEvent() {
         this.updatedItem = undefined

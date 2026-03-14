@@ -17,6 +17,7 @@ import { SearchPartService } from '@services/searchPart.service'
 import { UserService } from '@services/user.service'
 
 @Component({
+    standalone: true,   
     selector: 'app-userinfo',
     templateUrl: './userInfo.component.html',
     styleUrls: ['./userInfo.component.css'],

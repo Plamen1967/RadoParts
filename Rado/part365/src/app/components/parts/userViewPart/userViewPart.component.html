@@ -93,11 +93,11 @@
                                             }
                                         }
                                         <!-- @if (isPart) {
-                                    <app-partdetailview [part]="item"></app-partdetailview>
-                                }
-                                @if (isTyre) {
-                                    <app-tyredetailview [tyre]="item"></app-tyredetailview>
-                                } -->
+                      <app-partdetailview [part]="item"></app-partdetailview>
+                    }
+                    @if (isTyre) {
+                      <app-tyredetailview [tyre]="item"></app-tyredetailview>
+                      } -->
                                         @if (item.year) {
                                             <app-datarow class="item" label="{{ labels.YEAR }}" value="{{ item.year }}"></app-datarow>
                                         }
@@ -108,19 +108,19 @@
                                         @if (phones && !isMobile) {
                                             <app-datarow label="{{ labels.PHONE }}">
                                                 <div class="param col-sm-7">
-                                                    <ng-template [ngIf]="phone1">
+                                                    @if (phone1) {
                                                         <div>
                                                             <small data-cy="sellerName" class="me-2"><i class="las la-phone-volume"></i> {{ phone1 }} </small>
                                                         </div>
-                                                    </ng-template>
-                                                    <ng-template [ngIf]="phone2">
+                                                    }
+                                                    @if (phone2) {
                                                         <div>
                                                             <small data-cy="sellerName"
                                                                 ><i class="las la-phone-volume"></i>
                                                                 {{ phone2 }}
                                                             </small>
                                                         </div>
-                                                    </ng-template>
+                                                    }
                                                 </div>
                                             </app-datarow>
                                         }

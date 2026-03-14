@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { MenuOption } from '@model/menuOption';
+
+import { Component, Input } from '@angular/core'
+import { MenuOption } from '@model/menuOption'
 
 @Component({
     selector: 'app-buttonmenu',
     templateUrl: './buttonMenu.component.html',
     styleUrls: ['./buttonMenu.component.css'],
-    imports: [NgFor, NgIf]
+    imports: [],
 })
-export class ButtonMenuComponent{
+export class ButtonMenuComponent {
+    @Input() menuOptions?: MenuOption[]
 
-  @Input() menuOptions?: MenuOption[];
-
-  menuSelected(menuId?: number) {
-    return;
-  }
+    menuSelected(menuId?: number) {
+        return
+    }
 }

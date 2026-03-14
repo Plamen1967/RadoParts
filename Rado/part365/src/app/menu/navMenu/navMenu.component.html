@@ -1,7 +1,7 @@
 @if (!userId) {
     <header id="header" class="header">
         <div class="background-image" [ngClass]="{ show: displayBanner, noShow: !displayBanner }"></div>
-        <ng-template [ngIf]="isParts365" [ngIfElse]="radopartsMin">
+        @if (isParts365) {
             <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin me-2">
                 <div class="menuColor header container parent" [ngStyle]="{ 'text-align': 'center', 'justify-content': 'center' }">
                     <div>
@@ -18,22 +18,47 @@
                     </div>
                 </div>
             </nav>
-        </ng-template>
+        } @else {
+            <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin">
+                <div class="parent">
+                    <div class="menuColor container showCompany">
+                        <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">
+                            {{ companyName }}
+                        </div>
+                    </div>
+                    <div
+                        class="navbar-nav me-auto nav-item d-flex"
+                        [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
+                        [routerLinkActive]="['link-active']"
+                        [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
+                    </div>
+                </div>
+            </nav>
+        }
         <nav class="navbar navbar-expand-sm navbar-dark noPadding d-flex" #header>
             <div class="container showMenu menu" [ngStyle]="{ 'max-width': '100%', width: '100%', 'justify-content': 'center' }">
-                <ng-template [ngIf]="isParts365" [ngIfElse]="radoparts">
+                @if (isParts365) {
                     <a class="navbar-brand menuItem brand brandFont">Parts365.bg</a>
-                </ng-template>
+                } @else {
+                    <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenu">
+                        <div class="menuColor container" [ngStyle]="{ height: '4em', 'text-align': 'center', 'justify-content': 'center' }">
+                            <div class="brandFont" [ngStyle]="{ color: 'blue' }">
+                                {{ companyName }}
+                            </div>
+                        </div>
+                    </nav>
+                }
                 <!-- <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button> -->
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button> -->
                 <div class="navbar-collapse collapse menu-nav" [ngClass]="{ show: isExpanded }" id="navbarNavDropdown">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
@@ -58,13 +83,13 @@
                                 <a class="nav-link buttonGap checkout" routerLink="/checkout" routerLinkActive="active-link" data-toggle="tooltip" data-placement="top" title="Запази обяви">
                                     {{ checkout }}
                                     <!-- <div style="color: red; height: 12px; width: 12px;">
-                                        @if (localStorageItems) {
-                                            <span class="material-symbols-outlined" >
-                                                favorite
-                                                </span>
-                                        } @else {
-                                            <span class="material-icons" > favorite_border </span>                                    }
-                                        </div> -->
+                @if (localStorageItems) {
+                  <span class="material-symbols-outlined" >
+                    favorite
+                  </span>
+                } @else {
+                  <span class="material-icons" > favorite_border </span>                                    }
+                </div> -->
                                 </a>
                             </li>
                             @if (logged) {
@@ -190,17 +215,17 @@
                         </div>
                         <li class="dropdown-content" id="advert" (click)="removeMenu('advert')" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass" [ngStyle]="{ 'z-index': '2' }">
-                                <ng-container *ngIf="logged && seller && !admin">
+                                @if (logged && seller && !admin) {
                                     <a [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави Кола</a>
-                                </ng-container>
-                                <ng-container *ngIf="logged && seller && !admin">
+                                }
+                                @if (logged && seller && !admin) {
                                     <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }">Добави Бус</a>
-                                </ng-container>
+                                }
                                 <a (click)="addPart()" role="presentation">Добави част за кола</a>
-                                <ng-container *ngIf="logged && !admin">
+                                @if (logged && !admin) {
                                     <a (click)="addPart(1)" role="presentation">Добави част за бус</a>
                                     <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }">Добави Гума/Джанта</a>
-                                </ng-container>
+                                }
                             </ul>
                         </li>
                     </div>
@@ -294,11 +319,11 @@
                     </div>
                 }
                 <!-- <a *ng1If="logged" class="linkClass" (click)="logout()">
-              <div class="element">
-                  <span class="icon"><i class="las la-sign-out-alt iconSize"></i></span>
-                  <span class="text text-body-small-pale">Изход</span>
-              </div>
-          </a> -->
+          <div class="element">
+            <span class="icon"><i class="las la-sign-out-alt iconSize"></i></span>
+            <span class="text text-body-small-pale">Изход</span>
+          </div>
+        </a> -->
             </div>
         </nav>
     </header>
@@ -312,39 +337,10 @@
     }
 }
 
-<ng-template #radopartsMin>
-    <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin">
-        <div class="parent">
-            <div class="menuColor container showCompany">
-                <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">
-                    {{ companyName }}
-                </div>
-            </div>
-            <div
-                class="navbar-nav me-auto nav-item d-flex"
-                [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
-                [routerLinkActive]="['link-active']"
-                [routerLinkActiveOptions]="{ exact: true }">
-                <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
-            </div>
-        </div>
-    </nav>
-</ng-template>
-
-<ng-template #radoparts>
-    <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenu">
-        <div class="menuColor container" [ngStyle]="{ height: '4em', 'text-align': 'center', 'justify-content': 'center' }">
-            <div class="brandFont" [ngStyle]="{ color: 'blue' }">
-                {{ companyName }}
-            </div>
-        </div>
-    </nav>
-</ng-template>
-
 <ng-template #menuCanvas>
     <!-- <div class="menu-test">
-      <input type="checkbox" id="menu" class="menu-checkbox">
-      <label for="menu"><span class="navbar-toggler-icon"></span>
-      </label>
-  </div> -->
+  <input type="checkbox" id="menu" class="menu-checkbox">
+  <label for="menu"><span class="navbar-toggler-icon"></span>
+</label>
+</div> -->
 </ng-template>

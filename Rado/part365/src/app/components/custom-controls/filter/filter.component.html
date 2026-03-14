@@ -11,7 +11,6 @@
                             role="none"
                             id="Item{{ item.id }}"
                             class="option d-flex justify-content-end"
-                            style="cursor: pointer; padding: 2px; flex-direction: row; width: auto; flex-wrap: wrap; border: 1px solid black; border-radius: 2px; margin-bottom: 2px;"
                             (click)="clickItem($event, item)">
                             <div class="d-flex justify-content-start flex-column flex-grow-1">
                                 @for (description of item.keywords; track description[0]) {

@@ -11,12 +11,12 @@ import { goTop } from '@app/functions/functions';
 export class GoTopComponent {
   scrollToTopFlag = false
 
-  @HostListener('window:scroll', ['$event'])
-  strollY(event: { currentTarget: { scrollY: number; }; }) {
-    this.scrollToTopFlag = (event.currentTarget.scrollY > 0) ? true : false;
-  }
+  // @HostListener('window:scroll', ['$event'])
+  // strollY(event: { currentTarget: { scrollY: number; }; }) {
+  //   this.scrollToTopFlag = (event.currentTarget.scrollY > 0) ? true : false;
+  // }
 
-  @HostListener('click', ['$event'])
+    @HostListener('click')
   goTop() {
     goTop();
   }

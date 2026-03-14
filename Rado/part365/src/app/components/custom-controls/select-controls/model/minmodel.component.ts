@@ -5,7 +5,7 @@ import { TopService } from '@services/top.service'
 import { Subscription } from 'rxjs'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent } from '@angular/material/dialog'
 import { InternalValue } from '@model/internalValue'
-import { NgClass, NgFor, NgIf } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { ChoiseComponent } from '@components/categoriesMin/choise/choise.component'
 import { SearchInputComponent } from '@components/custom-controls/searchInput/searchInput.component'
 import { DialogData } from '@model/dialogData'
@@ -15,7 +15,7 @@ import { DialogData } from '@model/dialogData'
     selector: 'app-model',
     templateUrl: './minmodel.component.html',
     styleUrls: ['./minmodel.component.css'],
-    imports: [NgIf, NgFor, MatDialogContent, ChoiseComponent, MatDialogClose, NgClass, SearchInputComponent]
+    imports: [MatDialogContent, ChoiseComponent, MatDialogClose, NgClass, SearchInputComponent],
 })
 //#endregion
 export class MinModelComponent extends SelectBase implements OnInit {
@@ -67,7 +67,7 @@ export class MinModelComponent extends SelectBase implements OnInit {
         event.preventDefault()
         if (this.letterSelected == item.letters[0]) this.letterSelected = undefined
         else this.letterSelected = item.letters[0]
-        this._filter = '';
+        this._filter = ''
     }
 
     close() {

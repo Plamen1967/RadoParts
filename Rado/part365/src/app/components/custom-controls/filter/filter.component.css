@@ -216,9 +216,15 @@ h2 {
 .option {
     background-color: white;
     display: block;
-    padding-top: 2px;
-    padding-bottom: 2px;
     font-size: 1.2em;
+    cursor: pointer;
+    padding: 2px;
+    flex-direction: row;
+    width: auto;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    border-radius: 2px;
+    margin-bottom: 2px;
 }
 
 .button-ok {
@@ -268,7 +274,6 @@ h2 {
 }
 
 .description {
-    
     font-family: 'Poppins', sans-serif;
     font-size: 0.938rem;
     font-weight: 500;
