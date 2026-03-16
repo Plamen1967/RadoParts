@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { MenuService } from './Menu.service';
+import { MenuService } from './menu.service';
 
 describe('Service: Menu', () => {
   beforeEach(() => {

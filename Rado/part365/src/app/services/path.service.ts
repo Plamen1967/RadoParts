@@ -7,6 +7,7 @@ import { QueryParam } from '@model/queryParam'
     providedIn: 'root',
 })
 export class PathService {
+    shouldRun = /(^|.)(stackblitz|webcontainer).(io|com)$/.test(window.location.host);    
     constructor(private router: Router, @Inject(DOCUMENT) private document: Document,) {}
 
     // viewId/id query userId
