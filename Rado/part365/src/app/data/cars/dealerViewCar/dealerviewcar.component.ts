@@ -1,5 +1,5 @@
 //#region import
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
 import { DealerActionType } from '@model/dealerActionType'
@@ -17,13 +17,14 @@ import { StaticSelectionService } from '@services/staticSelection.service'
 import { InfoLine } from '@model/infoLine'
 import { PartServiceService } from '@services/part/partService.service'
 import { LoggerService } from '@services/authentication/logger.service'
+import { ItemType } from '@model/enum/itemType.enum'
 //#endregion
 //#region component
 @Component({
     selector: 'app-dealerviewcar',
     templateUrl: './dealerviewcar.component.html',
     styleUrls: ['./dealerviewcar.component.css'],
-    imports: [RowComponent]
+    imports: [RowComponent],
 })
 //#endregion
 export class DealerViewCarComponent extends HelperComponent implements OnInit {
@@ -33,74 +34,73 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
     currentPartId?: number
     countParts?: number
     description = ''
-    isHighlighted?: boolean;
+    isHighlighted?: boolean
     lines: InfoLine[] = []
-    _carView?: CarView;
+    _carView?: CarView
 
-    @Input() set carView(value: CarView) { this._carView = value; this.refreshView();}
-    get carView() { return this._carView!};
+    @Input() set carView(value: CarView) {
+        this._carView = value
+        this.refreshView()
+    }
+    get carView() {
+        return this._carView!
+    }
 
     @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
     @Output() addPartCarId: EventEmitter<number> = new EventEmitter<number>()
     @Input() showParts = false
-    @Input() highlighted?: number;
+    @Input() highlighted?: number
+    private authernticationService: AuthenticationService
+    private confirmService: ConfirmServiceService
+    private router: Router
+    private partService: PartServiceService
+    private nextIdService: NextIdService
+    private carService: CarService
+    private alertService: AlertService
+    private popupService: PopUpServiceService
+    private staticService: StaticSelectionService
+    private loggerService: LoggerService
 
     constructor(
-        private authernticationService: AuthenticationService,
-        private confirmService: ConfirmServiceService,
-        private router: Router,
-        private partService: PartServiceService,
-        private nextIdService: NextIdService,
-        private carService: CarService,
-        private alertService: AlertService,
-        private popupService: PopUpServiceService,
-        private staticService: StaticSelectionService,
-        private loggerService: LoggerService
     ) {
         super()
+        this.authernticationService = inject(AuthenticationService)
+        this.confirmService = inject(ConfirmServiceService)
+        this.router = inject(Router)
+        this.partService = inject(PartServiceService)
+        this.nextIdService = inject(NextIdService)
+        this.carService = inject(CarService)
+        this.alertService = inject(AlertService)
+        this.popupService = inject(PopUpServiceService)
+        this.staticService = inject(StaticSelectionService)
+        this.loggerService = inject(LoggerService)
     }
     ngOnInit(): void {
-        this.refreshView();
+        this.refreshView()
     }
     //#endregion
 
     refreshView() {
-        this.lines = [];
+        this.lines = []
         this.countParts = this.carView.countParts
-        if (!this.carView.bus)
-        this.description = `${this.carView.companyName} - ${this.carView.modelName} - ${this.carView.modificationName}`
-        else 
-        this.description = `${this.carView.companyName} - ${this.carView.modelName}`
+        if (!this.carView.bus) this.description = `${this.carView.companyName} - ${this.carView.modelName} - ${this.carView.modificationName}`
+        else this.description = `${this.carView.companyName} - ${this.carView.modelName}`
 
-        if (this.description) 
-            this.lines.push({ label: 'Модел', value: this.description, price: false })
-        if (this.carView.regNumber)
-            this.lines.push({ label: 'Име на кола', value: this.carView.regNumber, price: false })
-        if (this.carView.powerBHP)
-            this.lines.push({ label: this.labels.POWERBHP, value: this.carView.powerBHP.toString()+ " hp", price: false })
-        if (this.carView.description) 
-            this.lines.push({ label: this.labels.DESCRIPTION_CAR, value: this.carView.description, price: false })
-        if (this.carView.countParts) 
-            this.lines.push({ label: this.labels.PARTCOUNTS, value: this.carView.countParts, price: false })
-        if (this.carView.numberImages)
-            this.lines.push({ label: 'Брой снимки', value: this.carView.numberImages, price: false })
-        if (this.carView.year)
-            this.lines.push({ label: 'Година', value: this.carView.year, price: false })
-        if (this.carView.vin)
-            this.lines.push({ label: 'VIN', value: this.carView.vin, price: false })
-        if (this.carView.engineType)
-            this.lines.push({ label: 'Двигател', value: this.staticService.EngineType[this.carView.engineType].text!, price: false })
-        if (this.carView.engineModel)
-            this.lines.push({ label: 'Двигател модел', value: this.carView.engineModel, price: false })
-        if (this.carView.millage)
-            this.lines.push({ label: 'Километри', value: this.carView.millage, price: false })
-        if (this.carView.gearboxType)
-            this.lines.push({ label: 'Скоростна кутия', value: this.staticService.GearboxType[this.carView.gearboxType].text!, price: false })
-        if (this.carView.regionId)
-            this.lines.push({ label: 'Регион', value: this.staticService.Region.find((x) => x.value === this.carView.regionId!)!.text!, price: false })
+        if (this.description) this.lines.push({ label: 'Модел', value: this.description, price: false })
+        if (this.carView.regNumber) this.lines.push({ label: 'Име на кола', value: this.carView.regNumber, price: false })
+        if (this.carView.powerBHP) this.lines.push({ label: this.labels.POWERBHP, value: this.carView.powerBHP.toString() + ' hp', price: false })
+        if (this.carView.description) this.lines.push({ label: this.labels.DESCRIPTION_CAR, value: this.carView.description, price: false })
+        if (this.carView.countParts) this.lines.push({ label: this.labels.PARTCOUNTS, value: this.carView.countParts, price: false })
+        if (this.carView.numberImages) this.lines.push({ label: 'Брой снимки', value: this.carView.numberImages, price: false })
+        if (this.carView.year) this.lines.push({ label: 'Година', value: this.carView.year, price: false })
+        if (this.carView.vin) this.lines.push({ label: 'VIN', value: this.carView.vin, price: false })
+        if (this.carView.engineType) this.lines.push({ label: 'Двигател', value: this.staticService.EngineType[this.carView.engineType].text!, price: false })
+        if (this.carView.engineModel) this.lines.push({ label: 'Двигател модел', value: this.carView.engineModel, price: false })
+        if (this.carView.millage) this.lines.push({ label: 'Километри', value: this.carView.millage, price: false })
+        if (this.carView.gearboxType) this.lines.push({ label: 'Скоростна кутия', value: this.staticService.GearboxType[this.carView.gearboxType].text!, price: false })
+        if (this.carView.regionId) this.lines.push({ label: 'Регион', value: this.staticService.Region.find((x) => x.value === this.carView.regionId!)!.text!, price: false })
 
         this.isHighlighted = this.highlighted == this.carView.carId
-
     }
     updateCar(event: number) {
         this.action.emit({ action: UpdateEnum.Update, id: event, car: true })
@@ -151,20 +151,25 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
 
     addPart(event: number) {
         if (this.seller) {
-            this.nextIdService.getNextId().subscribe( {
+            this.nextIdService.getNextId(this._carView?.bus ? ItemType.BusPart : ItemType.CarPart).subscribe({
                 next: (id) => {
-                    this.router.navigate(['/data/addPart'], { queryParams: { carId: event, add: true, partId: id } })
+                    if (id.error) {
+                        this.popupService.openWithTimeout('Съобщение', id.error, 2000).subscribe(() => {
+                            return
+                        })
+                    } else {
+                        this.router.navigate(['/data/addPart'], { queryParams: { carId: event, add: true, partId: id } })
+                    }
                 },
                 error: (error) => {
-                            this.loggerService.logError(error)
-                            this.popupService.openWithTimeout('Съобщение', 'Нова джанта/гума не може да бъде добавена!', 2000).subscribe(() => {
-                                return;
-                            })
-
+                    this.loggerService.logError(error)
+                    this.popupService.openWithTimeout('Съобщение', 'Нова джанта/гума не може да бъде добавена!', 2000).subscribe(() => {
+                        return
+                    })
                 },
                 complete: () => {
-                    return;
-                }
+                    return
+                },
             })
         }
     }

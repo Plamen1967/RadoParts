@@ -17,6 +17,8 @@ namespace Rado
         public static IWebHostEnvironment _hostingEnvironment;
         public static string ImageFolder = Directory.GetCurrentDirectory();
         public static string WebRootFolder;
+        public static int MaxAds;
+        public static int MaxRetentionPeriod;
         public static string PictureHref { get; private set; }
 
         public static string LogFolder = Directory.GetCurrentDirectory() + @"\exceptions";
@@ -83,6 +85,8 @@ namespace Rado
                     CompanyName = content.CompanyName;
                     ImageFolder = configuration["ImageFolder"] ?? "";
                     PictureHref = content.PictureHref ?? "";
+                    MaxAds = content.MaxAds;
+                    MaxRetentionPeriod = content.MaxRetentionPeriod;
                     MailManager.emailPassword = content.EmailPassword ?? "Email_2020";
                     MailManager.host = "smtp.ionos.co.uk";
                     MailManager.hostEmail = content.HostEmail ?? "info@parts365.bg";

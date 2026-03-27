@@ -7,6 +7,7 @@ using Rado.Enums;
 using Rado.Exceptions;
 using Rado.Models;
 using Rado.Models.Authentication;
+using Settings;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Rado.Datasets
         static private List<User> _user = new List<User>();
         static private bool _initialized = false;
         static public object userLock = new object();
+        static private long lastId = -1;
+        static readonly object lockLastId = new object();
 
         UserDbSet()
         {
@@ -143,6 +146,80 @@ namespace Rado.Datasets
             {
                 throw new AppException($"GetRemainingAlowance : {exception.Message}");
             }
+        }
+
+        static public NextId GetNextId(ItemType adType, int userId)
+        {
+            Tuple<bool, string> tuple = CheckCanAddNewAd(adType, userId);
+            if (!tuple.Item1)
+            {
+                return new NextId() { nextId = 0, Error = tuple.Item2 };
+            }
+
+            lock (lockLastId)
+            {
+                string storedProcedure = "GetNextId";
+                if (lastId == -1)
+                {
+                    try
+                    {
+                        using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+                        {
+                            sqlConnection.Open();
+                            using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
+                            {
+                                SqlParameter nextIdParam = sqlCommand.Parameters.Add("@lastId", System.Data.SqlDbType.BigInt);
+                                nextIdParam.Direction = ParameterDirection.Output;
+
+                                sqlCommand.CommandType = CommandType.StoredProcedure;
+                                sqlCommand.ExecuteNonQuery();
+
+                                if (nextIdParam.Value == null)
+                                    lastId = 1;
+                                else
+                                    lastId = (long)nextIdParam.Value + 1;
+                            }
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new AppException(exception.Message);
+                    }
+                }
+                else
+                {
+                    lastId++;
+                }
+
+                return new NextId() { nextId = lastId };
+            }
+        }
+
+
+        public static Tuple<bool, string> CheckCanAddNewAd(ItemType itemType, int userId)
+        {
+            var userC = GetUserCountAsync(userId);
+            userC.Wait();
+            UserCount userCount = userC.Result;
+            int maxAds = Program.MaxAds;
+            User user = GetUserById(userId);
+            if (user.dealer == UserType.NormalUser)
+            {
+                if (new ItemType[] { ItemType.OnlyCar, ItemType.OnlyBus, ItemType.BusPart }.Contains(itemType))
+                {
+                    return new Tuple<bool, string>(false, "Само дилъри могат да добавят коли или бусове.");
+                }
+
+                if (userCount.Total >= maxAds)
+                    return new Tuple<bool, string>(false, "Вие достигнахте максималният брой обяви");
+            }
+            else if (user.dealer == UserType.Dealer)
+            {
+                //if (userCount.Total >= maxAds)
+                //    return new Tuple<bool, string>(false, "Вие достигнахте максималният брой обяви");
+            }
+
+            return new Tuple<bool, string>(true, "");
         }
         #endregion
 

@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, DOCUMENT } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, DOCUMENT, inject } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { AsyncPipe, ViewportScroller } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -59,8 +59,8 @@ import { UserCount } from '@model/userCount'
         ListTitleComponent,
         UpdateCarComponent,
         UpdatePartComponent,
-        AsyncPipe
-    ]
+        AsyncPipe,
+    ],
 })
 
 // interface ListCarParam {
@@ -112,7 +112,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     updateCarFlag = false
     updatePartFlag = false
     updateBusFlag = false
-    showParts = false;
+    showParts = false
     public todos$?: Observable<CarView[]>
     private readonly _autoSearch$: Subject<Filter>
     private readonly _debounce: number
@@ -123,24 +123,42 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     //#endregion
 
     //#region c'tor
-    constructor(
-        private formBuilder: FormBuilder,
-        private modelService: ModelService,
-        public modificationService: ModificationService,
-        private nextIdService: NextIdService,
-        private carService: CarService,
-        private scroller: ViewportScroller,
-        private confirmService: ConfirmServiceService,
-        private alertService: AlertService,
-        private popupService: PopUpServiceService,
-        private router: Router,
-        private route: ActivatedRoute,
-        @Inject(DOCUMENT) private document: Document,
-        private modalService: ModalService,
-        private loggerService: LoggerService,
-        private userCountService: UserCountService
+    private formBuilder: FormBuilder
+    private modelService: ModelService
+    public modificationService: ModificationService
+    private nextIdService: NextIdService
+    private carService: CarService
+    private scroller: ViewportScroller
+    private confirmService: ConfirmServiceService
+    private alertService: AlertService
+    private popupService: PopUpServiceService
+    private router: Router
+    private route: ActivatedRoute
+    private document: Document
+    private modalService: ModalService
+    private loggerService: LoggerService
+    private userCountService: UserCountService
+
+        constructor(
     ) {
         super()
+
+        this.formBuilder = inject(FormBuilder)
+        this.modelService = inject(ModelService)
+        this.modificationService = inject(ModificationService)
+        this.nextIdService = inject(NextIdService)
+        this.carService = inject(CarService)
+        this.scroller = inject(ViewportScroller)
+        this.confirmService = inject(ConfirmServiceService) 
+        this.alertService = inject(AlertService)
+        this.popupService = inject(PopUpServiceService)
+        this.router = inject(Router)
+        this.route = inject(ActivatedRoute)
+        this.modalService = inject(ModalService)
+        this.loggerService = inject(LoggerService)
+        this.userCountService = inject(UserCountService)
+        this.modalService = inject(ModalService)
+        this.document = inject(DOCUMENT)
 
         this.userCount$ = this.userCountService.userCount$
         this._autoSearch$ = new Subject<Filter>()
@@ -193,11 +211,17 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             if (this.bus) this.itemType = ItemType.OnlyBus
             else this.itemType = ItemType.OnlyCar
             this.label = this.bus ? 'Избери бус' : 'Избери кола'
-
+            const itemType: ItemType = this.addCarFlag ? ItemType.OnlyCar : this.addBusFlag ? ItemType.OnlyBus : this.bus ? ItemType.BusPart : ItemType.CarPart
             if (this.addCarFlag || this.addPartFlag || this.addBusFlag) {
-                this.nextIdService.getNextId().subscribe({
-                    next: (id) => {
-                        this.id = id
+                this.nextIdService.getNextId(itemType).subscribe({
+                    next: (nextId) => {
+                        if (nextId.error) {
+                            this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
+                                this.back(this.currentCarId!)
+                            })
+                        } else {
+                            this.id = nextId.nextId
+                        }
                     },
                     error: (error) => {
                         this.loggerService.logError(error)
@@ -241,7 +265,9 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     search(f: any) {
-        const filter: Filter = f ?? this.listForm.value
+        const filter: Filter = { ...f }
+        console.log('Auto search with filter', filter)
+
         this._autoSearch$?.next(filter)
     }
 
@@ -290,7 +316,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.currentPartId = undefined
     }
     updateCar(carId: number) {
-        this.currentCarId = carId;
+        this.currentCarId = carId
         if (this.bus) this.router.navigate(['/data/bus'], { queryParams: { updateBus: true, carId: carId } })
         else this.router.navigate(['/data/cars'], { queryParams: { updateCar: true, carId: carId } })
     }
@@ -304,11 +330,17 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     }
 
     addPart(event: number) {
-        this.nextIdService.getNextId().subscribe({
-            next: (id) => {
-                this.addPartCarId = id
-                this.currentCarId = event
-                this.mode = UpdateEnum.New
+        this.nextIdService.getNextId(this.bus ? ItemType.BusPart : ItemType.CarPart).subscribe({
+            next: (nextId) => {
+                if (nextId.error) {
+                    this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
+                        return
+                    })
+                } else {
+                    this.addPartCarId = nextId.nextId
+                    this.currentCarId = event
+                    this.mode = UpdateEnum.New
+                }
             },
             error: (error) => {
                 this.loggerService.logError(error)
@@ -393,11 +425,9 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     }
 
     newPart(carId: number) {
-        this.currentCarId = carId;
-        if (this.bus)
-            this.router.navigate(['/data/bus'], { queryParams: { addPart: true, carId: carId, bus: this.bus } })
-        else
-            this.router.navigate(['/data/cars'], { queryParams: { addPart: true, carId: carId } })
+        this.currentCarId = carId
+        if (this.bus) this.router.navigate(['/data/bus'], { queryParams: { addPart: true, carId: carId, bus: this.bus } })
+        else this.router.navigate(['/data/cars'], { queryParams: { addPart: true, carId: carId } })
     }
 
     addCar() {
@@ -419,6 +449,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                     this.loading = true
                     this.cars = []
                     Filter.userId = this.userId
+                    console.log('Auto search with filter', Filter)
                     return this.carService.fetchCars(Filter).pipe(tap(() => (this.loading = true)))
                 }),
                 takeUntil(this._destroy$)
@@ -475,8 +506,8 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         console.log('Current car id before update data', this.carService.currentCarId)
         if (this.carService.currentCarId) {
             const index = this.allCars.findIndex((item) => item.carId === this.carService.currentCarId)
-            const page = Math.floor(index / 10) + 1;
-            this.currentPage = this.numberPages = page; 
+            const page = Math.floor(index / 10) + 1
+            this.currentPage = this.numberPages = page
             this.currentCarId = this.carService.currentCarId
             this.carService.currentCarId = undefined
         } else {
@@ -484,8 +515,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         }
         this.cars = [...this.getPageData()]
         console.log('Current car id after update data', this.currentCarId)
-        if (this.currentCarId)
-            goToPosition(this.currentCarId!.toString())
+        if (this.currentCarId) goToPosition(this.currentCarId!.toString())
     }
 
     //#endregion

@@ -60,6 +60,7 @@ export class HelperComponent {
         this.queryParams.id = params.get('id')? +params.get('id') : undefined
         this.queryParams.query = params.get('query')? +params.get('query') : undefined
         this.queryParams.ad = params.get('ad') ? params.get('ad')! : undefined
+        this.queryParams.carId = params.get('carId') ? +params.get('carId') : undefined
         this.queryParams.update = params.get('update') ? params.get('update')! : undefined
         this.queryParams.itemType = params.get('itemType') ? +params.get('itemType') : undefined
         this.queryParams.userId = params.get('userId') ? +params.get('userId') : undefined
@@ -69,6 +70,7 @@ export class HelperComponent {
         this.queryParams.bus = params.get('bus') ? +params.get('bus') : undefined
         this.queryParams.activationcode = params.get('activationcode') ? params.get('activationcode')! : undefined
         this.queryParams.updateId = params.get('updateId') ? +params.get('updateId') : undefined
+        this.queryParams.updateCar = params.get('updateCar') ? params.get('updateCar')! : undefined
     }
 }
 

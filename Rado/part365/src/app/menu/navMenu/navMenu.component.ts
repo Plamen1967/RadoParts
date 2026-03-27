@@ -126,7 +126,9 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
         })
     }
 
-    showSideMenu() {
+    showSideMenu(event: Event) {
+        event.stopPropagation()
+        event.preventDefault()
         this.menuService.showMenu.set(!this.menuService.showMenu())
     }
     

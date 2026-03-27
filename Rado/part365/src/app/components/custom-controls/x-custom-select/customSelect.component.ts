@@ -38,6 +38,7 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
         this._selection = this.data_?.find((item) => item.id === this.value)?.description ?? this.placeHolder
         if (this.data_ && this.data_.length) 
             this.loaded = true;
+        if (this.value ) { this.writeValue(this.value) }
     }
     @Input() tooltip?: string
     @Input() label = "";
@@ -64,10 +65,10 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
                 private destroyRef: DestroyRef
     ) {
         super(control, errorService, el)
+        this._selection = this.placeHolder
     }
 
     ngOnInit() {
-        this._selection = this.placeHolder
     }
 
 

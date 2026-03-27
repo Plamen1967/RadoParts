@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Rado.Datasets;
 using Rado.Authorization;
-using System.Threading.Tasks;
+using Rado.Datasets;
 using Rado.Models;
+using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,6 +45,14 @@ namespace Rado.Controllers
         public async Task<ModelMin> Get(int id)
         {
             return await ModelsDbSet.GetModelMinByIdAsync(id);
+        }
+
+        [HttpGet()]
+        [Route("GetModelByName")]
+        [AllowAnonymous]
+        public async Task<ModelMin> GetModelByName([FromQuery] int companyId, [FromQuery] string name)
+        {
+            return await ModelsDbSet.GetModelByName(companyId, name);
         }
 
         #endregion

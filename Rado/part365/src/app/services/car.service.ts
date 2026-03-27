@@ -77,6 +77,8 @@ export class CarService {
       if (propertyValue && propertyValue !== 0 )
         params = params.set(property, `${filterCar[property as keyof typeof filterCar]}`)
     }
+    console.log(params.toString());
+    
     return this.http.get<CarView[]>(`${environment.restAPI}/car/GetCars`, { params })
       .pipe(first(),
         tap(() => this.loggerService.log("fetch cars")),

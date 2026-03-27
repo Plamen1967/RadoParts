@@ -18,27 +18,27 @@
                         [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
                         [routerLinkActive]="['link-active']"
                         [routerLinkActiveOptions]="{ exact: true }">
-                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
+                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']"></a>
                     </div>
                 </div>
             </nav>
         } @else {
             <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin">
                 <div class="parent">
-                    <div class="menuColor container showCompany">
-                        <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">
-                            {{ companyName }}
-                        </div>
-                    </div>
                     <div
                         class="navbar-nav me-auto nav-item d-flex"
                         [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
                         [routerLinkActive]="['link-active']"
                         [routerLinkActiveOptions]="{ exact: true }">
-                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
+                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']"></a>
                     </div>
+                    <div class="menuColor container d-flex flex-column align-items-center" [routerLink]="['/']">
+                        <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">
+                            Radoparts
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined menu-burger side-menu-button" (click)="showSideMenu($event)" role="none"> menu </span>
                 </div>
-                <span class="material-symbols-outlined menu-burger side-menu-button" (click)="showSideMenu()" role="none"> menu </span>
             </nav>
         }
         <nav class="navbar navbar-expand-sm navbar-dark noPadding d-flex" #header>
@@ -57,7 +57,7 @@
                 <div class="navbar-collapse collapse menu-nav" [ngClass]="{ show: isExpanded }" id="navbarNavDropdown">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-                            <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']">Начало</a>
+                            <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']"></a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">

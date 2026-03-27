@@ -64,6 +64,14 @@ namespace Rado.Controllers
             return await ModificationsDbSet.GetModificationFullByModelsIdAsync(modelsId);
         }
 
+        [HttpGet]
+        [Route("GetModificationByNameAndModelId")]
+        [AllowAnonymous]
+        public async Task<Models.ModificationMin> GetModificationByName([FromQuery] string name, [FromQuery] int modelId)
+        {
+            return await ModificationsDbSet.GetModificationByName(modelId, name);
+        }
+
         #endregion
 
     }

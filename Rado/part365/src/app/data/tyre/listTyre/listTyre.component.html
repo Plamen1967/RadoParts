@@ -134,19 +134,25 @@
                 </div>
             </div>
         </form>
-        <div class="d-flex mt-2 mb-2">
-            <button type="submit" #submit class="btn btnSearch me-2" data-cy="search" (click)="search()">{{ labels.SEARCH }}</button>
-            <button type="button" #submit class="btn btnSearch me-2" data-cy="search" (click)="clear()">Изчисти</button>
-            <div class="d-flex justify-content-start ms-2">
-                @if (selectedCategory === 3 || selectedCategory === 7) {
-                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(3)">Добави Гума</button>
-                }
-                @if (selectedCategory === 4 || selectedCategory === 7) {
-                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(4)">Добави Джанта</button>
-                }
-                @if (selectedCategory === 5 || selectedCategory === 7) {
-                    <button type="button" class="btn btnAdd" data-cy="addtyre" (click)="newTyre(5)">Добави Джанта с гума</button>
-                }
+        <div class="d-flex mt-2 mb-2 justify-content-between">
+            <div>
+                <button type="submit" #submit class="btn btnSearch me-2" data-cy="search" (click)="search()">{{ labels.SEARCH }}</button>
+                <button type="button" #submit class="btn btnSearch me-2" data-cy="search" (click)="clear()">Изчисти</button>
+            </div>
+            <div>
+            <app-buttonmenu appOutside [menuOptions]="menuOptions" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu>
+
+                <div class="d-flex justify-content-start ms-2" class="option-menu">
+                    @if (selectedCategory === 3 || selectedCategory === 7) {
+                        <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(3)">Добави Гума</button>
+                    }
+                    @if (selectedCategory === 4 || selectedCategory === 7) {
+                        <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(4)">Добави Джанта</button>
+                    }
+                    @if (selectedCategory === 5 || selectedCategory === 7) {
+                        <button type="button" class="btn btnAdd" data-cy="addtyre" (click)="newTyre(5)">Добави Джанта с гума</button>
+                    }
+                </div>
             </div>
         </div>
         @if (loading) {

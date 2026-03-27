@@ -15,8 +15,7 @@ namespace Models.Models
         [Required]
         public long carId { get; set; }
         public int? modelId { get; set; }
-        [Required]
-        public int modificationId { get; set; }
+        public int? modificationId { get; set; }
         public int year { get; set; }
         public string? vin { get; set; }
         [Required]

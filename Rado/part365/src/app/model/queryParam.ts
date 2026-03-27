@@ -3,6 +3,7 @@ import { ItemType } from "./enum/itemType.enum";
 export class QueryParam {
     query?: number;
     id?: number;
+    carId?: number
     viewId?: number;
     ad?: boolean;
     update?: boolean;
@@ -14,4 +15,5 @@ export class QueryParam {
     bus?: number;
     activationcode?: string;
     updateId?: number;
+    updateCar?: boolean;
 }

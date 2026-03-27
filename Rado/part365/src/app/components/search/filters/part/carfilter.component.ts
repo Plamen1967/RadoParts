@@ -1,6 +1,6 @@
 //#region import
 
-import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, ElementRef, EventEmitter, HostListener, Input, OnInit, Optional, Output, ViewChild } from '@angular/core'
+import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Optional, Output, ViewChild } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs'
@@ -63,24 +63,24 @@ import { StaticSelectionService } from '@services/staticSelection.service'
     templateUrl: './carfilter.component.html',
     styleUrls: ['./carfilter.component.css'],
     imports: [
-        CategoriesComponent,
-        RadioGroupComponent,
-        SelectComponent,
-        RadioGroupListComponent,
-        InputComponent,
-        TooltipDirective,
-        NgStyle,
-        CategoriesFooterComponent,
-        ReactiveFormsModule,
-        SearchInputComponent,
-        CompanyChoiseComponent,
-        ModelChoiceComponent,
-        ModificationChoiceComponent,
-        RegionComponent,
-        CategoryChoiseComponent,
-        SubcategoryChoiseComponent,
-        SearchBarComponent,
-    ]
+    CategoriesComponent,
+    RadioGroupComponent,
+    SelectComponent,
+    RadioGroupListComponent,
+    InputComponent,
+    TooltipDirective,
+    NgStyle,
+    CategoriesFooterComponent,
+    ReactiveFormsModule,
+    SearchInputComponent,
+    CompanyChoiseComponent,
+    ModelChoiceComponent,
+    ModificationChoiceComponent,
+    RegionComponent,
+    CategoryChoiseComponent,
+    SubcategoryChoiseComponent,
+    SearchBarComponent
+]
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -189,29 +189,49 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion
 
     //#region constructor
+    private formBuilder: FormBuilder
+    public categoryService: CategoryService
+    public subCategoryService: SubCategoryService
+    private userService: UserService
+    private homeService: HomeService
+    public modelService: ModelService
+    public popupService: PopUpServiceService
+    public loadingService: LoadingService
+    public staticSelectionService: StaticSelectionService
+    private router: Router
+    private confirmService: ConfirmServiceService
+    private topService: TopService
+    private changeDetector: ChangeDetectorRef
+    private searchPartService: SearchPartService
+    public dialog: MatDialog
+    private destroyRef: DestroyRef
+    public activeRoute: ActivatedRoute
+    @Optional() public parent: HomeComponent
 
     constructor(
-        private formBuilder: FormBuilder,
-        public categoryService: CategoryService,
-        public subCategoryService: SubCategoryService,
-        private userService: UserService,
-        private homeService: HomeService,
-        public modelService: ModelService,
-        public popupService: PopUpServiceService,
-        public loadingService: LoadingService,
-        public staticSelectionService: StaticSelectionService,
-        private router: Router,
-        private confirmService: ConfirmServiceService,
-        private topService: TopService,
-        private changeDetector: ChangeDetectorRef,
-        private searchPartService: SearchPartService,
-        public dialog: MatDialog,
-        private destroyRef: DestroyRef,
-        public activeRoute: ActivatedRoute,
-        @Optional() public parent: HomeComponent
     ) {
         super()
-        this.filterForm = formBuilder.group({
+        this.formBuilder = inject(FormBuilder)
+        this.categoryService = inject(CategoryService)
+        this.subCategoryService = inject(SubCategoryService)
+        this.userService = inject(UserService)
+        this.homeService = inject(HomeService)
+        this.modelService = inject(ModelService)
+        this.popupService = inject(PopUpServiceService)
+        this.loadingService = inject(LoadingService)
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.router = inject(Router)
+        this.confirmService = inject(ConfirmServiceService)
+        this.topService = inject(TopService)
+        this.changeDetector = inject(ChangeDetectorRef)
+        this.searchPartService = inject(SearchPartService)
+        this.dialog = inject(MatDialog)
+        this.destroyRef = inject(DestroyRef)
+        this.activeRoute = inject(ActivatedRoute)
+        this.parent = inject(HomeComponent, { optional: true }) as HomeComponent
+
+
+        this.filterForm = this.formBuilder.group({
             result: [],
             userId: [0],
             bus: [0],
@@ -231,7 +251,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             hasImages: [false],
             categoriesId: [''],
             subCategoriesId: [''],
-            selectedCategories: formBuilder.array([]),
+            selectedCategories: this.formBuilder.array([]),
         })
         this.formGroup = this.filterForm
         this.startState = this.filterForm.value

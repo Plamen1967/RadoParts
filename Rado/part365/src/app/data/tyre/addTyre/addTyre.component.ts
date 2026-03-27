@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
@@ -129,28 +129,45 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
     @Output() back: EventEmitter<number> = new EventEmitter<number>()
     @Output() saved: EventEmitter<number> = new EventEmitter<number>()
+        public staticSelectionService: StaticSelectionService
+        private formBuilder: FormBuilder
+        private popupService: PopUpServiceService
+        private tyreService: TyreService
+        private alerService: AlertService
+        private modelService: ModelService
+        private activatedRoute: ActivatedRoute
+        private router: Router
+        private homeService: HomeService
+        private pathService: PathService
+        private nextIdService: NextIdService
+        private imageService: ImageService
+        private stateServce: StateService
+        private navigationService: NavigationService
+        private confirmService: ConfirmServiceService
+        private loggerService: LoggerService
+        private userCountService: UserCountService
 
     constructor(
-        public staticSelectionService: StaticSelectionService,
-        formBuilder: FormBuilder,
-        private popupService: PopUpServiceService,
-        private tyreService: TyreService,
-        private alerService: AlertService,
-        private modelService: ModelService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private homeService: HomeService,
-        private pathService: PathService,
-        private nextIdService: NextIdService,
-        private imageService: ImageService,
-        private stateServce: StateService,
-        private navigationService: NavigationService,
-        private confirmService: ConfirmServiceService,
-        private loggerService: LoggerService,
-        private userCountService: UserCountService
     ) {
         super()
-        this.addForm = formBuilder.group({
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.formBuilder = inject(FormBuilder)
+        this.popupService = inject(PopUpServiceService)
+        this.tyreService = inject(TyreService)
+        this.alerService = inject(AlertService)
+        this.modelService = inject(ModelService)
+        this.activatedRoute = inject(ActivatedRoute)
+        this.router = inject(Router)
+        this.homeService = inject(HomeService)
+        this.pathService = inject(PathService)
+        this.nextIdService = inject(NextIdService)
+        this.imageService = inject(ImageService)
+        this.stateServce = inject(StateService)
+        this.navigationService = inject(NavigationService)
+        this.confirmService = inject(ConfirmServiceService)
+        this.loggerService = inject(LoggerService)
+        this.userCountService = inject(UserCountService)
+        this.addForm = this.formBuilder.group({
             itemType: [0, [Validators.required, Validators.min(1)]],
             tyreWidth: [0, [Validators.required, Validators.min(1)]],
             tyreHeight: [0, [Validators.required, Validators.min(1)]],
@@ -186,6 +203,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.rimWidth = [{ value: 0, text: 'Избери джанта ширина ' }, ...this.staticSelectionService.RimWidth]
         this.regions = [{ value: 0, text: 'Избери регион' }, ...this.staticSelectionService.Region]
         this.initValue = this.addForm.value
+        this.formGroup = this.addForm
     }
 
     get allowanceNotReached(): boolean {
@@ -257,9 +275,16 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             } else if (this.viewId) {
                 this.loadTyre(this.viewId)
             } else if (!this.itemId) {
-                this.nextIdService.getNextId().subscribe({
-                    next: (id) => {
-                        this.itemId = id
+                this.nextIdService.getNextId(this.itemType!).subscribe({
+                    next: (nextId) => {
+                        if (nextId.error) {
+                            this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
+                                this.goBack()
+                            })  
+                        }
+                        else    {
+                            this.itemId = nextId.nextId
+                        }
                     },
                     error: (error) => {
                         this.loggerService.logError(error)

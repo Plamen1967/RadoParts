@@ -1,21 +1,23 @@
 ﻿using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Rado.Models;
+using Models.Enums;
+using Models.Models;
+using Models.Models.Authentication;
 using Rado.Abuse;
+using Rado.Enrich;
 using Rado.Enums;
 using Rado.Exceptions;
+using Rado.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Utility;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
-using Utility;
-using Models.Models;
-using Models.Enums;
-using Rado.Enrich;
 
 namespace Rado.Datasets
 {
@@ -37,6 +39,16 @@ namespace Rado.Datasets
             if (car.regNumber == null) car.regNumber = "";
             if (car.description == null) car.description = "";
             if (car.engineModel == null) car.engineModel = "";
+            if (car.carId == 0) 
+            {
+
+                NextId nextId = UserDbSet.GetNextId(ItemType.OnlyCar, car.userId);
+                if (nextId.Error.Length > 0)
+                {
+                    throw new AppException($"Колата не може да бъде добавена");
+                }
+
+            }
 
             ValidationCar(car);
 
@@ -90,9 +102,9 @@ namespace Rado.Datasets
                             modelIdParam.Value = car.modelId;
                             modificationIdParam.Value = 0;
                         }
-                        else
+                        else if (car.modificationId != null)
                         {
-                            modelIdParam.Value = ModificationsDbSet.GetModificationById(car.modificationId).modelId;
+                            modelIdParam.Value = ModificationsDbSet.GetModificationById(car.modificationId ?? 0).modelId;
                             modificationIdParam.Value = car.modificationId;
                         }
                         yearParam.Value = car.year;
@@ -359,7 +371,7 @@ namespace Rado.Datasets
         {
             if (car.bus == 0)
             {
-                bool check = ModificationsDbSet.CheckModificationById(car.modificationId);
+                bool check = ModificationsDbSet.CheckModificationById(car.modificationId ?? 0);
                 if (!check)
                     throw new AppException($"Модификация с ID {car.modificationId} за кола {car.regNumber} не е валидна");
             }
@@ -368,7 +380,7 @@ namespace Rado.Datasets
                 if (car.modelId == null)
                     throw new AppException($"Модел за бус e задължителен");
 
-                bool check = ModelsDbSet.CheckModelById(car.modelId.Value);
+                bool check = ModelsDbSet.CheckModelById(car.modelId ?? 0);
                 if (!check)
                     throw new AppException($"Модел с ID {car.modificationId} за кола {car.regNumber} не е валидна");
             }

@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, NavigationStart, ParamMap, Router } from '@angular/router'
 import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
@@ -46,6 +46,7 @@ import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { NgClass } from '@angular/common'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
+import { ItemType } from '@model/enum/itemType.enum'
 //#endregion
 //#region component
 @Component({
@@ -65,8 +66,8 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
         CategoryChoiseComponent,
         DealersubcategoryChoiceComponent,
         ToolBarComponent,
-        NgClass
-    ]
+        NgClass,
+    ],
 })
 //#endregion
 export default class AddPartComponent extends HelperComponent implements AfterViewInit, OnInit, OnDestroy {
@@ -144,34 +145,55 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     description = ''
     //#endregion
     //#region
-    constructor(
-        formBuilder: FormBuilder,
-        public modelService: ModelService,
-        public carService: CarService,
-        public categoryService: CategoryService,
-        public subCategoryService: SubCategoryService,
-        public partService: PartServiceService,
-        public staticSelectionService: StaticSelectionService,
-        private activatedRoute: ActivatedRoute,
-        router: Router,
-        private homeService: HomeService,
-        private confirmService: ConfirmServiceService,
-        private modificationService: ModificationService,
-        private userService: UserService,
-        private nextIdService: NextIdService,
-        private dealerSubCategoryService: DealerSubCategoryService,
-        private imageService: ImageService,
-        private route: ActivatedRoute,
-        private loggerService: LoggerService,
-        public popupService: PopUpServiceService,
-        private userCountService: UserCountService,
-        private toastService: ToastService
-        
-        //#endregion
-    ) {
+    private formBuilder: FormBuilder
+    private modelService: ModelService
+    private carService: CarService
+    private categoryService: CategoryService
+    private subCategoryService: SubCategoryService
+    private partService: PartServiceService
+    public staticSelectionService: StaticSelectionService
+    private activatedRoute: ActivatedRoute
+    private router: Router
+    private homeService: HomeService
+    private confirmService: ConfirmServiceService
+    private modificationService: ModificationService
+    private userService: UserService
+    private nextIdService: NextIdService
+    private dealerSubCategoryService: DealerSubCategoryService
+    private imageService: ImageService
+    private route: ActivatedRoute
+    private loggerService: LoggerService
+    public popupService: PopUpServiceService
+    private userCountService: UserCountService
+    private toastService: ToastService
+
+    constructor() //#endregion
+    {
         super()
         //#region fromgroup
-        this.addPartForm = formBuilder.group({
+        this.modelService = inject(ModelService)
+        this.carService = inject(CarService)
+        this.categoryService = inject(CategoryService)
+        this.subCategoryService = inject(SubCategoryService)
+        this.partService = inject(PartServiceService)
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.activatedRoute = inject(ActivatedRoute)
+        this.router = inject(Router)
+        this.homeService = inject(HomeService)
+        this.confirmService = inject(ConfirmServiceService)
+        this.modificationService = inject(ModificationService)
+        this.userService = inject(UserService)
+        this.nextIdService = inject(NextIdService)
+        this.dealerSubCategoryService = inject(DealerSubCategoryService)
+        this.imageService = inject(ImageService)
+        this.route = inject(ActivatedRoute)
+        this.loggerService = inject(LoggerService)
+        this.popupService = inject(PopUpServiceService)
+        this.userCountService = inject(UserCountService)
+        this.toastService = inject(ToastService)
+        this.formBuilder = inject(FormBuilder)
+
+        this.addPartForm = this.formBuilder.group({
             partForCar: [true],
             carId: [undefined, [Validators.required, Validators.min(1)]],
             partId: [0],
@@ -198,12 +220,13 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             mainImageId: [0],
         })
         //#endregion
+        this.formGroup = this.addPartForm
         this.dealerSubCategories.push({ id: 0, description: 'Избери Подкатегория Дилър', count: 0, countCars: 0, countParts: 0, groupModelId: 0 })
 
         this.formInitialValues = this.initialState = this.addPartForm.value
-        router.events.subscribe((event) => {
+        this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
-                this.browserRefresh = !router.navigated
+                this.browserRefresh = !this.router.navigated
             }
         })
 
@@ -244,11 +267,17 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 this.addPartForm.patchValue({ regionId: this.regionId })
                 if (!this.partId) {
                     this.nextIdService
-                        .getNextId()
+                        .getNextId(this.bus ? ItemType.BusPart : ItemType.CarPart)
                         .pipe()
                         .subscribe({
-                            next: (id) => {
-                                this.partId = id
+                            next: (nextId) => {
+                                if (nextId.error) {
+                                    this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
+                                        this.goBack()
+                                    })
+                                } else {
+                                    this.partId = nextId.nextId
+                                }
                             },
                             error: (error) => {
                                 this.loggerService.logError(error)
@@ -311,7 +340,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.mainImageId = imageId
         this.addPartForm.patchValue({ mainImageId: imageId })
     }
-
 
     //#region single user
     updateNumberParts() {
@@ -409,7 +437,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         if (this.car?.engineType) this.engineTypeName = this.staticSelectionService.EngineType.find((x) => x.value === this.car?.engineType)?.text
         else this.engineTypeName = ''
         this.description = `${this.car.companyName} ${this.car.modelName} `
-        this.bus = car.bus!;
+        this.bus = car.bus!
         if (!this.bus) this.description = `${this.description} ${this.car.modificationName}`
         this.description = `${this.description} ${this.engineTypeName} ${this.car.engineModel} ${this.car.year}`
     }
@@ -480,12 +508,13 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             next: (res) => {
                 this.carId = this.carService.currentCarId = res.carId
                 this.addPartForm.patchValue({ carId: this.carId ?? 0 })
-                this.partView = res
+                this.partView = { ...res }
                 this.dealerSubCategoryName = this.partView.dealerSubCategoryName
                 this.images = []
                 this.mainImageId = this.partView.mainImageId
                 this.mode = UpdateEnum.Update
                 this.loading = false
+                this.dealerSubCategoryId = this.partView.dealerSubCategoryId
                 this.addPartForm.patchValue(this.partView)
                 this.imageService.getImages(this.partId!).subscribe((res) => (this.images = res))
                 this.initialState = { ...this.addPartForm.value }
@@ -580,5 +609,4 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     //#endregion
-
 }

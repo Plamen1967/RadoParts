@@ -12,5 +12,13 @@ namespace Rado.Models
         public int rimCount { get; set; }
         public int tyreCount { get; set; }
         public int rimWithTyreCount { get; set; }
+
+        public int Total
+        {
+            get
+            {
+                return carCount + busCount + partCarCount + partBusCount + rimCount + tyreCount + rimWithTyreCount;
+            }
+        }
     }
 }

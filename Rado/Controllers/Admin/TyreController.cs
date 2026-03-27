@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
 using Models.Models;
 using Rado.Datasets;
+using Rado.Enums;
 using Rado.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -65,15 +66,6 @@ namespace Rado.Controllers.Admin
             return null;
         }
 
-
-        [HttpGet]
-        [Route("GetNextId")]
-        [AllowAnonymous]
-
-        public long GetNextId()
-        {
-            return PartDbSet.GetNextId();
-        }
 
         [HttpGet]
         [Route("getSearchResult")]

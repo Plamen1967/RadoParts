@@ -108,14 +108,6 @@ namespace Rado.Controllers
             return await RimWithTyreDbSet.GetRimWithTyreByIdAsync(id);
         }
 
-        [HttpGet]
-        [Route("GetNextId")]
-        [AllowAnonymous]
-        public long GetNextId()
-        {
-            return PartDbSet.GetNextId();
-        }
-
         #endregion
     }
 }

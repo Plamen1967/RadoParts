@@ -89,13 +89,6 @@ namespace Rado.Controllers
             return await PartDbSet.GetPartsByCarIdAsync(carId, UserId);
         }
 
-        [HttpGet]
-        [Route("GetNextId")]
-        public long GetNextId()
-        {
-            return PartDbSet.GetNextId();
-        }
-
         [HttpPost]
         [Route("MainPicture")]
         public async Task<bool> MainPicture([FromBody] string mainPicture, long partId)
@@ -104,7 +97,7 @@ namespace Rado.Controllers
         }
         //[HttpPost()]
         //[Route("deletepart")]
-        //public async Task<bool> deletePart([FromBody] Id id)
+        //public async Task<bool> deletePart([FromBody] nextId id)
         //{
         //    return await PartDbSet.DeletePartAsync(id.id, UserId);
         //}

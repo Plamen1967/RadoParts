@@ -16,4 +16,6 @@
     public string HostEmail { get; set; }
     public bool SendEmails { get;set;}
     public int MaxPictures { get; set; }
+    public int MaxAds { get; set; }
+    public int MaxRetentionPeriod { get; set; }
 }

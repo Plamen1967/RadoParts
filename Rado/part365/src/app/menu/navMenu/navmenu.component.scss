@@ -454,9 +454,9 @@ nav {
 }
 
 .parent {
-    display: grid;
+    display: flex;
     padding-bottom: 4px;
-    grid-template-columns: minmax(120px, 25%) minmax(80, 10%);
+    justify-content: space-evenly;
 }
 
 .noShow {
@@ -594,7 +594,7 @@ nav {
 .side-menu-button {
     display: none;
     position: absolute;
-    top: 10px;
+    top: 16px;
     right: 10px;
     z-index: 1000;
     background-color: transparent;

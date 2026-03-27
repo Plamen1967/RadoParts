@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -134,31 +134,54 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         }
     }
 
-    constructor(
-        private partService: PartServiceService,
-        private carService: CarService,
-        private imageService: ImageService,
-        private localStorageService: LocalStorageService,
-        private homeService: HomeService,
-        private router: Router,
-        private activeRoute: ActivatedRoute,
-        private searchService: SearchPartService,
-        public breakpointObserver: BreakpointObserver,
-        private popupService: PopUpServiceService,
-        private tyreService: TyreService,
-        public pathService: PathService,
-        private matDialog: MatDialog,
-        private contirmationService: ConfirmServiceService,
-        private searchPartService: SearchPartService,
-        private alertService: AlertService,
-        public loggerService: LoggerService,
-        private destroyRef: DestroyRef
-    ) {
+    private partService: PartServiceService
+    private carService: CarService
+    private imageService: ImageService
+    private localStorageService: LocalStorageService
+    private homeService: HomeService
+    private router: Router
+    private activeRoute: ActivatedRoute
+    private searchService: SearchPartService
+    public breakpointObserver: BreakpointObserver
+    private popupService: PopUpServiceService
+    private tyreService: TyreService
+    public pathService: PathService
+    private matDialog: MatDialog
+    private contirmationService: ConfirmServiceService
+    private searchPartService: SearchPartService
+    private alertService: AlertService
+    public loggerService: LoggerService
+    private destroyRef: DestroyRef
+
+    constructor() {
         super()
+        this.partService = inject(PartServiceService)
+        this.carService = inject(CarService)
+        this.imageService = inject(ImageService)
+        this.localStorageService = inject(LocalStorageService)
+        this.homeService = inject(HomeService)  
+        this.router = inject(Router)
+        this.activeRoute = inject(ActivatedRoute)
+        this.searchService = inject(SearchPartService)
+        this.breakpointObserver = inject(BreakpointObserver)
+        this.popupService = inject(PopUpServiceService)
+        this.tyreService = inject(TyreService)
+        this.pathService = inject(PathService)
+        this.matDialog = inject(MatDialog)
+        this.contirmationService = inject(ConfirmServiceService)
+        this.searchPartService = inject(SearchPartService)
+        this.alertService = inject(AlertService)
+        this.loggerService = inject(LoggerService)
+        this.destroyRef = inject(DestroyRef)             
+        
+
+
+
+        
         this.showNavigation = true
         this.userPage = this.pathService.userPage
         if (this.userPage) this.showFavourite = false
-        if (pathService.userPage) this.canEdit = false
+        if (this.pathService.userPage) this.canEdit = false
     }
 
     ngAfterViewInit(): void {

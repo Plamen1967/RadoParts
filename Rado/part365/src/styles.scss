@@ -45,6 +45,8 @@ lib-ngx-image-zoom img {
     --title-color: antiquewhite;
     --toast-bgcolor: rgb(181, 47, 47);
     --toast-color: whitesmoke;
+    --side-bar-bgcolor: whitesmoke;
+    --side-bag-color: black;
 }
 
 :root {
@@ -246,10 +248,8 @@ body {
  }
 
  @media (max-width: 750px) {
-  .custom-container {
   }  
- }
-
+ 
 .toast-style  .mat-mdc-button {
         // background-color: #6654da;
         // color: white!important;

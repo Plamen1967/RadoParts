@@ -1,4 +1,4 @@
-import { Directive, Host, HostListener, inject } from '@angular/core';
+import { Directive, ElementRef, Host, HostListener, inject } from '@angular/core';
 import { MenuService } from '@services/Menu.service';
 
 @Directive({
@@ -8,17 +8,18 @@ import { MenuService } from '@services/Menu.service';
   }
 })
 export class OutsideDirective {
-
   onClick(event: Event) {
     const clickedInside = this.hostElement.nativeElement.contains(event.target);
-    if (!clickedInside) {
+    const isShown = this.menuService.showMenu();
+    if (isShown && !clickedInside) {
       // Handle the click outside event here
       console.log('Clicked outside the element!');
+      this.menuService.showMenu.set(false);
     }
   }
 
   menuService: MenuService
-  constructor(@Host() private hostElement: HTMLElement) { 
+  constructor(@Host() private hostElement: ElementRef) { 
     this.menuService = inject(MenuService);
   }
 }

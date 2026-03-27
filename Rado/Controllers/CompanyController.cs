@@ -54,6 +54,15 @@ namespace Rado.Controllers
             return await CompaniesDbSet.GetCompanyByIdAsync(id);
         }
 
+        // GET api/<CompanyController>/5
+        [HttpGet()]
+        [Route("GetCompanyByName")]
+        [AllowAnonymous]
+        public Company GetCompanyByName([FromQuery] string name)
+        {
+            return CompaniesDbSet.GetCompanyByName(name);
+        }
+
         #endregion
     }
 }

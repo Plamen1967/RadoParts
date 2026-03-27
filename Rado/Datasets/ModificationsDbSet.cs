@@ -4,6 +4,7 @@ using Rado.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Utility;
@@ -442,6 +443,14 @@ namespace Rado.Datasets
             mut.ReleaseMutex();
 
             return modificationInstance_;
+        }
+
+        internal static async Task<ModificationMin> GetModificationByName(int modelId, string name)
+        {
+            ModificationMin[] modificationMins = await GetModificationByModelIdAsync(modelId);
+            ModificationMin modificationMin = modificationMins.First(_ => _.modificationDisplayName == name);
+
+            return modificationMin;
         }
     }
 }

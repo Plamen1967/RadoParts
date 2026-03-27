@@ -287,6 +287,11 @@ namespace Rado.Datasets
                 //company.countCarBus = models.Sum(item => item.countCarBus); ;
             }
         }
+
+        internal static Company GetCompanyByName(string companyName)
+        {
+            return getCompanyByName(companyName);
+        }
     }
 
     /*

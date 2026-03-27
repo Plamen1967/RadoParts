@@ -1,9 +1,9 @@
 @if (menuOptions?.length) {
     <div class="menu">
-        <button class="menuBtn">...</button>
-        <div class="menu-content">
+        <button class="menuBtn btn btn-primary" type="button" (click)="menuContent.style.display = menuContent.style.display === 'flex' ? 'none' : 'flex'" >Добави ...</button>
+        <div #menuContent class="menu-content" [ngClass]="{'left': justify}">
             @for (menu of menuOptions; track menu.menuId) {
-                <a (click)="menuSelected(menu.menuId)" role="none">{{ menu.menu }}</a>
+                <a (click)="menuSelected(menu.menuId)" class="menu-item" role="none">{{ menu.menu }}</a>
             }
         </div>
     </div>

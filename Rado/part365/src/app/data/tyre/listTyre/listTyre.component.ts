@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, OnInit } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { Observable, Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators'
@@ -41,6 +41,8 @@ import { ModelChoiceComponent } from '@app/component-main/model-choice/model-cho
 import { goToPosition } from '@app/functions/functions'
 import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
+import { ButtonMenuComponent } from '@components/custom-controls/buttonMenu/buttonMenu.component'
+import { MenuOption } from '@model/menuOption'
 
 @Component({
     selector: 'app-listtyre',
@@ -61,7 +63,8 @@ import { UserCount } from '@model/userCount'
         CompanyChoiseComponent,
         ListTitleComponent,
         RegionComponent,
-    ]
+        ButtonMenuComponent,
+    ],
 })
 export default class ListTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
     searchForm: FormGroup
@@ -101,6 +104,11 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     itemType: ItemType = ItemType.AllTyre
     params?: QueryParam
     userCount$: Observable<UserCount | undefined>
+    menuOptions: MenuOption[] = [
+        { menuId: 1, menu: 'Добави Гума' },
+        { menuId: 2, menu: 'Добави Джанта' },
+        { menuId: 3, menu: 'Добави Джанта с гума' },
+    ]
 
     radioTypes: RadioButton[] = [
         { label: 'Всички', id: 7 },
@@ -114,27 +122,42 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     private readonly _autoSearch$: Subject<FilterRimWithTyre>
     private readonly _debounce: number
     private readonly _destroy$: Subject<boolean>
+    private formBuilder: FormBuilder
+    private searchPartService: SearchPartService
+    public staticSelectionService: StaticSelectionService
+    private authernticationService: AuthenticationService
+    private tyreService: TyreService
+    private homeService: HomeService
+    private popupService: PopUpServiceService
+    private loadingService: LoadingService
+    private modelService: ModelService
+    private stateService: StateService
+    private router: Router
+    private activatedRoute: ActivatedRoute
+    private confirmService: ConfirmServiceService
+    private alertService: AlertService
+    private userCountService: UserCountService
+    private destroyRef: DestroyRef
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private searchPartService: SearchPartService,
-        public staticSelectionService: StaticSelectionService,
-        private authernticationService: AuthenticationService,
-        private tyreService: TyreService,
-        private homeService: HomeService,
-        private popupService: PopUpServiceService,
-        private loadingService: LoadingService,
-        private modelService: ModelService,
-        private stateService: StateService,
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private confirmService: ConfirmServiceService,
-        private alertService: AlertService,
-        private userCountService: UserCountService,
-        private destroyRef: DestroyRef
-    ) {
+    constructor() {
         super()
-        this.searchForm = formBuilder.group({
+        this.formBuilder = inject(FormBuilder)
+        this.searchPartService = inject(SearchPartService)
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.authernticationService = inject(AuthenticationService)
+        this.tyreService = inject(TyreService)
+        this.homeService = inject(HomeService)
+        this.popupService = inject(PopUpServiceService)
+        this.loadingService = inject(LoadingService)
+        this.modelService = inject(ModelService)
+        this.stateService = inject(StateService)
+        this.router = inject(Router)
+        this.activatedRoute = inject(ActivatedRoute)
+        this.confirmService = inject(ConfirmServiceService)
+        this.alertService = inject(AlertService)
+        this.userCountService = inject(UserCountService)
+        this.destroyRef = inject(DestroyRef)
+        this.searchForm = this.formBuilder.group({
             category: [ItemType.AllTyre],
             tyreCompanyId: [0],
             tyreWidth: [0],
@@ -251,7 +274,18 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     categoryChanged(f: number) {
+        this.menuOptions = []
         this.selectedCategory = f
+        if (this.selectedCategory === 3 || this.selectedCategory === 7) {
+            this.menuOptions.push({ menuId: 1, menu: 'Добави Гума' })
+        }
+        if (this.selectedCategory === 4 || this.selectedCategory === 7) {
+            this.menuOptions.push({ menuId: 2, menu: 'Добави Джанта' })
+        }
+        if (this.selectedCategory === 5 || this.selectedCategory === 7) {
+            this.menuOptions.push({ menuId: 3, menu: 'Добави Джанта с гума' })
+        }
+
         this.updateData([])
         this.itemType = f
     }
@@ -372,5 +406,20 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         this.searchForm.setValue(value)
     }
 
+    action($event: number) {
+        switch ($event) {
+            case 1:
+                this.newTyre(ItemType.Tyre)
+                break
+            case 2:
+                this.newTyre(ItemType.Rim)
+                break
+            case 3:
+                this.newTyre(ItemType.RimWithTyre)
+                break
+            default:
+                throw new Error('Method not implemented.')
+        }
+    }
     //#endregion
 }

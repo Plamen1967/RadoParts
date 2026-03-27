@@ -3,7 +3,7 @@
         <app-cancelbutton [label]="cancelName" (cancelEvent)="clickCancel()"></app-cancelbutton>
     }
     @if (save) {
-        <app-savebutton class="me-2" [changed]="changed" [label]="saveName" (saveEvent)="clickSave()"></app-savebutton>
+        <app-savebutton class="me-2" [changed]="isChanged" [label]="saveName" (saveEvent)="clickSave()"></app-savebutton>
     }
 
 

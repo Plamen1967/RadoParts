@@ -1,6 +1,6 @@
 ﻿namespace Rado.Enums
 {
-    public enum ItemType
+    public enum ItemType : ushort
     {
         None = 0,
         All = 1,

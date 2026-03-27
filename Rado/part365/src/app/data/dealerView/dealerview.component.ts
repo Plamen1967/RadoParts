@@ -52,7 +52,6 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
     @Input() mainPicture?: string
     @Input() set highlighted(value: number | undefined) {
         this.highlighted_ = value
-        console.log('Dealer view set highlighted', this.highlighted_, this.id)
     }
     @Input() showPart!: boolean
     @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
@@ -85,7 +84,7 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
             this.getOnlyNumbers = this.rimWithTyreView?.numberImages || 0
         }
         this.isHighlighted = this.highlighted_ == this.id
-        console.log('Dealer view init', this.isHighlighted, this.id, this.highlighted_)
+        // console.log('Dealer view init', this.isHighlighted, this.id, this.highlighted_)
     }
     //#endregion
 

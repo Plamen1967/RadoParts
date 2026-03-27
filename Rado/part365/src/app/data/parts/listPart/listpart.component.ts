@@ -1,6 +1,6 @@
 //#region import
 import { AsyncPipe, NgStyle, ViewportScroller } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { goToPosition, sortPartView } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -70,8 +70,8 @@ import { UserCount } from '@model/userCount'
         TooltipDirective,
         SubcategoryChoiseComponent,
         ListTitleComponent,
-        AsyncPipe
-    ]
+        AsyncPipe,
+    ],
 })
 
 //#endregion
@@ -121,45 +121,65 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     private readonly _debounce: number
     private readonly _debounceParts: number
     private readonly _destroy$: Subject<boolean>
-    userCount$: Observable<UserCount | undefined>;
-    
+    userCount$: Observable<UserCount | undefined>
+    popupService: PopUpServiceService
 
     //#region members
 
     //#endregion
 
     //#region c'tor
+    public modelService: ModelService
+    public categoryService: CategoryService
+    public subCategoryService: SubCategoryService
+    public searchPartService: SearchPartService
+    private authernticationService: AuthenticationService
+    private formBuilder: FormBuilder
+    private partService: PartServiceService
+    public staticSelectionService: StaticSelectionService
+    private userService: UserService
+    private modificationService: ModificationService
+    private nextIdService: NextIdService
+    private scroller: ViewportScroller
+    private confirmService: ConfirmServiceService
+    private popupMessage: PopUpServiceService
+    private router: Router
+    private route: ActivatedRoute
+    private carService: CarService
+    private userCountService: UserCountService
+    private loggerService: LoggerService
+
     constructor(
-        public modelService: ModelService,
-        public categoryService: CategoryService,
-        public subCategoryService: SubCategoryService,
-        public searchPartService: SearchPartService,
-        private authernticationService: AuthenticationService,
-        formBuilder: FormBuilder,
-        private partService: PartServiceService,
-        public staticSelectionService: StaticSelectionService,
-        private userService: UserService,
-        private modificationService: ModificationService,
-        private nextIdService: NextIdService,
-        private scroller: ViewportScroller,
-        private confirmService: ConfirmServiceService,
-        private popupMessage: PopUpServiceService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private carService: CarService,
-        private userCountService: UserCountService,
-        private loggerService: LoggerService
     ) {
         super()
-
+        this.modelService = inject(ModelService)
+        this.categoryService = inject(CategoryService)
+        this.subCategoryService = inject(SubCategoryService)    
+        this.popupService = inject(PopUpServiceService)
+        this.searchPartService = inject(SearchPartService)
+        this.authernticationService = inject(AuthenticationService)
+        this.formBuilder = inject(FormBuilder)
+        this.partService = inject(PartServiceService)
+        this.staticSelectionService = inject(StaticSelectionService)    
+        this.userService = inject(UserService)
+        this.modificationService = inject(ModificationService)
+        this.nextIdService = inject(NextIdService)
+        this.scroller = inject(ViewportScroller)
+        this.confirmService = inject(ConfirmServiceService)
+        this.popupMessage = inject(PopUpServiceService)
+        this.router = inject(Router)
+        this.route = inject(ActivatedRoute)
+        this.carService = inject(CarService)
+        this.userCountService = inject(UserCountService)
+        this.loggerService = inject(LoggerService)  
         this._autoSearch$ = new Subject<Filter>()
         this._autoPartSearch$ = new Subject<Filter>()
         this._debounce = 0
         this._debounceParts = 1500
         this._destroy$ = new Subject<boolean>()
         this.userId = this.authenticationService.user?.userId
-        this.userCount$ = this.userCountService.userCount$;
-        this.searchForm = formBuilder.group({
+        this.userCount$ = this.userCountService.userCount$
+        this.searchForm = this.formBuilder.group({
             bus: [0],
             companyId: [0],
             modelId: [0],
@@ -354,9 +374,15 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     }
 
     newPart() {
-        this.nextIdService.getNextId().subscribe({
-            next: (id) => {
-                this.id = id
+        this.nextIdService.getNextId(this.bus ? ItemType.BusPart : ItemType.CarPart).subscribe({
+            next: (nextId) => {
+                if (nextId.error) {
+                    this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
+                        this.router.navigate(['/data/parts'])
+                    })
+                } else {
+                    this.id = nextId.nextId
+                }
             },
         })
     }
@@ -434,9 +460,9 @@ export default class ListPartComponent extends HelperComponent implements OnInit
                 // TODO
                 console.log(res)
             },
-            error: (error => {
+            error: (error) => {
                 this.loggerService.logError(error)
-            }),
+            },
             complete: () => {
                 return
             },
@@ -485,7 +511,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.currentId = id
         this.partService.currentId.next(id)
         this.id = undefined
-        
+
         goToPosition(id)
     }
 

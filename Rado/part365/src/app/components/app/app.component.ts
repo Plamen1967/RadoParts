@@ -35,6 +35,11 @@ import { OutsideDirective } from '@app/directive/outside.directive'
     styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnDestroy {
+toggleMenu(event: Event) {
+    event.stopPropagation()
+    event.preventDefault()
+    this.menuService.showMenu.set(!this.menuService.showMenu())
+}
     userCount$: Observable<UserCount | undefined>
     title = 'part365'
     opened = false
@@ -116,9 +121,12 @@ export class AppComponent implements OnDestroy {
         this._mobileQuery.removeEventListener('change', this._mobileQueryListener)
     }
     get checkout() {
-        return `${CONSTANT.SAVED} ${this.localStorage.items}`
+        return `${CONSTANT.SAVED}`
     }
 
+    get savedItemCount() {
+        return this.localStorage.items
+    }
     get logged() {
         return this.authenticationService.logged
     }

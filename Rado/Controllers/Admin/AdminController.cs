@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Models.Models;
 using Models.Models.Authentication;
 using Rado.Authorization;
 using Rado.Datasets;
+using Rado.Enums;
 using Rado.Exceptions;
 using Rado.Helper;
 using Rado.Models;
@@ -114,6 +116,13 @@ namespace Rado.Controllers.Admin
         {
 
             return await UserDbSet.GetUserCountAsync(UserId);
+        }
+
+        [HttpGet]
+        [Route("GetNextId")]
+        public NextId GetNextId([FromQuery] ItemType itemType)
+        {
+            return UserDbSet.GetNextId(itemType, UserId);
         }
 
 

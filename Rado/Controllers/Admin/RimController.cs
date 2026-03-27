@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
+using Models.Models;
 using Rado.Datasets;
+using Rado.Enums;
 using Rado.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -62,14 +64,6 @@ namespace Rado.Controllers.Admin
             RimView rimView;
             rimView = RimDbSet.GetRimById(rimId);
             return null;
-        }
-
-
-        [HttpGet]
-        [Route("GetNextId")]
-        public long GetNextId()
-        {
-            return PartDbSet.GetNextId();
         }
 
         [HttpGet]

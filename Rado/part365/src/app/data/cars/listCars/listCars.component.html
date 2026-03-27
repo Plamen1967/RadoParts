@@ -1,8 +1,7 @@
 @if (!id) {
     <div class="container">
-                @if (userCount$ | async; as userCount) {
+        @if (userCount$ | async; as userCount) {
             @if (userCount && userCount.partCarCount + userCount.partBusCount) {
-               
                 <app-listtitle [title]="title" [number]="getValue(userCount)"></app-listtitle>
 
                 <span class="count"></span>
@@ -61,7 +60,7 @@
                             <button type="submit" #submit class="btn btn-primary btn-sm" data-cy="search" (click)="search(undefined)">{{ labels.SEARCH }}</button>
                         </div>
                         <div>
-                            <button type="button" #submit class="btn btn-primary mb-2 btn-sm" data-cy="search" (click)="clearForm()">Изчисти филтъра</button>
+                            <button type="button" #submit class="btn btn-primary mb-2 btn-sm" data-cy="clear" (click)="clearForm()">Изчисти филтъра</button>
                         </div>
                     </div>
 
@@ -82,8 +81,8 @@
                 }
 
                 @for (car of cars; track car.carId) {
-                    <div id="{{ car.carId }}" title="{{car.regNumber}}" class="item card" style="margin: 6px 0px;">
-                        <app-dealerview 
+                    <div id="{{ car.carId }}" title="{{ car.regNumber }}" class="item card" style="margin: 6px 0px">
+                        <app-dealerview
                             [mainPicture]="car.mainPicture"
                             [highlighted]="currentCarId"
                             [carView]="car"
@@ -96,7 +95,7 @@
                 }
 
                 @if (searched && numberPages > 1) {
-                    <app-navigator class="me-1" [numberPages]="numberPages!" [currentPage]="currentPage!" [hasSort]="false" (moveToPage)="moveToPage($event)" > </app-navigator>
+                    <app-navigator class="me-1" [numberPages]="numberPages!" [currentPage]="currentPage!" [hasSort]="false" (moveToPage)="moveToPage($event)"> </app-navigator>
                 }
             } @else {
                 @if (loading) {
@@ -121,11 +120,9 @@
     <app-addcar [carId]="id" [bus]="1" [add]="addCarFlag" (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
 } @else if (addPartFlag) {
     <app-addpart [carId]="id" [bus]="bus" [add]="addPartFlag" (saved)="savedPart($event)" (noChange)="back($event)"></app-addpart>
-}
-@else if (updateCarFlag) {
+} @else if (updateCarFlag) {
     <app-updatecar [id]="id" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
-}
-@else if (updateBusFlag) {
+} @else if (updateBusFlag) {
     <app-updatecar [id]="id" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
 } @else if (updatePartFlag) {
     <app-updatepart [id]="id" (saved)="savedPart($event)" (noChange)="back($event)"></app-updatepart>

@@ -395,5 +395,14 @@ namespace Rado.Datasets
 
             CompaniesDbSet.UpdateCumpanyCountParts();
         }
+
+        internal static async Task<ModelMin> GetModelByName(int companyId, string name)
+        {
+            ModelMin[] modelMins = await GetModelsByCompanyIdAsync(companyId);
+            ModelMin model = modelMins.First(_ => _.displayModelName == name);
+
+            return model;
+            
+        }
     }
 }

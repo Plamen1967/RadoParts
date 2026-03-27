@@ -5,122 +5,108 @@
 <button class="btn btn-primary" (click)="login()">Login</button>
 <router-outlet /> -->
 <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="isMobile() ? 56 : 0">
-    <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'over'"  appOutside [fixedInViewport]="isMobile()" fixedTopGap="56" (click)="this.menuService.showMenu.set(false)">
+    <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'over'" appOutside [fixedInViewport]="isMobile()" fixedTopGap="56" (click)="this.menuService.showMenu.set(false)">
         <mat-nav-list style="position: relative; padding-top: 30px">
-            <button class="material-symbols-outlined menu-burger" role="none"  (click)="this.menuService.showMenu.set(!this.menuService.showMenu())"> close </button>
-            <div class="menu-container">
+            <div class="material-symbols-outlined menu-burger" role="none" (click)="toggleMenu($event)">close</div>
+            <div class="menu-container mt-3">
                 @if (!logged) {
-                    <a class="linkClass color2" [routerLink]="['/data/addNew']">
+                    <a class="linkClass color2 menu" [routerLink]="['/data/addNew']">
                         <div class="element">
-                            <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
+                            <span class="text menu">Добави обява <i class="las la-plus-square iconSize"></i></span>
                         </div>
                     </a>
-                } @else {
+                } @else if (!admin) {
                     <div class="dropdown linkClass color2 menu-container" role="presentation">
-                        <div class="element">
+                        <div class="element label ">
                             <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
                         </div>
-                        <li class="dropdown-content menu-container" id="advert" role="presentation">
-                            <ul aria-labelledby="admin" class="ulClass" [ngStyle]="{ 'z-index': '2' }">
-                                @if (logged && seller && !admin) {
-                                    <a [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави Кола</a>
-                                }
-                                @if (logged && seller && !admin) {
-                                    <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }">Добави Бус</a>
-                                }
-                                <a [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }">Добави част за кола</a>
-                                @if (logged && !admin) {
-                                    <a [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new', bus: 1 }">Добави част за бус</a>
-                                    <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }">Добави Гума/Джанта</a>
-                                }
-                            </ul>
-                        </li>
+                        <div class="dropdown-content menu-container element" role="presentation">
+                            @if (seller) {
+                            <a class="menu element" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави Кола</a>
+                                <a class="menu element" [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }">Добави Бус</a>
+                            }
+                            <a class="menu element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }">Добави част за кола</a>
+                            @if (seller) {
+                                <a class="menu element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new', bus: 1 }">Добави част за бус</a>
+                            }
+                            <a class="menu element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }">Добави Гума/Джанта</a>
+                        </div>
                     </div>
                 }
                 @if (logged) {
                     <div class="dropdown linkClass color2 menu-container" role="presentation">
-                        <div class="element">
+                        <div class="element label">
                             <span class="text text-body-small-pale">Моите обяви<i class="las la-newspaper iconSize"></i></span>
                         </div>
-                        <li class="dropdown-content" [ngStyle]="{ 'min-width': '180px' }" id="changeAdvert" role="presentation">
-                            <ul aria-labelledby="admin" class="ulClass">
+                        <li class="dropdown-content menu-container element w-100" [ngStyle]="{ 'min-width': '180px' }" role="presentation">
+                            <ul aria-labelledby="admin" class="ulClass w-100">
                                 @if (seller) {
-                                    <a (click)="cars()" role="presentation" class="menu"
-                                        >Коли
+                                    <div class="element w-100" >
+                                        <a class="menu" (click)="cars()" role="presentation">Коли</a>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount?.carCount) {
                                                 <span class="count">{{ userCount.carCount }}</span>
                                             }
                                         }
-                                    </a>
-                                    <a (click)="bus()" role="presentation" class="menu"
-                                        >Бус
+                                    </div>
+                                    <div class="element w-100">
+                                        <a class="menu" (click)="bus()" role="presentation">Бус</a>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount?.busCount) {
                                                 <span class="count">{{ userCount.busCount }}</span>
                                             }
                                         }
-                                    </a>
+                                    </div>
                                 }
-                                <a (click)="parts()" role="presentation" class="menu"
-                                    >Части
+                                <div class="element w-100">
+                                    <a class="menu" (click)="parts()" role="presentation">Части </a>
                                     @if (userCount$ | async; as userCount) {
                                         @if (userCount && userCount.partCarCount + userCount.partBusCount) {
                                             <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
                                         }
                                     }
-                                </a>
+                                </div>
                                 @if (seller) {
-                                    <a (click)="tyres()" role="presentation" class="menu"
-                                        >Гуми/Джанти
+                                    <div class="element w-100">
+                                        <a class="menu" (click)="tyres()" role="presentation">Гуми/Джанти</a>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {
                                                 <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
                                             }
                                         }
-                                    </a>
+                                    </div>
                                 }
                             </ul>
                         </li>
                     </div>
                 }
-                <div [routerLink]="['/checkout']" class="linkClass color2" style="background-color: var(--favoutite) !important" role="presentation">
+                <div [routerLink]="['/checkout']" class="linkClass color2 faviorite" role="presentation">
                     <div class="element">
-                        <span class="text text-body-small-pale"
-                            >{{ checkout }}
-                            @if (count) {
-                                <i class="ms-1 la-star las saved sizeSaved"></i>
-                            } @else {
-                                <i class="ms-1 la-star lar saved sizeSaved"></i>
-                            }
-                        </span>
+                        <span class="text text-body-small-pale">{{ checkout }} </span>
+                        @if (count) {
+                            <span class="count">{{ savedItemCount }}</span>
+                        }
                     </div>
                 </div>
 
                 @if (!logged) {
-                    <!-- @if (dialogLogin) {
-                        <div class="linkClass color2" (click)="login()" role="presentation">
-                            <div class="element">
-                                <span class="text text-body-small-pale">Вход/Регистрация <i class="las la-user iconSize"></i></span>
-                            </div>
-                        </div> -->
-                    <div class="linkClass color2" role="presentation">
+                    <div class="linkClass color2 menu" role="presentation">
                         <div class="element">
-                            <a [routerLink]="['/login']" [queryParams]="{ ad: 'new' }">Вход/Регистрация</a>
+                            <div [routerLink]="['/login']" [queryParams]="{ ad: 'new' }">Вход/Регистрация</div>
                         </div>
                     </div>
                 } @else {
                     <div class="dropdown linkClass color2" role="presentation">
-                        <div class="element">
+                        <div class="element label">
                             <span class="text text-body-small-pale">{{ exitName }}<i class="las la-user iconSize"></i></span>
                         </div>
-                        <li class="dropdown-content" [ngStyle]="{ 'min-width': '100px', right: '0px' }" id="user" role="presentation">
-                            <ul aria-labelledby="admin" class="ulClass" role="presentation">
-                                <a (click)="details()" role="presentation">Детайли</a>
-                                <a (click)="updatePassword()" role="presentation">{{ labels.UPDATEPASSWORD }}</a>
-                                <a (click)="logout()" role="presentation">Изход</a>
-                            </ul>
-                        </li>
+                        <div class="dropdown-content menu-container element w-100" [ngStyle]="{ 'min-width': '100px', right: '0px' }" role="presentation">
+                            <div aria-labelledby="admin" class="ulClass w-100" role="presentation">
+                                <a (click)="details()" class="menu element" role="presentation">Детайли</a>
+                                <a (click)="updatePassword()" class="menu element" role="presentation">{{ labels.UPDATEPASSWORD }}</a>
+                                <a (click)="logout()" class="menu element" role="presentation">Изход</a>
+                            </div>
+                        </div>
                     </div>
                 }
             </div>

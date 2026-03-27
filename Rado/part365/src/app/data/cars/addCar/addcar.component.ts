@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -7,7 +7,6 @@ import { CarView } from '@model/car/carView'
 import { UpdateEnum } from '@model/enum/update.enum'
 import { SelectOption } from '@model/selectOption'
 import { CarService } from '@services/car.service'
-import { ModelService } from '@services/company-model-modification/model.service'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { NextIdService } from '@services/nextId.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -32,6 +31,7 @@ import { DisplayPartView } from '@model/displayPartView'
 import { ImageData } from '@model/imageData'
 import { goTop } from '@app/functions/functions'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
+import { ItemType } from '@model/enum/itemType.enum'
 //#endregion
 
 //#region metadata
@@ -39,7 +39,7 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
     selector: 'app-addcar',
     templateUrl: './addcar.component.html',
     styleUrls: ['./addcar.component.scss'],
-    imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent]
+    imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent],
 })
 //#endregion
 export default class AddCarComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -73,7 +73,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     userId = 0
     query = 0
     bus_ = 0
-    ad = false;
+    ad = false
     images: ImageData[] = []
     _displayPartView?: DisplayPartView
     //#endregion
@@ -104,25 +104,37 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
     @Output() saved: EventEmitter<number> = new EventEmitter<number>()
     //#endregion
+    public carService: CarService
+    public modificationService: ModificationService
+    public staticSelectionService: StaticSelectionService
+    private activatedRoute: ActivatedRoute
+    private nextIdService: NextIdService
+    private formBuilder: FormBuilder
+    private router: Router
+    private confirmService: ConfirmServiceService
+    private homeService: HomeService
+    private loggerService: LoggerService
+    private popupService: PopUpServiceService
+    private userCountService: UserCountService
+    private toastService: ToastService
 
-    constructor(
-        public modelService: ModelService,
-        public carService: CarService,
-        public modificationService: ModificationService,
-        public staticSelectionService: StaticSelectionService,
-        private activatedRoute: ActivatedRoute,
-        private nextIdService: NextIdService,
-        formBuilder: FormBuilder,
-        private router: Router,
-        private confirmService: ConfirmServiceService,
-        private homeService: HomeService,
-        private loggerService: LoggerService,
-        private popupService: PopUpServiceService,
-        private userCountService: UserCountService,
-        private toastService: ToastService
-    ) {
+    constructor() {
         super()
-        this.addCarForm = formBuilder.group({
+        this.carService = inject(CarService)
+        this.modificationService = inject(ModificationService)
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.activatedRoute = inject(ActivatedRoute)
+        this.nextIdService = inject(NextIdService)
+        this.formBuilder = inject(FormBuilder)
+        this.router = inject(Router)
+        this.confirmService = inject(ConfirmServiceService)
+        this.homeService = inject(HomeService)
+        this.loggerService = inject(LoggerService)
+        this.popupService = inject(PopUpServiceService)
+        this.userCountService = inject(UserCountService)
+        this.toastService = inject(ToastService)
+
+        this.addCarForm = this.formBuilder.group({
             companyId: [undefined, Validators.required],
             modelId: [undefined, Validators.required],
             modificationId: [undefined, Validators.required],
@@ -140,7 +152,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             mainImageId: [''],
         })
 
-        this.formGroup = this.addCarForm;
+        this.formGroup = this.addCarForm
         this.yearTo = this.currentYear
         this.setYears()
         this.addCarForm.controls['companyId'].valueChanges.subscribe((f) => this.onCompanyChange(f))
@@ -156,15 +168,15 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     ngOnInit() {
         this.activatedRoute.queryParamMap.subscribe((param) => {
             this.parseQueryParams(param)
-            this.carId = this.queryParams.id ? this.queryParams.id : undefined
+            this.carId = this.queryParams.carId ? this.queryParams.carId : undefined
             if (this.queryParams.query) this.query = +this.queryParams.query
-            this.ad = this.queryParams.ad ? this.queryParams.ad : false    
+            this.ad = this.queryParams.ad ? this.queryParams.ad : false
             this.loadCar()
         })
     }
 
     ngAfterViewInit(): void {
-        this.goTop();
+        this.goTop()
         return
     }
     //#endregion actions
@@ -257,14 +269,11 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         if (this.car.powerBHP === 0) this.car.powerBHP = undefined
         if (this.car.powerkWh === 0) this.car.powerkWh = undefined
         if (this.car.millage === 0) this.car.millage = undefined
-        if (this.car.price === 0) this.car.price = undefined
 
         if (this.addCarForm.controls['powerBHP'].value === 0) this.addCarForm.controls['powerBHP'].setValue(undefined)
         if (this.addCarForm.controls['powerkWh'].value === 0) this.addCarForm.controls['powerkWh'].setValue(undefined)
         if (this.addCarForm.controls['millage'].value === 0) this.addCarForm.controls['millage'].setValue(undefined)
-        if (this.addCarForm.controls['price'].value === 0) this.addCarForm.controls['price'].setValue(undefined)
     }
-
 
     changeMessage() {
         this.confirmService.OKCancel(CONSTANT.MESSAGE, 'Потвърдете, че искате да отмeните промените').subscribe((reuslt) => {
@@ -303,9 +312,19 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
                 },
             })
         } else {
-            this.nextIdService.getNextId().subscribe({
+            this.nextIdService.getNextId(this.bus ? ItemType.OnlyBus : ItemType.OnlyCar).subscribe({
                 next: (id) => {
-                    this.carId = id
+                    if (id.nextId) {
+                        this.carId = id.nextId
+                    } else if (id.error) {
+                        this.popupService.openWithTimeout('Съобщение', id.error, 2000).subscribe(() => {
+                            this.goBack()
+                        })
+                    } else {
+                        this.popupService.openWithTimeout('Съобщение', 'Грешка при генериране на Id за новата кола!', 2000).subscribe(() => {
+                            this.goBack()
+                        })
+                    }
                 },
                 error: (error) => {
                     this.loggerService.logError(error)
@@ -346,7 +365,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     addCar() {
-        const carUpdated: Car = Object.assign(this.addCarForm.value, {bus: this.bus, carId: this.carId, userId: this.userId})
+        const carUpdated: Car = Object.assign(this.addCarForm.value, { bus: this.bus, carId: this.carId, userId: this.userId })
         this.saving = true
         this.carService.addUpdateCar(carUpdated, this.mode).subscribe({
             next: (val) => {

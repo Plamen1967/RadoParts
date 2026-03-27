@@ -18,8 +18,6 @@ namespace Rado.Datasets
 {
     public class PartDbSet
     {
-        static private long lastId = -1;
-        static readonly object lockLastId = new object();
         static object dictionaryLock = new object();
         static private Dictionary<long, SearchResult> dictionaryParts = new Dictionary<long, SearchResult>();
 
@@ -377,47 +375,6 @@ namespace Rado.Datasets
             return partView;
         }
 
-        static public long GetNextId()
-        {
-            lock (lockLastId)
-            {
-                string storedProcedure = "GetNextId";
-                if (lastId == -1)
-                {
-                    try
-                    {
-                        using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-                        {
-                            sqlConnection.Open();
-                            using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
-                            {
-                                SqlParameter nextIdParam = sqlCommand.Parameters.Add("@lastId", System.Data.SqlDbType.BigInt);
-                                nextIdParam.Direction = ParameterDirection.Output;
-
-                                sqlCommand.CommandType = CommandType.StoredProcedure;
-                                sqlCommand.ExecuteNonQuery();
-
-                                if (nextIdParam.Value == null)
-                                    lastId = 1;
-                                else
-                                    lastId = (long)nextIdParam.Value + 1;
-                            }
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new AppException(exception.Message);
-                    }
-                }
-                else
-                {
-                    lastId++;
-                }
-
-                return lastId;
-            }
-        }
-
 
         static async public Task<NumberPartsPerCategory[]> GetNumberPartsPerCategoryAsync(FilterNumberPartsPerCategory filterNumberPartsPerCategory)
         {
@@ -492,11 +449,11 @@ namespace Rado.Datasets
                                 long modelIdValue = Int64.Parse(modelID);
                                 if (modelIdValue > 10000)
                                 {
-                                    sqlCommand.Parameters.Add($"@groupModel{m++}Id", System.Data.SqlDbType.BigInt).Value = modelIdValue;
+                                    sqlCommand.Parameters.Add($"@groupModel{m++}nextId", System.Data.SqlDbType.BigInt).Value = modelIdValue;
                                 }
                                 else
                                 {
-                                    sqlCommand.Parameters.Add($"@model{g++}Id", System.Data.SqlDbType.BigInt).Value = modelIdValue;
+                                    sqlCommand.Parameters.Add($"@model{g++}nextId", System.Data.SqlDbType.BigInt).Value = modelIdValue;
                                 }
                                 if (m > 5) break;
                                 if (g > 5) break;
@@ -509,7 +466,7 @@ namespace Rado.Datasets
                             foreach (string modificationId in modificationsId)
                             {
                                 long modificationIdValue = Int64.Parse(modificationId);
-                                sqlCommand.Parameters.Add($"@modification{i++}Id", System.Data.SqlDbType.BigInt).Value = modificationIdValue;
+                                sqlCommand.Parameters.Add($"@modification{i++}nextId", System.Data.SqlDbType.BigInt).Value = modificationIdValue;
                                 if (i > 5) break;
                             }
 

@@ -29,6 +29,7 @@ export class DealersubcategoryChoiceComponent implements ControlValueAccessor, A
     @Input({required: true}) set categoryId(value: number){ 
         this.initCategories(value)
     }
+    @Input() id?: number;
     @Input() submitted = false;
     @Input() required = false;
     @Output() dealerSubCategoryChanged: EventEmitter<DealerSubCategory> = new EventEmitter<DealerSubCategory>()
@@ -56,7 +57,8 @@ export class DealersubcategoryChoiceComponent implements ControlValueAccessor, A
         })
     }
     writeValue(id: number): void {
-        this.dealerSubCategoryForm.patchValue({ dealerSubCategoriesId_int: id })
+        this.id = id;
+        this.dealerSubCategoryForm.patchValue({ dealerSubCategoriesId_int: this.id })
     }
     registerOnChange(fn: (_: unknown) => unknown): void {
         this.onChange = fn
@@ -94,6 +96,7 @@ export class DealersubcategoryChoiceComponent implements ControlValueAccessor, A
                 this.dealerSubCategories = [];    
             }
             this.dealerSubCategories?.unshift({ id: 0, description: 'Избери Подкатегория Дилър', count: 0, countCars: 0, countParts: 0, groupModelId: 0 })
+            this.dealerSubCategoryForm.patchValue({ dealerSubCategoriesId_int: this.id })
 
     }
 }

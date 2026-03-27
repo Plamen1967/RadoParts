@@ -35,7 +35,7 @@ namespace Rado.Enrich
 
             if (carView.bus == 1)
             {
-                var result = ModelsDbSet.GetModelByIdAsync(carView.modelId.Value);
+                var result = ModelsDbSet.GetModelByIdAsync(carView.modelId ?? 0);
                 result.Wait();
                 var model = result.Result;
                 carView.modelId = model.modelId;
@@ -44,8 +44,8 @@ namespace Rado.Enrich
             }
             else
             {
-                var modification = ModificationsDbSet.GetModificationById(carView.modificationId);
-                carView.modificationName = ModificationsDbSet.GetModificationNameById(carView.modificationId);
+                var modification = ModificationsDbSet.GetModificationById(carView.modificationId ?? 0);
+                carView.modificationName = ModificationsDbSet.GetModificationNameById(carView.modificationId ?? 0);
                 
                 if (modification != null)
                 {
@@ -464,7 +464,7 @@ namespace Rado.Enrich
             part.companyName = carView.companyName;
             part.modelId = carView.modelId;
             part.modelName = carView.modelName;
-            part.modificationId = carView.modificationId;
+            part.modificationId = carView.modificationId ?? 0;
             part.modification = carView.modificationName;
             part.engineType = carView.engineType;
             part.engineModel = carView.engineModel;
@@ -480,7 +480,7 @@ namespace Rado.Enrich
 
             part.categoryName = "Кола на части";
             part.isCar = true;
-            part.modificationName = ModificationsDbSet.GetModificationById(carView.modificationId)?.modificationName;
+            part.modificationName = ModificationsDbSet.GetModificationById(carView.modificationId ?? 0)?.modificationName;
 
             if (loadMainPicture)
             {
@@ -510,7 +510,7 @@ namespace Rado.Enrich
         {
             part.carId = carView.carId;
             part.modelId = carView.modelId;
-            part.modificationId = carView.modificationId;
+            part.modificationId = carView.modificationId ?? 0;
             part.modification = carView.modificationName;
             part.engineType = carView.engineType;
             part.engineModel = carView.engineModel;
@@ -526,7 +526,7 @@ namespace Rado.Enrich
         public static void InitPartFromCar(ref Part part, CarView car)
         {
             part.modelId = car.modelId;
-            part.modificationId = car.modificationId;
+            part.modificationId = car.modificationId ?? 0;
             part.modification = car.modificationName;
             part.year = car.year;
             part.millage = car.millage;

@@ -1,21 +1,17 @@
-.btnAdd
-{
+.btnAdd {
     background-color: rgb(100, 221, 23);
     color: white;
 }
-
 
 .btnSearch {
     background-color: blue;
     color: white;
 }
-.noShow
-{
+.noShow {
     display: none;
 }
 
-.show 
-{
+.show {
     display: display-inline;
 }
 
@@ -24,4 +20,22 @@
     background-color: blueviolet;
     color: antiquewhite;
     border-radius: 5px;
+}
+
+.option-menu {
+    display: none;
+}
+
+.button-menu {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .option-menu {
+        display: block;
+    }
+
+    .button-menu {
+        display: none;
+    }
 }
