@@ -4,7 +4,7 @@ import { ImageData } from '@model/imageData'
 import { FormsModule } from '@angular/forms'
 import { UploadComponent } from '../upload/upload.component'
 import { ImageService } from '@services/image.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
@@ -30,7 +30,7 @@ export class ImageListComponent extends HelperComponent implements OnInit {
 
     constructor(
         private imageService: ImageService,
-        private popupService: PopUpServiceService,
+        private popupService: PopUpService,
         private confirmService: ConfirmServiceService,
         private toastService: ToastService
     ) {

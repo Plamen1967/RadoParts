@@ -29,7 +29,7 @@ import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap, tak
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ActivatedRoute, ParamMap, Router } from '@angular/router'
 import { DealerViewComponent } from '@app/data/dealerView/dealerview.component'
 import { Numberparts } from '@model/numberparts'
@@ -122,7 +122,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     private readonly _debounceParts: number
     private readonly _destroy$: Subject<boolean>
     userCount$: Observable<UserCount | undefined>
-    popupService: PopUpServiceService
+    popupService: PopUpService
 
     //#region members
 
@@ -142,7 +142,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     private nextIdService: NextIdService
     private scroller: ViewportScroller
     private confirmService: ConfirmServiceService
-    private popupMessage: PopUpServiceService
+    private popupMessage: PopUpService
     private router: Router
     private route: ActivatedRoute
     private carService: CarService
@@ -155,7 +155,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.modelService = inject(ModelService)
         this.categoryService = inject(CategoryService)
         this.subCategoryService = inject(SubCategoryService)    
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.searchPartService = inject(SearchPartService)
         this.authernticationService = inject(AuthenticationService)
         this.formBuilder = inject(FormBuilder)
@@ -166,7 +166,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.nextIdService = inject(NextIdService)
         this.scroller = inject(ViewportScroller)
         this.confirmService = inject(ConfirmServiceService)
-        this.popupMessage = inject(PopUpServiceService)
+        this.popupMessage = inject(PopUpService)
         this.router = inject(Router)
         this.route = inject(ActivatedRoute)
         this.carService = inject(CarService)

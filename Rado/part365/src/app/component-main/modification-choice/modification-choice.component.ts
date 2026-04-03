@@ -1,4 +1,5 @@
-import { Component, DestroyRef, ElementRef, EventEmitter, Input, Output, Self } from '@angular/core'
+//#region imports
+import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, Self } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -10,14 +11,17 @@ import { OptionItem } from '@model/optionitem'
 import { Modification } from '@model/static-data/modification'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { ErrorService } from '@services/error.service'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-modification-choice',
     templateUrl: './modification-choice.component.html',
     styleUrls: ['./modification-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule]
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
+//#endregion
 export class ModificationChoiceComponent implements ControlValueAccessor {
+    //#region variables and services
     modifications: OptionItem[] = []
     modificationForm: FormGroup
     models_Id = ''
@@ -28,31 +32,32 @@ export class ModificationChoiceComponent implements ControlValueAccessor {
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
-
     @Input() multiselection = true
     @Input() useFilter = true
     @Input() all = false
     @Input() userId = 0
     @Input() required = false
     @Input() submitted = false
-    @Input() showCount = false;
+    @Input() showCount = false
     @Input() itemType: ItemType = ItemType.All
     @Input() set modelsId(value: string | number) {
         this.modelChange(value.toString())
     }
 
     @Output() modifcationChange: EventEmitter<Modification> = new EventEmitter<Modification>()
+    //#region services
+    private modificationService: ModificationService = inject(ModificationService)
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    @Self() public control: NgControl = inject(NgControl)
+    public errorService: ErrorService = inject(ErrorService)
+    private element: ElementRef = inject(ElementRef)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    //#endregion
+    //#endregion
 
-    constructor(
-        private modificationService: ModificationService,
-        private formBuilder: FormBuilder,
-        @Self() public control: NgControl,
-        public errorService: ErrorService,
-        private element: ElementRef,
-        private destroyRef: DestroyRef
-    ) {
+    constructor() {
         if (this.control) this.control.valueAccessor = this
-        this.modificationForm = formBuilder.group({
+        this.modificationForm = this.formBuilder.group({
             modificationsId_int: [0],
         })
 

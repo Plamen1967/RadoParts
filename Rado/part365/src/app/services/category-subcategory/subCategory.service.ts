@@ -1,17 +1,21 @@
+//#region imports
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { handleError } from '@app/functions/handleError'
 import { environment } from '@env/environment'
 import { SubCategory } from '@model/category-subcategory/subCategory'
 import { catchError, Observable } from 'rxjs'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class SubCategoryService {
+    //#region variables and services
     private subCategories: Map<number, Observable<SubCategory[]>> = new Map<number, Observable<SubCategory[]>>()
-
-    constructor(private http: HttpClient) {}
+    private http: HttpClient = inject(HttpClient)
+    //#endregion
 
     // fetch(categoryId: number): Observable<SubCategory[]> {
     //     if (this.subCategories.has(categoryId)) return this.subCategories.get(categoryId) ?? []

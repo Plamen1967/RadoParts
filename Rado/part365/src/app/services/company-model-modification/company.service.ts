@@ -1,18 +1,22 @@
+//#region imports 
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { handleError } from '@app/functions/handleError'
 import { environment } from '@env/environment'
 import { Company, getBusCompanyAll, getCompanyAll } from '@model/company-model-modification/company'
 import { catchError, map, Observable, of, switchMap } from 'rxjs'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class CompanyService {
+    //#region variables and services
     public companies?: Company[]
     public buscompanies?: Company[]
-
-    constructor(private http: HttpClient) {}
+    private http: HttpClient = inject(HttpClient)
+    //#endregion
 
     fetchCompanies(): Observable<Company[]> {
         if (this.companies) return of(this.companies)

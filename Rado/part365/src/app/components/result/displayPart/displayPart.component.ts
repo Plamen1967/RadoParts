@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -34,7 +34,7 @@ import { PhoneComponent } from '@components/custom-controls/phone/phone.componen
 import { Filter } from '@model/filters/filter'
 import { PartViewComponent } from './partView/partView.component'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { AlertService } from '@services/alert.service'
 import { PathService } from '@services/path.service'
@@ -184,27 +184,27 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     get isHeighligthed() {
         return this.highlighted === this.part.id; 
     }
+        private authernticationService: AuthenticationService = inject(AuthenticationService)
+        public partService: PartServiceService = inject(PartServiceService)
+        private carService: CarService = inject(CarService)
+        private checkoutService: CheckOutService = inject(CheckOutService)
+        private popupService: PopUpService = inject(PopUpService)
+        private localStorageService: LocalStorageService = inject(LocalStorageService)  
+        private homeService: HomeService = inject(HomeService)
+        public breakpointObserver: BreakpointObserver = inject(BreakpointObserver)
+        private router: Router = inject(Router) 
+        private staticService: StaticSelectionService = inject(StaticSelectionService)
+        private tyreService: TyreService = inject(TyreService)
+        public loadingService: LoadingService = inject(LoadingService)
+        public searchPartService: SearchPartService = inject(SearchPartService)
+        private confirmationService: ConfirmServiceService = inject(ConfirmServiceService)
+        private alertService: AlertService = inject(AlertService)
+        private pathService: PathService = inject(PathService)
+        private route: ActivatedRoute = inject(ActivatedRoute)
+
     //#endregion
     //#region ctor
-    constructor(
-        private authernticationService: AuthenticationService,
-        public partService: PartServiceService,
-        private carService: CarService,
-        private checkoutService: CheckOutService,
-        private popupService: PopUpServiceService,
-        private localStorageService: LocalStorageService,
-        private homeService: HomeService,
-        public breakpointObserver: BreakpointObserver,
-        private router: Router,
-        private staticService: StaticSelectionService,
-        private tyreService: TyreService,
-        public loadingService: LoadingService,
-        public searchPartService: SearchPartService,
-        private confirmationService: ConfirmServiceService,
-        private alertService: AlertService,
-        private pathService: PathService,
-        private route: ActivatedRoute
-    ) {
+    constructor() {
         super()
         this.dealerWebPage = this.pathService.userPage;
     }

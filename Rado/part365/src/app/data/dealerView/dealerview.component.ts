@@ -1,8 +1,9 @@
+//#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { Router } from '@angular/router'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ImageComponent } from '@components/custom-controls/image/image.component'
 import { CarView } from '@model/car/carView'
 import { DealerActionType } from '@model/dealerActionType'
@@ -22,14 +23,18 @@ import { DisplayPartView } from '@model/displayPartView'
 import { PartServiceService } from '@services/part/partService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { goToPosition } from '@app/functions/functions'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-dealerview',
     templateUrl: './dealerview.component.html',
     styleUrls: ['./dealerview.component.css'],
     imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent]
 })
+//#endregion
+
 export class DealerViewComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region variables and services
     parts: PartView[] = []
     showParts = false
     highlighted_?: number
@@ -56,19 +61,20 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
     @Input() showPart!: boolean
     @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
     @Output() addPartCarId: EventEmitter<number> = new EventEmitter<number>()
-
-    constructor(
-        private authernticationService: AuthenticationService,
-        private confirmService: ConfirmServiceService,
-        private router: Router,
-        private partService: PartServiceService,
-        private nextIdService: NextIdService,
-        private carService: CarService,
-        private alertService: AlertService,
-        private popupService: PopUpServiceService
-    ) {
+    private authernticationService: AuthenticationService = inject(AuthenticationService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private router: Router = inject(Router)
+    private partService: PartServiceService = inject(PartServiceService)
+    private nextIdService: NextIdService = inject(NextIdService)
+    private carService: CarService = inject(CarService)
+    private alertService: AlertService = inject(AlertService)
+    private popupService: PopUpService = inject(PopUpService)
+    //#endregion
+    
+    constructor() {
         super()
     }
+
     ngAfterViewInit(): void {
         if (this.isHighlighted) goToPosition(this.id)
     }

@@ -1,5 +1,6 @@
+//#region imports
 import { NgStyle, NgClass } from '@angular/common'
-import { AfterViewInit, Component } from '@angular/core'
+import { AfterViewInit, Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -10,15 +11,18 @@ import { CompanyService } from '@services/company-model-modification/company.ser
 import { ModelService } from '@services/company-model-modification/model.service'
 import { SelectOption } from '@model/selectOption'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
-
+import { PopUpService } from '@app/dialog/services/popUpService.service'
+//#endregion
+//#region component
 @Component({
     selector: 'app-model',
     templateUrl: './model.component.html',
     styleUrls: ['./model.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass]
+    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
 })
+//#endregion
 export default class ModelComponent extends HelperComponent implements AfterViewInit {
+    //#region variables and services
     modelForm: FormGroup
     companies: SelectOption[] = []
     modelsAll: SelectOption[] = []
@@ -27,18 +31,18 @@ export default class ModelComponent extends HelperComponent implements AfterView
     companyId?: number
     modelId?: number
     groupModelId?: number
-
-    constructor(
-        formBuilder: FormBuilder,
-        private adminService: AdminService,
-        private companyService: CompanyService,
-        private confirmService: ConfirmServiceService,
-        private popupService: PopUpServiceService,
-        private modelService: ModelService
-    ) {
+    formBuilder: FormBuilder = inject(FormBuilder)
+    private adminService: AdminService = inject(AdminService)
+    private companyService: CompanyService = inject(CompanyService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private popupService: PopUpService = inject(PopUpService)
+    private modelService: ModelService = inject(ModelService)
+    //#endregion
+    
+    constructor() {
         super()
 
-        this.modelForm = formBuilder.group({
+        this.modelForm = this.formBuilder.group({
             companyId: [0],
             groupModelId: [0],
             modelId: [0],

@@ -1,370 +1,425 @@
-import { Component, Input, HostListener, ViewChild, OnInit,
-    HostBinding, DoCheck, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
-import { NgxGalleryImageComponent } from '../image/ngx-gallery-image.component';
-import { NgxGalleryImage } from '../models/ngx-gallery-image.model';
-import { NgxGalleryLayout } from '../models/ngx-gallery-layout.model';
-import { NgxGalleryOptions } from '../models/ngx-gallery-options.model';
-import { NgxGalleryOrderedImage } from '../models/ngx-gallery-ordered-image.model';
-import { NgxGalleryPreviewComponent } from '../preview/ngx-gallery-preview.component';
-import { NgxGalleryHelperService } from '../services/ngx-gallery-helper.service';
-import { NgxGalleryThumbnailsComponent } from '../thumbnails/ngx-gallery-thumbnails.component';
-
+//#region imports
+import { Component, Input, HostListener, ViewChild, OnInit, HostBinding, DoCheck, ElementRef, AfterViewInit, Output, EventEmitter, inject } from '@angular/core'
+import { SafeResourceUrl } from '@angular/platform-browser'
+import { NgxGalleryImageComponent } from '../image/ngx-gallery-image.component'
+import { NgxGalleryImage } from '../models/ngx-gallery-image.model'
+import { NgxGalleryLayout } from '../models/ngx-gallery-layout.model'
+import { NgxGalleryOptions } from '../models/ngx-gallery-options.model'
+import { NgxGalleryOrderedImage } from '../models/ngx-gallery-ordered-image.model'
+import { NgxGalleryPreviewComponent } from '../preview/ngx-gallery-preview.component'
+import { NgxGalleryHelperService } from '../services/ngx-gallery-helper.service'
+import { NgxGalleryThumbnailsComponent } from '../thumbnails/ngx-gallery-thumbnails.component'
+//#endregion
+//#region component
 @Component({
     standalone: true,
     selector: 'app-ngx-gallery',
     template: `
-    <div class="ngx-gallery-layout {{currentOptions?.layout}}">
-        <app-ngx-gallery-image *ngIf="currentOptions?.image" [style.height]="getImageHeight()" [images]="mediumImages" [clickable]="currentOptions?.preview" [selectedIndex]="selectedIndex" [arrows]="currentOptions?.imageArrows" [arrowsAutoHide]="currentOptions?.imageArrowsAutoHide" [arrowPrevIcon]="currentOptions?.arrowPrevIcon" [arrowNextIcon]="currentOptions?.arrowNextIcon" [swipe]="currentOptions?.imageSwipe" [animation]="currentOptions?.imageAnimation" [size]="currentOptions?.imageSize" [autoPlay]="currentOptions?.imageAutoPlay" [autoPlayInterval]="currentOptions?.imageAutoPlayInterval" [autoPlayPauseOnHover]="currentOptions?.imageAutoPlayPauseOnHover" [infinityMove]="currentOptions?.imageInfinityMove"  [lazyLoading]="currentOptions?.lazyLoading" [actions]="currentOptions?.imageActions" [descriptions]="descriptions" [showDescription]="currentOptions?.imageDescription" [bullets]="currentOptions?.imageBullets" (onClick)="openPreview($event)" (onActiveChange)="selectFromImage($event)"></app-ngx-gallery-image>
+        <div class="ngx-gallery-layout {{ currentOptions?.layout }}">
+            @if (currentOptions?.image) {
+                <app-ngx-gallery-image
+                    [style.height]="getImageHeight()"
+                    [images]="mediumImages"
+                    [clickable]="currentOptions?.preview"
+                    [selectedIndex]="selectedIndex"
+                    [arrows]="currentOptions?.imageArrows"
+                    [arrowsAutoHide]="currentOptions?.imageArrowsAutoHide"
+                    [arrowPrevIcon]="currentOptions?.arrowPrevIcon"
+                    [arrowNextIcon]="currentOptions?.arrowNextIcon"
+                    [swipe]="currentOptions?.imageSwipe"
+                    [animation]="currentOptions?.imageAnimation"
+                    [size]="currentOptions?.imageSize"
+                    [autoPlay]="currentOptions?.imageAutoPlay"
+                    [autoPlayInterval]="currentOptions?.imageAutoPlayInterval"
+                    [autoPlayPauseOnHover]="currentOptions?.imageAutoPlayPauseOnHover"
+                    [infinityMove]="currentOptions?.imageInfinityMove"
+                    [lazyLoading]="currentOptions?.lazyLoading"
+                    [actions]="currentOptions?.imageActions"
+                    [descriptions]="descriptions"
+                    [showDescription]="currentOptions?.imageDescription"
+                    [bullets]="currentOptions?.imageBullets"
+                    (onClick)="openPreview($event)"
+                    (onActiveChange)="selectFromImage($event)"></app-ngx-gallery-image>
+            }
 
-        <app-ngx-gallery-thumbnails *ngIf="currentOptions?.thumbnails" 
-                [style.marginTop]="getThumbnailsMarginTop()" 
-                [style.marginBottom]="getThumbnailsMarginBottom()" 
-                [style.height]="getThumbnailsHeight()" 
-                [images]="smallImages" 
-                [links]="currentOptions?.thumbnailsAsLinks ? links : []" [labels]="labels" 
-                [linkTarget]="currentOptions?.linkTarget" [selectedIndex]="selectedIndex" 
-                [columns]="currentOptions?.thumbnailsColumns" [rows]="currentOptions?.thumbnailsRows" 
-                [margin]="currentOptions?.thumbnailMargin" [arrows]="currentOptions?.thumbnailsArrows" 
-                [arrowsAutoHide]="currentOptions?.thumbnailsArrowsAutoHide" [arrowPrevIcon]="currentOptions?.arrowPrevIcon" 
-                [arrowNextIcon]="currentOptions?.arrowNextIcon" [clickable]="currentOptions?.image || currentOptions?.preview"
-                [swipe]="currentOptions?.thumbnailsSwipe" [size]="currentOptions?.thumbnailSize" [moveSize]="currentOptions?.thumbnailsMoveSize" 
-                [order]="currentOptions?.thumbnailsOrder" [remainingCount]="currentOptions?.thumbnailsRemainingCount" [lazyLoading]="currentOptions?.lazyLoading" 
-                [actions]="currentOptions?.thumbnailActions"  (onActiveChange)="selectFromThumbnails($event)"></app-ngx-gallery-thumbnails>
-
-        <app-ngx-gallery-preview [images]="bigImages" [descriptions]="descriptions" [showDescription]="currentOptions?.previewDescription" 
-                [arrowPrevIcon]="currentOptions?.arrowPrevIcon" [arrowNextIcon]="currentOptions?.arrowNextIcon" [closeIcon]="currentOptions?.closeIcon" 
-                [fullscreenIcon]="currentOptions?.fullscreenIcon" [spinnerIcon]="currentOptions?.spinnerIcon" [arrows]="currentOptions?.previewArrows" 
-                [arrowsAutoHide]="currentOptions?.previewArrowsAutoHide" [swipe]="currentOptions?.previewSwipe" [fullscreen]="currentOptions?.previewFullscreen" 
-                [forceFullscreen]="currentOptions?.previewForceFullscreen" [closeOnClick]="currentOptions?.previewCloseOnClick" [closeOnEsc]="currentOptions?.previewCloseOnEsc" 
-                [keyboardNavigation]="currentOptions?.previewKeyboardNavigation" [animation]="currentOptions?.previewAnimation" [autoPlay]="currentOptions?.previewAutoPlay" 
-                [autoPlayInterval]="currentOptions?.previewAutoPlayInterval" [autoPlayPauseOnHover]="currentOptions?.previewAutoPlayPauseOnHover" 
-                [infinityMove]="currentOptions?.previewInfinityMove" [zoom]="currentOptions?.previewZoom" [zoomStep]="currentOptions?.previewZoomStep" 
-                [zoomMax]="currentOptions?.previewZoomMax" [zoomMin]="currentOptions?.previewZoomMin" [zoomInIcon]="currentOptions?.zoomInIcon" 
-                [zoomOutIcon]="currentOptions?.zoomOutIcon" [actions]="currentOptions?.actions" [rotate]="currentOptions?.previewRotate"
-                [rotateLeftIcon]="currentOptions?.rotateLeftIcon" [rotateRightIcon]="currentOptions?.rotateRightIcon" 
-                [download]="currentOptions?.previewDownload" [downloadIcon]="currentOptions?.downloadIcon" 
-                [bullets]="currentOptions?.previewBullets" (onClose)="onPreviewClose()" (onOpen)="onPreviewOpen()" (onActiveChange)="previewSelect($event)" [class.ngx-gallery-active]="previewEnabled"></app-ngx-gallery-preview>
-    </div>
+            @if (currentOptions?.thumbnails) {
+                <app-ngx-gallery-thumbnails
+                    [style.marginTop]="getThumbnailsMarginTop()"
+                    [style.marginBottom]="getThumbnailsMarginBottom()"
+                    [style.height]="getThumbnailsHeight()"
+                    [images]="smallImages"
+                    [links]="currentOptions?.thumbnailsAsLinks ? links : []"
+                    [labels]="labels"
+                    [linkTarget]="currentOptions?.linkTarget"
+                    [selectedIndex]="selectedIndex"
+                    [columns]="currentOptions?.thumbnailsColumns"
+                    [rows]="currentOptions?.thumbnailsRows"
+                    [margin]="currentOptions?.thumbnailMargin"
+                    [arrows]="currentOptions?.thumbnailsArrows"
+                    [arrowsAutoHide]="currentOptions?.thumbnailsArrowsAutoHide"
+                    [arrowPrevIcon]="currentOptions?.arrowPrevIcon"
+                    [arrowNextIcon]="currentOptions?.arrowNextIcon"
+                    [clickable]="currentOptions?.image || currentOptions?.preview"
+                    [swipe]="currentOptions?.thumbnailsSwipe"
+                    [size]="currentOptions?.thumbnailSize"
+                    [moveSize]="currentOptions?.thumbnailsMoveSize"
+                    [order]="currentOptions?.thumbnailsOrder"
+                    [remainingCount]="currentOptions?.thumbnailsRemainingCount"
+                    [lazyLoading]="currentOptions?.lazyLoading"
+                    [actions]="currentOptions?.thumbnailActions"
+                    (onActiveChange)="selectFromThumbnails($event)"></app-ngx-gallery-thumbnails>
+            }
+            <app-ngx-gallery-preview
+                [images]="bigImages"
+                [descriptions]="descriptions"
+                [showDescription]="currentOptions?.previewDescription"
+                [arrowPrevIcon]="currentOptions?.arrowPrevIcon"
+                [arrowNextIcon]="currentOptions?.arrowNextIcon"
+                [closeIcon]="currentOptions?.closeIcon"
+                [fullscreenIcon]="currentOptions?.fullscreenIcon"
+                [spinnerIcon]="currentOptions?.spinnerIcon"
+                [arrows]="currentOptions?.previewArrows"
+                [arrowsAutoHide]="currentOptions?.previewArrowsAutoHide"
+                [swipe]="currentOptions?.previewSwipe"
+                [fullscreen]="currentOptions?.previewFullscreen"
+                [forceFullscreen]="currentOptions?.previewForceFullscreen"
+                [closeOnClick]="currentOptions?.previewCloseOnClick"
+                [closeOnEsc]="currentOptions?.previewCloseOnEsc"
+                [keyboardNavigation]="currentOptions?.previewKeyboardNavigation"
+                [animation]="currentOptions?.previewAnimation"
+                [autoPlay]="currentOptions?.previewAutoPlay"
+                [autoPlayInterval]="currentOptions?.previewAutoPlayInterval"
+                [autoPlayPauseOnHover]="currentOptions?.previewAutoPlayPauseOnHover"
+                [infinityMove]="currentOptions?.previewInfinityMove"
+                [zoom]="currentOptions?.previewZoom"
+                [zoomStep]="currentOptions?.previewZoomStep"
+                [zoomMax]="currentOptions?.previewZoomMax"
+                [zoomMin]="currentOptions?.previewZoomMin"
+                [zoomInIcon]="currentOptions?.zoomInIcon"
+                [zoomOutIcon]="currentOptions?.zoomOutIcon"
+                [actions]="currentOptions?.actions"
+                [rotate]="currentOptions?.previewRotate"
+                [rotateLeftIcon]="currentOptions?.rotateLeftIcon"
+                [rotateRightIcon]="currentOptions?.rotateRightIcon"
+                [download]="currentOptions?.previewDownload"
+                [downloadIcon]="currentOptions?.downloadIcon"
+                [bullets]="currentOptions?.previewBullets"
+                (onClose)="onPreviewClose()"
+                (onOpen)="onPreviewOpen()"
+                (onActiveChange)="previewSelect($event)"
+                [class.ngx-gallery-active]="previewEnabled"></app-ngx-gallery-preview>
+        </div>
     `,
     styleUrls: ['./ngx-gallery.component.scss'],
     providers: [NgxGalleryHelperService],
-    imports: [NgxGalleryImageComponent, NgxGalleryThumbnailsComponent, NgxGalleryPreviewComponent]
+    imports: [NgxGalleryImageComponent, NgxGalleryThumbnailsComponent, NgxGalleryPreviewComponent],
 })
-export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit   {
-    @Input() options?: NgxGalleryOptions[];
-    @Input() images?: NgxGalleryImage[];
+//#endregion
 
-    @Output() imagesReady = new EventEmitter();
+export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
+    //#region variables and services
+    @Input() options?: NgxGalleryOptions[]
+    @Input() images?: NgxGalleryImage[]
+
+    @Output() imagesReady = new EventEmitter()
     // eslint-disable-next-line @angular-eslint/no-output-native
-    @Output() change = new EventEmitter<{ index: number; image: NgxGalleryImage; }>();
-    @Output() previewOpen = new EventEmitter();
-    @Output() previewClose = new EventEmitter();
-    @Output() previewChange = new EventEmitter<{ index: number; image: NgxGalleryImage; }>();
+    @Output() change = new EventEmitter<{ index: number; image: NgxGalleryImage }>()
+    @Output() previewOpen = new EventEmitter()
+    @Output() previewClose = new EventEmitter()
+    @Output() previewChange = new EventEmitter<{ index: number; image: NgxGalleryImage }>()
 
-    smallImages?: string[] | SafeResourceUrl[];
-    mediumImages?: NgxGalleryOrderedImage[];
-    bigImages?: string[] | SafeResourceUrl[];
-    descriptions?: string[];
-    links?: string[];
-    labels: string[] = [];
+    smallImages?: string[] | SafeResourceUrl[]
+    mediumImages?: NgxGalleryOrderedImage[]
+    bigImages?: string[] | SafeResourceUrl[]
+    descriptions?: string[]
+    links?: string[]
+    labels: string[] = []
 
-    oldImages?: NgxGalleryImage[];
-    oldImagesLength = 0;
+    oldImages?: NgxGalleryImage[]
+    oldImagesLength = 0
 
-    selectedIndex = 0;
-    previewEnabled?: boolean;
+    selectedIndex = 0
+    previewEnabled?: boolean
 
-    currentOptions?: NgxGalleryOptions;
+    currentOptions?: NgxGalleryOptions
 
-    private breakpoint: number | undefined = undefined;
-    private prevBreakpoint: number | undefined = undefined;
-    private fullWidthTimeout: NodeJS.Timeout | undefined;
+    private breakpoint: number | undefined = undefined
+    private prevBreakpoint: number | undefined = undefined
+    private fullWidthTimeout: number | undefined
 
-    @ViewChild(NgxGalleryPreviewComponent) preview?: NgxGalleryPreviewComponent;
-    @ViewChild(NgxGalleryImageComponent) image?: NgxGalleryImageComponent;
+    @ViewChild(NgxGalleryPreviewComponent) preview?: NgxGalleryPreviewComponent
+    @ViewChild(NgxGalleryImageComponent) image?: NgxGalleryImageComponent
     @ViewChild(NgxGalleryThumbnailsComponent)
-    private _thubmnails?: NgxGalleryThumbnailsComponent;
-    public get thubmnails_1(): NgxGalleryThumbnailsComponent | undefined  {
-        return this._thubmnails;
+    private _thubmnails?: NgxGalleryThumbnailsComponent
+    public get thubmnails_1(): NgxGalleryThumbnailsComponent | undefined {
+        return this._thubmnails
     }
     public set thubmnails_1(value: NgxGalleryThumbnailsComponent) {
-        this._thubmnails = value;
+        this._thubmnails = value
     }
     public get thubmnails(): NgxGalleryThumbnailsComponent | undefined {
-        return this._thubmnails;
+        return this._thubmnails
     }
     public set thubmnails(value: NgxGalleryThumbnailsComponent) {
-        this._thubmnails = value;
+        this._thubmnails = value
     }
 
-    @HostBinding('style.width') width?: string;
-    @HostBinding('style.height') height?: string;
-    @HostBinding('style.left') left?: string;
-
-    constructor(private myElement: ElementRef) {}
-
+    @HostBinding('style.width') width?: string
+    @HostBinding('style.height') height?: string
+    @HostBinding('style.left') left?: string
+    private myElement: ElementRef = inject(ElementRef)
+    //#endregion
+    
     ngOnInit() {
-        this.options = this.options?.map((opt) => new NgxGalleryOptions(opt));
-        this.sortOptions();
-        this.setBreakpoint();
-        this.setOptions();
-        this.checkFullWidth();
+        this.options = this.options?.map((opt) => new NgxGalleryOptions(opt))
+        this.sortOptions()
+        this.setBreakpoint()
+        this.setOptions()
+        this.checkFullWidth()
         if (this.currentOptions) {
-            this.selectedIndex = this.currentOptions.startIndex as number;
+            this.selectedIndex = this.currentOptions.startIndex as number
         }
         setInterval(() => {
-            this.rotate();
-        }, 10000);
+            this.rotate()
+        }, 10000)
     }
 
     ngDoCheck(): void {
-        if (this.images !== undefined && (this.images.length !== this.oldImagesLength)
-            || (this.images !== this.oldImages)) {
-            this.oldImagesLength = this.images?.length ?? 0;
-            this.oldImages = this.images;
-            this.setOptions();
-            this.setImages();
+        if ((this.images !== undefined && this.images.length !== this.oldImagesLength) || this.images !== this.oldImages) {
+            this.oldImagesLength = this.images?.length ?? 0
+            this.oldImages = this.images
+            this.setOptions()
+            this.setImages()
 
             if (this.images && this.images.length) {
-                this.imagesReady.emit();
+                this.imagesReady.emit()
             }
 
             if (this.image && this.currentOptions) {
-                this.image.reset((this.currentOptions.startIndex as number));
+                this.image.reset(this.currentOptions.startIndex as number)
             }
 
-            if (this.currentOptions?.thumbnailsAutoHide && this.currentOptions?.thumbnails
-                && (this.images?.length ?? 0) <= 1) {
-                this.currentOptions.thumbnails = false;
-                this.currentOptions.imageArrows = false;
+            if (this.currentOptions?.thumbnailsAutoHide && this.currentOptions?.thumbnails && (this.images?.length ?? 0) <= 1) {
+                this.currentOptions.thumbnails = false
+                this.currentOptions.imageArrows = false
             }
 
-            this.resetThumbnails();
+            this.resetThumbnails()
         }
     }
 
     ngAfterViewInit(): void {
-        this.checkFullWidth();
+        this.checkFullWidth()
     }
 
     @HostListener('window:resize') onResize() {
-        this.setBreakpoint();
+        this.setBreakpoint()
 
         if (this.prevBreakpoint !== this.breakpoint) {
-            this.setOptions();
-            this.resetThumbnails();
+            this.setOptions()
+            this.resetThumbnails()
         }
 
         if (this.currentOptions && this.currentOptions.fullWidth) {
-
             if (this.fullWidthTimeout) {
-                clearTimeout(this.fullWidthTimeout);
+                clearTimeout(this.fullWidthTimeout)
             }
 
             this.fullWidthTimeout = setTimeout(() => {
-                this.checkFullWidth();
-            }, 200);
+                this.checkFullWidth()
+            }, 200)
         }
     }
 
     getImageHeight(): string {
-        return (this.currentOptions && this.currentOptions.thumbnails) ?
-            this.currentOptions.imagePercent + '%' : '100%';
+        return this.currentOptions && this.currentOptions.thumbnails ? this.currentOptions.imagePercent + '%' : '100%'
     }
 
     getThumbnailsHeight(): string {
         if (this.currentOptions && this.currentOptions.image) {
-            return 'calc(' + this.currentOptions.thumbnailsPercent + '% - '
-            + this.currentOptions.thumbnailsMargin + 'px)';
+            return 'calc(' + this.currentOptions.thumbnailsPercent + '% - ' + this.currentOptions.thumbnailsMargin + 'px)'
         } else {
-            return '100%';
+            return '100%'
         }
     }
 
     getThumbnailsMarginTop(): string {
         if (this.currentOptions && this.currentOptions.layout === NgxGalleryLayout.ThumbnailsBottom) {
-            return this.currentOptions.thumbnailsMargin + 'px';
+            return this.currentOptions.thumbnailsMargin + 'px'
         } else {
-            return '0px';
+            return '0px'
         }
     }
 
     getThumbnailsMarginBottom(): string {
         if (this.currentOptions && this.currentOptions.layout === NgxGalleryLayout.ThumbnailsTop) {
-            return this.currentOptions.thumbnailsMargin + 'px';
+            return this.currentOptions.thumbnailsMargin + 'px'
         } else {
-            return '0px';
+            return '0px'
         }
     }
 
     openPreview(index: number): void {
         if (this.currentOptions?.previewCustom) {
-            this.currentOptions.previewCustom(index);
+            this.currentOptions.previewCustom(index)
         } else {
-            this.previewEnabled = true;
-            this.preview?.open(index);
+            this.previewEnabled = true
+            this.preview?.open(index)
         }
     }
 
     onPreviewOpen(): void {
-        this.previewOpen.emit();
+        this.previewOpen.emit()
 
         if (this.image && this.image.autoPlay) {
-            this.image.stopAutoPlay();
+            this.image.stopAutoPlay()
         }
     }
 
     onPreviewClose(): void {
-        this.previewEnabled = false;
-        this.previewClose.emit();
+        this.previewEnabled = false
+        this.previewClose.emit()
 
         if (this.image && this.image.autoPlay) {
-            this.image.startAutoPlay();
+            this.image.startAutoPlay()
         }
     }
 
     selectFromImage(index: number) {
-        this.select(index);
+        this.select(index)
     }
 
     selectFromThumbnails(index: number) {
-        this.select(index);
+        this.select(index)
 
-        if (this.currentOptions && this.currentOptions.thumbnails && this.currentOptions.preview
-            && (!this.currentOptions.image || this.currentOptions.thumbnailsRemainingCount)) {
-            this.openPreview(this.selectedIndex);
+        if (this.currentOptions && this.currentOptions.thumbnails && this.currentOptions.preview && (!this.currentOptions.image || this.currentOptions.thumbnailsRemainingCount)) {
+            this.openPreview(this.selectedIndex)
         }
     }
 
     show(index: number): void {
-        this.select(index);
+        this.select(index)
     }
 
     rotate() {
-        if (this.canShowNext())
-            this.showNext();
-        else this.show(0);    
+        if (this.canShowNext()) this.showNext()
+        else this.show(0)
     }
     showNext(): void {
-        this.image?.showNext();
+        this.image?.showNext()
     }
 
     showPrev(): void {
-        this.image?.showPrev();
+        this.image?.showPrev()
     }
 
     canShowNext(): boolean {
         if (this.images && this.currentOptions) {
-            return (this.currentOptions.imageInfinityMove || this.selectedIndex < this.images.length - 1)
-                ? true : false;
+            return this.currentOptions.imageInfinityMove || this.selectedIndex < this.images.length - 1 ? true : false
         } else {
-            return false;
+            return false
         }
     }
 
     canShowPrev(): boolean {
         if (this.images && this.currentOptions) {
-            return (this.currentOptions.imageInfinityMove || this.selectedIndex > 0) ? true : false;
+            return this.currentOptions.imageInfinityMove || this.selectedIndex > 0 ? true : false
         } else {
-            return false;
+            return false
         }
     }
 
     previewSelect(index: number) {
         if (this.images) {
-            this.previewChange.emit({index, image: this.images[index]});
+            this.previewChange.emit({ index, image: this.images[index] })
         }
     }
 
     moveThumbnailsRight() {
-        this.thubmnails?.moveRight();
+        this.thubmnails?.moveRight()
     }
 
     moveThumbnailsLeft() {
-        this.thubmnails?.moveLeft();
+        this.thubmnails?.moveLeft()
     }
 
     canMoveThumbnailsRight() {
-        return this.thubmnails?.canMoveRight();
+        return this.thubmnails?.canMoveRight()
     }
 
     canMoveThumbnailsLeft() {
-        return this.thubmnails?.canMoveLeft();
+        return this.thubmnails?.canMoveLeft()
     }
 
     private resetThumbnails() {
         if (this.thubmnails) {
-            this.thubmnails.reset((this.currentOptions?.startIndex as number));
+            this.thubmnails.reset(this.currentOptions?.startIndex as number)
         }
     }
 
     private select(index: number) {
-        this.selectedIndex = index;
+        this.selectedIndex = index
 
         this.change.emit({
             index,
-            image: this.images![index]
-        });
+            image: this.images![index],
+        })
     }
 
     private checkFullWidth(): void {
         if (this.currentOptions && this.currentOptions.fullWidth) {
-            this.width = document.body.clientWidth + 'px';
-            this.left = (-(document.body.clientWidth -
-                this.myElement.nativeElement.parentNode.innerWidth) / 2) + 'px';
+            this.width = document.body.clientWidth + 'px'
+            this.left = -(document.body.clientWidth - this.myElement.nativeElement.parentNode.innerWidth) / 2 + 'px'
         }
     }
 
     private setImages(): void {
-        this.smallImages = this.images?.map((img) => (img.small as string));
-        this.mediumImages = this.images?.map((img, i) => new NgxGalleryOrderedImage({
-            src: img.medium ?? '',
-            index: i
-        }));
-        this.bigImages = this.images?.map((img) => img.big as string);
-        this.descriptions = this.images?.map((img) => img.description as string);
-        this.links = this.images?.map((img) => img.url  as string);
-        this.labels = this.images?.map((img) => img.label  as string) ?? [];
+        this.smallImages = this.images?.map((img) => img.small as string)
+        this.mediumImages = this.images?.map(
+            (img, i) =>
+                new NgxGalleryOrderedImage({
+                    src: img.medium ?? '',
+                    index: i,
+                })
+        )
+        this.bigImages = this.images?.map((img) => img.big as string)
+        this.descriptions = this.images?.map((img) => img.description as string)
+        this.links = this.images?.map((img) => img.url as string)
+        this.labels = this.images?.map((img) => img.label as string) ?? []
     }
 
     private setBreakpoint(): void {
-        this.prevBreakpoint = this.breakpoint;
-        let breakpoints;
+        this.prevBreakpoint = this.breakpoint
+        let breakpoints
 
         if (typeof window !== 'undefined') {
-            breakpoints = this.options?.filter((opt) => (opt.breakpoint ?? 0) >= window.innerWidth)
-                .map((opt) => opt.breakpoint);
+            breakpoints = this.options?.filter((opt) => (opt.breakpoint ?? 0) >= window.innerWidth).map((opt) => opt.breakpoint)
         }
 
         if (breakpoints && breakpoints.length) {
-            this.breakpoint = breakpoints.pop();
+            this.breakpoint = breakpoints.pop()
         } else {
-            this.breakpoint = undefined;
+            this.breakpoint = undefined
         }
     }
 
     private sortOptions(): void {
         this.options = [
             ...(this.options ?? []).filter((a) => a.breakpoint === undefined),
-            ...(this.options ?? []) 
-                .filter((a) => a.breakpoint !== undefined)
-                .sort((a, b) => (b.breakpoint ?? 0) - (a.breakpoint ?? 0))
-        ];
+            ...(this.options ?? []).filter((a) => a.breakpoint !== undefined).sort((a, b) => (b.breakpoint ?? 0) - (a.breakpoint ?? 0)),
+        ]
     }
 
     private setOptions(): void {
-        this.currentOptions = new NgxGalleryOptions({});
+        this.currentOptions = new NgxGalleryOptions({})
 
-        this.options?.filter((opt) => opt.breakpoint === undefined || opt.breakpoint >= (this.breakpoint ?? 0))
-            .map((opt) => this.combineOptions(this.currentOptions!, opt));
+        this.options?.filter((opt) => opt.breakpoint === undefined || opt.breakpoint >= (this.breakpoint ?? 0)).map((opt) => this.combineOptions(this.currentOptions!, opt))
 
-        this.width = this.currentOptions.width as string;
-        this.height = this.currentOptions.height as string;
+        this.width = this.currentOptions.width as string
+        this.height = this.currentOptions.height as string
     }
 
     private combineOptions(first: NgxGalleryOptions, second: NgxGalleryOptions) {
-        Object.keys(second).map((val) => first[val] = second[val] !== undefined ? second[val] : first[val]);
+        Object.keys(second).map((val) => (first[val] = second[val] !== undefined ? second[val] : first[val]))
     }
 }
-

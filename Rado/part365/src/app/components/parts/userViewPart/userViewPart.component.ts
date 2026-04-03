@@ -24,7 +24,7 @@ import { RequestByEmailComponent } from '@components/custom-controls/requestByEm
 import { UserCardComponent } from '@components/custom-controls/userCard/userCard.component'
 import { ImageCarouselComponent } from '../../custom-controls/image-carousel/image-carousel.component'
 import { FavouriteComponent } from '@components/custom-controls/favourite/favourite.component'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { AlertService } from '@services/alert.service'
@@ -143,7 +143,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     private activeRoute: ActivatedRoute
     private searchService: SearchPartService
     public breakpointObserver: BreakpointObserver
-    private popupService: PopUpServiceService
+    private popupService: PopUpService
     private tyreService: TyreService
     public pathService: PathService
     private matDialog: MatDialog
@@ -164,7 +164,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         this.activeRoute = inject(ActivatedRoute)
         this.searchService = inject(SearchPartService)
         this.breakpointObserver = inject(BreakpointObserver)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.tyreService = inject(TyreService)
         this.pathService = inject(PathService)
         this.matDialog = inject(MatDialog)

@@ -12,7 +12,7 @@ import { NextIdService } from '@services/nextId.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { Car } from '@model/car/car'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { HomeService } from '@services/home.service'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -114,7 +114,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     private confirmService: ConfirmServiceService
     private homeService: HomeService
     private loggerService: LoggerService
-    private popupService: PopUpServiceService
+    private popupService: PopUpService
     private userCountService: UserCountService
     private toastService: ToastService
 
@@ -130,7 +130,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         this.confirmService = inject(ConfirmServiceService)
         this.homeService = inject(HomeService)
         this.loggerService = inject(LoggerService)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.userCountService = inject(UserCountService)
         this.toastService = inject(ToastService)
 

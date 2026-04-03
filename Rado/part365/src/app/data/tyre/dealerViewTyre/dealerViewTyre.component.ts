@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+//#region imports
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DealerActionType } from '@model/dealerActionType'
@@ -8,14 +9,17 @@ import { UpdateEnum } from '@model/enum/update.enum'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { InfoLine } from '@model/infoLine'
 import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.component'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-dealerviewtyre',
     templateUrl: './dealerViewTyre.component.html',
     styleUrls: ['./dealerViewTyre.component.css'],
-    imports: [DataRowComponent]
+    imports: [DataRowComponent],
 })
-export class DealerViewTyreComponent extends HelperComponent implements OnInit{
+//#endregion
+export class DealerViewTyreComponent extends HelperComponent implements OnInit {
+    //#region variables and services
     id?: number
     item_!: DisplayPartView
     isTyre?: boolean
@@ -23,26 +27,29 @@ export class DealerViewTyreComponent extends HelperComponent implements OnInit{
     tyrelines: InfoLine[] = []
     rimlines: InfoLine[] = []
     lines: InfoLine[] = []
-    companyName?: string;
-    modelName?: string;
+    companyName?: string
+    modelName?: string
 
     @Input() set item(value: DisplayPartView) {
         this.id = value.id
-        this.item_ = {...value}
+        this.item_ = { ...value }
         this.isTyre = this.item_.itemType == ItemType.Tyre || this.item_.itemType == ItemType.RimWithTyre
         this.isRim = this.item_.itemType == ItemType.Rim || this.item_.itemType == ItemType.RimWithTyre
     }
     @Input() highlighted?: boolean
     @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
-
-    constructor(
-        private staticService: StaticSelectionService,
-        private router: Router
-    ) {
+    //#region services
+    private staticService: StaticSelectionService = inject(StaticSelectionService)
+    private router: Router = inject(Router)
+    //#endregion
+    //#endregion
+    
+    constructor() {
         super()
     }
+
     ngOnInit(): void {
-        this.generateLine();
+        this.generateLine()
     }
 
     get typeDescription() {
@@ -97,10 +104,9 @@ export class DealerViewTyreComponent extends HelperComponent implements OnInit{
         if (this.item_.rimBoltCountName) this.rimlines.push({ label: 'Брой болтове', value: this.item_.rimBoltCountName, price: false })
         if (this.item_.rimBoltDistanceName) this.rimlines.push({ label: 'Болт разстояние', value: this.item_.rimBoltDistanceName, price: false })
         if (this.item_.rimCenterName) this.rimlines.push({ label: 'Център', value: this.item_.rimCenterName, price: false })
-            if (this.item_.regionId)
-                this.lines.push({ label: 'Регион', value: this.staticService.Region.find((x) => x.value === this.item_?.regionId)!.text!, price: false })
-          
-        this.companyName = this.item_.companyName ?? '';
+        if (this.item_.regionId) this.lines.push({ label: 'Регион', value: this.staticService.Region.find((x) => x.value === this.item_?.regionId)!.text!, price: false })
+
+        this.companyName = this.item_.companyName ?? ''
         this.modelName = this.item_.modelName ?? ''
     }
 }

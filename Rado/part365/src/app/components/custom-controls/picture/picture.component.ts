@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, Input, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core'
 import { ImageService } from '@services/image.service'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageData } from '@model/imageData'
@@ -6,7 +6,7 @@ import { UploadComponent } from '../upload/upload.component'
 import { FormsModule } from '@angular/forms'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { AlertService } from '@services/alert.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
@@ -17,26 +17,37 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     imports: [UploadComponent, FormsModule]
 })
 export class PictureComponent extends HelperComponent {
+    //#region services and variables
+    private imageService: ImageService;
+    private popupService: PopUpService;
+    private alertService: AlertService;
+    private contirmationService: ConfirmServiceService;
+    private destroyRef: DestroyRef;
+    //#endregion
+    //#region variables
     @Input() updateFlag?: boolean
     @Input({ required: true }) id?: number
     @Input() images: ImageData[] = []
     @Input() currentMainImageId?: number
     @Input() mainImageFlag = true
-
+    
     @Output() mainImageIdChange: EventEmitter<number> = new EventEmitter<number>()
 
     deleteImageId?: number
     message?: string
+    //#endregion
 
-    constructor(
-        private imageService: ImageService,
-        private popupService: PopUpServiceService,
-        private alertService: AlertService,
-        private contirmationService: ConfirmServiceService,
-        private destroyRef: DestroyRef
-    ) {
+    constructor() {
         super()
+        //#region inject services
+        this.imageService = inject(ImageService)
+        this.popupService = inject(PopUpService)
+        this.alertService = inject(AlertService)
+        this.contirmationService = inject(ConfirmServiceService)
+        this.destroyRef = inject(DestroyRef)
+        //#endregion
     }
+
     imageAdded(image: ImageData[]) {
         image.forEach((x) => {
             this.images.push(x)

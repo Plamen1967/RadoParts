@@ -1,6 +1,6 @@
 //#region import
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, Inject, OnInit, Renderer2, DOCUMENT } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit, Renderer2, DOCUMENT } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
@@ -11,17 +11,19 @@ import { UserService } from '@services/user.service'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { InputPasswordComponent } from '@components/custom-controls/inputPassword/inputpassword.component'
 import { UserComponent } from '@components/custom-controls/user/user.component'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 //#endregion
-
+//#region component
 @Component({
     imports: [UserComponent, FormsModule, ReactiveFormsModule, NgClass, RouterLink, NgStyle, InputPasswordComponent],
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+    styleUrls: ['./login.component.css'],
 })
+//#endregion
 export class LoginComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region variables and services
     showLoginFlag = false
     showLoginType2 = 'password'
     showFlag = false
@@ -40,8 +42,46 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
     phonePattern = /[0-9+\- ()]/
     phoneMin = 10
     phoneMax = 20
-    webLogin = false;
-    dialogRef?: MatDialogRef<LoginComponent>;
+    webLogin = false
+    dialogRef?: MatDialogRef<LoginComponent>
+    //#region services
+    private formBuilder = inject(FormBuilder)
+    private route = inject(ActivatedRoute)
+    private router = inject(Router)
+    private alertService = inject(AlertService)
+    public checkoutService = inject(CheckOutService)
+    public userService = inject(UserService)
+    private renderer = inject(Renderer2)
+    private matDialog = inject(MatDialog)
+    private popupService = inject(PopUpService)
+    private confirmationService = inject(ConfirmServiceService)
+    private document = inject(DOCUMENT)
+    //#endregion
+    //#endregion
+
+    constructor() {
+        super()
+        this.loginForm = this.formBuilder.group({
+            userName: ['', Validators.required],
+            email: ['', Validators.required],
+            phone: ['', [Validators.required, Validators.pattern(this.phonePattern), Validators.minLength(this.phoneMin), Validators.maxLength(this.phoneMax)]],
+            password: ['', Validators.required],
+            confirmPassword: ['', Validators.required],
+            dealer: [undefined, Validators.required],
+            contract: [false, Validators.requiredTrue],
+        })
+
+        this.formGroup = this.loginForm
+
+        if (this.authenticationService.currentUserValue) {
+            this.router.navigate(['/'])
+        }
+        if (this.router.url.includes('/login') || this.router.url.includes('/registration')) {
+            this.webLogin = true
+        } else {
+            this.dialogRef = inject(MatDialogRef<LoginComponent>)
+        }
+    }
 
     showLogin() {
         this.showLoginFlag = !this.showLoginFlag
@@ -71,41 +111,6 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
         elem.focus()
     }
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private alertService: AlertService,
-        public checkoutService: CheckOutService,
-        public userService: UserService,
-        private renderer: Renderer2,
-        private matDialog: MatDialog,
-        private popupService: PopUpServiceService,
-        private confirmationService: ConfirmServiceService,
-        @Inject(DOCUMENT) private document: Document
-    ) {
-        super()
-        this.loginForm = this.formBuilder.group({
-            userName: ['', Validators.required],
-            email: ['', Validators.required],
-            phone: ['', [Validators.required, Validators.pattern(this.phonePattern), Validators.minLength(this.phoneMin), Validators.maxLength(this.phoneMax)]],
-            password: ['', Validators.required],
-            confirmPassword: ['', Validators.required],
-            dealer: [undefined, Validators.required],
-            contract: [false, Validators.requiredTrue],
-        })
-
-        this.formGroup = this.loginForm
-
-        if (this.authenticationService.currentUserValue) {
-            this.router.navigate(['/'])
-        }
-        if (this.router.url.includes('/login') || this.router.url.includes('/registration')) {
-            this.webLogin = true;
-        } else {
-            this.dialogRef = inject(MatDialogRef<LoginComponent>);
-        }
-    }
     keyPress(event: KeyboardEvent) {
         const pattern = this.phonePattern
         const inputChar = String.fromCharCode(+event.key)
@@ -117,8 +122,7 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
     cancel() {
         if (this.webLogin) {
             this.router.navigate(['/'])
-        } 
-        else this.dialogRef?.close(false);
+        } else this.dialogRef?.close(false)
     }
 
     ngOnInit() {
@@ -139,7 +143,6 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
             elem?.focus()
         }, 1000)
     }
-
 
     onUserNameChange() {
         this.controls['password'].setValue('')
@@ -230,11 +233,12 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
                 next: () => {
                     this.checkoutService.getItems()
                     this.loading = false
-                    
+
                     console.log(`Web login: ${this.webLogin}`)
                     if (this.webLogin) {
                         this.router.navigate(['/'])
-                    } this.dialogRef?.close(true);
+                    }
+                    this.dialogRef?.close(true)
                 },
                 error: (err) => {
                     this.loading = false

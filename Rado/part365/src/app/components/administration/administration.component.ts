@@ -1,10 +1,10 @@
-import { Component, DestroyRef, OnInit } from '@angular/core'
+import { Component, DestroyRef, inject, OnInit } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { UserInfoComponent } from '@app/user/userInfo/userInfo.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { User } from '@model/user'
@@ -17,19 +17,15 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
     selector: 'app-administration',
     templateUrl: './administration.component.html',
     styleUrls: ['./administration.component.css'],
-    imports: [UserInfoComponent, FormsModule]
+    imports: [UserInfoComponent, FormsModule],
 })
 export default class AdministrationComponent extends HelperComponent implements OnInit {
-    constructor(
-        private userService: UserService,
-        private router: Router,
-        private confirmationService: ConfirmServiceService,
-        private popupService: PopUpServiceService,
-        private adminService: AdminService,
-                private destroyRef: DestroyRef
-    ) {
-        super()
-    }
+    private userService: UserService
+    private router: Router
+    private confirmationService: ConfirmServiceService
+    private popupService: PopUpService
+    private adminService: AdminService
+    private destroyRef: DestroyRef
 
     users?: User[]
     allUsers?: User[]
@@ -38,6 +34,18 @@ export default class AdministrationComponent extends HelperComponent implements 
     search = ''
     selected?: number
     searchSubject: Subject<string> = new Subject<string>()
+
+    constructor() {
+        super()
+
+        this.userService = inject(UserService)
+        this.router = inject(Router)
+        this.confirmationService = inject(ConfirmServiceService)
+        this.popupService = inject(PopUpService)
+        this.adminService = inject(AdminService)
+        this.destroyRef = inject(DestroyRef)
+    }
+
     ngOnInit() {
         this.getUsers()
         this.searchSubject
@@ -55,38 +63,41 @@ export default class AdministrationComponent extends HelperComponent implements 
     }
 
     getUsers() {
-        this.userService.getAll()
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-            next: (users) => {
-                this.allUsers = users.filter((user) => user.dealer != 2)
-                this.users = this.allUsers
-            },
-        })
+        this.userService
+            .getAll()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (users) => {
+                    this.allUsers = users.filter((user) => user.dealer != 2)
+                    this.users = this.allUsers
+                },
+            })
     }
     //#region View ads
     deleteUser(event: number) {
         this.deletedUserId = +event
         const user = this.users?.find((user) => user.userId === this.deletedUserId)
         this.message = `Искате ли да изтриете потребител: ${user?.userName}?`
-        this.confirmationService.OKCancel(this.labels.WARNING, this.message)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((result) => {
-            if (result === OKCancelOption.OK) {
-                this.onOk()
-            }
-        })
+        this.confirmationService
+            .OKCancel(this.labels.WARNING, this.message)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((result) => {
+                if (result === OKCancelOption.OK) {
+                    this.onOk()
+                }
+            })
     }
 
     onOk() {
         this.userService.adminDeleteUser(this.deletedUserId!).subscribe({
             next: (message: string) => {
                 this.message = message
-                this.popupService.openWithTimeout(this.labels.MESSAGE, message)
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe(() => {
-                    this.getUsers()
-                })
+                this.popupService
+                    .openWithTimeout(this.labels.MESSAGE, message)
+                    .pipe(takeUntilDestroyed(this.destroyRef))
+                    .subscribe(() => {
+                        this.getUsers()
+                    })
             },
             error: (error) => {
                 console.log(error)

@@ -2,7 +2,7 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, NavigationStart, ParamMap, Router } from '@angular/router'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
 import { UpdateEnum } from '@model/enum/update.enum'
@@ -163,7 +163,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     private imageService: ImageService
     private route: ActivatedRoute
     private loggerService: LoggerService
-    public popupService: PopUpServiceService
+    public popupService: PopUpService
     private userCountService: UserCountService
     private toastService: ToastService
 
@@ -188,7 +188,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.imageService = inject(ImageService)
         this.route = inject(ActivatedRoute)
         this.loggerService = inject(LoggerService)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.userCountService = inject(UserCountService)
         this.toastService = inject(ToastService)
         this.formBuilder = inject(FormBuilder)

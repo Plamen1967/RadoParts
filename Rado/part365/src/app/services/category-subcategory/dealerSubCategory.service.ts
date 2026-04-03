@@ -1,15 +1,18 @@
+//#region imports
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { handleError } from '@app/functions/handleError'
 import { environment } from '@env/environment'
 import { DealerSubCategory } from '@model/category-subcategory/dealerSubCategory'
 import { catchError, Observable } from 'rxjs'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class DealerSubCategoryService {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient)
 
     fetch(subCategoryId: number): Observable<DealerSubCategory[]> {
         return this.http

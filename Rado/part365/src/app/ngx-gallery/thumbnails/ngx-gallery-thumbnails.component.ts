@@ -1,13 +1,14 @@
-import { Component, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges, ElementRef } from '@angular/core'
+//#region imports
+import { Component, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges, ElementRef, inject } from '@angular/core'
 import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-browser'
-
 import { NgxGalleryHelperService } from '../services/ngx-gallery-helper.service'
 import { NgxGalleryOrder } from '../models/ngx-gallery-order.model'
 import { NgxGalleryAction } from './../action/ngx-gallery-action.model'
 import { NgxGalleryActionComponent } from '../action/ngx-gallery-action.component'
 import { NgxGalleryArrowsComponent } from '../arrows/ngx-gallery-arrows.component'
 import { NgClass, NgFor } from '@angular/common'
-
+//#endregion
+//#region component
 @Component({
     standalone: true,
     selector: 'app-ngx-gallery-thumbnails',
@@ -15,7 +16,10 @@ import { NgClass, NgFor } from '@angular/common'
     styleUrls: ['./ngx-gallery-thumbnails.component.scss'],
     imports: [NgFor, NgClass, NgxGalleryActionComponent, NgxGalleryArrowsComponent],
 })
+//#endregion
+
 export class NgxGalleryThumbnailsComponent implements OnChanges {
+    //#region variables and services
     thumbnailsLeft?: string
     thumbnailsMarginLeft?: string
     mouseenter?: boolean
@@ -49,12 +53,10 @@ export class NgxGalleryThumbnailsComponent implements OnChanges {
 
     private index = 0
     contain = ''
-
-    constructor(
-        private sanitization: DomSanitizer,
-        private elementRef: ElementRef,
-        private helperService: NgxGalleryHelperService
-    ) {}
+    private sanitization: DomSanitizer = inject(DomSanitizer)
+    private elementRef: ElementRef = inject(ElementRef)
+    private helperService: NgxGalleryHelperService = inject(NgxGalleryHelperService)
+    //#endregion
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['selectedIndex']) {

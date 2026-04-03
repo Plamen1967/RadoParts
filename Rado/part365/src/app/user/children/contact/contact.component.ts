@@ -1,29 +1,27 @@
-import { Component, OnInit, Optional } from '@angular/core';
+//#region 
+import { Component, OnInit, inject } from '@angular/core';
 import { DealerWebPageComponent } from '@app/user/dealerWebPage/dealerWebPage.component';
 import { UserHeaderComponent } from '@app/user/userHeader/userHeader.component';
 import { User } from '@model/user';
 import { UserService } from '@services/user.service';
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-contact',
     templateUrl: './contact.component.html',
     styleUrls: ['./contact.component.css'],
     imports: [UserHeaderComponent]
 })
+//#endregion
 export default class ContactComponent implements OnInit {
-
-  user?: User;
-  constructor(private userService: UserService, 
-    @Optional() public parent: DealerWebPageComponent
-  ) {
-    this.user = parent?.user;
-    console.log(this.user)
-   }
-
+  //#region variables and services
+  private userService = inject(UserService);
+  public parent = inject(DealerWebPageComponent, { optional: true });
+  user?: User = this.parent?.user;
+  //#endregion
   ngOnInit() {
+    console.log(this.user);
     return;
   }
-
-
 
 }

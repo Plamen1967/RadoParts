@@ -1,4 +1,5 @@
-import { Component, DestroyRef, ElementRef, Input, OnInit, Self } from '@angular/core'
+//#region imports
+import { Component, DestroyRef, ElementRef, inject, Input, OnInit, Self } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -8,14 +9,18 @@ import { Category } from '@model/category-subcategory/category'
 import { OptionItem } from '@model/optionitem'
 import { CategoryService } from '@services/category-subcategory/category.service'
 import { ErrorService } from '@services/error.service'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-category-choise',
     templateUrl: './category-choise.component.html',
     styleUrls: ['./category-choise.component.css'],
     imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule]
 })
+//#endregion
+
 export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
+    //#region variables and services
     categoryForm: FormGroup
     isDisabled?: boolean
     categories: OptionItem[] = []
@@ -27,17 +32,27 @@ export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
     @Input() multiselection = true
     @Input() submitted = false
     @Input() required = false
+    //#region services
+    public categoryService: CategoryService
+    private formBuilder: FormBuilder
+    @Self() public control: NgControl
+    public errorService: ErrorService
+    private element: ElementRef
+    private destroyRef: DestroyRef
+    //#endregion
+    //#endregion
 
     constructor(
-        public categoryService: CategoryService,
-        private formBuilder: FormBuilder,
-        @Self() public control: NgControl,
-        public errorService: ErrorService,
-        private element: ElementRef,
-        private destroyRef: DestroyRef
     ) {
+    this.categoryService = inject(CategoryService)
+    this.formBuilder = inject(FormBuilder)
+    this.control = inject(NgControl)
+    this.errorService = inject(ErrorService)
+    this.element = inject(ElementRef)
+    this.destroyRef = inject(DestroyRef)
+
         if (this.control) this.control.valueAccessor = this
-        this.categoryForm = formBuilder.group({
+        this.categoryForm = this.formBuilder.group({
             categoriesId_int: [''],
         })
     }

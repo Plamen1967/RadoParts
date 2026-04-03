@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, Input, OnInit, Self } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, Self } from '@angular/core'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { SelectComponent } from '../select-controls/select/select.component'
 import { SelectOption } from '@model/selectOption'
@@ -29,16 +29,19 @@ export class YearComponent extends HelperComponent implements ControlValueAccess
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
+
+        @Self() public control: NgControl = inject(NgControl)
+        public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+        public errorService: ErrorService = inject(ErrorService)
+        formBuilder: FormBuilder = inject(FormBuilder)
+        private destroyRef: DestroyRef = inject(DestroyRef)
+
+
     constructor(
-        @Self() public control: NgControl,
-        public staticSelectionService: StaticSelectionService,
-        public errorService: ErrorService,
-        formBuilder: FormBuilder,
-        private destroyRef: DestroyRef
     ) {
         super()
         if (this.control) this.control.valueAccessor = this
-        this.yearForm = formBuilder.group({
+        this.yearForm = this.formBuilder.group({
             year_int: [0],
         })
     }

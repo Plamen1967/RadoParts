@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core'
+//#region imports
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
@@ -10,7 +11,7 @@ import { AlertService } from '@services/alert.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { ImageService } from '@services/image.service'
 import { ModalService } from '@services/dialog-api/modal.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { first } from 'rxjs'
 import { UploadComponent } from '@components/custom-controls/upload/upload.component'
 import { PictureComponent } from '@components/custom-controls/picture/picture.component'
@@ -23,14 +24,17 @@ import { SelectOption } from '@model/selectOption'
 import { QueryParam } from '@model/queryParam'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { globalStaticData } from '@model/staticData'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
-    imports: [UploadComponent, PictureComponent, NgStyle, TextAreaComponent, InputComponent, ReactiveFormsModule, SelectComponent]
+    imports: [UploadComponent, PictureComponent, NgStyle, TextAreaComponent, InputComponent, ReactiveFormsModule, SelectComponent],
 })
+//#endregion
 export class UpdateUserComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region services and variables
     unamePattern = '^[a-z0-9_-]{8,15}$'
     pwdPattern = '^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?!.*s).{6,12}$'
     mobnumPattern = '^((\\+91-?)|0)?[0-9]{10}$'
@@ -55,21 +59,37 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
     currentImageId?: number
     numberAds?: number
     regions: SelectOption[] = []
+    //#region services
+    private formBuilder: FormBuilder
+    private router: Router
+    private userService: UserService
+    private alerService: AlertService
+    public staticSelectionService: StaticSelectionService
+    public imageService: ImageService
+    public modalService: ModalService
+    public popupService: PopUpService
+    private location: Location
+    private route: ActivatedRoute
+    private confirmationService: ConfirmServiceService
+    //#endregion
+    //#endregion
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private router: Router,
-        private userService: UserService,
-        private alerService: AlertService,
-        public staticSelectionService: StaticSelectionService,
-        public imageService: ImageService,
-        public modalService: ModalService,
-        public popupService: PopUpServiceService,
-        private location: Location,
-        private route: ActivatedRoute,
-        private confirmationService: ConfirmServiceService
-    ) {
+    constructor() {
         super()
+        //#region inject services
+        this.formBuilder = inject(FormBuilder)
+        this.router = inject(Router)
+        this.userService = inject(UserService)
+        this.alerService = inject(AlertService)
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.imageService = inject(ImageService)
+        this.modalService = inject(ModalService)
+        this.popupService = inject(PopUpService)
+        this.location = inject(Location)
+        this.route = inject(ActivatedRoute)
+        this.confirmationService = inject(ConfirmServiceService)
+        //#endregion
+        
         this.userForm = this.formBuilder.group({
             userName: ['', [Validators.maxLength(50), Validators.required]],
             companyName: ['', [Validators.maxLength(50)]],
@@ -206,8 +226,8 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                 setTimeout(() => {
                     this.router.navigate(['/'])
                 }, 3000)
-                // TOD 
-                console.log(data);
+                // TOD
+                console.log(data)
             },
             error: (error) => {
                 this.alerService.error(error)
@@ -314,7 +334,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
 
     //#region Delete User
     onDeleteUserDialog() {
-        if (!this.user) return;
+        if (!this.user) return
         this.message = 'Моля потвърдете изтриването на бизнес картата'
         this.confirmationService.OKCancel('Съобщение', `моля потвърдете изтриването на акаунта.`, 'Изтрий Акаунта', 'Откажи').subscribe((result) => {
             if (result === OKCancelOption.OK) {
@@ -324,7 +344,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
     }
 
     deletUser() {
-        if (!this.user) return;
+        if (!this.user) return
         const userId: number = this.user.userId!
         if (!userId) return
 
@@ -375,8 +395,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
         this.userService.userPrivate().subscribe({
             next: (message) => {
                 this.message = message
-                if (this.authenticationService.currentUserValue)
-                    this.authenticationService.currentUserValue.dealer = UserType.User
+                if (this.authenticationService.currentUserValue) this.authenticationService.currentUserValue.dealer = UserType.User
                 this.userForm.controls['companyName'].clearValidators()
                 this.userForm.controls['companyName'].updateValueAndValidity()
                 this.userForm.controls['firstName'].setValidators(Validators.required)
@@ -409,8 +428,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
         this.userService.userDealer().subscribe({
             next: (message) => {
                 this.message = message
-                if (this.authenticationService.currentUserValue)
-                    this.authenticationService.currentUserValue.dealer = UserType.Dealer
+                if (this.authenticationService.currentUserValue) this.authenticationService.currentUserValue.dealer = UserType.Dealer
                 this.dealer = UserType.Dealer
                 this.userForm.controls['companyName'].setValidators([Validators.required, Validators.maxLength(50)])
                 this.userForm.controls['companyName'].updateValueAndValidity()
@@ -418,8 +436,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                 this.userForm.controls['firstName'].updateValueAndValidity()
                 this.requiredField(true)
                 this.popupService.openWithTimeout(this.labels.MESSAGE, this.message, 2000)
-                if (this.authenticationService.currentUserValue)
-                    this.dealer = this.authenticationService.currentUserValue.dealer!
+                if (this.authenticationService.currentUserValue) this.dealer = this.authenticationService.currentUserValue.dealer!
             },
             error: (error) => {
                 this.message = error

@@ -1,5 +1,6 @@
+//#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component } from '@angular/core'
+import { AfterViewInit, Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -12,33 +13,47 @@ import { AdminService } from '@services/admin.service'
 import { AlertService } from '@services/alert.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { UserService } from '@services/user.service'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css'],
-    imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent]
+    imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent],
 })
+//#endregion
+
 export default class UserComponent extends HelperComponent implements AfterViewInit {
+    //#region services and variables
     users?: User[]
     userForm: FormGroup
     public user?: User
     submitted = false
     regions?: SelectOption[] = []
-
-    constructor(
-        private userService: UserService,
-        private alerService: AlertService,
-        public staticSelectionService: StaticSelectionService,
-        public adminService: AdminService,
-        formBuilder: FormBuilder,
-        private router: Router
-    ) {
+    //#region services
+    private userService: UserService
+    private alerService: AlertService
+    public staticSelectionService: StaticSelectionService
+    public adminService: AdminService
+    formBuilder: FormBuilder
+    private router: Router
+    //#endregion
+    //#endregion
+    constructor() {
         super()
-        this.regions = [...this.staticSelectionService.Region]
-        userService.getAll().subscribe((users) => (this.users = users))
+        //#region inject services 
+        this.userService = inject(UserService)
+        this.alerService = inject(AlertService)
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.adminService = inject(AdminService)
+        this.formBuilder = inject(FormBuilder)
+        this.router = inject(Router)
+        // #endregion
 
-        this.userForm = formBuilder.group({
+        this.regions = [...this.staticSelectionService.Region]
+        this.userService.getAll().subscribe((users) => (this.users = users))
+
+        this.userForm = this.formBuilder.group({
             users: [''],
             userName: ['', [Validators.maxLength(50), Validators.required]],
             companyName: ['', [Validators.maxLength(50)]],
@@ -59,7 +74,6 @@ export default class UserComponent extends HelperComponent implements AfterViewI
 
         this.formGroup = this.userForm
     }
-
 
     ngAfterViewInit(): void {
         this.controls['users'].valueChanges.subscribe((userId) => {

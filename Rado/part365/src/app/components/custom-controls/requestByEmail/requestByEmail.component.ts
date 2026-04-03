@@ -10,7 +10,7 @@ import { NgStyle } from '@angular/common'
 import { InputComponent } from '../input/input.component'
 import { TextAreaComponent } from '../textArea/textArea.component'
 import { CatchaComponent } from '../catcha/catcha.component'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { Catcha } from '@model/catcha'
 
@@ -36,7 +36,7 @@ export class RequestByEmailComponent extends HelperComponent implements OnInit {
         private formBuilder: FormBuilder,
         private messageService: MessageService,
         private imageService: ImageService,
-        private popupService: PopUpServiceService,
+        private popupService: PopUpService,
         private destroyRef: DestroyRef
     ) {
         super()

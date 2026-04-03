@@ -1,68 +1,69 @@
-import { Injectable } from '@angular/core';
-import { ModalService } from './dialog-api/modal.service';
-
+//#region imports
+import { inject, Injectable } from '@angular/core'
+import { ModalService } from './dialog-api/modal.service'
+//#endregion
+//#region service
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
+//#endregion
 export class PopService {
+    //#region variables and services
+    private message_ = ''
+    private header_ = ''
+    private time = 2000
+    private modalService: ModalService = inject(ModalService)
+    //#endregion
+    public getMessage() {
+        return this.message_
+    }
+    private get message() {
+        return this.message_
+    }
 
-constructor(private modalService: ModalService) { }
+    private set message(value: string) {
+        this.message_ = value
+    }
 
-private message_ = ""
-private header_ = "";
-private time = 2000;
+    public getHeader() {
+        return this.header_
+    }
 
-public getMessage() {
-  return this.message_
-}
-private get message() {
-  return this.message_
-}
+    private get header() {
+        return this.header_
+    }
 
-private set message(value: string) {
-  this.message_ = value;
-}
+    private set header(value: string) {
+        this.header_ = value
+    }
 
-public getHeader() {
-  return this.header_
-}
+    private close() {
+        console.log(`ClosePopup`)
+        // TODO this.modalService.close("popup");
+    }
 
-private get header() {
-  return this.header_
-}
+    public closePopup() {
+        console.log(`ClosePopup`)
+        // TODO this.modalService.close("popup");
+    }
 
-private set header(value: string) {
-  this.header_ = value;
-}
+    public openPopup(header: string, message: string) {
+        console.log(`openPopup`)
+        this.header_ = header
+        this.message_ = message
+        // TODO this.modalService.open("popup");
+    }
 
-private close() {
-  console.log(`ClosePopup`)
-  // TODO this.modalService.close("popup");
-}
-
-public closePopup() {
-  console.log(`ClosePopup`)
-  // TODO this.modalService.close("popup");
-}
-
-public openPopup(header: string, message: string) {
-  console.log(`openPopup`)
-  this.header_ = header;
-  this.message_ = message;
-  // TODO this.modalService.open("popup");
-}
- 
-
-showMessage(header: string, message: string, time = 2000) {
-  this.header_ = header;
-  this.message_ = message;
-  console.log(`Popup: ${time}`)
-  // TODO this.modalService.open("popup");
-  this.time = time;
-  this.close.bind(this);
-  setTimeout(() => {
-    console.log(`PopService`)
-    this.close()
-  }, 2000)
-}
+    showMessage(header: string, message: string, time = 2000) {
+        this.header_ = header
+        this.message_ = message
+        console.log(`Popup: ${time}`)
+        // TODO this.modalService.open("popup");
+        this.time = time
+        this.close.bind(this)
+        setTimeout(() => {
+            console.log(`PopService`)
+            this.close()
+        }, 2000)
+    }
 }

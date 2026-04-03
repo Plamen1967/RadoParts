@@ -1,5 +1,6 @@
+//#region imports
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Part } from '@model/part/part'
 import { Observable, of, Subject } from 'rxjs'
 import { catchError, first, tap, map } from 'rxjs/operators'
@@ -10,17 +11,18 @@ import { environment } from '@env/environment'
 import { DisplayPartView, Enrich } from '@model/displayPartView'
 import { Filter } from '@model/filters/filter'
 import { convertToParam } from '@app/functions/handleError'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class PartServiceService {
+    //#region variables and services
     Result?: Part[]
-    constructor(
-        private http: HttpClient,
-        private loggerService: LoggerService,
-        private staticService: StaticSelectionService
-    ) {}
+    private http = inject(HttpClient)
+    private loggerService = inject(LoggerService)
+    private staticService = inject(StaticSelectionService)
 
     httpHeader = {
         headers: new HttpHeaders({
@@ -31,6 +33,7 @@ export class PartServiceService {
 
     currentId: Subject<number | undefined> = new Subject<number | undefined>()
     currentPartId?: number
+    //#endregion
 
     resetCurrentId() {
         this.currentId.next(undefined)
@@ -65,12 +68,11 @@ export class PartServiceService {
 
     getPartViews(filter: Filter): Observable<PartView[]> {
         let params = new HttpParams()
-        for(const property in filter) {
-            const propertyValue = filter[property as keyof typeof filter];
-            if (propertyValue != undefined && propertyValue != null)
-                params = params.set(property, `${propertyValue}`);
-          }
-        return this.http.get<PartView[]>(`${environment.restAPI}/part/GetParts`, {params}).pipe(
+        for (const property in filter) {
+            const propertyValue = filter[property as keyof typeof filter]
+            if (propertyValue != undefined && propertyValue != null) params = params.set(property, `${propertyValue}`)
+        }
+        return this.http.get<PartView[]>(`${environment.restAPI}/part/GetParts`, { params }).pipe(
             first(),
             tap(() => this.loggerService.log(`Search for part ${filter}`))
         )
@@ -81,7 +83,7 @@ export class PartServiceService {
     }
 
     deletePart(partId: number): Observable<boolean> {
-        return this.http.post<boolean>(`${environment.restAPI}/part/delete`, {id: partId}).pipe(
+        return this.http.post<boolean>(`${environment.restAPI}/part/delete`, { id: partId }).pipe(
             first(),
             tap(() => this.loggerService.log(`delete part ${partId}`))
         )
@@ -93,12 +95,11 @@ export class PartServiceService {
 
     addUpdatePart(part: Part, update: boolean) {
         part.modifiedTime = Date.now()
-        for(const property in part) {
-            const propertyValue = part[property as keyof typeof part];
-            if (propertyValue === undefined || propertyValue === null)
-                delete part[property as keyof typeof part];
-          }
-      
+        for (const property in part) {
+            const propertyValue = part[property as keyof typeof part]
+            if (propertyValue === undefined || propertyValue === null) delete part[property as keyof typeof part]
+        }
+
         if (update) {
             return this.updatePart(part.partId!, part)
         } else {
@@ -128,7 +129,7 @@ export class PartServiceService {
             map((res) => {
                 return res
             }),
-            tap(() => this.loggerService.log('search')),
+            tap(() => this.loggerService.log('search'))
         )
     }
 }

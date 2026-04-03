@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core'
-import { PopUpService } from '@services/dialog-api/popUp.service'
+//#region imports
+import { inject, Injectable } from '@angular/core'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
+//#endregion
 
 @Injectable({
     providedIn: 'root',
 })
 export class LocalStorageService {
+    //#region services and variables
+    private popupService: PopUpService
     storeName = 'items'
     ids: number[] = []
-    
-    constructor(private popupService: PopUpService) {
+    //#endregion
+
+    constructor() {
+        this.popupService = inject(PopUpService)
         const items = localStorage.getItem('items')
         this.ids = JSON.parse(items!)
         if (!this.ids) this.ids = []
@@ -20,12 +26,9 @@ export class LocalStorageService {
     }
     addSavedItem(id: number) {
         if (this.ids.length > 9) {
-            this.popupService.openPopup('Съобщение', 'Максимум 10 обяви може да бъдат запзаени')
-
-            setTimeout(() => {
-                this.popupService.closePopup()
-            }, 2000)
-            return
+            this.popupService.openWithTimeout('Съобщение', 'Максимум 10 обяви може да бъдат запзаени', 2000).subscribe(() => {
+                this.popupService.close()
+            })
         }
         this.ids.push(id)
         localStorage.setItem(this.storeName, JSON.stringify(this.ids))

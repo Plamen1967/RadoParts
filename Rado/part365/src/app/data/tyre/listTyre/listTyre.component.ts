@@ -27,7 +27,7 @@ import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
 import { NavigatorComponent } from '@components/result/navigator/navigator.component'
 import { DealerActionType } from '@model/dealerActionType'
 import { Filter } from '@model/filters/filter'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { AlertService } from '@services/alert.service'
@@ -128,7 +128,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     private authernticationService: AuthenticationService
     private tyreService: TyreService
     private homeService: HomeService
-    private popupService: PopUpServiceService
+    private popupService: PopUpService
     private loadingService: LoadingService
     private modelService: ModelService
     private stateService: StateService
@@ -147,7 +147,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         this.authernticationService = inject(AuthenticationService)
         this.tyreService = inject(TyreService)
         this.homeService = inject(HomeService)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.loadingService = inject(LoadingService)
         this.modelService = inject(ModelService)
         this.stateService = inject(StateService)

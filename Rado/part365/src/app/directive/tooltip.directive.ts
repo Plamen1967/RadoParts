@@ -1,58 +1,63 @@
-import { Directive, ElementRef, HostListener, Input, OnDestroy } from "@angular/core";
-
+//#region imports
+import { Directive, ElementRef, HostListener, inject, Input, OnDestroy } from '@angular/core'
+//#endregion
+//#region directive
 @Directive({
-  standalone: true,
-  selector: '[appToolTip]',
+    standalone: true,
+    selector: '[appToolTip]',
 })
-export class TooltipDirective implements OnDestroy{
+//#endregion
 
-  constructor(private el: ElementRef) {
+export class TooltipDirective implements OnDestroy {
+    //#region variables and services
+    @Input() appToolTip = '' // The text for the tooltip to display
 
-  }
-  @Input() appToolTip = ''; // The text for the tooltip to display
+    private myPopup?: HTMLElement
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    timer: any
+    popup?: HTMLDivElement
+    tooltip?: Node
+    delay = 500
+    id = 'tooltip'
+    private el: ElementRef = inject(ElementRef)
+    //#endregion
 
-  private myPopup?: HTMLElement;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  timer: any;
-  popup?: HTMLDivElement ;
-  tooltip?: Node;
-  delay = 500;
-  id =  'tooltip'
-  ngOnDestroy(): void {
-    if (this.myPopup) { this.myPopup.remove() }
-  }
+    @HostListener('mouseenter') onMouseEnter() {
+        this.timer = setTimeout(() => {
+            this.createTooltipPopup()
+        }, this.delay)
+    }
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.timer = setTimeout(() => {
-      this.createTooltipPopup();
-    }, this.delay)
-  }
+    @HostListener('mouseleave') onMouseLeave() {
+        const elem = document.getElementById(this.id)
+        if (elem) {
+            this.el.nativeElement?.removeChild(elem)
+        }
+        if (this.timer) clearTimeout(this.timer)
+    }
 
-  @HostListener('mouseleave') onMouseLeave() {
-    const elem = document.getElementById(this.id)
-    if (elem) { this.el.nativeElement?.removeChild(elem) }
-    if (this.timer) clearTimeout(this.timer)
-  }
+    ngOnDestroy(): void {
+        if (this.myPopup) {
+            this.myPopup.remove()
+        }
+    }
 
-  private createTooltipPopup() {
-    this.popup = document.createElement('div');
-    this.myPopup = this.popup;
-    this.myPopup.id = 'tooltip'
-    this.popup.innerHTML = this.appToolTip;
-    this.popup.classList.add("tooltip-container");
-    this.el.nativeElement.style.position= 'relative';
-    this.tooltip = this.el.nativeElement.appendChild(this.popup);
-    this.timer = setTimeout(() => {
-      this.el.nativeElement?.removeChild(this.tooltip)
-      this.tooltip = undefined;
-    }, 5000)
-  }
-
+    private createTooltipPopup() {
+        this.popup = document.createElement('div')
+        this.myPopup = this.popup
+        this.myPopup.id = 'tooltip'
+        this.popup.innerHTML = this.appToolTip
+        this.popup.classList.add('tooltip-container')
+        this.el.nativeElement.style.position = 'relative'
+        this.tooltip = this.el.nativeElement.appendChild(this.popup)
+        this.timer = setTimeout(() => {
+            this.el.nativeElement?.removeChild(this.tooltip)
+            this.tooltip = undefined
+        }, 5000)
+    }
 }
 
-
 // <div class="user-icon" [appToolTip]="'Sign In'"></div>
-
 
 // <style>
 // /* Tooltip container */
@@ -71,7 +76,7 @@ export class TooltipDirective implements OnDestroy{
 //   text-align: center;
 //   padding: 5px 0;
 //   border-radius: 6px;
- 
+
 //   /* Position the tooltip text - see examples below! */
 //   position: absolute;
 //   z-index: 1;

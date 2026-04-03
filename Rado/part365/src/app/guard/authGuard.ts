@@ -1,18 +1,20 @@
-import { Injectable } from '@angular/core'
+//#region imports
+import { inject, Injectable } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router'
 import { LoginComponent } from '@app/user/login/login.component'
 import { UserType } from '@model/enum/userType.enum'
 import { AuthenticationService } from '@services/authentication/authentication.service'
-
+//#endregion
+//#region service
 @Injectable({ providedIn: 'root' })
+//#endregion
 export class AuthGuard implements CanActivate {
-    constructor(
-        private authenticationService: AuthenticationService,
-        private router: Router,
-        private matModal: MatDialog
-    ) {}
-
+    //#region variables and services
+    private authenticationService = inject(AuthenticationService)
+    private router: Router = inject(Router)
+    private matModal: MatDialog = inject(MatDialog)
+    //#endregion
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const user = this.authenticationService.currentUserValue
         if (user) {
@@ -46,6 +48,6 @@ export class AuthGuard implements CanActivate {
             })
         }
 
-        return this.router.createUrlTree(['/']);
+        return this.router.createUrlTree(['/'])
     }
 }

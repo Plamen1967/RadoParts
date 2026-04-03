@@ -5,7 +5,6 @@ import { signal } from '@angular/core';
 })
 export class MenuService {
 public showMenu = signal(false);
-constructor() { }
 
 
 

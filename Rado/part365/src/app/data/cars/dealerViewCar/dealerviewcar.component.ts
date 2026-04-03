@@ -10,7 +10,7 @@ import { NextIdService } from '@services/nextId.service'
 import { CarService } from '@services/car.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { AlertService } from '@services/alert.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { Router } from '@angular/router'
 import { RowComponent } from '@components/custom-controls/partRow/row.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -57,7 +57,7 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
     private nextIdService: NextIdService
     private carService: CarService
     private alertService: AlertService
-    private popupService: PopUpServiceService
+    private popupService: PopUpService
     private staticService: StaticSelectionService
     private loggerService: LoggerService
 
@@ -71,7 +71,7 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
         this.nextIdService = inject(NextIdService)
         this.carService = inject(CarService)
         this.alertService = inject(AlertService)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.staticService = inject(StaticSelectionService)
         this.loggerService = inject(LoggerService)
     }

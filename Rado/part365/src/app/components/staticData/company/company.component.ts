@@ -1,5 +1,6 @@
+//#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component, OnInit } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -10,26 +11,30 @@ import { QueryParam } from '@model/queryParam'
 import { AdminService } from '@services/admin.service'
 import { CompanyService } from '@services/company-model-modification/company.service'
 import { SelectOption } from '@model/selectOption'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-company',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent]
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent],
 })
+//#endregion
 export default class CompanyComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region variables and services
     companyForm: FormGroup
     companies?: SelectOption[] = []
     originalCompanies: Company[] = []
     params?: QueryParam
-    constructor(
-        formBuilder: FormBuilder,
-        private companyService: CompanyService,
-        private adminService: AdminService,
-        private route: ActivatedRoute
-    ) {
+    formBuilder: FormBuilder = inject(FormBuilder)
+    private companyService: CompanyService = inject(CompanyService)
+    private adminService: AdminService = inject(AdminService)
+    private route: ActivatedRoute = inject(ActivatedRoute)
+    //#endregion
+    
+    constructor() {
         super()
-        this.companyForm = formBuilder.group({
+        this.companyForm = this.formBuilder.group({
             companyId: [0, [Validators.required]],
             companyName: ['', [Validators.required]],
         })

@@ -1,5 +1,6 @@
+//#region imports
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 import { environment } from '@env/environment'
@@ -11,19 +12,20 @@ import { SearchResult } from '@model/searchResult'
 import { convertToParam } from '@app/functions/handleError'
 import { DisplayPartView, Enrich } from '@model/displayPartView'
 import { SaveSearchService } from './saveSearch.service'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#region 
 export class SearchPartService {
-    constructor(
-        private http: HttpClient,
-        private staticSelectionService: StaticSelectionService,
-        private loggerService: LoggerService,
-        private saveSearchService: SaveSearchService,
-        private authenticationService: AuthenticationService
-    ) {}
-
+    //#region variables and services
+    private http = inject(HttpClient);
+    private staticSelectionService = inject(StaticSelectionService);
+    private loggerService = inject(LoggerService);
+    private saveSearchService = inject(SaveSearchService);
+    private authenticationService = inject(AuthenticationService);
+    //#endregion
     searchForPartByNumber(filter: Filter): Observable<SearchResult> {
         if (!filter.userId) filter.id = Date.now()
         filter.clientId = this.authenticationService.clientId

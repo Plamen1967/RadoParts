@@ -1,5 +1,5 @@
 //#region import
-import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild, DOCUMENT } from '@angular/core'
+import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild, DOCUMENT, inject } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -32,17 +32,14 @@ import { CategoriesMinComponent } from '@components/categoriesMin/categoriesMin.
 import { FilterComponent } from '@components/custom-controls/filter/filter.component'
 import { SaveSearchService } from '@services/saveSearch.service'
 import { QueryParam } from '@model/queryParam'
-
 //#endregion
-
 //#region component declaration
 @Component({
     selector: 'app-home',
     templateUrl: './Home.component.html',
     styleUrls: ['./Home.component.css'],
-    imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, TooltipDirective, GoTopComponent]
+    imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, TooltipDirective, GoTopComponent],
 })
-
 //#endregion
 export class HomeComponent extends HelperComponent implements OnInit, OnDestroy {
     //#region members
@@ -81,36 +78,35 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     @Input() userId?: number
     @Input() query?: number
     @Input() searchType?: number = 1
+    formBuilder: FormBuilder = inject(FormBuilder)
+    public partService: PartServiceService = inject(PartServiceService)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private checkOutService: CheckOutService = inject(CheckOutService)
+    private localStorage: LocalStorageService = inject(LocalStorageService)
+    private homeService: HomeService = inject(HomeService)
+    private router: Router = inject(Router)
+    private route: ActivatedRoute = inject(ActivatedRoute)
+    public searchService: SearchPartService = inject(SearchPartService)
+    public loadingService: LoadingService = inject(LoadingService)
+    private categoryService: CategoryService = inject(CategoryService)
+    private matDialog: MatDialog = inject(MatDialog)
+    private confirmationService: ConfirmServiceService = inject(ConfirmServiceService)
+    private saveSearches: SaveSearchService = inject(SaveSearchService)
+    public dialog: MatDialog = inject(MatDialog)
+    @Inject(DOCUMENT) private document: Document = inject(DOCUMENT)
     //#endregion
 
     //#region constructor
-    constructor(
-        formBuilder: FormBuilder,
-        public partService: PartServiceService,
-        public staticSelectionService: StaticSelectionService,
-        private checkOutService: CheckOutService,
-        private localStorage: LocalStorageService,
-        private homeService: HomeService,
-        private router: Router,
-        private route: ActivatedRoute,
-        public searchService: SearchPartService,
-        public loadingService: LoadingService,
-        private categoryService: CategoryService,
-        private matDialog: MatDialog,
-        private confirmationService: ConfirmServiceService,
-        private saveSearches: SaveSearchService,
-        public dialog: MatDialog,
-        @Inject(DOCUMENT) private document: Document
-    ) {
+    constructor() {
         console.log('Home component created')
         super()
         this.subscriptions.push(
-            checkOutService.checkout.subscribe((x) => {
+            this.checkOutService.checkout.subscribe((x) => {
                 this.checoutItems = x
             })
         )
 
-        this.selection = 1;
+        this.selection = 1
     }
 
     ngOnDestroy(): void {
@@ -124,7 +120,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
         this.showCategory = showCategory
     }
     ngOnInit() {
-        goTop();
+        goTop()
         if (this.itemType) this.setSelection(this.itemType)
         this.route.queryParams.subscribe((params: QueryParam) => {
             if (params.query) {
@@ -143,30 +139,6 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     //this.dataManager?.searchResult?.filterPart?.itemType
     //#region search
 
-    //#region get
-    get admin() {
-        return this.authenticationService.admin
-    }
-
-    get dataManager() {
-        return this.homeService.getDataManager(0)
-    }
-
-    get showParts() {
-        return this.selection == 1
-    }
-
-    get showTyres() {
-        return this.selection == 2
-    }
-    get mobile() {
-        return isMobile()
-    }
-    get checkout() {
-        return ` ${this.localStorage.items}`
-    }
-
-    //#endregion
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     clickCategory(event: MouseEvent) {
         this.matDialog
@@ -289,6 +261,30 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
             }
         })
     }
+    //#region get
+    get admin() {
+        return this.authenticationService.admin
+    }
+
+    get dataManager() {
+        return this.homeService.getDataManager(0)
+    }
+
+    get showParts() {
+        return this.selection == 1
+    }
+
+    get showTyres() {
+        return this.selection == 2
+    }
+    get mobile() {
+        return isMobile()
+    }
+    get checkout() {
+        return ` ${this.localStorage.items}`
+    }
+
+    //#endregion
 }
 
 //#region category

@@ -1,15 +1,13 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+/// <reference types="jasmine" />
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import StockComponent from './stock.component';
 
-import { StockComponent } from './stock.component';
 
 describe('StockComponent', () => {
   let component: StockComponent;
   let fixture: ComponentFixture<StockComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ StockComponent ]
     })

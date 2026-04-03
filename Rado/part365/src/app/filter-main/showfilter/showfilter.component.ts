@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { Filter } from '@model/filters/filter';
-import { SaveSearchService } from '@services/saveSearch.service';
-
+//#region imports
+import { Component, inject } from '@angular/core'
+import { Filter } from '@model/filters/filter'
+import { SaveSearchService } from '@services/saveSearch.service'
+//#endregion
+//#region component
 @Component({
     selector: 'app-showfilter',
     templateUrl: './showfilter.component.html',
     styleUrls: ['./showfilter.component.css'],
-    standalone: false
 })
-export class ShowfilterComponent implements OnInit {
+//#endregion
+export class ShowfilterComponent {
+    //#region variables and services
+    filters: Filter[] = []
+    private saveSearchService: SaveSearchService = inject(SaveSearchService)
+    //#endregion
 
-  filters: Filter[] = [];
-
-  constructor(private saveSearchService: SaveSearchService) { 
-    this.filters = this.saveSearchService.getSavedItems();
-  } 
-
-  ngOnInit() {
-  }
-
+    constructor() {
+        this.filters = this.saveSearchService.getSavedItems()
+    }
 }

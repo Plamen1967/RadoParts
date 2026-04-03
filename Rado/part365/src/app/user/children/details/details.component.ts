@@ -1,4 +1,5 @@
-import { Component, DestroyRef, OnInit, Optional } from '@angular/core';
+//#region imports
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model';
@@ -15,13 +16,15 @@ import { UserService } from '@services/user.service';
 import { ImageData } from '@model/imageData'
 import { convertImage } from '@app/functions/functions';
 import { DealerWebPageComponent } from '@app/user/dealerWebPage/dealerWebPage.component';
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-details',
     templateUrl: './details.component.html',
     styleUrls: ['./details.component.css'],
     imports: [ImageCarouselComponent]
 })
+//#endregion
 export default class DetailsComponent implements OnInit {
 
   userId!: number
@@ -31,19 +34,17 @@ export default class DetailsComponent implements OnInit {
       images2: NgxGalleryImage[] = []
       images?: ImageData[]
       description = "";
+      private userService = inject(UserService);
+      private activeRoute = inject(ActivatedRoute);
+      private router = inject(Router);
+      private searchPartService = inject(SearchPartService);
+      private homeService = inject(HomeService);
+      private destroyRef = inject(DestroyRef);
+      public loggerService = inject(LoggerService);
+      public parent = inject(DealerWebPageComponent, { optional: true });
   
-  constructor(
-        private userService: UserService,
-        private activeRoute: ActivatedRoute,
-        private router: Router,
-        private searchPartService: SearchPartService,
-        private homeService: HomeService,
-        private destroyRef: DestroyRef,
-        public loggerService: LoggerService,
-        @Optional() public parent: DealerWebPageComponent
-
-  ) { 
-    this.user = parent.user;
+  constructor() { 
+    this.user = this.parent?.user;
     if (this.user) this.loadUser(this.user);
   }
 

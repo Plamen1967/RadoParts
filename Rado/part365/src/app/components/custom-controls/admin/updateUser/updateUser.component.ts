@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, DestroyRef, Input, OnInit } from '@angular/core'
+//#region Imports
+import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
@@ -18,18 +19,21 @@ import { SelectComponent } from '@components/custom-controls/select-controls/sel
 import { TextAreaComponent } from '@components/custom-controls/textArea/textArea.component'
 import { UploadComponent } from '@components/custom-controls/upload/upload.component'
 import { PictureComponent } from '@components/custom-controls/picture/picture.component'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-
+//#endregion
+//#region Component
 @Component({
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
-    imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule]
+    imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule],
 })
+//#endregion
 export default class UpdateUserComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region variables and services
     unamePattern = '^[a-z0-9_-]{8,15}$'
     pwdPattern = ''
     mobnumPattern = '^((\\+91-?)|0)?[0-9]{10}$'
@@ -55,21 +59,23 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
 
     @Input() activationcode!: string
     @Input() userId!: number
-
-    constructor(
-        private formBuilder: FormBuilder,
-        private router: Router,
-        private userService: UserService,
-        private alerService: AlertService,
-        public staticSelectionService: StaticSelectionService,
-        public imageService: ImageService,
-        public modalService: ModalService,
-        private location: Location,
-        private route: ActivatedRoute,
-        private popupService: PopUpServiceService,
-        private confirmationService: ConfirmServiceService,
-        private destroyRef: DestroyRef
-    ) {
+    //#region services
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    private router: Router = inject(Router)
+    private userService: UserService = inject(UserService)
+    private alerService: AlertService = inject(AlertService)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    public imageService: ImageService = inject(ImageService)
+    public modalService: ModalService = inject(ModalService)
+    private location: Location = inject(Location)
+    private route: ActivatedRoute = inject(ActivatedRoute)
+    private popupService: PopUpService = inject(PopUpService)
+    private confirmationService: ConfirmServiceService = inject(ConfirmServiceService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    //#endregion
+    //#endregion
+    
+    constructor() {
         super()
         this.regions = [...this.staticSelectionService.Region]
         this.userForm = this.formBuilder.group({

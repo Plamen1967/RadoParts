@@ -6,7 +6,7 @@ export class ToastPOM {
         this.page = page
     }
     async checkToastMessage(message: string) {
-        const toast = this.page.locator('simple-snack-bar');
+        const toast = this.page.locator('simple-snack-bar', { hasText: message });
         await toast.waitFor({ state: 'visible' , timeout: 500000 });
         await toast.getByText("Ok").click(); 
     }   

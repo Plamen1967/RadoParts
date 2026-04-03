@@ -1,8 +1,7 @@
 //#region imports
-import { ViewportScroller } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { RadioGroupListComponent } from '@components/custom-controls/radioGroupList/radiogrouplist.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -17,26 +16,23 @@ import { UserView } from '@model/userView'
 import { HomeService } from '@services/home.service'
 import { LoadingService } from '@services/loading.service'
 import { PathService } from '@services/path.service'
-import { UserService } from '@services/user.service'
 import { ImageData } from '@model/imageData'
 import { ImageCarouselComponent } from '@components/custom-controls/image-carousel/image-carousel.component'
 import { UserHeaderComponent } from '../userHeader/userHeader.component'
-import { ImageService } from '@services/image.service'
 import { SelectComponent } from '../../components/custom-controls/select-controls/select/select.component'
 import { SelectOption } from '@model/selectOption'
 import { convertImage, goTop, goToPosition } from '@app/functions/functions'
 //#endregion
-
 //#region component
-
 @Component({
     selector: 'app-userhomepage',
     templateUrl: './userHomePage.component.html',
     styleUrls: ['./userHomePage.component.css'],
-    imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent]
+    imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent],
 })
 //#endregion
 export class UserHomePageComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region variables and services
     @Input() set countItems(value: CountItems) {
         if (value) {
             if (value.Total()) this.radios.push({ label: `Всички ${value.Total()}` })
@@ -52,7 +48,7 @@ export class UserHomePageComponent extends HelperComponent implements OnInit, Af
     _user: UserView | undefined
     @Input() userId?: number
     @Input() set user(value: UserView | undefined) {
-        this._user = value;
+        this._user = value
         if (value) this.loadUser(value)
     }
     defaultType = ItemType.All
@@ -79,25 +75,30 @@ export class UserHomePageComponent extends HelperComponent implements OnInit, Af
 
     typeForm: FormGroup
     numberParts: number | string = ''
-
     images?: ImageData[]
-
     parts: DisplayPartView[] = []
     images2: NgxGalleryImage[] = []
     selectOption: SelectOption[] = []
-    constructor(
-        private route: ActivatedRoute,
-        private homeService: HomeService,
-        private router: Router,
-        private scroller: ViewportScroller,
-        private pathService: PathService,
-        private imageService: ImageService,
-        public loadingService: LoadingService,
-        private userService: UserService,
-        private formBuilder: FormBuilder
-    ) {
+    //#region services
+    private homeService: HomeService
+    private router: Router
+    private pathService: PathService
+    public loadingService: LoadingService
+    private formBuilder: FormBuilder
+    //#endregion
+    //#endregion
+
+    constructor() {
         super()
-        this.typeForm = formBuilder.group({
+        //#region inject services
+        this.homeService = inject(HomeService)
+        this.router = inject(Router)
+        this.pathService = inject(PathService)
+        this.loadingService = inject(LoadingService)
+        this.formBuilder = inject(FormBuilder)
+        //#endregion
+
+        this.typeForm = this.formBuilder.group({
             type: [ItemType.All],
         })
 
@@ -116,7 +117,6 @@ export class UserHomePageComponent extends HelperComponent implements OnInit, Af
                 color: '',
             }
         })
-
     }
 
     get imasgesSrc(): string[] {
@@ -127,7 +127,6 @@ export class UserHomePageComponent extends HelperComponent implements OnInit, Af
         if (this.user?.userId) return this.homeService.getDataManager(this.user.userId)
         return null
     }
-
 
     loadUser(user: UserView) {
         this.userId = user.userId

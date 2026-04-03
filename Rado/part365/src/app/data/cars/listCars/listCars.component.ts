@@ -18,7 +18,7 @@ import { CONSTANT } from '@app/constant/globalLabels'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { NavigatorComponent } from '@components/result/navigator/navigator.component'
 import { AlertService } from '@services/alert.service'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ActivatedRoute, ParamMap, Router } from '@angular/router'
 import { DealerViewComponent } from '@app/data/dealerView/dealerview.component'
 import { ModalService } from '@services/dialog-api/modal.service'
@@ -131,7 +131,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     private scroller: ViewportScroller
     private confirmService: ConfirmServiceService
     private alertService: AlertService
-    private popupService: PopUpServiceService
+    private popupService: PopUpService
     private router: Router
     private route: ActivatedRoute
     private document: Document
@@ -151,7 +151,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.scroller = inject(ViewportScroller)
         this.confirmService = inject(ConfirmServiceService) 
         this.alertService = inject(AlertService)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.router = inject(Router)
         this.route = inject(ActivatedRoute)
         this.modalService = inject(ModalService)

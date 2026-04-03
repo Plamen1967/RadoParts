@@ -1,5 +1,6 @@
+//#region imports
 import { NgStyle } from '@angular/common'
-import { Component, DestroyRef, EventEmitter, OnInit, Optional, Output, ViewChild } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, ViewChild } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -20,14 +21,17 @@ import { LoggerService } from '@services/authentication/logger.service'
 import { HomeService } from '@services/home.service'
 import { SearchPartService } from '@services/searchPart.service'
 import { UserService } from '@services/user.service'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-stock',
     templateUrl: './stock.component.html',
     styleUrls: ['./stock.component.css'],
-    imports: [NgStyle, RadioGroupListComponent, FormsModule, ResultComponent, UserViewPartComponent]
+    imports: [NgStyle, RadioGroupListComponent, FormsModule, ResultComponent, UserViewPartComponent],
 })
+//#endregion
 export default class StockComponent implements OnInit {
+    //#region services and variables
     userId = 0
     user?: UserView
 
@@ -54,24 +58,15 @@ export default class StockComponent implements OnInit {
     ]
     id?: number
     displayRatio: RadioButton[] = []
-    constructor(
-        private userService: UserService,
-        private activeRoute: ActivatedRoute,
-        private router: Router,
-        private searchPartService: SearchPartService,
-        private homeService: HomeService,
-        private destroyRef: DestroyRef,
-        public loggerService: LoggerService,
-        @Optional() public parent: DealerWebPageComponent
-    ) {
-      this.user = parent?.user
-      this.userId = this.user?.userId ?? 0;
-      if (this.homeService.getDataManager(+this.userId)) {
-        this.dataManager = this.homeService.getDataManager(+this.userId);
-        this.userCount = this.dataManager?.userCount 
-        this.updateCount();
-      }
-    }
+    private userService = inject(UserService)
+    private activeRoute = inject(ActivatedRoute)
+    private router = inject(Router)
+    private searchPartService = inject(SearchPartService)
+    private homeService = inject(HomeService)
+    private destroyRef = inject(DestroyRef)
+    public loggerService = inject(LoggerService)
+    public parent = inject(DealerWebPageComponent, { optional: true })
+    //#endregion
 
     ngOnInit() {
         this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
@@ -84,7 +79,13 @@ export default class StockComponent implements OnInit {
             if (page) this.page = +page
 
             if (params['currentId']) this.currentId = +params['currentId']
-
+            this.user = this.parent?.user
+            this.userId = this.user?.userId ?? 0
+            if (this.homeService.getDataManager(+this.userId)) {
+                this.dataManager = this.homeService.getDataManager(+this.userId)
+                this.userCount = this.dataManager?.userCount
+                this.updateCount()
+            }
             if (!this.homeService.getDataManager(+this.userId)) {
                 const filter: Filter = { id: 0, userId: this.userId, searchBy: SearchBy.Filter, bus: -1 }
                 filter.userId = this.userId
@@ -101,7 +102,7 @@ export default class StockComponent implements OnInit {
                                 this.loadUser(this.user)
                             }
                             if (res.userCount) {
-                                this.userCount  = res.userCount
+                                this.userCount = res.userCount
                                 this.updateCount()
                             }
                         },
@@ -195,7 +196,7 @@ export default class StockComponent implements OnInit {
         const item = this.radios.find((item) => item.id == ItemType.All)
         if (item) item.count = count
 
-        this.displayRatio = this.radios.filter(item => item.count);
+        this.displayRatio = this.radios.filter((item) => item.count)
     }
 
     filterChange(event: number) {

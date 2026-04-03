@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core'
+//#region imports
+import { inject, Injectable } from '@angular/core'
 import { DataManager } from '@model/dataManager'
 import { SearchResult } from '@model/searchResult'
 import { DisplayPartView, Enrich } from '@model/displayPartView'
@@ -6,16 +7,20 @@ import { Filter } from '@model/filters/filter'
 import { SearchPartService } from './searchPart.service'
 import { Part } from '@model/part/part'
 import { StaticSelectionService } from './staticSelection.service'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class HomeService {
+    //#region variables and services
     dataManagers: Map<number, DataManager> = new Map<number, DataManager>()
 
-    constructor(public searchPartService: SearchPartService,
-        private staticService: StaticSelectionService
-    ) {}
+    public searchPartService: SearchPartService = inject(SearchPartService)
+    private staticService: StaticSelectionService = inject(StaticSelectionService)
+    //#endregion
+    
     updateDisplayPartView(updatedItem: DisplayPartView) {
         this.updateItem(updatedItem.id!, updatedItem)
     }
@@ -35,7 +40,7 @@ export class HomeService {
     updatePart(part: Part) {
         this.dataManagers.forEach((manager) => {
             manager.allParts = manager.allParts?.map((elem) => {
-                if (elem.id === part.partId) return { ...Enrich(part, this.staticService)}
+                if (elem.id === part.partId) return { ...Enrich(part, this.staticService) }
                 else return elem
             })
 
@@ -78,19 +83,19 @@ export class HomeService {
         dataManager.updateData(result)
     }
     getDataManager(userId: number) {
-        if (!userId) return undefined;
+        if (!userId) return undefined
 
         if (!this.dataManagers.has(+userId)) return undefined
         return this.dataManagers.get(+userId)
     }
 
     deleteDataManager(id: number) {
-        if (!id) return undefined;
+        if (!id) return undefined
 
         this.dataManagers.delete(+id)
     }
     setDataManager(id: number, dataManager: DataManager) {
-        if (!id) return undefined;
+        if (!id) return undefined
 
         this.dataManagers.delete(+id)
         this.dataManagers.set(+id, dataManager)

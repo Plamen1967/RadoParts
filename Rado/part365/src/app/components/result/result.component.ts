@@ -1,6 +1,5 @@
 //#region import
-
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, DOCUMENT } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, DOCUMENT, inject } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
 import { NavigatorComponent } from '@components/result/navigator/navigator.component'
@@ -20,7 +19,7 @@ import { SearchPartService } from '@services/searchPart.service'
 import { UserService } from '@services/user.service'
 import { AlertService } from '@services/alert.service'
 import { QueryParam } from '@model/queryParam'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { SaveSearchService } from '@services/saveSearch.service'
 import { MatDialog } from '@angular/material/dialog'
 import { FilterComponent } from '@components/custom-controls/filter/filter.component'
@@ -30,14 +29,16 @@ import { LoggerService } from '@services/authentication/logger.service'
 import { goTop, goToPosition } from '@app/functions/functions'
 import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
 //#endregion
-
+//#region component
 @Component({
     selector: 'app-result',
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss'],
-    imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent]
+    imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent],
 })
+//#endregion
 export class ResultComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
+    //#region variables and services
     @Input() id!: number
     @Input() set currentId(value: number) {
         this.highlighted = value
@@ -72,21 +73,22 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     updateId?: number
     filters: { id: number; text: string }[] = []
 
-    constructor(
-        private homeService: HomeService,
-        private route: ActivatedRoute,
-        private userService: UserService,
-        private popupService: PopUpServiceService,
-        private searchPartService: SearchPartService,
-        private partService: PartServiceService,
-        private router: Router,
-        private saveSearches: SaveSearchService,
-        private alertService: AlertService,
-        public loggerService: LoggerService,
-        public dialog: MatDialog,
-        @Inject(DOCUMENT) document: Document,
-        private destroyRef: DestroyRef
-    ) {
+    private homeService: HomeService = inject(HomeService)
+    private route: ActivatedRoute = inject(ActivatedRoute)
+    private userService: UserService = inject(UserService)
+    private popupService: PopUpService = inject(PopUpService)
+    private searchPartService: SearchPartService = inject(SearchPartService)
+    private partService: PartServiceService = inject(PartServiceService)
+    private router: Router = inject(Router)
+    private saveSearches: SaveSearchService = inject(SaveSearchService)
+    private alertService: AlertService = inject(AlertService)
+    public loggerService: LoggerService = inject(LoggerService)
+    public dialog: MatDialog = inject(MatDialog)
+    @Inject(DOCUMENT) document: Document = inject(DOCUMENT)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    //#endregion
+
+    constructor() {
         super()
     }
 
@@ -133,13 +135,11 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                 })
             } else if (params.query) {
                 this.query = +params.query
-                this.dataManager = this.homeService.getDataManager(+this.query)                
-                
+                this.dataManager = this.homeService.getDataManager(+this.query)
+
                 if (params.page) this.page = +params.page
-                else if (this.dataManager?.currentPage)
-                    this.page = this.dataManager.currentPage
-                else
-                     this.page = 1
+                else if (this.dataManager?.currentPage) this.page = this.dataManager.currentPage
+                else this.page = 1
                 this.results()
             } else if (params.userId) {
                 this.userId = params.userId

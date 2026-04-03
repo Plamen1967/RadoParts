@@ -1,5 +1,6 @@
+//#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component } from '@angular/core'
+import { AfterViewInit, Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -9,17 +10,21 @@ import { AdminService } from '@services/admin.service'
 import { ModelService } from '@services/company-model-modification/model.service'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { Modification } from '@model/static-data/modification'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-modification',
     templateUrl: './modification.component.html',
     styleUrls: ['./modification.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass]
+    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
 })
+//#endregion
+
 export default class ModificationComponent extends HelperComponent implements AfterViewInit {
+    //#region variables and services
     modificationForm: FormGroup
     companies: SelectOption[] = []
     models: SelectOption[] = []
@@ -32,18 +37,18 @@ export default class ModificationComponent extends HelperComponent implements Af
     years: SelectOption[]
     yearsTo: SelectOption[]
     originalModification: Modification[] = []
+    formBuilder: FormBuilder = inject(FormBuilder)
+    private adminService: AdminService = inject(AdminService)
+    private modelService: ModelService = inject(ModelService)
+    private modificationService: ModificationService = inject(ModificationService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private popupService: PopUpService = inject(PopUpService)
+    //#endregion
 
-    constructor(
-        formBuilder: FormBuilder,
-        private adminService: AdminService,
-        private modelService: ModelService,
-        private modificationService: ModificationService,
-        private confirmService: ConfirmServiceService,
-        private popupService: PopUpServiceService
-    ) {
+    constructor() {
         super()
 
-        this.modificationForm = formBuilder.group({
+        this.modificationForm = this.formBuilder.group({
             companyId: [''],
             modelId: [''],
             modificationId: [''],
@@ -52,7 +57,7 @@ export default class ModificationComponent extends HelperComponent implements Af
             yearFrom: [2000],
             yearTo: [2001],
         })
-        
+
         this.formGroup = this.modificationForm
 
         const result: SelectOption[] = []

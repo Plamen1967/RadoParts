@@ -1,13 +1,19 @@
-import { Injectable } from '@angular/core'
+//#region imports
+import { inject, Injectable } from '@angular/core'
 import { Filter } from '@model/filters/filter'
 import { StaticSelectionService } from './staticSelection.service'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class SaveSearchService {
+    //#region variables and services
     storageName = 'filters'
-    constructor(private staticSelectionService: StaticSelectionService) {}
+    private staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    //#endregion
+
     save(filter: Filter) {
         const keywords = new Map<string, string>()
 

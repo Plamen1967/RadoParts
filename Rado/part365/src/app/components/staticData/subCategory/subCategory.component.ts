@@ -1,120 +1,127 @@
-import { NgClass, NgStyle } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputComponent } from '@components/custom-controls/input/input.component';
-import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component';
-import { HelperComponent } from '@components/custom-controls/helper/helper.component';
-import { SubCategory } from '@model/category-subcategory/subCategory';
-import { AdminService } from '@services/admin.service';
-import { CategoryService } from '@services/category-subcategory/category.service';
-import { SubCategoryService } from '@services/category-subcategory/subCategory.service';
-import { SelectOption } from '@model/selectOption';
+//#region Imports
+import { NgClass, NgStyle } from '@angular/common'
+import { AfterViewInit, Component, inject } from '@angular/core'
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { InputComponent } from '@components/custom-controls/input/input.component'
+import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
+import { HelperComponent } from '@components/custom-controls/helper/helper.component'
+import { SubCategory } from '@model/category-subcategory/subCategory'
+import { AdminService } from '@services/admin.service'
+import { CategoryService } from '@services/category-subcategory/category.service'
+import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
+import { SelectOption } from '@model/selectOption'
+//#endregion
+//#region Component
 @Component({
     selector: 'app-subcategory',
     templateUrl: './subCategory.component.html',
     styleUrls: ['./subCategory.component.css'],
-    imports: [ReactiveFormsModule, InputComponent, NgStyle, SelectComponent, NgClass]
+    imports: [ReactiveFormsModule, InputComponent, NgStyle, SelectComponent, NgClass],
 })
+//#endregion
 export default class SubCategoryComponent extends HelperComponent implements AfterViewInit {
+    //#region variables and services
+    subCategoryForm: FormGroup
+    categories: SelectOption[] = []
+    subCategories: SelectOption[] = []
+    categoryId?: number
+    subCategoryId?: number
+    //#region services
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    private adminService: AdminService = inject(AdminService)
+    private categoryService: CategoryService = inject(CategoryService)
+    private subCategoryService: SubCategoryService = inject(SubCategoryService)
+    //#endregion
+    //#endregion
 
-  subCategoryForm: FormGroup;
-  categories: SelectOption[] = [];
-  subCategories: SelectOption[] = [];
-  categoryId?: number;
-  subCategoryId?: number;
+    constructor() {
+        super()
 
-  constructor(private formBuilder: FormBuilder,
-    private adminService: AdminService,
-    private categoryService: CategoryService,
-    private subCategoryService: SubCategoryService,) {
-    super();
+        this.subCategoryForm = this.formBuilder.group({
+            categoryId: [''],
+            subCategoryId: [''],
+            subCategoryName: ['', Validators.required],
+        })
 
-    this.subCategoryForm = formBuilder.group({
-      categoryId: [''],
-      subCategoryId: [''],
-      subCategoryName: ['', Validators.required]
-    })
+        this.formGroup = this.subCategoryForm
+        this.categoryService.fetch().subscribe((res) => (this.categories = res))
+    }
 
-    this.formGroup = this.subCategoryForm;
-    this.categoryService.fetch().subscribe(res => this.categories = res)
-  }
+    ngAfterViewInit(): void {
+        this.controls['categoryId'].valueChanges.subscribe((f) => this.categoryChanged(f))
+        this.controls['subCategoryId'].valueChanges.subscribe((f) => this.subCategoryChanged(f))
+    }
 
-  ngAfterViewInit(): void {
-    this.controls['categoryId'].valueChanges.subscribe(f => this.categoryChanged(f))
-    this.controls['subCategoryId'].valueChanges.subscribe(f => this.subCategoryChanged(f))
-  }
+    categoryChanged(categoryId: number) {
+        this.categoryId = categoryId
+        this.subCategoryService.getSubCategoriesByCategoriesId(categoryId.toString()).subscribe((res) => {
+            res.unshift({ categoryId: 0, subCategoryId: 0, subCategoryName: this.labels.ADDSUBCATEGORY })
+            this.subCategories = res.map((category) => {
+                return {
+                    value: category.categoryId,
+                    text: category.subCategoryName,
+                }
+            })
+        })
+    }
 
-  categoryChanged(categoryId: number) {
-    this.categoryId = categoryId;
-    this.subCategoryService.getSubCategoriesByCategoriesId(categoryId.toString()).subscribe(res => {
-      res.unshift({ categoryId: 0, subCategoryId: 0, subCategoryName: this.labels.ADDSUBCATEGORY })
-      this.subCategories = res.map((category) => {
-        return {
-          value: category.categoryId, text: category.subCategoryName
+    subCategoryChanged(subCategoryId: number) {
+        this.subCategoryId = subCategoryId
+        let subCategoryName = ''
+        if (subCategoryId) {
+            const subCategory = this.subCategories.find((item) => item.value === subCategoryId)
+            subCategoryName = subCategory?.text ?? ''
         }
-      });
-    })
-  }
 
-  subCategoryChanged(subCategoryId: number) {
-    this.subCategoryId = subCategoryId;
-    let subCategoryName = '';
-    if (subCategoryId) {
-      const subCategory = this.subCategories.find(item => item.value === subCategoryId);
-      subCategoryName = subCategory?.text ?? ''
+        this.subCategoryForm.patchValue({ subCategoryName: subCategoryName })
     }
 
-    this.subCategoryForm.patchValue({ subCategoryName: subCategoryName });
-  }
-
-  updateSubCategory() {
-    this.adminService.updateSubCategory(this.subCategoryForm.value).subscribe((subcategory) => { this.updateSubCategories(subcategory) })
-  }
-
-  delete() {
-    this.adminService.deleteSubCategory(this.subCategoryId!).subscribe((res) => {
-      if (res) {
-        const index = this.subCategories.findIndex(item => item.value === this.subCategoryId);
-        if (index != -1) this.subCategories.splice(index, 1);
-        this.subCategoryForm.patchValue({subCategoryName : ''});
-      }
-
-    } )
-  }
-
-  updateSubCategories(subcategory: SubCategory) {
-    const subcategory_ = this.subCategories.find(item => item.value === subcategory.subCategoryId);
-    if (subcategory_)
-      subcategory_.text = subcategory.subCategoryName
-    else {
-      this.subCategories.push({
-        value: subcategory.categoryId, text: subcategory.subCategoryName
-      });
-      this.subCategoryForm.patchValue({subCategoryName : '', subCategoryId : 0})
+    updateSubCategory() {
+        this.adminService.updateSubCategory(this.subCategoryForm.value).subscribe((subcategory) => {
+            this.updateSubCategories(subcategory)
+        })
     }
 
-    this.subCategories.sort((x,y) => {
-      return x.text! < y.text! ? -1 : 1;
-    });
-  }
+    delete() {
+        this.adminService.deleteSubCategory(this.subCategoryId!).subscribe((res) => {
+            if (res) {
+                const index = this.subCategories.findIndex((item) => item.value === this.subCategoryId)
+                if (index != -1) this.subCategories.splice(index, 1)
+                this.subCategoryForm.patchValue({ subCategoryName: '' })
+            }
+        })
+    }
 
-  get buttonLabel() {
-    if (this.subCategoryId)
-      return this.labels.UPDATE;
-    else 
-      return this.labels.ADD;  
-  }
+    updateSubCategories(subcategory: SubCategory) {
+        const subcategory_ = this.subCategories.find((item) => item.value === subcategory.subCategoryId)
+        if (subcategory_) subcategory_.text = subcategory.subCategoryName
+        else {
+            this.subCategories.push({
+                value: subcategory.categoryId,
+                text: subcategory.subCategoryName,
+            })
+            this.subCategoryForm.patchValue({ subCategoryName: '', subCategoryId: 0 })
+        }
 
-  get deleteButton() {
-    return !this.subCategoryId;
-  }
+        this.subCategories.sort((x, y) => {
+            return x.text! < y.text! ? -1 : 1
+        })
+    }
 
-  get updateButton() {
-    if (this.subCategoryId) return false;
-    const subCategoryName = this.controls['subCategoryName'].value;
-    if (subCategoryName?.length) return false;
+    get buttonLabel() {
+        if (this.subCategoryId) return this.labels.UPDATE
+        else return this.labels.ADD
+    }
 
-    return true;
-  }
+    get deleteButton() {
+        return !this.subCategoryId
+    }
 
+    get updateButton() {
+        if (this.subCategoryId) return false
+        const subCategoryName = this.controls['subCategoryName'].value
+        if (subCategoryName?.length) return false
+
+        return true
+    }
 }

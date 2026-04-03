@@ -1,5 +1,6 @@
+//#region imports
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { environment } from '@env/environment'
 import { Observable, of } from 'rxjs'
 import { catchError, first, map, tap } from 'rxjs/operators'
@@ -7,11 +8,14 @@ import { LoggerService } from './authentication/logger.service'
 import { ImageData } from '@model/imageData'
 import { CatchaItem } from '@model/catchaItem'
 import { Catcha } from '@model/catcha'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class ImageService {
+    //#region variables and services
     httpHeader = {
         headers: new HttpHeaders({
             'content-type': 'application/json',
@@ -20,11 +24,10 @@ export class ImageService {
     }
 
     businessCardImages: ImageData[] = []
-    constructor(
-        private http: HttpClient,
-        private loggerService: LoggerService
-    ) {}
-
+    private http = inject(HttpClient)
+    private loggerService = inject(LoggerService)
+    //#endregion
+    
     getImages(id: number): Observable<ImageData[]> {
         const params = new HttpParams().set('id', `${id}`)
         return this.http.get<ImageData[]>(`${environment.restAPI}/image/GetImages`, { params }).pipe(

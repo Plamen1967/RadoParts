@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Input, OnInit, Output, Self } from '@angular/core'
+//#region imports
+import { AfterViewInit, Component, DestroyRef, EventEmitter, Input, OnInit, Output, Self, inject } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -10,21 +11,24 @@ import { OptionItem } from '@model/optionitem'
 import { CompanyService } from '@services/company-model-modification/company.service'
 import { ErrorService } from '@services/error.service'
 import { switchMap } from 'rxjs'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-company-choise',
     templateUrl: './company-choise.component.html',
     styleUrls: ['./company-choise.component.css'],
-    imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule]
+    imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule],
 })
+//#endregion
 export class CompanyChoiseComponent implements ControlValueAccessor, AfterViewInit, OnInit {
+    //#region variables and services
     companies: OptionItem[] = []
     companyId = 0
     isDisabled = false
     companyForm: FormGroup
     _bus = 0
     _itemType = ItemType.All
-    loaded = false;
+    loaded = false
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
@@ -44,7 +48,7 @@ export class CompanyChoiseComponent implements ControlValueAccessor, AfterViewIn
         this.initCompanies()
     }
 
-    @Input() showCount = false;
+    @Input() showCount = false
     @Input() userId = 0
     @Input() all = false
     @Input() submitted = false
@@ -59,16 +63,24 @@ export class CompanyChoiseComponent implements ControlValueAccessor, AfterViewIn
     }
 
     @Output() countPerUser: EventEmitter<number> = new EventEmitter<number>()
-
-    constructor(
-        public companyService: CompanyService,
-        formBuilder: FormBuilder,
-        @Self() public control: NgControl,
-        public errorService: ErrorService,
-        private destroyRef: DestroyRef
-    ) {
+    //#region services
+    public companyService: CompanyService
+    formBuilder: FormBuilder
+    @Self() public control: NgControl
+    public errorService: ErrorService
+    private destroyRef: DestroyRef
+    //#endregion
+    //#endregion
+    constructor() {
+        //#region inject services
+        this.companyService = inject(CompanyService)
+        this.formBuilder = inject(FormBuilder)
+        this.control = inject(NgControl)
+        this.errorService = inject(ErrorService)
+        this.destroyRef = inject(DestroyRef)
+        //#endregion
         if (this.control) this.control.valueAccessor = this
-        this.companyForm = formBuilder.group({
+        this.companyForm = this.formBuilder.group({
             companyId_int: [0],
         })
     }
@@ -157,6 +169,6 @@ export class CompanyChoiseComponent implements ControlValueAccessor, AfterViewIn
         let count = 0
         this.companies.forEach((item) => (count += item.count))
         this.countPerUser.emit(count)
-        this.loaded = true;
+        this.loaded = true
     }
 }

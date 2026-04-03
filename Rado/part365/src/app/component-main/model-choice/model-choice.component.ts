@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, DestroyRef, ElementRef, Input, OnInit, Self } from '@angular/core'
+//#region imports
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -8,14 +9,18 @@ import { ItemType } from '@model/enum/itemType.enum'
 import { OptionItem } from '@model/optionitem'
 import { ModelService } from '@services/company-model-modification/model.service'
 import { ErrorService } from '@services/error.service'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-model-choice',
     templateUrl: './model-choice.component.html',
     styleUrls: ['./model-choice.component.css'],
     imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule]
 })
+//#endregion
+
 export class ModelChoiceComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+    //#region variables and services
     modelForm: FormGroup
     models: OptionItem[] = []
     isDisabled = false
@@ -38,17 +43,19 @@ export class ModelChoiceComponent implements ControlValueAccessor, OnInit, After
     @Input() userId = 0
     @Input() showCount = false
     @Input() itemType: ItemType = ItemType.All
-
+    //#region services
+    public modelService: ModelService = inject(ModelService)
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    @Self() public control: NgControl = inject(NgControl)
+    public errorService: ErrorService = inject(ErrorService)
+    private element: ElementRef = inject(ElementRef)
+    private destroyRef: DestroyRef = inject(DestroyRef)   
+    //#region 
+    //#endregion
     constructor(
-        public modelService: ModelService,
-        private formBuilder: FormBuilder,
-        @Self() public control: NgControl,
-        public errorService: ErrorService,
-        private element: ElementRef,
-        private destroyRef: DestroyRef
     ) {
         if (this.control) this.control.valueAccessor = this
-        this.modelForm = formBuilder.group({
+        this.modelForm = this.formBuilder.group({
             modelsId_int: [0],
         })
     }

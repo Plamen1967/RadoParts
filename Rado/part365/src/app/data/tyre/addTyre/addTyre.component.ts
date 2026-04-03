@@ -2,7 +2,7 @@ import { NgClass, NgStyle } from '@angular/common'
 import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { RadioGroupListComponent } from '@components/custom-controls/radioGroupList/radiogrouplist.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -131,7 +131,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     @Output() saved: EventEmitter<number> = new EventEmitter<number>()
         public staticSelectionService: StaticSelectionService
         private formBuilder: FormBuilder
-        private popupService: PopUpServiceService
+        private popupService: PopUpService
         private tyreService: TyreService
         private alerService: AlertService
         private modelService: ModelService
@@ -152,7 +152,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         super()
         this.staticSelectionService = inject(StaticSelectionService)
         this.formBuilder = inject(FormBuilder)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.tyreService = inject(TyreService)
         this.alerService = inject(AlertService)
         this.modelService = inject(ModelService)

@@ -1,5 +1,6 @@
+//#region imports
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { catchError, map, Observable, of, Subject } from 'rxjs'
 import { Category } from '../../model/category-subcategory/category'
 import { handleError } from '../../functions/handleError'
@@ -7,16 +8,22 @@ import { environment } from '@env/environment'
 import { FilterCategory } from '@model/filters/filterCategory'
 import { NumberPartsPerCategory } from '@model/category-subcategory/numberPartsPerCategory'
 import { Dropdown } from '@model/dropDown'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
+
 export class CategoryService {
+    //#region variables and services
     categories?: Category[]
     _filtercategories: Observable<Dropdown[]>  = new Observable<Dropdown[]>();
     displayCategory = false;
-    constructor(private http: HttpClient) {}
+    private http: HttpClient = inject(HttpClient)
     private open: Subject<MouseEvent>  = new Subject<MouseEvent>();
+    //#endregion
+    
     setFilterCategories(f: Dropdown[]) {
         return this._filtercategories = of([...f]);
       }

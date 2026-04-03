@@ -1,17 +1,23 @@
+//#region imports
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { map } from 'rxjs/operators'
 import { environment } from '../../environments/environment'
 import { Car } from '@model/car/car'
 import { FilterCar } from '@model/filters/filterCar'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class SeachCarService {
-    constructor(private http: HttpClient) {}
+    //#region variables and services
+    private http = inject(HttpClient)
 
     cars: Car[] = []
+    //#endregion
+
     fetch(filter: FilterCar) {
         let params = new HttpParams()
 

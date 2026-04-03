@@ -1,4 +1,5 @@
-import { Component, DestroyRef, EventEmitter, Output, Self } from '@angular/core'
+//#region Imports
+import { Component, DestroyRef, EventEmitter, inject, Output, Self } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { ClearbuttonComponent } from '@components/custom-controls/buttons/clearbutton/clearbutton.component'
@@ -7,25 +8,30 @@ import { SelectComponent } from '@components/custom-controls/select-controls/sel
 import { HelperComponent } from '@components/helper.old/helper.component'
 import { SelectOption } from '@model/selectOption'
 import { StaticSelectionService } from '@services/staticSelection.service'
-
+//#endregion
+//#region Component
 @Component({
     selector: 'app-search-bar',
     templateUrl: './search-bar.component.html',
     styleUrls: ['./search-bar.component.css'],
-    imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule]
+    imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule],
 })
+//#endregion
 export class SearchBarComponent extends HelperComponent implements ControlValueAccessor {
+    //#region variables and services
     sort?: SelectOption[]
     sortForm: FormGroup
     isDisabled?: boolean
     @Output() submitEvent: EventEmitter<void> = new EventEmitter<void>()
     @Output() clearEvent: EventEmitter<void> = new EventEmitter<void>()
-    constructor(
-        public staticSelectionService: StaticSelectionService,
-        private destroyRef: DestroyRef,
-        private fb: FormBuilder,
-        @Self() public control: NgControl
-    ) {
+    //#region services
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    private fb: FormBuilder = inject(FormBuilder)
+    @Self() public control: NgControl = inject(NgControl)
+    //#endregion
+    //#endregion   
+    constructor() {
         super()
         if (this.control) this.control.valueAccessor = this
         this.sortForm = this.fb.group({

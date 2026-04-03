@@ -1,5 +1,6 @@
+//#region imports
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '@env/environment';
 import { BackendMessage } from '@model/backMessage';
 import { Numberparts } from '@model/numberparts';
@@ -8,12 +9,15 @@ import { UserCount } from '@model/userCount';
 import { UserView } from '@model/userView';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-
+//#endregion
+//#region service
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+//#endregion
 
+export class UserService {
+  //#region variables and services
   httpHeader = {
     headers: new HttpHeaders({
       'content-type': 'application/json',
@@ -24,11 +28,9 @@ export class UserService {
   users: User[] = [];
   private userCount?: UserCount;
   public userPageObj = new BehaviorSubject<number>(0);
-  public userPage: Observable<number>;
-
-  constructor(private http: HttpClient) { 
-    this.userPage = this.userPageObj.asObservable();
-  }
+  public userPage: Observable<number> = this.userPageObj.asObservable();
+  private http = inject(HttpClient);
+  //#endregion
   public userViews: UserView[] = [];
 
   setUserCount(userCount: UserCount) {

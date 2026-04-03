@@ -1,15 +1,11 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HelperComponent } from './helper.component';
 
 describe('HelperComponent', () => {
   let component: HelperComponent;
   let fixture: ComponentFixture<HelperComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HelperComponent ]
     })

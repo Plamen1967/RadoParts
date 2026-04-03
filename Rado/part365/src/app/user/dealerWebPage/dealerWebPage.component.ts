@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, DestroyRef, Input, OnInit, Renderer2 } from '@angular/core'
+//#region imports
+import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router, RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router'
 import { User } from '@model/user'
@@ -10,37 +11,32 @@ import { HomeService } from '@services/home.service'
 import { LoggerService } from '@services/authentication/logger.service'
 import { UserView } from '@model/userView'
 import { DataManager } from '@model/dataManager'
-
+//#endregion
+// #region component
 @Component({
     selector: 'app-dealerwebpage',
     templateUrl: './dealerWebPage.component.html',
     styleUrls: ['./dealerWebPage.component.css'],
     imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive]
 })
+//#endregion
 export class DealerWebPageComponent implements OnInit, AfterViewInit {
+    //#region variables and services
     @Input() userId = 0
     user?: UserView
     id = 0
-    url: string
-     dataManager?: DataManager
-        
-    constructor(
-        private activeRoute: ActivatedRoute,
-        private router: Router,
-        private searchPartService: SearchPartService,
-        private homeService: HomeService,
-        private destroyRef: DestroyRef,
-        public loggerService: LoggerService,
-        private renderer: Renderer2,
-
-    ) {
-        const userId = this.activeRoute.snapshot.paramMap.get('userId')
-        if (userId) this.userId = +userId
-        this.url = this.activeRoute.snapshot.url.toString()
-        console.log(this.activeRoute.snapshot)
-        this.renderer.addClass(document.body, 'user-color');
-    }
-
+    url = ''
+    dataManager?: DataManager   
+    //#region services
+    private activeRoute = inject(ActivatedRoute)
+    private router = inject(Router)
+    private searchPartService = inject(SearchPartService)
+    private homeService = inject(HomeService)
+    private destroyRef = inject(DestroyRef)
+    public loggerService = inject(LoggerService)
+    //#endregion
+    //#endregion    
+    
     ngOnInit() {
         this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
             this.userId = params['userId']

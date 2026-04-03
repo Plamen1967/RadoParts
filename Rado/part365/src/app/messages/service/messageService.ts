@@ -1,24 +1,26 @@
+//#region imports
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { environment } from '@env/environment'
 import { LoggerService } from '@services/authentication/logger.service'
 import { Message } from '../model/Message'
-
+//#endregion
+//#region service
 @Injectable({
     providedIn: 'root',
 })
+//#endregion
 export class MessageService {
+    //#region variables and services
     httpHeader = {
         headers: new HttpHeaders({
             'content-type': 'application/json',
             accept: '*/*',
         }),
     }
-
-    constructor(
-        private httpClient: HttpClient,
-        private loggerService: LoggerService
-    ) {}
+    private httpClient: HttpClient = inject(HttpClient)
+    private loggerService: LoggerService = inject(LoggerService)
+    //#endregion
 
     fetchMessages() {
         // Implementation for fetching messages
@@ -37,6 +39,7 @@ export class MessageService {
     getMessagesPerUser(userId: number) {
         return this.httpClient.get<Message[]>(`${environment.restAPI}/message/getUserMessages?userId=${userId}`, this.httpHeader)
     }
+
     getMessages() {
         return this.httpClient.get<Message[]>(`${environment.restAPI}/message/GetUserMessages`, this.httpHeader)
     }

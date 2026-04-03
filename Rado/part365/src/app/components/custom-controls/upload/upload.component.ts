@@ -7,7 +7,7 @@ import { WebcamImage } from 'ngx-webcam'
 import { ImageData } from '@model/imageData'
 import { CameraComponent } from '../camera/camera.component'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { ErrorService } from '@services/error.service'
 //#endregion
@@ -41,7 +41,7 @@ export class UploadComponent extends HelperComponent implements OnInit {
         private http: HttpClient,
         private imageService: ImageService,
         private destroyRef: DestroyRef,
-        private popupService: PopUpServiceService,
+        private popupService: PopUpService,
         private errorService: ErrorService
     ) {
         super()

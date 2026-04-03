@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { PopUpDialogData } from '../model/popUpDialogData'
 import { MatDialog } from '@angular/material/dialog'
 import { PopUpMessageComponent } from '../dialogs/popUpMessage/popUpMessage.component'
@@ -6,10 +6,14 @@ import { PopUpMessageComponent } from '../dialogs/popUpMessage/popUpMessage.comp
 @Injectable({
     providedIn: 'root',
 })
-export class PopUpServiceService {
+export class PopUpService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dialogRef?: any
-    constructor(private matDialog: MatDialog) {}
+    private matDialog: MatDialog;
+
+    constructor() {
+        this.matDialog = inject(MatDialog)  
+    }
 
     openWithTimeout(title: string, content: string, timeout = 2000) {
         const data: PopUpDialogData = {

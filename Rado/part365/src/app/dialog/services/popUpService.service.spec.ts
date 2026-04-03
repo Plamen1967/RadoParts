@@ -1,14 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { PopUpServiceService } from './popUpService.service';
+import { PopUpService } from './popUpService.service';
 
 describe('Service: PopUpService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PopUpServiceService]
+      providers: [PopUpService]
     });
   });
 
-  it('should ...', inject([PopUpServiceService], (service: PopUpServiceService) => {
+  it('should ...', inject([PopUpService], (service: PopUpService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -1,7 +1,8 @@
+//#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, HostListener, Input, OnInit, Optional } from '@angular/core'
+import { AfterViewInit, Component, HostListener, inject, Input, OnInit, Optional } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { Router } from '@angular/router'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { isMobile, sortUser } from '@app/functions/functions'
 import { CategoriesFooterComponent } from '@components/custom-controls/categoriesFooter/categoriesfooter.component'
@@ -17,7 +18,6 @@ import { Filter } from '@model/filters/filter'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
 import { User } from '@model/user'
-import { ModelService } from '@services/company-model-modification/model.service'
 import { HomeService } from '@services/home.service'
 import { LoadingService } from '@services/loading.service'
 import { SearchPartService } from '@services/searchPart.service'
@@ -32,7 +32,8 @@ import { CategoriesComponent } from '@components/custom-controls/categories/cate
 import { Dropdown } from '@model/dropDown'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-tyrefilter',
     templateUrl: './tyrefilter.component.html',
@@ -49,10 +50,13 @@ import { ModelChoiceComponent } from '@app/component-main/model-choice/model-cho
         CompanyChoiseComponent,
         SearchBarComponent,
         CategoriesComponent,
-        ModelChoiceComponent
-    ]
+        ModelChoiceComponent,
+    ],
 })
+//#endregion
+
 export class TyreFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region variables and services
     categories = [
         { value: 1, text: 'Гуми' },
         { value: 2, text: 'Джанти' },
@@ -89,7 +93,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     rimMaterial?: SelectOption[]
     rimWidth?: SelectOption[]
     regions?: SelectOption[]
-    companyId?: number;
+    companyId?: number
 
     countTyres?: CountTyres
     categoriesFooter: Dropdown[] = [
@@ -119,22 +123,23 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
             this.submit()
         }
     }
-    constructor(
-        private formBuilder: FormBuilder,
-        private modelService: ModelService,
-        private homeService: HomeService,
-        private userService: UserService,
-        public loadingService: LoadingService,
-        public searchPartService: SearchPartService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private tyreService: TyreService,
-        public staticSelectionService: StaticSelectionService,
-        private confirmService: ConfirmServiceService,
-        @Optional() public home?: HomeComponent
-    ) {
+    //#region services
+    formBuilder: FormBuilder = inject(FormBuilder)
+    private homeService: HomeService = inject(HomeService)
+    private userService: UserService = inject(UserService)
+    public loadingService: LoadingService = inject(LoadingService)
+    public searchPartService: SearchPartService = inject(SearchPartService)
+    private router: Router = inject(Router)
+    private tyreService: TyreService = inject(TyreService)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    @Optional() public home?: HomeComponent
+    //#endregion
+    //#endregion
+
+    constructor() {
         super()
-        this.filterForm = formBuilder.group({
+        this.filterForm = this.formBuilder.group({
             itemType: [ItemType.AllTyre],
             userId: [0],
             approved: [3],
@@ -156,14 +161,13 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
             hasImages: [false],
         })
 
-
         this.initialState = this.filterForm.value
         delete this.initialState.itemType
     }
     ngAfterViewInit(): void {
         this.filterForm.controls['itemType'].valueChanges.subscribe((f) => this.itemTypeChanged(f))
         this.filterForm.controls['companyId'].valueChanges.subscribe((companyId) => this.onCompanyChange(companyId))
-        
+
         if (this.itemType) {
             this.filterForm.patchValue({ itemType: ItemType.AllTyre })
             this.itemTypeChanged(ItemType.AllTyre)
@@ -277,7 +281,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     }
 
     onCompanyChange(companyId: number) {
-        this.companyId = companyId;
+        this.companyId = companyId
         // this.modelService.fetchByCompanyId(companyId).subscribe((res) => {
         //     res.unshift(getModelAll())
         //     this.models = res.map((model) => {

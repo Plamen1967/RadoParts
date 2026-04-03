@@ -43,7 +43,7 @@ import { RadioGroupComponent } from '@components/custom-controls/radioGroup/radi
 import { CategoriesComponent } from '@components/custom-controls/categories/categories.component'
 import { SearchPartService } from '@services/searchPart.service'
 import { SearchInputComponent } from '@components/custom-controls/searchInput/searchInput.component'
-import { PopUpServiceService } from '@app/dialog/services/popUpService.service'
+import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { HomeComponent } from '@components/search/home/Home.component'
 import { CompanyChoiseComponent } from '@app/component-main/company-choise/company-choise.component'
@@ -195,7 +195,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     private userService: UserService
     private homeService: HomeService
     public modelService: ModelService
-    public popupService: PopUpServiceService
+    public popupService: PopUpService
     public loadingService: LoadingService
     public staticSelectionService: StaticSelectionService
     private router: Router
@@ -217,7 +217,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         this.userService = inject(UserService)
         this.homeService = inject(HomeService)
         this.modelService = inject(ModelService)
-        this.popupService = inject(PopUpServiceService)
+        this.popupService = inject(PopUpService)
         this.loadingService = inject(LoadingService)
         this.staticSelectionService = inject(StaticSelectionService)
         this.router = inject(Router)
