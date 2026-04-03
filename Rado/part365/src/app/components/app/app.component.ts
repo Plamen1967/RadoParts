@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MediaMatcher } from '@angular/cdk/layout'
 import { MenuService } from '@services/Menu.service'
-import { effect, untracked } from '@angular/core'
+import { effect } from '@angular/core'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { LocalStorageService } from '@services/storage/localStorage.service'
 import { UserCount } from '@model/userCount'
@@ -61,6 +61,7 @@ toggleMenu(event: Event) {
     private confirmService: ConfirmServiceService
     private userCountService: UserCountService
 
+    showMenu = false
     constructor() {
         this.dialog = inject(MatDialog)
         this.pathService = inject(PathService)
@@ -74,6 +75,7 @@ toggleMenu(event: Event) {
         this.confirmService = inject(ConfirmServiceService)
         this.userCountService = inject(UserCountService)
         this.menuService = inject(MenuService)
+        this.menuService.showMenu.set(false)
         if (this.authenticationService.currentToken) {
             this.authenticationService.validateToken().subscribe({
                 next: () => {
@@ -94,6 +96,9 @@ toggleMenu(event: Event) {
             } else {
                 this.snav?.toggle(this.menuService.showMenu())
             }
+
+            this.showMenu = this.menuService.showMenu()
+            console.log(this.showMenu)
         })
 
         this.userCount$ = this.userCountService.userCount$
@@ -114,7 +119,7 @@ toggleMenu(event: Event) {
         return false
     }
     get count() {
-        return this.localStorage.items
+        return this.localStorage.items;
     }
 
     ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 import { APIRequestContext, expect } from '@playwright/test'
-import { test } from '../tests/fixtures/login.spec'
-import { PartPage } from '../tests/home/part/partPage'
+import { test } from './tests/fixtures/login.spec'
+import { PartPage } from './tests/home/part/partPage'
 
 let apiContext: APIRequestContext
 

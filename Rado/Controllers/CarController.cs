@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Models.Enums;
 using Models.Models;
+using Models.Models.Authentication;
 using Rado.Authorization;
 using Rado.Datasets;
 using Rado.Exceptions;
@@ -180,6 +181,13 @@ namespace Rado.Controllers
             return await CarsDbSet.CheckForUniqueness(carName, bus, UserId);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("Check")]
+        public async Task<bool> CheckUniquness([FromQuery] string carName, [FromQuery] int bus, [FromQuery] int  userId)
+        {
+            return await CarsDbSet.CheckForUniqueness(carName, bus, userId);
+        }
 
         [HttpGet]
         [EnableCors("testingApp")]

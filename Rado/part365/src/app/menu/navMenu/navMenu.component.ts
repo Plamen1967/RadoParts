@@ -1,5 +1,5 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, Inject, DOCUMENT } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT } from '@angular/core'
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -74,27 +74,40 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
     userCount$: Observable<UserCount | undefined>
     menuService: MenuService;
     document!: Document
+    private router: Router;
+    private checkOutService: CheckOutService;
+    private location: Location;
+    private localStorage: LocalStorageService;
+    private userService: UserService;
+    private carService: CarService;
+    private partService: PartServiceService;
+    public pathService: PathService;
+    private activatedRoute: ActivatedRoute;
+    private userCountService: UserCountService;
+    private matDialog: MatDialog;
+    private confirmService: ConfirmServiceService;
+    public staticSelectionService: StaticSelectionService;
 
     constructor(
-        private router: Router,
-        private checkOutService: CheckOutService,
-        private location: Location,
-        private localStorage: LocalStorageService,
-        private userService: UserService,
-        private carService: CarService,
-        private partService: PartServiceService,
-        public pathService: PathService,
-        private activatedRoute: ActivatedRoute,
-        private userCountService: UserCountService,
-        private matDialog: MatDialog,
-        private confirmService: ConfirmServiceService,
-        public staticSelectionService: StaticSelectionService
     ) {
         super()
-        this.document = Inject(DOCUMENT)
+        this.router = inject(Router)
+        this.checkOutService = inject(CheckOutService)
+        this.location = inject(Location)
+        this.localStorage = inject(LocalStorageService)
+        this.userService = inject(UserService)
+        this.carService = inject(CarService)
+        this.partService = inject(PartServiceService)
+        this.pathService = inject(PathService)
+        this.activatedRoute = inject(ActivatedRoute)
+        this.userCountService = inject(UserCountService)
+        this.matDialog = inject(MatDialog)
+        this.confirmService = inject(ConfirmServiceService)
+        this.staticSelectionService = inject(StaticSelectionService)
+        this.document = inject(DOCUMENT)
         this.menuService = inject(MenuService);
-        checkOutService.checkout.subscribe(() => this.checkoutUpdate())
-        userService.userPage.subscribe((userId) => {
+        this.checkOutService.checkout.subscribe(() => this.checkoutUpdate())
+        this.userService.userPage.subscribe((userId) => {
             this.userId = userId
         })
         this.userPage = this.pathService.userPage
@@ -137,7 +150,7 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
     }
 
     toggleSideMenu() {
-
+        return;
     }
     toggle() {
         this.isExpanded = !this.isExpanded
@@ -159,6 +172,7 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
             if (result === OKCancelOption.OK) {
                 this.authenticationService.logout()
                 this.router.navigate(['/'])
+                this.menuService.showMenu.set(false)
             }
         })
     }

@@ -1,10 +1,10 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { TestMultiSelectionComponent } from "../components/select/test.multiSelectionComponent";
-import { TestTextArea } from "../components/test.textArea";
-import { TestSelectOption } from "../components/test.selectOption";
-import { TestInput } from "../components/test.Input";
+import { TestMultiSelectionComponent } from "../../tests/components/select/test.multiSelectionComponent";
+import { TestTextArea } from "../../tests/components/test.textArea";
+import { TestSelectOption } from "../../tests/components/test.selectOption";
+import { TestInput } from "../../tests/components/test.Input";
 
-export class AddCarPage {
+export class AddCarPOM {
     private page: Page;
     private company: TestMultiSelectionComponent;
     private nameCar: Locator;
@@ -40,7 +40,7 @@ export class AddCarPage {
         this.regionId = new TestSelectOption(page, "regionId");
 
         this.backBtn = this.page.getByRole('button').and(this.page.getByText("Назад"))
-        this.saveBtn = this.page.getByRole('button').and(this.page.getByText("Запиши"))
+        this.saveBtn = this.page.getByRole('button', { name: "Запиши" })
     }
 
     async enterCarName(carName: string) {
@@ -68,15 +68,15 @@ export class AddCarPage {
     }
     
     async selectEngineType(select: string) {
-        this.engineType.selectOption(select);
+        await this.engineType.selectOption(select);
     }
 
     async selectGearboxType(select: string) {
-        this.gearboxType.selectOption(select);
+        await this.gearboxType.selectOption(select);
     }
 
     async selectRegion(select: string) {
-        this.regionId.selectOption(select);
+        await this.regionId.selectOption(select);
     }
 
     async enterCompany(companyName: string) {

@@ -1,64 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { AddCarPage } from '../../tests/data/addCarPage';
-import { AdPage } from '../../tests/data/adPage';
-import { AddPart } from '../../tests/data/addPart';
-import { PopupMessageCheck } from '../../tests/messages/popupMessage';
-import { LoginPage } from '../../tests/login/loginPOM';
+import { AddCarPOM } from '../../data/pom/addCarPOM';
+import { AdPage } from '../../data/pom/adPagePOM';
+import { AddPartPOM } from '../../data/pom/addPartPOM';
+import { PopupMessageCheck } from '../messages/popupMessage';
+import { LoginPage } from '../../data/pom/loginPOM';
 
 
-test('add car', async({page}) => {
-
-    const adPage: AdPage = new AdPage(page);
-    adPage.open();
-
-    const data = {
-        carName: 'Car 45',
-        company: 'Audi',
-        model: '100 (43) (1976 - 1982)',
-        modification: '1.6 (85 Hp) (1976 - 1982)',
-        vin: '12345678901234567',
-        year: 1975,
-        description: 'Колата идва с двигател'
-    }
-
-
-    await page.getByRole('button', {name: 'Добавете Кола'}).click();
-    await expect(page).toHaveURL('/data/addCar?ad=new');
-    const addCarPage = new AddCarPage(page);
-
-    await addCarPage.enterCarName(data.carName);
-    await addCarPage.enterVin("123456789012345");
-
-    await addCarPage.save();
-    await page.getByRole('button').and(page.getByText('Ok')).click();
-
-    await addCarPage.checkCompanyRequired();
-    await addCarPage.checkVinMinLength();
-
-    await addCarPage.enterCompany(data.company);
-    await addCarPage.enterVin(data.vin);
-
-    await addCarPage.save();
-    await page.getByRole('button').and(page.getByText('Ok')).click();
-
-    await addCarPage.checkModelRequired()
-    await addCarPage.checkNoVinMinLength();
-
-    await addCarPage.enterModel(data.model)
-    await addCarPage.save();
-    await page.getByRole('button').and(page.getByText('Ok')).click();
-
-    await addCarPage.checkModificationRequired()
-
-    await addCarPage.enterModification(data.modification)
-
-    await addCarPage.enterYear(data.year);
-    await addCarPage.enterDescription(data.description);
-
-    await addCarPage.save();
-
-    await expect(page).toHaveURL('/data/addNew');
-})
 
 test('add bus', async({page}) => {
 
@@ -82,7 +29,7 @@ test('add bus', async({page}) => {
 
     await page.getByRole('button', {name: 'Добавете Бус'}).click();
     await expect(page).toHaveURL('/data/addCar?ad=new&bus=1');
-    const addCarPage = new AddCarPage(page, true);
+    const addCarPage = new AddCarPOM(page, true);
 
     await addCarPage.enterCarName(data.carName);
     await addCarPage.enterVin("123456789012345");
@@ -131,7 +78,7 @@ test('add bus part', async({page}) => {
 
     await page.getByRole('button', {name: 'Добавете част за бус'}).click();
 
-    const addPart = new AddPart(page);
+    const addPart = new AddPartPOM(page);
 
     await addPart.checkPartCar(data.partType);
     await addPart.enterCompany(data.company);
@@ -163,7 +110,7 @@ test('add bus part for a bus', async({page}) => {
 
     await page.getByRole('button', {name: 'Добавете част за бус'}).click();
 
-    const addPart = new AddPart(page);
+    const addPart = new AddPartPOM(page);
 
 
     await addPart.checkPartCarByLabel(data.partType);

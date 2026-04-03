@@ -195,27 +195,26 @@ namespace Rado.Datasets
             try
             {
                 string storedProcedure = "CheckUnique";
-                using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
-                {
-                    await connection.OpenAsync();
-                    using (SqlCommand command = new SqlCommand(storedProcedure, connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.Add("@regNumber", SqlDbType.NVarChar).Value = regNumber;
-                        command.Parameters.Add("@userId", SqlDbType.BigInt).Value = userId;
-                        command.Parameters.Add("@bus", SqlDbType.BigInt).Value = bus;
-                        command.Parameters.Add("@result", SqlDbType.BigInt);
-                        command.Parameters["@result"].Direction = ParameterDirection.Output;
+                SqlConnection connection = new SqlConnection();
+                SqlCommand command = new SqlCommand();
+                connection.ConnectionString = Program.ConnectionString;
+                command.Connection = connection;
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = storedProcedure;
 
+                command.Parameters.AddWithValue("@regNumber", regNumber);
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@bus",bus);
 
-                        await command.ExecuteNonQueryAsync();
+                command.Parameters.Add("@result", SqlDbType.Int);
+                command.Parameters["@result"].Direction = ParameterDirection.Output;
 
-                        long value = (long)command.Parameters["@result"].Value;
-                        if (value > 0)
-                            return false;
-                    }
+                connection.Open();
+                int i = command.ExecuteNonQuery();
 
-                }
+                int value = (int)command.Parameters["@result"].Value;
+                if (value > 0)
+                    return false;
             }
             catch (Exception e)
             {

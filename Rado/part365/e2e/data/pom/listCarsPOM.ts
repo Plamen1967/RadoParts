@@ -1,6 +1,6 @@
 import { Page, expect } from "@playwright/test";
-import { TestSelectOption } from "../components/test.selectOption";
-import { TestCustomSelectComponent } from "../components/select/test.customSelectComponent";
+import { TestSelectOption } from "../../tests/components/test.selectOption";
+import { TestCustomSelectComponent } from "../../tests/components/select/test.customSelectComponent";
 
 export class ListCarPOM {
 
@@ -51,6 +51,6 @@ export class ListCarPOM {
 
     async deleteItem(carName: string) {
         await this.page.locator(`[title="${carName}"]`).getByText("Изтрий").click();
-        await this.page.locator('Потвърди').click();
+        await this.page.locator('button').getByText('Потвърди').click();
     }
 }

@@ -315,6 +315,7 @@ a {
     border-radius: 50%;
     background-color: rgb(236, 14, 88);
     width: 24px;
+    height: 24px;
     color: rgb(188, 228, 93);
     display: inline-flex;
     align-items: center;
@@ -349,6 +350,7 @@ nav {
 .buttonGap {
     margin-right: 0px;
     margin-bottom: 1px;
+    height: 42px;
 }
 .header {
     font-family: var(--bs-body-font-family);
@@ -451,6 +453,12 @@ nav {
 
 .sizeSaved {
     font-size: 2em;
+}
+.tabSvg {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+    color: white;
 }
 
 .parent {

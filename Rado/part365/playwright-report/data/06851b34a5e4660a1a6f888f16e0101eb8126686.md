@@ -1,0 +1,60 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e7]:
+  - generic [ref=e8]:
+    - banner [ref=e10]:
+      - navigation [ref=e11]:
+        - generic [ref=e12]:
+          - navigation [ref=e13]:
+            - generic [ref=e15]: Part365
+          - generic [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - link [ref=e19] [cursor=pointer]:
+                  - /url: /
+            - list [ref=e20]:
+              - listitem [ref=e21]:
+                - link "Добави обява" [active] [ref=e22] [cursor=pointer]:
+                  - /url: /data/addNew
+              - listitem [ref=e23]:
+                - link "Запазени 0" [ref=e24] [cursor=pointer]:
+                  - /url: /checkout
+              - listitem [ref=e25]:
+                - link "Коли" [ref=e26] [cursor=pointer]:
+                  - /url: /data/cars
+                  - generic [ref=e27] [cursor=pointer]: Коли
+              - listitem [ref=e28]:
+                - link "Бусове" [ref=e29] [cursor=pointer]:
+                  - /url: /data/bus
+                  - generic [ref=e30] [cursor=pointer]: Бусове
+              - listitem [ref=e31]:
+                - link "Части" [ref=e32] [cursor=pointer]:
+                  - /url: /data/parts
+              - listitem [ref=e33]:
+                - link "Гуми/Джанти" [ref=e34] [cursor=pointer]:
+                  - /url: /data/tyres
+              - listitem [ref=e35]:
+                - generic [ref=e36]:
+                  - generic [ref=e37]: person
+                  - button "rado" [ref=e38] [cursor=pointer]: rado
+    - generic [ref=e41]:
+      - generic [ref=e43]:
+        - button "Добавете Кола" [ref=e44] [cursor=pointer]
+        - button "Добавете Бус" [ref=e45] [cursor=pointer]
+      - generic [ref=e47]:
+        - button "Добавете Част за кола" [ref=e48] [cursor=pointer]
+        - button "Добавете Част за бус" [ref=e49] [cursor=pointer]
+      - button "Добавете Джанта/Гума" [ref=e52] [cursor=pointer]
+  - generic [ref=e55]:
+    - generic [ref=e56]:
+      - link "ЗА ВРЪЗКА" [ref=e58] [cursor=pointer]:
+        - /url: /info/contact
+      - link "ОБЩИ УСЛОВИЯ" [ref=e60] [cursor=pointer]:
+        - /url: /info/terms
+      - link "ЗА РЕКЛАМА" [ref=e62] [cursor=pointer]:
+        - /url: /info/contact
+    - generic [ref=e63]:
+      - generic [ref=e64]: 2025 © Parts365 Marketplace
+      - paragraph [ref=e65]: Part365 Marketplace e платформа, на която партньори на Part365 предлагат своите продукти и услуги. Работейки с множество доставчици, ние Parts365 успяваме да предложим богат асортимент на едно място за всички автолюбители. Нашите партньори предлагат авточасти, гуми, джанти, акумулатори, автоаксесоари и други продукти на автомобилна тематика.
+```

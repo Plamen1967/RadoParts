@@ -391,7 +391,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         const content = `${type} е успешно ${mode}`
         this.carService.currentCarId = val.carId
         this.userCountService.refresh()
-        const snackBarRef = this.toastService.showToast(content, 1)
+        const snackBarRef = this.toastService.showToast(content, 2)
         snackBarRef.afterDismissed().subscribe(() => {
             Object.keys(this.addCarForm.controls).forEach((key) => {
                 this.addCarForm.controls[key].setErrors(null)

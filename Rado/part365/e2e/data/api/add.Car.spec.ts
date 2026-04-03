@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test'
-import { LoginPage } from '../../../tests/login/loginPOM'
-import { test } from '../../../tests/fixtures/login.spec'
+import { LoginPage } from '../pom/loginPOM'
+import { test } from '../../tests/fixtures/login.spec'
 
 test.describe('Car API testing', () => {
     test('add car', async ({ page, request, api }) => {

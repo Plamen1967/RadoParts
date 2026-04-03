@@ -1,13 +1,13 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { TestRadioButton } from "../components/test.RadioButton";
-import { TestCustomSelectComponent } from "../components/select/test.customSelectComponent";
-import { TestCategoryChoiseComponent } from "../components/select/test.categoryChoiceComponent";
-import { TestInput } from "../components/test.Input";
-import { TestMultiSelectionComponent } from "../components/select/test.multiSelectionComponent";
-import { TestSelectOption } from "../components/test.selectOption";
-import { TestTextArea } from "../components/test.textArea";
+import { TestRadioButton } from "../../tests/components/test.RadioButton";
+import { TestCustomSelectComponent } from "../../tests/components/select/test.customSelectComponent";
+import { TestCategoryChoiseComponent } from "../../tests/components/select/test.categoryChoiceComponent";
+import { TestInput } from "../../tests/components/test.Input";
+import { TestMultiSelectionComponent } from "../../tests/components/select/test.multiSelectionComponent";
+import { TestSelectOption } from "../../tests/components/test.selectOption";
+import { TestTextArea } from "../../tests/components/test.textArea";
 
-export class AddPart {
+export class AddPartPOM {
     private page: Page;
     private bus!: boolean;
     private partCar: TestRadioButton

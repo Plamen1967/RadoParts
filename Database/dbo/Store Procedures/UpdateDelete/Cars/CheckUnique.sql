@@ -4,5 +4,6 @@
 	@bus INT,
 	@result INT OUTPUT
 AS
-	SELECT @result = COUNT(*) FROM Cars WHERE userId = @userId and regNumber = @regNumber and bus = @bus;
-RETURN @result
+BEGIN
+	SELECT @result = COUNT(*) FROM Cars WHERE userId = @userId and regNumber = @regNumber and bus = @bus and deleted = 0
+END

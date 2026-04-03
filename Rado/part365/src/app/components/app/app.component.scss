@@ -31,11 +31,18 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    height: 24px;
-    width: 24px;
+    height: 28px;
+    width: 28px;
     padding: 0px;
 }
+a {
+    text-decoration: none;
+    outline: none;
+}
 
+a:focus {
+    outline: default;
+}
 .menu-burger:hover {
     background-color: blue;
     color: white;
@@ -52,15 +59,20 @@
     flex-direction: column;
     align-items: start;
 }
-
+.tabSvg {
+    height: 24px;
+    width: 24px;
+    margin-right: 5px;
+    color: white;
+}
 .menu:hover {
     background-color: lightgray;
     color: black;
 }
 
 .label {
-    background-color: blue;
-    color: white;
+    font-size: 0.8rem;
+    color:black;
     width: 100%;
     margin: 4px 0px;
 }
@@ -95,6 +107,7 @@ ul {
     border-radius: 50%;
     background-color: rgb(236, 14, 88);
     width: 24px;
+    height: 24px;
     color: rgb(188, 228, 93);
     display: inline-flex;
     align-items: center;

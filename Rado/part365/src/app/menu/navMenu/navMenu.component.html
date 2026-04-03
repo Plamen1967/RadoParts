@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/elements-content -->
 @if (!userId) {
     <header id="header" class="header">
         <!-- <mat-toolbar class="example-toolbar">
@@ -18,7 +19,8 @@
                         [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
                         [routerLinkActive]="['link-active']"
                         [routerLinkActiveOptions]="{ exact: true }">
-                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']"></a>
+                        // eslint-disable-next-line @angular-eslint/template/elements-content
+                        <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']" ></a>
                     </div>
                 </div>
             </nav>
@@ -33,11 +35,9 @@
                         <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']"></a>
                     </div>
                     <div class="menuColor container d-flex flex-column align-items-center" [routerLink]="['/']">
-                        <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">
-                            Radoparts
-                        </div>
+                        <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">Radoparts</div>
                     </div>
-                    <span class="material-symbols-outlined menu-burger side-menu-button" (click)="showSideMenu($event)" role="none"> menu </span>
+                    <button class="material-symbols-outlined menu-burger side-menu-button" (click)="showSideMenu($event)"> menu </button>
                 </div>
             </nav>
         }
@@ -60,7 +60,7 @@
                             <a class="nav-link homeLink" data-cy="home" [routerLink]="['/']"></a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto ">
                         @if (!admin) {
                             <li>
                                 <a
@@ -82,8 +82,9 @@
                             @if (logged) {
                                 @if (seller) {
                                     <li>
-                                        <a class="nav-link menuButton2" (click)="cars()" routerLink="/data/cars" routerLinkActive="active-link" data-cy="carsUrl" role="presentation">
-                                            Коли
+                                        
+                                        <a class="nav-link menuButton2 d-inline-flex" (click)="cars()" routerLink="/data/cars" routerLinkActive="active-link" data-cy="carsUrl" role="presentation">
+                                            <div><img class="tabSvg" src="images/svg/car.svg" alt="" />Коли</div>
                                             @if (userCount$ | async; as userCount) {
                                                 @if (userCount && userCount.carCount) {
                                                     <span class="count">{{ userCount.carCount }}</span>
@@ -92,8 +93,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="nav-link menuButton2" data-cy="cars" routerLink="/data/bus" (click)="bus()" routerLinkActive="active-link" role="presentation">
-                                            Бусове
+                                        <a class="nav-link menuButton2 d-inline-flex" data-cy="cars" routerLink="/data/bus" (click)="bus()" routerLinkActive="active-link" role="presentation">
+                                            <div><img class="tabSvg" src="images/svg/van.svg" alt="" />Бусове</div>
                                             @if (userCount$ | async; as userCount) {
                                                 @if (userCount && userCount.busCount) {
                                                     <span class="count">{{ userCount.busCount }}</span>
@@ -190,7 +191,7 @@
             </div>
             <div class="head space-evenly">
                 @if (!logged) {
-                    <a class="linkClass color2" [routerLink]="['/data/addNew']">
+                    <a class="linkClass color2 " [routerLink]="['/data/addNew']">
                         <div class="element">
                             <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
                         </div>
@@ -206,12 +207,12 @@
                                     <a [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави Кола</a>
                                 }
                                 @if (logged && seller && !admin) {
-                                    <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }">Добави Бус</a>
+                                    <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }"><img class="tabSvg" src="images/svg/van.svg" alt="" />Добави Бус</a>
                                 }
                                 <a (click)="addPart()" role="presentation">Добави част за кола</a>
                                 @if (logged && !admin) {
-                                    <a (click)="addPart(1)" role="presentation">Добави част за бус</a>
-                                    <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }">Добави Гума/Джанта</a>
+                                    <a (click)="addPart(1)" role="presentation"><img class="tabSvg" src="images/svg/van.svg" alt="" />Добави част за бус</a>
+                                    <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Добави Гума/Джанта</a>
                                 }
                             </ul>
                         </li>
@@ -225,16 +226,15 @@
                         <li class="dropdown-content" [ngStyle]="{ 'min-width': '180px' }" id="changeAdvert" (click)="removeMenu('changeAdvert')" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass">
                                 @if (seller) {
-                                    <a (click)="cars()" role="presentation" class="menu"
-                                        >Коли
+                                    <a (click)="cars()" role="presentation" class="menu d-inline-flex"><div><img class="tabSvg" src="images/svg/car.svg" alt="" />Коли</div>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount?.carCount) {
                                                 <span class="count">{{ userCount.carCount }}</span>
                                             }
                                         }
                                     </a>
-                                    <a (click)="bus()" role="presentation" class="menu"
-                                        >Бус
+                                    <a (click)="bus()" role="presentation" class="menu d-inline-flex"
+                                        ><div><img class="tabSvg" src="images/svg/van.svg" alt="" />Бусове</div>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount?.busCount) {
                                                 <span class="count">{{ userCount.busCount }}</span>
@@ -297,10 +297,10 @@
                             <span class="text text-body-small-pale">{{ exitName }}<i class="las la-user iconSize"></i></span>
                         </div>
                         <li class="dropdown-content" [ngStyle]="{ 'min-width': '100px', right: '0px' }" id="user" (click)="removeMenu('user')" role="presentation">
-                            <ul aria-labelledby="admin" class="ulClass" role="presentation">
-                                <a (click)="details()" role="presentation">Детайли</a>
-                                <a (click)="updatePassword()" role="presentation">{{ labels.UPDATEPASSWORD }}</a>
-                                <a (click)="logout()" role="presentation">Изход</a>
+                            <ul aria-labelledby="admin" class="ulClass" role="none">
+                                <a (click)="details()" role="none">Детайли</a>
+                                <a (click)="updatePassword()" role="none">{{ labels.UPDATEPASSWORD }}</a>
+                                <a (click)="logout()" role="none">Изход</a>
                             </ul>
                         </li>
                     </div>
@@ -331,3 +331,4 @@
 </label>
 </div> -->
 </ng-template>
+
