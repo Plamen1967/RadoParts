@@ -2,6 +2,9 @@
 @import 'bootstrap/scss/_variables.scss';
 @import 'bootstrap/scss/mixins/_breakpoints.scss';
 
+a {
+    text-decoration: none;
+}
 .active-link {
     color: black;
     border-bottom: 5px solid var(--active-borderbottom) !important;
@@ -260,6 +263,8 @@ div {
         background-color: azure;
         color: black;
         cursor: pointer;
+        right: 0px;
+        left: auto; 
     }
 }
 
@@ -455,8 +460,8 @@ nav {
     font-size: 2em;
 }
 .tabSvg {
-    height: 30px;
-    width: 30px;
+    height: 26px;
+    width: 26px;
     margin-right: 5px;
     color: white;
 }
@@ -480,19 +485,19 @@ nav {
     display: block;
     opacity: 0.99;
 }
-.homeLink::before {
-    content: '';
-    padding-top: 5px;
-    background: url(/images/png/home.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    width: 30px;
-    display: block;
-    float: left;
-    align-items: center;
-    margin-right: 10px;
-}
+// .homeLink::before {
+//     content: '';
+//     padding-top: 5px;
+//     background: url(/images/png/home.png);
+//     background-size: contain;
+//     background-repeat: no-repeat;
+//     background-position: center center;
+//     width: 30px;
+//     display: block;
+//     float: left;
+//     align-items: center;
+//     margin-right: 10px;
+// }
 
 @media (max-width: 900px) {
     .showCompany {
@@ -603,7 +608,7 @@ nav {
     display: none;
     position: absolute;
     top: 16px;
-    right: 10px;
+    left: 10px;
     z-index: 1000;
     background-color: transparent;
     border: none;

@@ -152,7 +152,7 @@ namespace Utility
                         LoggerUtil.LogInfo(subject);
                         LoggerUtil.LogInfo(bodyText);
 
-                        // client.Send(message);
+                        client.Send(message);
                     }
                 }
             }
@@ -244,6 +244,7 @@ namespace Utility
             using (StreamReader sr = new StreamReader($"{dir}/mail/templates/showdetails.html"))
             {
                 dir = await sr.ReadToEndAsync();
+                NewUserEmail("plamen1967@gmail.com", "new add", dir);
 
             }
 

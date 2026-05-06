@@ -5,103 +5,104 @@
 <button class="btn btn-primary" (click)="login()">Login</button>
 <router-outlet /> -->
 <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="isMobile() ? 56 : 0">
-        <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'over'" appOutside [fixedInViewport]="isMobile()" fixedTopGap="56" (click)="this.menuService.showMenu.set(false)">
-            <mat-nav-list style="position: relative; padding-top: 30px">
-                <button class="material-symbols-outlined menu-burger" role="button" (click)="toggleMenu($event)">close</button>
-                <div class="menu-container mt-3">
-                    @if (!logged) {
-                        <a class="linkClass color2 menu" [routerLink]="['/data/addNew']">
-                            <div class="element">
-                                <div class="d-flex align-items-center">
-                                    <span class="material-symbols-outlined me-2"> add_ad </span> <span class="text menu">Добави обява <i class="las la-plus-square iconSize"></i></span>
-                                </div>
-                            </div>
-                        </a>
-                    } @else if (!admin) {
-                        <div class="dropdown linkClass color2 menu-container" role="presentation">
-                            <div class="element label">
-                                <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
-                            </div>
-                            <div class="dropdown-content menu-container element" role="presentation">
-                                @if (seller) {
-                                    <a class="menu element" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }"
-                                        ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span>Добави Кола</div></a
-                                    >
-                                    <a class="menu element" [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }"
-                                        ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави Бус</div></a
-                                    >
-                                }
-                                <a class="menu element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }"
-                                    ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span>Добави част за кола</div></a
-                                >
-                                @if (seller) {
-                                    <a class="menu element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new', bus: 1 }"
-                                        ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави част за бус</div></a
-                                    >
-                                }
-                                <a class="menu element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }"
-                                    ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави Гума/Джанта</div></a
-                                >
+    <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'over'" appOutside [fixedInViewport]="isMobile()" fixedTopGap="56" (click)="this.menuService.showMenu.set(false)">
+        <mat-nav-list>
+            <button class="material-symbols-outlined menu-burger" role="button" (click)="toggleMenu($event)">close</button>
+            <div class="menu-container">
+                @if (!logged) {
+                    <a class="linkClass add-data layout" [routerLink]="['/data/addNew']">
+                        <div class="element">
+                            <div class="d-flex align-items-center">
+                                <span class="material-symbols-outlined me-2"> add_ad </span> <span class="text menu">Добави обява <i class="las la-plus-square iconSize"></i></span>
                             </div>
                         </div>
-                    }
-                    @if (logged) {
-                        <div class="dropdown linkClass color2 menu-container" role="presentation">
-                            <div class="element label">
-                                <span class="text text-body-small-pale">Моите обяви<i class="las la-newspaper iconSize"></i></span>
-                            </div>
-                            <li class="dropdown-content menu-container element w-100" [ngStyle]="{ 'min-width': '180px' }" role="presentation">
-                                <ul aria-labelledby="admin" class="ulClass w-100">
-                                    @if (seller) {
-                                        <div class="element w-100">
-                                            <a class="menu" (click)="cars()" role="presentation"
-                                                ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span> Коли</div></a
-                                            >
-                                            @if (userCount$ | async; as userCount) {
-                                                @if (userCount?.carCount) {
-                                                    <span class="count">{{ userCount.carCount }}</span>
-                                                }
-                                            }
-                                        </div>
-                                        <div class="element w-100">
-                                            <a class="menu" (click)="bus()" role="presentation"
-                                                ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Бус</div></a
-                                            >
-                                            @if (userCount$ | async; as userCount) {
-                                                @if (userCount?.busCount) {
-                                                    <span class="count">{{ userCount.busCount }}</span>
-                                                }
-                                            }
-                                        </div>
-                                    }
+                    </a>
+                } @else if (!admin) {
+                    <div class="dropdown linkClass add-data layout menu-container" role="presentation">
+                        <div class="element label">
+                            <span class="text text-body-small-pale">Добави обява <i class="las la-plus-square iconSize"></i></span>
+                        </div>
+                        <div class="dropdown-content menu-container element" role="presentation">
+                            @if (seller) {
+                                <a class="element" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }"
+                                    ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span>Добави Кола</div></a
+                                >
+                                <a class="element" [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }"
+                                    ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави Бус</div></a
+                                >
+                            }
+                            <a class="element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }"
+                                ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span>Добави част за кола</div></a
+                            >
+                            @if (seller) {
+                                <a class="element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new', bus: 1 }"
+                                    ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави част за бус</div></a
+                                >
+                            }
+                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }"
+                                ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави Гума/Джанта</div></a
+                            >
+                        </div>
+                    </div>
+                }
+                @if (logged) {
+                    <div class="dropdown linkClass my-ads layout menu-container" role="presentation">
+                        <div class="element label" >
+                            <span class="text text-body-small-pale">Моите обяви<i class="las la-newspaper iconSize" ></i></span>
+                        </div>
+                        <li id="myads" class="dropdown-content menu-container element w-100" [ngStyle]="{ 'min-width': '180px' }" role="presentation">
+                            <ul aria-labelledby="admin" class="ulClass w-100">
+                                @if (seller) {
                                     <div class="element w-100">
-                                        <a class="menu" (click)="parts()" role="presentation"
-                                            ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> toolbar </span>Части</div></a
+                                        <a (click)="cars()" role="presentation"
+                                            ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span> Коли</div></a
                                         >
                                         @if (userCount$ | async; as userCount) {
-                                            @if (userCount && userCount.partCarCount + userCount.partBusCount) {
-                                                <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
+                                            @if (userCount?.carCount) {
+                                                <span class="count">{{ userCount.carCount }}</span>
                                             }
                                         }
                                     </div>
-                                    @if (seller) {
-                                        <div class="element w-100">
-                                            <a class="menu" (click)="tyres()" role="presentation"
-                                                ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Гуми/Джанти</div></a
-                                            >
-                                            @if (userCount$ | async; as userCount) {
-                                                @if (userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {
-                                                    <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
-                                                }
+                                    <div class="element w-100">
+                                        <a (click)="bus()" role="presentation"
+                                            ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Бус</div></a
+                                        >
+                                        @if (userCount$ | async; as userCount) {
+                                            @if (userCount?.busCount) {
+                                                <span class="count">{{ userCount.busCount }}</span>
                                             }
-                                        </div>
+                                        }
+                                    </div>
+                                }
+                                <div class="element w-100">
+                                    <a (click)="parts()" role="presentation"
+                                        ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> toolbar </span>Части</div></a
+                                    >
+                                    @if (userCount$ | async; as userCount) {
+                                        @if (userCount && userCount.partCarCount + userCount.partBusCount) {
+                                            <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
+                                        }
                                     }
-                                </ul>
-                            </li>
-                        </div>
-                    }
+                                </div>
+                                @if (seller) {
+                                    <div class="element w-100">
+                                        <a (click)="tyres()" role="presentation"
+                                            ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Гуми/Джанти</div></a
+                                        >
+                                        @if (userCount$ | async; as userCount) {
+                                            @if (userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {
+                                                <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </ul>
+                        </li>
+                    </div>
+                }
+                @if (savedItemCount) {
                     <a [routerLink]="['/checkout']" class="linkClass color2" role="presentation">
-                        <div class="element">
+                        <div class="element faviorite layout">
                             <div class="d-flex align-items-center">
                                 <span class="material-symbols-outlined me-2"> favorite </span>
                                 <span class="text text-body-small-pale">{{ checkout }} </span>
@@ -111,39 +112,40 @@
                             }
                         </div>
                     </a>
+                }
 
-                    @if (!logged) {
-                        <div class="linkClass color2 menu" role="presentation">
-                            <div class="element">
-                                <a [routerLink]="['/login']" [queryParams]="{ ad: 'new' }" class="d-flex align-items-center">
-                                    <span class="material-symbols-outlined me-2"> login </span>
-                                    Вход/Регистрация
-                                </a>
+                @if (!logged) {
+                    <div class="linkClass user-details menu" role="presentation">
+                        <div class="element">
+                            <a [routerLink]="['/login']" [queryParams]="{ ad: 'new' }" class="d-flex align-items-center">
+                                <span class="material-symbols-outlined me-2"> login </span>
+                                Вход/Регистрация
+                            </a>
+                        </div>
+                    </div>
+                } @else {
+                    <div class="dropdown linkClass user-details layout" role="presentation">
+                        <div class="element label">
+                            <span class="text text-body-small-pale">Акаунт: {{ exitName }}<i class="las la-user iconSize"></i></span>
+                        </div>
+                        <div class="dropdown-content menu-container element w-100" [ngStyle]="{ 'min-width': '100px', right: '0px' }" role="presentation">
+                            <div aria-labelledby="admin" class="ulClass w-100" role="presentation">
+                                <a (click)="details()" class="element" role="presentation"
+                                    ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> person_text </span>Детайли</div></a
+                                >
+                                <a (click)="updatePassword()" class="element" role="presentation"
+                                    ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> password </span>{{ labels.UPDATEPASSWORD }}</div></a
+                                >
+                                <a (click)="logout()" class="element" role="none"
+                                    ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> exit_to_app </span>Изход</div></a
+                                >
                             </div>
                         </div>
-                    } @else {
-                        <div class="dropdown linkClass color2" role="presentation">
-                            <div class="element label">
-                                <span class="text text-body-small-pale">Акаунт: {{ exitName }}<i class="las la-user iconSize"></i></span>
-                            </div>
-                            <div class="dropdown-content menu-container element w-100" [ngStyle]="{ 'min-width': '100px', right: '0px' }" role="presentation">
-                                <div aria-labelledby="admin" class="ulClass w-100" role="presentation">
-                                    <a (click)="details()" class="menu element" role="presentation"
-                                        ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> person_text </span>Детайли</div></a
-                                    >
-                                    <a (click)="updatePassword()" class="menu element" role="presentation"
-                                        ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> password </span>{{ labels.UPDATEPASSWORD }}</div></a
-                                    >
-                                    <a (click)="logout()" class="menu element" role="none"
-                                        ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> exit_to_app </span>Изход</div></a
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </mat-nav-list>
-        </mat-sidenav>
+                    </div>
+                }
+            </div>
+        </mat-nav-list>
+    </mat-sidenav>
     <mat-sidenav-content>
         <div [ngClass]="{ 'main-class': true }" class="main-style">
             <div class="main">

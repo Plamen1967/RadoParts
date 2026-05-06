@@ -11,6 +11,35 @@
     }
 }
 
+.layout {
+    border-radius: 8px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.label {
+    font-size: 0.8rem;
+    color: black;
+    width: 100%;
+    margin: 4px 0px;
+    background-color: rgb(133 184 236 / 20%);
+    color: black;
+}
+
+.add-data {
+    background-color: transparent;
+    color: black;
+}
+
+
+.my-ads {
+    background-color: transparent;
+    color: black;
+}
+
+.user-details {
+    background-color: transparent;
+    color: black;
+}
 .main-style {
     display: flex;
     flex-direction: column;
@@ -34,6 +63,7 @@
     height: 28px;
     width: 28px;
     padding: 0px;
+    border: none;
 }
 a {
     text-decoration: none;
@@ -54,6 +84,14 @@ a:focus {
     width: 100%;
 }
 
+mat-nav-list > div
+{
+    margin-top: 32px;
+}
+
+mat-nav-list {
+    position: relative;;
+}
 .menu-container {
     display: flex;
     flex-direction: column;
@@ -70,12 +108,6 @@ a:focus {
     color: black;
 }
 
-.label {
-    font-size: 0.8rem;
-    color:black;
-    width: 100%;
-    margin: 4px 0px;
-}
 .menu-container a {
     text-decoration: none;
     width: 100%;
@@ -127,9 +159,10 @@ mat-sidenav {
     justify-content: space-between;
     cursor: pointer;
     border: none;
+    color:black;
 }
 .element:focus {
-    outline: none
+    outline: none;
 }
 
 .faviorite {

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Input } from '@angular/core'
+import { Component, DestroyRef, inject, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DisplayPartView } from '@model/displayPartView'
@@ -64,15 +64,16 @@ export class UserCardComponent extends HelperComponent {
     region?: string
     sellerName?: string
     sellerWebPage?: string
+    private staticService: StaticSelectionService = inject(StaticSelectionService)
+        private router: Router = inject(Router)
+        private homeService: HomeService = inject (HomeService)
+        public loadingService: LoadingService = inject(LoadingService)
+        public searchPartService: SearchPartService = inject(SearchPartService)
+        public confirmationService: ConfirmServiceService = inject(ConfirmServiceService)
+        public userService: UserService = inject(UserService)
+        private destroyRef: DestroyRef = inject(DestroyRef)
+
     constructor(
-        private staticService: StaticSelectionService,
-        private router: Router,
-        private homeService: HomeService,
-        public loadingService: LoadingService,
-        public searchPartService: SearchPartService,
-        public confirmationService: ConfirmServiceService,
-        public userService: UserService,
-        private destroyRef: DestroyRef
     ) {
         super()
     }

@@ -1,3 +1,4 @@
+//#region imports
 import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, Self } from '@angular/core'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { SelectComponent } from '../select-controls/select/select.component'
@@ -6,13 +7,16 @@ import { ErrorService } from '@services/error.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { HelperComponent } from '../helper/helper.component'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-
+//#endregion
+//#region services
 @Component({
     selector: 'app-year',
     templateUrl: './year.component.html',
     styleUrls: ['./year.component.css'],
     imports: [ReactiveFormsModule, SelectComponent]
 })
+//#endregion
+
 export class YearComponent extends HelperComponent implements ControlValueAccessor, AfterViewInit, OnInit {
     isDisabled = false
     yearForm: FormGroup

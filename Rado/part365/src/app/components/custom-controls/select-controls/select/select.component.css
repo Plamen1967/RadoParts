@@ -1,4 +1,5 @@
-@import "app/field-style.css";
+@import "@app/field-style.css";
+
 
 * {
     box-sizing: border-box;

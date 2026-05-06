@@ -116,14 +116,14 @@ namespace Rado.Datasets
             }
         }
 
-        static private int compare(Category x, Category y)
+        private static int compare(Category x, Category y)
         {
             if (x.categoryName.ToLower() == "други") return 1;
             if (y.categoryName.ToLower() == "други") return -1;
             return x.categoryName.CompareTo(y.categoryName);
         }
 
-        static public void Refresh()
+        public static void Refresh()
         {
             mut.WaitOne();
 
@@ -132,7 +132,7 @@ namespace Rado.Datasets
 
             mut.ReleaseMutex();
         }
-        static private CategoriesDbSet getInstance()
+        private static CategoriesDbSet getInstance()
         {
             if (categoriesInstance_?.isCashLoaded == true)
                 return categoriesInstance_;
@@ -153,7 +153,6 @@ namespace Rado.Datasets
             }
             catch (Exception e)
             {
-                categoriesInstance_.isCashLoaded = false;
                 categoriesInstance_ = null;
 
                 Console.WriteLine(e.Message);

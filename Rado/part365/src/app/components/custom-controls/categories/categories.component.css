@@ -33,7 +33,6 @@ a {
     text-align: left;
     float: left;
     clear: both;
-    width: 100%;
     background-color: rgb(107, 186, 235);
 }
 
@@ -49,7 +48,7 @@ img {
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
     font-weight: 500;
-    width: 300px;
+    width: 250px;
     cursor: pointer;
 }
 

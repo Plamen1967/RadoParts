@@ -13,7 +13,7 @@
                         <div class="brandFontMin" [ngStyle]="{ color: 'blue' }">Parts</div>
                         <div class="brandFontMin" [ngStyle]="{ color: 'green' }">365</div>
                     </div>
-                    <div></div>
+                    <div></div>p
                     <div
                         class="navbar-nav me-auto nav-item"
                         [ngStyle]="{ 'padding-left': '5px', 'margin-top': '5px', 'text-align': 'center', 'justify-content': 'center' }"
@@ -44,14 +44,17 @@
         <nav class="navbar navbar-expand-sm navbar-dark noPadding d-flex" #header>
             <div class="container showMenu menu" [ngStyle]="{ 'max-width': '100%', width: '100%', 'justify-content': 'center' }">
                 @if (isParts365) {
-                    <a class="navbar-brand menuItem brand brandFont">Parts365.bg</a>
+                    <a  [routerLink]="['/']" class="navbar-brand menuItem brand brandFont">
+                        <span class="material-symbols-outlined" style="font-size: 3rem; align-items: baseline;">home</span>
+                        Parts365.bg</a>
                 } @else {
                     <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenu">
-                        <div class="menuColor container" [ngStyle]="{ height: '4em', 'text-align': 'center', 'justify-content': 'center' }">
+                        <a [routerLink]="['/']" class="menuColor container" [ngStyle]="{ height: '4em', 'text-align': 'center', 'justify-content': 'center' }">
                             <div class="brandFont" [ngStyle]="{ color: 'blue' }">
+                        <span class="material-symbols-outlined" style="font-size: 3rem;">home</span>
                                 {{ companyName }}
                             </div>
-                        </div>
+                        </a>
                     </nav>
                 }
                 <div class="navbar-collapse collapse menu-nav" [ngClass]="{ show: isExpanded }" id="navbarNavDropdown">
@@ -70,8 +73,9 @@
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                     routerLink="/data/addNew"
-                                    routerLinkActive="active-link">
+                                    routerLinkActive="active-link" style="height: 42px;">
                                     Добави обява
+
                                 </a>
                             </li>
                             <li>
