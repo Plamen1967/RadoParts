@@ -6,18 +6,18 @@ namespace Utility
     public class LoggerUtil
     {
         private static LoggerUtil instance = null;
-        static public object userLock = new object();
+        public static object userLock = new object();
 
 
         LoggerUtil()
         {
         }
-        static public void LogFunctionInfo(string info)
+        public static void LogFunctionInfo(string info)
         {
             LogInfo(info);
         }
 
-        static public void LogInfo(string info)
+        public static void LogInfo(string info)
         {
             lock (userLock)
             {
@@ -32,7 +32,7 @@ namespace Utility
                 }
             }
         }
-        static public void Warning(string warning)
+        public static void Warning(string warning)
         {
             lock (userLock)
             {
@@ -48,7 +48,7 @@ namespace Utility
                 }
             }
         }
-        static public void Log(Exception exception)
+        public static void Log(Exception exception)
         {
             lock (userLock)
             {
@@ -73,7 +73,7 @@ namespace Utility
 
             return instance;
         }
-        public async static Task Log(string message, int tickCount = 0)
+        public static async Task Log(string message, int tickCount = 0)
         {
             try
             {

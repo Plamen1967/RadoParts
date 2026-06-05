@@ -2,14 +2,14 @@
 {
     public static class ProgramSettings
     {
-        static public string? ImageFolder { get; set; }
-        static public int MaxPictures { get; set; }
-        static public string? ConnectionString { get; set; }
-        static public string Api { get; set; }
-        static public string? LogFolder { get; set; }
-        static public bool DevelopmentMode { get; set; }
-        static public string? PictureHref { get; set; }
-        static public string? WebRootFolder { get; set; }
-        static public long MaxSize { get; set; }
+        public static string? ImageFolder { get; set; }
+        public static int MaxPictures { get; set; }
+        public static string? ConnectionString { get; set; }
+        public static string Api { get; set; }
+        public static string? LogFolder { get; set; }
+        public static bool DevelopmentMode { get; set; }
+        public static string? PictureHref { get; set; }
+        public static string? WebRootFolder { get; set; }
+        public static long MaxSize { get; set; }
     }
 }

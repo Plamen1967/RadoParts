@@ -5,7 +5,7 @@
                 <li #menu role="none" (mouseover)="clearDisplay()" (focus)="focus()" (dblclick)="onCategoryClick($event, dropdown.id!)" (click)="onCategoryClick($event, dropdown.id!)">
                     <div class="parent menu">
                         <a>
-                            <img src="../../../{{ dropdown.imageName }}" alt="{{ dropdown.imageName }}" />
+                            <img src="../../../{{ dropdown.imageName }}" alt="{{ dropdown.imageName }}" class="category-image"/>
                             {{ dropdown.name }}
                         </a>
                         <div class="category-number-style menu">{{ dropdown.count }}</div>

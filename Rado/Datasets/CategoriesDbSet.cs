@@ -11,22 +11,23 @@ namespace Rado.Datasets
 {
     public class CategoriesDbSet
     {
-        private static Mutex mut = new Mutex();
-        private List<Category> categories = new List<Category>();
-        static private CategoriesDbSet categoriesInstance_ = null;
-        bool isCashLoaded = false;
+        private static readonly Mutex _mutex = new Mutex();
+        private readonly List<Category> _categories = new List<Category>();
+        private static CategoriesDbSet _categoriesInstance = null;
+        private bool _isCashLoaded;
+
         private CategoriesDbSet()
         {
         }
 
-        static public async Task<Category[]> GetCategoriesAsync()
+        public static async Task<Category[]> GetCategoriesAsync()
         {
             Category[] categories = null;
             await Task.Run(() =>
             {
                 try
                 {
-                    categories = getInstance().categories.ToArray();
+                    categories = GetInstance()._categories.ToArray();
                 }
                 catch (Exception exception)
                 {
@@ -36,49 +37,77 @@ namespace Rado.Datasets
 
             return categories;
         }
-        static public Category[] GetCategories()
+        public static Category[] GetCategories()
         {
             Category[] categories = null;
             try
             {
-                categories = getInstance().categories.ToArray();
+                categories = GetInstance()._categories.ToArray();
             }
             catch (Exception exception)
             {
               LoggerUtil.LogException(exception.Message);
             }
 
-      return categories;
+            return categories;
         }
 
-        static public async Task<Category> GetCategoryByIdAsync(int categoryId)
+        public static async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
             Category category = null;
             await Task.Run(() =>
             {
-                category = getInstance().categories.Find(x => x.categoryId == categoryId);
+                category = GetInstance()._categories.Find(x => x.categoryId == categoryId);
             });
 
             return category;
         }
 
-        static public Category GetCategoryById(int categoryId)
+        public static Category GetCategoryById(int categoryId)
         {
-            Category category = getInstance().categories.Find(x => x.categoryId == categoryId);
+            Category category = GetInstance()._categories.Find(x => x.categoryId == categoryId);
 
             return category;
         }
 
-        static public string GetCategoryNameById(int categoryId)
+        public static string GetCategoryNameById(int categoryId)
         {
-            Category category = getInstance().categories.Find(x => x.categoryId == categoryId);
+            Category category = GetInstance()._categories.Find(x => x.categoryId == categoryId);
 
             return category.categoryName;
         }
 
-
-        void loadCash()
+        private void updateOnceOff()
         {
+            string sqlCommandText = $@"
+            update Categories SET CategoryName = 'МОТОРЧЕТА, МАШИНКИ И МЕХАН.' where categoryid = 12
+            update Categories SET CategoryName = 'ОХЛАДИТЕЛНА И КЛИМАТИЧНА С-МА' where categoryid = 14
+            update Categories SET CategoryName = 'АУДИО, ВИДЕО, НАВИГАЦИИ и ДР.' where categoryid = 1";
+
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+                {
+                    using (SqlCommand sqlCommand = new SqlCommand(sqlCommandText, sqlConnection))
+                    {
+                        sqlConnection.Open();
+
+                        sqlCommand.CommandType = CommandType.Text;
+
+                        sqlCommand.ExecuteNonQuery();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerUtil.LogException(ex);
+            }
+        }
+
+        private void LoadCash()
+        {
+            updateOnceOff();
             try
             {
                 using(SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
@@ -93,11 +122,11 @@ namespace Rado.Datasets
                         {
                             while(sqlDataReader.Read())
                             {
-                                categories.Add(new Category()
+                                _categories.Add(new Category()
                                 {
                                     categoryId = Convert.ToInt32(sqlDataReader["categoryId"]),
-                                    categoryName = Convert.ToString(sqlDataReader["categoryName"]),
-                                    imageName = Convert.ToString(sqlDataReader["imageName"])
+                                    categoryName = Convert.ToString(sqlDataReader["categoryName"]) ?? "",
+                                    imageName = Convert.ToString(sqlDataReader["imageName"]) ?? ""
                                 });
                             }
                         }
@@ -105,7 +134,7 @@ namespace Rado.Datasets
                     }
                 }
 
-                categories.Sort(compare);
+                _categories.Sort(Compare);
             }
             catch (Exception e)
             {
@@ -116,51 +145,52 @@ namespace Rado.Datasets
             }
         }
 
-        private static int compare(Category x, Category y)
+        private static int Compare(Category x, Category y)
         {
             if (x.categoryName.ToLower() == "други") return 1;
             if (y.categoryName.ToLower() == "други") return -1;
-            return x.categoryName.CompareTo(y.categoryName);
+            return String.Compare(x.categoryName, y.categoryName, StringComparison.Ordinal);
         }
 
         public static void Refresh()
         {
-            mut.WaitOne();
+            _mutex.WaitOne();
 
-            if (categoriesInstance_ != null)
-                categoriesInstance_.isCashLoaded = false;
+            if (_categoriesInstance != null)
+                _categoriesInstance._isCashLoaded = false;
 
-            mut.ReleaseMutex();
+            _mutex.ReleaseMutex();
         }
-        private static CategoriesDbSet getInstance()
+
+        private static CategoriesDbSet GetInstance()
         {
-            if (categoriesInstance_?.isCashLoaded == true)
-                return categoriesInstance_;
+            if (_categoriesInstance?._isCashLoaded == true)
+                return _categoriesInstance;
 
-            mut.WaitOne();
+            _mutex.WaitOne();
 
-            if (categoriesInstance_?.isCashLoaded == true)
+            if (_categoriesInstance?._isCashLoaded == true)
             {
-                mut.ReleaseMutex();
-                return categoriesInstance_;
+                _mutex.ReleaseMutex();
+                return _categoriesInstance;
             }
 
             try
             {
-                categoriesInstance_ = new CategoriesDbSet();
-                categoriesInstance_.loadCash();
-                categoriesInstance_.isCashLoaded = true;
+                _categoriesInstance = new CategoriesDbSet();
+                _categoriesInstance.LoadCash();
+                _categoriesInstance._isCashLoaded = true;
             }
             catch (Exception e)
             {
-                categoriesInstance_ = null;
+                _categoriesInstance = null;
 
                 Console.WriteLine(e.Message);
             }
 
-            mut.ReleaseMutex();
+            _mutex.ReleaseMutex();
 
-            return categoriesInstance_;
+            return _categoriesInstance;
         }
     }
 }

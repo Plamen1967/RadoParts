@@ -166,41 +166,29 @@
     >
       <div class="item-title w-100 text-center">
         <a
-          href="https://radoparts.com/viewPart?id=1734559057451"
+          href="{{API}}\viewPart?id={{ViewID}}"
           target="_blank"
           class="item-title-link"
         >
-          Колa на части - Audi 100 (43) 1.9 (100 Hp)</a
+          {{Description}}</a
         >
       </div>
       <div class="item-content">
         <div class="item-image">
           <img
-            src="https://radoparts.com/photos/1734559057451/min/393.jpeg"
+            src="{{Image}}"
             alt="Item Image"
             class="img-thumbnail"
           />
-          <div class="image-number">2 Снимки</div>
+          <div class="image-number">{{NumberPhotos}} Снимки</div>
         </div>
         <div class="item-tags">
-          <div class="tag">
-            <div>Цена</div>
-            <div>100 лв.</div>
-          </div>
-          <div class="tag">
-            <div>Регион</div>
-            <div>Варна.</div>
-          </div>
-          <div class="tag">
-            <div>Публикувана</div>
-            <div>10/12/2025</div>
-          </div>
+            {{Tags}}
         </div>
         <div style="align-items: start; min-height: 100%">
-          <div class="item-dealer">Радо Партс</div>
+          <div class="item-dealer">{{Dealer}}</div>
         </div>
       </div>
     </div>
   </body>
-  <script src="js/item.js"></script>
 </html>

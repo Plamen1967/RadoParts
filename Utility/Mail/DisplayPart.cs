@@ -2,12 +2,12 @@ using System;
 
 public class DisplayPartMessageOld
 {
-		static public string GenerateMessage(string imageData, string description)
+		public static string GenerateMessage(string imageData, string description)
 		{
 			return Message(imageData);
 		}
 
-		static public string Message(string src)
+		public static string Message(string src)
 		{
 //		string style = @"<style> .rounded {
 //							border-radius: .25rem!important;

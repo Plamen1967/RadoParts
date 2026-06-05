@@ -265,7 +265,7 @@ namespace Utility
 
             return imageBytes;
         }
-        public async static Task<int> StoreInDB(int userId, string objectId, byte[] imageData, string fullPath, int originalImageId)
+        public static async Task<int> StoreInDB(int userId, string objectId, byte[] imageData, string fullPath, int originalImageId)
         {
             string storeProcedureName = "ImageDataIns";
 
@@ -404,7 +404,7 @@ namespace Utility
                 LoggerUtil.LogException(exception);
             }
         }
-        static async public Task<ImageData[]> GetImagesAsync(long objectId)
+        public static async Task<ImageData[]> GetImagesAsync(long objectId)
         {
             List<ImageData> imageDataList = new List<ImageData>();
             string storeProcedureName = $"SELECT  * FROM ImageData  WHERE objectId = {@objectId} and imageType <> 2 AND deleted = 0";
@@ -503,7 +503,7 @@ namespace Utility
             }
 
         }
-        static async private Task<ImageData> getMainImage(long objectId)
+        private static async Task<ImageData> getMainImage(long objectId)
         {
             ImageData imageDataItem = null;
             string storeProcedureName = "ImageDataMainImage";
@@ -550,7 +550,7 @@ namespace Utility
         }
 
         #region Get Count of Images for Id
-        static async public Task<int> GetNumberImages(long objectId)
+        public static async Task<int> GetNumberImages(long objectId)
         {
             string storeProcedureName = "ImageDataCount";
 
@@ -595,7 +595,7 @@ namespace Utility
         #endregion
 
         #region Get First Image for part / car if it is not stored
-        static public ImageData GetMinImageById(long imageId)
+        public static ImageData GetMinImageById(long imageId)
         {
             ImageData mainImage = null;
             try
@@ -610,7 +610,7 @@ namespace Utility
 
             return mainImage;
         }
-        static async public Task<ImageData> GetMainImageAsync(long id)
+        public static async Task<ImageData> GetMainImageAsync(long id)
         {
             ImageData mainImage = null;
             try
@@ -628,7 +628,7 @@ namespace Utility
         }
         #endregion
 
-        static public ImageData GetImageById(long imageId)
+        public static ImageData GetImageById(long imageId)
         {
             ImageData imageData = null;
             string storeProcedureName = "ImageDataById";
@@ -722,7 +722,7 @@ namespace Utility
             }
         }
 
-        static public string DeleteBusinessCard(long userId)
+        public static string DeleteBusinessCard(long userId)
         {
             ImageData imageDataItem = new ImageData();
             string storeProcedureName = "BusinessCardDel";
@@ -759,7 +759,7 @@ namespace Utility
 
         }
 
-        static public ImageData GetBusinessCard(int userId)
+        public static ImageData GetBusinessCard(int userId)
         {
             ImageData imageDataReturn = null;
 
@@ -832,7 +832,7 @@ namespace Utility
         #endregion
 
         #region Get Main Images for array of ids
-        static public async Task<IEnumerable<ImageData>> GetMainImages(long[] ids)
+        public static async Task<IEnumerable<ImageData>> GetMainImages(long[] ids)
         {
             List<ImageData> images = new List<ImageData>();
             foreach (long id in ids)
@@ -897,7 +897,7 @@ namespace Utility
 
         #region Resize Image
 
-        static private string getMainImageFromDb(long id)
+        private static string getMainImageFromDb(long id)
         {
             string mainPicture = "";
             int startTime = Environment.TickCount;
@@ -995,7 +995,7 @@ namespace Utility
         //    return image;
         //}
 
-        static async public Task<ImageData[]> GetMinImagesAsync(long id)
+        public static async Task<ImageData[]> GetMinImagesAsync(long id)
         {
             try
             {
@@ -1438,7 +1438,7 @@ namespace Utility
 
         #endregion
 
-        static private string GetmainPictureStr(long objectId)
+        private static string GetmainPictureStr(long objectId)
         {
             ImageData imageDataItem = new ImageData();
             string storeProcedureName = "GetMainImageAsync";
@@ -1476,7 +1476,7 @@ namespace Utility
 
         }
 
-        static public int GetUserId(long id)
+        public static int GetUserId(long id)
         {
             int userId = 0;
             string storeProcedureName = "GetUserId";
@@ -1516,7 +1516,7 @@ namespace Utility
         #region Converter
 
 
-        static public void Converter()
+        public static void Converter()
         {
             return;
         }

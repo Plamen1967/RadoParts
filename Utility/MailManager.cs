@@ -6,15 +6,15 @@ using System.Net.Mail;
 
 namespace Utility
 {
-    static public class MailManager
+    public static class MailManager
     {
-        static public string host = "smtp.ionos.co.uk";
-        static public string hostEmail = "info@parts365.bg";
-        static public MailAddress addressFrom = new MailAddress(hostEmail, "Message from radoparts.com", System.Text.Encoding.UTF8);
-        static public string emailPassword = "Email_2020";
-        static private int Port = 587;
-        static public bool SendEmails = false;
-        static public string TemplateFolder = String.Empty;
+        public static string host = "smtp.ionos.co.uk";
+        public static string hostEmail = "info@parts365.bg";
+        public static MailAddress addressFrom = new MailAddress(hostEmail, "Message from radoparts.com", System.Text.Encoding.UTF8);
+        public static string emailPassword = "Email_2020";
+        private static int Port = 587;
+        public static bool SendEmails = false;
+        public static string TemplateFolder = String.Empty;
 
         public static void NewUserEmail(string email, string subject, string body)
         {
@@ -152,6 +152,11 @@ namespace Utility
                         LoggerUtil.LogInfo(subject);
                         LoggerUtil.LogInfo(bodyText);
 
+                        SmtpClient fileclient = new SmtpClient("mysmtphost");
+
+                        fileclient.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+                        fileclient.PickupDirectoryLocation = @"d:\messagefolder";
+                        fileclient.Send(message);
                         client.Send(message);
                     }
                 }

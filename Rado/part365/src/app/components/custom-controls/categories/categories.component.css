@@ -7,6 +7,12 @@
     margin: 0px;
 }
 
+.category-image {
+    height: 30px;
+    width: 30px;
+    margin-right: 2px;
+    object-fit: contain;
+}
 .vertical-nav li:hover {
     background-color: #EC449B!important;
 }

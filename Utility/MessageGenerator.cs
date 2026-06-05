@@ -159,7 +159,7 @@ namespace Utility
 
         private Tuple<string, string> getHREF()
         {
-            return new Tuple<string, string>($@"http://www.radoparts.com/viewPart?id={displayPartView_.id}", 
+            return new Tuple<string, string>($@"Program.api/viewPart?id={displayPartView_.id}", 
                                                 $@"{displayPartView_.descriptionModel}");
         }
         private string getMainImage()
@@ -188,9 +188,33 @@ namespace Utility
                                 </div>";
             return details;
         }
+
+        private string generateTags(Dictionary<string, string> Tags)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var tag in Tags)
+            {
+                string s = $@"
+                <div class='tag'>
+                    <div>{tag.Key}</div>
+                    <div>{tag.Value}</div>
+                </div>";
+
+                stringBuilder.Append(s);
+            }
+
+            return stringBuilder.ToString();
+        }
         private string generateBody()
         {
-            string body = $@"<body style='{Body}'>
+            using (StreamReader sr = new StreamReader(@"templates\item.html"))
+            {
+                string s = sr.ReadToEnd();
+                return s;
+            }
+
+
+string body = $@"<body style='{Body}'>
                             <div style='{Container}'>
                             {getDetails()}
                             </div>
@@ -204,8 +228,17 @@ namespace Utility
             displayPartView_ = displayPartView;
             string message;
             string bodyMessage = generateBody();
+            string tags = generateTags(displayPartView.Tags);
+            bodyMessage = bodyMessage.Replace("{{API}}", "http:\\localhost:4200");
+            bodyMessage = bodyMessage.Replace("{{ViewID}}", displayPartView.id.ToString());
+            bodyMessage = bodyMessage.Replace("{{Description}}", displayPartView.descriptionModel);
+            bodyMessage = bodyMessage.Replace("{{Image}}", displayPartView.mainPicture);
+            bodyMessage = bodyMessage.Replace("{{NumberPhotos}}", displayPartView.numberImages.ToString());
+            bodyMessage = bodyMessage.Replace("{{Dealer}}", displayPartView.sellerName);
+            bodyMessage = bodyMessage.Replace("{{Tags}}", tags);
+
             emailMessage_ = emailMessage;
-            message = $"<html>{Head}{bodyMessage}<html>";
+            message = $"{bodyMessage}";
             return message;
         }
     }
