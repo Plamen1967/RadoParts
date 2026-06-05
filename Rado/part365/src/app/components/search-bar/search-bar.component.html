@@ -2,7 +2,7 @@
     <div class="d-inline-flex justify-content-between mt-1 mb-1 pt-3 pb-3">
         <div class="d-inline-flex">
             <app-searchbutton class="me-1" (click)="submit()"></app-searchbutton>
-            <app-clearbutton (click)="clearFilter()"></app-clearbutton>
+            <app-clearbutton (clickButton)="clearFilter()"></app-clearbutton>
         </div>
     </div>
     <form [formGroup]="sortForm">

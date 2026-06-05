@@ -27,14 +27,23 @@ lib-ngx-image-zoom img {
     --bs-breakpoint-lg: 992px;
     --bs-breakpoint-xl: 1200px;
     --bs-breakpoint-xxl: 1400px;
-    --search-button-color: #f0fff0;
-    --search-button-background-color: #2a52be;
     --back-button-color: #f0fff0;
     --back-button-background-color: #ffffff;
     --cancel-button-color: white;
     --cancel-button-bgcolor: #ff0000;
-    --clear-button-color: #2a52be;
-    --clear-button-bgcolor: whitesmoke;
+
+    --search-button-color: #f0fff0;
+    --search-button-bgcolor: #2a52be;
+
+    --search-button-color-hover: white;
+    --search-button-bgcolor-hover: rgb(9, 175, 231);
+
+    --clear-button-color: black;
+    --clear-button-bgcolor: lightgray;
+
+    --clear-button-color-hover: black;
+    --clear-button-bgcolor-hover: white;
+
     --ok-button-color: #f0fff0;
     --ok-button-bgcolor: #2a52be;
     --active-borderbottom: red;
@@ -268,4 +277,8 @@ body {
 
 .min140px {
     min-width: 140px;
+}
+
+.dropdown-item {
+    margin-left: 10px;
 }

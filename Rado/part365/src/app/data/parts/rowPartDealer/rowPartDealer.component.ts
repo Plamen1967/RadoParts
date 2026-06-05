@@ -127,7 +127,7 @@ export class RowPartDealerComponent extends HelperComponent {
         if (this.partView_.gearboxType) this.lines.push({ label: this.labels.TYPE_GEARBOX, value: this.gearboxDesc, price: false })
         if (this.positionDesc) this.lines.push({ label: this.labels.POSITION, value: this.positionDesc, price: false })
         if (this.partView_.millage) this.lines.push({ label: this.labels.MILLAGE, value: this.partView_.millage, price: false })
-        if (this.partView_.categoryName) this.lines.push({ label: this.labels.CATEGORY, value: this.partView_.categoryName, price: false })
+        if (this.partView_.dealerSubCategoryName) this.lines.push({ label: this.labels.DEALERSUBCATEGORY, value: this.partView_.dealerSubCategoryName, price: false })
         if (this.partView_.regionId) this.lines.push({ label: this.labels.REGION, value: this.region, price: false })
         if (this.partView_.price) this.lines.push({ label: this.labels.PRICE, value: this.partView_.price, price: true })
     }

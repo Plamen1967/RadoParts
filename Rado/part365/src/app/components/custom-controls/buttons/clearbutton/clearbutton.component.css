@@ -1,6 +1,13 @@
 .clear-button {
     background-color: var(--clear-button-bgcolor);
     color: var(--clear-button-color);
+    border: 1px solid var(--clear-button-color);
+    border-radius: 4px;
+}
+
+.clear-button:hover {
+    background-color: var( --clear-button-bgcolor-hover);
+    color: var(--clear-button-color-hover);
 }
 
 .buttonSize {

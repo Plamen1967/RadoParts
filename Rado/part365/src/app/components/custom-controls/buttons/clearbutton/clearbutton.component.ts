@@ -1,24 +1,26 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { HelperComponent } from '@components/helper.old/helper.component';
 
 @Component({
+    standalone: true,
     selector: 'app-clearbutton',
     templateUrl: './clearbutton.component.html',
     styleUrls: ['./clearbutton.component.css'],
     imports: []
 })
-export class ClearbuttonComponent extends HelperComponent implements OnInit {
+export class ClearbuttonComponent extends HelperComponent  {
 
-  @Output() click: EventEmitter<void> = new EventEmitter(); 
+  @Output() clickButton: EventEmitter<void> = new EventEmitter<void>(); 
 
-  constructor() { super() }
-
-  ngOnInit() {
+  constructor() { 
+    super() 
   }
+
+  
 
   generateEvent(event:Event) {
     event.stopPropagation();
-    this.click.emit();
+    this.clickButton.emit();
   }
 
 }

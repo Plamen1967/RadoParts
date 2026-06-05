@@ -139,8 +139,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     private loggerService: LoggerService
     private userCountService: UserCountService
 
-        constructor(
-    ) {
+    constructor() {
         super()
 
         this.formBuilder = inject(FormBuilder)
@@ -149,7 +148,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.nextIdService = inject(NextIdService)
         this.carService = inject(CarService)
         this.scroller = inject(ViewportScroller)
-        this.confirmService = inject(ConfirmServiceService) 
+        this.confirmService = inject(ConfirmServiceService)
         this.alertService = inject(AlertService)
         this.popupService = inject(PopUpService)
         this.router = inject(Router)
@@ -507,9 +506,13 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         if (this.carService.currentCarId) {
             const index = this.allCars.findIndex((item) => item.carId === this.carService.currentCarId)
             const page = Math.floor(index / 10) + 1
-            this.currentPage = this.numberPages = page
-            this.currentCarId = this.carService.currentCarId
-            this.carService.currentCarId = undefined
+            if (index != -1) {
+                this.currentPage = this.numberPages = page
+                this.currentCarId = this.carService.currentCarId
+            } else {
+                this.carService.currentCarId = undefined
+                this.currentPage = 1
+            }
         } else {
             this.currentPage = 1
         }

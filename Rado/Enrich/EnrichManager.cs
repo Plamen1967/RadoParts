@@ -258,10 +258,15 @@ namespace Rado.Enrich
                 LoggerUtil.LogFunctionInfo("Load Image Part");
                 var result = ModelsDbSet.GetModelByIdAsync(partView.modelId.Value);
                 model = result.Result;
-                partView.modelName = model.modelName;
-                partView.companyId = model.companyId;
                 if (model != null)
+                {
+                    partView.companyId = model.companyId;
                     partView.companyName = CompaniesDbSet.getCompanyById(model.companyId)?.companyName;
+                }
+                else
+                {
+                    LoggerUtil.Warning($"Part Id {partView.partId} has no model");
+                }
                 LoggerUtil.LogFunctionInfo("End Image Part");
             }
             catch (Exception e)

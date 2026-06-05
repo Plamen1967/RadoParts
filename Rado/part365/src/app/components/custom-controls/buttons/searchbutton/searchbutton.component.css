@@ -1,6 +1,12 @@
 .search-button {
-    background-color: var(--search-button-background-color);
+    background-color: var(--search-button-bgcolor);
     color: var(--search-button-color);
+    border: 1px solid var(--search-button-bgcolor);
+}
+
+.search-button:hover {
+    background-color: var(--search-button-bgcolor-hover);
+    color: var(--search-button-color-hover);
 }
 
 .buttonSize {
