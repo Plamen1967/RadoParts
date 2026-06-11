@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, DOCUMENT, inject } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, DOCUMENT, inject, DestroyRef } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { AsyncPipe, ViewportScroller } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -139,6 +139,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     private modalService: ModalService
     private loggerService: LoggerService
     private userCountService: UserCountService
+    private destroyRef = inject(DestroyRef);
 
     constructor() {
         super()
@@ -199,7 +200,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             const itemType: ItemType = this.addCarFlag ? ItemType.OnlyCar : this.addBusFlag ? ItemType.OnlyBus : this.bus ? ItemType.BusPart : ItemType.CarPart
             if (this.addCarFlag || this.addPartFlag || this.addBusFlag) {
                 this.nextIdService.getNextId(itemType)
-                    .pipe(takeUntilDestroyed())
+                    .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe({
                         next: (nextId) => {
                             if (nextId.error) {
@@ -237,7 +238,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
             this.carService
                 .fetchCarNameId(this.bus)
-                .pipe(takeUntilDestroyed())
+                .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((res) => {
                     this.carsList = res.map((item) => {
                         return { value: item.carId, text: item.regNumber }
@@ -429,7 +430,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     setAutoSearch() {
         this._autoSearch$
             .pipe(
-                takeUntilDestroyed(),
+                takeUntilDestroyed(this.destroyRef),
                 debounceTime(this._debounce),
                 distinctUntilChanged(),
                 switchMap((Filter) => {
@@ -478,7 +479,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     loadCar(id: number) {
         this.carService.fetchCar(id)
-            .pipe(takeUntilDestroyed())
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((car) => {
                 this.refreshCar(car)
                 })
