@@ -1,4 +1,4 @@
-import { Component, Inject} from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
 import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
@@ -11,11 +11,13 @@ import { LoadinData } from '@model/loadinData';
     styleUrls: ['./loading-dialog.component.css']
 })
 export class LoadingDialogComponent {
-  message = "Зареждане на данните";
+  message = "Зареждане на обявите";
   title = "Зареждане"
+  data: LoadinData
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: LoadinData) {
-    this.title = data.title;
-    this.message = data.message
+  constructor( ) {
+    this.data = inject(MAT_DIALOG_DATA)
+    this.title = this.data.title;
+    this.message = this.data.message
   }
 }

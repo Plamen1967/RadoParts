@@ -48,12 +48,15 @@ export class TooltipDirective implements OnDestroy {
         this.myPopup.id = 'tooltip'
         this.popup.innerHTML = this.appToolTip
         this.popup.classList.add('tooltip-container')
+        this.popup.style.width = 'auto'
         this.el.nativeElement.style.position = 'relative'
+        this.el.nativeElement.style.display = 'inline-block'
+        this.el.nativeElement.style.minWidth = '200px'
         this.tooltip = this.el.nativeElement.appendChild(this.popup)
         this.timer = setTimeout(() => {
             this.el.nativeElement?.removeChild(this.tooltip)
             this.tooltip = undefined
-        }, 5000)
+        }, 1000)
     }
 }
 

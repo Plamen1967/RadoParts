@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Settings;
 using System.ComponentModel;
+using System.Globalization;
 using System.Net;
 using System.Net.Mail;
 
@@ -143,7 +144,7 @@ namespace Utility
                         message.Subject = subject;
                         message.SubjectEncoding = System.Text.Encoding.UTF8;
 
-                        LoggerUtil.LogInfo(DateTime.Now.ToString());
+                        LoggerUtil.LogInfo(DateTime.Now.ToString(CultureInfo.InvariantCulture));
                         LoggerUtil.LogFunctionInfo("ToBeSendMessage");
                         LoggerUtil.LogInfo(host);
                         LoggerUtil.LogInfo(hostEmail);

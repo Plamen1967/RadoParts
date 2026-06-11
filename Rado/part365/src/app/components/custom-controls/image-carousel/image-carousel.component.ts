@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterContentInit, ChangeDetectionStrategy, Component, Input } from '@angular/core'
+import { AfterContentInit, ChangeDetectionStrategy, Component, inject, Input } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { ZoomComponent } from '../zoom/zoom/zoom.component'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
@@ -12,7 +12,10 @@ import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model
     imports: [NgClass, NgStyle]
 })
 export class ImageCarouselComponent implements AfterContentInit {
-    constructor(private matDialog: MatDialog) {}
+    private matDialog: MatDialog;
+    constructor() {
+        this.matDialog = inject(MatDialog);
+    }
     ngAfterContentInit(): void {
         setTimeout(() => {
             document.getElementById('next')?.click()

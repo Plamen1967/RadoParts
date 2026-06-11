@@ -38,6 +38,7 @@ import UpdateCarComponent from '../updateCar/updateCar.component'
 import UpdatePartComponent from '@app/data/parts/updatepart/updatepart.component'
 import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 //#endregion
 //#region component
 @Component({
@@ -174,7 +175,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         })
     }
     //#endregion
-
     ngOnDestroy(): void {
         this._destroy$.next(true)
     }
@@ -183,10 +183,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.search(this.listForm.value)
     }
 
-    highlighted(carId?: number): boolean {
-        console.log(`highlighted: ${this.currentCarId === carId} ${carId} ${this.currentCarId}`)
-        return this.currentCarId === carId
-    }
     ngOnInit() {
         this.bus = this.bus ?? 0
         this.loading = true
@@ -199,25 +195,18 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             goTop()
-            this.addCarFlag = params.get('addCar') ? true : false
-            this.addBusFlag = params.get('addBus') ? true : false
-            this.addPartFlag = params.get('addPart') ? true : false
-            this.updateCarFlag = params.get('updateCar') ? true : false
-            this.updateBusFlag = params.get('updateBus') ? true : false
-            this.updatePartFlag = params.get('updatePart') ? true : false
-            this.currentPartId = params.get('currentPartId') ? +params.get('currentPartId')! : undefined
-            this.title = this.bus ? 'Бусове' : 'Коли'
-            if (this.bus) this.itemType = ItemType.OnlyBus
-            else this.itemType = ItemType.OnlyCar
-            this.label = this.bus ? 'Избери бус' : 'Избери кола'
+            this.updateParamsFromQuery(params)
             const itemType: ItemType = this.addCarFlag ? ItemType.OnlyCar : this.addBusFlag ? ItemType.OnlyBus : this.bus ? ItemType.BusPart : ItemType.CarPart
             if (this.addCarFlag || this.addPartFlag || this.addBusFlag) {
-                this.nextIdService.getNextId(itemType).subscribe({
-                    next: (nextId) => {
-                        if (nextId.error) {
-                            this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
-                                this.back(this.currentCarId!)
-                            })
+                this.nextIdService.getNextId(itemType)
+                    .pipe(takeUntilDestroyed())
+                    .subscribe({
+                        next: (nextId) => {
+                            if (nextId.error) {
+                                this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
+                                    this.back(this.currentCarId!)
+                                    return
+                                })
                         } else {
                             this.id = nextId.nextId
                         }
@@ -246,12 +235,15 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
             if (this.carService.currentCarId) this.currentCarId = this.carService.currentCarId
 
-            this.carService.fetchCarNameId(this.bus).subscribe((res) => {
-                this.carsList = res.map((item) => {
-                    return { value: item.carId, text: item.regNumber }
+            this.carService
+                .fetchCarNameId(this.bus)
+                .pipe(takeUntilDestroyed())
+                .subscribe((res) => {
+                    this.carsList = res.map((item) => {
+                        return { value: item.carId, text: item.regNumber }
+                    })
+                    this.carsList.unshift({ value: 0, text: 'Всички' })
                 })
-                this.carsList.unshift({ value: 0, text: 'Всички' })
-            })
         })
     }
 
@@ -379,10 +371,26 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         })
     }
 
-    //#region rage management
+    //#region page management
     moveToPage(page: number) {
         this.currentPage = page
-        this.cars = this.getPageData()
+        this.cars = [...this.getPageData()]
+
+        goToPosition('top')
+    }
+
+    nextPage() {
+        if (this.currentPage + 1 > this.numberPages) return
+
+        this.currentPage++
+        this.cars = [...this.getPageData()]
+        goToPosition('top')
+    }
+    previousPage() {
+        if (this.currentPage - 1 === 0) return
+
+        this.currentPage--
+        this.cars = [...this.getPageData()]
         goToPosition('top')
     }
 
@@ -390,37 +398,19 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         return this.allCars.slice((this.currentPage - 1) * 10, this.currentPage * 10)
     }
 
-    nextPage() {
-        if (this.currentPage + 1 > this.numberPages) return
-
-        this.currentPage++
-        this.cars = this.getPageData()
-        goToPosition('top')
-    }
-    previousPage() {
-        if (this.currentPage - 1 === 0) return
-
-        this.currentPage--
-        this.cars = this.getPageData()
-        goToPosition('top')
-    }
-
     get pageMessage() {
         const message = `${this.currentPage} от ${this.numberPages}`
         return message
     }
 
-    getValue(userCount: UserCount) {
-        if (this.bus) return userCount.busCount
-
-        return userCount.carCount
-    }
-    focus() {
-        this.submitElement?.nativeElement.focus()
-    }
-
+    // #endregion
+    //#region actions
     addBus() {
         this.router.navigate(['/data/bus'], { queryParams: { addBus: true } })
+    }
+
+    addCar() {
+        this.router.navigate(['/data/cars'], { queryParams: { addCar: true } })
     }
 
     newPart(carId: number) {
@@ -429,26 +419,23 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         else this.router.navigate(['/data/cars'], { queryParams: { addPart: true, carId: carId } })
     }
 
-    addCar() {
-        this.router.navigate(['/data/cars'], { queryParams: { addCar: true } })
-    }
-
-    //#endregion
     savedPart(pratId: number) {
         console.log(`Part id : ${pratId}`)
         return
     }
+    //#endregion
 
+    // #region search
     setAutoSearch() {
         this._autoSearch$
             .pipe(
+                takeUntilDestroyed(),
                 debounceTime(this._debounce),
                 distinctUntilChanged(),
                 switchMap((Filter) => {
                     this.loading = true
                     this.cars = []
                     Filter.userId = this.userId
-                    console.log('Auto search with filter', Filter)
                     return this.carService.fetchCars(Filter).pipe(tap(() => (this.loading = true)))
                 }),
                 takeUntil(this._destroy$)
@@ -473,11 +460,28 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                 },
             })
     }
+    // #endregion
+
     //#region  save Car
+    highlighted(carId?: number): boolean {
+        return this.currentCarId === carId
+    }
+
+    getValue(userCount: UserCount) {
+        if (this.bus) return userCount.busCount
+
+        return userCount.carCount
+    }
+    focus() {
+        this.submitElement?.nativeElement.focus()
+    }
+
     loadCar(id: number) {
-        this.carService.fetchCar(id).subscribe((car) => {
-            this.refreshCar(car)
-        })
+        this.carService.fetchCar(id)
+            .pipe(takeUntilDestroyed())
+            .subscribe((car) => {
+                this.refreshCar(car)
+                })
     }
 
     refreshCar(car: CarView) {
@@ -502,22 +506,19 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.searched = true
         this.allCars = [...res]
         this.numberPages = Math.ceil(this.allCars.length / 10)
-        console.log('Current car id before update data', this.carService.currentCarId)
+        this.currentPage = 1
         if (this.carService.currentCarId) {
             const index = this.allCars.findIndex((item) => item.carId === this.carService.currentCarId)
-            const page = Math.floor(index / 10) + 1
             if (index != -1) {
+                const page = Math.floor(index / 10) + 1
                 this.currentPage = this.numberPages = page
                 this.currentCarId = this.carService.currentCarId
             } else {
                 this.carService.currentCarId = undefined
                 this.currentPage = 1
             }
-        } else {
-            this.currentPage = 1
         }
         this.cars = [...this.getPageData()]
-        console.log('Current car id after update data', this.currentCarId)
         if (this.currentCarId) goToPosition(this.currentCarId!.toString())
     }
 
@@ -532,4 +533,19 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.currentCarId = event
     }
     //#endregion
+    updateParamsFromQuery(params: ParamMap) {
+        this.addCarFlag = params.get('addCar') ? true : false
+        this.addBusFlag = params.get('addBus') ? true : false
+        this.addPartFlag = params.get('addPart') ? true : false
+        this.updateCarFlag = params.get('updateCar') ? true : false
+        this.updateBusFlag = params.get('updateBus') ? true : false
+        this.updatePartFlag = params.get('updatePart') ? true : false
+        this.currentPartId = params.get('currentPartId') ? +params.get('currentPartId')! : undefined
+
+        if (this.bus) this.itemType = ItemType.OnlyBus
+        else this.itemType = ItemType.OnlyCar
+
+        this.title = this.bus ? 'Бусове' : 'Коли'
+        this.label = this.bus ? 'Избери бус' : 'Избери кола'
+    }
 }

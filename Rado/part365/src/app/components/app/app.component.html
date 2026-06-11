@@ -47,8 +47,8 @@
                 }
                 @if (logged) {
                     <div class="dropdown linkClass my-ads layout menu-container" role="presentation">
-                        <div class="element label" >
-                            <span class="text text-body-small-pale">Моите обяви<i class="las la-newspaper iconSize" ></i></span>
+                        <div class="element label">
+                            <span class="text text-body-small-pale">Моите обяви<i class="las la-newspaper iconSize"></i></span>
                         </div>
                         <li id="myads" class="dropdown-content menu-container element w-100" [ngStyle]="{ 'min-width': '180px' }" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass w-100">
@@ -148,18 +148,19 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <div [ngClass]="{ 'main-class': true }" class="main-style">
-            <div class="main">
+            <header>
                 @if (!dealerWebaPage) {
                     <app-nav-menu style="display: block; width: 100%"></app-nav-menu>
                 }
-
-                <div class="componentPadding">
+            </header>
+            <main class="main d-flex justify-content-center">
+                <div class="componentPadding col-sm-12 col-md-10 col-lg-8 ">
                     <router-outlet (activate)="onActivate($event, outlet)" #outlet></router-outlet>
                 </div>
-            </div>
-            <div class="footer">
+            </main>
+            <footer class="footer">
                 <app-footer></app-footer>
-            </div>
+            </footer>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
