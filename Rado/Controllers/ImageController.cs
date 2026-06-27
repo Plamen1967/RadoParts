@@ -1,3 +1,4 @@
+#region assemblies
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utility;
 using Controller = Rado.Controllers.Admin.Controller;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+#endregion
 
 namespace Rado.Controllers
 {
@@ -18,15 +19,14 @@ namespace Rado.Controllers
     [EnableCors("testingApp")]
     public class ImageController : Controller
     {
-
         public ImageController(IWebHostEnvironment hostingEnvironment)
         {
         }
 
         #region Private Api
         [HttpPost]
-        [Route("UploadWebImage")]
         [Authorize]
+        [Route($"{nameof(UploadWebImage)}")]
         public async Task<ImageData> UploadWebImage([FromBody] WebCamImage webCamImage)
         {
             return await ImageManager.UploadWebImageAsync(UserId, webCamImage);
@@ -35,14 +35,14 @@ namespace Rado.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        [Route("deleteBusinessCardImage")]
+        [Route($"{nameof(DeleteBusinessCardImage)}")]
         [Authorize]
         public string DeleteBusinessCardImage()
         {
             return ImageManager.DeleteBusinessCard(UserId);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [Authorize]
@@ -60,26 +60,8 @@ namespace Rado.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(400)]
-        [Route("deleteMinImage")]
-        [Authorize]
-        public async Task<bool> deleteMinImage([FromBody] int imageId)
-        {
-            try
-            {
-                return await ImageManager.DeleteImageAsync(UserId, imageId); ;
-            }
-            catch (Exception exception)
-            {
-                LoggerUtil.LogException (exception);
-                return false;
-            }
-        }
-
-        [HttpPost]
         [DisableRequestSizeLimit]
-        [Route("Upload")]
+        [Route($"{nameof(Upload)}")]
         [Authorize]
         public async Task<ImageData[]> Upload()
         {
@@ -90,7 +72,7 @@ namespace Rado.Controllers
 
         #region Public Api
         [HttpGet]
-        [Route("GetBusinessCardImage")]
+        [Route($"{nameof(GetBusinessCardImage)}")]
         [AllowAnonymous]
         public ImageData GetBusinessCardImage([FromQuery] int id)
         {
@@ -98,7 +80,7 @@ namespace Rado.Controllers
         }
 
         [HttpPost]
-        [Route("VerifyCatcha")]
+        [Route($"{nameof(VerifyCatcha)}")]
         [AllowAnonymous]
         public bool VerifyCatcha([FromBody] CatchaItem catchaItem)
         {
@@ -106,15 +88,15 @@ namespace Rado.Controllers
         }
 
         [HttpGet]
-        [Route("GetMainImageAsync")]
+        [Route($"{nameof(GetMainImageAsync)}")]
         [AllowAnonymous]
-        public async Task<ImageData> GetMainImage([FromQuery] long id)
+        public async Task<ImageData> GetMainImageAsync([FromQuery] long id)
         {
             return await ImageManager.GetMainImageAsync(id);
         }
 
         [HttpGet]
-        [Route("GetImages")]
+        [Route($"{nameof(GetImages)}")]
         [AllowAnonymous]
         public async Task<IEnumerable<ImageData>> GetImages([FromQuery] long id)
         {
@@ -122,7 +104,7 @@ namespace Rado.Controllers
         }
 
         [HttpGet]
-        [Route("GetMinImages")]
+        [Route($"{nameof(GetMinImages)}")]
         [AllowAnonymous]
         public async Task<IEnumerable<ImageData>> GetMinImages([FromQuery] long id)
         {
@@ -131,7 +113,7 @@ namespace Rado.Controllers
 
 
         [HttpGet]
-        [Route("GetCatcha")]
+        [Route($"{nameof(GetCatcha)}")]
         [AllowAnonymous]
         public Catcha GetCatcha()
         {
@@ -139,14 +121,14 @@ namespace Rado.Controllers
         }
 
         [HttpGet]
-        [Route("GetImageCount")]
-        public async Task<int> GetNumberImages([FromQuery] long id)
+        [Route($"{nameof(GetImageCount)}")]
+        public async Task<int> GetImageCount([FromQuery] long id)
         {
-            return await ImageManager.GetNumberImages(id);
+            return await ImageManager.GetImageCount(id);
         }
 
         [HttpGet]
-        [Route("GetMainImages")]
+        [Route($"{nameof(GetMainImages)}")]
         [AllowAnonymous]
         public async Task<IEnumerable<ImageData>> GetMainImages([FromQuery] string ids)
         {
@@ -154,7 +136,10 @@ namespace Rado.Controllers
             IEnumerable<ImageData> images = null;
             try
             {
-                if (ids == null) return new List<ImageData>();
+                if (ids == null)
+                {
+                    return new List<ImageData>();
+                }
 
                 string[] result = ids.Split(',');
                 long[] ids2 = Array.ConvertAll(result, long.Parse);
@@ -162,7 +147,8 @@ namespace Rado.Controllers
                 int startTime = Environment.TickCount;
 
                 images = await ImageManager.GetMainImages(ids2);
-                await Task.Run(() => LoggerUtil.Log(string.Format("ImageController::GetMainImages: {0}", Environment.TickCount - startTime), Environment.TickCount));
+                await Task.Run(() => LoggerUtil.Log(
+                    $"ImageController::GetMainImages: {Environment.TickCount - startTime}", Environment.TickCount));
             }
             catch (Exception exception)
             {
@@ -175,8 +161,27 @@ namespace Rado.Controllers
     }
 }
 
-
 #region Commented
+
+//[HttpPost]
+//[ProducesResponseType(201)]
+//[ProducesResponseType(400)]
+//[Route("deleteMinImage")]
+//[Authorize]
+//public async Task<bool> deleteMinImage([FromBody] int imageId)
+//{
+//    try
+//    {
+//        return await ImageManager.DeleteImageAsync(UserId, imageId); ;
+//    }
+//    catch (Exception exception)
+//    {
+//        LoggerUtil.LogException(exception);
+//        return false;
+//    }
+//}
+
+
 //public async System.Threading.Tasks.Task<IActionResult> UploadAsync()
 //{
 //    try

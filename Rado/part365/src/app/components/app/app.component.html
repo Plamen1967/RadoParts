@@ -154,9 +154,15 @@
                 }
             </header>
             <main class="main d-flex justify-content-start">
-                <div class="componentPadding col-sm-12 col-md-10 col-lg-8 ">
-                    <router-outlet (activate)="onActivate($event, outlet)" #outlet></router-outlet>
-                </div>
+                <aside class="col-sm-0 col-md-0 col-lg-2 left-aside ">
+                </aside>
+                <article class="col-sm-12 col-md-10 col-lg-8 main-content">
+                    <div class="componentPadding">
+                        <router-outlet (activate)="onActivate($event, outlet)" #outlet></router-outlet>
+                    </div>
+                </article>`
+                <aside class="col-sm-0 col-md-2 col-lg-2 right-aside">
+                </aside>
             </main>
             <footer class="footer">
                 <app-footer></app-footer>

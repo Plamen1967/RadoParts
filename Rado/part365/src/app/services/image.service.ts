@@ -46,7 +46,7 @@ export class ImageService {
     }
 
     deleteBusinessCardImage(): Observable<string> {
-        return this.http.post(`${environment.restAPI}/image/deleteBusinessCardImage`, {}, { responseType: 'text' }).pipe(first())
+        return this.http.post(`${environment.restAPI}/image/DeleteBusinessCardImage`, {}, { responseType: 'text' }).pipe(first())
     }
 
     getImageCount(id: number): Observable<number> {

@@ -73,7 +73,7 @@ namespace Rado.Enrich
             //    carView.sellerWebPage = user.webPage;
             //}
 
-            var imageResult = ImageManager.GetNumberImages(carView.carId);
+            var imageResult = ImageManager.GetImageCount(carView.carId);
             imageResult.Wait();
 
             carView.numberImages = imageResult.Result; ;
@@ -104,7 +104,7 @@ namespace Rado.Enrich
                 rimView.sellerWebPage = user.webPage;
             }
 
-            var imageResult = ImageManager.GetNumberImages(rimView.rimId);
+            var imageResult = ImageManager.GetImageCount(rimView.rimId);
             imageResult.Wait();
             rimView.numberImages = imageResult.Result;
 
@@ -165,7 +165,7 @@ namespace Rado.Enrich
                 }
             }
 
-            var imageResult = ImageManager.GetNumberImages(rimWithTyreView.rimWithTyreId);
+            var imageResult = ImageManager.GetImageCount(rimWithTyreView.rimWithTyreId);
             imageResult.Wait();
             rimWithTyreView.numberImages = imageResult.Result;
 
@@ -196,7 +196,7 @@ namespace Rado.Enrich
             Loader.LoadTyre(tyreView, sqlDataReader);
             tyreView.traderDetails = GetTraderDetails(tyreView.userId);
 
-            var imageResult = ImageManager.GetNumberImages(tyreView.tyreId);
+            var imageResult = ImageManager.GetImageCount(tyreView.tyreId);
             imageResult.Wait();
             tyreView.numberImages = imageResult.Result;
 
@@ -299,8 +299,8 @@ namespace Rado.Enrich
                 partView.mainPicture = ImageManager.GenerateImageHRef(partView.partId, partView.mainImageId, true);
                 LoggerUtil.LogFunctionInfo("GenerateImageHRef 2");
             }
-            LoggerUtil.LogFunctionInfo("GetNumberImages 1");
-            var imageResult = ImageManager.GetNumberImages(partView.partId);
+            LoggerUtil.LogFunctionInfo("GetImageCount 1");
+            var imageResult = ImageManager.GetImageCount(partView.partId);
             imageResult.Wait();
 
 
@@ -320,7 +320,7 @@ namespace Rado.Enrich
 
             Loader.LoadRimWithTyre(rimViewTyre, sqlDataReader);
 
-            var imageResult = ImageManager.GetNumberImages(rimViewTyre.rimWithTyreId);
+            var imageResult = ImageManager.GetImageCount(rimViewTyre.rimWithTyreId);
             imageResult.Wait();
             rimViewTyre.numberImages = imageResult.Result;
 
@@ -389,7 +389,7 @@ namespace Rado.Enrich
             displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.itemType);
             displayPartView.id = displayPartView.isCar ? part_.carId.Value : part_.partId;
             displayPartView.price = part_.price;
-            var imageResult = ImageManager.GetNumberImages(displayPartView.id);
+            var imageResult = ImageManager.GetImageCount(displayPartView.id);
 
             imageResult.Wait();
             var imageData = ImageManager.GetImagesAsync(displayPartView.id);
@@ -485,7 +485,7 @@ namespace Rado.Enrich
 
             part.categoryName = "Кола на части";
             part.isCar = true;
-            part.modificationName = ModificationsDbSet.GetModificationById(carView.modificationId ?? 0)?.modificationName;
+            part.modificationName = ModificationsDbSet.GetModificationById(carView.modificationId ?? 0)?.modificationName ?? "";
 
             if (loadMainPicture)
             {
@@ -501,7 +501,7 @@ namespace Rado.Enrich
                 }
             }
 
-            var imageResult = ImageManager.GetNumberImages(carView.carId);
+            var imageResult = ImageManager.GetImageCount(carView.carId);
             imageResult.Wait();
 
             part.numberImages = imageResult.Result;

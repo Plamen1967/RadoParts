@@ -88,6 +88,16 @@ namespace Utility
 
             return path + imageId.ToString() + ".jpeg";
         }
+
+        private static void GegImageCount(long objectId, ref int imageCount, ref int minImageCount)
+        {
+            string path = GetPhotosPath(objectId);
+            if (Directory.Exists(path))
+            {
+                imageCount = Directory.GetFiles(path, "*.*").Length;
+                minImageCount = Directory.GetFiles(Path.Combine(path, "min"), "*.*").Length;
+            }
+        }
         public static string GenerateMinImageSrc(long objectId, long imageId)
         {
             string path = GetPhotosPath(objectId);
@@ -345,39 +355,32 @@ namespace Utility
 
         public static async Task<bool> DeleteImageAsync(int userId, int imageId)
         {
-            long objectId = 0;
             string storeProcedureName = "ImageDataDel";
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+                await using SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                await using SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+                sqlCommand.Parameters.Add("@imageId", SqlDbType.Int).Value = imageId;
+                var objectIdParam = sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt);
+                objectIdParam.Direction = ParameterDirection.Output;
+
+                await sqlConnection.OpenAsync();
+
+                var result = await sqlCommand.ExecuteNonQueryAsync();
+                var objectId = (long)objectIdParam.Value;
+
+                await sqlConnection.CloseAsync();
+
+                DeleteFromSpace(objectId, imageId);
+
+                if (result != 1)
                 {
-
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
-                        sqlCommand.Parameters.Add("@imageId", SqlDbType.Int).Value = imageId;
-                        var objectIdParam = sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt);
-                        objectIdParam.Direction = ParameterDirection.Output;
-
-                        await sqlConnection.OpenAsync();
-
-                        int result = await sqlCommand.ExecuteNonQueryAsync();
-                        objectId = (long)objectIdParam.Value;
-
-                        await sqlConnection.CloseAsync();
-
-                        DeleteFromSpace(objectId, imageId);
-
-                        if (result != 1)
-                        {
-                            throw new AppException($"Снимката не може да бъде изтрита");
-                        }
-
-                    }
+                    throw new AppException($"Снимката не може да бъде изтрита");
                 }
-
             }
             catch (Exception exception)
             {
@@ -398,12 +401,27 @@ namespace Utility
             {
                 File.Delete(imageSrc);
                 File.Delete(imageMinSrc);
+                CheckImageCount(objectId);
             }
             catch (Exception exception)
             {
                 LoggerUtil.LogException(exception);
             }
         }
+
+        static void CheckImageCount(long objectId)
+        {
+            int imageCount = 0, minImageCount = 0;
+            GegImageCount(objectId, ref imageCount, ref minImageCount);
+            var resultImageCount = GetImageCount(objectId);
+            resultImageCount.Wait();
+            if (resultImageCount.Result != imageCount)
+            {
+                LoggerUtil.LogFunctionInfo($"CheckImageCount {objectId} {imageCount} {resultImageCount.Result}");
+            }
+        }
+
+
         public static async Task<ImageData[]> GetImagesAsync(long objectId)
         {
             List<ImageData> imageDataList = new List<ImageData>();
@@ -550,7 +568,7 @@ namespace Utility
         }
 
         #region Get Count of Images for Id
-        public static async Task<int> GetNumberImages(long objectId)
+        public static async Task<int> GetImageCount(long objectId)
         {
             string storeProcedureName = "ImageDataCount";
 
@@ -1691,22 +1709,24 @@ namespace Utility
             return b;
         }
 
-        public static async Task<ImageData[]> UploadFiles(HttpRequest httpRequest, int UserId)
+        public static async Task<ImageData[]> UploadFiles(HttpRequest httpRequest, int userId)
         {
             try
             {
-                StringValues objectId;
-                httpRequest.Form.TryGetValue("partId", out objectId);
+                httpRequest.Form.TryGetValue("partId", out var objectId);
                 var files = httpRequest.Form.Files;
 
                 long id = Convert.ToInt64(objectId.ToString());
 
-                int count = await ImageManager.GetNumberImages(id);
+                int count = await ImageManager.GetImageCount(id);
 
-                var pathToSave = Path.Combine(ProgramSettings.ImageFolder, objectId.ToString());
+                if (ProgramSettings.ImageFolder != null)
+                {
+                    var pathToSave = Path.Combine(ProgramSettings.ImageFolder, objectId.ToString());
 
-                if (!Directory.Exists(pathToSave))
-                    Directory.CreateDirectory(pathToSave);
+                    if (!Directory.Exists(pathToSave))
+                        Directory.CreateDirectory(pathToSave);
+                }
 
                 if (files.Any(f => f.Length == 0))
                 {
@@ -1719,7 +1739,7 @@ namespace Utility
                     string fullPath = GetPhotosPath(objectId);
                     Directory.CreateDirectory(fullPath);
 
-                    ImageData businessCardImage = await SaveBusinessCardAsync(files[0], objectId, UserId);
+                    ImageData businessCardImage = await SaveBusinessCardAsync(files[0], objectId, userId);
                     images.Add(businessCardImage);
 
                     return images.ToArray();
@@ -1732,18 +1752,19 @@ namespace Utility
                         {
                             throw (new MaxCountPictureException($"Максималният брой снимки за обява от {ProgramSettings.MaxPictures} е достигнат"));
                         }
-                        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName?.Trim('"');
                         string fullPath = GetPhotosPath(objectId);
                         Directory.CreateDirectory(fullPath);
 
                         fullPath = fullPath + fileName;
 
-                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        await using (var stream = new FileStream(fullPath, FileMode.Create))
                         {
                             await file.CopyToAsync(stream);
                         }
 
-                        ImageData image = await ImageManager.SaveImageAsync(fullPath, UserId, objectId.ToString());
+                        ImageData image = await ImageManager.SaveImageAsync(fullPath, userId, objectId.ToString());
                         images.Add(image);
 
                         File.Delete(fullPath);
@@ -1752,6 +1773,7 @@ namespace Utility
                     }
                 }
 
+                CheckImageCount(id);
                 return images.ToArray();
             }
             catch (MaxCountPictureException exception)
