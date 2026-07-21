@@ -1,5 +1,5 @@
 //#region @Component
-import { Component, ElementRef, HostListener, Inject, OnInit } from '@angular/core'
+import { Component, ElementRef, HostListener, inject, Inject, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
 import { SelectBase } from '@components/custom-controls/selectBase'
 import { NgClass } from '@angular/common'
@@ -35,11 +35,11 @@ export class CompanyComponent extends SelectBase implements OnInit {
         { label: 'Всички', id: 0 },
         { label: 'С обяви', id: 1 },
     ]
+    @Inject(MAT_DIALOG_DATA) public data: DialogData = inject(MAT_DIALOG_DATA);
+    public dialogRef: MatDialogRef<CompanyComponent> = inject(MatDialogRef<CompanyComponent>);
+    private elem: ElementRef = inject(ElementRef)
     //#endregion
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        public dialogRef: MatDialogRef<CompanyComponent>,
-        private elem: ElementRef
     ) {
         super()
     }

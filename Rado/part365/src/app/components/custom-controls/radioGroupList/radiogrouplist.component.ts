@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Renderer2, Self, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, OnInit, Optional, Output, Renderer2, Self, ViewChild } from '@angular/core'
 import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
@@ -33,10 +33,11 @@ export class RadioGroupListComponent implements OnInit, ControlValueAccessor, Af
     @Output() changeRadioGroup: EventEmitter<number> = new EventEmitter<number>()
 
     @ViewChild('radioGroup', { static: false }) radioGroup?: ElementRef
+    @Optional() @Self() public ngControl: NgControl = inject(NgControl, { self: true });
+    private renderer: Renderer2 = inject(Renderer2)
+    private _el: ElementRef = inject(ElementRef)
+
     constructor(
-        @Optional() @Self() public ngControl: NgControl,
-        private renderer: Renderer2,
-        private _el: ElementRef
     ) {
         if (this.ngControl) this.ngControl.valueAccessor = this
     }

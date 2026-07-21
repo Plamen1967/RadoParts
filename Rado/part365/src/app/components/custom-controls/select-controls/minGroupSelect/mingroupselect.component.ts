@@ -1,12 +1,11 @@
 //#region
-import { Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self } from '@angular/core'
-import { ControlValueAccessor, NgControl } from '@angular/forms'
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { ControlValueAccessor } from '@angular/forms'
 import { TopService } from '@services/top.service'
 import { MatDialog } from '@angular/material/dialog'
 import { InternalValue } from '@model/internalValue'
 import { SelectionItem } from '@model/selectionItem'
 import { BaseControl } from '@components/custom-controls/baseControl'
-import { ErrorService } from '@services/error.service'
 
 @Component({
     selector: 'app-mingroupselect',
@@ -40,16 +39,13 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
     ids?: number[]
     selectedItems?: string
     SelectionItems: SelectionItem[] = []
+    private topService: TopService = inject(TopService)
+    public dialog: MatDialog = inject(MatDialog)
     //#endregion
     //#region constructor
     constructor(
-        private topService: TopService,
-        public dialog: MatDialog,
-        @Optional() @Self() public ngControl: NgControl,
-        errorService: ErrorService,
-        element: ElementRef
     ) {
-        super(ngControl, errorService, element)
+        super()
     }
     //#endregion
     //#region interface functions

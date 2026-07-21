@@ -1,5 +1,5 @@
 import { NgStyle } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory';
 import { Dropdown } from '@model/dropDown';
 
@@ -19,8 +19,8 @@ export class CategoriesComponent {
   @Input() dropDowns : Dropdown[] = [];
   @Output() selection : EventEmitter<CategorySubcategory> = new EventEmitter<CategorySubcategory>()
 
-  constructor(private element: ElementRef, 
-    private renderer: Renderer2) { }
+  element: ElementRef = inject(ElementRef) 
+   renderer: Renderer2 = inject(Renderer2)
 
 
   clearDisplay() {

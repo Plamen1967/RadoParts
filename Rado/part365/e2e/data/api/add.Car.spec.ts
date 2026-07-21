@@ -24,15 +24,18 @@ test.describe('Car API testing', () => {
         while (storage == '{}') storage = await page.evaluate(() => JSON.stringify(localStorage))
         const jwt = JSON.parse(JSON.parse(storage).currentUser)['token']
         const userId = JSON.parse(JSON.parse(storage).currentUser)['userId']
-        const modification = await request.get(`http://localhost:29235/api/modification/GetModificationByName?modification=${car.modificationName}`, { headers: { Authorization: `Bearer ${jwt}` } })
+        const modification = await request.get(`${api}/modification/GetModificationByName?modification=${car.modificationName}`, { headers: { Authorization: `Bearer ${jwt}` } })
         await expect(modification.ok()).toBeTruthy()
-        const nextId = await request.get(`http://localhost:29235/api/part/GetNextId`, { headers: { Authorization: `Bearer ${jwt}` } })
-        expect(nextId.ok()).toBeTruthy()
-        const id = await nextId.json()
+        const resultNext = await request.get(`${api}/users/GetNextId`, { headers: { Authorization: `Bearer ${jwt}` } })
+        console.log(resultNext.status())
+        expect(resultNext.status()).toBe(200)
+        expect(resultNext.ok()).toBeTruthy()
+        const id = await resultNext.json()
+        console.log(id)
         const modificationId = await modification.json()
-        const result = await request.post('http://localhost:29235/api/car', {
+        const result = await request.post(`${api}/car`, {
             data: {
-                carId: id,
+                carId: id.nextId,
                 modificationId: modificationId.modificationId,
                 userId: 5,
                 year: car.year,
@@ -47,13 +50,15 @@ test.describe('Car API testing', () => {
             headers: { Authorization: `Bearer ${jwt}` },
         })
         expect(result.status()).toBe(400)
+        const body = await result.body()
+        console.log(body.toString())
         const message = await result.json()
         expect(message.message).toEqual('Колата не може да бъде записана')
         console.log(message.message)
         expect(result.statusText()).toEqual('Bad Request')
         const correct_cresult = await request.post(`${api}/car`, {
             data: {
-                carId: id,
+                carId: id.nextId,
                 modificationId: modificationId.modificationId,
                 userId: userId,
                 year: car.year,

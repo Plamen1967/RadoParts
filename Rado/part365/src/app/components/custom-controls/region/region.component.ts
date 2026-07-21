@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, OnInit, Self } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, Self } from '@angular/core'
 import { SelectComponent } from '../select-controls/select/select.component'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { ErrorService } from '@services/error.service'
@@ -23,16 +23,16 @@ export class RegionComponent extends HelperComponent implements ControlValueAcce
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
-    constructor(
-        @Self() public control: NgControl,
-        public staticSelectionService: StaticSelectionService,
-        public errorService: ErrorService,
-        formBuilder: FormBuilder,
-                private destroyRef: DestroyRef
-    ) {
+    @Self() public control: NgControl = inject(NgControl, { self: true })
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    public errorService: ErrorService = inject(ErrorService)
+    formBuilder: FormBuilder = inject(FormBuilder)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+
+    constructor() {
         super()
         if (this.control) this.control.valueAccessor = this
-        this.regionForm = formBuilder.group({
+        this.regionForm = this.formBuilder.group({
             region_int: [0],
         })
 

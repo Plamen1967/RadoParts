@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, Self, ViewChild, OnInit, DestroyRef } from '@angular/core'
+import { Component, ElementRef, EventEmitter, Input, Output, Self, ViewChild, OnInit, DestroyRef, inject } from '@angular/core'
 import { ControlValueAccessor, NgControl } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { SelectionItem } from '@model/selectionItem'
@@ -64,12 +64,12 @@ export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
     @Input() placeHolder?: string
     @Input() showCount = true
     @Input() showImage = true
+    @Self() public control: NgControl = inject(NgControl)
+    public dialog: MatDialog = inject(MatDialog)
+    public errorService: ErrorService = inject(ErrorService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
 
     constructor(
-        @Self() public control: NgControl,
-        public dialog: MatDialog,
-        public errorService: ErrorService,
-        private destroyRef: DestroyRef
     ) {
         if (this.control) this.control.valueAccessor = this
     }

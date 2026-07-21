@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ItemType } from '@model/enum/itemType.enum'
@@ -30,17 +30,17 @@ export class RequestByEmailComponent extends HelperComponent implements OnInit {
     @Input({ required: true }) id!: number
     @Input() itemType?: ItemType
 
-    @Output() messageSent: EventEmitter<boolean> = new EventEmitter<boolean>()
+        @Output() messageSent: EventEmitter<boolean> = new EventEmitter<boolean>()
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    private messageService: MessageService = inject(MessageService)
+    private imageService: ImageService = inject(ImageService)
+    private popupService: PopUpService = inject(PopUpService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private messageService: MessageService,
-        private imageService: ImageService,
-        private popupService: PopUpService,
-        private destroyRef: DestroyRef
-    ) {
+    constructor()
+    {
         super()
-        this.requestByEmail = formBuilder.group({
+        this.requestByEmail = this.formBuilder.group({
             name: ['', Validators.required],
             email: ['', Validators.required],
             request: ['', Validators.required],

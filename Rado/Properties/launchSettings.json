@@ -2,7 +2,6 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "workingDirectory": "D:\\Angular",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

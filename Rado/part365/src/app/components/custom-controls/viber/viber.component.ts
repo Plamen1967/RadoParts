@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostListener, inject, Input, OnInit } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
@@ -8,8 +8,7 @@ import {DomSanitizer} from '@angular/platform-browser';
     imports: []
 })
 export class ViberComponent implements OnInit {
-
-  constructor(private sanitizer:DomSanitizer) { }
+  private sanitizer:DomSanitizer = inject(DomSanitizer)
   @Input() number?:string ;
    @HostListener('click', ["$event"])
    // eslint-disable-next-line @typescript-eslint/no-explicit-any

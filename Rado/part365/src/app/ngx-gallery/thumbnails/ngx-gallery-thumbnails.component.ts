@@ -6,7 +6,7 @@ import { NgxGalleryOrder } from '../models/ngx-gallery-order.model'
 import { NgxGalleryAction } from './../action/ngx-gallery-action.model'
 import { NgxGalleryActionComponent } from '../action/ngx-gallery-action.component'
 import { NgxGalleryArrowsComponent } from '../arrows/ngx-gallery-arrows.component'
-import { NgClass, NgFor } from '@angular/common'
+import { NgClass } from '@angular/common'
 //#endregion
 //#region component
 @Component({
@@ -14,7 +14,7 @@ import { NgClass, NgFor } from '@angular/common'
     selector: 'app-ngx-gallery-thumbnails',
     templateUrl: './ngx-gallery-thumbnails.component.html',
     styleUrls: ['./ngx-gallery-thumbnails.component.scss'],
-    imports: [NgFor, NgClass, NgxGalleryActionComponent, NgxGalleryArrowsComponent],
+    imports: [NgClass, NgxGalleryActionComponent, NgxGalleryArrowsComponent],
 })
 //#endregion
 

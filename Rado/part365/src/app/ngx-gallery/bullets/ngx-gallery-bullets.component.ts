@@ -1,14 +1,16 @@
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input, Output, EventEmitter, } from '@angular/core';
 
 @Component({
     standalone: true,
     selector: 'app-ngx-gallery-bullets',
     template: `
-        <div class="ngx-gallery-bullet" *ngFor="let bullet of getBullets(); let i = index;" (click)="handleChange($event, i)" [ngClass]="{ 'ngx-gallery-active': i === active }" role="none"></div>
+        @for (bullet of getBullets(); track $index) {
+        <div class="ngx-gallery-bullet" (click)="handleChange($event, $index)" [ngClass]="{ 'ngx-gallery-active': $index === active }" role="none"></div>
+        }
     `,
     styleUrls: ['./ngx-gallery-bullets.component.scss'],
-    imports: [NgFor, NgClass]
+    imports: [NgClass]
 })
 export class NgxGalleryBulletsComponent {
     @Input() count?: number;

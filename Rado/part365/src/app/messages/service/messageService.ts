@@ -11,6 +11,15 @@ import { Message } from '../model/Message'
 })
 //#endregion
 export class MessageService {
+    markAsRead(messageId: number, isRead: boolean) {
+      return this.httpClient.post<boolean>(`${environment.restAPI}/message/markAsRead?messageId=${messageId}&read=${isRead}`, this.httpHeader)
+    }
+    markAsUnRead(messageId: number) {
+      return this.httpClient.post<boolean>(`${environment.restAPI}/message/markAsRead?messageId=${messageId}&read=false`, this.httpHeader)
+    }
+    deleteMessage(messageId: number) {
+      return this.httpClient.post<boolean>(`${environment.restAPI}/message/deleteMessage/${messageId}`, this.httpHeader)
+    }
     //#region variables and services
     httpHeader = {
         headers: new HttpHeaders({

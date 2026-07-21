@@ -3,7 +3,6 @@ using Models.Enums;
 using Models.Helper;
 using Models.Models;
 using Models.Models.Authentication;
-using Models.Models.Utility;
 using Rado.Datasets;
 using Rado.Enums;
 using Rado.Models;
@@ -11,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using Utility;
 
 namespace Rado.Enrich
@@ -329,21 +327,21 @@ namespace Rado.Enrich
         public static Message EnrichMessage(SqlDataReader sqlDataReader)
         {
             Message message = Loader.LoadMessage(sqlDataReader);
-            if (message.isCar == 0)
+            if (message.IsCar == 0)
             {
-                PartView part = PartDbSet.GetPart(message.partId);
-                message.partDescription = part.companyName;
-                message.partDescription = $" {part.dealerSubCategoryName}  за {part.companyName} {part.modelName}";
-                message.modificationName = part.modificationName;
+                PartView part = PartDbSet.GetPart(message.PartId);
+                message.PartDescription = part.companyName;
+                message.PartDescription = $" {part.dealerSubCategoryName}  за {part.companyName} {part.modelName}";
+                message.ModificationName = part.modificationName;
             }
             else
             {
-                var task = CarsDbSet.GetCarByIdAsync(message.partId);
+                var task = CarsDbSet.GetCarByIdAsync(message.PartId);
                 task.Wait();
                 CarView carView = task.Result;
 
-                message.partDescription = $"{carView.companyName} {carView.modelName} на части";
-                message.modificationName = carView.modificationName;
+                message.PartDescription = $"{carView.companyName} {carView.modelName} на части";
+                message.ModificationName = carView.modificationName;
             }
 
             return message; ;

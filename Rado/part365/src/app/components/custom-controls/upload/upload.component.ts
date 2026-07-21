@@ -1,6 +1,6 @@
 //#region import
 import { HttpClient, HttpEventType } from '@angular/common/http'
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageService } from '@services/image.service'
 import { WebcamImage } from 'ngx-webcam'
@@ -36,13 +36,13 @@ export class UploadComponent extends HelperComponent implements OnInit {
 
     @Output() uploadFinished = new EventEmitter<ImageData[]>()
     @Output() uploadProcess = new EventEmitter<number>()
+    private http: HttpClient = inject(HttpClient)
+    private imageService: ImageService = inject(ImageService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    private popupService: PopUpService = inject(PopUpService)
+    private errorService: ErrorService = inject(ErrorService)
 
     constructor(
-        private http: HttpClient,
-        private imageService: ImageService,
-        private destroyRef: DestroyRef,
-        private popupService: PopUpService,
-        private errorService: ErrorService
     ) {
         super()
     }

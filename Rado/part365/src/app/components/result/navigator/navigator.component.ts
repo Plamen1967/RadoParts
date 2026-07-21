@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core'
+import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { SortType } from '@model/enum/sortType.enum'
 import { RadioButton } from '@model/radioButton'
@@ -47,9 +47,7 @@ export class NavigatorComponent implements OnInit {
     arrayPages_: number[] = []
     pages: number[] = []
     previousButton?: ElementRef<HTMLInputElement>
-
-
-    constructor(public staticSelectionService: StaticSelectionService) {}
+    taticSelectionService: StaticSelectionService = inject(StaticSelectionService);
 
     calcOffset() {
         const remnainer = this.currentPage % this.itemsPerPages;

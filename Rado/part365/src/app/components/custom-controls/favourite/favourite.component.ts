@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core';
 import { ToastService } from '@services/dialog-api/ToastService/toast.service';
 import { LocalStorageService } from '@services/storage/localStorage.service';
 
@@ -11,6 +11,8 @@ import { LocalStorageService } from '@services/storage/localStorage.service';
 })
 export class FavouriteComponent implements OnInit {
    @HostListener('click', ["$event"])
+    private localStorageService: LocalStorageService = inject(LocalStorageService);
+    private toastService: ToastService = inject(ToastService);
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
    click(event: any) {
     event.stopPropagation();
@@ -25,8 +27,6 @@ export class FavouriteComponent implements OnInit {
   @Output() unchecked: EventEmitter<number> = new EventEmitter<number>()
     isSaved?: boolean;
     _id = 0;
-
-  constructor(    private localStorageService: LocalStorageService, private toastService: ToastService) { }
 
   ngOnInit() {
     this.isSaved = this.localStorageService.isSaved(this._id) 

@@ -7,7 +7,7 @@
             </div>
         }
         @if (_useFilter) {
-            <app-searchinput (filterChanged)="filterChange($event)"></app-searchinput>
+            <app-searchinput (filterChanged)="filterChange($event)" (Search)="filterChange($event)"></app-searchinput>
         }
         @if (useLetter) {
             <div class="letter-container col-sm-5">

@@ -1,4 +1,4 @@
-import { ElementRef, Self,  } from '@angular/core';
+import { ElementRef, inject, Self,  } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ErrorService } from '@services/error.service';
 
@@ -16,18 +16,18 @@ export class BaseControl<T> implements ControlValueAccessor {
   protected onChange?(_: T) {}
   touched = false;
   isDisabled = false;
-  protected element : ElementRef;
   protected outerHTML : string;
   autocomplete = 'none'
 
-  constructor(@Self() public control: NgControl,
-              public errorService : ErrorService,
-              element : ElementRef) { 
+  @Self() public control: NgControl = inject(NgControl, { self: true });
+  public errorService : ErrorService = inject(ErrorService);
+  element : ElementRef = inject(ElementRef);
+
+  constructor() { 
     if (this.control) 
       this.control.valueAccessor = this;
-    this.element = element;
     this.outerHTML = this.element.nativeElement.outerHTML;
-    const outername: string = element.nativeElement.outerHTML;
+    const outername: string = this.element.nativeElement.outerHTML;
     const arr = outername.split(' ');
     this.autocomplete = arr.find(item => item.includes('formcontrolname'))?.split('=')[1] ?? 'none';
     this.autocomplete = this.autocomplete.replaceAll('"', '');

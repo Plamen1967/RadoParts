@@ -1,7 +1,4 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CustomSelectComponent } from './customSelect.component';
 
@@ -9,7 +6,7 @@ describe('CustomSelectComponent', () => {
   let component: CustomSelectComponent;
   let fixture: ComponentFixture<CustomSelectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomSelectComponent ]
     })

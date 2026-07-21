@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
@@ -7,9 +7,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 })
 export class ConfirmationService {
 
-constructor(private dialog: MatDialog) {
- }
-
+  private readonly dialog = inject(MatDialog);
 
 openDialog(header:string, message:string, id = 'confirmDialog'): MatDialogRef<ConfirmationComponent> {
   const dialogRef: MatDialogRef<ConfirmationComponent> =  this.dialog.open(ConfirmationComponent, {

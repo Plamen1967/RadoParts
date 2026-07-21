@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Models.Enums;
 using Models.Models;
@@ -52,31 +53,29 @@ public class MessagesDbSet
         return messages.ToArray();
     }
 
-    static public bool MarkRead(long originalMsgId, int userId)
+    public static async Task<bool> MarkReadAsync(long originalMsgId, bool read, int userId)
     {
         try
         {
-            string storedProcedure = "MarkRead";
+            string storedProcedure = "MarkReadUpd";
 
-            using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-            {
-                sqlConnection.Open();
-                using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
-                {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlCommand.Parameters.Add("@receiveUserId", System.Data.SqlDbType.Int).Value = userId;
-                    sqlCommand.Parameters.Add("@originalMsgId", System.Data.SqlDbType.BigInt).Value = originalMsgId;
+            SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+            await sqlConnection.OpenAsync();
+            SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
 
-                    sqlCommand.ExecuteNonQuery();
-                }
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.Add("@receiveUserId", System.Data.SqlDbType.Int).Value = userId;
+            sqlCommand.Parameters.Add("@originalMsgId", System.Data.SqlDbType.BigInt).Value = originalMsgId;
+            sqlCommand.Parameters.Add("@read", System.Data.SqlDbType.Bit).Value = read;
 
-                sqlConnection.CloseAsync();
-            }
+            await sqlCommand.ExecuteNonQueryAsync();
+            await sqlConnection.CloseAsync();
         }
         catch (Exception exception)
         {
             LoggerUtil.LogFunctionInfo("MarkRead");
             LoggerUtil.LogException(exception.Message);
+            throw new BadHttpRequestException("Съобщението не може да се маркира!");
         }
         finally
         {
@@ -124,8 +123,11 @@ public class MessagesDbSet
 
             Message messageNew = new Message();
             messageNew.message = message;
-            messageNew.receiveUserId = userId;
-            messageNew.msgDate = DateTime.Now.Millisecond;
+            messageNew.ReceiveUserId = userId;
+            messageNew.SenderName = emailMessage.name;
+            messageNew.Email = emailMessage.email;
+            messageNew.Request = emailMessage.request;
+            messageNew.MsgDate = DateTime.Now.Ticks;
 
             MessagesDbSet.AddMessage(messageNew);
 
@@ -148,37 +150,42 @@ public class MessagesDbSet
         return true;
     }
 
-    static public bool DeleteMessage(long id, int userId)
+    public static async Task<bool> DeleteMessageAsync(long id, int userId)
     {
         try
         {
-            string storedProcedure = "MarkRead";
-
-            using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+            try
             {
-                sqlConnection.Open();
-                using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
-                {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlCommand.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
-                    sqlCommand.Parameters.Add("@originalMsgId", System.Data.SqlDbType.BigInt).Value = id;
+                string storedProcedure = "MarkRead";
 
-                    sqlCommand.ExecuteNonQuery();
-                }
+                SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                await sqlConnection.OpenAsync();
 
-                sqlConnection.CloseAsync();
+                SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
+                sqlCommand.Parameters.Add("@originalMsgId", System.Data.SqlDbType.BigInt).Value = id;
+
+                await sqlCommand.ExecuteNonQueryAsync();
+
+                await sqlConnection.CloseAsync();
             }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogFunctionInfo("DeleteMessage");
+                LoggerUtil.LogException(exception.Message);
+                return false;
+            }
+            finally
+            {
+            }
+            return true;
         }
         catch (Exception exception)
         {
-            LoggerUtil.LogFunctionInfo("DeleteMessage");
-            LoggerUtil.LogException(exception.Message);
-            return false;
+            LoggerUtil.LogException(exception);
+            throw new BadHttpRequestException("Съобщението не може да бъде изтрито!");
         }
-        finally
-        {
-        }
-        return true;
     }
 
     static public bool AddMessage(Message message)
@@ -195,23 +202,17 @@ public class MessagesDbSet
                 {
                     sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    SqlParameter previousMsgIdParam = sqlCommand.Parameters.Add("@previousMsgId", System.Data.SqlDbType.BigInt);
-                    SqlParameter msgDateParam = sqlCommand.Parameters.Add("@msgDate", System.Data.SqlDbType.BigInt);
-                    SqlParameter sendUserIdParam = sqlCommand.Parameters.Add("@sendUserId", System.Data.SqlDbType.Int);
-                    SqlParameter receiveUserIdParam = sqlCommand.Parameters.Add("@receiveUserId", System.Data.SqlDbType.Int);
-                    SqlParameter originalMsgIdParam = sqlCommand.Parameters.Add("@originalMsgId", System.Data.SqlDbType.BigInt);
-                    SqlParameter messageParam = sqlCommand.Parameters.Add("@message", System.Data.SqlDbType.NVarChar);
-                    SqlParameter partIdParam = sqlCommand.Parameters.Add("@partId", System.Data.SqlDbType.BigInt);
-                    SqlParameter isCarIdParam = sqlCommand.Parameters.Add("@isCar", System.Data.SqlDbType.Int);
-
-                    previousMsgIdParam.Value = message.previousMsgId;
-                    sendUserIdParam.Value = message.sendUserId;
-                    receiveUserIdParam.Value = message.receiveUserId;
-                    originalMsgIdParam.Value = message.originalMsgId;
-                    msgDateParam.Value = message.msgDate;
-                    messageParam.Value = message.message;
-                    partIdParam.Value = message.partId;
-                    isCarIdParam.Value = message.isCar;
+                    sqlCommand.Parameters.Add("@previousMsgId", System.Data.SqlDbType.BigInt).Value = message.PreviousMsgId;
+                    sqlCommand.Parameters.Add("@msgDate", System.Data.SqlDbType.BigInt).Value = message.MsgDate;
+                    sqlCommand.Parameters.Add("@sendUserId", System.Data.SqlDbType.Int).Value = message.SendUserId;
+                    sqlCommand.Parameters.Add("@receiveUserId", System.Data.SqlDbType.Int).Value = message.ReceiveUserId;
+                    sqlCommand.Parameters.Add("@originalMsgId", System.Data.SqlDbType.BigInt).Value = message.OriginalMsgId;
+                    sqlCommand.Parameters.Add("@message", System.Data.SqlDbType.NVarChar).Value = message.message;
+                    sqlCommand.Parameters.Add("@partId", System.Data.SqlDbType.BigInt).Value = message.PartId;
+                    sqlCommand.Parameters.Add("@isCar", System.Data.SqlDbType.Int).Value = message.IsCar;
+                    sqlCommand.Parameters.Add("@request", System.Data.SqlDbType.NVarChar).Value = message.Request;
+                    sqlCommand.Parameters.Add("@senderName", System.Data.SqlDbType.NVarChar).Value = message.SenderName;
+                    sqlCommand.Parameters.Add("@email", System.Data.SqlDbType.NVarChar).Value = message.Email;
 
                     sqlCommand.ExecuteNonQuery();
 

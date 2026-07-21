@@ -14,14 +14,15 @@
                 [style.top]="getThumbnailTop(i)"
                 [ngClass]="{ 'ngx-gallery-active': i === selectedIndex, 'ngx-gallery-clickable': clickable }"
                 [attr.aria-label]="labels[i]">
-                <div class="ngx-gallery-icons-wrapper">
-                    <app-ngx-gallery-action
-                        *ngFor="let action of actions"
-                        [icon]="action.icon"
-                        [disabled]="action.disabled!"
-                        [titleText]="action.titleText!"
-                        (onClick)="action.onClick($event, i)"></app-ngx-gallery-action>
-                </div>
+                @for (action of actions; track $index) {
+                    <div class="ngx-gallery-icons-wrapper">
+                        <app-ngx-gallery-action
+                            [icon]="action.icon"
+                            [disabled]="action.disabled!"
+                            [titleText]="action.titleText!"
+                            (onClick)="action.onClick($event, $index)"></app-ngx-gallery-action>
+                    </div>
+                }
                 @if (remainingCount && remainingCountValue && i === rows! * columns! - 1) {
                     <div class="ngx-gallery-remaining-count-overlay">
                         <span class="ngx-gallery-remaining-count">+{{ remainingCountValue }}</span>

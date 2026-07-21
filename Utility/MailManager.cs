@@ -121,6 +121,7 @@ namespace Utility
 
         public static void SendEmail(string addressTo, string subject, string bodyText)
         {
+            return;
             //if (!SendEmails) return;
             try
             {

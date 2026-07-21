@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
@@ -9,7 +9,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class WhatsComponent {
  // <a href="https://wa.me/1234567890?text=hello" target="_blank">Chat on WhatsApp</a>
-  constructor(private sanitizer:DomSanitizer) { }
+  private sanitizer:DomSanitizer = inject(DomSanitizer)
   @Input() number?: string;
 
   get whatsNumber() {

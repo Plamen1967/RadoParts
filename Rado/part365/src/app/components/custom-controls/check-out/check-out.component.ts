@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, OnInit, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -34,23 +34,23 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     id?: string| number;
     mode: UpdateEnum = UpdateEnum.View
     heigligthed?: number|string
+    checkoutService: CheckOutService = inject(CheckOutService)
+    formBulder: FormBuilder = inject(FormBuilder)
+    activeRoute: ActivatedRoute = inject(ActivatedRoute)
+    staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    router: Router = inject(Router)
+    confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    localStorageService: LocalStorageService = inject(LocalStorageService)
+    loggerService: LoggerService = inject(LoggerService)
+    destroyRef: DestroyRef = inject(DestroyRef)
 
     @Output() backEvent: EventEmitter<void> = new EventEmitter<void>()
     constructor(
-        private checkoutService: CheckOutService,
-        formBulder: FormBuilder,
-        public activeRoute: ActivatedRoute,
-        public staticSelectionService: StaticSelectionService,
-        private router: Router,
-        private confirmService: ConfirmServiceService,
-        public localStorageService: LocalStorageService,
-        public loggerService: LoggerService,
-        private destroyRef: DestroyRef
     ) {
         super()
 
-        this.checkoutForm = formBulder.group({})
-        activeRoute.queryParams.subscribe((d) => {
+        this.checkoutForm = this.formBulder.group({})
+        this.activeRoute.queryParams.subscribe((d) => {
             this.id = +d['id']
         })
     }

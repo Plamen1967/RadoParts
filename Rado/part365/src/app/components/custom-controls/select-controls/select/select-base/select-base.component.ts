@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core'
 import { FormsModule, ValidationErrors } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
@@ -41,8 +41,8 @@ export class SelectBaseComponent {
     _data?: SelectOption[] = []
     first = true
     selectedValue?: number
+    public errorService: ErrorService = inject(ErrorService)
 
-    constructor(public errorService: ErrorService) {}
     // ngOnChanges(changes: SimpleChanges): void {
     //     if (changes['initialValue']) {
     //         this.selectedValue = changes['initialValue'].currentValue

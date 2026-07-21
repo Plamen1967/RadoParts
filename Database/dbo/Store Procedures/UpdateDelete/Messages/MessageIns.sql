@@ -6,6 +6,9 @@
 	@originalMsgId bigInt,
 	@message NVARCHAR(200),
 	@partId bigInt = 0,
+	@sendername  NVARCHAR(50),
+	@email  NVARCHAR(200),
+	@request NVARCHAR(200),
 	@isCar int = 0
 AS
 	INSERT INTO Messages 
@@ -17,7 +20,11 @@ AS
 		originalMsgId,
 		[message],
 		partId,
-		isCar
+		sendername,
+		email,
+		request,
+		isCar,
+		isRead
 	)
 	VALUES
 	(
@@ -28,7 +35,11 @@ AS
 		@originalMsgId,
 		@message,
 		@partId,
-		@isCar
+		@sendername,
+		@email,
+		@request,
+		@isCar,
+		0
 		)
 
 RETURN @@ROWCOUNT

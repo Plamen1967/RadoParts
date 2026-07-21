@@ -1,5 +1,5 @@
 //#region imports
-import { Component, Inject, OnInit } from '@angular/core'
+import { Component, inject, Inject, OnInit } from '@angular/core'
 import { SelectBase } from '../../selectBase'
 import { TopService } from '@services/top.service'
 import { Subscription } from 'rxjs'
@@ -23,11 +23,10 @@ export class MinModelComponent extends SelectBase implements OnInit {
     subscription?: Subscription
     placeHolder?: string
     clearBox?: boolean
+    private topService: TopService = inject(TopService)
+    @Inject(MAT_DIALOG_DATA) public data: DialogData = inject(MAT_DIALOG_DATA)
 
-    constructor(
-        private topService: TopService,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData
-    ) {
+    constructor() {
         super()
         this._data = []
     }

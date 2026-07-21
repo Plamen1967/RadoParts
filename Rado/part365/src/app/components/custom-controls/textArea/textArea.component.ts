@@ -1,7 +1,6 @@
-import { Component, ElementRef, Input, Self } from '@angular/core';
-import { FormsModule, NgControl } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BaseControl } from '../baseControl';
-import { ErrorService } from '@services/error.service';
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
@@ -20,8 +19,8 @@ export class TextAreaComponent extends BaseControl<string> {
   @Input() required?: boolean;
 
 
-  constructor(@Self() control: NgControl, errorService: ErrorService, element: ElementRef) {
-    super(control, errorService, element);
+  constructor() {
+    super();
   }
 
   override get contolName(): string {

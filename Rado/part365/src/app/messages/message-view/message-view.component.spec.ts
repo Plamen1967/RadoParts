@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { MenuMinComponent } from './menu-min.component';
+import { MessageViewComponent } from './message-view.component';
 
-describe('MenuMinComponent', () => {
-  let component: MenuMinComponent;
-  let fixture: ComponentFixture<MenuMinComponent>;
+describe('MessageViewComponent', () => {
+  let component: MessageViewComponent;
+  let fixture: ComponentFixture<MessageViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MenuMinComponent ]
+      declarations: [ MessageViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MenuMinComponent);
+    fixture = TestBed.createComponent(MessageViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthenticationService } from '@services/authentication/authentication.service';
 
 @Component({
@@ -9,7 +9,8 @@ import { AuthenticationService } from '@services/authentication/authentication.s
 })
 export class SuspendedComponent  {
   suspended = true;
-  constructor(private authenticationService: AuthenticationService) {
-    this.suspended = authenticationService.suspended?true:false;
+  private authenticationService: AuthenticationService = inject(AuthenticationService);
+  constructor() {
+    this.suspended = this.authenticationService.suspended?true:false;
   }
 }

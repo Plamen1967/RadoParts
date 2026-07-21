@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, Input, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { ImageService } from '@services/image.service'
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
@@ -26,6 +26,11 @@ export class ImageComponent {
     _partId?: number
     showIcon = false
     noImage = false
+    private sanitization: DomSanitizer = inject(DomSanitizer)
+    private imageService: ImageService = inject(ImageService)
+    private helperService: NgxGalleryHelperService = inject(NgxGalleryHelperService)
+    private alertService: AlertService = inject(AlertService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
 
     @Input() height = '8em'
     @Input() width = '6em'
@@ -99,14 +104,6 @@ export class ImageComponent {
                 }, 1000)
             })
     }
-
-    constructor(
-        private sanitization: DomSanitizer,
-        private imageService: ImageService,
-        private helperService: NgxGalleryHelperService,
-        private alertService: AlertService,
-        private destroyRef: DestroyRef
-    ) {}
 
     background(image: NgxGalleryImage) {
         const str = "{'background-image': 'url(" + `"${image.medium}"` + ")'}"

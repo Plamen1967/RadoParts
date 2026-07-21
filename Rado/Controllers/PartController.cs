@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using Models.Enums;
 using Models.Models;
 using Rado;
@@ -118,6 +120,11 @@ namespace Rado.Controllers
         [AllowAnonymous]
         public async Task<PartView> Get(long id)
         {
+            if (id == 0)
+            {
+                throw new BadHttpRequestException("Invalid id");
+            }
+
             return await PartDbSet.GetPartAsync(id);
         }
 

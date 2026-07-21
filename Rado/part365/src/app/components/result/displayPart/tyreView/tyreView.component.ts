@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DisplayPartView } from '@model/displayPartView'
 import { ItemType } from '@model/enum/itemType.enum'
@@ -39,8 +39,9 @@ export class TyreViewComponent extends HelperComponent implements OnInit {
     item?: DisplayPartView
     isTyre?: boolean
     isRim?: boolean
-
-    constructor(private staticService: StaticSelectionService) {
+    staticService: StaticSelectionService = inject(StaticSelectionService)  
+    
+    constructor() {
         super()
     }
 

@@ -6,10 +6,8 @@ using Rado.Authorization;
 using Rado.Datasets;
 using Rado.Enums;
 using Rado.Exceptions;
-using Rado.Helper;
 using Rado.Models;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -117,14 +115,6 @@ namespace Rado.Controllers.Admin
 
             return await UserDbSet.GetUserCountAsync(UserId);
         }
-
-        [HttpGet]
-        [Route("GetNextId")]
-        public NextId GetNextId([FromQuery] ItemType itemType)
-        {
-            return UserDbSet.GetNextId(itemType, UserId);
-        }
-
 
         [HttpPost]
         [EnableCors("testingApp")]

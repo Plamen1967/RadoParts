@@ -6,7 +6,7 @@ import { NgxGalleryHelperService } from '../services/ngx-gallery-helper.service'
 import { NgxGalleryOrderedImage } from '../models/ngx-gallery-ordered-image.model'
 import { NgxGalleryAnimation } from '../models/ngx-gallery-animation.model'
 import { NgxGalleryAction } from '../action/ngx-gallery-action.model'
-import { NgClass, NgFor, NgIf } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { NgxGalleryActionComponent } from '../action/ngx-gallery-action.component'
 import { NgxGalleryArrowsComponent } from '../arrows/ngx-gallery-arrows.component'
 import { NgxGalleryBulletsComponent } from '../bullets/ngx-gallery-bullets.component'
@@ -17,47 +17,49 @@ import { NgxGalleryBulletsComponent } from '../bullets/ngx-gallery-bullets.compo
     selector: 'app-ngx-gallery-image',
     template: `
         <div class="ngx-gallery-image-wrapper ngx-gallery-animation-{{ animation }} ngx-gallery-image-size-{{ size }}">
-            <div
-                role="none"
-                class="ngx-gallery-image"
-                *ngFor="let image of getImages(); let i = index"
-                [ngClass]="{
-                    'ngx-gallery-active': selectedIndex === image.index,
-                    'ngx-gallery-inactive-left': (selectedIndex ?? 0) > image.index,
-                    'ngx-gallery-inactive-right': selectedIndex ?? 0 < image.index,
-                    'ngx-gallery-clickable': clickable,
-                }"
-                [style.background-image]="getSafeUrl(image.src)"
-                (click)="handleClick($event, image.index)">
-                <div class="ngx-gallery-icons-wrapper">
-                    <app-ngx-gallery-action
-                        *ngFor="let action of actions"
-                        [icon]="action.icon"
-                        [disabled]="action.disabled!"
-                        [titleText]="action.titleText!"
-                        (onClick)="action.onClick($event, image.index)"></app-ngx-gallery-action>
-                </div>
+            @for (image of getImages(); track $index) {
                 <div
-                    class="ngx-gallery-image-text"
-                    *ngIf="showDescription && descriptions && descriptions[image.index!]"
-                    [innerHTML]="descriptions[image.index]"
-                    (click)="$event.stopPropagation()"
-                    role="none"></div>
-            </div>
+                    role="none"
+                    class="ngx-gallery-image"
+                    [ngClass]="{
+                        'ngx-gallery-active': selectedIndex === image.index,
+                        'ngx-gallery-inactive-left': (selectedIndex ?? 0) > image.index,
+                        'ngx-gallery-inactive-right': selectedIndex ?? 0 < image.index,
+                        'ngx-gallery-clickable': clickable,
+                    }"
+                    [style.background-image]="getSafeUrl(image.src)"
+                    (click)="handleClick($event, image.index)">
+                    <div class="ngx-gallery-icons-wrapper">
+                        @for (action of actions; track $index) {
+                        <app-ngx-gallery-action
+                            [icon]="action.icon"
+                            [disabled]="action.disabled!"
+                            [titleText]="action.titleText!"
+                            (onClick)="action.onClick($event, image.index)"></app-ngx-gallery-action>
+                        }
+                    </div>
+                    @if (showDescription && descriptions && descriptions[image.index!]) {
+                        <div class="ngx-gallery-image-text" [innerHTML]="descriptions[image.index]" (click)="$event.stopPropagation()" role="none"></div>
+                    }
+                </div>
+            }
         </div>
-        <app-ngx-gallery-bullets *ngIf="bullets" [count]="images?.length" [active]="selectedIndex" (onChange)="show($event)"></app-ngx-gallery-bullets>
+        @if(bullets) {
+            <app-ngx-gallery-bullets [count]="images?.length" [active]="selectedIndex" (onChange)="show($event)"></app-ngx-gallery-bullets>
+        }
+        @if (arrows) {
         <app-ngx-gallery-arrows
             class="ngx-gallery-image-size-{{ size }}"
-            *ngIf="arrows"
             (onPrevClick)="showPrev()"
             (onNextClick)="showNext()"
             [prevDisabled]="!canShowPrev()"
             [nextDisabled]="!canShowNext()"
             [arrowPrevIcon]="arrowPrevIcon"
             [arrowNextIcon]="arrowNextIcon"></app-ngx-gallery-arrows>
+        }
     `,
     styleUrls: ['./ngx-gallery-image.component.scss'],
-    imports: [NgFor, NgClass, NgxGalleryActionComponent, NgIf, NgxGalleryArrowsComponent, NgxGalleryBulletsComponent],
+    imports: [NgClass, NgxGalleryActionComponent, NgxGalleryArrowsComponent, NgxGalleryBulletsComponent],
 })
 //#endregion
 export class NgxGalleryImageComponent implements OnInit, OnChanges {

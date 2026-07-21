@@ -1,7 +1,6 @@
-import { Component, ElementRef, Input, Self } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { BaseControl } from '../baseControl'
-import { FormsModule, NgControl } from '@angular/forms'
-import { ErrorService } from '@services/error.service'
+import { FormsModule } from '@angular/forms'
 import { NgClass, NgStyle } from '@angular/common'
 
 @Component({
@@ -31,8 +30,9 @@ export class InputComponent extends BaseControl<string> {
     @Input() number?: boolean
     @Input() text = 'text'
 
-    constructor(@Self() control: NgControl, errorService: ErrorService, element: ElementRef) {
-        super(control, errorService, element)
+    // prefer inject() over constructor parameter injection
+    constructor() {
+        super()
     }
 
     override get contolName(): string {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, Inject, Input, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef, inject, Inject, Input, OnInit, ViewChild } from '@angular/core'
 import { CustomSelectComponent } from '../customSelect.component'
 import { TopService } from '@services/top.service'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
@@ -19,16 +19,15 @@ export class CompanyComponent extends SelectBase implements OnInit {
     value?: number
     placeHolder?: string
     @ViewChild(CustomSelectComponent) customSelect?: CustomSelectComponent
-    @HostBinding('style:display') flex = 'flex'
-
     @Input() useFilter = false
+    private topService: TopService = inject(TopService)
+    private companyService: CompanyService = inject(CompanyService)
+    @Inject(MAT_DIALOG_DATA) public data: DialogData = inject(MAT_DIALOG_DATA)
+    public dialogRef: MatDialogRef<CompanyComponent> = inject(MatDialogRef)
+    private elem: ElementRef = inject(ElementRef)
     //#endregion
+
     constructor(
-        private topService: TopService,
-        private companyService: CompanyService,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        public dialogRef: MatDialogRef<CompanyComponent>,
-        private elem: ElementRef
     ) {
         super()
         this.label = this.topService.property?.label ?? this.label

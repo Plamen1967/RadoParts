@@ -11,6 +11,10 @@ namespace Models.Models
 {
     public class Car : Item
     {
+        public Car()
+        {
+
+        }
         protected List<ImageData>? images_ = new List<ImageData>();
         [Required]
         public long carId { get; set; }

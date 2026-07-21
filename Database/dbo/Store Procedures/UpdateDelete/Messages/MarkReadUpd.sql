@@ -1,11 +1,12 @@
 ﻿CREATE PROCEDURE [dbo].[MarkReadUpd]
 	@originalMsgId int,
-	@receiveUserId int
+	@receiveUserId int,
+	@read Bit = 1
 AS
 	UPDATE 
 		Messages
 	SET
-		[read] = 1
+        isRead = @read
 	WHERE 
 		originalMsgId = @originalMsgId and 
 		receiveUserId = @receiveUserId

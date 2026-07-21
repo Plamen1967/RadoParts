@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, Self } from '@angular/core'
-import { ControlValueAccessor, NgControl } from '@angular/forms'
+import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { ControlValueAccessor } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from './x-company/company.component'
-import { ErrorService } from '@services/error.service'
 import { NgClass, NgStyle } from '@angular/common'
 import { ButtonGroupComponent } from '../buttonGroup/buttongroup.component'
 import { OptionItem } from '@model/optionitem'
@@ -48,14 +47,11 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
     @Input() useFilter = false
     @Input() multiSelection = false
     @Input() placeHolder?: string
-    constructor(
-        @Self() control: NgControl,
-        public dialog: MatDialog,
-        errorService: ErrorService,
-        el: ElementRef,
-        private destroyRef: DestroyRef
-    ) {
-        super(control, errorService, el)
+    public dialog: MatDialog = inject(MatDialog)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+
+    constructor() {
+        super()
     }
 
     ngOnInit() {

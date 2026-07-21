@@ -18,14 +18,14 @@ export class ToolBarComponent extends HelperComponent {
   @Input() saveName = this.labels.SAVE;
   @Input() cancelName = this.labels.CANCEL;
   @Input() isChanged = false;
-  @Output() save = new EventEmitter()
-  @Output() cancel = new EventEmitter()
+  @Output() Save = new EventEmitter()
+  @Output() Cancel = new EventEmitter()
 
   clickSave() {
-    this.save.emit()
+    this.Save.emit()
   }
   clickCancel() {
-    this.cancel.emit()
+    this.Cancel.emit()
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit, Input, HostListener, OnDestroy } from '@angular/core';
+import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit, Input, HostListener, OnDestroy, inject } from '@angular/core';
 import { NgxImgZoomService } from './ngx-img-zoom.service';
 import { NgxImgZoomMode } from './mode.enum';
 import { NgStyle } from '@angular/common';
@@ -41,10 +41,10 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
   zoomImage?: string;
   previewImage?: string;
 
+  renderer: Renderer2 = inject(Renderer2)
+  ngxZoomService: NgxImgZoomService = inject(NgxImgZoomService)
 
   constructor(
-    private renderer: Renderer2,
-    private ngxZoomService: NgxImgZoomService
     ) {
       this.zoomBreakPoints = this.ngxZoomService.zoomBreakPoints;
       this.zoomMode = this.ngxZoomService.zoomMode;
@@ -87,7 +87,7 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
     this.renderer.setStyle(this.lens, 'visibility', 'hidden');
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @HostListener('window:click', ['$event.target']) onclick(event: Event) {
+  @HostListener('window:click', ['$event.target']) onclick(_target: EventTarget | null) {
     this.hideResultDiv = true;
     this.renderer.setStyle(this.lens, 'visibility', 'hidden');
   }

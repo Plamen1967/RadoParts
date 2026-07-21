@@ -15,6 +15,6 @@ export class NextIdService {
     }
 
     getNextId(itemType: ItemType): Observable<NextId> {
-        return this.httpClient.get<NextId>(`${environment.restAPI}/admin/GetNextId?itemType=${itemType}`)
+        return this.httpClient.get<NextId>(`${environment.restAPI}/user/GetNextId?itemType=${itemType}`)
     }
 }

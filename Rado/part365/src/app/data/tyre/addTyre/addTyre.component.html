@@ -214,12 +214,12 @@
         </div>
 
         <!-- <div class="d-inline-flex justify-content-end">
-            <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+            <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div> -->
         <div class="row mt-3" style="position: relative">
             <app-imagelist [id]="itemId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
-            <div class="d-inline-flex justify-content-end position-buttons w-100">
-                <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (save)="onSubmit()" (cancel)="cancel()"></app-toolbar>
+            <div class="d-inline-flex justify-content-end position-buttons w-100">      
+                <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>
         </div>
     </form>

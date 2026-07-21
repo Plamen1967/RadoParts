@@ -322,4 +322,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="rimId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="162963bd-ec21-495e-89f2-16736b4295bd" ChangeDateTime="07/21/2026 08:34:46">
+    <Property Name="ElementName" Value="[dbo].[Messages].[read]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Messages]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="isRead" />
+  </Operation>
 </Operations>

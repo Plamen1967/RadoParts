@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Optional, output, Output, Renderer2, Self, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, Optional, output, Output, Renderer2, Self, ViewChild } from '@angular/core'
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 
@@ -6,12 +6,12 @@ import { RadioButton } from '@model/radioButton'
     selector: 'app-radiogroup',
     templateUrl: './radiogroup.component.html',
     styleUrls: ['./radiogroup.component.css'],
-    imports: [FormsModule]
+    imports: [FormsModule],
 })
 export class RadioGroupComponent implements ControlValueAccessor, AfterViewInit {
     _radios: RadioButton[] = []
     _value = 1
-    panelClosed = output<number>();
+    panelClosed = output<number>()
     // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
     private onChange?(_: unknown) {}
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -23,17 +23,17 @@ export class RadioGroupComponent implements ControlValueAccessor, AfterViewInit 
         this._radios = value
     }
     @Input() set value(value: number) {
-      this.writeValue(value)
+        this.writeValue(value)
     }
     @Input() itemSize = 70
     @Output() changeRadioGroup: EventEmitter<number> = new EventEmitter<number>()
 
     @ViewChild('radioGroup', { static: false }) radioGroup?: ElementRef
-    constructor(
-        @Optional() @Self() public ngControl: NgControl,
-        private renderer: Renderer2,
-        private _el: ElementRef
-    ) {
+    @Optional() @Self() public ngControl: NgControl = inject(NgControl, { self: true })
+    private renderer: Renderer2 = inject(Renderer2)
+    private _el: ElementRef = inject(ElementRef)
+
+    constructor() {
         if (this.ngControl) this.ngControl.valueAccessor = this
     }
     ngAfterViewInit(): void {
@@ -55,10 +55,10 @@ export class RadioGroupComponent implements ControlValueAccessor, AfterViewInit 
     }
 
     click(event: Event, value: number) {
-        event.stopPropagation();
+        event.stopPropagation()
         this._value = value
         if (this.onChange) this.onChange(value)
-        this.panelClosed.emit(value);
+        this.panelClosed.emit(value)
     }
 
     isChecked(id: number) {

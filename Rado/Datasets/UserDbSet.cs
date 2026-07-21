@@ -7,7 +7,6 @@ using Rado.Enums;
 using Rado.Exceptions;
 using Rado.Models;
 using Rado.Models.Authentication;
-using Settings;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,11 +21,11 @@ namespace Rado.Datasets
 {
     public class UserDbSet
     {
-        static private List<User> _user = new List<User>();
-        static private bool _initialized = false;
-        static public object userLock = new object();
-        static private long lastId = -1;
-        static readonly object lockLastId = new object();
+        private static List<User> _user = new List<User>();
+        private static bool _initialized = false;
+        private static object userLock = new object();
+        private static long lastId = -1;
+        private static object lockLastId = new object();
 
         UserDbSet()
         {
@@ -43,33 +42,29 @@ namespace Rado.Datasets
             try
             {
                 NumberParts numberParts = new NumberParts();
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-                {
-                    await sqlConnection.OpenAsync();
-                    using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                await using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                await sqlConnection.OpenAsync();
+                await using SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                        SqlParameter numberCarPartsParam = new SqlParameter("@carnumberParts", SqlDbType.Int);
-                        numberCarPartsParam.Direction = ParameterDirection.Output;
-                        SqlParameter numberBusPartsParam = new SqlParameter("@busnumberParts", SqlDbType.Int);
-                        numberBusPartsParam.Direction = ParameterDirection.Output;
+                SqlParameter numberCarPartsParam = new SqlParameter("@carnumberParts", SqlDbType.Int);
+                numberCarPartsParam.Direction = ParameterDirection.Output;
+                SqlParameter numberBusPartsParam = new SqlParameter("@busnumberParts", SqlDbType.Int);
+                numberBusPartsParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter userIdParam = new SqlParameter("@userId", SqlDbType.Int);
-                        userIdParam.Value = userId;
+                SqlParameter userIdParam = new SqlParameter("@userId", SqlDbType.Int);
+                userIdParam.Value = userId;
 
-                        sqlCommand.Parameters.Add(userIdParam);
-                        sqlCommand.Parameters.Add(numberCarPartsParam);
-                        sqlCommand.Parameters.Add(numberBusPartsParam);
+                sqlCommand.Parameters.Add(userIdParam);
+                sqlCommand.Parameters.Add(numberCarPartsParam);
+                sqlCommand.Parameters.Add(numberBusPartsParam);
 
-                        await sqlCommand.ExecuteNonQueryAsync();
+                await sqlCommand.ExecuteNonQueryAsync();
 
-                        numberParts.car = (int)numberCarPartsParam.Value;
-                        numberParts.bus = (int)numberBusPartsParam.Value;
+                numberParts.car = (int)numberCarPartsParam.Value;
+                numberParts.bus = (int)numberBusPartsParam.Value;
 
-                        return numberParts;
-                    }
-                }
+                return numberParts;
             }
             catch (Exception exception)
             {
@@ -81,66 +76,62 @@ namespace Rado.Datasets
         #endregion
 
         #region GetUserCount
-        public async static Task<UserCount> GetUserCountAsync(int userId)
+        public static async Task<UserCount> GetUserCountAsync(int userId)
         {
             UserCount userCount = new UserCount();
             string storedProcedure = "GetUserCount";
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-                {
-                    await sqlConnection.OpenAsync();
-                    using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                await using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                await sqlConnection.OpenAsync();
+                await using SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                        SqlParameter partCarCountParam = new SqlParameter("@partCarCount", SqlDbType.Int);
-                        partCarCountParam.Direction = ParameterDirection.Output;
+                SqlParameter partCarCountParam = new SqlParameter("@partCarCount", SqlDbType.Int);
+                partCarCountParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter partBusCountParam = new SqlParameter("@partBusCount", SqlDbType.Int);
-                        partBusCountParam.Direction = ParameterDirection.Output;
+                SqlParameter partBusCountParam = new SqlParameter("@partBusCount", SqlDbType.Int);
+                partBusCountParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter carCountParam = new SqlParameter("@carCount", SqlDbType.Int);
-                        carCountParam.Direction = ParameterDirection.Output;
+                SqlParameter carCountParam = new SqlParameter("@carCount", SqlDbType.Int);
+                carCountParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter busCountParam = new SqlParameter("@busCount", SqlDbType.Int);
-                        busCountParam.Direction = ParameterDirection.Output;
+                SqlParameter busCountParam = new SqlParameter("@busCount", SqlDbType.Int);
+                busCountParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter tyreCountParam = new SqlParameter("@tyreCount", SqlDbType.Int);
-                        tyreCountParam.Direction = ParameterDirection.Output;
+                SqlParameter tyreCountParam = new SqlParameter("@tyreCount", SqlDbType.Int);
+                tyreCountParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter rimCountParam = new SqlParameter("@rimCount", SqlDbType.Int);
-                        rimCountParam.Direction = ParameterDirection.Output;
+                SqlParameter rimCountParam = new SqlParameter("@rimCount", SqlDbType.Int);
+                rimCountParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter rimWithTyreCountParam = new SqlParameter("@rimWithTyreCount", SqlDbType.Int);
-                        rimWithTyreCountParam.Direction = ParameterDirection.Output;
+                SqlParameter rimWithTyreCountParam = new SqlParameter("@rimWithTyreCount", SqlDbType.Int);
+                rimWithTyreCountParam.Direction = ParameterDirection.Output;
 
-                        SqlParameter userIdParam = new SqlParameter("@userId", SqlDbType.Int);
-                        userIdParam.Value = userId;
+                SqlParameter userIdParam = new SqlParameter("@userId", SqlDbType.Int);
+                userIdParam.Value = userId;
 
-                        sqlCommand.Parameters.Add(userIdParam);
-                        sqlCommand.Parameters.Add(partCarCountParam);
-                        sqlCommand.Parameters.Add(partBusCountParam);
-                        sqlCommand.Parameters.Add(carCountParam);
-                        sqlCommand.Parameters.Add(busCountParam);
-                        sqlCommand.Parameters.Add(tyreCountParam);
-                        sqlCommand.Parameters.Add(rimCountParam);
-                        sqlCommand.Parameters.Add(rimWithTyreCountParam);
+                sqlCommand.Parameters.Add(userIdParam);
+                sqlCommand.Parameters.Add(partCarCountParam);
+                sqlCommand.Parameters.Add(partBusCountParam);
+                sqlCommand.Parameters.Add(carCountParam);
+                sqlCommand.Parameters.Add(busCountParam);
+                sqlCommand.Parameters.Add(tyreCountParam);
+                sqlCommand.Parameters.Add(rimCountParam);
+                sqlCommand.Parameters.Add(rimWithTyreCountParam);
 
-                        await sqlCommand.ExecuteNonQueryAsync();
+                await sqlCommand.ExecuteNonQueryAsync();
 
-                        userCount.partCarCount = (int)partCarCountParam.Value;
-                        userCount.partBusCount = (int)partBusCountParam.Value;
-                        userCount.carCount = (int)carCountParam.Value;
-                        userCount.busCount = (int)busCountParam.Value;
-                        userCount.tyreCount = (int)tyreCountParam.Value;
-                        userCount.rimCount = (int)rimCountParam.Value;
-                        userCount.rimWithTyreCount = (int)rimWithTyreCountParam.Value;
-                        userCount.user = UserDbSet.GetUserById(userId);
+                userCount.partCarCount = (int)partCarCountParam.Value;
+                userCount.partBusCount = (int)partBusCountParam.Value;
+                userCount.carCount = (int)carCountParam.Value;
+                userCount.busCount = (int)busCountParam.Value;
+                userCount.tyreCount = (int)tyreCountParam.Value;
+                userCount.rimCount = (int)rimCountParam.Value;
+                userCount.rimWithTyreCount = (int)rimWithTyreCountParam.Value;
+                userCount.user = UserDbSet.GetUserById(userId);
 
-                        return userCount;
-                    }
-                }
+                return userCount;
             }
             catch (Exception exception)
             {
@@ -148,7 +139,7 @@ namespace Rado.Datasets
             }
         }
 
-        static public NextId GetNextId(ItemType adType, int userId)
+        public static NextId GetNextId(ItemType adType, int userId)
         {
             Tuple<bool, string> tuple = CheckCanAddNewAd(adType, userId);
             if (!tuple.Item1)
@@ -163,23 +154,19 @@ namespace Rado.Datasets
                 {
                     try
                     {
-                        using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-                        {
-                            sqlConnection.Open();
-                            using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
-                            {
-                                SqlParameter nextIdParam = sqlCommand.Parameters.Add("@lastId", System.Data.SqlDbType.BigInt);
-                                nextIdParam.Direction = ParameterDirection.Output;
+                        using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                        sqlConnection.Open();
+                        using SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
+                        SqlParameter nextIdParam = sqlCommand.Parameters.Add("@lastId", System.Data.SqlDbType.BigInt);
+                        nextIdParam.Direction = ParameterDirection.Output;
 
-                                sqlCommand.CommandType = CommandType.StoredProcedure;
-                                sqlCommand.ExecuteNonQuery();
+                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                        sqlCommand.ExecuteNonQuery();
 
-                                if (nextIdParam.Value == null)
-                                    lastId = 1;
-                                else
-                                    lastId = (long)nextIdParam.Value + 1;
-                            }
-                        }
+                        if (nextIdParam.Value == null)
+                            lastId = 1;
+                        else
+                            lastId = (long)nextIdParam.Value + 1;
                     }
                     catch (Exception exception)
                     {
@@ -395,27 +382,23 @@ namespace Rado.Datasets
 
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+                await using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                await sqlConnection.OpenAsync();
+
+                await using SqlCommand command = new SqlCommand(storeProcedureName, sqlConnection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
+
+                var columns = await command.ExecuteNonQueryAsync();
+
+                if (columns !=  1)
                 {
-                    await sqlConnection.OpenAsync();
-
-                    using (SqlCommand command = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
-
-                        int columns = await command.ExecuteNonQueryAsync();
-
-                        if (columns !=  1)
-                        {
-                            throw new AppException($"Потребителя {user.userName} неуспешно е прехвърлен на частно лице");
-                        }
-                        refresh();
-
-                        return $"Потребителя {user.userName} успешно е прехвърлен на частно лице";
-                    }
+                    throw new AppException($"Потребителя {user.userName} неуспешно е прехвърлен на частно лице");
                 }
+                refresh();
+
+                return $"Потребителя {user.userName} успешно е прехвърлен на частно лице";
             }
             catch (Exception exception)
             {
@@ -432,29 +415,24 @@ namespace Rado.Datasets
             User user = null;
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+                using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                using SqlCommand command = new SqlCommand(storeProcedureName, sqlConnection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@ActivationCode", System.Data.SqlDbType.NVarChar, 200).Value = activationCode;
+                sqlConnection.Open();
+
+                using (SqlDataReader sqlDataReader = command.ExecuteReader())
                 {
-
-                    using (SqlCommand command = new SqlCommand(storeProcedureName, sqlConnection))
+                    if (sqlDataReader.Read())
                     {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        command.Parameters.Add("@ActivationCode", System.Data.SqlDbType.NVarChar, 200).Value = activationCode;
-                        sqlConnection.Open();
-
-                        using (SqlDataReader sqlDataReader = command.ExecuteReader())
-                        {
-                            if (sqlDataReader.Read())
-                            {
-                                user = EnrichManager.EnrichUser(sqlDataReader);
-                                user.PasswordHash = "";
-                            }
-                        }
-
-                        sqlConnection.Close();
-                        return user;
+                        user = EnrichManager.EnrichUser(sqlDataReader);
+                        user.PasswordHash = "";
                     }
                 }
+
+                sqlConnection.Close();
+                return user;
             }
             catch (Exception exception)
             {
@@ -504,27 +482,23 @@ namespace Rado.Datasets
 
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+                using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                sqlConnection.Open();
+
+                using SqlCommand command = new SqlCommand(storeProcedureName, sqlConnection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
+
+                int columns = command.ExecuteNonQuery();
+
+                if (columns != 1)
                 {
-                    sqlConnection.Open();
-
-                    using (SqlCommand command = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
-
-                        int columns = command.ExecuteNonQuery();
-
-                        if (columns != 1)
-                        {
-                            throw new AppException($"Потребителя {user.userName} неуспешно е прехвърлен на дилър");
-                        }
-                        refresh();
-
-                        return $"Потребителя {user.userName} успешно е прехвърлен на дилър";
-                    }
+                    throw new AppException($"Потребителя {user.userName} неуспешно е прехвърлен на дилър");
                 }
+                refresh();
+
+                return $"Потребителя {user.userName} успешно е прехвърлен на дилър";
             }
             catch (Exception exception)
             {
@@ -1300,6 +1274,21 @@ namespace Rado.Datasets
 
 
             return userView;
+        }
+
+        public static Tuple<bool, string> IsUserIdValid(long userId)
+        {
+            lock (userLock)
+            {
+                User user =  getUsers().Find(x => x.userId == userId);
+                if (user == null)
+                    return Tuple.Create(false, $"User is not found" );
+
+                if (user.suspended == 1)
+                    return Tuple.Create(false, $"User is suspended");
+            }
+
+            return Tuple.Create(true, string.Empty);
         }
 
         #region GetUserById

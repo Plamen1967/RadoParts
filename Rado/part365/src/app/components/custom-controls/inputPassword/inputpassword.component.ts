@@ -1,6 +1,5 @@
-import { Component, ElementRef, Input, Self } from '@angular/core'
-import { FormsModule, NgControl } from '@angular/forms'
-import { ErrorService } from '@services/error.service'
+import { Component, Input } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import { BaseControl } from '../baseControl'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { NgClass } from '@angular/common'
@@ -20,8 +19,8 @@ export class InputPasswordComponent extends BaseControl<string> {
     showFlag = false
     type = 'password'
 
-    constructor(@Self() control: NgControl, errorService: ErrorService, element: ElementRef) {
-        super(control, errorService, element)
+    constructor() {
+        super()
     }
 
     get labels() {

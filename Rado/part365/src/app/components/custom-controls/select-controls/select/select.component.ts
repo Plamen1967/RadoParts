@@ -1,7 +1,6 @@
-import { Component, ElementRef, EventEmitter, Input, Output, Self } from '@angular/core'
-import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
-import { ErrorService } from '@services/error.service'
 import { BaseControl } from '../../baseControl'
 import { SelectBaseComponent } from "./select-base/select-base.component";
 
@@ -47,11 +46,8 @@ export class SelectComponent extends BaseControl<number>{
     selectedValue?: number
 
     constructor(
-        @Self() control: NgControl,
-        erroService: ErrorService,
-        private _el: ElementRef
     ) {
-        super(control, erroService, _el)
+        super()
         this.control.valueAccessor = this;
     }
 
@@ -77,7 +73,7 @@ export class SelectComponent extends BaseControl<number>{
         if (this.onChange) this.onChange(this.value!)
         this.markAsTouched()
         this.changeSelectOption(this.value!)
-        this.onClose.emit(this._el)
+        this.onClose.emit(this.element)
     }
 
     onSelect(element: SelectOption) {

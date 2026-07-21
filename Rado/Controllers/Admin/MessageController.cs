@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Rado.Datasets;
-using System.Threading.Tasks;
-using Rado.Models;
-using Utility.Authorization;
 using Rado.Authorization;
-using Microsoft.AspNetCore.Http;
+using Rado.Datasets;
+using Rado.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Utility;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -85,17 +83,25 @@ namespace Rado.Controllers.Admin
 
         [HttpPost]
         [EnableCors("testingApp")]
-        [Route("deleteMessage")]
-        public bool DeleteMessage([FromBody] Id id)
+        [Route("deleteMessage/{id}")]
+        public async Task<bool> DeleteMessage(long id)
         {
-            return MessagesDbSet.DeleteMessage(id.id, UserId);
+            return await MessagesDbSet.DeleteMessageAsync(id, UserId);
         }
+
+        //[HttpPost]
+        //[EnableCors("testingApp")]
+        //[Route("deleteMessage")]
+        //public bool DeleteMessage([FromBody] Id id)
+        //{
+        //    return MessagesDbSet.DeleteMessage(id.id, UserId);
+        //}
         [HttpPost]
         [EnableCors("testingApp")]
-        [Route("markRead")]
-        public bool MarkRead([FromBody] Id id)
+        [Route("markAsRead")]
+        public async Task<bool> MarkAsRead([FromQuery] int messageId, [FromQuery] bool read)
         {
-            return MessagesDbSet.DeleteMessage(id.id, UserId);
+            return await MessagesDbSet.MarkReadAsync(messageId, read, UserId);
         }
         // PUT api/<Model>/5
         [HttpPut("{id}")]

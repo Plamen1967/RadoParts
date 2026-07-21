@@ -16,16 +16,16 @@ namespace Rado.Abuse
             "select","delete","dbo.","sys.","user", "drop", "table", ";", "'", "--", "/*", "*/", "xp_", "sp_", "EXECUTE", "EXEC", "sp_executesql", "create", "procedure"
         };
 
-        static public bool BlockPart(Part part)
+        public static bool BlockPart(Part part)
         {
             foreach (string word in invalidWords)
             {
-                if (part.description.ToLower().Contains(word.ToLower())) 
+                if (part.description != null && part.description.ToLower().Contains(word.ToLower())) 
                 {
                     return true;
                 }
 
-                if (part.partNumber.ToLower().Contains(word.ToLower()))
+                if (part.partNumber != null && part.partNumber.ToLower().Contains(word.ToLower()))
                 {
                     return true;
                 }

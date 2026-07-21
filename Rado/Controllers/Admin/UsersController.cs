@@ -40,6 +40,12 @@ namespace Rado.Controllers.Admin
         //    return UserDbSet.GetUsers().Where(user => !user.isAdmin());
         //}
 
+        [HttpGet]
+        [Route("GetNextId")]
+        public NextId GetNextId([FromQuery] ItemType itemType)
+        {
+            return UserDbSet.GetNextId(itemType, UserId);
+        }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]

@@ -60,16 +60,19 @@ namespace Utility
         public static Message LoadMessage(SqlDataReader sqlDataReader)
         {
             Message message = new Message();
-            message.id = Int64("id", sqlDataReader);
-            message.sendUserId = Int32("sendUserId", sqlDataReader);
-            message.receiveUserId = Int32("receiveUserId", sqlDataReader);
-            message.msgDate = Int64("msgDate", sqlDataReader);
+            message.Id = Int64("id", sqlDataReader);
+            message.SendUserId = Int32("sendUserId", sqlDataReader);
+            message.ReceiveUserId = Int32("receiveUserId", sqlDataReader);
+            message.MsgDate = Int64("msgDate", sqlDataReader);
             message.message = ToString("message", sqlDataReader);
-            message.previousMsgId = Int64("previousMsgId", sqlDataReader);
-            message.originalMsgId = Int64("originalMsgId", sqlDataReader);
-            message.isCar = Int32("isCar", sqlDataReader);
-            message.partId = Int64("partId", sqlDataReader);
-            message.read = Int32("read", sqlDataReader);
+            message.PreviousMsgId = Int64("previousMsgId", sqlDataReader);
+            message.OriginalMsgId = Int64("originalMsgId", sqlDataReader);
+            message.IsCar = Int32("isCar", sqlDataReader);
+            message.PartId = Int64("partId", sqlDataReader);
+            message.IsRead = Int32("isRead", sqlDataReader);
+            message.SenderName = ToString("sendername", sqlDataReader);
+            message.Email = ToString("email", sqlDataReader);
+            message.Request = ToString("request", sqlDataReader);
 
             return message;
         }

@@ -13,4 +13,8 @@ export class Message {
     modificationName?: string
     price?: number
     messageDateString?: string
+    email?: string
+    senderName?: string
+    isRead?: number
+    request?: string
 }

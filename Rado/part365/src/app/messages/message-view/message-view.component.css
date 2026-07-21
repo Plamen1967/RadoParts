@@ -1,0 +1,72 @@
+.message-style
+{
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: blanchedalmond;
+}
+
+.title
+{
+    font-weight: bold;
+    margin-bottom: 5px;
+    background-color: white;
+    color: black;
+    display: inline-flex;
+    padding: 5px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.date
+{
+    color: black;
+    font:0.8em Arial, sans-serif; 
+    margin-bottom: 2px;
+    justify-content: flex-start;
+    display: flex;
+    color: gray;
+    margin-right: 5px;
+    height: 24px;
+    align-items: center;
+}
+
+.header
+{
+    font-size: 1.2em;
+    font-weight: 400;
+    margin-bottom: 5px;
+    background-color: white;
+    color: black    ;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    display: inline-flex;
+    align-items: center;
+}
+
+.button-style
+{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: black;
+    font-size: 1.2em;
+    border-radius: 4px;
+    align-items: center;
+    display: flex;
+    align-items: center;    
+    padding: 4px;
+}
+
+.mark-read-button, .mark-unread-button
+{
+    background-color: #007bff;
+    color: white;
+}
+
+
+.delete-button
+{
+    background-color: red;
+    color: white;
+}

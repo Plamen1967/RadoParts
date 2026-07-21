@@ -1,8 +1,7 @@
-import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, Self } from '@angular/core'
-import { ControlValueAccessor, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core'
+import { ControlValueAccessor, ReactiveFormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from '../select-controls/company/company.component'
-import { ErrorService } from '@services/error.service'
 import { NgClass, NgStyle } from '@angular/common'
 import { ButtonGroupComponent } from '../buttonGroup/buttongroup.component'
 import { OptionItem } from '@model/optionitem'
@@ -16,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     styleUrls: ['./customSelect.component.css'],
     imports: [NgClass, NgStyle, ButtonGroupComponent, ReactiveFormsModule]
 })
-export class CustomSelectComponent extends BaseControl<number> implements OnInit, ControlValueAccessor {
+export class CustomSelectComponent extends BaseControl<number> implements ControlValueAccessor {
 
     selectedValue?: number
     letterItem = undefined
@@ -56,19 +55,14 @@ export class CustomSelectComponent extends BaseControl<number> implements OnInit
     @Input() set select(value: number) {
         this.writeValue(value);
     };
-    constructor(
-        @Self() control: NgControl,
-        public dialog: MatDialog,
-        errorService: ErrorService,
-        el: ElementRef,
-        private alertService: AlertService,
-                private destroyRef: DestroyRef
-    ) {
-        super(control, errorService, el)
-        this._selection = this.placeHolder
-    }
+    public dialog: MatDialog = inject(MatDialog);
+    private alertService: AlertService = inject(AlertService);
+    private destroyRef: DestroyRef = inject(DestroyRef);
 
-    ngOnInit() {
+    constructor(
+    ) {
+        super()
+        this._selection = this.placeHolder
     }
 
 

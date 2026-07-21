@@ -38,7 +38,7 @@
                     </div>
                 }
                 @if (_useFilter) {
-                    <app-searchinput (filterChanged)="filterChange($event)" style="background-color: white"></app-searchinput>
+                    <app-searchinput (filterChanged)="filterChange($event)" (Search)="filterChange($event)" style="background-color: white" ></app-searchinput>
                 }
                 <div class="options-container">
                     @for (item of _data; track index()) {

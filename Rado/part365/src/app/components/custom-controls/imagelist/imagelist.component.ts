@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { HelperComponent } from '../helper/helper.component'
 import { ImageData } from '@model/imageData'
 import { FormsModule } from '@angular/forms'
@@ -28,11 +28,12 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     @Input() UpdateFlag = false
     @Output() defaultImageEvent: EventEmitter<number> = new EventEmitter<number>()
 
+    private imageService: ImageService = inject(ImageService)
+    private popupService: PopUpService = inject(PopUpService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private toastService: ToastService = inject(ToastService)
+    
     constructor(
-        private imageService: ImageService,
-        private popupService: PopUpService,
-        private confirmService: ConfirmServiceService,
-        private toastService: ToastService
     ) {
         super()
     }

@@ -1,8 +1,7 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, EventEmitter, Input, Optional, Output, Self } from '@angular/core'
-import { FormsModule, NgControl } from '@angular/forms'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import { BaseControl } from '../baseControl'
-import { ErrorService } from '@services/error.service'
 
 @Component({
     selector: 'app-searchinput',
@@ -18,14 +17,10 @@ export class SearchInputComponent extends BaseControl<string> {
     @Input() placeHolder = ''
 
     @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>()
-    @Output() search: EventEmitter<string> = new EventEmitter<string>()
+    @Output() Search: EventEmitter<string> = new EventEmitter<string>()
 
-    constructor(
-        @Optional() @Self() public ngControl: NgControl,
-        errorService: ErrorService,
-        element: ElementRef
-    ) {
-        super(ngControl, errorService, element)
+    constructor() {
+        super()
     }
 
     override writeValue(obj: string): void {
@@ -43,7 +38,7 @@ export class SearchInputComponent extends BaseControl<string> {
     }
 
     onSearch() {
-       this.search.emit(this.filter)
+       this.Search.emit(this.filter)
     }
 
     onClearBox() {
