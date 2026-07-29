@@ -57,7 +57,7 @@ namespace Rado.Datasets
             Category category = null;
             await Task.Run(() =>
             {
-                category = GetInstance()._categories.Find(x => x.categoryId == categoryId);
+                category = GetInstance()._categories.Find(x => x.CategoryId == categoryId);
             });
 
             return category;
@@ -65,16 +65,16 @@ namespace Rado.Datasets
 
         public static Category GetCategoryById(int categoryId)
         {
-            Category category = GetInstance()._categories.Find(x => x.categoryId == categoryId);
+            Category category = GetInstance()._categories.Find(x => x.CategoryId == categoryId);
 
             return category;
         }
 
         public static string GetCategoryNameById(int categoryId)
         {
-            Category category = GetInstance()._categories.Find(x => x.categoryId == categoryId);
+            Category category = GetInstance()._categories.Find(x => x.CategoryId == categoryId);
 
-            return category.categoryName;
+            return category.CategoryName;
         }
 
         private void updateOnceOff()
@@ -124,9 +124,9 @@ namespace Rado.Datasets
                             {
                                 _categories.Add(new Category()
                                 {
-                                    categoryId = Convert.ToInt32(sqlDataReader["categoryId"]),
-                                    categoryName = Convert.ToString(sqlDataReader["categoryName"]) ?? "",
-                                    imageName = Convert.ToString(sqlDataReader["imageName"]) ?? ""
+                                    CategoryId = Convert.ToInt32(sqlDataReader["categoryId"]),
+                                    CategoryName = Convert.ToString(sqlDataReader["categoryName"]) ?? "",
+                                    ImageName = Convert.ToString(sqlDataReader["imageName"]) ?? ""
                                 });
                             }
                         }
@@ -147,9 +147,9 @@ namespace Rado.Datasets
 
         private static int Compare(Category x, Category y)
         {
-            if (x.categoryName.ToLower() == "други") return 1;
-            if (y.categoryName.ToLower() == "други") return -1;
-            return String.Compare(x.categoryName, y.categoryName, StringComparison.Ordinal);
+            if (x.CategoryName.ToLower() == "други") return 1;
+            if (y.CategoryName.ToLower() == "други") return -1;
+            return String.Compare(x.CategoryName, y.CategoryName, StringComparison.Ordinal);
         }
 
         public static void Refresh()

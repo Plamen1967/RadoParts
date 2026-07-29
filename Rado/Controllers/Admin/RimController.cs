@@ -36,7 +36,7 @@ namespace Rado.Controllers.Admin
         [HttpPost]
         public RimView Post([FromBody] Rim rim)
         {
-            rim.userId = UserId;
+            rim.UserId = UserId;
             return RimDbSet.AddRim(rim);
         }
 
@@ -44,7 +44,7 @@ namespace Rado.Controllers.Admin
         [HttpPost("{id}")]
         public RimView Post(long id, Rim rim)
         {
-            rim.userId = UserId;
+            rim.UserId = UserId;
             return RimDbSet.UpdateRim(rim);
         }
 

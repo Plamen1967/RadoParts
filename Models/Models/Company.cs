@@ -2,12 +2,12 @@
 {
     public class Company
     {
-        public int companyId { get; set; }
-        public string companyName { get; set; }
-        public int important { get; set; }
-        public int bus { get; set; }
-        public int countParts { get; set; }
-        public int countCars { get; set; }
+        public int CompanyId { get; set; }
+        public string CompanyName { get; set; }
+        public int Important { get; set; }
+        public int Bus { get; set; }
+        public int CountParts { get; set; }
+        public int CountCars { get; set; }
 
     }
 }

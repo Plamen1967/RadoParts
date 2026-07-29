@@ -154,14 +154,14 @@ namespace Utility
 
         private Tuple<string, string> getHREF()
         {
-            return new Tuple<string, string>($@"Program.api/viewPart?id={displayPartView_.id}", 
-                                                $@"{displayPartView_.descriptionModel}");
+            return new Tuple<string, string>($@"Program.api/viewPart?id={displayPartView_.Id}", 
+                                                $@"{displayPartView_.DescriptionModel}");
         }
         private string getMainImage()
         {
-            string mainImageSrc = displayPartView_.mainPicture.Replace("http://localhost:4005", "http://www.radoparts.com");
+            string mainImageSrc = displayPartView_.MainPicture.Replace("http://localhost:4005", "http://www.radoparts.com");
              string mainImage = $@"
-                                    <img style='{Img}' id='{displayPartView_.id}' 
+                                    <img style='{Img}' id='{displayPartView_.Id}' 
                                          src='{mainImageSrc}'/>
                                  ";
             return mainImage;
@@ -213,8 +213,8 @@ string body = $@"<body style='{Body}'>
                             <div style='{Container}'>
                             {getDetails()}
                             </div>
-                            <div>От: {emailMessage_.name} <a href='mailto:{emailMessage_.email}'>Отговори</a></div>
-                            <div>Съобщение:{emailMessage_.request}</div>
+                            <div>От: {emailMessage_.Name} <a href='mailto:{emailMessage_.Email}'>Отговори</a></div>
+                            <div>Съобщение:{emailMessage_.Request}</div>
                             <body>";
             return body;
         }
@@ -225,11 +225,11 @@ string body = $@"<body style='{Body}'>
             string bodyMessage = generateBody();
             string tags = generateTags(displayPartView.Tags);
             bodyMessage = bodyMessage.Replace("{{API}}", "http:\\localhost:4200");
-            bodyMessage = bodyMessage.Replace("{{ViewID}}", displayPartView.id.ToString());
-            bodyMessage = bodyMessage.Replace("{{Description}}", displayPartView.descriptionModel);
-            bodyMessage = bodyMessage.Replace("{{Image}}", displayPartView.mainPicture);
-            bodyMessage = bodyMessage.Replace("{{NumberPhotos}}", displayPartView.numberImages.ToString());
-            bodyMessage = bodyMessage.Replace("{{Dealer}}", displayPartView.sellerName);
+            bodyMessage = bodyMessage.Replace("{{ViewID}}", displayPartView.Id.ToString());
+            bodyMessage = bodyMessage.Replace("{{Description}}", displayPartView.DescriptionModel);
+            bodyMessage = bodyMessage.Replace("{{Image}}", displayPartView.MainPicture);
+            bodyMessage = bodyMessage.Replace("{{NumberPhotos}}", displayPartView.NumberImages.ToString());
+            bodyMessage = bodyMessage.Replace("{{Dealer}}", displayPartView.SellerName);
             bodyMessage = bodyMessage.Replace("{{Tags}}", tags);
 
             emailMessage_ = emailMessage;

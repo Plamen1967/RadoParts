@@ -25,8 +25,8 @@ namespace Rado.Models.Authentication
         public int regionId { get; set; }
         public string address { get; set; }
         public string city { get; set; }
-        public ImageData busimessCard { get; set; }
-        public ImageData[] images { get; set; }
+        public ImageDataClass busimessCard { get; set; }
+        public ImageDataClass[] images { get; set; }
 
     }
 

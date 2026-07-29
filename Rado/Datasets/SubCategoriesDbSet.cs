@@ -38,9 +38,9 @@ namespace Rado.Datasets
                                 {
                                     subCategories.Add(new SubCategory()
                                     {
-                                        subCategoryId = Convert.ToInt32(sqlDataReader["subCategoryId"]),
-                                        categoryId = Convert.ToInt32(sqlDataReader["categoryId"]),
-                                        subCategoryName = Convert.ToString(sqlDataReader["subCategoryName"])
+                                        SubCategoryId = Convert.ToInt32(sqlDataReader["subCategoryId"]),
+                                        CategoryId = Convert.ToInt32(sqlDataReader["categoryId"]),
+                                        SubCategoryName = Convert.ToString(sqlDataReader["subCategoryName"])
                                     });
                                 }
                             }
@@ -59,9 +59,9 @@ namespace Rado.Datasets
 
         static private int compare(SubCategory x, SubCategory y)
         {
-            if (x.subCategoryName.ToLower() == "други") return 1;
-            if (y.subCategoryName.ToLower() == "други") return -1;
-            return x.subCategoryName.CompareTo(y.subCategoryName);
+            if (x.SubCategoryName.ToLower() == "други") return 1;
+            if (y.SubCategoryName.ToLower() == "други") return -1;
+            return String.Compare(x.SubCategoryName, y.SubCategoryName, StringComparison.Ordinal);
         }
 
 
@@ -91,7 +91,7 @@ namespace Rado.Datasets
             {
                 try
                 {
-                    subCategories = getInstance().subCategories.FindAll(x => x.categoryId == categoryid).ToArray();
+                    subCategories = getInstance().subCategories.FindAll(x => x.CategoryId == categoryid).ToArray();
                 }
                 catch (Exception e)
                 {
@@ -104,7 +104,7 @@ namespace Rado.Datasets
 
         static public SubCategory[] GetSubCategories(int categoryid)
         {
-            return getInstance().subCategories.FindAll(x => x.categoryId == categoryid).ToArray();
+            return getInstance().subCategories.FindAll(x => x.CategoryId == categoryid).ToArray();
         }
 
         static public Task<SubCategory[]> GetSubCategoriesByCategoriesId(string categoriesId)
@@ -117,7 +117,7 @@ namespace Rado.Datasets
                 {
                     int id = Int32.Parse(modelId);
 
-                    subCategories.AddRange(getInstance().subCategories.FindAll(x => x.categoryId == id));
+                    subCategories.AddRange(getInstance().subCategories.FindAll(x => x.CategoryId == id));
                 }
             }
 
@@ -126,25 +126,25 @@ namespace Rado.Datasets
 
         static public List<int> GetSubCategoriesIds(int categoryid)
         {
-            List<SubCategory> subCategories = getInstance().subCategories.FindAll(x => x.categoryId == categoryid);
-            return subCategories.ConvertAll(x => x.subCategoryId);
+            List<SubCategory> subCategories = getInstance().subCategories.FindAll(x => x.CategoryId == categoryid);
+            return subCategories.ConvertAll(x => x.SubCategoryId);
         }
 
         static public SubCategory GetSubCategoryById(int subCategoryId)
         {
-            return getInstance().subCategories.Find(x => x.subCategoryId == subCategoryId);
+            return getInstance().subCategories.Find(x => x.SubCategoryId == subCategoryId);
         }
         static public string GetSubCategoryNameById(int subCategoryId)
         {
-            return getInstance().subCategories.Find(x => x.subCategoryId == subCategoryId).subCategoryName;
+            return getInstance().subCategories.Find(x => x.SubCategoryId == subCategoryId).SubCategoryName;
         }
 
         static public int GetCategoryId(int? subCategoryId)
         {
             if (subCategoryId == null) return 0;
 
-            SubCategory subCategory = getInstance().subCategories.Find(x => x.subCategoryId == subCategoryId);
-            return subCategory != null ? subCategory.categoryId : 0;
+            SubCategory subCategory = getInstance().subCategories.Find(x => x.SubCategoryId == subCategoryId);
+            return subCategory != null ? subCategory.CategoryId : 0;
         }
 
         static public void Refresh()

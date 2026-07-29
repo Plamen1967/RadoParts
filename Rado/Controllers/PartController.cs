@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using Models.Enums;
 using Models.Models;
-using Rado;
 using Rado.Authorization;
 using Rado.Datasets;
 using Rado.Enrich;
@@ -32,7 +30,7 @@ namespace Rado.Controllers
         {
             try
             {
-                part.userId = UserId;
+                part.UserId = UserId;
                 return await PartDbSet.AddPartAsync(part);
             } 
             catch(Exception exception)
@@ -49,7 +47,7 @@ namespace Rado.Controllers
         {
             try
             {
-                part.userId = UserId;
+                part.UserId = UserId;
                 return await PartDbSet.UpdatePartAsync(part);
             }
             catch (Exception exception)
@@ -111,8 +109,8 @@ namespace Rado.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<PartView>> GetParts([FromQuery] Filter filterPart)
         {
-            filterPart.userId = UserId;
-            filterPart.searchBy = Enums.SearchBy.Filter;
+            filterPart.UserId = UserId;
+            filterPart.SearchBy = Enums.SearchBy.Filter;
             return await PartDbSet.GetPartsAsync(filterPart);
         }
         // GET api/<PartController>/5

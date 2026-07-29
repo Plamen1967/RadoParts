@@ -46,7 +46,7 @@ namespace Rado.Models
         public string partNumber { get; set; }
         public long modifiedTime { get; set; }
 
-        List<ImageData> images_ = new List<ImageData>();
-        public ImageData[] images { get { return images_.ToArray(); } }
+        List<ImageDataClass> images_ = new List<ImageDataClass>();
+        public ImageDataClass[] images { get { return images_.ToArray(); } }
     }
 }

@@ -39,10 +39,10 @@ namespace Rado.Datasets
                             {
                                 dealerSubCategories.Add(new DealerSubCategory()
                                 {
-                                    dealerSubCategoryId = Convert.ToInt32(sqlDataReader["dealerSubCategoryId"]),
-                                    subCategoryId = Convert.ToInt32(sqlDataReader["subCategoryId"]),
-                                    dealerSubCategoryName = Convert.ToString(sqlDataReader["dealerSubCategoryName"]),
-                                    categoryId = Convert.ToInt32(sqlDataReader["categoryId"])
+                                    DealerSubCategoryId = Convert.ToInt32(sqlDataReader["dealerSubCategoryId"]),
+                                    SubCategoryId = Convert.ToInt32(sqlDataReader["subCategoryId"]),
+                                    DealerSubCategoryName = Convert.ToString(sqlDataReader["dealerSubCategoryName"]),
+                                    CategoryId = Convert.ToInt32(sqlDataReader["categoryId"])
 
                                 });
                             }
@@ -62,22 +62,22 @@ namespace Rado.Datasets
         }
         static public DealerSubCategory GetDealerSubCategoryById(int dealerSubCategoryId)
         {
-            return getInstance().dealerSubCategories.Find(x => x.dealerSubCategoryId == dealerSubCategoryId);
+            return getInstance().dealerSubCategories.Find(x => x.DealerSubCategoryId == dealerSubCategoryId);
         }
         static public DealerSubCategory[] GetDealerSubCategoriesPerSubCategory(int subCategoryid)
         {
-            return getInstance().dealerSubCategories.FindAll(x => x.subCategoryId == subCategoryid).ToArray();
+            return getInstance().dealerSubCategories.FindAll(x => x.SubCategoryId == subCategoryid).ToArray();
         }
         static public DealerSubCategory[] GetDealerSubCategoriesPerCategory(int categoryid)
         {
-            return getInstance().dealerSubCategories.FindAll(x => x.categoryId == categoryid).ToArray();
+            return getInstance().dealerSubCategories.FindAll(x => x.CategoryId == categoryid).ToArray();
         }
         static public int GetCategoryId(int? dealerSubCategoryId)
         {
             if (dealerSubCategoryId == null) return 0;
 
-            DealerSubCategory dealerSubCategory = getInstance().dealerSubCategories.Find(x => x.dealerSubCategoryId == dealerSubCategoryId);
-            return dealerSubCategory != null ? dealerSubCategory.subCategoryId : 0;
+            DealerSubCategory dealerSubCategory = getInstance().dealerSubCategories.Find(x => x.DealerSubCategoryId == dealerSubCategoryId);
+            return dealerSubCategory != null ? dealerSubCategory.SubCategoryId : 0;
         }
 
         static public void Refresh()

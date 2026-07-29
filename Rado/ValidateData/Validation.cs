@@ -20,17 +20,17 @@ namespace Rado.Abuse
         {
             foreach (string word in invalidWords)
             {
-                if (part.description != null && part.description.ToLower().Contains(word.ToLower())) 
+                if (part.Description != null && part.Description.ToLower().Contains(word.ToLower())) 
                 {
                     return true;
                 }
 
-                if (part.partNumber != null && part.partNumber.ToLower().Contains(word.ToLower()))
+                if (part.PartNumber != null && part.PartNumber.ToLower().Contains(word.ToLower()))
                 {
                     return true;
                 }
 
-                if (part.dealerSubCategoryName.ToLower().Contains(word.ToLower()))
+                if (part.DealerSubCategoryName.ToLower().Contains(word.ToLower()))
                 {
                     return true;
                 }
@@ -42,12 +42,12 @@ namespace Rado.Abuse
         {
             foreach (string word in invalidWords)
             {
-                if (car.vin.ToLower().Contains(word.ToLower()))
+                if (car.Vin.ToLower().Contains(word.ToLower()))
                 {
                     return true;
                 }
 
-                if (car.description.ToLower().Contains(word.ToLower()))
+                if (car.Description.ToLower().Contains(word.ToLower()))
                 {
                     return true;
                 }
@@ -58,9 +58,9 @@ namespace Rado.Abuse
         {
             foreach (string word in sqlWords)
             {
-                part.description = removeWord(part.description, word);
-                part.partNumber = removeWord(part.partNumber, word);
-                part.dealerSubCategoryName = removeWord(part.dealerSubCategoryName, word);
+                part.Description = removeWord(part.Description, word);
+                part.PartNumber = removeWord(part.PartNumber, word);
+                part.DealerSubCategoryName = removeWord(part.DealerSubCategoryName, word);
             }
 
             return part;
@@ -70,8 +70,8 @@ namespace Rado.Abuse
         {
             foreach (string word in sqlWords)
             {
-                car.description = removeWord(car.description, word);
-                car.vin = removeWord(car.vin, word);
+                car.Description = removeWord(car.Description, word);
+                car.Vin = removeWord(car.Vin, word);
             }
 
             return car;

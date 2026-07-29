@@ -7,13 +7,13 @@ public class EmailMessage
 	{
 	}
 
-	public ItemType itemType { get; set; } 
+	public ItemType ItemType { get; set; } 
 
-	public string name { get; set; }
-	public long id { get; set; }
-	public string email { get; set; }
-	public string request { get; set; }
-	public bool sendCopy { get; set; }
+	public string Name { get; set; }
+	public long Id { get; set; }
+	public string Email { get; set; }
+	public string Request { get; set; }
+	public bool SendCopy { get; set; }
 
 }
 

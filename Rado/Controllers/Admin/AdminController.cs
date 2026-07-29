@@ -41,7 +41,7 @@ namespace Rado.Controllers.Admin
         public IActionResult Users()
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return  Ok(UserDbSet.GetUsers());
             }
@@ -84,7 +84,7 @@ namespace Rado.Controllers.Admin
         public async Task<User> SuspendUser([FromBody] SuspendUser suspendUser)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return await UserDbSet.SuspendUser(suspendUser.userId, suspendUser.suspendedDateTime);
             }
@@ -98,7 +98,7 @@ namespace Rado.Controllers.Admin
         public async Task<User> UnSuspendUser([FromBody] SuspendUser suspendUser)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return await UserDbSet.UnSuspendUser(suspendUser.userId);
             }
@@ -122,7 +122,7 @@ namespace Rado.Controllers.Admin
         public bool approveAd([FromBody] ApproveAd approveAd)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.ApproveAd(approveAd);
             }
@@ -135,7 +135,7 @@ namespace Rado.Controllers.Admin
         public async Task<UserStats> getUserStats([FromQuery] long userId)
         {
             User user = UserDbSet.GetUserById(userId);
-            if (user.isAdmin() || UserId == userId)
+            if (user.IsAdmin() || UserId == userId)
             {
                 return await AdminDbSet.GetUserStats(userId);
             }
@@ -156,7 +156,7 @@ namespace Rado.Controllers.Admin
         public Category updateCategory([FromBody] Category category)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.UpdateCategory(category);
             }
@@ -170,7 +170,7 @@ namespace Rado.Controllers.Admin
         public SubCategory updateSubCategory([FromBody] SubCategory subCategory)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.UpdateSubCategory(subCategory);
             }
@@ -184,7 +184,7 @@ namespace Rado.Controllers.Admin
         public string recoverPassword(int userId)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.RecoverPassword(userId);
             }
@@ -198,7 +198,7 @@ namespace Rado.Controllers.Admin
         public bool updatePassword([FromBody] NewPassword newPassword)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.UpdatePassword(newPassword);
             }
@@ -212,7 +212,7 @@ namespace Rado.Controllers.Admin
         public DealerSubCategory updateDealerSubCategory([FromBody] DealerSubCategory dealerSubCategory)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.UpdateDealerSubCategory(dealerSubCategory);
             }
@@ -226,7 +226,7 @@ namespace Rado.Controllers.Admin
         public async Task<Company> updateCompany([FromBody] Company company)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return await AdminDbSet.UpdateCompany(company);
             }
@@ -254,7 +254,7 @@ namespace Rado.Controllers.Admin
         public async Task<Modification> updateModification([FromBody] Modification modification)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return await AdminDbSet.UpdateModificationAsync(modification);
             }
@@ -268,7 +268,7 @@ namespace Rado.Controllers.Admin
         public async Task<Company> addCompany([FromBody] Company company)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return await AdminDbSet.UpdateCompany(company);
             }
@@ -296,7 +296,7 @@ namespace Rado.Controllers.Admin
         public async Task<Modification> addModification([FromBody] Modification modification)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return await AdminDbSet.UpdateModificationAsync(modification);
             }
@@ -311,7 +311,7 @@ namespace Rado.Controllers.Admin
         public bool deleteModel([FromBody] int modelId)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.DeleteModel(modelId);
             }
@@ -326,7 +326,7 @@ namespace Rado.Controllers.Admin
         public bool deleteModification([FromBody] int modificationId)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.DeleteModification(modificationId);
             }
@@ -341,7 +341,7 @@ namespace Rado.Controllers.Admin
         public bool deleteCategory([FromBody] int subCategoryId)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.DeleteCategory(subCategoryId);
             }
@@ -356,7 +356,7 @@ namespace Rado.Controllers.Admin
         public bool deleteSubCategory([FromBody] int subCategoryId)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.DeleteSubCategory(subCategoryId);
             }
@@ -371,7 +371,7 @@ namespace Rado.Controllers.Admin
         public bool deleteDealerSubCategory([FromBody] int dealerSubCategoryId)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.isAdmin())
+            if (user.IsAdmin())
             {
                 return AdminDbSet.DeleteDealerSubCategory(dealerSubCategoryId);
             }

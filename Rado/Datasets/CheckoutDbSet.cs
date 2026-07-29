@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Models.Enums;
+using Models.Models;
 using Rado.Enrich;
 using Rado.Exceptions;
 using Rado.Models;
@@ -68,14 +69,14 @@ namespace Rado.Datasets
                         SqlParameter priceParam = command.Parameters.Add("@price", System.Data.SqlDbType.Decimal);
                         SqlParameter captureTimeParam = command.Parameters.Add("@captureTime", System.Data.SqlDbType.DateTime);
 
-                        partIdParam.Value = item.partId;
-                        userIdParam.Value = item.userId;
-                        priceParam.Value = item.price;
+                        partIdParam.Value = item.PartId;
+                        userIdParam.Value = item.UserId;
+                        priceParam.Value = item.Price;
                         captureTimeParam.Value = dateTime;
 
                         command.ExecuteNonQuery();
                     }
-                    using (SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM checkout where userId = {item.userId}", connection))
+                    using (SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM checkout where userId = {item.UserId}", connection))
                     {
                         numberItems = (Int32)command.ExecuteScalar();
                     }
@@ -190,7 +191,7 @@ namespace Rado.Datasets
             {
                 RimWithTyreView rimWithtyre =  RimWithTyreDbSet.GetRimWithTyreById(id);
 
-                if (rimWithtyre.rimWithTyreId != 0)
+                if (rimWithtyre.RimWithTyreId != 0)
                 {
                     DisplayPartView displayPart = EnrichManager.EnrichDisplayPartView(rimWithtyre);
                     displayPart.Normalize();

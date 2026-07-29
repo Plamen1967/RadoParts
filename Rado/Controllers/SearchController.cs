@@ -32,7 +32,7 @@ namespace Rado.Controllers
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            filter.searchBy = SearchBy.PartNumber;
+            filter.SearchBy = SearchBy.PartNumber;
             SearchResult searchResult = await SearchDbSet.SearchPartByNumber(filter);
             searchResult.filter = filter;
 

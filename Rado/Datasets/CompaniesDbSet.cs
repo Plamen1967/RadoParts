@@ -28,13 +28,13 @@ namespace Rado.Datasets
         {
             var companies = await Numbers.GetCompaniesPerUser(userId);
 
-            return companies.Where(company => company.bus == 0).ToArray();
+            return companies.Where(company => company.Bus == 0).ToArray();
         }
         public static async Task<Company[]> GetBusCompaniesByUserId(int userId)
         {
             var companies = await Numbers.GetCompaniesPerUser(userId);
 
-            return companies.Where(company => company.bus == 1).ToArray();
+            return companies.Where(company => company.Bus == 1).ToArray();
         }
 
         void loadCash()
@@ -58,19 +58,19 @@ namespace Rado.Datasets
 
                                 companies.Add(new Company()
                                 {
-                                    companyId = Convert.ToInt32(sqlDataReader["companyID"]),
-                                    companyName = Convert.ToString(sqlDataReader["companyName"]),
-                                    bus = Convert.ToInt32(sqlDataReader["bus"])
+                                    CompanyId = Convert.ToInt32(sqlDataReader["companyID"]),
+                                    CompanyName = Convert.ToString(sqlDataReader["companyName"]),
+                                    Bus = Convert.ToInt32(sqlDataReader["bus"])
                                 });
 
                                 if (important != 0)
                                 {
                                     importantCompanies.Add(new Company()
                                     {
-                                        companyId = Convert.ToInt32(sqlDataReader["companyID"]),
-                                        companyName = Convert.ToString(sqlDataReader["companyName"]),
-                                        bus = Convert.ToInt32(sqlDataReader["bus"]),
-                                        important = 1
+                                        CompanyId = Convert.ToInt32(sqlDataReader["companyID"]),
+                                        CompanyName = Convert.ToString(sqlDataReader["companyName"]),
+                                        Bus = Convert.ToInt32(sqlDataReader["bus"]),
+                                        Important = 1
                                     });
                                 }
                             }
@@ -88,13 +88,13 @@ namespace Rado.Datasets
             {
             }
 
-            importantCompanies.Insert(0, new Company() { companyName = "Популярни", companyId = Program.DISIABLED });
-            importantCompanies.Add(new Company() { companyName = "Всички", companyId = Program.DISIABLED });
+            importantCompanies.Insert(0, new Company() { CompanyName = "Популярни", CompanyId = Program.DISIABLED });
+            importantCompanies.Add(new Company() { CompanyName = "Всички", CompanyId = Program.DISIABLED });
             companies = importantCompanies.Concat(companies).ToList();
 
             AllCompanies = companies.ToArray();
-            BusCompanies = companies.Where(company => company.bus == 1 || company.companyId == Program.DISIABLED).ToArray();
-            CarCompanies = companies.Where(company => company.bus == 0).ToArray();
+            BusCompanies = companies.Where(company => company.Bus == 1 || company.CompanyId == Program.DISIABLED).ToArray();
+            CarCompanies = companies.Where(company => company.Bus == 0).ToArray();
         }
 
         static public async Task<Company[]> GetAllCompanies()
@@ -158,7 +158,7 @@ namespace Rado.Datasets
                 Company company = null;
                 await Task.Run(() =>
                 {
-                    company = getCompanyById(companyId);
+                    company = GetCompanyById(companyId);
                 });
 
                 return company;
@@ -169,14 +169,14 @@ namespace Rado.Datasets
             }
         }
 
-        static public void UpdatePartCount(int companyId, int number)
+        public static void UpdatePartCount(int companyId, int number)
         {
             try
                 {
-                    var companies = Array.FindAll(getInstance().AllCompanies, x => x.companyId == companyId);
+                    var companies = Array.FindAll(getInstance().AllCompanies, x => x.CompanyId == companyId);
                     foreach (var company in companies)
                     {
-                        company.countParts += number;
+                        company.CountParts += number;
                     }
                 }
                 catch
@@ -188,10 +188,10 @@ namespace Rado.Datasets
         {
             try
             {
-                var companies = Array.FindAll(getInstance().AllCompanies, x => x.companyId == companyId);
+                var companies = Array.FindAll(getInstance().AllCompanies, x => x.CompanyId == companyId);
                 foreach (var company in companies)
                 {
-                    company.countCars += number;
+                    company.CountCars += number;
                 }
             }
             catch
@@ -211,28 +211,28 @@ namespace Rado.Datasets
             mut.ReleaseMutex();
         }
 
-        static public Company getCompanyByName(string companyName)
+        public static Company GetCompanyByName(string companyName)
         {
-            Company company = Array.Find(getInstance().AllCompanies, x => x.companyName == companyName);
+            Company company = Array.Find(getInstance().AllCompanies, x => x.CompanyName == companyName);
             return company;
         }
-        static public Company getCompanyById(int companyId)
+        public static Company GetCompanyById(int companyId)
         {
-            Company company = Array.Find(getInstance().AllCompanies, x => x.companyId == companyId);
+            Company company = Array.Find(getInstance().AllCompanies, x => x.CompanyId == companyId);
             return company;
         }
 
-        static public string GetCompanyNameById(int companyId)
+        public static string GetCompanyNameById(int companyId)
         {
-            Company company = Array.Find(getInstance().AllCompanies, x => x.companyId == companyId);
-            return (company != null) ? company.companyName : "";
+            Company company = Array.Find(getInstance().AllCompanies, x => x.CompanyId == companyId);
+            return (company != null) ? company.CompanyName : "";
         }
-        static public void Init()
+        public static void Init()
         {
             getInstance();    
         }
 
-        static private CompaniesDbSet getInstance()
+        private static CompaniesDbSet getInstance()
         {
             if (companyInstance_?.isCashLoaded == true) 
                 return companyInstance_;
@@ -288,10 +288,6 @@ namespace Rado.Datasets
             }
         }
 
-        internal static Company GetCompanyByName(string companyName)
-        {
-            return getCompanyByName(companyName);
-        }
     }
 
     /*

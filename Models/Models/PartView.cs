@@ -1,33 +1,29 @@
-﻿using Microsoft.Data.SqlClient;
-using Models.Models;
-using Rado;
-using Rado.Models.Authentication;
-using System.Diagnostics;
+﻿using Models.Models;
 using System.Text.Json.Serialization;
 
 namespace Rado.Models
 {
     public class PartView : Part
     {
-        public string companyName { get; set; }
-        public int companyId { get; set; }
-        public string modelName { get; set; }
-        public string modificationName { get; set; }
-        public string categoryName { get; set; }
-        public bool isCar { get; set; }
-        public string regNumber { get; set; }
+        public string CompanyName { get; set; }
+        public int CompanyId { get; set; }
+        public string ModelName { get; set; }
+        public string ModificationName { get; set; }
+        public string CategoryName { get; set; }
+        public bool IsCar { get; set; }
+        public string RegNumber { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string vin { get; set; }
-        public int numberImages { get; set; }
+        public string Vin { get; set; }
+        public int NumberImages { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string yearName { get; set; }
-        public ImageData mainImageData { get; set; }
+        public string YearName { get; set; }
+        public ImageDataClass MainImageDataClass { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TraderDetails traderDetails { get; set;}
+        public TraderDetails TraderDetails { get; set;}
 
         public PartView()
         {
-            leftRightPosition = frontBackPosition = 0;
+            LeftRightPosition = FrontBackPosition = 0;
         }
 
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Elfie.Diagnostics;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Models.Enums;
 using Models.Models;
 using Models.Models.Utility;
@@ -7,13 +6,11 @@ using Rado.Enrich;
 using Rado.Enums;
 using Rado.Exceptions;
 using Rado.Models;
-using Rado.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using Utility;
 
@@ -155,39 +152,39 @@ namespace Rado.Datasets
                 {
                     await connection.OpenAsync();
 
-                    if (rimWithTyre.mainPicture == null) rimWithTyre.mainPicture = "";
+                    if (rimWithTyre.MainPicture == null) rimWithTyre.MainPicture = "";
 
                     DateTime dateTime = DateTime.Now;
                     using (SqlCommand command = new SqlCommand(storeProcedureName, connection))
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                        command.Parameters.Add("@rimWithTyreId", System.Data.SqlDbType.BigInt).Value = rimWithTyre.rimWithTyreId;
-                        command.Parameters.Add("@tyreCompanyId", System.Data.SqlDbType.Int).Value = rimWithTyre.tyreCompanyId;
-                        command.Parameters.Add("@tyreWidth", System.Data.SqlDbType.Int).Value = rimWithTyre.tyreWidth;
-                        command.Parameters.Add("@tyreHeight", System.Data.SqlDbType.Int).Value = rimWithTyre.tyreHeight;
-                        command.Parameters.Add("@tyreRadius", System.Data.SqlDbType.Int).Value = rimWithTyre.tyreRadius;
-                        command.Parameters.Add("@tyreType", System.Data.SqlDbType.Int).Value = rimWithTyre.tyreType;
-                        command.Parameters.Add("@companyId", System.Data.SqlDbType.Int).Value = rimWithTyre.companyId;
-                        command.Parameters.Add("@modelId", System.Data.SqlDbType.Int).Value = rimWithTyre.modelId;
-                        command.Parameters.Add("@rimWidth", System.Data.SqlDbType.Int).Value = rimWithTyre.rimWidth;
-                        command.Parameters.Add("@rimMaterial", System.Data.SqlDbType.Int).Value = rimWithTyre.rimMaterial;
-                        command.Parameters.Add("@rimOffset", System.Data.SqlDbType.Int).Value = rimWithTyre.rimOffset;
-                        command.Parameters.Add("@rimBoltCount", System.Data.SqlDbType.Int).Value = rimWithTyre.rimBoltCount;
-                        command.Parameters.Add("@rimBoltDistance", System.Data.SqlDbType.Int).Value = rimWithTyre.rimBoltDistance;
-                        command.Parameters.Add("@rimCenter", System.Data.SqlDbType.Int).Value = rimWithTyre.rimCenter;
-                        command.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = rimWithTyre.price;
-                        command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar).Value = rimWithTyre.description;
-                        command.Parameters.Add("@mainImageId", System.Data.SqlDbType.Int).Value = rimWithTyre.mainImageId;
-                        command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = rimWithTyre.mainPicture;
-                        command.Parameters.Add("@regionId", System.Data.SqlDbType.Int).Value = rimWithTyre.regionId;
-                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = rimWithTyre.userId;
-                        command.Parameters.Add("@modifiedTime", System.Data.SqlDbType.BigInt).Value = rimWithTyre.modifiedTime;
-                        command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = rimWithTyre.count;
-                        command.Parameters.Add("@month", System.Data.SqlDbType.Int).Value = rimWithTyre.monthDOT;
-                        command.Parameters.Add("@year", System.Data.SqlDbType.Int).Value = rimWithTyre.yearDOT;
+                        command.Parameters.Add("@rimWithTyreId", System.Data.SqlDbType.BigInt).Value = rimWithTyre.RimBoltCount;
+                        command.Parameters.Add("@tyreCompanyId", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
+                        command.Parameters.Add("@tyreWidth", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
+                        command.Parameters.Add("@tyreHeight", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
+                        command.Parameters.Add("@tyreRadius", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreHeight;
+                        command.Parameters.Add("@tyreType", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
+                        command.Parameters.Add("@companyId", System.Data.SqlDbType.Int).Value = rimWithTyre.CompanyId;
+                        command.Parameters.Add("@modelId", System.Data.SqlDbType.Int).Value = rimWithTyre.ModelId;
+                        command.Parameters.Add("@rimWidth", System.Data.SqlDbType.Int).Value = rimWithTyre.RimWidth;
+                        command.Parameters.Add("@rimMaterial", System.Data.SqlDbType.Int).Value = rimWithTyre.RimMaterial;
+                        command.Parameters.Add("@rimOffset", System.Data.SqlDbType.Int).Value = rimWithTyre.RimOffset;
+                        command.Parameters.Add("@rimBoltCount", System.Data.SqlDbType.Int).Value = rimWithTyre.RimBoltCount;
+                        command.Parameters.Add("@rimBoltDistance", System.Data.SqlDbType.Int).Value = rimWithTyre.RimBoltDistance;
+                        command.Parameters.Add("@rimCenter", System.Data.SqlDbType.Int).Value = rimWithTyre.RimCenter;
+                        command.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = rimWithTyre.Price;
+                        command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar).Value = rimWithTyre.Description;
+                        command.Parameters.Add("@mainImageId", System.Data.SqlDbType.Int).Value = rimWithTyre.MainImageId;
+                        command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = rimWithTyre.MainPicture;
+                        command.Parameters.Add("@regionId", System.Data.SqlDbType.Int).Value = rimWithTyre.RegionId;
+                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = rimWithTyre.UserId;
+                        command.Parameters.Add("@modifiedTime", System.Data.SqlDbType.BigInt).Value = rimWithTyre.ModifiedTime;
+                        command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = rimWithTyre.Count;
+                        command.Parameters.Add("@month", System.Data.SqlDbType.Int).Value = rimWithTyre.MonthDOT;
+                        command.Parameters.Add("@year", System.Data.SqlDbType.Int).Value = rimWithTyre.YearDOT;
 
-                        if (!update) command.Parameters.Add("@itemType", System.Data.SqlDbType.Int).Value = rimWithTyre.itemType;
+                        if (!update) command.Parameters.Add("@itemType", System.Data.SqlDbType.Int).Value = rimWithTyre.ItemType;
 
                         await command.ExecuteNonQueryAsync();
                     }
@@ -201,71 +198,71 @@ namespace Rado.Datasets
                 throw new AppException($"Tyre can not be updated. Message {e.Message}");
             }
 
-            return EnrichManager.EnrichDisplayPartView(await GetRimWithTyreByIdAsync(rimWithTyre.rimWithTyreId));
+            return EnrichManager.EnrichDisplayPartView(await GetRimWithTyreByIdAsync(rimWithTyre.RimWithTyreId));
         }
 
-        static public SearchResult SearchForRimTyres(Filter filterPart)
+        public static SearchResult SearchForRimTyres(Filter filterPart)
         {
             List<DisplayPartView> items = new List<DisplayPartView>();
             try
             {
                 List<string> where = new List<string>();
-                if (filterPart.itemType != ItemType.None && filterPart.itemType != ItemType.AllTyre)
-                where.Add(String.Format("itemType = {0}", ((int)filterPart.itemType)));
+                if (filterPart.ItemType != ItemType.None && filterPart.ItemType != ItemType.AllTyre)
+                where.Add($"itemType = {((int)filterPart.ItemType)}");
 
-                if (filterPart.tyreCompanyId != 0)
-                    where.Add(String.Format("tyreCompanyId = {0}", filterPart.tyreCompanyId));
+                if (filterPart.TyreCompanyId != 0)
+                    where.Add($"tyreCompanyId = {filterPart.TyreCompanyId}");
 
-                if (filterPart.tyreWidth != 0)
-                    where.Add(String.Format("tyreWidth  = {0} ", filterPart.tyreWidth));
+                if (filterPart.TyreWidth != 0)
+                    where.Add($"tyreWidth  = {filterPart.TyreWidth}");
 
-                if (filterPart.tyreHeight != 0)
-                    where.Add(String.Format("tyreHeight = {0}", filterPart.tyreHeight));
+                if (filterPart.TyreHeight != 0)
+                    where.Add($"tyreHeight = {filterPart.TyreHeight}");
 
-                if (filterPart.tyreRadius != 0)
-                    where.Add(String.Format("tyreRadius = {0}", filterPart.tyreRadius));
+                if (filterPart.TyreRadius != 0)
+                    where.Add($"tyreRadius = {filterPart.TyreRadius}");
 
-                if (filterPart.tyreType != 0)
-                    where.Add(String.Format("tyreType = {0}", filterPart.tyreType));
+                if (filterPart.TyreType != 0)
+                    where.Add($"tyreType = {filterPart.TyreType}");
 
-                if (filterPart.companyId != 0)
-                    where.Add(String.Format("companyId = {0}", filterPart.companyId));
+                if (filterPart.CompanyId != 0)
+                    where.Add($"companyId = {filterPart.CompanyId}");
 
-                if (filterPart.modelId != 0)
+                if (filterPart.ModelId != 0)
                 {
-                    if (ModelsDbSet.isGroupModel(filterPart.modelId))
+                    if (ModelsDbSet.isGroupModel(filterPart.ModelId))
                     {
-                        where.Add(String.Format("groupModelId  = {0} ", filterPart.modelId));
+                        where.Add($"groupModelId  = {filterPart.ModelId}");
                     }
                     else
                     {
-                        where.Add(String.Format("modelId = {0}", filterPart.modelId));
+                        where.Add($"modelId = {filterPart.ModelId}");
                     }
                 }
 
-                if (filterPart.rimWidth != 0)
-                    where.Add(String.Format("rimWidth = {0}", filterPart.rimWidth));
+                if (filterPart.RimWidth != 0)
+                    where.Add($"rimWidth = {filterPart.RimWidth}");
 
-                if (filterPart.rimMaterial != 0)
-                    where.Add(String.Format("rimMaterial = {0}", filterPart.rimMaterial));
+                if (filterPart.RimMaterial != 0)
+                    where.Add($"rimMaterial = {filterPart.RimMaterial}");
 
-                if (filterPart.rimOffset != 0)
-                    where.Add(String.Format("rimOffset = {0}", filterPart.rimOffset));
+                if (filterPart.RimOffset != 0)
+                    where.Add($"rimOffset = {filterPart.RimOffset}");
 
-                if (filterPart.rimBoltCount != 0)
-                    where.Add(String.Format("rimBoltCount = {0}", filterPart.rimBoltCount));
+                if (filterPart.RimBoltCount != 0)
+                    where.Add($"rimBoltCount = {filterPart.RimBoltCount}");
 
-                if (filterPart.rimBoltDistance != 0)
-                    where.Add(String.Format("rimBoltDistance = {0}", filterPart.rimBoltDistance));
+                if (filterPart.RimBoltDistance != 0)
+                    where.Add($"rimBoltDistance = {filterPart.RimBoltDistance}");
 
-                if (filterPart.rimCenter != 0)
-                    where.Add(String.Format("rimCenter = {0}", filterPart.rimCenter));
+                if (filterPart.RimCenter != 0)
+                    where.Add($"rimCenter = {filterPart.RimCenter}");
 
-                if (filterPart.regionId != 0)
-                    where.Add(String.Format("regionId = {0}", filterPart.regionId));
+                if (filterPart.RegionId != 0)
+                    where.Add($"regionId = {filterPart.RegionId}");
 
-                if (filterPart.userId != 0 && filterPart.userId != null)
-                    where.Add(String.Format("userId = {0}", filterPart.userId));
+                if (filterPart.UserId != 0 && filterPart.UserId != null)
+                    where.Add($"userId = {filterPart.UserId}");
 
                 string selectCommand = "SELECT * FROM RimWithTyreView WITH(NOLOCK)";
                 if (where.Count > 0)
@@ -304,9 +301,9 @@ namespace Rado.Datasets
                     sqlConnection.Close();
                 }
 
-                if (filterPart.hasImages)
+                if (filterPart.HasImages)
                 {
-                    items = items.Where(x => x.numberImages > 0).ToList();
+                    items = items.Where(x => x.NumberImages > 0).ToList();
                 }
             }
             catch (Exception exception)

@@ -97,24 +97,23 @@ namespace Rado.Datasets
             {
                 List<string> where = new List<string>();
 
-                if (filter.tyreCompanyId != 0)
-                    where.Add(String.Format("tyreCompanyId = {0}", filter.tyreCompanyId));
+                if (filter.TyreCompanyId != 0)
+                    where.Add($"tyreCompanyId = {filter.TyreCompanyId}");
 
-                if (filter.tyreWidth != 0)
-                    where.Add(String.Format("tyreWidth  = {0}) ", filter.tyreWidth));
+                if (filter.TyreWidth != 0)
+                    where.Add($"tyreWidth  = {filter.TyreWidth}");
 
-                if (filter.tyreHeight != 0)
-                    where.Add(String.Format("tyreHeight = {0}", filter.tyreHeight));
+                if (filter.TyreHeight != 0)
+                    where.Add($"tyreHeight = {filter.TyreHeight}");
 
-                if (filter.tyreRadius != 0)
-                    where.Add(String.Format("tyreRadius = {0}", filter.tyreRadius));
+                if (filter.TyreRadius != 0)
+                    where.Add($"tyreRadius = {filter.TyreRadius}");
 
-                if (filter.tyreType != 0)
-                    where.Add(String.Format("year = {0}", filter.tyreType));
+                if (filter.TyreType != 0)
+                    where.Add($"year = {filter.TyreType}");
 
-
-                if (filter.userId != 0 && filter.userId != null)
-                    where.Add(String.Format("userId = {0}", filter.userId));
+                if (filter.UserId != 0 && filter.UserId != null)
+                    where.Add($"userId = {filter.UserId}");
 
                 string selectCommand = "SELECT * FROM TyreView WITH(NOLOCK)";
                 if (where.Count > 0)
@@ -227,7 +226,7 @@ namespace Rado.Datasets
         static public TyreView AddUpdateTyreAsync(Tyre tyre, bool update)
         {
             string storeProcedureName;
-            if (tyre.mainPicture == null) tyre.mainPicture = "";
+            if (tyre.MainPicture == null) tyre.MainPicture = "";
             if (!update)
             {
                 storeProcedureName = "TyreIns";
@@ -248,23 +247,22 @@ namespace Rado.Datasets
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                        command.Parameters.Add("@tyreId", System.Data.SqlDbType.BigInt).Value = tyre.tyreId;
-                        command.Parameters.Add("@tyreCompanyId", System.Data.SqlDbType.Int).Value = tyre.tyreCompanyId;
-                        command.Parameters.Add("@tyreWidth", System.Data.SqlDbType.Int).Value = tyre.tyreWidth;
-                        command.Parameters.Add("@tyreHeight", System.Data.SqlDbType.Int).Value = tyre.tyreHeight;
-                        command.Parameters.Add("@tyreRadius", System.Data.SqlDbType.Int).Value = tyre.tyreRadius;
-                        command.Parameters.Add("@tyreType", System.Data.SqlDbType.Int).Value = tyre.tyreType;
-                        command.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = tyre.price;
-                        command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar).Value = tyre.description;
-                        command.Parameters.Add("@regionId", System.Data.SqlDbType.Int).Value = tyre.regionId;
-                        command.Parameters.Add("@mainImageId", System.Data.SqlDbType.Int).Value = tyre.mainImageId;
-                        command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = tyre.mainPicture;
-                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = tyre.userId;
-                        command.Parameters.Add("@modifiedTime", System.Data.SqlDbType.BigInt).Value = tyre.modifiedTime;
-                        command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = tyre.count;
-                        command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = tyre.count;
-                        command.Parameters.Add("@month", System.Data.SqlDbType.Int).Value = tyre.month;
-                        command.Parameters.Add("@year", System.Data.SqlDbType.Int).Value = tyre.year;
+                        command.Parameters.Add("@tyreId", System.Data.SqlDbType.BigInt).Value = tyre.TyreId;
+                        command.Parameters.Add("@tyreCompanyId", System.Data.SqlDbType.Int).Value = tyre.TyreCompanyId;
+                        command.Parameters.Add("@tyreWidth", System.Data.SqlDbType.Int).Value = tyre.TyreWidth;
+                        command.Parameters.Add("@tyreHeight", System.Data.SqlDbType.Int).Value = tyre.TyreHeight;
+                        command.Parameters.Add("@tyreRadius", System.Data.SqlDbType.Int).Value = tyre.TyreRadius;
+                        command.Parameters.Add("@tyreType", System.Data.SqlDbType.Int).Value = tyre.TyreType;
+                        command.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = tyre.Price;
+                        command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar).Value = tyre.Description;
+                        command.Parameters.Add("@regionId", System.Data.SqlDbType.Int).Value = tyre.RegionId;
+                        command.Parameters.Add("@mainImageId", System.Data.SqlDbType.Int).Value = tyre.MainImageId;
+                        command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = tyre.MainPicture;
+                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = tyre.UserId;
+                        command.Parameters.Add("@modifiedTime", System.Data.SqlDbType.BigInt).Value = tyre.ModifiedTime;
+                        command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = tyre.Count;
+                        command.Parameters.Add("@month", System.Data.SqlDbType.Int).Value = tyre.Month;
+                        command.Parameters.Add("@year", System.Data.SqlDbType.Int).Value = tyre.Year;
 
                         command.ExecuteNonQuery();
                     }
@@ -276,7 +274,7 @@ namespace Rado.Datasets
                 throw new AppException($"Tyre can not be updated. Message {e.Message}");
             }
 
-            return GetTyreById(tyre.tyreId);
+            return GetTyreById(tyre.TyreId);
         }
 
         #region unused finctions

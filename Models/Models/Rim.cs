@@ -6,16 +6,16 @@ namespace Rado.Models
     public class Rim: Item
     {
         public Rim() { }
-        public long rimId { get; set; }
-        public int companyId { get; set; }
-        public int modelId { get; set; }
-        public int rimWidth { get; set; }
-        public int rimMaterial { get; set; }
-        public int rimOffset { get; set; }
-        public int rimBoltCount { get; set; }
-        public int rimBoltDistance { get; set; }
-        public int rimCenter { get; set; }
-        public int count { get; set; }
-        public decimal price { get; set; }
+        public long RimId { get; set; }
+        public int CompanyId { get; set; }
+        public int ModelId { get; set; }
+        public int RimWidth { get; set; }
+        public int RimMaterial { get; set; }
+        public int RimOffset { get; set; }
+        public int RimBoltCount { get; set; }
+        public int RimBoltDistance { get; set; }
+        public int RimCenter { get; set; }
+        public int Count { get; set; }
+        public decimal Price { get; set; }
     }
 }

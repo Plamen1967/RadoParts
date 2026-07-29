@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GetData.Utility
+﻿namespace GetData.Utility
 {
     class RowData
     {
-        public string modification { get; set; }
-        public int yearFrom { get; set; }
-        public int yearTo { get; set; }
+        public string Modification { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
     }
 }

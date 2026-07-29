@@ -1,23 +1,17 @@
-﻿using Microsoft.Data.SqlClient;
-using Rado.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace Rado.Models
 {
     public class Item
     {
-        public string? description { get; set; }
-        public long mainImageId { get; set; }
+        public string? Description { get; set; }
+        public long MainImageId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? mainPicture { get; set; }
-        public int userId { get; set; }
-        public int approved { get; set; }
-        public long createdTime { get; set; }
-        public long modifiedTime { get; set; }
-        public int regionId { get; set; }
+        public string? MainPicture { get; set; }
+        public int UserId { get; set; }
+        public int Approved { get; set; }
+        public long CreatedTime { get; set; }
+        public long ModifiedTime { get; set; }
+        public int RegionId { get; set; }
     }
 }

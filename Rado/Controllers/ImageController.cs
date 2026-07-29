@@ -27,9 +27,9 @@ namespace Rado.Controllers
         [HttpPost]
         [Authorize]
         [Route($"{nameof(UploadWebImage)}")]
-        public async Task<ImageData> UploadWebImage([FromBody] WebCamImage webCamImage)
+        public async Task<ImageDataClass> UploadWebImage([FromBody] WebCamImage webCamImage)
         {
-            return await ImageManager.UploadWebImageAsync(UserId, webCamImage);
+            return await ImageManager.UploadWebCameraImageAsync(UserId, webCamImage);
         }
 
         [HttpPost]
@@ -63,7 +63,7 @@ namespace Rado.Controllers
         [DisableRequestSizeLimit]
         [Route($"{nameof(Upload)}")]
         [Authorize]
-        public async Task<ImageData[]> Upload()
+        public async Task<ImageDataClass[]> Upload()
         {
             return await ImageManager.UploadFiles(Request, UserId);
         }
@@ -74,7 +74,7 @@ namespace Rado.Controllers
         [HttpGet]
         [Route($"{nameof(GetBusinessCardImage)}")]
         [AllowAnonymous]
-        public ImageData GetBusinessCardImage([FromQuery] int id)
+        public ImageDataClass GetBusinessCardImage([FromQuery] int id)
         {
             return ImageManager.GetBusinessCard(id);
         }
@@ -90,7 +90,7 @@ namespace Rado.Controllers
         [HttpGet]
         [Route($"{nameof(GetMainImageAsync)}")]
         [AllowAnonymous]
-        public async Task<ImageData> GetMainImageAsync([FromQuery] long id)
+        public async Task<ImageDataClass> GetMainImageAsync([FromQuery] long id)
         {
             return await ImageManager.GetMainImageAsync(id);
         }
@@ -98,7 +98,7 @@ namespace Rado.Controllers
         [HttpGet]
         [Route($"{nameof(GetImages)}")]
         [AllowAnonymous]
-        public async Task<IEnumerable<ImageData>> GetImages([FromQuery] long id)
+        public async Task<IEnumerable<ImageDataClass>> GetImages([FromQuery] long id)
         {
             return await ImageManager.GetImagesAsync(id);
         }
@@ -106,7 +106,7 @@ namespace Rado.Controllers
         [HttpGet]
         [Route($"{nameof(GetMinImages)}")]
         [AllowAnonymous]
-        public async Task<IEnumerable<ImageData>> GetMinImages([FromQuery] long id)
+        public async Task<IEnumerable<ImageDataClass>> GetMinImages([FromQuery] long id)
         {
             return await ImageManager.GetMinImagesAsync(id);
         }
@@ -130,15 +130,15 @@ namespace Rado.Controllers
         [HttpGet]
         [Route($"{nameof(GetMainImages)}")]
         [AllowAnonymous]
-        public async Task<IEnumerable<ImageData>> GetMainImages([FromQuery] string ids)
+        public async Task<IEnumerable<ImageDataClass>> GetMainImages([FromQuery] string ids)
         {
 
-            IEnumerable<ImageData> images = null;
+            IEnumerable<ImageDataClass> images = null;
             try
             {
                 if (ids == null)
                 {
-                    return new List<ImageData>();
+                    return new List<ImageDataClass>();
                 }
 
                 string[] result = ids.Split(',');

@@ -29,7 +29,6 @@ import { LoggerService } from '@services/authentication/logger.service'
 import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { ImageData } from '@model/imageData'
-import { goTop } from '@app/functions/functions'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
 //#endregion
@@ -43,7 +42,23 @@ import { ItemType } from '@model/enum/itemType.enum'
 })
 //#endregion
 export default class AddCarComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region services
     label!: string
+    public carService: CarService = inject(CarService)
+    public modificationService: ModificationService = inject(ModificationService)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    private nextIdService: NextIdService = inject(NextIdService)
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    private router: Router = inject(Router)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private homeService: HomeService = inject(HomeService)
+    private loggerService: LoggerService = inject(LoggerService)
+    private popupService: PopUpService = inject(PopUpService)
+    private userCountService: UserCountService = inject(UserCountService)
+    private toastService: ToastService = inject(ToastService)
+    //#endregion  
+    
     //#region host listeners
     @HostListener('window:keydown.esc')
     handleKeyDownEscape() {
@@ -104,36 +119,10 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
     @Output() saved: EventEmitter<number> = new EventEmitter<number>()
     //#endregion
-    public carService: CarService
-    public modificationService: ModificationService
-    public staticSelectionService: StaticSelectionService
-    private activatedRoute: ActivatedRoute
-    private nextIdService: NextIdService
-    private formBuilder: FormBuilder
-    private router: Router
-    private confirmService: ConfirmServiceService
-    private homeService: HomeService
-    private loggerService: LoggerService
-    private popupService: PopUpService
-    private userCountService: UserCountService
-    private toastService: ToastService
 
     constructor() {
         super()
-        this.carService = inject(CarService)
-        this.modificationService = inject(ModificationService)
-        this.staticSelectionService = inject(StaticSelectionService)
-        this.activatedRoute = inject(ActivatedRoute)
-        this.nextIdService = inject(NextIdService)
-        this.formBuilder = inject(FormBuilder)
-        this.router = inject(Router)
-        this.confirmService = inject(ConfirmServiceService)
-        this.homeService = inject(HomeService)
-        this.loggerService = inject(LoggerService)
-        this.popupService = inject(PopUpService)
-        this.userCountService = inject(UserCountService)
-        this.toastService = inject(ToastService)
-
+        //#region form initialization
         this.addCarForm = this.formBuilder.group({
             companyId: [undefined, Validators.required],
             modelId: [undefined, Validators.required],
@@ -151,7 +140,8 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             regionId: [this.regionId],
             mainImageId: [''],
         })
-
+        //#endregion
+        
         this.formGroup = this.addCarForm
         this.yearTo = this.currentYear
         this.setYears()
@@ -162,7 +152,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         })
         this.formInitialValues = this.addCarForm.value
         this.userId = this.loggedUser?.userId ?? 0
-        goTop()
     }
 
     ngOnInit() {

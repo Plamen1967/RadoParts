@@ -35,14 +35,14 @@ namespace Rado.Datasets
                 storeProcedureName = "CarsIns";
             }
 
-            if (car.vin == null) car.vin = "";
-            if (car.regNumber == null) car.regNumber = "";
-            if (car.description == null) car.description = "";
-            if (car.engineModel == null) car.engineModel = "";
-            if (car.carId == 0) 
+            if (car.Vin == null) car.Vin = "";
+            if (car.RegNumber == null) car.RegNumber = "";
+            if (car.Description == null) car.Description = "";
+            if (car.EngineModel == null) car.EngineModel = "";
+            if (car.CarId == 0)
             {
 
-                NextId nextId = UserDbSet.GetNextId(ItemType.OnlyCar, car.userId);
+                NextId nextId = UserDbSet.GetNextId(ItemType.OnlyCar, car.UserId);
                 if (nextId.Error.Length > 0)
                 {
                     throw new AppException($"Колата не може да бъде добавена");
@@ -89,39 +89,39 @@ namespace Rado.Datasets
                         SqlParameter modifiedTimeParam = command.Parameters.Add("@modifiedTime", SqlDbType.BigInt);
                         SqlParameter mainPictureParam = command.Parameters.Add("@mainPicture", SqlDbType.NVarChar);
                         command.Parameters.Add("@approved", SqlDbType.Int).Value = approved;
-                        command.Parameters.Add("@mainImageId", SqlDbType.NVarChar).Value = car.mainImageId;
+                        command.Parameters.Add("@mainImageId", SqlDbType.NVarChar).Value = car.MainImageId;
 
-                        if (car.mainPicture == null) car.mainPicture = "";
+                        if (car.MainPicture == null) car.MainPicture = "";
                         if (!update)
                         {
-                            command.Parameters.Add("@bus", SqlDbType.Int).Value = car.bus;
+                            command.Parameters.Add("@bus", SqlDbType.Int).Value = car.Bus;
                         }
-                        carIdParam.Value = car.carId;
-                        if (car.bus == 1)
+                        carIdParam.Value = car.CarId;
+                        if (car.Bus == 1)
                         {
-                            modelIdParam.Value = car.modelId;
+                            modelIdParam.Value = car.ModelId;
                             modificationIdParam.Value = 0;
                         }
-                        else if (car.modificationId != null)
+                        else if (car.ModificationId != null)
                         {
-                            modelIdParam.Value = ModificationsDbSet.GetModificationById(car.modificationId ?? 0).modelId;
-                            modificationIdParam.Value = car.modificationId;
+                            modelIdParam.Value = ModificationsDbSet.GetModificationById(car.ModificationId ?? 0).ModelId;
+                            modificationIdParam.Value = car.ModificationId;
                         }
-                        yearParam.Value = car.year;
-                        vinParam.Value = car.vin;
-                        regNumberParam.Value = car.regNumber;
-                        descriptionParam.Value = car.description;
+                        yearParam.Value = car.Year;
+                        vinParam.Value = car.Vin;
+                        regNumberParam.Value = car.RegNumber;
+                        descriptionParam.Value = car.Description;
                         priceParam.Value = 0;
-                        engineTypeParam.Value = car.engineType;
-                        engineModelParam.Value = car.engineModel;
-                        powerkWhParam.Value = car.powerkWh;
-                        powerBHPParam.Value = car.powerBHP;
-                        userIdParam.Value = car.userId;
-                        millageParam.Value = car.millage;
-                        regionIdParam.Value = car.regionId;
-                        gearboxTypeParam.Value = car.gearboxType;
-                        modifiedTimeParam.Value = car.modifiedTime;
-                        mainPictureParam.Value = car.mainPicture;
+                        engineTypeParam.Value = car.EngineType;
+                        engineModelParam.Value = car.EngineModel;
+                        powerkWhParam.Value = car.PowerkWh;
+                        powerBHPParam.Value = car.PowerBHP;
+                        userIdParam.Value = car.UserId;
+                        millageParam.Value = car.Millage;
+                        regionIdParam.Value = car.RegionId;
+                        gearboxTypeParam.Value = car.GearboxType;
+                        modifiedTimeParam.Value = car.ModifiedTime;
+                        mainPictureParam.Value = car.MainPicture;
 
                         await command.ExecuteNonQueryAsync();
                     }
@@ -138,7 +138,7 @@ namespace Rado.Datasets
 
             }
 
-            CarView carView = await getCarByIdAsync(car.carId);
+            CarView carView = await getCarByIdAsync(car.CarId);
             PartView partView = new PartView();
             EnrichManager.InitPartViewFromCar(carView, partView, true);
 
@@ -212,9 +212,13 @@ namespace Rado.Datasets
                 connection.Open();
                 int i = command.ExecuteNonQuery();
 
-                int value = (int)command.Parameters["@result"].Value;
-                if (value > 0)
-                    return false;
+                var o = command.Parameters["@result"].Value;
+                if (o != null)
+                {
+                    int value = (int)o;
+                    if (value > 0)
+                        return false;
+                }
             }
             catch (Exception e)
             {
@@ -223,40 +227,37 @@ namespace Rado.Datasets
 
             return result;
         }
-        static public async Task<CarView> getCarByIdAsync(long carId)
+
+        private static async Task<CarView> getCarByIdAsync(long carId)
         {
             string storedProcedure = "CarsAll";
             CarView carView = new CarView();
             try
             {
-                using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
+                SqlConnection connection = new SqlConnection(Program.ConnectionString);
+                await connection.OpenAsync();
                 {
-                    await connection.OpenAsync();
-                    using (SqlCommand command = new SqlCommand(storedProcedure, connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.Add("@carId", SqlDbType.BigInt).Value = carId;
+                    SqlCommand command = new SqlCommand(storedProcedure, connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add("@carId", SqlDbType.BigInt).Value = carId;
 
-                        using (SqlDataReader sqlDataReader = await command.ExecuteReaderAsync())
-                        {
-                            if (await sqlDataReader.ReadAsync())
-                            {
-                                carView = EnrichManager.EnrichCarView(sqlDataReader);
-                            }
-                        }
+                    SqlDataReader sqlDataReader = await command.ExecuteReaderAsync();
+                    if (await sqlDataReader.ReadAsync())
+                    {
+                        carView = EnrichManager.EnrichCarView(sqlDataReader);
                     }
+                }
 
-                    using (SqlCommand command = new SqlCommand("GetNumberPartsByCarId", connection))
+                {
+                    SqlCommand command = new SqlCommand("GetNumberPartsByCarId", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add("@carId", SqlDbType.BigInt).Value = carId;
+
+                    SqlDataReader sqlDataReader = await command.ExecuteReaderAsync();
                     {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.Add("@carId", SqlDbType.BigInt).Value = carId;
-
-                        using (SqlDataReader sqlDataReader = await command.ExecuteReaderAsync())
+                        if (await sqlDataReader.ReadAsync())
                         {
-                            if (await sqlDataReader.ReadAsync())
-                            {
-                                carView.countParts = Convert.ToInt32(sqlDataReader["Count"]);
-                            }
+                            carView.CountParts = Convert.ToInt32(sqlDataReader["Count"]);
                         }
                     }
                     await connection.CloseAsync();
@@ -269,30 +270,26 @@ namespace Rado.Datasets
             return carView;
         }
 
-        static public bool MainPicture(long partId, string mainPicture, int userId)
+        public static bool MainPicture(long partId, string mainPicture, int userId)
         {
             string storeProcedureName = "UpdateMainPictureCar";
             try
             {
-                using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
-                {
-                    connection.Open();
+                SqlConnection connection = new SqlConnection(Program.ConnectionString);
+                connection.Open();
 
-                    using (SqlCommand command = new SqlCommand(storeProcedureName, connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
+                SqlCommand command = new SqlCommand(storeProcedureName, connection);
+                command.CommandType = CommandType.StoredProcedure;
 
-                        SqlParameter carIdParam = command.Parameters.Add("@carId", SqlDbType.BigInt);
-                        SqlParameter mainPictureParam = command.Parameters.Add("@mainPicture", SqlDbType.NVarChar);
-                        SqlParameter userIdParam = command.Parameters.Add("@userId", SqlDbType.Int);
+                SqlParameter carIdParam = command.Parameters.Add("@carId", SqlDbType.BigInt);
+                SqlParameter mainPictureParam = command.Parameters.Add("@mainPicture", SqlDbType.NVarChar);
+                SqlParameter userIdParam = command.Parameters.Add("@userId", SqlDbType.Int);
 
-                        carIdParam.Value = partId;
-                        mainPictureParam.Value = mainPicture;
-                        userIdParam.Value = userId;
+                carIdParam.Value = partId;
+                mainPictureParam.Value = mainPicture;
+                userIdParam.Value = userId;
 
-                        command.ExecuteNonQuery();
-                    }
-                }
+                command.ExecuteNonQuery();
             }
             catch (Exception exception)
             {
@@ -304,7 +301,7 @@ namespace Rado.Datasets
         }
 
 
-        static public async Task<bool> ValidateNameAsync(int userid, long carId, string name)
+        public static async Task<bool> ValidateNameAsync(int userid, long carId, string name)
         {
             bool validate = await validateNameAsync(userid, carId, name);
 
@@ -368,27 +365,27 @@ namespace Rado.Datasets
         }
         private static void ValidationCar(Car car)
         {
-            if (car.bus == 0)
+            if (car.Bus == 0)
             {
-                bool check = ModificationsDbSet.CheckModificationById(car.modificationId ?? 0);
+                bool check = ModificationsDbSet.CheckModificationById(car.ModificationId ?? 0);
                 if (!check)
-                    throw new AppException($"Модификация с ID {car.modificationId} за кола {car.regNumber} не е валидна");
+                    throw new AppException($"Модификация с ID {car.ModificationId} за кола {car.RegNumber} не е валидна");
             }
-            else if (car.bus == 1)
+            else if (car.Bus == 1)
             {
-                if (car.modelId == null)
+                if (car.ModelId == null)
                     throw new AppException($"Модел за бус e задължителен");
 
-                bool check = ModelsDbSet.CheckModelById(car.modelId ?? 0);
+                bool check = ModelsDbSet.CheckModelById(car.ModelId ?? 0);
                 if (!check)
-                    throw new AppException($"Модел с ID {car.modificationId} за кола {car.regNumber} не е валидна");
+                    throw new AppException($"Модел с ID {car.ModificationId} за кола {car.RegNumber} не е валидна");
             }
             else
             {
-                throw new AppException($"{car.regNumber} няма избран тип car/bus");
+                throw new AppException($"{car.RegNumber} няма избран тип car/bus");
             }
 
-            if (car.regNumber == "")
+            if (car.RegNumber == "")
                 throw new AppException($"Колата/Буса няма избрано име");
 
         }
@@ -400,12 +397,12 @@ namespace Rado.Datasets
             {
                 carNameId.Add(new CarNameId()
                 {
-                    carId = car.carId,
-                    companyId = car.companyId,
-                    modelId = car.modelId.Value,
-                    regNumber = car.regNumber,
-                    engineType = car.engineType,
-                    engineModel = car.engineModel
+                    carId = car.CarId,
+                    companyId = car.CompanyId,
+                    modelId = car.ModelId.Value,
+                    regNumber = car.RegNumber,
+                    engineType = car.EngineType,
+                    engineModel = car.EngineModel
                 });
             }
 
@@ -414,90 +411,90 @@ namespace Rado.Datasets
 
         static public async Task<CarView[]> GetCars(Filter filter)
         {
-            if (filter.userId == null) filter.userId = 0;
+            if (filter.UserId == null) filter.UserId = 0;
 
             List<CarView> cars = new List<CarView>();
             try
             {
                 List<string> where = new List<string>();
-                if (filter.bus == 0 || filter.bus == 1)
-                    where.Add(string.Format("bus = {0}", filter.bus));
+                if (filter.Bus == 0 || filter.Bus == 1)
+                    where.Add(string.Format("bus = {0}", filter.Bus));
 
-                if (filter.carId != 0)
-                    where.Add(string.Format("carId = {0}", filter.carId));
+                if (filter.CarId != 0)
+                    where.Add(string.Format("carId = {0}", filter.CarId));
 
-                if (filter.modificationId != 0)
+                if (filter.ModificationId != 0)
                 {
-                    where.Add(string.Format("modificationId = {0}", filter.modificationId));
+                    where.Add(string.Format("modificationId = {0}", filter.ModificationId));
                 }
-                else if (filter.modelId != 0)
+                else if (filter.ModelId != 0)
                 {
-                    if (ModelsDbSet.isGroupModel(filter.modelId))
+                    if (ModelsDbSet.isGroupModel(filter.ModelId))
                     {
-                        where.Add(string.Format("groupModelId  = {0} ", filter.modelId));
+                        where.Add($"groupModelId  = {filter.ModelId} ");
                     }
                     else
                     {
-                        where.Add(string.Format("modelId = {0}", filter.modelId));
+                        where.Add($"modelId = {filter.ModelId}");
                     }
                 }
-                else if (filter.companyId != 0)
-                    where.Add(string.Format("companyId  = {0} ", filter.companyId));
+                else if (filter.CompanyId != 0)
+                    where.Add($"companyId  = {filter.CompanyId} ");
 
-                if (filter.modelsId != null && filter.modelsId.Length > 0)
+                if (filter.ModelsId != null && filter.ModelsId.Length > 0)
                 {
-                    where.Add(string.Format("( modelId in ({0}) or groupModelId in ({0}) )", filter.modelsId));
+                    where.Add($"( modelId in ({filter.ModelsId}) or groupModelId in ({filter.ModelsId}) )");
                 }
-                if (filter.modificationsId != null && filter.modificationsId.Length > 0)
+                if (filter.ModificationsId != null && filter.ModificationsId.Length > 0)
                 {
-                    where.Add(string.Format("( modificationId in ({0}))", filter.modificationsId));
+                    where.Add($"( modificationId in ({filter.ModificationsId}))");
                 }
 
-                if (filter.itemType == ItemType.OnlyCar || filter.itemType == ItemType.AllCarAndPart)
+                if (filter.ItemType == ItemType.OnlyCar || filter.ItemType == ItemType.AllCarAndPart)
                     where.Add($"bus = 0");
-                else if (filter.itemType == ItemType.OnlyBus || filter.itemType == ItemType.AllBusAndPart)
+                else if (filter.ItemType == ItemType.OnlyBus || filter.ItemType == ItemType.AllBusAndPart)
                     where.Add($"bus = 1");
 
-                if (filter.year != 0)
-                    where.Add(string.Format("year = {0}", filter.year));
+                if (filter.Year != 0)
+                    where.Add($"year = {filter.Year}");
 
-                if (filter.engineType != 0)
-                    where.Add(string.Format("engineType = {0}", filter.engineType));
+                if (filter.EngineType != 0)
+                    where.Add($"engineType = {filter.EngineType}");
 
-                if (filter.engineModel != null && filter.engineModel.Length > 0)
-                    where.Add(string.Format("engineModel like '{0}%'", filter.engineModel));
+                if (filter.EngineModel != null && filter.EngineModel.Length > 0)
+                    where.Add($"engineModel like '{filter.EngineModel}%'");
 
-                if (filter.gearboxType != 0)
-                    where.Add(string.Format("gearboxType = {0}", filter.gearboxType));
+                if (filter.GearboxType != 0)
+                    where.Add($"gearboxType = {filter.GearboxType}");
 
-                if (filter.powerBHP != 0)
-                    where.Add(string.Format("powerBHP = {0}", filter.powerBHP));
+                if (filter.PowerBHP != 0)
+                    where.Add($"powerBHP = {filter.PowerBHP}");
 
-                if (filter.regionId != 0)
-                    where.Add(string.Format("regionId = {0}", filter.regionId));
+                if (filter.RegionId != 0)
+                    where.Add($"regionId = {filter.RegionId}");
 
-                if (filter.regNumber?.Length > 0)
-                    where.Add(string.Format("regNumber = '{0}'", filter.regNumber));
+                if (filter.RegNumber?.Length > 0)
+                    where.Add($"regNumber = '{filter.RegNumber}'");
 
-                if (filter.adminRun)
+                if (filter.AdminRun)
                 {
-                    if (filter.approved != ApprovedType.All)
-                        where.Add(string.Format("approved = {0}", (int)filter.approved));
-                    if (filter.userId != 0 && filter.userId != null)
-                        where.Add(string.Format("userId = {0}", filter.userId));
+                    if (filter.Approved != ApprovedType.All)
+                        where.Add($"approved = {(int)filter.Approved}");
+                    if (filter.UserId != 0 && filter.UserId != null)
+                        where.Add($"userId = {filter.UserId}");
                 }
-                else if (filter.userId != 0 && filter.userId != null)
-                    where.Add(string.Format("userId = {0}", filter.userId));
-                else if (!filter.adminRun)
+                else if (filter.UserId != 0 && filter.UserId != null)
+                    where.Add($"userId = {filter.UserId}");
+                else if (!filter.AdminRun)
                 {
                     where.Add("approved <> 2");
                     where.Add("suspended = 0");
                 }
 
-                if (filter.keyword != null && filter.keyword.Length > 0)
+                if (filter.Keyword != null && filter.Keyword.Length > 0)
                 {
-                    string[] keywords = filter.keyword.Split(' ');
-                    List<string> or = new List<string>();
+                    string[] keywords = filter.Keyword.Split(' ');
+                    List<string> or = [];
                     foreach (string keyword in keywords)
                     {
                         double len = keyword.Length;
@@ -505,16 +502,16 @@ namespace Rado.Datasets
                         int lenInt = (int)(len + 0.5);
                         string newKeyword = keyword.ToLower().Substring(0, lenInt);
 
-                        or.Add(string.Format("description like '%{0}%'", newKeyword));
+                        or.Add($"description like '%{newKeyword}%'");
                     }
 
                     if (or.Count > 0)
                     {
-                        string orString = string.Format("({0})", string.Join(" OR ", or.ToArray()));
+                        string orString = $"({string.Join(" OR ", or.ToArray())})";
                         where.Add(orString);
                     }
                 }
-                where.Add(string.Format("deleted = 0"));
+                where.Add($"deleted = 0");
 
                 string selectCommand = "SELECT * FROM CarView WITH(NOLOCK)";
                 if (where.Count > 0)
@@ -553,7 +550,7 @@ namespace Rado.Datasets
                     Console.WriteLine("Elapsed Time CarsAll Details is {0} ms", carsAllwatch.ElapsedMilliseconds);
 
 
-                    if (filter.userId != 0)
+                    if (filter.UserId != 0)
                     {
                         Dictionary<long, int> partPerCar = new Dictionary<long, int>();
                         string storedProcedure = "PartPerCar";
@@ -565,7 +562,7 @@ namespace Rado.Datasets
                         {
                             command.CommandType = CommandType.StoredProcedure;
                             var userIdParam = command.Parameters.Add("@userId", SqlDbType.BigInt);
-                            userIdParam.Value = filter.userId;
+                            userIdParam.Value = filter.UserId;
 
                             using (SqlDataReader sqlDataReader = await command.ExecuteReaderAsync())
                             {
@@ -580,7 +577,7 @@ namespace Rado.Datasets
                         }
 
                         stopwatch.Stop();
-                        Console.WriteLine("Elapsed Time PartPerCar is {0} ms", stopwatch.ElapsedMilliseconds);
+                        Console.WriteLine($"Elapsed Time PartPerCar is {stopwatch.ElapsedMilliseconds} ms");
 
                         Stopwatch countwatch = new Stopwatch();
                         countwatch.Start();
@@ -588,9 +585,9 @@ namespace Rado.Datasets
                         foreach (var car in cars)
                         {
                             int count = 0;
-                            if (partPerCar.TryGetValue(car.carId, out count))
+                            if (partPerCar.TryGetValue(car.CarId, out count))
                             {
-                                car.countParts = count;
+                                car.CountParts = count;
                             }
                         }
                         countwatch.Stop();
@@ -616,14 +613,14 @@ namespace Rado.Datasets
 
         static public async Task<CarView[]> GetCarsv2(Filter filter)
         {
-            if (filter.userId == null) filter.userId = 0;
+            if (filter.UserId == null) filter.UserId = 0;
 
             List<CarView> cars = new List<CarView>();
             try
             {
                 List<string> where = new List<string>();
 
-                string[] models = filter.modelsId.Split(',');
+                string[] models = filter.ModelsId.Split(',');
                 List<string> modelsId = new List<string>();
                 List<string> groupModelsId = new List<string>();
 
@@ -637,9 +634,9 @@ namespace Rado.Datasets
                 }
 
                 string[] keywords = { };
-                if (filter.keyword != null && filter.keyword.Length > 0)
+                if (filter.Keyword != null && filter.Keyword.Length > 0)
                 {
-                    keywords = filter.keyword.Split(' ');
+                    keywords = filter.Keyword.Split(' ');
                     List<string> or = new List<string>();
                     foreach (string keyword in keywords)
                     {
@@ -668,59 +665,59 @@ namespace Rado.Datasets
                     {
                         sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                        if (filter.carId != 0)
-                            sqlCommand.Parameters.Add("@carId", SqlDbType.BigInt).Value = filter.carId;
+                        if (filter.CarId != 0)
+                            sqlCommand.Parameters.Add("@carId", SqlDbType.BigInt).Value = filter.CarId;
 
-                        if (filter.modificationId != 0)
+                        if (filter.ModificationId != 0)
                         {
-                            sqlCommand.Parameters.Add("@modificationId", SqlDbType.Int).Value = filter.modificationId;
+                            sqlCommand.Parameters.Add("@modificationId", SqlDbType.Int).Value = filter.ModificationId;
                         }
-                        else if (filter.modelId != 0)
+                        else if (filter.ModelId != 0)
                         {
-                            if (ModelsDbSet.isGroupModel(filter.modelId))
+                            if (ModelsDbSet.isGroupModel(filter.ModelId))
                             {
-                                sqlCommand.Parameters.Add("@groupModelId", SqlDbType.Int).Value = filter.modelId;
+                                sqlCommand.Parameters.Add("@groupModelId", SqlDbType.Int).Value = filter.ModelId;
                             }
                             else
                             {
-                                sqlCommand.Parameters.Add("@modelId", SqlDbType.Int).Value = filter.modelId;
+                                sqlCommand.Parameters.Add("@modelId", SqlDbType.Int).Value = filter.ModelId;
                             }
                         }
-                        else if (filter.companyId != 0)
-                            sqlCommand.Parameters.Add("@modecompanyIdlId", SqlDbType.Int).Value = filter.companyId;
+                        else if (filter.CompanyId != 0)
+                            sqlCommand.Parameters.Add("@companyId", SqlDbType.Int).Value = filter.CompanyId;
 
-                        if (filter.modificationsId != null && filter.modificationsId.Length > 0)
-                            sqlCommand.Parameters.Add("@modificationId", SqlDbType.VarChar).Value = filter.modificationId;
+                        if (filter.ModificationsId != null && filter.ModificationsId.Length > 0)
+                            sqlCommand.Parameters.Add("@modificationId", SqlDbType.VarChar).Value = filter.ModificationsId;
 
-                        if (filter.bus == 0 || filter.bus == 1)
-                            sqlCommand.Parameters.Add("@bus", SqlDbType.Int).Value = filter.bus;
+                        if (filter.Bus == 0 || filter.Bus == 1)
+                            sqlCommand.Parameters.Add("@bus", SqlDbType.Int).Value = filter.Bus;
 
-                        if (filter.year != 0)
-                            sqlCommand.Parameters.Add("@year", SqlDbType.Int).Value = filter.year;
+                        if (filter.Year != 0)
+                            sqlCommand.Parameters.Add("@year", SqlDbType.Int).Value = filter.Year;
 
-                        if (filter.engineType != 0)
-                            sqlCommand.Parameters.Add("@engineType", SqlDbType.Int).Value = filter.engineType;
+                        if (filter.EngineType != 0)
+                            sqlCommand.Parameters.Add("@engineType", SqlDbType.Int).Value = filter.EngineType;
 
-                        if (filter.gearboxType != 0)
-                            sqlCommand.Parameters.Add("@gearboxType", SqlDbType.Int).Value = filter.gearboxType;
+                        if (filter.GearboxType != 0)
+                            sqlCommand.Parameters.Add("@gearboxType", SqlDbType.Int).Value = filter.GearboxType;
 
-                        if (filter.engineModel != null && filter.engineModel.Length > 0)
-                            sqlCommand.Parameters.Add("@engineModel", SqlDbType.VarChar).Value = filter.engineModel;
+                        if (filter.EngineModel != null && filter.EngineModel.Length > 0)
+                            sqlCommand.Parameters.Add("@engineModel", SqlDbType.VarChar).Value = filter.EngineModel;
 
-                        if (filter.powerBHP != 0)
-                            sqlCommand.Parameters.Add("@powerBHP", SqlDbType.Int).Value = filter.powerBHP;
+                        if (filter.PowerBHP != 0)
+                            sqlCommand.Parameters.Add("@powerBHP", SqlDbType.Int).Value = filter.PowerBHP;
 
-                        if (filter.regionId != 0)
-                            sqlCommand.Parameters.Add("@regionId", SqlDbType.Int).Value = filter.regionId;
+                        if (filter.RegionId != 0)
+                            sqlCommand.Parameters.Add("@regionId", SqlDbType.Int).Value = filter.RegionId;
 
-                        if (filter.adminRun)
-                            sqlCommand.Parameters.Add("@adminRun", SqlDbType.Int).Value = filter.adminRun;
+                        if (filter.AdminRun)
+                            sqlCommand.Parameters.Add("@adminRun", SqlDbType.Int).Value = filter.AdminRun;
 
-                        if (filter.approved != ApprovedType.All)
-                            sqlCommand.Parameters.Add("@approved", SqlDbType.Int).Value = filter.approved;
+                        if (filter.Approved != ApprovedType.All)
+                            sqlCommand.Parameters.Add("@approved", SqlDbType.Int).Value = filter.Approved;
 
-                        if (filter.userId != 0 && filter.userId != null)
-                            sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = filter.userId;
+                        if (filter.UserId != 0 && filter.UserId != null)
+                            sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = filter.UserId;
 
                         if (modelsId.Count > 0)
                         {
@@ -756,7 +753,7 @@ namespace Rado.Datasets
                     Console.WriteLine("Elapsed Time CarsAll Details is {0} ms", carsAllwatch.ElapsedMilliseconds);
 
 
-                    if (filter.userId != 0)
+                    if (filter.UserId != 0)
                     {
                         Dictionary<long, int> partPerCar = new Dictionary<long, int>();
                         string storedProcedure = "PartPerCar";
@@ -768,7 +765,7 @@ namespace Rado.Datasets
                         {
                             command.CommandType = CommandType.StoredProcedure;
                             var userIdParam = command.Parameters.Add("@userId", SqlDbType.BigInt);
-                            userIdParam.Value = filter.userId;
+                            userIdParam.Value = filter.UserId;
 
                             using (SqlDataReader sqlDataReader = await command.ExecuteReaderAsync())
                             {
@@ -791,9 +788,9 @@ namespace Rado.Datasets
                         foreach (var car in cars)
                         {
                             int count = 0;
-                            if (partPerCar.TryGetValue(car.carId, out count))
+                            if (partPerCar.TryGetValue(car.CarId, out count))
                             {
-                                car.countParts = count;
+                                car.CountParts = count;
                             }
                         }
                         countwatch.Stop();

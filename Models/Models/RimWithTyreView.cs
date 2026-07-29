@@ -1,24 +1,20 @@
-﻿using Microsoft.Data.SqlClient;
-using Rado.Enums;
-using Rado.Models.Authentication;
+﻿using Models.Models.Utility;
+using Rado.Models;
 using System.Text.Json.Serialization;
-using System.Threading;
-using Models.Models;
-using Models.Models.Utility;
 
-namespace Rado.Models
+namespace Models.Models
 {
     public class RimWithTyreView : RimWithTyre
     {
-        public int numberImages { get; set; }
+        public int NumberImages { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public ImageData mainImageData { get; set; }
+        public ImageDataClass MainImageData { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string companyName { get; set; }
+        public string CompanyName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string modelName { get; set; }
+        public string ModelName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public TraderDetails traderDetails { get; set; }
+        public TraderDetails TraderDetails { get; set; }
 
     }
 }

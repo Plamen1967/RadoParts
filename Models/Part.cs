@@ -7,39 +7,38 @@ namespace Rado
 {
     public class Part : Item
     {
+        public Part() { }
         [Required]
-        public long partId { get; set; }
-        public long? carId { get; set; }
-        public int? categoryId { get; set; }
-        public int? subCategoryId { get; set; }
+        public long PartId { get; set; }
+        public long? CarId { get; set; }
+        public int? CategoryId { get; set; }
+        public int? SubCategoryId { get; set; }
         [Required] 
-        public int dealerSubCategoryId { get; set; }
+        public int DealerSubCategoryId { get; set; }
         [Required]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string dealerSubCategoryName { get; set; }
-        public int? leftRightPosition { get; set; }
-        public int? frontBackPosition { get; set; }
+        public string DealerSubCategoryName { get; set; }
+        public int? LeftRightPosition { get; set; }
+        public int? FrontBackPosition { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? partNumber { get; set; }
-        public int? modelId { get; set; }
-        public int? engineType { get; set; }
-        public string? engineModel { get; set; }
+        public string? PartNumber { get; set; }
+        public int? ModelId { get; set; }
+        public int? EngineType { get; set; }
+        public string? EngineModel { get; set; }
         [Required]
-        public int? year { get; set; }
+        public int? Year { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public int? powerkWh { get; set; }
+        public int? PowerkWh { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public int? powerBHP { get; set; }
+        public int? PowerBHP { get; set; }
         [Required]
-        public int modificationId { get; set; }
-        public string? modification { get; set; }
+        public int ModificationId { get; set; }
+        public string? Modification { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public int? millage { get; set; }
-        public int? gearboxType { get; set; }
-        public int? bus { get; set; }
+        public int? Millage { get; set; }
+        public int? GearboxType { get; set; }
+        public int? Bus { get; set; }
         [Required]
-        public decimal price { get; set; }
-        public Part()
-        { }
+        public decimal Price { get; set; }
     }
 }

@@ -1,13 +1,12 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, DOCUMENT, inject, DestroyRef } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, inject, DestroyRef } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
-import { AsyncPipe, ViewportScroller } from '@angular/common'
+import { AsyncPipe } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { SelectOption } from '@model/selectOption'
 import { UpdateEnum } from '@model/enum/update.enum'
 import { CarView } from '@model/car/carView'
 import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs'
-import { ModelService } from '@services/company-model-modification/model.service'
 import { NextIdService } from '@services/nextId.service'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { CarService } from '@services/car.service'
@@ -21,7 +20,6 @@ import { AlertService } from '@services/alert.service'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ActivatedRoute, ParamMap, Router } from '@angular/router'
 import { DealerViewComponent } from '@app/data/dealerView/dealerview.component'
-import { ModalService } from '@services/dialog-api/modal.service'
 import { CompanyChoiseComponent } from '@app/component-main/company-choise/company-choise.component'
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
 import { ModificationChoiceComponent } from '@app/component-main/modification-choice/modification-choice.component'
@@ -124,42 +122,21 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     //#endregion
 
     //#region c'tor
-    private formBuilder: FormBuilder
-    private modelService: ModelService
-    public modificationService: ModificationService
-    private nextIdService: NextIdService
-    private carService: CarService
-    private scroller: ViewportScroller
-    private confirmService: ConfirmServiceService
-    private alertService: AlertService
-    private popupService: PopUpService
-    private router: Router
-    private route: ActivatedRoute
-    private document: Document
-    private modalService: ModalService
-    private loggerService: LoggerService
-    private userCountService: UserCountService
-    private destroyRef = inject(DestroyRef);
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    public modificationService: ModificationService = inject(ModificationService)
+    private nextIdService: NextIdService = inject(NextIdService)
+    private carService: CarService = inject(CarService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private alertService: AlertService = inject(AlertService)
+    private popupService: PopUpService = inject(PopUpService)
+    private router: Router = inject(Router) 
+    private route: ActivatedRoute = inject(ActivatedRoute)
+    private loggerService: LoggerService = inject(LoggerService)
+    private userCountService: UserCountService = inject(UserCountService)
+    private destroyRef = inject(DestroyRef)
 
     constructor() {
         super()
-
-        this.formBuilder = inject(FormBuilder)
-        this.modelService = inject(ModelService)
-        this.modificationService = inject(ModificationService)
-        this.nextIdService = inject(NextIdService)
-        this.carService = inject(CarService)
-        this.scroller = inject(ViewportScroller)
-        this.confirmService = inject(ConfirmServiceService)
-        this.alertService = inject(AlertService)
-        this.popupService = inject(PopUpService)
-        this.router = inject(Router)
-        this.route = inject(ActivatedRoute)
-        this.modalService = inject(ModalService)
-        this.loggerService = inject(LoggerService)
-        this.userCountService = inject(UserCountService)
-        this.modalService = inject(ModalService)
-        this.document = inject(DOCUMENT)
 
         this.userCount$ = this.userCountService.userCount$
         this._autoSearch$ = new Subject<Filter>()

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Rado.Models
+﻿namespace Rado.Models
 {
     public class DealerSubCategory
     {
-        public int dealerSubCategoryId { get; set; }
-        public int subCategoryId { get; set; }
-        public string dealerSubCategoryName { get; set; }
-        public int categoryId { get; set; }
+        public int DealerSubCategoryId { get; set; }
+        public int SubCategoryId { get; set; }
+        public string DealerSubCategoryName { get; set; }
+        public int CategoryId { get; set; }
     }
 }

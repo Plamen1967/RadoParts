@@ -89,44 +89,44 @@ public class MessagesDbSet
         try 
         {
             int userId;
-            if (emailMessage.itemType == Rado.Enums.ItemType.OnlyCar ||
-                emailMessage.itemType == Rado.Enums.ItemType.OnlyBus)
+            if (emailMessage.ItemType == Rado.Enums.ItemType.OnlyCar ||
+                emailMessage.ItemType == Rado.Enums.ItemType.OnlyBus)
             {
-                CarView carView = await CarsDbSet.GetCarByIdAsync(emailMessage.id);
-                userId = carView.userId;
+                CarView carView = await CarsDbSet.GetCarByIdAsync(emailMessage.Id);
+                userId = carView.UserId;
             }
-            else if (emailMessage.itemType == Rado.Enums.ItemType.BusPart || emailMessage.itemType == Rado.Enums.ItemType.CarPart)
+            else if (emailMessage.ItemType == Rado.Enums.ItemType.BusPart || emailMessage.ItemType == Rado.Enums.ItemType.CarPart)
             {
-                PartView part = await PartDbSet.GetPartAsync(emailMessage.id);
-                userId = part.userId;
+                PartView part = await PartDbSet.GetPartAsync(emailMessage.Id);
+                userId = part.UserId;
             } 
-            else if (emailMessage.itemType == Rado.Enums.ItemType.Tyre ||
-                emailMessage.itemType == Rado.Enums.ItemType.Rim ||
-                emailMessage.itemType == Rado.Enums.ItemType.RimWithTyre)
+            else if (emailMessage.ItemType == Rado.Enums.ItemType.Tyre ||
+                emailMessage.ItemType == Rado.Enums.ItemType.Rim ||
+                emailMessage.ItemType == Rado.Enums.ItemType.RimWithTyre)
             {
-                RimWithTyreView rimWithTyreView = await RimWithTyreDbSet.GetRimWithTyreByIdAsync(emailMessage.id);
-                userId = rimWithTyreView.userId;
+                RimWithTyreView rimWithTyreView = await RimWithTyreDbSet.GetRimWithTyreByIdAsync(emailMessage.Id);
+                userId = rimWithTyreView.UserId;
             } else
             {
                 return false;
             }
 
 
-            DisplayPartView displayPartView = await SearchDbSet.GetItemAsync(emailMessage.id);
+            DisplayPartView displayPartView = await SearchDbSet.GetItemAsync(emailMessage.Id);
             User user = UserDbSet.GetUserById(userId);
-            ImageData image = await ImageManager.GetMainImageAsync(emailMessage.id);
-            string link = $"<a href='{Program.api}/part?id={emailMessage.id}' target= '_blank'>Виж обявата</a>";
-            string message = $"<div>Имате запитване за обявата: {link} от {emailMessage.name}";
+            ImageDataClass image = await ImageManager.GetMainImageAsync(emailMessage.Id);
+            string link = $"<a href='{Program.api}/part?id={emailMessage.Id}' target= '_blank'>Виж обявата</a>";
+            string message = $"<div>Имате запитване за обявата: {link} от {emailMessage.Name}";
 
-            message += $"<p> <span style='font-weight: bold;'>Съобщение: </span> {emailMessage.request} </p>";
-            message += $"<a href='mailto:{emailMessage.email}'>Отговори</a>";
+            message += $"<p> <span style='font-weight: bold;'>Съобщение: </span> {emailMessage.Request} </p>";
+            message += $"<a href='mailto:{emailMessage.Email}'>Отговори</a>";
 
             Message messageNew = new Message();
             messageNew.message = message;
             messageNew.ReceiveUserId = userId;
-            messageNew.SenderName = emailMessage.name;
-            messageNew.Email = emailMessage.email;
-            messageNew.Request = emailMessage.request;
+            messageNew.SenderName = emailMessage.Name;
+            messageNew.Email = emailMessage.Email;
+            messageNew.Request = emailMessage.Request;
             messageNew.MsgDate = DateTime.Now.Ticks;
 
             MessagesDbSet.AddMessage(messageNew);
@@ -135,10 +135,10 @@ public class MessagesDbSet
 
             message = messageGenerator.GenerateMessage(displayPartView, emailMessage);
 
-            MailManager.SendEmail(user.email, "Запитване за обява", message);
+            MailManager.SendEmail(user.Email, "Запитване за обява", message);
 
-            if (emailMessage.sendCopy)
-                MailManager.SendEmail(emailMessage.email, "Запитване за обява", message);
+            if (emailMessage.SendCopy)
+                MailManager.SendEmail(emailMessage.Email, "Запитване за обява", message);
         }
         catch (Exception exception)
         {

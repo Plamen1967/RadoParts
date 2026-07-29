@@ -20,13 +20,13 @@ namespace Utility
 
         private static void InitDataCol(Item item, SqlDataReader sqlDataReader)
         {
-            item.description = ToString("description", sqlDataReader);
-            item.mainImageId = Int32("mainImageId", sqlDataReader);
-            item.regionId = Int32("regionId", sqlDataReader);
-            item.userId = Int32("userId", sqlDataReader);
-            item.approved = Int32("approved", sqlDataReader);
-            item.createdTime = Int64("createdTime", sqlDataReader);
-            item.modifiedTime = Int64("modifiedTime", sqlDataReader);
+            item.Description = ToString("description", sqlDataReader);
+            item.MainImageId = Int32("mainImageId", sqlDataReader);
+            item.RegionId = Int32("regionId", sqlDataReader);
+            item.UserId = Int32("userId", sqlDataReader);
+            item.Approved = Int32("approved", sqlDataReader);
+            item.CreatedTime = Int64("createdTime", sqlDataReader);
+            item.ModifiedTime = Int64("modifiedTime", sqlDataReader);
         }
 
         #endregion
@@ -41,20 +41,20 @@ namespace Utility
         {
             InitDataCol(car, sqlDataReader);
 
-            car.carId = Int64("carId", sqlDataReader);
-            car.modelId = Int32("modelId", sqlDataReader);
-            car.modificationId = Int32("modificationId", sqlDataReader);
-            car.year = Int32("year", sqlDataReader);
-            car.vin = ToString("VIN", sqlDataReader);
-            car.regNumber = ToString("regNumber", sqlDataReader);
-            car.powerkWh = Int32("powerkWh", sqlDataReader);
-            car.powerBHP = Int32("powerBHP", sqlDataReader);
-            car.engineType = Int32("engineType", sqlDataReader);
-            car.engineModel = ToString("engineModel", sqlDataReader);
-            car.millage = Int32("millage", sqlDataReader);
-            car.gearboxType = Int32("gearboxType", sqlDataReader);
-            car.bus = Int32("bus", sqlDataReader);
-            car.createdTime = Int64("createdTime", sqlDataReader);
+            car.CarId = Int64("carId", sqlDataReader);
+            car.ModelId = Int32("modelId", sqlDataReader);
+            car.ModificationId = Int32("modificationId", sqlDataReader);
+            car.Year = Int32("year", sqlDataReader);
+            car.Vin = ToString("VIN", sqlDataReader);
+            car.RegNumber = ToString("regNumber", sqlDataReader);
+            car.PowerkWh = Int32("powerkWh", sqlDataReader);
+            car.PowerBHP = Int32("powerBHP", sqlDataReader);
+            car.EngineType = Int32("engineType", sqlDataReader);
+            car.EngineModel = ToString("engineModel", sqlDataReader);
+            car.Millage = Int32("millage", sqlDataReader);
+            car.GearboxType = Int32("gearboxType", sqlDataReader);
+            car.Bus = Int32("bus", sqlDataReader);
+            car.CreatedTime = Int64("createdTime", sqlDataReader);
         }
 
         public static Message LoadMessage(SqlDataReader sqlDataReader)
@@ -88,22 +88,22 @@ namespace Utility
         {
             InitDataCol(rim, sqlDataReader);
 
-            rim.price = Decimal("price", sqlDataReader);
-            rim.companyId = Int32("companyId", sqlDataReader);
-            rim.modelId = Int32("modelId", sqlDataReader);
-            rim.rimWidth = Int32("rimWidth", sqlDataReader);
-            rim.rimMaterial = Int32("rimMaterial", sqlDataReader);
-            rim.rimOffset = Int32("rimOffset", sqlDataReader);
-            rim.rimBoltCount = Int32("rimBoltCount", sqlDataReader);
-            rim.rimBoltDistance = Int32("rimBoltDistance", sqlDataReader);
-            rim.rimCenter = Int32("rimCenter", sqlDataReader);
+            rim.Price = Decimal("price", sqlDataReader);
+            rim.CompanyId = Int32("companyId", sqlDataReader);
+            rim.ModelId = Int32("modelId", sqlDataReader);
+            rim.RimWidth = Int32("rimWidth", sqlDataReader);
+            rim.RimMaterial = Int32("rimMaterial", sqlDataReader);
+            rim.RimOffset = Int32("rimOffset", sqlDataReader);
+            rim.RimBoltCount = Int32("rimBoltCount", sqlDataReader);
+            rim.RimBoltDistance = Int32("rimBoltDistance", sqlDataReader);
+            rim.RimCenter = Int32("rimCenter", sqlDataReader);
 
-            rim.description = ToString("description", sqlDataReader);
-            rim.mainPicture = ToString("mainPicture", sqlDataReader);
-            rim.mainImageId = Int32("mainImageId", sqlDataReader);
-            rim.createdTime = Int64("createdTime", sqlDataReader);
-            rim.modifiedTime = Int64("modifiedTime", sqlDataReader);
-            rim.count = Int32("count", sqlDataReader);
+            rim.Description = ToString("description", sqlDataReader);
+            rim.MainPicture = ToString("mainPicture", sqlDataReader);
+            rim.MainImageId = Int32("mainImageId", sqlDataReader);
+            rim.CreatedTime = Int64("createdTime", sqlDataReader);
+            rim.ModifiedTime = Int64("modifiedTime", sqlDataReader);
+            rim.Count = Int32("count", sqlDataReader);
         }
         public static Part LoadPart(SqlDataReader sqlDataReader)
         {
@@ -117,27 +117,27 @@ namespace Utility
         {
             InitDataCol(part, sqlDataReader);
 
-            part.price = Decimal("price", sqlDataReader);
-            part.partId = Int64("partId", sqlDataReader);
-            part.carId = Int64("carId", sqlDataReader);
-            part.modelId = Int32("modelId", sqlDataReader);
-            part.modificationId = Int32("modificationId", sqlDataReader);
-            part.year = Int32("year", sqlDataReader);
-            part.description = ToString("description", sqlDataReader);
-            part.price = Decimal("price", sqlDataReader);
-            part.leftRightPosition = Int32("leftRightPosition", sqlDataReader);
-            part.frontBackPosition = Int32("frontBackPosition", sqlDataReader);
-            part.partNumber = ToString("partNumber", sqlDataReader);
-            part.engineType = Int32("engineType", sqlDataReader);
-            part.engineModel = ToString("engineModel", sqlDataReader);
-            part.powerkWh = Int32("powerkWh", sqlDataReader);
-            part.powerBHP = Int32("powerBHP", sqlDataReader);
-            part.millage = Int32("millage", sqlDataReader);
-            part.gearboxType = Int32("gearboxType", sqlDataReader);
-            part.dealerSubCategoryId = Int32("dealerSubCategoryId", sqlDataReader);
-            part.dealerSubCategoryName = ToString("dealerSubCategoryName", sqlDataReader);
-            part.bus = Int32("bus", sqlDataReader);
-            part.createdTime = Int64("createdTime", sqlDataReader);
+            part.Price = Decimal("price", sqlDataReader);
+            part.PartId = Int64("partId", sqlDataReader);
+            part.CarId = Int64("carId", sqlDataReader);
+            part.ModelId = Int32("modelId", sqlDataReader);
+            part.ModificationId = Int32("modificationId", sqlDataReader);
+            part.Year = Int32("year", sqlDataReader);
+            part.Description = ToString("description", sqlDataReader);
+            part.Price = Decimal("price", sqlDataReader);
+            part.LeftRightPosition = Int32("leftRightPosition", sqlDataReader);
+            part.FrontBackPosition = Int32("frontBackPosition", sqlDataReader);
+            part.PartNumber = ToString("partNumber", sqlDataReader);
+            part.EngineType = Int32("engineType", sqlDataReader);
+            part.EngineModel = ToString("engineModel", sqlDataReader);
+            part.PowerkWh = Int32("powerkWh", sqlDataReader);
+            part.PowerBHP = Int32("powerBHP", sqlDataReader);
+            part.Millage = Int32("millage", sqlDataReader);
+            part.GearboxType = Int32("gearboxType", sqlDataReader);
+            part.DealerSubCategoryId = Int32("dealerSubCategoryId", sqlDataReader);
+            part.DealerSubCategoryName = ToString("dealerSubCategoryName", sqlDataReader);
+            part.Bus = Int32("bus", sqlDataReader);
+            part.CreatedTime = Int64("createdTime", sqlDataReader);
         }
 
         public static Tyre LoadTyre(SqlDataReader sqlDataReader)
@@ -150,16 +150,16 @@ namespace Utility
         {
             InitDataCol(tyre, sqlDataReader);
 
-            tyre.price = Decimal("price", sqlDataReader);
-            tyre.tyreId = Int64("tyreId", sqlDataReader);
-            tyre.tyreCompanyId = Int32("tyreCompanyId", sqlDataReader);
-            tyre.tyreWidth = Int32("tyreWidth", sqlDataReader);
-            tyre.tyreHeight = Int32("tyreHeight", sqlDataReader);
-            tyre.tyreRadius = Int32("tyreRadius", sqlDataReader);
-            tyre.tyreType = Int32("tyreType", sqlDataReader);
-            tyre.count = Int32("count", sqlDataReader);
-            tyre.month = Int32("month", sqlDataReader);
-            tyre.year = Int32("year", sqlDataReader);
+            tyre.Price = Decimal("price", sqlDataReader);
+            tyre.TyreId = Int64("tyreId", sqlDataReader);
+            tyre.TyreCompanyId = Int32("tyreCompanyId", sqlDataReader);
+            tyre.TyreWidth = Int32("tyreWidth", sqlDataReader);
+            tyre.TyreHeight = Int32("tyreHeight", sqlDataReader);
+            tyre.TyreRadius = Int32("tyreRadius", sqlDataReader);
+            tyre.TyreType = Int32("tyreType", sqlDataReader);
+            tyre.Count = Int32("count", sqlDataReader);
+            tyre.Month = Int32("month", sqlDataReader);
+            tyre.Year = Int32("year", sqlDataReader);
         }
         public static RimWithTyre LoadRimWithTyre(SqlDataReader sqlDataReader)
         {
@@ -173,82 +173,83 @@ namespace Utility
         {
             InitDataCol(rimWithTyre, sqlDataReader);
 
-            rimWithTyre.price = Decimal("price", sqlDataReader);
-            rimWithTyre.rimWithTyreId = Int64("rimWithTyreId", sqlDataReader);
+            rimWithTyre.Price = Decimal("price", sqlDataReader);
+            rimWithTyre.RimWithTyreId = Int64("rimWithTyreId", sqlDataReader);
 
-            rimWithTyre.tyreCompanyId = Int32("tyreCompanyId", sqlDataReader);
-            rimWithTyre.tyreWidth = Int32("tyreWidth", sqlDataReader);
-            rimWithTyre.tyreHeight = Int32("tyreHeight", sqlDataReader);
-            rimWithTyre.tyreRadius = Int32("tyreRadius", sqlDataReader);
-            rimWithTyre.tyreType = Int32("tyreType", sqlDataReader);
-            rimWithTyre.itemType = (ItemType)Int32("itemType", sqlDataReader);
+            rimWithTyre.TyreCompanyId = Int32("tyreCompanyId", sqlDataReader);
+            rimWithTyre.TyreWidth = Int32("tyreWidth", sqlDataReader);
+            rimWithTyre.TyreHeight = Int32("tyreHeight", sqlDataReader);
+            rimWithTyre.TyreRadius = Int32("tyreRadius", sqlDataReader);
+            rimWithTyre.TyreType = Int32("tyreType", sqlDataReader);
+            rimWithTyre.ItemType = (ItemType)Int32("itemType", sqlDataReader);
 
-            rimWithTyre.companyId = Int32("companyId", sqlDataReader);
-            rimWithTyre.modelId = Int32("modelId", sqlDataReader);
-            rimWithTyre.rimWidth = Int32("rimWidth", sqlDataReader);
-            rimWithTyre.rimMaterial = Int32("rimMaterial", sqlDataReader);
-            rimWithTyre.rimOffset = Int32("rimOffset", sqlDataReader);
-            rimWithTyre.rimBoltCount = Int32("rimBoltCount", sqlDataReader);
-            rimWithTyre.rimBoltDistance = Int32("rimBoltDistance", sqlDataReader);
-            rimWithTyre.rimCenter = Int32("rimCenter", sqlDataReader);
-            rimWithTyre.count = Int32("count", sqlDataReader);
-            rimWithTyre.monthDOT = Int32("month", sqlDataReader);
-            rimWithTyre.yearDOT = Int32("year", sqlDataReader);
+            rimWithTyre.CompanyId = Int32("companyId", sqlDataReader);
+            rimWithTyre.ModelId = Int32("modelId", sqlDataReader);
+            rimWithTyre.RimWidth = Int32("rimWidth", sqlDataReader);
+            rimWithTyre.RimMaterial = Int32("rimMaterial", sqlDataReader);
+            rimWithTyre.RimOffset = Int32("rimOffset", sqlDataReader);
+            rimWithTyre.RimBoltCount = Int32("rimBoltCount", sqlDataReader);
+            rimWithTyre.RimBoltDistance = Int32("rimBoltDistance", sqlDataReader);
+            rimWithTyre.RimCenter = Int32("rimCenter", sqlDataReader);
+            rimWithTyre.Count = Int32("count", sqlDataReader);
+            rimWithTyre.MonthDOT = Int32("month", sqlDataReader);
+            rimWithTyre.YearDOT = Int32("year", sqlDataReader);
         }
 
         public static User LoadUser(SqlDataReader sqlDataReader)
         {
             User user = new();
-            user.userId = Int32("userId", sqlDataReader);
-            user.companyName = ToString("companyName", sqlDataReader);
-            user.firstName = ToString("firstName", sqlDataReader);
-            user.fatherName = ToString("fatherName", sqlDataReader);
-            user.lastName = ToString("lastName", sqlDataReader);
-            user.phone = ToString("phone", sqlDataReader);
-            user.phone2 = ToString("phone2", sqlDataReader);
-            user.viber = ToString("viber", sqlDataReader);
-            user.whats = ToString("whats", sqlDataReader);
-            user.email = ToString("email", sqlDataReader);
-            user.address = ToString("address", sqlDataReader);
-            user.city = ToString("city", sqlDataReader);
-            user.regionId = Int32("regionId", sqlDataReader);
-            user.userName = ToString("userName", sqlDataReader);
-            user.dealer = (UserType)Int32("dealer", sqlDataReader);
+            user.UserId = Int32("userId", sqlDataReader);
+            user.CompanyName = ToString("companyName", sqlDataReader);
+            user.FirstName = ToString("firstName", sqlDataReader);
+            user.FatherName = ToString("fatherName", sqlDataReader);
+            user.LastName = ToString("lastName", sqlDataReader);
+            user.Phone = ToString("phone", sqlDataReader);
+            user.Phone2 = ToString("phone2", sqlDataReader);
+            user.Viber = ToString("viber", sqlDataReader);
+            user.Whats = ToString("whats", sqlDataReader);
+            user.Email = ToString("email", sqlDataReader);
+            user.Address = ToString("address", sqlDataReader);
+            user.City = ToString("city", sqlDataReader);
+            user.RegionId = Int32("regionId", sqlDataReader);
+            user.UserName = ToString("userName", sqlDataReader);
+            user.Dealer = (UserType)Int32("dealer", sqlDataReader);
             user.PasswordHash = ToString("password", sqlDataReader);
-            user.webPage = ToString("webPage", sqlDataReader);
-            user.activationCode = ToString("activationCode", sqlDataReader);
-            user.activated = Int32("activated", sqlDataReader);
-            user.blocked = Int32("blocked", sqlDataReader);
-            user.attempt = Int32("attempt", sqlDataReader);
-            user.description = ToString("description", sqlDataReader);
-            user.creationDate = ToDateTime("creationDate", sqlDataReader).ToString();
-            user.suspended = Int32("suspended", sqlDataReader);
-            user.imageId = Int32("imageId", sqlDataReader);
-            user.suspendedDateTime = Int64("suspendedDateTime", sqlDataReader);
+            user.WebPage = ToString("webPage", sqlDataReader);
+            user.ActivationCode = ToString("activationCode", sqlDataReader);
+            user.Activated = Int32("activated", sqlDataReader);
+            user.Blocked = Int32("blocked", sqlDataReader);
+            user.Attempt = Int32("attempt", sqlDataReader);
+            user.Description = ToString("description", sqlDataReader);
+            user.CreationDate = ToDateTime("creationDate", sqlDataReader).ToString();
+            user.Suspended = Int32("suspended", sqlDataReader);
+            user.ImageId = Int32("imageId", sqlDataReader);
+            user.SuspendedDateTime = Int64("suspendedDateTime", sqlDataReader);
 
             return user;
         }
 
-        public static ImageData LoadImageData(SqlDataReader sqlDataReader)
+        public static ImageDataClass LoadImageData(SqlDataReader sqlDataReader)
         {
-            ImageData imageData = new ImageData();
+            ImageDataClass imageDataClass = new ImageDataClass();
 
-            LoadImageData(imageData, sqlDataReader);
+            LoadImageData(imageDataClass, sqlDataReader);
 
-            return imageData;
+            return imageDataClass;
         }
-        public static void LoadImageData(ImageData imageData, SqlDataReader sqlDataReader)
+
+        private static void LoadImageData(ImageDataClass imageDataClass, SqlDataReader sqlDataReader)
         {
-            imageData.imageId = Int32("imageId", sqlDataReader);
-            imageData.userId = Int32("userId", sqlDataReader);
-            imageData.objectId = Int64("objectId", sqlDataReader);
-            imageData.imageFile = ToString("imageFile", sqlDataReader);
-            imageData.imageType = Int32("imageType", sqlDataReader);
-            imageData.originalImageId = Int32("originalImageId", sqlDataReader);
-            imageData.deleted = Int32("deleted", sqlDataReader);
-            imageData.deleteDateTime = ToDateTime("deleteDateTime", sqlDataReader);
-            imageData.imageMinSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, true);
-            imageData.imageSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, false);
+            imageDataClass.ImageId = Int32("imageId", sqlDataReader);
+            imageDataClass.UserId = Int32("userId", sqlDataReader);
+            imageDataClass.ObjectId = Int64("objectId", sqlDataReader);
+            imageDataClass.ImageFile = ToString("imageFile", sqlDataReader);
+            imageDataClass.ImageType = Int32("imageType", sqlDataReader);
+            imageDataClass.OriginalImageId = Int32("originalImageId", sqlDataReader);
+            imageDataClass.Deleted = Int32("deleted", sqlDataReader);
+            imageDataClass.DeleteDateTime = ToDateTime("deleteDateTime", sqlDataReader);
+            imageDataClass.ImageMinSrc = ImageManager.GenerateImageHRef(imageDataClass.ObjectId, imageDataClass.ImageId, true);
+            imageDataClass.ImageSrc = ImageManager.GenerateImageHRef(imageDataClass.ObjectId, imageDataClass.ImageId, false);
 
 
         }
@@ -264,98 +265,76 @@ namespace Utility
         {
             Filter filter = new Filter();
 
-            filter.id = Int64("filterId", sqlDataReader);
-            filter.itemType = (ItemType)Int32("itemType", sqlDataReader);
-            filter.carId = Int64("carId", sqlDataReader);
-            filter.companyId = Int32("companyId", sqlDataReader);
-            filter.modelId = Int32("modelId", sqlDataReader);
-            filter.modificationId = Int32("modificationId", sqlDataReader);
-            filter.year = Int32("year", sqlDataReader);
-            filter.categoryId = Int32("categoryId", sqlDataReader);
-            filter.subCategoryId = Int32("subCategoryId", sqlDataReader);
-            filter.categoriesId = ToString("categoriesId", sqlDataReader);
-            filter.subCategoryId = Int32("subCategoryId", sqlDataReader);
-            filter.subCategoriesId = ToString("subCategoriesId", sqlDataReader);
-            filter.engineType = Int32("engineType", sqlDataReader);
-            filter.engineModel = ToString("engineModel", sqlDataReader);
-            filter.partNumber = ToString("partNumber", sqlDataReader);
-            filter.powerkWh = Int32("powerkWh", sqlDataReader);
-            filter.powerBHP = Int32("powerBHP", sqlDataReader);
-            filter.gearboxType = Int32("gearboxType", sqlDataReader);
-            filter.categories = ToString("categories", sqlDataReader);
-            filter.partOnly = Short("partOnly", sqlDataReader) > 0 ? true : false;
-            filter.extendedSearch = Short("extendedSearch", sqlDataReader) > 0 ? true : false;
+            filter.Id = Int64("filterId", sqlDataReader);
+            filter.ItemType = (ItemType)Int32("itemType", sqlDataReader);
+            filter.CarId = Int64("carId", sqlDataReader);
+            filter.CompanyId = Int32("companyId", sqlDataReader);
+            filter.ModelId = Int32("modelId", sqlDataReader);
+            filter.ModificationId = Int32("modificationId", sqlDataReader);
+            filter.Year = Int32("year", sqlDataReader);
+            filter.CategoryId = Int32("categoryId", sqlDataReader);
+            filter.SubCategoryId = Int32("subCategoryId", sqlDataReader);
+            filter.CategoriesId = ToString("categoriesId", sqlDataReader);
+            filter.SubCategoryId = Int32("subCategoryId", sqlDataReader);
+            filter.SubCategoriesId = ToString("subCategoriesId", sqlDataReader);
+            filter.EngineType = Int32("engineType", sqlDataReader);
+            filter.EngineModel = ToString("engineModel", sqlDataReader);
+            filter.PartNumber = ToString("partNumber", sqlDataReader);
+            filter.PowerkWh = Int32("powerkWh", sqlDataReader);
+            filter.PowerBHP = Int32("powerBHP", sqlDataReader);
+            filter.GearboxType = Int32("gearboxType", sqlDataReader);
+            filter.Categories = ToString("categories", sqlDataReader);
+            filter.PartOnly = Short("partOnly", sqlDataReader) > 0 ? true : false;
+            filter.ExtendedSearch = Short("extendedSearch", sqlDataReader) > 0 ? true : false;
             int search = Short("searchBy", sqlDataReader);
-            filter.regNumber = ToString("regNumber", sqlDataReader);
-            filter.modelsId = ToString("modelsId", sqlDataReader);
-            filter.modificationsId = ToString("modificationsId", sqlDataReader);
+            filter.RegNumber = ToString("regNumber", sqlDataReader);
+            filter.ModelsId = ToString("modelsId", sqlDataReader);
+            filter.ModificationsId = ToString("modificationsId", sqlDataReader);
 
-            filter.clientId = Int64("clientId", sqlDataReader);
-            filter.userId = Int32("userId", sqlDataReader);
-            filter.loadMainPicture = Short("loadMainPicture", sqlDataReader) > 0 ? true : false;
-            filter.orderBy = Int32("orderBy", sqlDataReader);
-            filter.regionId = Int32("regionId", sqlDataReader);
+            filter.ClientId = Int64("clientId", sqlDataReader);
+            filter.UserId = Int32("userId", sqlDataReader);
+            filter.LoadMainPicture = Short("loadMainPicture", sqlDataReader) > 0 ? true : false;
+            filter.OrderBy = Int32("orderBy", sqlDataReader);
+            filter.RegionId = Int32("regionId", sqlDataReader);
 
-            filter.hasImages = Short("hasImages", sqlDataReader) > 0 ? true : false;
-            filter.keyword = ToString("keyword", sqlDataReader);
-            filter.description = ToString("description", sqlDataReader);
-            filter.adminRun = Short("adminRun", sqlDataReader) > 0 ? true : false;
-            filter.approved = (ApprovedType)Short("approved", sqlDataReader);
+            filter.HasImages = Short("hasImages", sqlDataReader) > 0 ? true : false;
+            filter.Keyword = ToString("keyword", sqlDataReader);
+            filter.Description = ToString("description", sqlDataReader);
+            filter.AdminRun = Short("adminRun", sqlDataReader) > 0 ? true : false;
+            filter.Approved = (ApprovedType)Short("approved", sqlDataReader);
 
-            filter.tyreCompanyId = Int32("tyreCompanyId", sqlDataReader);
-            filter.tyreWidth = Int32("tyreWidth", sqlDataReader);
-            filter.tyreHeight = Int32("tyreHeight", sqlDataReader);
-            filter.tyreRadius = Int32("tyreRadius", sqlDataReader);
-            filter.tyreType = Int32("tyreType", sqlDataReader);
+            filter.TyreCompanyId = Int32("tyreCompanyId", sqlDataReader);
+            filter.TyreWidth = Int32("tyreWidth", sqlDataReader);
+            filter.TyreHeight = Int32("tyreHeight", sqlDataReader);
+            filter.TyreRadius = Int32("tyreRadius", sqlDataReader);
+            filter.TyreType = Int32("tyreType", sqlDataReader);
 
-            filter.rimCompanyId = Int32("rimCompanyId", sqlDataReader);
-            filter.rimModelId = Int32("rimModelId", sqlDataReader);
-            filter.rimWidth = Int32("rimWidth", sqlDataReader);
-            filter.rimMaterial = Int32("rimMaterial", sqlDataReader);
-            filter.rimOffset = Int32("rimOffset", sqlDataReader);
-            filter.rimBoltCount = Int32("rimBoltCount", sqlDataReader);
-            filter.rimBoltDistance = Int32("rimBoltDistance", sqlDataReader);
-            filter.rimCenter = Int32("rimCenter", sqlDataReader);
-            filter.bus = Int32("bus", sqlDataReader);
-            filter.partForCar = Int32("partForCar", sqlDataReader);
+            filter.RimCompanyId = Int32("rimCompanyId", sqlDataReader);
+            filter.RimModelId = Int32("rimModelId", sqlDataReader);
+            filter.RimWidth = Int32("rimWidth", sqlDataReader);
+            filter.RimMaterial = Int32("rimMaterial", sqlDataReader);
+            filter.RimOffset = Int32("rimOffset", sqlDataReader);
+            filter.RimBoltCount = Int32("rimBoltCount", sqlDataReader);
+            filter.RimBoltDistance = Int32("rimBoltDistance", sqlDataReader);
+            filter.RimCenter = Int32("rimCenter", sqlDataReader);
+            filter.Bus = Int32("bus", sqlDataReader);
+            filter.PartForCar = Int32("partForCar", sqlDataReader);
 
             switch (search)
             {
                 case 0:
-                    filter.searchBy = SearchBy.Filter;
+                    filter.SearchBy = SearchBy.Filter;
                     break;
                 case 1:
-                    filter.searchBy = SearchBy.PartNumber;
+                    filter.SearchBy = SearchBy.PartNumber;
                     break;
                 default:
-                    filter.searchBy = SearchBy.Filter;
+                    filter.SearchBy = SearchBy.Filter;
                     break;
             }
 
             return filter;
         }
-
-        //public static User LoadUser(SqlDataReader sqlDataReader)
-        //{
-        //    User user = new User();
-
-        //    user.userId = Int32("userId", sqlDataReader);
-        //    user.companyName = ToString("companyName", sqlDataReader);
-        //    user.firstName = ToString("firstName", sqlDataReader);
-        //    user.fatherName = ToString("fatherName", sqlDataReader);
-        //    user.lastName = ToString("lastName", sqlDataReader);
-        //    user.address = ToString("address", sqlDataReader);
-        //    user.city = ToString("city", sqlDataReader);
-        //    user.phone = ToString("phone", sqlDataReader);
-        //    user.phone2 = ToString("phone2", sqlDataReader);
-        //    user.viber = ToString("viber", sqlDataReader);
-        //    user.whats = ToString("whats", sqlDataReader);
-        //    user.webPage = ToString("webPage", sqlDataReader);
-        //    user.description = ToString("description", sqlDataReader);
-        //    user.imageData = ImageManager.GetBusinessCard(user.userId);
-
-        //    return user;
-        //}
     }
 }
 

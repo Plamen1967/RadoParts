@@ -8,19 +8,19 @@ namespace Rado.Models
 {
     public class Modification
     {
-        public int modificationId { get; set; }
-        public int modelId { get; set; }
-        public string modificationName { get; set; }
-        public string modificationDisplayName { get; set; }
-        public int yearFrom { get; set; }
-        public int yearTo { get; set; }
-        public int powerHP { get; set; }
-        public int engine { get; set; }
-        public int doors { get; set; }
-        public int kupe { get; set; }
-        public int countParts { get; set; }
-        public int countCars { get; set; }
-        public int countCarBus { get; set; }
+        public int ModificationId { get; set; }
+        public int ModelId { get; set; }
+        public string ModificationName { get; set; }
+        public string ModificationDisplayName { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public int PowerHP { get; set; }
+        public int Engine { get; set; }
+        public int Doors { get; set; }
+        public int Kupe { get; set; }
+        public int CountParts { get; set; }
+        public int CountCars { get; set; }
+        public int CountCarBus { get; set; }
 
         
 
@@ -28,14 +28,14 @@ namespace Rado.Models
         {
             return new ModificationMin()
             {
-                modificationId = modificationId,
-                modelId = modelId,
-                modificationName = modificationName,
-                modificationDisplayName = modificationDisplayName,
-                yearFrom = yearFrom,
-                yearTo = yearTo,
-                countParts = countParts,
-                countCars = countCarBus,
+                ModificationId = ModificationId,
+                ModelId = ModelId,
+                ModificationName = ModificationName,
+                ModificationDisplayName = ModificationDisplayName,
+                YearFrom = YearFrom,
+                YearTo = YearTo,
+                CountParts = CountParts,
+                CountCars = CountCarBus,
 
             };
         }
@@ -43,15 +43,15 @@ namespace Rado.Models
 
     public class ModificationMin 
     {
-        public int modificationId { get; set; }
-        public int modelId { get; set; }
-        public string modificationName { get; set; }
-        public string modificationDisplayName { get; set; }
-        public int yearFrom { get; set; }
-        public int yearTo { get; set; }
+        public int ModificationId { get; set; }
+        public int ModelId { get; set; }
+        public string ModificationName { get; set; }
+        public string ModificationDisplayName { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
 
-        public int countParts { get; set; }
-        public int countCars { get; set; }
+        public int CountParts { get; set; }
+        public int CountCars { get; set; }
 
     }
 }

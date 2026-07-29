@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
+using Models.Models;
 using Models.Models.Utility;
 using Rado.Datasets;
 using Rado.Enrich;
@@ -27,7 +28,7 @@ namespace Rado.Controllers
         [EnableCors("testingApp")]
         public async Task<DisplayPartView> Post([FromBody] RimWithTyre rimWithTyre)
         {
-            rimWithTyre.userId = UserId;
+            rimWithTyre.UserId = UserId;
             return await RimWithTyreDbSet.AddRimWithTyreAsync(rimWithTyre);
         }
 
@@ -46,7 +47,7 @@ namespace Rado.Controllers
         {
             try
             {
-                rimWithTyre.userId = UserId;
+                rimWithTyre.UserId = UserId;
                 return await RimWithTyreDbSet.AddRimWithTyreAsync(rimWithTyre);
             }
             catch (Exception exception)
@@ -61,7 +62,7 @@ namespace Rado.Controllers
         {
             try
             {
-                rimWithTyre.userId = UserId;
+                rimWithTyre.UserId = UserId;
                 return await RimWithTyreDbSet.UpdateRimWithTyreAsync(rimWithTyre);
             }
             catch (Exception exception)

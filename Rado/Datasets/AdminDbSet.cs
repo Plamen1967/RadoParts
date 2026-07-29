@@ -104,7 +104,7 @@ namespace Rado.Datasets
         {
             string storedProcedure = "Category";
             InsertUpdate update = InsertUpdate.Update;
-            if (category.categoryId == 0)
+            if (category.CategoryId == 0)
             {
                 update = InsertUpdate.Insert;
                 storedProcedure = storedProcedure + "Ins";
@@ -123,13 +123,13 @@ namespace Rado.Datasets
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
                         SqlParameter categoryNameParam = sqlCommand.Parameters.Add("@categoryName", SqlDbType.VarChar);
-                        categoryNameParam.Value = category.categoryName;
+                        categoryNameParam.Value = category.CategoryName;
                         SqlParameter returnCategoryIdParam = null;
 
                         if (update == InsertUpdate.Update)
                         {
                             SqlParameter categoryIdParam = sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int);
-                            categoryIdParam.Value = category.categoryId;
+                            categoryIdParam.Value = category.CategoryId;
                         }
                         else
                         {
@@ -143,7 +143,7 @@ namespace Rado.Datasets
 
                         CategoriesDbSet.Refresh();
 
-                        int categoryId = category.categoryId;
+                        int categoryId = category.CategoryId;
 
                         if (update == InsertUpdate.Insert)
                             categoryId = (int)returnCategoryIdParam.Value;
@@ -165,7 +165,7 @@ namespace Rado.Datasets
         {
             string storedProcedure = "SubCategory";
             InsertUpdate update = InsertUpdate.Update;
-            if (subCategory.subCategoryId == 0)
+            if (subCategory.SubCategoryId == 0)
             {
                 update = InsertUpdate.Insert;
                 storedProcedure = storedProcedure + "Ins";
@@ -184,19 +184,19 @@ namespace Rado.Datasets
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
                         SqlParameter subCategoryNameParam = sqlCommand.Parameters.Add("@subCategoryName", SqlDbType.VarChar);
-                        subCategoryNameParam.Value = subCategory.subCategoryName;
+                        subCategoryNameParam.Value = subCategory.SubCategoryName;
 
                         SqlParameter returnSubCategoryIdNameParam = null;
 
                         if (update == InsertUpdate.Update)
                         {
                             SqlParameter subCategoryIdParam = sqlCommand.Parameters.Add("@subCategoryId", SqlDbType.Int);
-                            subCategoryIdParam.Value = subCategory.subCategoryId;
+                            subCategoryIdParam.Value = subCategory.SubCategoryId;
                         }
                         else
                         {
                             SqlParameter categoryIdNameParam = sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int);
-                            categoryIdNameParam.Value = subCategory.categoryId;
+                            categoryIdNameParam.Value = subCategory.CategoryId;
 
                             returnSubCategoryIdNameParam = sqlCommand.Parameters.Add("@returnSubCategoryId", SqlDbType.Int);
                             returnSubCategoryIdNameParam.Direction = ParameterDirection.Output;
@@ -208,7 +208,7 @@ namespace Rado.Datasets
 
                         SubCategoriesDbSet.Refresh();
 
-                        int subCategoryId = subCategory.subCategoryId;
+                        int subCategoryId = subCategory.SubCategoryId;
 
                         if (update == InsertUpdate.Insert)
                             subCategoryId = (int)returnSubCategoryIdNameParam.Value;
@@ -231,7 +231,7 @@ namespace Rado.Datasets
         {
             string storedProcedure = "DealerSubCategory";
             InsertUpdate update = InsertUpdate.Update;
-            if (dealerSubCategory.dealerSubCategoryId == 0)
+            if (dealerSubCategory.DealerSubCategoryId == 0)
             {
                 update = InsertUpdate.Insert;
                 storedProcedure = storedProcedure + "Ins";
@@ -250,19 +250,19 @@ namespace Rado.Datasets
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
                         SqlParameter dealerSubCategoryNameParam = sqlCommand.Parameters.Add("@dealerSubCategoryName", SqlDbType.VarChar);
-                        dealerSubCategoryNameParam.Value = dealerSubCategory.dealerSubCategoryName;
+                        dealerSubCategoryNameParam.Value = dealerSubCategory.DealerSubCategoryName;
 
                         SqlParameter returnDealerSubCategoryIdNameParam = null;
 
                         if (update == InsertUpdate.Update)
                         {
                             SqlParameter dealerSubCategoryIdParam = sqlCommand.Parameters.Add("@dealerSubCategoryId", SqlDbType.Int);
-                            dealerSubCategoryIdParam.Value = dealerSubCategory.dealerSubCategoryId;
+                            dealerSubCategoryIdParam.Value = dealerSubCategory.DealerSubCategoryId;
                         }
                         else
                         {
                             SqlParameter subCategoryIdNameParam = sqlCommand.Parameters.Add("@subCategoryId", SqlDbType.Int);
-                            subCategoryIdNameParam.Value = dealerSubCategory.subCategoryId;
+                            subCategoryIdNameParam.Value = dealerSubCategory.SubCategoryId;
 
                             returnDealerSubCategoryIdNameParam = sqlCommand.Parameters.Add("@returnDealerSubCategoryId", SqlDbType.Int);
                             returnDealerSubCategoryIdNameParam.Direction = ParameterDirection.Output;
@@ -274,7 +274,7 @@ namespace Rado.Datasets
 
                         DealerSubCategoryDbSet.Refresh();
 
-                        int dealerSubCategoryId = dealerSubCategory.dealerSubCategoryId;
+                        int dealerSubCategoryId = dealerSubCategory.DealerSubCategoryId;
 
                         if (update == InsertUpdate.Insert)
                             dealerSubCategoryId = (int)returnDealerSubCategoryIdNameParam.Value;
@@ -298,13 +298,13 @@ namespace Rado.Datasets
             {
                 string storedProcedure = "Company";
                 InsertUpdate update = InsertUpdate.Update;
-                if (company.companyId == 0)
+                if (company.CompanyId == 0)
                 {
                     update = InsertUpdate.Insert;
                     storedProcedure = storedProcedure + "Ins";
-                    var company1 = CompaniesDbSet.getAllCompanies().OrderByDescending(x => x.companyId).FirstOrDefault();
-                    int max = company1.companyId;
-                    company.companyId = ++max;
+                    var company1 = CompaniesDbSet.getAllCompanies().OrderByDescending(x => x.CompanyId).FirstOrDefault();
+                    int max = company1.CompanyId;
+                    company.CompanyId = ++max;
                 }
                 else
                 {
@@ -321,19 +321,19 @@ namespace Rado.Datasets
                         {
                             //SqlParameter returnCompanyIdParam = null;
 
-                            sqlCommand.Parameters.Add("@companyName", SqlDbType.VarChar).Value = company.companyName;
-                            sqlCommand.Parameters.Add("@important", SqlDbType.Int).Value = company.important;
+                            sqlCommand.Parameters.Add("@companyName", SqlDbType.VarChar).Value = company.CompanyName;
+                            sqlCommand.Parameters.Add("@important", SqlDbType.Int).Value = company.Important;
 
                             if (update == InsertUpdate.Update)
                             {
                                 SqlParameter companyIdParam = sqlCommand.Parameters.Add("@companyId", SqlDbType.Int);
-                                companyIdParam.Value = company.companyId;
+                                companyIdParam.Value = company.CompanyId;
                             }
                             else
                             {
                                 SqlParameter companyIdParam = sqlCommand.Parameters.Add("@companyId", SqlDbType.Int);
-                                companyIdParam.Value = company.companyId;
-                                sqlCommand.Parameters.Add("@bus", SqlDbType.Int).Value = company.bus;
+                                companyIdParam.Value = company.CompanyId;
+                                sqlCommand.Parameters.Add("@bus", SqlDbType.Int).Value = company.Bus;
                                 //returnCompanyIdParam = sqlCommand.Parameters.Add("@returnCompanyId", System.Data.SqlDbType.Int);
                                 //returnCompanyIdParam.Direction = System.Data.ParameterDirection.Output;
                             }
@@ -344,8 +344,8 @@ namespace Rado.Datasets
 
 
 
-                            int companyId = company.companyId;
-                            company = CompaniesDbSet.getCompanyById(companyId);
+                            int companyId = company.CompanyId;
+                            company = CompaniesDbSet.GetCompanyById(companyId);
                         }
 
                     }
@@ -368,7 +368,7 @@ namespace Rado.Datasets
             await Task.Run(() => {
                 string storedProcedure = "Modification";
                 InsertUpdate update = InsertUpdate.Update;
-                if (updatedModification.modificationId == 0)
+                if (updatedModification.ModificationId == 0)
                 {
                     update = InsertUpdate.Insert;
                     storedProcedure = storedProcedure + "Ins";
@@ -387,28 +387,28 @@ namespace Rado.Datasets
                         using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                         {
                             SqlParameter modelNameParam = sqlCommand.Parameters.Add("@modificationName", SqlDbType.VarChar);
-                            modelNameParam.Value = updatedModification.modificationName;
+                            modelNameParam.Value = updatedModification.ModificationName;
                             SqlParameter returnModificationIdParam = null;
 
                             if (update == InsertUpdate.Update)
                             {
                                 SqlParameter modelIdParam = sqlCommand.Parameters.Add("@modificationId", SqlDbType.Int);
-                                modelIdParam.Value = updatedModification.modificationId;
+                                modelIdParam.Value = updatedModification.ModificationId;
                             }
                             else
                             {
                                 SqlParameter modelIdParam = sqlCommand.Parameters.Add("@modelId", SqlDbType.Int);
-                                modelIdParam.Value = updatedModification.@modelId;
+                                modelIdParam.Value = updatedModification.ModelId;
                                 returnModificationIdParam = sqlCommand.Parameters.Add("@returnModificationId", SqlDbType.Int);
                                 returnModificationIdParam.Direction = ParameterDirection.Output;
                             }
 
-                            sqlCommand.Parameters.Add("@yearFrom", SqlDbType.Int).Value = updatedModification.yearFrom;
-                            sqlCommand.Parameters.Add("@yearTo", SqlDbType.Int).Value = updatedModification.yearTo;
-                            sqlCommand.Parameters.Add("@powerHP", SqlDbType.Int).Value = updatedModification.powerHP;
-                            sqlCommand.Parameters.Add("@engine", SqlDbType.Int).Value = updatedModification.engine;
-                            sqlCommand.Parameters.Add("@doors", SqlDbType.Int).Value = updatedModification.doors;
-                            sqlCommand.Parameters.Add("@kupe", SqlDbType.Int).Value = updatedModification.kupe;
+                            sqlCommand.Parameters.Add("@yearFrom", SqlDbType.Int).Value = updatedModification.YearFrom;
+                            sqlCommand.Parameters.Add("@yearTo", SqlDbType.Int).Value = updatedModification.YearTo;
+                            sqlCommand.Parameters.Add("@powerHP", SqlDbType.Int).Value = updatedModification.PowerHP;
+                            sqlCommand.Parameters.Add("@engine", SqlDbType.Int).Value = updatedModification.Engine;
+                            sqlCommand.Parameters.Add("@doors", SqlDbType.Int).Value = updatedModification.Doors;
+                            sqlCommand.Parameters.Add("@kupe", SqlDbType.Int).Value = updatedModification.Kupe;
 
                             sqlCommand.CommandType = CommandType.StoredProcedure;
                             int rows = sqlCommand.ExecuteNonQuery();
@@ -416,7 +416,7 @@ namespace Rado.Datasets
 
                             ModificationsDbSet.Refresh();
 
-                            int modificationId = updatedModification.modificationId;
+                            int modificationId = updatedModification.ModificationId;
 
                             if (update == InsertUpdate.Insert)
                                 modificationId = (int)returnModificationIdParam.Value;

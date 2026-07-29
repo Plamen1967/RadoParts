@@ -18,7 +18,7 @@ namespace Utility.Authorization
             if (!checkUser(user))
                 return false;
 
-            if (user.dealer == 0)
+            if (user.Dealer == 0)
                 throw new UnauthorizedAccessException("User is not a dealer");
 
             return true;
@@ -31,7 +31,7 @@ namespace Utility.Authorization
                 throw new AppException("User can not be found");
             }
 
-            if (user.suspended == 1)
+            if (user.Suspended == 1)
                 throw new AppException("User is suspended");
 
             return true;

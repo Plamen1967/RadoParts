@@ -2,95 +2,92 @@
 using Models.Models;
 using Rado.Enums;
 using Rado.Models;
-using System.ComponentModel.Design;
 using System.Text.Json.Serialization;
 
 namespace Models.Enums
 {
     public class DisplayPartView
     {
-        public long id { get; set; }
-        public ItemType itemType { get; set; }
-        public bool isCar { get; set; }
+        public long Id { get; set; }
+        public ItemType ItemType { get; set; }
+        public bool IsCar { get; set; }
         [JsonIgnore()]
-        public PartView part { get; set; }
+        public PartView Part { get; set; }
         [JsonIgnore()]
-        public RimWithTyreView rimWithTyre { get; set; }
+        public RimWithTyreView RimWithTyre { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string mainPicture { get; set; }
-        public string description { get; set; }
+        public string? MainPicture { get; set; }
+        public string? Description { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public decimal price { get; set; }
+        public decimal Price { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerName { get; set; }
+        public string? SellerName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerPhone { get; set; }
+        public string? SellerPhone { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerPhone2 { get; set; }
+        public string? SellerPhone2 { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string sellerViber { get; set; }
+        public string? SellerViber { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerWhats { get; set; }
+        public string? SellerWhats { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerLogo { get; set; }
+        public string? SellerLogo { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerCity { get; set; }
+        public string SellerCity { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerCompanyName { get; set; }
+        public string? SellerCompanyName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string sellerWebPage { get; set; }
+        public string? SellerWebPage { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int numberImages { get; set; }
+        public int NumberImages { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int userId { get; set; }
+        public int UserId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ImageData mainImageData { get; set; }
+        public ImageDataClass MainImageData { get; set; }
         [JsonIgnore()]
-        public int regionId { get; set; }
+        public int RegionId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public long mainImageId { get; set; }
+        public long MainImageId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
-        public ImageData[] images { get; set; }
+        public ImageDataClass[] Images { get; set; }
         [JsonIgnore()]
-        public int approved { get; set; }
+        public int Approved { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int Count { get; set; }
-        public UserType dealer { get; set; }
+        public UserType Dealer { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public long modifiedTime { get; set; }
+        public long ModifiedTime { get; set; }
         [JsonIgnore()]
-        public string engineTypeDesc { get; set; }
+        public string? EngineTypeDesc { get; set; }
         [JsonIgnore()]
-        public string positionDesc { get; set; }
+        public string? PositionDesc { get; set; }
         [JsonIgnore()]
-        public string gearboxDesc { get; set; }
+        public string? GearboxDesc { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string ItemTypeStr { get; set; }
+        public string? ItemTypeStr { get; set; }
         [JsonIgnore()]
-        public string RegionStr { get; set; }
+        public string? RegionStr { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string descriptionModel { get; set; }
+        public string? DescriptionModel { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Dictionary<string, string> Tags { get; set; }
+        public Dictionary<string, string>? Tags { get; set; } = new Dictionary<string, string>();
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Dictionary<string, string> RimTags { get; set; }
+        public Dictionary<string, string>? RimTags { get; set; } = new Dictionary<string, string>();
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Dictionary<string, string> TyreTags { get; set; }
+        public Dictionary<string, string>? TyreTags { get; set; } = new Dictionary<string, string>();
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string companyName { get; set; }
-
+        public string? CompanyName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string modelName { get; set; }
+        public string? ModelName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string modificationName { get; set; }
-
+        public string? ModificationName { get; set; }
 
         public DisplayPartView Normalize()
         {
             Tags = new Dictionary<string, string>();
-            switch(itemType)
+            switch(ItemType)
             {
                 case ItemType.CarPart:
                 case ItemType.BusPart:
@@ -120,188 +117,189 @@ namespace Models.Enums
         }
 
         private string GetPosition() {
-            part.frontBackPosition = part.frontBackPosition ?? 0;
-            part.leftRightPosition = part.leftRightPosition ?? 0;
+            Part.FrontBackPosition = Part.FrontBackPosition ?? 0;
+            Part.LeftRightPosition = Part.LeftRightPosition ?? 0;
 
-            if (part.frontBackPosition == (int)PositionFB.None && part.leftRightPosition == (int)PositionLR.None)
+            if (Part.FrontBackPosition == (int)PositionFB.None && Part.LeftRightPosition == (int)PositionLR.None)
             {
                 return "";
             }
 
             string positionDesc = "";
 
-            if (part.frontBackPosition != 0)
+            if (Part.FrontBackPosition != 0)
             {
-                positionDesc = ConverterToString.FrontBackStr((PositionFB)part.frontBackPosition);
+                positionDesc = ConverterToString.FrontBackStr((PositionFB)Part.FrontBackPosition);
             }
 
-            if (part.leftRightPosition != 0)
+            if (Part.LeftRightPosition != 0)
             {
-                positionDesc += ConverterToString.LeftRightStr((PositionLR)part.leftRightPosition);
+                positionDesc += ConverterToString.LeftRightStr((PositionLR)Part.LeftRightPosition);
             }
 
             return positionDesc;
         }
-        
-        public void NormalizePart()
+
+        private void NormalizePart()
         {
             NormalizePartCar();
             NormalzeCommon();
         }
-        public void NormalizeCar()
+        private void NormalizeCar()
         {
             NormalizePartCar();
             NormalzeCommon();
         }
-        public void NormalizeTyre(bool only = true)
+        private void NormalizeTyre(bool only = true)
         {
             TyreTags = new Dictionary<string, string>();
             string tyreWidth = "", tyreHeight = "", tyreRadius = "";
-            if (ConverterToString.TyreWidthString(rimWithTyre.tyreWidth) != string.Empty)
+            if (ConverterToString.TyreWidthString(RimWithTyre.TyreWidth) != string.Empty)
             {
-                tyreWidth = ConverterToString.TyreWidthString(rimWithTyre.tyreWidth);
+                tyreWidth = ConverterToString.TyreWidthString(RimWithTyre.TyreWidth);
                 TyreTags.Add("Широчина", tyreWidth);
             }
 
-
-            if (ConverterToString.TyreHeightString(rimWithTyre.tyreHeight) != string.Empty)
+            if (ConverterToString.TyreHeightString(RimWithTyre.TyreHeight) != string.Empty)
             {
-                tyreHeight = ConverterToString.TyreHeightString(rimWithTyre.tyreHeight);
+                tyreHeight = ConverterToString.TyreHeightString(RimWithTyre.TyreHeight);
                 TyreTags.Add("Височина", tyreHeight);
             }
 
-            if (ConverterToString.TyreRadiusString(rimWithTyre.tyreRadius) != string.Empty)
+            if (ConverterToString.TyreRadiusString(RimWithTyre.TyreRadius) != string.Empty)
             {
-                tyreRadius = ConverterToString.TyreRadiusString(rimWithTyre.tyreRadius);
+                tyreRadius = ConverterToString.TyreRadiusString(RimWithTyre.TyreRadius);
                 TyreTags.Add("Радиус", tyreRadius);
             }
 
             if (tyreWidth.Length > 0 && tyreHeight.Length > 0 && tyreRadius.Length > 0)
                 TyreTags.Add("Размер", $"{tyreWidth}/{tyreHeight}R{tyreRadius}");
 
-            if (ConverterToString.TyreTypeString(rimWithTyre.tyreType) != string.Empty)
-                TyreTags.Add("Вид", ConverterToString.TyreTypeString(rimWithTyre.tyreType));
+            if (ConverterToString.TyreTypeString(RimWithTyre.TyreType) != string.Empty)
+                TyreTags.Add("Вид", ConverterToString.TyreTypeString(RimWithTyre.TyreType));
 
-            if (rimWithTyre.monthDOT != null && rimWithTyre.monthDOT !=0 && 
-                rimWithTyre.yearDOT != null && rimWithTyre.yearDOT != 0)
+            if (RimWithTyre.MonthDOT != null && RimWithTyre.MonthDOT != 0 &&
+                RimWithTyre.YearDOT != null && RimWithTyre.YearDOT != 0)
             {
-                string year = rimWithTyre.yearDOT.Value.ToString("D2");
-                string month = rimWithTyre.monthDOT.Value.ToString("D2");
+                string year = RimWithTyre.YearDOT.Value.ToString("D2");
+                string month = RimWithTyre.MonthDOT.Value.ToString("D2");
                 TyreTags.Add("DOT", $"{month}{year}");
             }
 
-            if (ConverterToString.TyreProducersString(rimWithTyre.tyreCompanyId) != string.Empty)
-                TyreTags.Add("Производител", ConverterToString.TyreProducersString(rimWithTyre.tyreCompanyId));
+            if (ConverterToString.TyreProducersString(RimWithTyre.TyreCompanyId) != string.Empty)
+                TyreTags.Add("Производител", ConverterToString.TyreProducersString(RimWithTyre.TyreCompanyId));
 
-            if (rimWithTyre.count != 0)
-                TyreTags.Add("Брой", $"{rimWithTyre.count}");
+            if (RimWithTyre.Count != 0)
+                TyreTags.Add("Брой", $"{RimWithTyre.Count}");
 
             if (only)
                 NormalzeCommon();
         }
-        public void NormalizeRim(bool only = true)
+
+        private void NormalizeRim(bool only = true)
         {
             RimTags = new Dictionary<string, string>();
 
-            if (ConverterToString.RimWidthString(rimWithTyre.rimWidth) != string.Empty)
-                RimTags.Add("Щирочина", ConverterToString.RimWidthString(rimWithTyre.rimWidth));
+            if (ConverterToString.RimWidthString(RimWithTyre.RimWidth) != string.Empty)
+                RimTags.Add("Щирочина", ConverterToString.RimWidthString(RimWithTyre.RimWidth));
 
-            if (ConverterToString.RimMaterialString(rimWithTyre.rimMaterial) != string.Empty)
-                RimTags.Add("Материал", ConverterToString.RimMaterialString(rimWithTyre.rimMaterial));
+            if (ConverterToString.RimMaterialString(RimWithTyre.RimMaterial) != string.Empty)
+                RimTags.Add("Материал", ConverterToString.RimMaterialString(RimWithTyre.RimMaterial));
 
-            if (rimWithTyre.rimCenter != null && rimWithTyre.rimCenter.Value != 0 && 
-                ConverterToString.RimCenterString(rimWithTyre.rimCenter.Value) != string.Empty)
-                RimTags.Add("Център", ConverterToString.RimCenterString(rimWithTyre.rimCenter.Value));
+            if (RimWithTyre.RimCenter != null && RimWithTyre.RimCenter.Value != 0 &&
+                ConverterToString.RimCenterString(RimWithTyre.RimCenter.Value) != string.Empty)
+                RimTags.Add("Център", ConverterToString.RimCenterString(RimWithTyre.RimCenter.Value));
 
-            if (rimWithTyre.rimOffset != null && ConverterToString.RimOffsetString(rimWithTyre.rimOffset.Value) != string.Empty)
-                RimTags.Add("Офсет", ConverterToString.RimOffsetString(rimWithTyre.rimOffset.Value));
+            if (RimWithTyre.RimOffset != null && ConverterToString.RimOffsetString(RimWithTyre.RimOffset.Value) != string.Empty)
+                RimTags.Add("Офсет", ConverterToString.RimOffsetString(RimWithTyre.RimOffset.Value));
 
-            if (rimWithTyre.rimBoltCount != null && ConverterToString.RimBoltCountString(rimWithTyre.rimBoltCount.Value) != string.Empty)
-                RimTags.Add("Брой болтове", ConverterToString.RimBoltCountString(rimWithTyre.rimBoltCount.Value));
+            if (RimWithTyre.RimBoltCount != null && ConverterToString.RimBoltCountString(RimWithTyre.RimBoltCount.Value) != string.Empty)
+                RimTags.Add("Брой болтове", ConverterToString.RimBoltCountString(RimWithTyre.RimBoltCount.Value));
 
-            if (rimWithTyre.rimBoltDistance != null && ConverterToString.RimBoltDistanceString(rimWithTyre.rimBoltDistance.Value) != string.Empty)
-                RimTags.Add("Болт разстояние", ConverterToString.RimBoltDistanceString(rimWithTyre.rimBoltDistance.Value));
+            if (RimWithTyre.RimBoltDistance != null && ConverterToString.RimBoltDistanceString(RimWithTyre.RimBoltDistance.Value) != string.Empty)
+                RimTags.Add("Болт разстояние", ConverterToString.RimBoltDistanceString(RimWithTyre.RimBoltDistance.Value));
 
-            if (rimWithTyre.rimBoltDistance != null && ConverterToString.BoltDistanceString(rimWithTyre.rimBoltDistance.Value) != string.Empty)
-                RimTags.Add("Болт дистанция", ConverterToString.BoltDistanceString(rimWithTyre.rimBoltDistance.Value));
+            if (RimWithTyre.RimBoltDistance != null && ConverterToString.BoltDistanceString(RimWithTyre.RimBoltDistance.Value) != string.Empty)
+                RimTags.Add("Болт дистанция", ConverterToString.BoltDistanceString(RimWithTyre.RimBoltDistance.Value));
 
             if (only)
                 NormalzeCommon();
         }
-        public void NormalizeRimWithTyre()
+
+        private void NormalizeRimWithTyre()
         {
             NormalizeRim(false);
             NormalizeTyre(false);
             NormalzeCommon();
         }
 
-        public void NormalizePartCar()
+        private void NormalizePartCar()
         {
-            if (part.engineType != null && part.engineType.Value != 0)
-                engineTypeDesc = ConverterToString.EngineTypeStr(part.engineType.Value);
-            if (part.gearboxType != null && part.gearboxType.Value != 0)
-                gearboxDesc = ConverterToString.GearboxTypeStr(part.gearboxType.Value);
-            if (part.gearboxType != null && part.gearboxType.Value != 0 && ConverterToString.GearboxTypeStr(part.gearboxType.Value) != string.Empty)
-                Tags.Add("Скоростна кутия", ConverterToString.GearboxTypeStr(part.gearboxType.Value));
+            if (Part.EngineModel != null && Part.EngineType.Value != 0)
+                EngineTypeDesc = ConverterToString.EngineTypeStr(Part.EngineType.Value);
+            if (Part.GearboxType != null && Part.GearboxType.Value != 0)
+                GearboxDesc = ConverterToString.GearboxTypeStr(Part.GearboxType.Value);
+            if (Part.GearboxType != null && Part.GearboxType.Value != 0 && ConverterToString.GearboxTypeStr(Part.GearboxType.Value) != string.Empty)
+                Tags.Add("Скоростна кутия", ConverterToString.GearboxTypeStr(Part.GearboxType.Value));
 
-            if (part.engineType != null && part.engineType.Value != 0 && ConverterToString.EngineTypeStr(part.engineType.Value) != string.Empty)
-                Tags.Add("Вид двигател", ConverterToString.EngineTypeStr(part.engineType.Value));
-            if (part.engineModel.Length > 0)
-                Tags.Add("Код двигател", $"Код двигател:{part.engineModel}");
+            if (Part.EngineType != null && Part.EngineType.Value != 0 && ConverterToString.EngineTypeStr(Part.EngineType.Value) != string.Empty)
+                Tags.Add("Вид двигател", ConverterToString.EngineTypeStr(Part.EngineType.Value));
+            if (Part.EngineModel.Length > 0)
+                Tags.Add("Код двигател", $"Код двигател:{Part.EngineModel}");
 
-            if (!part.isCar)
+            if (!Part.IsCar)
             {
-                positionDesc = GetPosition();
-                if (positionDesc != string.Empty)
-                    Tags.Add("Позиция", $"Позиция {positionDesc}");
+                PositionDesc = GetPosition();
+                if (PositionDesc != string.Empty)
+                    Tags.Add("Позиция", $"Позиция {PositionDesc}");
             }
-            if (part.powerkWh != null && part.powerkWh != 0)
-                Tags.Add("Мощност", $"{part.powerkWh}KW/{part.powerBHP}BHP ");
-            if (part.vin?.Length > 0)
-                Tags.Add("VIN", $"{part.vin}");
-            if ((itemType == ItemType.BusPart || itemType == ItemType.CarPart)  && part.partNumber.Length > 0 )
-                Tags.Add("Номер на частта", $"Номер на частта: {part.partNumber}");
-            if (part.millage != 0)
-                Tags.Add("Пробег", $"{part.millage} км");
+            if (Part.PowerkWh != null && Part.PowerkWh != 0)
+                Tags.Add("Мощност", $"{Part.PowerkWh}KW/{Part.PowerBHP}BHP ");
+            if (Part.Vin?.Length > 0)
+                Tags.Add("VIN", $"{Part.Vin}");
+            if ((ItemType == ItemType.BusPart || ItemType == ItemType.CarPart)  && Part.PartNumber.Length > 0 )
+                Tags.Add("Номер на частта", $"Номер на частта: {Part.PartNumber}");
+            if (Part.Millage != 0)
+                Tags.Add("Пробег", $"{Part.Millage} км");
 
 
         }
         public void NormalzeCommon()
         {
-            if (itemType == ItemType.CarPart || itemType == ItemType.BusPart || itemType == ItemType.OnlyBus || itemType == ItemType.OnlyCar) {
-                if (itemType == ItemType.OnlyCar)
-                    descriptionModel = $"Колa на части - {part.companyName} {part.modelName}    {part.modificationName}";
-                else if (itemType == ItemType.OnlyBus)
-                    descriptionModel = $"Бус на части - {part.companyName} {part.modelName}";
+            if (ItemType == ItemType.CarPart || ItemType == ItemType.BusPart || ItemType == ItemType.OnlyBus || ItemType == ItemType.OnlyCar) {
+                if (ItemType == ItemType.OnlyCar)
+                    DescriptionModel = $"Колa на части - {Part.CompanyName} {Part.ModelName}    {Part.ModificationName}";
+                else if (ItemType == ItemType.OnlyBus)
+                    DescriptionModel = $"Бус на части - {Part.CompanyName} {Part.ModelName}";
                 else
                 {
-                    descriptionModel = $"{part.dealerSubCategoryName} за {part.companyName} {part.modelName} {part.modificationName}";
+                    DescriptionModel = $"{Part.DealerSubCategoryName} за {Part.CompanyName} {Part.ModelName} {Part.ModificationName}";
                 }
             } 
             else
             {
-                if (itemType == ItemType.Rim)
+                if (ItemType == ItemType.Rim)
                 {
-                    descriptionModel = "Джанта";
+                    DescriptionModel = "Джанта";
                 }
-                else if (itemType == ItemType.Tyre)
+                else if (ItemType == ItemType.Tyre)
                 {
-                    descriptionModel = "Гума";
+                    DescriptionModel = "Гума";
                 }
-                else if (itemType == ItemType.RimWithTyre)
+                else if (ItemType == ItemType.RimWithTyre)
                 {
-                    descriptionModel = "Гума с джанта";
+                    DescriptionModel = "Гума с джанта";
                 }
             }
 
-            if (mainPicture == null)
-                mainPicture = "assets/NoImage.jpg";
+            if (MainPicture == null)
+                MainPicture = "assets/NoImage.jpg";
 
-            if (ConverterToString.RegionString(regionId) != string.Empty)
-                Tags.TryAdd("Регион", ConverterToString.RegionString(regionId));
+            if (ConverterToString.RegionString(RegionId) != string.Empty)
+                Tags.TryAdd("Регион", ConverterToString.RegionString(RegionId));
 
-            if (description.Length > 0)
-                Tags.Add("Описание", $"{description}");
+            if (Description?.Length > 0)
+                Tags.Add("Описание", $"{Description}");
         }
     }
 }

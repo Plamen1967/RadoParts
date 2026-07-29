@@ -81,22 +81,22 @@ namespace Rado.Datasets
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                        command.Parameters.Add("@rimId", System.Data.SqlDbType.BigInt).Value = rim.rimId;
-                        command.Parameters.Add("@companyId", System.Data.SqlDbType.Int).Value = rim.companyId;
-                        command.Parameters.Add("@modelId", System.Data.SqlDbType.Int).Value = rim.modelId;
-                        command.Parameters.Add("@rimWidth", System.Data.SqlDbType.Int).Value = rim.rimWidth;
-                        command.Parameters.Add("@rimMaterial", System.Data.SqlDbType.Int).Value = rim.rimMaterial;
-                        command.Parameters.Add("@rimOffset", System.Data.SqlDbType.Int).Value = rim.rimOffset;
-                        command.Parameters.Add("@rimBoltCount", System.Data.SqlDbType.Int).Value = rim.rimBoltCount;
-                        command.Parameters.Add("@rimBoltDistance", System.Data.SqlDbType.Int).Value = rim.rimBoltDistance;
-                        command.Parameters.Add("@rimCenter", System.Data.SqlDbType.Int).Value = rim.rimCenter;
-                        command.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = rim.price;
-                        command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar).Value = rim.description;
-                        command.Parameters.Add("@mainImageId", System.Data.SqlDbType.Int).Value = rim.mainImageId;
-                        command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = rim.mainPicture;
-                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = rim.userId;
-                        command.Parameters.Add("@modifiedTime", System.Data.SqlDbType.BigInt).Value = rim.modifiedTime;
-                        command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = rim.count;
+                        command.Parameters.Add("@rimId", System.Data.SqlDbType.BigInt).Value = rim.RimId;
+                        command.Parameters.Add("@companyId", System.Data.SqlDbType.Int).Value = rim.CompanyId;
+                        command.Parameters.Add("@modelId", System.Data.SqlDbType.Int).Value = rim.ModelId;
+                        command.Parameters.Add("@rimWidth", System.Data.SqlDbType.Int).Value = rim.RimWidth;
+                        command.Parameters.Add("@rimMaterial", System.Data.SqlDbType.Int).Value = rim.RimMaterial;
+                        command.Parameters.Add("@rimOffset", System.Data.SqlDbType.Int).Value = rim.RimOffset;
+                        command.Parameters.Add("@rimBoltCount", System.Data.SqlDbType.Int).Value = rim.RimBoltCount;
+                        command.Parameters.Add("@rimBoltDistance", System.Data.SqlDbType.Int).Value = rim.RimBoltDistance;
+                        command.Parameters.Add("@rimCenter", System.Data.SqlDbType.Int).Value = rim.RimCenter;
+                        command.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = rim.Price;
+                        command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar).Value = rim.Description;
+                        command.Parameters.Add("@mainImageId", System.Data.SqlDbType.Int).Value = rim.MainImageId;
+                        command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = rim.MainPicture;
+                        command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = rim.UserId;
+                        command.Parameters.Add("@modifiedTime", System.Data.SqlDbType.BigInt).Value = rim.ModifiedTime;
+                        command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = rim.Count;
 
                         command.ExecuteNonQuery();
                     }
@@ -108,7 +108,7 @@ namespace Rado.Datasets
                 throw new AppException($"Tyre can not be updated. Message {e.Message}");
             }
 
-            return GetRimById(rim.rimId);
+            return GetRimById(rim.RimId);
         }
         static public RimView GetRimById(long rimId)
         {

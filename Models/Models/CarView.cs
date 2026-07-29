@@ -1,41 +1,33 @@
-﻿using Microsoft.Data.SqlClient;
-using Models.Models;
-using Rado.Models.Authentication;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
+﻿using Models.Models;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Rado.Models
 {
     public class CarView : Car
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? companyName { get; set; }
+        public string? CompanyName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? modelName { get; set; }
+        public string? ModelName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? modificationName { get; set; }
-        public int companyId { get; set; }
-        public int countParts { get; set; }
+        public string? ModificationName { get; set; }
+        public int CompanyId { get; set; }
+        public int CountParts { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? sellerName { get; set; }
+        public string? SellerName { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? sellerPhone { get; set; }
+        public string? SellerPhone { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? sellerPhone2 { get; set; }
+        public string? SellerPhone2 { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? sellerViber { get; set; }
+        public string? SellerViber { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? sellerWhats { get; set; }
+        public string? SellerWhats { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? sellerWebPage { get; set; }
-        public int numberImages { get; set; }
+        public string? SellerWebPage { get; set; }
+        public int NumberImages { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ImageData? mainImageData { get; set; }
+        public ImageDataClass? MainImageData { get; set; }
 
     }
 }

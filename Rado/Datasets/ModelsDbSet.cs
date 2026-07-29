@@ -57,7 +57,7 @@ namespace Rado.Datasets
 
         public static bool isGroupModel(int modelId)
         {
-            var found = getInstance().groupModels.Find(element => element.modelId == modelId);
+            var found = getInstance().groupModels.Find(element => element.ModelId == modelId);
             if (found == null)
                 return false;
             return true;
@@ -80,13 +80,13 @@ namespace Rado.Datasets
                             {
                                 groupModels.Add(new Model
                                 {
-                                    groupModelId = Convert.ToInt32(sqlDataReader["groupModelId"]),
-                                    companyId = Convert.ToInt32(sqlDataReader["companyID"]),
-                                    modelName = Convert.ToString(sqlDataReader["groupModelName"]),
-                                    displayModelName = Convert.ToString(sqlDataReader["groupModelName"]),
-                                    yearFrom = 0, 
-                                    yearTo = 0,
-                                    modelId = Convert.ToInt32(sqlDataReader["groupModelId"])
+                                    GroupModelId = Convert.ToInt32(sqlDataReader["groupModelId"]),
+                                    CompanyId = Convert.ToInt32(sqlDataReader["companyID"]),
+                                    ModelName = Convert.ToString(sqlDataReader["groupModelName"]),
+                                    DisplayModelName = Convert.ToString(sqlDataReader["groupModelName"]),
+                                    YearFrom = 0,
+                                    YearTo = 0,
+                                    ModelId = Convert.ToInt32(sqlDataReader["groupModelId"])
                                 });
                             }
                         }
@@ -126,12 +126,12 @@ namespace Rado.Datasets
 
                                 Model model = new Models.Model()
                                 {
-                                    modelId = Convert.ToInt32(sqlDataReader["modelID"]),
-                                    companyId = Convert.ToInt32(sqlDataReader["companyID"]),
-                                    modelName = Convert.ToString(sqlDataReader["modelName"]),
-                                    yearFrom = Convert.ToInt32(sqlDataReader["yearFrom"]),
-                                    yearTo = Convert.ToInt32(sqlDataReader["yearTo"]),
-                                    groupModelId = Convert.ToInt32(sqlDataReader["groupModelId"]),
+                                    ModelId = Convert.ToInt32(sqlDataReader["modelID"]),
+                                    CompanyId = Convert.ToInt32(sqlDataReader["companyID"]),
+                                    ModelName = Convert.ToString(sqlDataReader["modelName"]),
+                                    YearFrom = Convert.ToInt32(sqlDataReader["yearFrom"]),
+                                    YearTo = Convert.ToInt32(sqlDataReader["yearTo"]),
+                                    GroupModelId = Convert.ToInt32(sqlDataReader["groupModelId"]),
                                 };
 
                                 EnrichManager.EnrichModel(model);
@@ -145,7 +145,7 @@ namespace Rado.Datasets
                 foreach(var model in tempSearch)
                 {
                     models.Add(model);
-                    List<Model> modelList = allModels.FindAll(modelTemp => modelTemp.groupModelId == model.groupModelId);
+                    List<Model> modelList = allModels.FindAll(modelTemp => modelTemp.GroupModelId == model.GroupModelId);
                     foreach (var temp2 in modelList)
                         models.Add(temp2);
                 }
@@ -223,9 +223,9 @@ namespace Rado.Datasets
             List<ModelMin> modelMins = null;
             await Task.Run(() =>
             {
-                List<Model> list = getInstance().models.FindAll(x => x.companyId == companyId);
+                List<Model> list = getInstance().models.FindAll(x => x.CompanyId == companyId);
                 if (list.Count == 0)
-                    list = getInstance().allModels.FindAll(x => x.companyId == companyId);
+                    list = getInstance().allModels.FindAll(x => x.CompanyId == companyId);
 
                 modelMins = new List<ModelMin>();
                 foreach (var model in list) {
@@ -241,9 +241,9 @@ namespace Rado.Datasets
             List<Model> models = null;
             try
             {
-            models = getInstance().models.FindAll(x => x.companyId == companyId);
+            models = getInstance().models.FindAll(x => x.CompanyId == companyId);
                 if (models.Count == 0)
-                    models = getInstance().allModels.FindAll(x => x.companyId == companyId);
+                    models = getInstance().allModels.FindAll(x => x.CompanyId == companyId);
 
             }
             catch(Exception ex)
@@ -263,7 +263,7 @@ namespace Rado.Datasets
 
             await Task.Run(() =>
             {
-                model = getInstance().allModels.Find(x => x.modelId == modelId);
+                model = getInstance().allModels.Find(x => x.ModelId == modelId);
             });
 
             return model;
@@ -273,7 +273,7 @@ namespace Rado.Datasets
             if (modelId == 0)
                 return false;
 
-            bool exist = getInstance().allModels.Exists(x => x.modelId == modelId);
+            bool exist = getInstance().allModels.Exists(x => x.ModelId == modelId);
 
             return exist;
         }
@@ -281,9 +281,9 @@ namespace Rado.Datasets
         {
             try
             {
-                var model = getInstance().allModels.Find(x => x.modelId == modelId);
+                var model = getInstance().allModels.Find(x => x.ModelId == modelId);
                 if (model != null) 
-                    model.countParts = number;
+                    model.CountParts = number;
             }
             catch(Exception ex)
             {
@@ -294,9 +294,9 @@ namespace Rado.Datasets
         {
             try
             {
-                var model = getInstance().allModels.Find(x => x.modelId == modelId);
+                var model = getInstance().allModels.Find(x => x.ModelId == modelId);
                 if (model != null)
-                    model.countCars = number;
+                    model.CountCars = number;
             }
             catch (Exception ex)
             {
@@ -312,24 +312,24 @@ namespace Rado.Datasets
                 return null;
             await Task.Run(() =>
             {
-                Model model = getInstance().allModels.Find(x => x.modelId == modelId);
+                Model model = getInstance().allModels.Find(x => x.ModelId == modelId);
                 modelMin = model.GetModelMin();
             });
 
             return modelMin;
 
         }
-        static public string GetModelNameById(int modelId)
+        public static string GetModelNameById(int modelId)
         {
             if (modelId == 0)
                 return "";
 
-            Model model = getInstance().allModels.Find(x => x.modelId == modelId);
+            Model model = getInstance().allModels.Find(x => x.ModelId == modelId);
 
-            return (model != null) ? model.modelName : "";
+            return (model != null) ? model.ModelName : "";
 
         }
-        static public void Refresh()
+        public static void Refresh()
         {
             mut.WaitOne();
 
@@ -379,18 +379,18 @@ namespace Rado.Datasets
         {
             foreach(var model in GetModels())
             {
-                var modifications = ModificationsDbSet.GetModificationByModelId(model.modelId);
-                int countParts = modifications.Sum(item => item.countParts);
-                int countCarBus = modifications.Sum(item => item.countCarBus);
-                model.countParts = countParts;
-                model.countCarBus = countCarBus;
+                var modifications = ModificationsDbSet.GetModificationByModelId(model.ModelId);
+                int countParts = modifications.Sum(item => item.CountParts);
+                int countCarBus = modifications.Sum(item => item.CountCarBus);
+                model.CountParts = countParts;
+                model.CountCarBus = countCarBus;
             }
 
             foreach (var groupmodel in getInstance().groupModels)
             {
-                var models = getInstance().models.FindAll(item => item.groupModelId == groupmodel.modelId);
-                groupmodel.countParts = models.Sum(item => item.countParts);
-                groupmodel.countCarBus = models.Sum(item => item.countCarBus);
+                var models = getInstance().models.FindAll(item => item.GroupModelId == groupmodel.ModelId);
+                groupmodel.CountParts = models.Sum(item => item.CountParts);
+                groupmodel.CountCarBus = models.Sum(item => item.CountCarBus);
             }
 
             CompaniesDbSet.UpdateCumpanyCountParts();

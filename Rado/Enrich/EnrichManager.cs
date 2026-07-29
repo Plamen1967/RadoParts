@@ -31,33 +31,33 @@ namespace Rado.Enrich
             CarView carView = new();
             Loader.LoadCar(carView, sqlDataReader);
 
-            if (carView.bus == 1)
+            if (carView.Bus == 1)
             {
-                var result = ModelsDbSet.GetModelByIdAsync(carView.modelId ?? 0);
+                var result = ModelsDbSet.GetModelByIdAsync(carView.ModelId ?? 0);
                 result.Wait();
                 var model = result.Result;
-                carView.modelId = model.modelId;
-                carView.modelName = model.modelName;
-                carView.companyId = model.companyId;
+                carView.ModelId = model.ModelId;
+                carView.ModelName = model.ModelName;
+                carView.CompanyId = model.CompanyId;
             }
             else
             {
-                var modification = ModificationsDbSet.GetModificationById(carView.modificationId ?? 0);
-                carView.modificationName = ModificationsDbSet.GetModificationNameById(carView.modificationId ?? 0);
-                
+                var modification = ModificationsDbSet.GetModificationById(carView.ModificationId ?? 0);
+                carView.ModificationName = ModificationsDbSet.GetModificationNameById(carView.ModificationId ?? 0);
+
                 if (modification != null)
                 {
-                    var result = ModelsDbSet.GetModelByIdAsync(modification.modelId).Result;
+                    var result = ModelsDbSet.GetModelByIdAsync(modification.ModelId).Result;
                     var model = result;
-                    carView.modelId = model.modelId;
-                    carView.modelName = model.modelName;
-                    carView.companyId = model.companyId;
+                    carView.ModelId = model.ModelId;
+                    carView.ModelName = model.ModelName;
+                    carView.CompanyId = model.CompanyId;
                 }
             }
 
-            if (carView.companyId != 0)
+            if (carView.CompanyId != 0)
             {
-                carView.companyName = CompaniesDbSet.getCompanyById(carView.companyId)?.companyName;
+                carView.CompanyName = CompaniesDbSet.GetCompanyById(carView.CompanyId)?.CompanyName;
             }
 
             //User user = UserDbSet.GetUserById(carView.userId);
@@ -71,15 +71,15 @@ namespace Rado.Enrich
             //    carView.sellerWebPage = user.webPage;
             //}
 
-            var imageResult = ImageManager.GetImageCount(carView.carId);
+            var imageResult = ImageManager.GetImageCount(carView.CarId);
             imageResult.Wait();
 
-            carView.numberImages = imageResult.Result; ;
+            carView.NumberImages = imageResult.Result;
 
-            if (carView.mainImageId != 0)
+            if (carView.MainImageId != 0)
             {
-                ImageManager.CheckImageExists(carView.carId, carView.mainImageId);
-                carView.mainPicture = ImageManager.GenerateImageHRef(carView.carId, carView.mainImageId, true);
+                ImageManager.CheckImageExists(carView.CarId, carView.MainImageId);
+                carView.MainPicture = ImageManager.GenerateImageHRef(carView.CarId, carView.MainImageId, true);
             }
 
             return carView;
@@ -91,42 +91,42 @@ namespace Rado.Enrich
             RimView rimView = new RimView();
 
             Loader.LoadRim(rimView, sqlDataReader);
-            User user = UserDbSet.GetUserById(rimView.userId);
+            var user = UserDbSet.GetUserById(rimView.UserId);
             if (user != null)
             {
-                rimView.sellerName = user.companyName;
-                rimView.sellerPhone = user.phone;
-                rimView.sellerPhone2 = user.phone2;
-                rimView.sellerViber = user.viber;
-                rimView.sellerWhats = user.whats;
-                rimView.sellerWebPage = user.webPage;
+                rimView.SellerName = user.CompanyName;
+                rimView.SellerPhone = user.Phone;
+                rimView.SellerPhone2 = user.Phone2;
+                rimView.SellerViber = user.Viber;
+                rimView.SellerWhats = user.Whats;
+                rimView.SellerWebPage = user.WebPage;
             }
 
-            var imageResult = ImageManager.GetImageCount(rimView.rimId);
+            var imageResult = ImageManager.GetImageCount(rimView.RimId);
             imageResult.Wait();
-            rimView.numberImages = imageResult.Result;
+            rimView.NumberImages = imageResult.Result;
 
             return rimView;
         }
 
         public static void EnrichModification(Modification modification)
         {
-            modification.modificationDisplayName = modification.modificationName;
-            string yearToString = modification.yearTo.ToString();
+            modification.ModificationDisplayName = modification.ModificationName;
+            string yearToString = modification.YearTo.ToString();
             if (yearToString == "0")
                 yearToString = "";
-            if (modification.yearFrom != 0)
-                modification.modificationDisplayName = modification.modificationDisplayName + $" ({modification.yearFrom} - {yearToString})";
+            if (modification.YearFrom != 0)
+                modification.ModificationDisplayName = modification.ModificationDisplayName + $" ({modification.YearFrom} - {yearToString})";
         }
 
         public static void EnrichModel(Model model)
         {
-            model.displayModelName = model.modelName;
-            string yearToString = model.yearTo.ToString();
+            model.DisplayModelName = model.ModelName;
+            string yearToString = model.YearTo.ToString();
             if (yearToString == "0")
                 yearToString = "";
-            if (model.yearFrom != 9999 && model.yearFrom != 0 && model.yearTo != -1)
-                model.displayModelName = model.displayModelName + $" ({model.yearFrom} - {yearToString})";
+            if (model.YearFrom != 9999 && model.YearFrom != 0 && model.YearTo != -1)
+                model.DisplayModelName = model.DisplayModelName + $" ({model.YearFrom} - {yearToString})";
         }
         public static RimWithTyreView EnrichRimWithTyreView(SqlDataReader sqlDataReader)
         {
@@ -134,38 +134,38 @@ namespace Rado.Enrich
 
             Loader.LoadRimWithTyre(rimWithTyreView, sqlDataReader);
 
-            if (rimWithTyreView.itemType != ItemType.Tyre)
+            if (rimWithTyreView.ItemType != ItemType.Tyre)
             {
-                rimWithTyreView.companyName = CompaniesDbSet.getCompanyById(rimWithTyreView.companyId).companyName;
-                rimWithTyreView.modelName = ModelsDbSet.GetModelNameById(rimWithTyreView.modelId);
+                rimWithTyreView.CompanyName = CompaniesDbSet.GetCompanyById(rimWithTyreView.CompanyId).CompanyName;
+                rimWithTyreView.ModelName = ModelsDbSet.GetModelNameById(rimWithTyreView.ModelId);
             }
 
-            if (rimWithTyreView.mainImageId != 0)
+            if (rimWithTyreView.MainImageId != 0)
             {
-                ImageManager.CheckImageExists(rimWithTyreView.rimWithTyreId, rimWithTyreView.mainImageId);
-                rimWithTyreView.mainPicture = ImageManager.GenerateImageHRef(rimWithTyreView.rimWithTyreId, rimWithTyreView.mainImageId, true);
+                ImageManager.CheckImageExists(rimWithTyreView.RimWithTyreId, rimWithTyreView.MainImageId);
+                rimWithTyreView.MainPicture = ImageManager.GenerateImageHRef(rimWithTyreView.RimWithTyreId, rimWithTyreView.MainImageId, true);
             }
 
-            if (rimWithTyreView.mainImageId != 0)
+            if (rimWithTyreView.MainImageId != 0)
             {
-                rimWithTyreView.mainImageData = ImageManager.GetMinImageById(rimWithTyreView.mainImageId);
+                rimWithTyreView.MainImageData = ImageManager.GetMinImageById(rimWithTyreView.MainImageId);
             }
             else
             {
-                var result = ImageManager.GetMainImageAsync(rimWithTyreView.rimWithTyreId); ;
+                var result = ImageManager.GetMainImageAsync(rimWithTyreView.RimWithTyreId); ;
                 result.Wait();
-                rimWithTyreView.mainImageData = result.Result;
-                if (rimWithTyreView.mainImageData != null)
+                rimWithTyreView.MainImageData = result.Result;
+                if (rimWithTyreView.MainImageData != null)
                 {
-                    LoggerUtil.Warning($"RimWithTyre {rimWithTyreView.rimWithTyreId} has images but does not have default image. User {rimWithTyreView.userId}");
-                    rimWithTyreView.mainImageId = rimWithTyreView.mainImageData.imageId;
-                    rimWithTyreView.mainPicture = ImageManager.GenerateImageHRef(rimWithTyreView.rimWithTyreId, rimWithTyreView.mainImageId, true);
+                    LoggerUtil.Warning($"RimWithTyre {rimWithTyreView.RimWithTyreId} has images but does not have default image. User {rimWithTyreView.UserId}");
+                    rimWithTyreView.MainImageId = rimWithTyreView.MainImageData.ImageId;
+                    rimWithTyreView.MainPicture = ImageManager.GenerateImageHRef(rimWithTyreView.RimWithTyreId, rimWithTyreView.MainImageId, true);
                 }
             }
 
-            var imageResult = ImageManager.GetImageCount(rimWithTyreView.rimWithTyreId);
+            var imageResult = ImageManager.GetImageCount(rimWithTyreView.RimWithTyreId);
             imageResult.Wait();
-            rimWithTyreView.numberImages = imageResult.Result;
+            rimWithTyreView.NumberImages = imageResult.Result;
 
             return rimWithTyreView;
         }
@@ -175,12 +175,12 @@ namespace Rado.Enrich
             if (user != null)
             {
                 TraderDetails traderDetails = new TraderDetails();
-                traderDetails.sellerName = user.companyName;
-                traderDetails.sellerPhone = user.phone;
-                traderDetails.sellerPhone2 = user.phone2;
-                traderDetails.sellerViber = user.viber;
-                traderDetails.sellerWhats = user.whats;
-                traderDetails.sellerWebPage = user.webPage;
+                traderDetails.SellerName = user.CompanyName;
+                traderDetails.SellerPhone = user.Phone;
+                traderDetails.SellerPhone2 = user.Phone2;
+                traderDetails.SellerViber = user.Viber;
+                traderDetails.SellerWhats = user.Whats;
+                traderDetails.SellerWebPage = user.WebPage;
 
                 return traderDetails;
             }
@@ -192,11 +192,11 @@ namespace Rado.Enrich
         {
             TyreView tyreView = new TyreView();
             Loader.LoadTyre(tyreView, sqlDataReader);
-            tyreView.traderDetails = GetTraderDetails(tyreView.userId);
+            tyreView.TraderDetails = GetTraderDetails(tyreView.UserId);
 
-            var imageResult = ImageManager.GetImageCount(tyreView.tyreId);
+            var imageResult = ImageManager.GetImageCount(tyreView.TyreId);
             imageResult.Wait();
-            tyreView.numberImages = imageResult.Result;
+            tyreView.NumberImages = imageResult.Result;
 
             return tyreView;
         }
@@ -207,16 +207,16 @@ namespace Rado.Enrich
             Loader.LoadPart(partView, sqlDataReader);
 
             LoggerUtil.LogFunctionInfo("Start InitFromRow: 1");
-            partView.isCar = false;
+            partView.IsCar = false;
             try
             {
-                var dealerSubCategory = DealerSubCategoryDbSet.GetDealerSubCategoryById(partView.dealerSubCategoryId);
-                partView.subCategoryId = dealerSubCategory.subCategoryId;
-                if (partView.subCategoryId != 0)
+                var dealerSubCategory = DealerSubCategoryDbSet.GetDealerSubCategoryById(partView.DealerSubCategoryId);
+                partView.SubCategoryId = dealerSubCategory.SubCategoryId;
+                if (partView.SubCategoryId != 0)
                 {
-                    var subCategory = SubCategoriesDbSet.GetSubCategoryById(partView.subCategoryId.Value);
-                    partView.categoryId = subCategory.categoryId;
-                    partView.categoryName = $"{CategoriesDbSet.GetCategoryById(partView.categoryId.Value)?.categoryName} / {subCategory?.subCategoryName}";
+                    var subCategory = SubCategoriesDbSet.GetSubCategoryById(partView.SubCategoryId.Value);
+                    partView.CategoryId = subCategory.CategoryId;
+                    partView.CategoryName = $"{CategoriesDbSet.GetCategoryById(partView.CategoryId.Value)?.CategoryName} / {subCategory?.SubCategoryName}";
                 }
 
             }
@@ -227,19 +227,19 @@ namespace Rado.Enrich
             }
             try
             {
-                if (partView.bus == 0)
+                if (partView.Bus == 0)
                 {
-                    Modification modification = ModificationsDbSet.GetModificationById(partView.modificationId);
-                    partView.modelId = modification.modelId;
-                    if (modification != null) partView.modificationName = modification?.modificationName;
-                    if (partView.year == 0 && modification != null)
+                    Modification modification = ModificationsDbSet.GetModificationById(partView.ModificationId);
+                    partView.ModelId = modification.ModelId;
+                    if (modification != null) partView.ModificationName = modification?.ModificationName;
+                    if (partView.Year == 0 && modification != null)
                     {
-                        if (modification.yearFrom != 0 && modification.yearTo != 0)
-                            partView.yearName = $"{modification.yearFrom} - {modification.yearTo}";
-                        else if (modification.yearFrom == 0)
-                            partView.yearName = $" - {modification.yearTo}";
+                        if (modification.YearFrom != 0 && modification.YearTo != 0)
+                            partView.YearName = $"{modification.YearFrom} - {modification.YearTo}";
+                        else if (modification.YearFrom == 0)
+                            partView.YearName = $" - {modification.YearTo}";
                         else
-                            partView.yearName = $"{modification.yearFrom} - ";
+                            partView.YearName = $"{modification.YearFrom} - ";
                     }
                 }
 
@@ -254,55 +254,55 @@ namespace Rado.Enrich
             try
             {
                 LoggerUtil.LogFunctionInfo("Load Image Part");
-                var result = ModelsDbSet.GetModelByIdAsync(partView.modelId.Value);
+                var result = ModelsDbSet.GetModelByIdAsync(partView.ModelId.Value);
                 model = result.Result;
                 if (model != null)
                 {
-                    partView.companyId = model.companyId;
-                    partView.companyName = CompaniesDbSet.getCompanyById(model.companyId)?.companyName;
+                    partView.CompanyId = model.CompanyId;
+                    partView.CompanyName = CompaniesDbSet.GetCompanyById(model.CompanyId)?.CompanyName;
                 }
                 else
                 {
-                    LoggerUtil.Warning($"Part Id {partView.partId} has no model");
+                    LoggerUtil.Warning($"Part Id {partView.PartId} has no model");
                 }
                 LoggerUtil.LogFunctionInfo("End Image Part");
             }
             catch (Exception e)
             {
                 LoggerUtil.LogFunctionInfo("InitFromRow");
-                LoggerUtil.LogException($"Model ${e.Message} PartId: {partView.partId}");
+                LoggerUtil.LogException($"Model ${e.Message} PartId: {partView.PartId}");
             }
-
+                
             User user;
-            partView.yearName = partView.year.ToString();
+            partView.YearName = partView.Year.ToString();
 
             try
             {
-                user = UserDbSet.GetUserById(partView.userId);
+                user = UserDbSet.GetUserById(partView.UserId);
             }
             catch (Exception e)
             {
                 LoggerUtil.LogFunctionInfo("InitFromRow 5");
-                LoggerUtil.LogException($"Category ${e.Message} PartId: {partView.partId}");
+                LoggerUtil.LogException($"Category ${e.Message} PartId: {partView.PartId}");
             }
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             LoggerUtil.LogFunctionInfo("CheckImageExists 1");
-            if (partView.mainImageId != 0)
+            if (partView.MainImageId != 0)
             {
                 LoggerUtil.LogFunctionInfo("CheckImageExists 2");
-                ImageManager.CheckImageExists(partView.partId, partView.mainImageId);
+                ImageManager.CheckImageExists(partView.PartId, partView.MainImageId);
                 LoggerUtil.LogFunctionInfo("GenerateImageHRef 1");
-                partView.mainPicture = ImageManager.GenerateImageHRef(partView.partId, partView.mainImageId, true);
+                partView.MainPicture = ImageManager.GenerateImageHRef(partView.PartId, partView.MainImageId, true);
                 LoggerUtil.LogFunctionInfo("GenerateImageHRef 2");
             }
             LoggerUtil.LogFunctionInfo("GetImageCount 1");
-            var imageResult = ImageManager.GetImageCount(partView.partId);
+            var imageResult = ImageManager.GetImageCount(partView.PartId);
             imageResult.Wait();
 
 
-            partView.numberImages = imageResult.Result;
+            partView.NumberImages = imageResult.Result;
             LoggerUtil.LogFunctionInfo("GetNumberImages 2");
             stopwatch.Stop();
 
@@ -318,9 +318,9 @@ namespace Rado.Enrich
 
             Loader.LoadRimWithTyre(rimViewTyre, sqlDataReader);
 
-            var imageResult = ImageManager.GetImageCount(rimViewTyre.rimWithTyreId);
+            var imageResult = ImageManager.GetImageCount(rimViewTyre.RimWithTyreId);
             imageResult.Wait();
-            rimViewTyre.numberImages = imageResult.Result;
+            rimViewTyre.NumberImages = imageResult.Result;
 
             return rimViewTyre;
         }
@@ -330,9 +330,9 @@ namespace Rado.Enrich
             if (message.IsCar == 0)
             {
                 PartView part = PartDbSet.GetPart(message.PartId);
-                message.PartDescription = part.companyName;
-                message.PartDescription = $" {part.dealerSubCategoryName}  за {part.companyName} {part.modelName}";
-                message.ModificationName = part.modificationName;
+                message.PartDescription = part.CompanyName;
+                message.PartDescription = $" {part.DealerSubCategoryName}  за {part.CompanyName} {part.ModelName}";
+                message.ModificationName = part.ModificationName;
             }
             else
             {
@@ -340,68 +340,68 @@ namespace Rado.Enrich
                 task.Wait();
                 CarView carView = task.Result;
 
-                message.PartDescription = $"{carView.companyName} {carView.modelName} на части";
-                message.ModificationName = carView.modificationName;
+                message.PartDescription = $"{carView.CompanyName} {carView.ModelName} на части";
+                message.ModificationName = carView.ModificationName;
             }
 
-            return message; ;
+            return message;
 
         }
-        public static void EnrichImageData(ImageData imageData, SqlDataReader sqlDataReader)
+        public static void EnrichImageData(ImageDataClass imageDataClass, SqlDataReader sqlDataReader)
         {
-            string path = ImageManager.GetPhotosPath(imageData.objectId);
-            imageData.imageSrc = ImageManager.GenerateImageSrc(imageData.objectId, imageData.imageId);
-            imageData.imageMinSrc = ImageManager.GenerateMinImageSrc(imageData.objectId, imageData.imageId);
+            string path = ImageManager.GetPhotosPath(imageDataClass.ObjectId);
+            imageDataClass.ImageSrc = ImageManager.GenerateImageSrc(imageDataClass.ObjectId, imageDataClass.ImageId);
+            imageDataClass.ImageMinSrc = ImageManager.GenerateMinImageSrc(imageDataClass.ObjectId, imageDataClass.ImageId);
             byte[] imageBytes;
-            bool imageSrcExist = File.Exists(imageData.imageSrc);
-            bool imageMinSrcExist = File.Exists(imageData.imageMinSrc);
+            bool imageSrcExist = File.Exists(imageDataClass.ImageSrc);
+            bool imageMinSrcExist = File.Exists(imageDataClass.ImageMinSrc);
 
-            imageBytes = (byte[])sqlDataReader["imageData"];
+            imageBytes = (byte[])sqlDataReader["imageDataClass"];
             // ImageManager.ArchiveData(imageBytes);
             if (!imageSrcExist || !imageMinSrcExist)
             {
                 if (!imageSrcExist)
-                    ImageManager.CreateImage(imageData.imageSrc, imageBytes, false);
+                    ImageManager.CreateImage(imageDataClass.ImageSrc, imageBytes, false);
                 if (!imageMinSrcExist)
-                    ImageManager.CreateImage(imageData.imageMinSrc, imageBytes, true);
+                    ImageManager.CreateImage(imageDataClass.ImageMinSrc, imageBytes, true);
 
             }
 
-            imageData.imageSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, false);
-            imageData.imageMinSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, true);
+            imageDataClass.ImageSrc = ImageManager.GenerateImageHRef(imageDataClass.ObjectId, imageDataClass.ImageId, false);
+            imageDataClass.ImageMinSrc = ImageManager.GenerateImageHRef(imageDataClass.ObjectId, imageDataClass.ImageId, true);
         }
 
         public static DisplayPartView EnrichDisplayView(PartView part_)
         {
             DisplayPartView displayPartView = new DisplayPartView();
-            displayPartView.isCar = part_.isCar;
-            displayPartView.part = part_;
-            if (part_.bus == 1)
+            displayPartView.IsCar = part_.IsCar;
+            displayPartView.Part = part_;
+            if (part_.Bus == 1)
             {
-                displayPartView.itemType = displayPartView.isCar ? ItemType.OnlyBus : ItemType.BusPart;
+                displayPartView.ItemType = displayPartView.IsCar ? ItemType.OnlyBus : ItemType.BusPart;
             }
             else
             {
-                displayPartView.itemType = displayPartView.isCar ? ItemType.OnlyCar : ItemType.CarPart;
+                displayPartView.ItemType = displayPartView.IsCar ? ItemType.OnlyCar : ItemType.CarPart;
             }
-            displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.itemType);
-            displayPartView.id = displayPartView.isCar ? part_.carId.Value : part_.partId;
-            displayPartView.price = part_.price;
-            var imageResult = ImageManager.GetImageCount(displayPartView.id);
+            displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.ItemType);
+            displayPartView.Id = displayPartView.IsCar ? part_.CarId.Value : part_.PartId;
+            displayPartView.Price = part_.Price;
+            var imageResult = ImageManager.GetImageCount(displayPartView.Id);
 
             imageResult.Wait();
-            var imageData = ImageManager.GetImagesAsync(displayPartView.id);
+            var imageData = ImageManager.GetImagesAsync(displayPartView.Id);
             imageData.Wait();
-            displayPartView.images = imageData.Result;
-            displayPartView.numberImages = imageResult.Result;
-            displayPartView.userId = part_.userId;
-            displayPartView.regionId = part_.regionId;
-            displayPartView.RegionStr = ConverterToString.RegionString(displayPartView.regionId);
-            displayPartView.approved = part_.approved;
-            displayPartView.mainPicture = part_.mainPicture;
-            displayPartView.description = part_.description;
-            displayPartView.modifiedTime = part_.modifiedTime;
-            sellerImage(displayPartView);
+            displayPartView.Images = imageData.Result;
+            displayPartView.NumberImages = imageResult.Result;
+            displayPartView.UserId = part_.UserId;
+            displayPartView.RegionId = part_.RegionId;
+            displayPartView.RegionStr = ConverterToString.RegionString(displayPartView.RegionId);
+            displayPartView.Approved = part_.Approved;
+            displayPartView.MainPicture = part_.MainPicture;
+            displayPartView.Description = part_.Description;
+            displayPartView.ModifiedTime = part_.ModifiedTime;
+            SellerImage(displayPartView);
 
             return displayPartView;
         }
@@ -412,143 +412,143 @@ namespace Rado.Enrich
         {
             User user = Loader.LoadUser(sqlDataReader);
 
-            if (user.webPage.Length > 0 && !user.webPage.StartsWith("http"))
-                user.webPage = $"http://{user.webPage}.{Program.CompanyName}.com";
+            if (user.WebPage.Length > 0 && !user.WebPage.StartsWith("http"))
+                user.WebPage = $"http://{user.WebPage}.{Program.CompanyName}.com";
 
 
             try
             {
-                user.imageData = ImageManager.GetBusinessCard(user.userId);
+                user.ImageData = ImageManager.GetBusinessCard(user.UserId);
             }
             catch (Exception exception)
             {
-                user.imageData = null;
+                user.ImageData = null;
                 LoggerUtil.LogException(exception);
             }
 
             return user;
         }
 
-        public static void sellerImage(DisplayPartView displayPartView)
+        public static void SellerImage(DisplayPartView displayPartView)
         {
-            User user = UserDbSet.GetUserById(displayPartView.userId);
-            displayPartView.sellerCity = user.city;
-            displayPartView.sellerCompanyName = user.companyName;
-            if (user.imageData != null)
-                displayPartView.sellerLogo = user.imageData.imageMinSrc;
+            User user = UserDbSet.GetUserById(displayPartView.UserId);
+            displayPartView.SellerCity = user.City;
+            displayPartView.SellerCompanyName = user.CompanyName;
+            if (user.ImageData != null)
+                displayPartView.SellerLogo = user.ImageData.ImageMinSrc;
 
-            if (user.dealer == UserType.Dealer)
+            if (user.Dealer == UserType.Dealer)
             {
-                displayPartView.sellerName = user.companyName;
-                displayPartView.sellerWebPage = user.webPage;
+                displayPartView.SellerName = user.CompanyName;
+                displayPartView.SellerWebPage = user.WebPage;
             }
             else
             {
-                displayPartView.sellerName = string.Join(',', user.firstName, user.lastName);
-                displayPartView.sellerName = "Частно лице: " + displayPartView.sellerName;
+                displayPartView.SellerCity = string.Join(',', user.FirstName, user.LastName);
+                displayPartView.SellerName = "Частно лице: " + displayPartView.SellerName;
             }
 
             if (user != null)
             {
-                displayPartView.sellerPhone = user.phone;
-                displayPartView.sellerPhone2 = user.phone2;
-                displayPartView.sellerViber = user.viber;
-                displayPartView.sellerWhats = user.whats;
-                displayPartView.sellerWebPage = user.webPage;
-                displayPartView.dealer = user.dealer;
+                displayPartView.SellerPhone = user.Phone;
+                displayPartView.SellerPhone2 = user.Phone2;
+                displayPartView.SellerViber = user.Viber;
+                displayPartView.SellerWhats = user.Whats;
+                displayPartView.SellerWebPage = user.WebPage;
+                displayPartView.Dealer = user.Dealer;
             }
 
         }
 
         public static void InitPartViewFromCar(CarView carView, PartView part, bool loadMainPicture = false)
         {
-            part.carId = carView.carId;
-            part.companyId = carView.companyId;
-            part.companyName = carView.companyName;
-            part.modelId = carView.modelId;
-            part.modelName = carView.modelName;
-            part.modificationId = carView.modificationId ?? 0;
-            part.modification = carView.modificationName;
-            part.engineType = carView.engineType;
-            part.engineModel = carView.engineModel;
-            part.year = carView.year;
-            part.description = carView.description;
-            part.millage = carView.millage;
-            part.regionId = carView.regionId;
-            part.gearboxType = carView.gearboxType;
-            part.regNumber = carView.regNumber;
-            part.vin = carView.vin;
-            part.userId = carView.userId;
-            part.bus = carView.bus;
+            part.CarId = carView.CarId;
+            part.CompanyId = carView.CompanyId;
+            part.CompanyName = carView.CompanyName;
+            part.ModelId = carView.ModelId;
+            part.ModelName = carView.ModelName;
+            part.ModificationId = carView.ModificationId ?? 0;
+            part.Modification = carView.ModificationName;
+            part.EngineType = carView.EngineType;
+            part.EngineModel = carView.EngineModel;
+            part.Year = carView.Year;
+            part.Description = carView.Description;
+            part.Millage = carView.Millage;
+            part.RegionId = carView.RegionId;
+            part.GearboxType = carView.GearboxType;
+            part.RegNumber = carView.RegNumber;
+            part.Vin = carView.Vin;
+            part.UserId = carView.UserId;
+            part.Bus = carView.Bus;
 
-            part.categoryName = "Кола на части";
-            part.isCar = true;
-            part.modificationName = ModificationsDbSet.GetModificationById(carView.modificationId ?? 0)?.modificationName ?? "";
+            part.CategoryName = "Кола на части";
+            part.IsCar = true;
+            part.ModificationName = ModificationsDbSet.GetModificationById(carView.ModificationId ?? 0)?.ModificationName ?? "";
 
             if (loadMainPicture)
             {
-                var result = ImageManager.GetMainImageAsync(carView.carId);
+                var result = ImageManager.GetMainImageAsync(carView.CarId);
                 result.Wait();
-                carView.mainImageData = result.Result;
+                carView.MainImageData = result.Result;
 
-                if (carView.mainImageData == null)
+                if (carView.MainImageData == null)
                 {
-                    var resultData = ImageManager.GetMainImageAsync(carView.carId);
+                    var resultData = ImageManager.GetMainImageAsync(carView.CarId);
                     resultData.Wait();
-                    carView.mainImageData = resultData.Result;
+                    carView.MainImageData = resultData.Result;
                 }
             }
 
-            var imageResult = ImageManager.GetImageCount(carView.carId);
+            var imageResult = ImageManager.GetImageCount(carView.CarId);
             imageResult.Wait();
 
-            part.numberImages = imageResult.Result;
-            part.mainImageData = carView.mainImageData;
-            part.modifiedTime = carView.modifiedTime;
-            part.approved = carView.approved;
-            part.mainPicture = carView.mainPicture;
-            part.userId = carView.userId;
+            part.NumberImages = imageResult.Result;
+            part.MainImageDataClass = carView.MainImageData;
+            part.ModifiedTime = carView.ModifiedTime;
+            part.Approved = carView.Approved;
+            part.MainPicture = carView.MainPicture;
+            part.UserId = carView.UserId;
         }
         public static void InitPartViewFromCar(CarView carView, Part part, bool loadMainPicture = false)
         {
-            part.carId = carView.carId;
-            part.modelId = carView.modelId;
-            part.modificationId = carView.modificationId ?? 0;
-            part.modification = carView.modificationName;
-            part.engineType = carView.engineType;
-            part.engineModel = carView.engineModel;
-            part.year = carView.year;
-            part.description = carView.description;
-            part.millage = carView.millage;
-            part.regionId = carView.regionId;
-            part.gearboxType = carView.gearboxType;
-            part.userId = carView.userId;
-            part.bus = carView.bus;
+            part.CarId = carView.CarId;
+            part.ModelId = carView.ModelId;
+            part.ModificationId = carView.ModificationId ?? 0;
+            part.Modification = carView.ModificationName;
+            part.EngineType = carView.EngineType;
+            part.EngineModel = carView.EngineModel;
+            part.Year = carView.Year;
+            part.Description = carView.Description;
+            part.Millage = carView.Millage;
+            part.RegionId = carView.RegionId;
+            part.GearboxType = carView.GearboxType;
+            part.UserId = carView.UserId;
+            part.Bus = carView.Bus;
         }
 
         public static void InitPartFromCar(ref Part part, CarView car)
         {
-            part.modelId = car.modelId;
-            part.modificationId = car.modificationId ?? 0;
-            part.modification = car.modificationName;
-            part.year = car.year;
-            part.millage = car.millage;
-            part.engineType = car.engineType;
-            part.engineModel = car.engineModel;
-            part.regionId = car.regionId;
-            part.gearboxType = car.gearboxType;
-            part.powerBHP = car.powerBHP;
-            part.powerkWh = car.powerkWh;
-            part.bus = car.bus;
+            part.Millage = car.ModelId;
+            part.ModificationId = car.ModificationId ?? 0;
+            part.Modification = car.ModificationName;
+            part.Year = car.Year;
+            part.Millage = car.Millage;
+            part.EngineType = car.EngineType;
+            part.EngineModel = car.EngineModel;
+            part.RegionId = car.RegionId;
+            part.GearboxType = car.GearboxType;
+            part.PowerBHP = car.PowerBHP;
+            part.PowerkWh = car.PowerkWh;
+            part.Bus = car.Bus;
         }
 
         public static void EnrichFilter(Filter filter)
         {
             string description = "";
-            filter.keywords = new Dictionary<string, string>();
+            filter.Keywords = new Dictionary<string, string>();
             try
             {
-                switch (filter.itemType)
+                switch (filter.ItemType)
                 {
                     case ItemType.AllCarAndPart:
                         description = $"{description} Всички обяви за коли";
@@ -581,28 +581,28 @@ namespace Rado.Enrich
                         description = $"{description} Гуми/Джанти";
                         break;
                     case ItemType.RegNumber:
-                        description = $"Search by part number {filter.regNumber}";
+                        description = $"Search by part number {filter.RegNumber}";
                         break;
                 }
-                filter.keywords.Add("Описание", description);
-                if (filter.companyId != 0)
+                filter.Keywords.Add("Описание", description);
+                if (filter.CompanyId != 0)
                 {
-                    string companyName = CompaniesDbSet.getCompanyById(filter.companyId).companyName;
-                    filter.keywords.Add("Компания", companyName);
+                    string companyName = CompaniesDbSet.GetCompanyById(filter.CompanyId).CompanyName;
+                    filter.Keywords.Add("Компания", companyName);
                 }
                 else
                 {
-                    filter.keywords.Add("Компания", "Всички");
+                    filter.Keywords.Add("Компания", "Всички");
                 }
-                if (filter.modelId != 0)
+                if (filter.ModelId != 0)
                 {
-                    string modelName = ModelsDbSet.GetModelNameById(filter.modelId);
+                    string modelName = ModelsDbSet.GetModelNameById(filter.ModelId);
                     description = $"{description} Модел: {modelName}";
-                    filter.keywords.Add("Модел", modelName);
+                    filter.Keywords.Add("Модел", modelName);
                 }
-                else if (filter.modelsId?.Length > 0)
+                else if (filter.ModelsId?.Length > 0)
                 {
-                    string[] ids = filter.modelsId.Split(',');
+                    string[] ids = filter.ModelsId.Split(',');
                     description = $"{description} Модели:";
                     List<string> models = new List<string>();
                     foreach (string id in ids)
@@ -611,80 +611,80 @@ namespace Rado.Enrich
                         description = $"{description} {modelName}";
                         models.Add(modelName);
                     }
-                    filter.keywords.Add("Модел", string.Join(',', models));
+                    filter.Keywords.Add("Модел", string.Join(',', models));
                 }
                 else
                 {
-                    filter.keywords.Add("Модел", "Всички");
+                    filter.Keywords.Add("Модел", "Всички");
                 }
-                if (filter.modificationId != 0)
+                if (filter.ModificationId != 0)
                 {
-                    string modificationName = ModificationsDbSet.GetModificationNameById(filter.modificationId);
-                    filter.keywords.Add("Модификация", modificationName);
+                    string modificationName = ModificationsDbSet.GetModificationNameById(filter.ModificationId);
+                    filter.Keywords.Add("Модификация", modificationName);
                 }
-                else if (filter.modificationsId?.Length > 0)
+                else if (filter.ModificationsId?.Length > 0)
                 {
-                    string[] ids = filter.modificationsId.Split(',');
+                    string[] ids = filter.ModificationsId.Split(',');
                     List<string> modifications = new List<string>();
                     foreach (string id in ids)
                     {
                         string modificationName = ModificationsDbSet.GetModificationNameById(Convert.ToInt32(id));
                         modifications.Add(modificationName);
                     }
-                    filter.keywords.Add("Модификации", string.Join(',', modifications));
+                    filter.Keywords.Add("Модификации", string.Join(',', modifications));
                 }
                 else
                 {
-                    filter.keywords.Add("Модификация", "Всички");
+                    filter.Keywords.Add("Модификация", "Всички");
                 }
 
-                if (filter.categoryId != 0)
+                if (filter.CategoryId != 0)
                 {
-                    string categoryName = CategoriesDbSet.GetCategoryNameById(filter.categoryId);
-                    filter.keywords.Add("Категория", categoryName);
+                    string categoryName = CategoriesDbSet.GetCategoryNameById(filter.CategoryId);
+                    filter.Keywords.Add("Категория", categoryName);
                 }
-                else if (filter.categoriesId?.Length > 0)
+                else if (filter.CategoriesId?.Length > 0)
                 {
-                    string[] ids = filter.categoriesId.Split(',');
+                    string[] ids = filter.CategoriesId.Split(',');
                     List<string> items = new List<string>();
                     foreach (string id in ids)
                     {
                         string categoryName = CategoriesDbSet.GetCategoryNameById(Convert.ToInt32(id));
                         items.Add(categoryName);
                     }
-                    filter.keywords.Add("Категории", string.Join(',', items));
+                    filter.Keywords.Add("Категории", string.Join(',', items));
                 }
                 else
                 {
-                    filter.keywords.Add("Категория", "Всички");
+                    filter.Keywords.Add("Категория", "Всички");
                 }
 
-                if (filter.subCategoryId != 0)
+                if (filter.SubCategoryId != 0)
                 {
-                    string subCategoryName = SubCategoriesDbSet.GetSubCategoryNameById(filter.subCategoryId);
-                    filter.keywords.Add("Подкатегория", subCategoryName);
+                    string subCategoryName = SubCategoriesDbSet.GetSubCategoryNameById(filter.SubCategoryId);
+                    filter.Keywords.Add("Подкатегория", subCategoryName);
                 }
-                else if (filter.categoriesId?.Length > 0)
+                else if (filter.CategoriesId?.Length > 0)
                 {
-                    string[] ids = filter.categoriesId.Split(',');
+                    string[] ids = filter.CategoriesId.Split(',');
                     List<string> items = new List<string>();
                     foreach (string id in ids)
                     {
                         string categoryName = SubCategoriesDbSet.GetSubCategoryNameById(Convert.ToInt32(id));
                         items.Add(categoryName);
                     }
-                    filter.keywords.Add("Подкатегория", string.Join(',', items));
+                    filter.Keywords.Add("Подкатегория", string.Join(',', items));
                 }
                 else
                 {
-                    filter.keywords.Add("Подкатегория", "Всички");
+                    filter.Keywords.Add("Подкатегория", "Всички");
                 }
 
-                if (filter.keyword?.Length > 0)
-                    filter.keywords.Add("Търси по", filter.keyword);
+                if (filter.Keyword?.Length > 0)
+                    filter.Keywords.Add("Търси по", filter.Keyword);
 
-                if (filter.partNumber?.Length > 0)
-                    filter.keywords.Add("Номер част", filter.partNumber);
+                if (filter.PartNumber?.Length > 0)
+                    filter.Keywords.Add("Номер част", filter.PartNumber);
             }
             catch (Exception exception)
             {
@@ -701,7 +701,7 @@ namespace Rado.Enrich
         //    displayPartView.rimWithTyre = rimWithTyreView;
 
         //    displayPartView.price = rimWithTyreView.price;
-        //    displayPartView.mainImageData = rimWithTyreView.mainImageData;
+        //    displayPartView.MainImageData = rimWithTyreView.MainImageData;
         //    var imageResult = ImageManager.GetNumberImages(displayPartView.id);
         //    imageResult.Wait();
 
@@ -722,27 +722,27 @@ namespace Rado.Enrich
         {
             DisplayPartView displayPartView = new DisplayPartView();
 
-            displayPartView.isCar = part.isCar;
-            displayPartView.part = part;
-            if (part.bus == 1)
+            displayPartView.IsCar = part.IsCar;
+            displayPartView.Part = part;
+            if (part.Bus == 1)
             {
-                displayPartView.itemType = displayPartView.isCar ? ItemType.OnlyBus : ItemType.BusPart;
+                displayPartView.ItemType = displayPartView.IsCar ? ItemType.OnlyBus : ItemType.BusPart;
             }
             else
             {
-                displayPartView.itemType = displayPartView.isCar ? ItemType.OnlyCar : ItemType.CarPart;
+                displayPartView.ItemType = displayPartView.IsCar ? ItemType.OnlyCar : ItemType.CarPart;
             }
-            displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.itemType);
-            displayPartView.id = part.isCar ? part.carId.Value : part.partId;
-            displayPartView.price = part.price;
-            displayPartView.userId = part.userId;
-            displayPartView.regionId = part.regionId;
-            displayPartView.approved = part.approved;
-            displayPartView.mainPicture = part.mainPicture;
-            displayPartView.description = part.description;
-            displayPartView.modifiedTime = part.modifiedTime;
+            displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.ItemType);
+            displayPartView.Id = part.IsCar ? part.CarId.Value : part.PartId;
+            displayPartView.Price = part.Price;
+            displayPartView.UserId = part.UserId;
+            displayPartView.RegionId = part.RegionId;
+            displayPartView.Approved = part.Approved;
+            displayPartView.MainPicture = part.MainPicture;
+            displayPartView.Description = part.Description;
+            displayPartView.ModifiedTime = part.ModifiedTime;
 
-            enrichDisplay(displayPartView);
+            EnrichDisplay(displayPartView);
 
             return displayPartView;
         }
@@ -750,41 +750,41 @@ namespace Rado.Enrich
         public static DisplayPartView EnrichDisplayPartView(RimWithTyreView rimWithTyreView)
         {
             DisplayPartView displayPartView = new DisplayPartView();
-            displayPartView.itemType = rimWithTyreView.itemType;
-            displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.itemType);
-            displayPartView.id = rimWithTyreView.rimWithTyreId;
-            displayPartView.rimWithTyre = rimWithTyreView;
+            displayPartView.ItemType = rimWithTyreView.ItemType;
+            displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.ItemType);
+            displayPartView.Id = rimWithTyreView.RimWithTyreId;
+            displayPartView.RimWithTyre = rimWithTyreView;
 
-            displayPartView.price = rimWithTyreView.price;
-            displayPartView.mainImageData = rimWithTyreView.mainImageData;
+            displayPartView.Price = rimWithTyreView.Price;
+            displayPartView.MainImageData = rimWithTyreView.MainImageData;
 
-            displayPartView.Count = rimWithTyreView.count;
-            displayPartView.userId = rimWithTyreView.userId;
-            displayPartView.regionId = rimWithTyreView.regionId;
-            displayPartView.approved = rimWithTyreView.approved;
-            displayPartView.mainPicture = rimWithTyreView.mainPicture;
-            displayPartView.description = rimWithTyreView.description;
-            displayPartView.modifiedTime = rimWithTyreView.modifiedTime;
-            var companyName = CompaniesDbSet.GetCompanyNameById(rimWithTyreView.companyId);
-            var modelName = ModelsDbSet.GetModelNameById(rimWithTyreView.modelId);
+            displayPartView.Count = rimWithTyreView.Count;
+            displayPartView.UserId = rimWithTyreView.UserId;
+            displayPartView.RegionId = rimWithTyreView.RegionId;
+            displayPartView.Approved = rimWithTyreView.Approved;
+            displayPartView.MainPicture = rimWithTyreView.MainPicture;
+            displayPartView.Description = rimWithTyreView.Description;
+            displayPartView.ModifiedTime = rimWithTyreView.ModifiedTime;
+            var companyName = CompaniesDbSet.GetCompanyNameById(rimWithTyreView.CompanyId);
+            var modelName = ModelsDbSet.GetModelNameById(rimWithTyreView.ModelId);
             if (companyName.Length > 0)
-                displayPartView.companyName = companyName;
+                displayPartView.CompanyName = companyName;
             if (modelName.Length > 0)
-                displayPartView.modelName = modelName;
-            enrichDisplay(displayPartView);
+                displayPartView.ModelName = modelName;
+            EnrichDisplay(displayPartView);
 
             return displayPartView;
         }
 
-        public static void enrichDisplay(DisplayPartView displayPartView)
+        private static void EnrichDisplay(DisplayPartView displayPartView)
         {
-            var images = ImageManager.GetImagesAsync(displayPartView.id);
+            var images = ImageManager.GetImagesAsync(displayPartView.Id);
             images.Wait();
 
-            displayPartView.numberImages = images.Result.Length;
-            displayPartView.images = images.Result;
-            displayPartView.RegionStr = ConverterToString.RegionString(displayPartView.regionId);
-            sellerImage(displayPartView);
+            displayPartView.NumberImages = images.Result.Length;
+            displayPartView.Images = images.Result;
+            displayPartView.RegionStr = ConverterToString.RegionString(displayPartView.RegionId);
+            SellerImage(displayPartView);
         }
     }
 }

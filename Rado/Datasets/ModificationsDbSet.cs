@@ -38,15 +38,15 @@ namespace Rado.Datasets
                             {
                                 var modificaion = new Models.Modification()
                                 {
-                                    modificationId = Convert.ToInt32(reader["modificationId"]),
-                                    modelId = Convert.ToInt32(reader["modelId"]),
-                                    modificationName = Convert.ToString(reader["modificationName"]),
-                                    yearFrom = Convert.ToInt32(reader["yearFrom"]),
-                                    yearTo = Convert.ToInt32(reader["yearTo"]),
-                                    powerHP = Convert.ToInt32(reader["powerHP"]),
-                                    engine = Convert.ToInt32(reader["engine"]),
-                                    doors = Convert.ToInt32(reader["doors"]),
-                                    kupe = Convert.ToInt32(reader["kupe"])
+                                    ModificationId = Convert.ToInt32(reader["modificationId"]),
+                                    ModelId = Convert.ToInt32(reader["modelId"]),
+                                    ModificationName = Convert.ToString(reader["modificationName"]),
+                                    YearFrom = Convert.ToInt32(reader["yearFrom"]),
+                                    YearTo = Convert.ToInt32(reader["yearTo"]),
+                                    PowerHP = Convert.ToInt32(reader["powerHP"]),
+                                    Engine = Convert.ToInt32(reader["engine"]),
+                                    Doors = Convert.ToInt32(reader["doors"]),
+                                    Kupe = Convert.ToInt32(reader["kupe"])
                                 };
                                 EnrichManager.EnrichModification(modificaion);
 
@@ -71,7 +71,7 @@ namespace Rado.Datasets
 
             await Task.Run(() =>
             {
-                modification = getInstance().modifications.Find(element => element.modificationName == modificationName);
+                modification = getInstance().modifications.Find(element => element.ModificationName == modificationName);
             });
 
             return modification;
@@ -104,7 +104,7 @@ namespace Rado.Datasets
 
             await Task.Run(() =>
             {
-                IEnumerable<Modification> modifications = getInstance().modifications.FindAll(x => x.modelId == modelId);
+                IEnumerable<Modification> modifications = getInstance().modifications.FindAll(x => x.ModelId == modelId);
                 List<ModificationMin> min = new List<ModificationMin>();
                 foreach (Modification modification in modifications)
                 {
@@ -123,7 +123,7 @@ namespace Rado.Datasets
             
             await Task.Run(() =>
             {
-                modifications = getInstance().modifications.FindAll(x => x.modelId == modelId).ToArray();
+                modifications = getInstance().modifications.FindAll(x => x.ModelId == modelId).ToArray();
             });
 
             return modifications;
@@ -131,7 +131,7 @@ namespace Rado.Datasets
         static public Modification[] GetModificationByModelId(int modelId)
         {
 
-            Modification[] modifications = getInstance().modifications.FindAll(x => x.modelId == modelId).ToArray();
+            Modification[] modifications = getInstance().modifications.FindAll(x => x.ModelId == modelId).ToArray();
 
             return modifications;
         }
@@ -148,13 +148,13 @@ namespace Rado.Datasets
                     int id = Int32.Parse(modelId);
                     if (id > 10000)
                     {
-                        Model[] models = Array.FindAll<Model>(ModelsDbSet.GetModels(), x => x.groupModelId == id);
+                        Model[] models = Array.FindAll<Model>(ModelsDbSet.GetModels(), x => x.GroupModelId == id);
                         foreach (var model in models)
                         {
-                            List<Models.Modification> modifications = getInstance().modifications.FindAll(x => x.modelId == model.modelId);
+                            List<Models.Modification> modifications = getInstance().modifications.FindAll(x => x.ModelId == model.ModelId);
                             foreach (Modification modification in modifications)
                             {
-                                var result = allModifications.Find(item => item.modificationId == modification.modificationId);
+                                var result = allModifications.Find(item => item.ModificationId == modification.ModificationId);
                                 if (result == null)
                                     allModifications.Add(modification);
                             }
@@ -162,10 +162,10 @@ namespace Rado.Datasets
                     }
                     else
                     {
-                        List<Models.Modification> modifications = getInstance().modifications.FindAll(x => x.modelId == id);
+                        List<Models.Modification> modifications = getInstance().modifications.FindAll(x => x.ModelId == id);
                         foreach (Modification modification in modifications)
                         {
-                            var result = allModifications.Find(item => item.modificationId == modification.modificationId);
+                            var result = allModifications.Find(item => item.ModificationId == modification.ModificationId);
                             if (result == null)
                                 allModifications.Add(modification);
                         }
@@ -214,7 +214,7 @@ namespace Rado.Datasets
         {
             try
             {
-                return getInstance().modifications.Find(x => x.modificationId == modificationlId)?.modificationName;
+                return getInstance().modifications.Find(x => x.ModificationId == modificationlId)?.ModificationName;
             }
             catch (Exception exception)
             {
@@ -226,11 +226,11 @@ namespace Rado.Datasets
 
         static public Models.Modification GetModificationById(int modificationId)
         {
-            return getInstance().modifications.Find(x => x.modificationId == modificationId);
+            return getInstance().modifications.Find(x => x.ModificationId == modificationId);
         }
         static public bool CheckModificationById(int modificationId)
         {
-            bool exist = getInstance().modifications.Exists(x => x.modificationId == modificationId);
+            bool exist = getInstance().modifications.Exists(x => x.ModificationId == modificationId);
 
             return exist;
         }
@@ -239,9 +239,9 @@ namespace Rado.Datasets
         {
             try
             {
-                var modification = getInstance().modifications.Find(x => x.modificationId == modificationId);
+                var modification = getInstance().modifications.Find(x => x.ModificationId == modificationId);
                 if (modification != null) 
-                    modification.countParts = number;
+                    modification.CountParts = number;
             }
             catch (Exception exception)
             {
@@ -252,9 +252,9 @@ namespace Rado.Datasets
         {
             try
             {
-                var modification = getInstance().modifications.Find(x => x.modificationId == modificationId);
+                var modification = getInstance().modifications.Find(x => x.ModificationId == modificationId);
                 if (modification != null)
-                    modification.countCars+= number;
+                    modification.CountCars += number;
             }
             catch (Exception exception)
             {
@@ -284,15 +284,15 @@ namespace Rado.Datasets
                         sqlConnection.Open();
                         sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
 
-                        sqlCommand.Parameters.Add("@modificationId", System.Data.SqlDbType.Int).Value = modification.modificationId;
-                        sqlCommand.Parameters.Add("@modificationName", System.Data.SqlDbType.NVarChar, 50).Value = modification.modificationName;
-                        sqlCommand.Parameters.Add("@modelId", System.Data.SqlDbType.Int).Value = modification.modelId;
-                        sqlCommand.Parameters.Add("@yearFrom", System.Data.SqlDbType.Int).Value = modification.yearFrom;
-                        sqlCommand.Parameters.Add("@yearTo", System.Data.SqlDbType.Int).Value = modification.yearTo;
-                        sqlCommand.Parameters.Add("@powerHP", System.Data.SqlDbType.Int).Value = modification.powerHP;
-                        sqlCommand.Parameters.Add("@engine", System.Data.SqlDbType.Int).Value = modification.engine;
-                        sqlCommand.Parameters.Add("@doors", System.Data.SqlDbType.Int).Value = modification.doors;
-                        sqlCommand.Parameters.Add("@kupe", System.Data.SqlDbType.Int).Value = modification.kupe;
+                        sqlCommand.Parameters.Add("@modificationId", System.Data.SqlDbType.Int).Value = modification.ModificationId;
+                        sqlCommand.Parameters.Add("@modificationName", System.Data.SqlDbType.NVarChar, 50).Value = modification.ModificationName;
+                        sqlCommand.Parameters.Add("@modelId", System.Data.SqlDbType.Int).Value = modification.ModelId;
+                        sqlCommand.Parameters.Add("@yearFrom", System.Data.SqlDbType.Int).Value = modification.YearFrom;
+                        sqlCommand.Parameters.Add("@yearTo", System.Data.SqlDbType.Int).Value = modification.YearTo;
+                        sqlCommand.Parameters.Add("@powerHP", System.Data.SqlDbType.Int).Value = modification.PowerHP;
+                        sqlCommand.Parameters.Add("@engine", System.Data.SqlDbType.Int).Value = modification.Engine;
+                        sqlCommand.Parameters.Add("@doors", System.Data.SqlDbType.Int).Value = modification.Doors;
+                        sqlCommand.Parameters.Add("@kupe", System.Data.SqlDbType.Int).Value = modification.Kupe;
 
                         sqlCommand.ExecuteNonQuery();
                         sqlConnection.Close();
@@ -311,9 +311,9 @@ namespace Rado.Datasets
         {
             try
             {
-                var modification = getInstance().modifications.Find(x => x.modificationId == modificationId);
+                var modification = getInstance().modifications.Find(x => x.ModificationId == modificationId);
                 if (modification != null) 
-                    modification.countParts = number;
+                    modification.CountParts = number;
             }
             catch (Exception ex)
             {
@@ -399,9 +399,9 @@ namespace Rado.Datasets
         {
             try
             {
-                var model = getInstance().modifications.Find(x => x.modificationId == modificationId);
+                var model = getInstance().modifications.Find(x => x.ModificationId == modificationId);
                 if (model != null) 
-                    model.countParts += number;
+                    model.CountParts += number;
             }
             catch (Exception ex)
             {
@@ -448,7 +448,7 @@ namespace Rado.Datasets
         internal static async Task<ModificationMin> GetModificationByName(int modelId, string name)
         {
             ModificationMin[] modificationMins = await GetModificationByModelIdAsync(modelId);
-            ModificationMin modificationMin = modificationMins.First(_ => _.modificationDisplayName == name);
+            ModificationMin modificationMin = modificationMins.First(_ => _.ModificationDisplayName == name);
 
             return modificationMin;
         }

@@ -5,58 +5,58 @@ namespace Models.Models
 {
     public class Filter
     {
-        public long id { get; set; }
-        public ItemType itemType { get; set; }
-        public int bus { get; set; }
-        public long carId { get; set; }
-        public int companyId { get; set; }
-        public int modelId { get; set; }
-        public string? modelsId { get; set; }
-        public int modificationId { get; set; }
-        public string? modificationsId { get; set; }
-        public int year { get; set; }
-        public int categoryId { get; set; }
-        public string? categoriesId { get; set; }
-        public int subCategoryId { get; set; }
-        public string? subCategoriesId { get; set; }
-        public int engineType { get; set; }
-        public string? engineModel { get; set; }
-        public string? partNumber { get; set; }
-        public int powerkWh { get; set; }
-        public int powerBHP { get; set; }
-        public int gearboxType { get; set; }
-        public string? categories { get; set; }
-        public bool partOnly { get; set; }
-        public SearchBy searchBy { get; set; }
-        public string? regNumber { get; set; }
-        public bool extendedSearch { get; set; }
-        public SearchType searchType { get; set; }
-        public int tyreCompanyId { get; set; }
-        public int tyreWidth { get; set; }
-        public int tyreHeight { get; set; }
-        public int tyreRadius { get; set; }
-        public int tyreType { get; set; }
-        public int rimCompanyId { get; set; }
-        public int rimModelId { get; set; }
-        public int rimWidth { get; set; }
-        public int rimMaterial { get; set; }
-        public int rimOffset { get; set; }
-        public int rimBoltCount { get; set; }
-        public int rimBoltDistance { get; set; }
-        public int rimCenter { get; set; }
-        public long clientId { get; set; }
-        public int? userId { get; set; }
-        public bool loadMainPicture { get; set; }
-        public int orderBy { get; set; }
-        public int regionId { get; set; }
-        public bool hasImages { get; set; }
-        public string? keyword { get; set; }
-        public string? description { get; set; }
-        public bool adminRun { get; set; }
-        public int partForCar { get; set; }
-        public Dictionary<string, string>? keywords { get; set; }
-        public ApprovedType approved { get; set; }
-        public bool loaded { get; set; } = false;
+        public long Id { get; set; }
+        public ItemType ItemType { get; set; }
+        public int Bus { get; set; }
+        public long CarId { get; set; }
+        public int CompanyId { get; set; }
+        public int ModelId { get; set; }
+        public string? ModelsId { get; set; }
+        public int ModificationId { get; set; }
+        public string? ModificationsId { get; set; }
+        public int Year { get; set; }
+        public int CategoryId { get; set; }
+        public string? CategoriesId { get; set; }
+        public int SubCategoryId { get; set; }
+        public string? SubCategoriesId { get; set; }
+        public int EngineType { get; set; }
+        public string? EngineModel { get; set; }
+        public string? PartNumber { get; set; }
+        public int PowerkWh { get; set; }
+        public int PowerBHP { get; set; }
+        public int GearboxType { get; set; }
+        public string? Categories { get; set; }
+        public bool PartOnly { get; set; }
+        public SearchBy SearchBy { get; set; }
+        public string? RegNumber { get; set; }
+        public bool ExtendedSearch { get; set; }
+        public SearchType SearchType { get; set; }
+        public int TyreCompanyId { get; set; }
+        public int TyreWidth { get; set; }
+        public int TyreHeight { get; set; }
+        public int TyreRadius { get; set; }
+        public int TyreType { get; set; }
+        public int RimCompanyId { get; set; }
+        public int RimModelId { get; set; }
+        public int RimWidth { get; set; }
+        public int RimMaterial { get; set; }
+        public int RimOffset { get; set; }
+        public int RimBoltCount { get; set; }
+        public int RimBoltDistance { get; set; }
+        public int RimCenter { get; set; }
+        public long ClientId { get; set; }
+        public int? UserId { get; set; }
+        public bool LoadMainPicture { get; set; }
+        public int OrderBy { get; set; }
+        public int RegionId { get; set; }
+        public bool HasImages { get; set; }
+        public string? Keyword { get; set; }
+        public string? Description { get; set; }
+        public bool AdminRun { get; set; }
+        public int PartForCar { get; set; }
+        public Dictionary<string, string>? Keywords { get; set; }
+        public ApprovedType Approved { get; set; }
+        public bool Loaded { get; set; } = false;
 
     }
 

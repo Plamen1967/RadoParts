@@ -38,7 +38,7 @@ namespace Rado.Controllers.Admin
         [HttpPost]
         public async Task<TyreView> Post([FromBody] Tyre tyre)
         {
-            tyre.userId = UserId;
+            tyre.UserId = UserId;
             return await TyreDbSet.AddTyreAsync(tyre);
         }
 
@@ -46,7 +46,7 @@ namespace Rado.Controllers.Admin
         [HttpPost("{id}")]
         public async Task<TyreView> Post(long id, Tyre tyre)
         {
-            tyre.userId = UserId;
+            tyre.UserId = UserId;
             return await TyreDbSet.UpdateTyreAsync(tyre);
         }
 

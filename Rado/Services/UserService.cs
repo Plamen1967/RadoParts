@@ -32,7 +32,7 @@ namespace Rado.Services
         {
             try
             {
-                var user = UserDbSet.GetUsers().FirstOrDefault(x => x.userName == request.Username || x.email == request.Username || x.phone == request.Username);
+                var user = UserDbSet.GetUsers().FirstOrDefault(x => x.UserName == request.Username || x.Email == request.Username || x.Phone == request.Username);
 
                 if (user == null)
                 {
@@ -40,18 +40,18 @@ namespace Rado.Services
                 } 
                 else if (!BCryptNet.Verify(request.Password, user.PasswordHash))
                 {
-                    if (UserDbSet.WrongAttempt(user.userId) == -1)
+                    if (UserDbSet.WrongAttempt(user.UserId) == -1)
                         throw new AppException("Вашият акаунт е блокиран");
                     else
                         throw new AppException("Името или паролата са некоректни");
                 }
-                else if (user.activated == 0)
+                else if (user.Activated == 0)
                 {
                     throw new AppException("Вашият акаунт не е активиран. Проверете е-майла си за активиращият код!");
                 }
                 else
                 {
-                    UserDbSet.SuccessfullLogin(user.userId);
+                    UserDbSet.SuccessfullLogin(user.UserId);
                 }
 
                 var jwtToken = _jwtUtils.GenerateJwtToken(user);
@@ -75,7 +75,7 @@ namespace Rado.Services
             User user;
             try
             {
-                user = UserDbSet.GetUsers().First(x => x.userId == userId);
+                user = UserDbSet.GetUsers().First(x => x.UserId == userId);
             }
             catch(Exception exception)
             {

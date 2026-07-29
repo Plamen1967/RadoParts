@@ -152,23 +152,23 @@ namespace Rado.Datasets
                 Company[] companies = await CompaniesDbSet.GetAllCompanies();
                 List<Company> companies1 = companies.ToList();
                 foreach (var company in companies1) 
-                    company.countCars = company.countParts = 0;
+                    company.CountCars = company.CountParts = 0;
 
                 foreach (var companyNum in countStats.companyNumber)
                 {
-                    var foundCompanies = companies1.Where(company => company.companyId == companyNum.Key);
+                    var foundCompanies = companies1.Where(company => company.CompanyId == companyNum.Key);
                     foreach (var company in foundCompanies)
                     {
-                        company.countParts += companyNum.Value;
+                        company.CountParts += companyNum.Value;
                     }
                 }
 
                 foreach (var companyNum in carCountStats.companyNumber)
                 {
-                    var foundCompanies = companies1.Where(company => company.companyId == companyNum.Key);
+                    var foundCompanies = companies1.Where(company => company.CompanyId == companyNum.Key);
                     foreach (var company in foundCompanies)
                     {
-                        company.countCars += companyNum.Value;
+                        company.CountCars += companyNum.Value;
                     }
                 }
                 return companies1;
@@ -228,23 +228,23 @@ namespace Rado.Datasets
                 ModificationMin[] modifications = await ModificationsDbSet.GetModificationByModelsIdAsync(modelId);
                 List<ModificationMin> modifications1 = modifications.ToList();
                 foreach (var modification in modifications1)
-                    modification.countCars = modification.countParts = 0;
+                    modification.CountCars = modification.CountParts = 0;
 
                 foreach (var modificationNum in countStats.modificationNumber)
                 {
-                    var foundModifications = modifications.Where(modification => modification.modificationId == modificationNum.Key);
+                    var foundModifications = modifications.Where(modification => modification.ModificationId == modificationNum.Key);
                     foreach (var modification in foundModifications)
                     {
-                        modification.countParts += modificationNum.Value;
+                        modification.CountParts += modificationNum.Value;
                     }
                 }
 
                 foreach (var modificationNum in carCountStats.modificationNumber)
                 {
-                    var foundModifications = modifications.Where(modification => modification.modificationId == modificationNum.Key);
+                    var foundModifications = modifications.Where(modification => modification.ModificationId == modificationNum.Key);
                     foreach (var modification in foundModifications)
                     {
-                        modification.countCars += modificationNum.Value;
+                        modification.CountCars += modificationNum.Value;
                     }
                 }
 

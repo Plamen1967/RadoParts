@@ -5,17 +5,17 @@ namespace Models.Models
 {
     public class Tyre : Item
     {
-        protected List<ImageData> images_ = new List<ImageData>();
-        public long tyreId { get; set; }
-        public int? tyreCompanyId { get; set; }
-        public int tyreWidth { get; set; }
-        public int tyreHeight { get; set; }
-        public int tyreRadius { get; set; }
-        public int tyreType { get; set; }
-        public int count { get; set; }
-        public int? month { get; set; }
-        public int? year { get; set; }
-        public decimal price { get; set; }
+        protected List<ImageDataClass> images_ = new List<ImageDataClass>();
+        public long TyreId { get; set; }
+        public int? TyreCompanyId { get; set; }
+        public int TyreWidth { get; set; }
+        public int TyreHeight { get; set; }
+        public int TyreRadius { get; set; }
+        public int TyreType { get; set; }
+        public int Count { get; set; }
+        public int? Month { get; set; }
+        public int? Year { get; set; }
+        public decimal Price { get; set; }
         public Tyre() { }
     }
 }

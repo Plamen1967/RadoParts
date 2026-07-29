@@ -20,8 +20,8 @@ namespace Models.Models
         public string? webPage { get; set; }
         public string? description { get; set; }
         public string? region { get; set; }
-        public ImageData[] images { get; set; }
-        public ImageData? businessCard { get; set; }
+        public ImageDataClass[] images { get; set; }
+        public ImageDataClass? businessCard { get; set; }
         public DisplayPartView[] data { get; set; }
 
     }

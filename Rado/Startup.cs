@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Rado.Middleware;
 using Rado.Models;
 using Rado.Services;
-using Rado.Utility;
 using Security;
 using Settings;
 using System.IO;
@@ -92,7 +91,6 @@ namespace Rado
                 app.UseHsts();
             }
 
-            ImageManager.Converter();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors(testingAppOrigins);

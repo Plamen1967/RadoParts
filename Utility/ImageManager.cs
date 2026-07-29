@@ -1,3 +1,4 @@
+using Libwebp.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Primitives;
@@ -10,7 +11,6 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO.Compression;
 using System.Net.Http.Headers;
 using System.Text;
 using Image = System.Drawing.Image;
@@ -19,34 +19,20 @@ namespace Utility
 {
     public class ImageManager
     {
+        #region properties
+        private const int OrientationKey = 0x0112;
+        private const int NotSpecified = 0;
+        private const int NormalOrientation = 1;
+        private const int MirrorHorizontal = 2;
+        private const int UpsideDown = 3;
+        private const int MirrorVertical = 4;
+        private const int MirrorHorizontalAndRotateRight = 5;
+        private const int RotateLeft = 6;
+        private const int MirorHorizontalAndRotateLeft = 7;
+        private const int RotateRight = 8;
         static Dictionary<long, string> catchaCache = new Dictionary<long, string>();
 
-        public static void CheckImageExists(long objectId, long imageId)
-        {
-            string imageSrc = ImageManager.GenerateImageSrc(objectId, imageId);
-            string imageMinSrc = ImageManager.GenerateMinImageSrc(objectId, imageId);
-            bool imageSrcExist = File.Exists(imageSrc);
-            bool imageMinSrcExist = File.Exists(imageMinSrc);
-
-            if (!imageSrcExist || !imageMinSrcExist)
-            {
-                GetImageById(imageId);
-            }
-
-        }
-        public static string GenerateImageHRef(long objectId, long imageId, bool mininized)
-        {
-            string minimizedDir = mininized ? "min" : "";
-            string assetDir = ProgramSettings.DevelopmentMode ? "" : "";
-            string pictureRef = ProgramSettings.DevelopmentMode ? ProgramSettings.PictureHref : "";
-            string imageSrc = Path.Combine(ProgramSettings.PictureHref, assetDir, ProgramSettings.ImageFolder, objectId.ToString(), minimizedDir);
-            imageSrc = imageSrc + "/" +imageId.ToString() + ".jpeg";
-            imageSrc = imageSrc.Replace("\\", "/");
-
-            return imageSrc;
-        }
-
-        public static string devPath 
+        private static string devPath 
         { 
             get
             {
@@ -56,117 +42,164 @@ namespace Utility
                 return "";
             }
         }
-        public static string rootPath
+
+        private static string rootPath
         {
             get
             {
                 return ProgramSettings.WebRootFolder;
             }
         }
-        public static string photoPath 
+
+        private static string photoPath 
         { 
             get
             {
                 return Path.Combine(rootPath, ProgramSettings.ImageFolder);
             } 
         }
+        #endregion
+
+        #region get paths
+        public static string GenerateImageHRef(long objectId, long imageId, bool minimized)
+        {
+            string minimizedDir = minimized ? "min" : "";
+            string assetDir = ProgramSettings.DevelopmentMode ? "" : "";
+            if (ProgramSettings.PictureHref != null)
+            {
+                string imageSrc = Path.Combine(ProgramSettings.PictureHref, assetDir, ProgramSettings.ImageFolder, objectId.ToString(), minimizedDir);
+                imageSrc = imageSrc + "/" + imageId + ".jpeg";
+                imageSrc = imageSrc.Replace("\\", "/");
+
+                return imageSrc;
+            }
+
+            return "";
+        }
+        public static string GenerateMinImageSrc(long objectId, long imageId)
+        {
+            string path = GetPhotosPath(objectId);
+
+            return path + "min/" + imageId + ".jpeg";
+        }
+        public static string GenerateImageSrc(long objectId, long imageId)
+        {
+            string path = GetPhotosPath(objectId);
+
+            return path + imageId + ".jpeg";
+        }
+        public static string GenerateWebPImageSrc(long objectId, long imageId)
+        {
+            string path = GetPhotosPath(objectId);
+            string webpPath = path + "webp";
+            if (!Directory.Exists(webpPath))
+                Directory.CreateDirectory(webpPath);
+
+            return webpPath + "/" + imageId + ".webp";
+        }
         public static string GetPhotosPath(long objectId)
         {
             string path = photoPath;
             return Path.Combine(photoPath, objectId.ToString()) + "/";
         }
-        public static string GetPhotosPath(string objectId)
+        private static string GetPhotosPath(string objectId)
         {
             long objectId_;
             Int64.TryParse(objectId, out objectId_);
 
             return GetPhotosPath(objectId_);
         }
-        public static string GenerateImageSrc(long objectId, long imageId )
+        private static string generateMinImageFileName(string imageFileName)
         {
-            string path = GetPhotosPath(objectId);
+            imageFileName = imageFileName.Replace("/", "\\");
 
-            return path + imageId.ToString() + ".jpeg";
+            string folder = imageFileName.Substring(0, imageFileName.LastIndexOf('\\')) + "\\min\\";
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            return imageFileName.Insert(imageFileName.LastIndexOf('\\') + 1, "min\\");
+        }
+        #endregion
+
+        public static async Task StoreWebPImage(long itemId, long originalImageId)
+        {
+            string imageSrc = GenerateImageSrc(itemId, originalImageId);
+            string WebpFilePath = GenerateWebPImageSrc(itemId, originalImageId);
+            await using var file = new FileStream(imageSrc, FileMode.Open);
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            //setup configuration for the encoder
+            var config = new WebpConfigurationBuilder().Output("output.webp").Build();
+            // create an encoder and pass in the configuration
+            var encoder = new WebpEncoder(config);
+            // start encoding by passing your memorystream and filename
+            var output = await encoder.EncodeAsync(ms, Path.GetFileName(file.Name));
+
+            await using var outFile = new FileStream(WebpFilePath, FileMode.Create);
+            await output.CopyToAsync(outFile);
+
+            #region Image Encoder
+            /* your converted file is returned as FileStream, do what you want download,
+
+               copy to disk, write to db or save on cloud storage,*/
+
+
+            //var imageBytes = await File.ReadAllBytesAsync(imageSrc);
+
+            //using var inStream = new MemoryStream(imageBytes);
+
+            //WebPConfiguration config = new WebpConfigurationBuilder().Output(WebpFilePath).Build();
+            //// create an encoder and pass in the configuration
+            //if (config != null)
+            //{
+            //    var encoder = new WebpEncoder();
+            //    // start encoding by passing your memorystream and filename
+            //    var output = await encoder.EncodeAsync(inStream, Path.GetFileName(WebpFilePath));
+            //}
+
+            //using var myImage = Image.FromStream(inStream);
+
+            //using var outStream = new MemoryStream();
+
+            //await myImage.SaveAsync(outStream, new WebpEncoder());
+
+            //return new FileContentResult(outStream.ToArray(), "image/webp");
+            //var webPFileStream = new FileStream(WebpFilePath, FileMode.Create);
+            //ImageFactory imageFactory = new ImageFactory(preserveExifData: false);
+            //_ = imageFactory.Load(File.OpenRead(imageSrc))
+            //    .Format(new WebPFormat())
+            //    .Quality(100)
+            //    .Save(webPFileStream);
+            #endregion
         }
 
-        private static void GegImageCount(long objectId, ref int imageCount, ref int minImageCount)
-        {
-            string path = GetPhotosPath(objectId);
-            if (Directory.Exists(path))
-            {
-                imageCount = Directory.GetFiles(path, "*.*").Length;
-                minImageCount = Directory.GetFiles(Path.Combine(path, "min"), "*.*").Length;
-            }
-        }
-        public static string GenerateMinImageSrc(long objectId, long imageId)
-        {
-            string path = GetPhotosPath(objectId);
-
-            return path + "min/" + imageId.ToString() + ".jpeg";
-        }
-
-        public static async Task<ImageData> SaveImageAsync(string fullPath, int userId, string itemId)
+        private static async Task<ImageDataClass?> SaveImageAsync(string fullPath, int userId, string itemId)
         {
             return await SaveImageAsync(fullPath, userId, Int64.Parse(itemId));
         }
 
-        public static async Task<ImageData> SaveImageAsync(string fullPath, int userId, long itemId)
+        private static async Task<ImageDataClass?> SaveImageAsync(string fullPath, int userId, long itemId)
         {
 
             byte[] imageArray = await System.IO.File.ReadAllBytesAsync(fullPath);
-            int originalImageId = await ImageManager.StoreInDB(userId, itemId.ToString(), imageArray, fullPath, 0);
-            string imageSrc = ImageManager.GenerateImageSrc(itemId, originalImageId);
-            string imageMinSrc = ImageManager.GenerateMinImageSrc(itemId, originalImageId);
-            ImageManager.CreateImage(imageSrc, imageArray, true);
-            ImageManager.CreateImage(imageMinSrc, imageArray, true);
-
-            //imageData.imageSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, false);
-            //imageData.imageMinSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, true);
+            int originalImageId = await StoreInDb(userId, itemId.ToString(), imageArray, fullPath, 0);
+            string imageSrc = GenerateImageSrc(itemId, originalImageId);
+            string imageMinSrc = GenerateMinImageSrc(itemId, originalImageId);
+            CreateImage(imageSrc, imageArray, true);
+            CreateImage(imageMinSrc, imageArray, true);
+            await StoreWebPImage(itemId, originalImageId);
 
             try
             {
-                return ImageManager.GetImageById(originalImageId);
+                return GetImageById(originalImageId);
             }
             catch (Exception ex)
             {
               LoggerUtil.LogException(ex.Message);
             }
 
-      return null;
-
+            return null;
         }
-
-        public static void RecoverImages()
-        {
-            string storeProcedureName = "ImageDataAll";
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
-                {
-
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                      return;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                LoggerUtil.LogException(ex.Message);
-            }
-        }
-
-        public static Image String64ToImage(byte[] bytes)
-        {
-            Image image;
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                image = Image.FromStream(ms);
-            }
-            return image;
-        }
-
-
         public static void CreateImage(string fileName, byte[] imageBytes, bool minimized)
         {
             if (File.Exists(fileName)) 
@@ -180,169 +213,74 @@ namespace Utility
             if (minimized)
             {
                 string base64ImageRepresentation = Convert.ToBase64String(imageBytes);
-                using (var imageMemoryStream = new MemoryStream(Convert.FromBase64String(base64ImageRepresentation)))
+                var imageMemoryStream = new MemoryStream(Convert.FromBase64String(base64ImageRepresentation));
+                var img = Image.FromStream(imageMemoryStream);
+                LoggerUtil.LogFunctionInfo($"CreateImage {fileName}");
+                var inputStream = new MemoryStream();
+                var oututStream = new MemoryStream();
+                img.Save(inputStream, ImageFormat.Jpeg);
+                TargetSize targetSize = new TargetSize(200, 200);
+
+                try
                 {
-                    using (var img = Image.FromStream(imageMemoryStream)) 
-                    {
-                        LoggerUtil.LogFunctionInfo($"CreateImage {fileName}");
-                        using (var inputStream = new MemoryStream())
-                        {
-                            using (var oututStream = new MemoryStream())
-                            {
-                                img.Save(inputStream, ImageFormat.Jpeg);
-                                TargetSize targetSize = new TargetSize(200, 200);
+                    resizeImage3(targetSize, 2, inputStream, oututStream);
+                    MemoryStream mem = new MemoryStream();
+                    mem.CopyTo(oututStream);
+                    var yourImage = Image.FromStream(oututStream);
 
-                                try
-                                {
-                                    ImageManager.resizeImage3(targetSize, 2, inputStream, oututStream);
-                                    MemoryStream mem = new MemoryStream();
-                                    mem.CopyTo(oututStream);
-                                    var yourImage = Image.FromStream(oututStream);
-
-                                    yourImage.Save(fileName, ImageFormat.Jpeg);
-                                    yourImage.Dispose();
-                                }
-                                catch (Exception ex)
-                                {
-                                    LoggerUtil.LogException(ex.Message);
-                                    File.WriteAllBytes(fileName, imageBytes);
-
-                                }
-                            }
-                        }
-                    }
+                    yourImage.Save(fileName, ImageFormat.Jpeg);
+                    yourImage.Dispose();
                 }
-        } 
+                catch (Exception ex)
+                {
+                    LoggerUtil.LogException(ex.Message);
+                    File.WriteAllBytes(fileName, imageBytes);
+                }
+            }
             else 
                 File.WriteAllBytes(fileName, imageBytes);
         }
-
-
-//            MemoryStream mem = new MemoryStream();
-//            mem.CopyTo(oututStream);
-//            var yourImage = Image.FromStream(oututStream);
-
-//            yourImage.Save(image, ImageFormat.Jpeg);
-//            yourImage.Dispose();
-////            img = ImageManager.ResizeImage(img, new Size(800, 600));
-
-//            using (var inputStream = new MemoryStream())
-//            {
-//                using (var oututStream = new MemoryStream())
-//                {
-//                    img.Save(inputStream, ImageFormat.Jpeg);
-//                    TargetSize targetSize = new TargetSize(400, 400);
-
-//                    resizeImage3(targetSize, 2, inputStream, oututStream);
-//                    Task.Run(() => LoggerUtil.Log(ToString.Format("ResizeImage3 {0}", Environment.TickCount - startTime), Environment.TickCount));
-//                    MemoryStream mem = new MemoryStream();
-//                    mem.CopyTo(oututStream);
-//                    var yourImage = Image.FromStream(oututStream);
-
-//                    yourImage.Save(imageFileNameMin, ImageFormat.Jpeg);
-//                    yourImage.Dispose();
-
-//                    return oututStream.ToArray();
-//                }
-//            }
-
-
-//        }
-
-        public static void CheckImageSrc(string fileName, byte[] imageBytes)
-        {
-
-        }
-
-        public static byte[] ResizeImage(byte[] imageBytes)
-        {
-            try
-            {
-                using (MemoryStream memoryStream = new MemoryStream(imageBytes))
-                {
-                    using (MemoryStream oututStream = new MemoryStream())
-                    {
-                        TargetSize targetSize = new TargetSize(400, 400);
-                        ImageManager.resizeImage3(targetSize, 1, memoryStream, oututStream);
-                        imageBytes = oututStream.ToArray();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggerUtil.LogException(ex);
-            } 
-
-            return imageBytes;
-        }
-        public static async Task<int> StoreInDB(int userId, string objectId, byte[] imageData, string fullPath, int originalImageId)
+        private static async Task<int> StoreInDb(int userId, string objectId, byte[] imageData, string fullPath, int originalImageId)
         {
             string storeProcedureName = "ImageDataIns";
-
             try
             {
                 if (imageData.Length > ProgramSettings.MaxSize)
                 {
                     TargetSize targetSize = new TargetSize(400, 400);
-                    using (MemoryStream inputStream = new MemoryStream(imageData))
-                    {
-                        using (MemoryStream outputStream = new MemoryStream())
-                        {
-                            resizeImage3(targetSize, 2, inputStream, outputStream);
-                            imageData = outputStream.ToArray();
-                        }
-                    }
+                    MemoryStream inputStream = new MemoryStream(imageData);
+                    MemoryStream outputStream = new MemoryStream();
+                    resizeImage3(targetSize, 2, inputStream, outputStream);
+                    imageData = outputStream.ToArray();
                 }
-            }
-            catch(Exception exception)
-            {
-              await Task.Run(() =>
-              {
-                LoggerUtil.LogFunctionInfo("StoreInDB");
-                LoggerUtil.LogException(exception.Message);
-              });
-            }
-            ImageType imageType = ImageType.Normanl;
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+                ImageType imageType = ImageType.Normanl;
+
+                await using SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                await using SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+
+                if (!Int64.TryParse(objectId, out var objectIdAsLong))
+                    throw new AppException($"Снимката неуспешно е качена");
+
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+                sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectIdAsLong;
+                sqlCommand.Parameters.Add("@imageFile", SqlDbType.VarChar).Value = fullPath;
+                sqlCommand.Parameters.Add("@originalImageId", SqlDbType.Int).Value = originalImageId;
+                sqlCommand.Parameters.Add("@imageData", SqlDbType.Image).Value = imageData;
+                sqlCommand.Parameters.Add("@imageType", SqlDbType.Int).Value = imageType;
+                sqlCommand.Parameters.Add("@imageId", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+                await sqlConnection.OpenAsync();
+                int columns = await sqlCommand.ExecuteNonQueryAsync();
+                int imageId = (int)sqlCommand.Parameters["@imageId"].Value;
+                await sqlConnection.CloseAsync();
+
+                if (columns != 1)
                 {
-
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        long objectIdAsLong;
-                        if (!Int64.TryParse(objectId, out objectIdAsLong))
-                            throw new AppException($"Снимката неуспешно е качена");
-
-
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
-                        sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectIdAsLong;
-                        sqlCommand.Parameters.Add("@imageFile", SqlDbType.VarChar).Value = fullPath;
-                        sqlCommand.Parameters.Add("@originalImageId", SqlDbType.Int).Value = originalImageId;
-                        sqlCommand.Parameters.Add("@imageData", SqlDbType.Image).Value = imageData;
-                        sqlCommand.Parameters.Add("@imageType", SqlDbType.Int).Value = imageType;
-                        
-                        sqlCommand.Parameters.Add("@imageId", SqlDbType.Int).Direction = ParameterDirection.Output;
-
-
-                        await sqlConnection.OpenAsync();
-
-                        int columns = await sqlCommand.ExecuteNonQueryAsync();
-
-                        int imageId = (int)sqlCommand.Parameters["@imageId"].Value;
-
-                        await sqlConnection.CloseAsync();
-
-                        if (columns != 1)
-                        {
-                            throw new AppException($"Снимката неуспешно е качена");
-                        }
-                        return imageId;
-                    }
-
+                    throw new AppException($"Снимката неуспешно е качена");
                 }
+                return imageId;
             }
             catch (Exception exception)
             {
@@ -352,7 +290,154 @@ namespace Utility
             }
 
         }
+        public static async Task<ImageDataClass[]> GetImagesAsync(long objectId)
+        {
+            List<ImageDataClass> imageDataList = new List<ImageDataClass>();
+            string storeProcedureName = $"SELECT  * FROM ImageData WHERE objectId = {@objectId} and imageType <> 2 AND deleted = 0";
 
+            try
+            {
+                SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+                sqlCommand.CommandType = CommandType.Text;
+
+                sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
+
+                await sqlConnection.OpenAsync();
+
+                SqlDataAdapter sda = new SqlDataAdapter(storeProcedureName, sqlConnection);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    ImageDataClass imageDataClass = new ImageDataClass
+                    {
+                        ObjectId = objectId,
+                        ImageId = (int)row["imageId"],
+                        UserId = (int)row["userId"],
+                        ImageFile = row["imageFile"] as string,
+                        ImageType = (int)row["imageType"]
+                    };
+                    imageDataClass.ImageMinSrc = GenerateImageHRef(imageDataClass.ObjectId, imageDataClass.ImageId, true);
+                    imageDataClass.ImageSrc = GenerateImageHRef(imageDataClass.ObjectId, imageDataClass.ImageId, false);
+                    imageDataList.Add(imageDataClass);
+                }
+                
+                await sqlConnection.CloseAsync();
+                return imageDataList.ToArray();
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogFunctionInfo("GetImages");
+                LoggerUtil.LogException(exception.Message);
+                throw new AppException($"Снимкатите не могат да се заредят");
+            }
+        }
+        private static async Task<ImageDataClass> GetMainImage(long objectId)
+        {
+            ImageDataClass imageDataClassItem = null;
+            string storeProcedureName = "ImageDataMainImage";
+
+            try
+            {
+                await using SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                await using SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
+
+                await sqlConnection.OpenAsync();
+
+                await using SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+                if (await sqlDataReader.ReadAsync())
+                {
+                    imageDataClassItem = Loader.LoadImageData(sqlDataReader);
+                }
+                if (imageDataClassItem == null)
+                {
+                    ImageDataClass[] images = await GetMinImagesAsync(objectId);
+                    if (images.Length > 0)
+                        imageDataClassItem = images[0];
+                }
+                await sqlConnection.CloseAsync();
+
+                return imageDataClassItem;
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogFunctionInfo("getMainImage");
+                LoggerUtil.LogException(exception.Message);
+                throw new AppException($"Снимкатите не могат да се заредят");
+            }
+
+        }
+        #region Get First Image for part / car if it is not stored
+        public static ImageDataClass GetMinImageById(long imageId)
+        {
+            ImageDataClass mainImage = null;
+            try
+            {
+                mainImage = GetImageById(imageId);
+            }
+            catch (Exception exp)
+            {
+                LoggerUtil.LogException(string.Format("{0} {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, imageId));
+                LoggerUtil.LogException(exp.Message);
+            }
+
+            return mainImage;
+        }
+        public static async Task<ImageDataClass> GetMainImageAsync(long id)
+        {
+            ImageDataClass mainImage = null;
+            try
+            {
+                mainImage = await GetMainImage(id);
+            }
+            catch (Exception exp)
+            {
+                LoggerUtil.LogException(string.Format("{0} {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, id));
+                LoggerUtil.LogException(exp.Message);
+            }
+
+            return mainImage;
+
+        }
+        #endregion
+        private static ImageDataClass GetImageById(long imageId)
+        {
+            ImageDataClass imageDataClass = null;
+            string storeProcedureName = "ImageDataById";
+
+            try
+            {
+                SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@imageId", SqlDbType.BigInt).Value = imageId;
+
+                sqlConnection.Open();
+
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                if (sqlDataReader.Read())
+                {
+                    LoggerUtil.LogFunctionInfo($"GetImageById {imageId}");
+                    imageDataClass = Loader.LoadImageData(sqlDataReader);
+                }
+                sqlConnection.Close();
+                return imageDataClass;
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogFunctionInfo("GetImageById");
+                LoggerUtil.LogException(exception.Message);
+                throw new AppException($"Снимкатa не могат да се заредят");
+            }
+            
+        }
+        #region delete image
         public static async Task<bool> DeleteImageAsync(int userId, int imageId)
         {
             string storeProcedureName = "ImageDataDel";
@@ -375,7 +460,7 @@ namespace Utility
 
                 await sqlConnection.CloseAsync();
 
-                DeleteFromSpace(objectId, imageId);
+                DeleteFromDiscSpace(objectId, imageId);
 
                 if (result != 1)
                 {
@@ -391,16 +476,18 @@ namespace Utility
 
             return true;
         }
-
-        static void DeleteFromSpace(long objectId, int imageId)
+        static void DeleteFromDiscSpace(long objectId, int imageId)
         {
-            string imageSrc = ImageManager.GenerateImageSrc(objectId, imageId);
-            string imageMinSrc = ImageManager.GenerateMinImageSrc(objectId, imageId);
+            string imageSrc = GenerateImageSrc(objectId, imageId);
+            string imageMinSrc = GenerateMinImageSrc(objectId, imageId);
+            string imageWebPSrc = GenerateWebPImageSrc(objectId, imageId);
 
             try
             {
                 File.Delete(imageSrc);
                 File.Delete(imageMinSrc);
+                File.Delete(imageWebPSrc);
+
                 CheckImageCount(objectId);
             }
             catch (Exception exception)
@@ -408,7 +495,9 @@ namespace Utility
                 LoggerUtil.LogException(exception);
             }
         }
+        #endregion
 
+        #region helper functions
         static void CheckImageCount(long objectId)
         {
             int imageCount = 0, minImageCount = 0;
@@ -421,185 +510,31 @@ namespace Utility
             }
         }
 
-
-        public static async Task<ImageData[]> GetImagesAsync(long objectId)
-        {
-            List<ImageData> imageDataList = new List<ImageData>();
-            string storeProcedureName = $"SELECT  * FROM ImageData  WHERE objectId = {@objectId} and imageType <> 2 AND deleted = 0";
-
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
-                {
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.Text;
-
-                        sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
-
-                        await sqlConnection.OpenAsync();
-
-                        using (SqlDataAdapter sda = new SqlDataAdapter(storeProcedureName, sqlConnection))
-                        {
-                            DataTable dt = new DataTable();
-                            sda.Fill(dt);
-                            foreach (DataRow row in dt.Rows)
-                            {
-                                ImageData imageData = new ImageData();
-                                imageData.objectId = objectId;
-                                imageData.imageId = (int)row["imageId"];
-                                imageData.userId = (int)row["userId"];
-                                //imageData.objectId = Int32.TryParse(row["objectId"] as int;
-                                imageData.imageFile = row["imageFile"] as string;
-                                imageData.imageType = (int)row["imageType"];
-                                //imageData.originalImageId = row["originalImageId"] as int;
-                                //imageData.deleted = row["deleted"] as int;
-                                //imageData.deleteDateTime = row["deleteDateTime"];
-                                imageData.imageMinSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, true);
-                                imageData.imageSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, false);
-
-
-                                //foreach (DataColumn column in schemaTable.Columns)
-                                //{
-                                //    Console.WriteLine(string.Format("{0} = {1}",
-                                //       column.ColumnName, row[column]));
-                                //}
-                                //while (await sqlDataReader.ReadAsync())
-                                //{
-                                //ImageData image = Loader.LoadImageData(sqlDataReader);
-                                imageDataList.Add(imageData);
-                                //}
-                            }
-
-                            await sqlConnection.CloseAsync();
-                            return imageDataList.ToArray();
-                        }
-                        //using (SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync())
-                        //{
-                        //    dsLocation.Load(sqlDataReader);
-                        //    DataTable schemaTable = await sqlDataReader.GetSchemaTableAsync();
-
-                        //    foreach (DataRow row in schemaTable.Rows)
-                        //    {
-                        //        ImageData imageData = new ImageData();
-                        //        imageData.objectId = objectId;
-                        //        //imageData.imageId = Int32.TryParse(row["imageId"]);
-                        //        //imageData.userId = Int32.TryParse(row["userId"] as int;
-                        //        //imageData.objectId = Int32.TryParse(row["objectId"] as int;
-                        //        imageData.imageFile = row["imageFile"] as string;
-                        //        //imageData.imageType = row["imageType"] as int;
-                        //        //imageData.originalImageId = row["originalImageId"] as int;
-                        //        //imageData.deleted = row["deleted"] as int;
-                        //        //imageData.deleteDateTime = row["deleteDateTime"];
-                        //        imageData.imageMinSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, true);
-                        //        imageData.imageSrc = ImageManager.GenerateImageHRef(imageData.objectId, imageData.imageId, false);
-
-
-                        //        //foreach (DataColumn column in schemaTable.Columns)
-                        //        //{
-                        //        //    Console.WriteLine(string.Format("{0} = {1}",
-                        //        //       column.ColumnName, row[column]));
-                        //        //}
-                        //        //while (await sqlDataReader.ReadAsync())
-                        //        //{
-                        //        ImageData image = Loader.LoadImageData(sqlDataReader);
-                        //        imageDataList.Add(image);
-                        //        //}
-                        //    }
-
-                        //    await sqlConnection.CloseAsync();
-                        //    return imageDataList.ToArray();
-                        //}
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                LoggerUtil.LogFunctionInfo("GetImages");
-                LoggerUtil.LogException(exception.Message);
-                throw new AppException($"Снимкатите не могат да се заредят");
-            }
-
-        }
-        private static async Task<ImageData> getMainImage(long objectId)
-        {
-            ImageData imageDataItem = null;
-            string storeProcedureName = "ImageDataMainImage";
-
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
-                {
-
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
-
-                        await sqlConnection.OpenAsync();
-
-                        using (SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync())
-                        {
-                            if (await sqlDataReader.ReadAsync())
-                            {
-                                imageDataItem = Loader.LoadImageData(sqlDataReader);
-                            }
-                        }
-                        if (imageDataItem == null)
-                        {
-                            ImageData[] images = await GetMinImagesAsync(objectId);
-                            if (images.Length > 0)
-                                imageDataItem = images[0];
-                        }
-                        await sqlConnection.CloseAsync();
-
-                        return imageDataItem;
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                LoggerUtil.LogFunctionInfo("getMainImage");
-                LoggerUtil.LogException(exception.Message);
-                throw new AppException($"Снимкатите не могат да се заредят");
-            }
-
-        }
-
-        #region Get Count of Images for Id
         public static async Task<int> GetImageCount(long objectId)
         {
             string storeProcedureName = "ImageDataCount";
 
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+                SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
+
+                await sqlConnection.OpenAsync();
+
+                int imageCount = 0;
+
+                SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+                if (await sqlDataReader.ReadAsync())
                 {
-
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
-                        
-                        await sqlConnection.OpenAsync();
-
-                        int imageCount = 0;
-
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            if (await sqlDataReader.ReadAsync())
-                            {
-                                imageCount = Convert.ToInt32(sqlDataReader["imageCount"]);
-                            }
-                        }
-
-                        await sqlConnection.CloseAsync();
-
-                        return imageCount;
-                    }
+                    imageCount = Convert.ToInt32(sqlDataReader["imageCount"]);
                 }
+
+                await sqlConnection.CloseAsync();
+
+                return imageCount;
             }
             catch (Exception exception)
             {
@@ -609,164 +544,96 @@ namespace Utility
             }
 
         }
-
-        #endregion
-
-        #region Get First Image for part / car if it is not stored
-        public static ImageData GetMinImageById(long imageId)
+        private static void GegImageCount(long objectId, ref int imageCount, ref int minImageCount)
         {
-            ImageData mainImage = null;
-            try
+            string path = GetPhotosPath(objectId);
+            if (Directory.Exists(path))
             {
-                mainImage = GetImageById(imageId);
+                imageCount = Directory.GetFiles(path, "*.*").Length;
+                minImageCount = Directory.GetFiles(Path.Combine(path, "min"), "*.*").Length;
             }
-            catch (Exception exp)
-            {
-                LoggerUtil.LogException(string.Format("{0} {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, imageId));
-                LoggerUtil.LogException(exp.Message);
-            }
-
-            return mainImage;
         }
-        public static async Task<ImageData> GetMainImageAsync(long id)
+        public static void CheckImageExists(long objectId, long imageId)
         {
-            ImageData mainImage = null;
-            try
-            {
-                mainImage = await getMainImage(id);
-            }
-            catch (Exception exp)
-            {
-                LoggerUtil.LogException(string.Format("{0} {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, id));
-                LoggerUtil.LogException(exp.Message);
-            }
+            string imageSrc = GenerateImageSrc(objectId, imageId);
+            string imageMinSrc = GenerateMinImageSrc(objectId, imageId);
+            bool imageSrcExist = File.Exists(imageSrc);
+            bool imageMinSrcExist = File.Exists(imageMinSrc);
 
-            return mainImage;
-
+            if (!imageSrcExist || !imageMinSrcExist)
+            {
+                GetImageById(imageId);
+            }
         }
         #endregion
-
-        public static ImageData GetImageById(long imageId)
-        {
-            ImageData imageData = null;
-            string storeProcedureName = "ImageDataById";
-
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
-                {
-
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@imageId", SqlDbType.BigInt).Value = imageId;
-
-                        sqlConnection.Open();
-
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            if (sqlDataReader.Read())
-                            {
-                                LoggerUtil.LogFunctionInfo($"GetImageById {imageId}");
-                                imageData = Loader.LoadImageData(sqlDataReader);
-                            }
-                        }
-                        sqlConnection.Close();
-                        return imageData;
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                LoggerUtil.LogFunctionInfo("GetImageById");
-                LoggerUtil.LogException(exception.Message);
-                throw new AppException($"Снимкатa не могат да се заредят");
-            }
-            
-        }
+        
         #region BusinessCard
-        private static async Task<ImageData> SaveBusinessCardAsync(IFormFile file, StringValues objectId, int UserId)
+        private static async Task<ImageDataClass> SaveBusinessCardAsync(IFormFile file, StringValues objectId, int UserId)
         {
             int userId;
             Int32.TryParse(objectId.ToString(), out userId);
             if (UserId != 0)
                 userId = UserId;
 
-            var fullPath = ImageManager.GenerateImageSrc(userId, userId);
-            using (var stream = new FileStream(fullPath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
+            var fullPath = GenerateImageSrc(userId, userId);
+            var stream = new FileStream(fullPath, FileMode.Create);
+            file.CopyTo(stream);
 
-            byte[] imageArray = await System.IO.File.ReadAllBytesAsync(fullPath);
-            string imageSrc = ImageManager.GenerateImageSrc(userId, userId);
-            string imageMinSrc = ImageManager.GenerateMinImageSrc(userId, userId);
-            ImageManager.CreateImage(imageSrc, imageArray, true);
-            ImageManager.CreateImage(imageMinSrc, imageArray, true);
+            byte[] imageArray = await File.ReadAllBytesAsync(fullPath);
+            string imageSrc = GenerateImageSrc(userId, userId);
+            string imageMinSrc = GenerateMinImageSrc(userId, userId);
+            CreateImage(imageSrc, imageArray, true);
+            CreateImage(imageMinSrc, imageArray, true);
 
             string storeProcedureName = "BusinessCardIns";
-            ImageData imageDataReturn = null;
+            ImageDataClass imageDataClassReturn = null;
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
-                {
+                SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
-                        sqlCommand.Parameters.Add("@image", SqlDbType.Image).Value = imageArray;
+                sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+                sqlCommand.Parameters.Add("@image", SqlDbType.Image).Value = imageArray;
 
 
-                        await sqlConnection.OpenAsync();
+                await sqlConnection.OpenAsync();
+                await sqlCommand.ExecuteNonQueryAsync();
+                await sqlConnection.CloseAsync();
+                imageDataClassReturn = GetBusinessCard(userId);
 
-                        await sqlCommand.ExecuteNonQueryAsync();
-
-                        await sqlConnection.CloseAsync();
-                    }
-
-                    imageDataReturn = GetBusinessCard(userId);
-
-                    return imageDataReturn;
-                }
+                return imageDataClassReturn;
             }
             catch (Exception exception)
             {
                 LoggerUtil.LogFunctionInfo("UpdateBusinessCard");
                 LoggerUtil.LogException(exception.Message);
-                throw new AppException($"Снимката неуспешно е качена");
+                throw new AppException("Снимката неуспешно е качена");
             }
         }
-
         public static string DeleteBusinessCard(long userId)
         {
-            ImageData imageDataItem = new ImageData();
+            ImageDataClass imageDataClassItem = new ImageDataClass();
             string storeProcedureName = "BusinessCardDel";
 
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+                SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@userId", SqlDbType.BigInt).Value = userId;
+
+                sqlConnection.Open();
+
+                int result = sqlCommand.ExecuteNonQuery();
+
+                sqlConnection.Close();
+                if (result == 0)
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@userId", SqlDbType.BigInt).Value = userId;
-
-                        sqlConnection.Open();
-
-                        int result = sqlCommand.ExecuteNonQuery();
-
-                        sqlConnection.Close();
-                        if (result == 0)
-                        {
-                            throw new Exception("Бизнес картата не можe да сбъде изтрита");
-                        }
-                        return "Бизнес картата е успещно изтрита";
-                    }
+                    throw new Exception("Бизнес картата не можe да сбъде изтрита");
                 }
+                return "Бизнес картата е успещно изтрита";
             }
             catch (Exception exception)
             {
@@ -776,67 +643,59 @@ namespace Utility
             }
 
         }
-
-        public static ImageData GetBusinessCard(int userId)
+        public static ImageDataClass GetBusinessCard(int userId)
         {
-            ImageData imageDataReturn = null;
+            ImageDataClass imageDataClassReturn = null;
 
             try
             {
                 string storeProcedureName = "BusinessCardGet";
                 byte[] imageBytes = null;
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+                SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+
+
+                sqlConnection.Open();
+
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                if (sqlDataReader.Read())
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
-
-
-                        sqlConnection.Open();
-
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            if (sqlDataReader.Read())
-                            {
-                                imageDataReturn = new ImageData();
-                                imageBytes = (byte[])sqlDataReader["image"];
-                                string base64ImageRepresentation = Convert.ToBase64String(imageBytes);
-                                // imageDataReturn.imageData = "data:image/jpg;base64," + base64ImageRepresentation;
-                                imageDataReturn.imageId = userId;
-                            }
-                        }
-
-                        sqlConnection.Close();
-
-                        if (imageDataReturn != null)
-                        {
-                            string imageSrc = ImageManager.GenerateImageSrc(userId, userId);
-                            string imageMinSrc = ImageManager.GenerateMinImageSrc(userId, userId);
-                            bool imageSrcExist = File.Exists(imageSrc);
-                            bool imageMinSrcExist = File.Exists(imageMinSrc);
-
-                            if (!imageSrcExist || !imageMinSrcExist)
-                            {
-                                if (!imageSrcExist)
-                                    ImageManager.CreateImage(imageSrc, imageBytes, false);
-                                if (!imageMinSrcExist)
-                                    ImageManager.CreateImage(imageMinSrc, imageBytes, true);
-
-                            }
-
-                            imageSrc = ImageManager.GenerateImageHRef(userId, userId, false);
-                            imageMinSrc = ImageManager.GenerateImageHRef(userId, userId, true);
-
-                            imageDataReturn.imageSrc = imageSrc;
-                            imageDataReturn.imageMinSrc = imageMinSrc;
-
-
-                        }
-                        return imageDataReturn;
-                    }
+                    imageDataClassReturn = new ImageDataClass();
+                    imageBytes = (byte[])sqlDataReader["image"];
+                    string base64ImageRepresentation = Convert.ToBase64String(imageBytes);
+                    // imageDataClassReturn.imageDataClass = "data:image/jpg;base64," + base64ImageRepresentation;
+                    imageDataClassReturn.ImageId = userId;
                 }
+                sqlConnection.Close();
+
+                if (imageDataClassReturn != null)
+                {
+                    string imageSrc = GenerateImageSrc(userId, userId);
+                    string imageMinSrc = GenerateMinImageSrc(userId, userId);
+                    bool imageSrcExist = File.Exists(imageSrc);
+                    bool imageMinSrcExist = File.Exists(imageMinSrc);
+
+                    if (!imageSrcExist || !imageMinSrcExist)
+                    {
+                        if (!imageSrcExist)
+                            CreateImage(imageSrc, imageBytes, false);
+                        if (!imageMinSrcExist)
+                            CreateImage(imageMinSrc, imageBytes, true);
+
+                    }
+
+                    imageSrc = GenerateImageHRef(userId, userId, false);
+                    imageMinSrc = GenerateImageHRef(userId, userId, true);
+
+                    imageDataClassReturn.ImageSrc = imageSrc;
+                    imageDataClassReturn.ImageMinSrc = imageMinSrc;
+
+
+                }
+                return imageDataClassReturn;
             }
             catch (Exception exception)
             {
@@ -846,16 +705,15 @@ namespace Utility
             }
 
         }
-
         #endregion
 
         #region Get Main Images for array of ids
-        public static async Task<IEnumerable<ImageData>> GetMainImages(long[] ids)
+        public static async Task<IEnumerable<ImageDataClass>> GetMainImages(long[] ids)
         {
-            List<ImageData> images = new List<ImageData>();
+            List<ImageDataClass> images = new List<ImageDataClass>();
             foreach (long id in ids)
             {
-                ImageData mainImage = await getMainImage(id);
+                ImageDataClass mainImage = await GetMainImage(id);
                 if (mainImage != null)
                 {
                     images.Add(mainImage);
@@ -865,162 +723,16 @@ namespace Utility
             return images;
         }
         #endregion
-
-
-        #region Get all images for car / part / user
-        //static public ImageData[] GetImages(long id)
-        //{
-        //    try
-        //    {
-        //        return ImageManager.GetImages(id);
-
-        //        #region oldCode
-        //        //List<ImageData> images = new List<ImageData>();
-
-        //        //var pathToSave = Path.Combine(Program.ImageFolder, id.ToString());
-        //        //if (!Directory.Exists(pathToSave))
-        //        //    Directory.CreateDirectory(pathToSave);
-
-        //        //string[] imageFiles = Directory.GetFiles(pathToSave);
-
-        //        //foreach (string imageFile in imageFiles)
-        //        //{
-        //        //    if (imageFile.Contains("businessCard")) continue;
-        //        //    byte[] imageArray = getImage(imageFile);
-        //        //    string ImageData = null;
-        //        //    if (imageArray != null)
-        //        //    {
-        //        //        string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-        //        //        ImageData = "data:image/jpg;base64," + base64ImageRepresentation;
-        //        //    }
-
-        //        //    string imgSrc_ = imageFile.Substring(Program.ImageFolder.Length + 1);
-
-        //        //    images.Add(new ImageData() { imageSrc = imgSrc_, imageData = ImageData });
-        //        //}
-        //        //return images.ToArray();
-        //        #endregion
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        LoggerUtil.LogFunctionInfo("GetImages");
-        //        LoggerUtil.LogException(exception.Message);
-        //    }
-
-        //    return null;
-        //}
-        #endregion
-
-        // private functions
-
+        
         #region Resize Image
-
-        private static string getMainImageFromDb(long id)
-        {
-            string mainPicture = "";
-            int startTime = Environment.TickCount;
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
-                {
-                    string storedProcedure = "GetMainPicture";
-                    sqlConnection.Open();
-                    using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = id;
-
-                        SqlParameter mainPictureParam = sqlCommand.Parameters.Add("@mainPicture", SqlDbType.NVarChar, 200);
-                        mainPictureParam.Direction = ParameterDirection.Output;
-                        mainPictureParam.Value = "";
-
-                        SqlParameter returnParameter = sqlCommand.Parameters.Add("@ReturnVal", SqlDbType.Int);
-                        returnParameter.Direction = ParameterDirection.ReturnValue;
-
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            sqlDataReader.Read();
-
-                            Task.Run(() => LoggerUtil.Log(string.Format("GetMainPicture SQL {0}", Environment.TickCount - startTime), Environment.TickCount));
-                            mainPicture = (string)mainPictureParam.Value;
-
-                            return mainPicture;
-                        }
-                    }
-                }
-            }
-            catch(Exception exception)
-            {
-                LoggerUtil.LogFunctionInfo("getMainImageFromDb");
-                LoggerUtil.LogException(exception.Message);
-            }
-            finally
-            {
-
-            }
-
-            return mainPicture;
-        }
-
-        private static string getMainImageFromFolder(long id)
-        {
-            string imageFile = "";
-            try
-            {
-                var pathToSave = Path.Combine(ProgramSettings.ImageFolder, id.ToString());
-                if (Directory.Exists(pathToSave))
-                {
-                    string[] imageFiles = Directory.GetFiles(pathToSave);
-                    if (imageFiles.Length > 0)
-                    {
-                        imageFile = imageFiles[0];
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                throw new AppException(exception.Message);
-            }
-
-            return imageFile;
-
-        }
-
-        //static private ImageData getMainImage(long id, string imageFile)
-        //{
-        //    ImageData image = null;
-        //    int startTime = Environment.TickCount;
-        //    try
-        //    {
-        //        if (imageFile == "")
-        //        {
-        //            imageFile = getMainImageFromDb(id);
-        //        }
-        //        if (imageFile == "")
-        //        {
-        //            imageFile = getMainImageFromFolder(id);
-        //        }
-
-        //        image = getMinImage(imageFile);
-        //        Task.Run(() => Logger.Log(ToString.Format("ImageManager.GetPicture {0} {1}", Environment.TickCount - startTime, id), Environment.TickCount));
-        //        if (image != null) image.imageId = (int)id;
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw new AppException(exception.Message);
-        //    }
-        //    return image;
-        //}
-
-        public static async Task<ImageData[]> GetMinImagesAsync(long id)
+        public static async Task<ImageDataClass[]> GetMinImagesAsync(long id)
         {
             try
             {
-                return await ImageManager.GetImagesAsync(id);
+                return await GetImagesAsync(id);
 
                 #region oldCode
-                //List<ImageData> images = new List<ImageData>();
+                //List<ImageDataClass> images = new List<ImageDataClass>();
 
                 //var pathToSave = Path.Combine(Program.ImageFolder, id.ToString());
                 //if (!Directory.Exists(pathToSave))
@@ -1032,16 +744,16 @@ namespace Utility
                 //{
                 //    if (imageFile.Contains("businessCard")) continue;
                 //    byte[] imageArray = resizeImage(imageFile);
-                //    string ImageData = null;
+                //    string ImageDataClass = null;
                 //    if (imageArray != null)
                 //    {
                 //        string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-                //        ImageData = "data:image/jpg;base64," + base64ImageRepresentation;
+                //        ImageDataClass = "data:image/jpg;base64," + base64ImageRepresentation;
                 //    }
 
                 //    string imgSrc_ = imageFile.Substring(Program.ImageFolder.Length + 1);
 
-                //    images.Add(new ImageData() { imageSrc = imgSrc_, imageData = ImageData });
+                //    images.Add(new ImageDataClass() { imageSrc = imgSrc_, imageDataClass = ImageDataClass });
                 //}
                 //return images.ToArray();
                 #endregion
@@ -1055,492 +767,195 @@ namespace Utility
             return null;
         }
         #endregion
-
-        private static string generateMinImageFileName(string imageFileName)
-        {
-            imageFileName = imageFileName.Replace("/", "\\");
-
-            string folder = imageFileName.Substring(0, imageFileName.LastIndexOf('\\')) + "\\min\\";
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
-
-            return imageFileName.Insert(imageFileName.LastIndexOf('\\')+1, "min\\");
-        }
-
-        public static byte[] getImage(string imageFileName)
-        {
-            try
-            {
-                long startTime = Environment.TickCount;
-                Image img;
-                if (File.Exists(imageFileName))
-                {
-                    using(FileStream fileStream = new FileStream(imageFileName, FileMode.Open, FileAccess.Read))
-                    {
-                        img = System.Drawing.Image.FromStream(fileStream);
-                        using (var oututStream = new MemoryStream())
-                        {
-                            img.Save(oututStream, ImageFormat.Jpeg);
-                            Task.Run(() => LoggerUtil.Log(string.Format("Load Minimazed Image {0}", Environment.TickCount - startTime), Environment.TickCount));
-                            return oututStream.ToArray();
-                        }
-                    }
-
-                }
-            }
-            catch(Exception exception)
-            {
-                LoggerUtil.Log(exception);
-            }
-
-            return null;
-
-        }
-
-        public static void ArchiveData(byte[] origin)
-        {
-
-            using (var memoryStream = new MemoryStream())
-            {
-                using var compressor = new GZipStream(memoryStream, CompressionLevel.SmallestSize, leaveOpen: true);
-                compressor.Write(origin, 0, origin.Length);
-                compressor.Close();
-            }
-
-            byte[] btZipped = null;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, false))
-                {
-
-                    var entry = archive.CreateEntry("entry.bin");
-
-                    using (var entryStream = entry.Open())
-                    using (var streamWriter = new BinaryWriter(entryStream))
-                    {
-                        streamWriter.Write(origin, 0, origin.Length);
-                    }
-
-                }
-
-                btZipped = memoryStream.ToArray();
-            }
-        }
-
- //       byte[] btDecomp = new byte[btmod.Length];
-
- //using (var memoryStream = new MemoryStream(btZipped))
- //           {
- //               using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
- //               {
- //                   var entry = archive.GetEntry("entry.bin");
-
- //                   using (var entryStream = entry.Open())
- //                   using (var streamReader = new BinaryReader(entryStream))
- //                   {
- //                       streamReader.Read(btDecomp, 0, btDecomp.Length);
- //                   }
-
- //               }
- //           }
-        private static byte[] resizeImage(string imageFileName)
-        {
-            try
-            {
-                string imageFileNameMin = generateMinImageFileName(imageFileName);
-
-                int startTime = Environment.TickCount;
-
-                if (File.Exists(imageFileNameMin))
-                {
-                    return getImage(imageFileNameMin);
-                }
-                else
-                {
-                    return CreateMinImage(imageFileName);
-                }
-            }
-            catch (Exception exception)
-            {
-                LoggerUtil.LogException(string.Format("{0} {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, imageFileName));
-                LoggerUtil.LogException(exception.Message);
-            }
-
-            return null;
-        }
-
-        public static byte[] CreateMinImage(string imageFileName)
-        {
-            try
-            {
-                int startTime = Environment.TickCount;
-                string imageFileNameMin = generateMinImageFileName(imageFileName);
-
-                using (FileStream fileStream = new FileStream(imageFileName, FileMode.Open, FileAccess.Read))
-                {
-                    Image img = System.Drawing.Image.FromStream(fileStream);
-
-
-                    Task.Run(() => LoggerUtil.Log(string.Format("Read file from disk {0}", Environment.TickCount - startTime), Environment.TickCount));
-                    ImageConverter _imageConverter = new ImageConverter();
-
-
-                    using (var inputStream = new MemoryStream())
-                    {
-                        using (var oututStream = new MemoryStream())
-                        {
-                            img.Save(inputStream, ImageFormat.Jpeg);
-                            TargetSize targetSize = new TargetSize(400, 400);
-
-                            resizeImage3(targetSize, 2, inputStream, oututStream);
-                            Task.Run(() => LoggerUtil.Log(string.Format("ResizeImage3 {0}", Environment.TickCount - startTime), Environment.TickCount));
-                            MemoryStream mem = new MemoryStream();
-                            mem.CopyTo(oututStream);
-                            var yourImage = Image.FromStream(oututStream);
-
-                            yourImage.Save(imageFileNameMin, ImageFormat.Jpeg);
-                            yourImage.Dispose();
-
-                            return oututStream.ToArray();
-                        }
-                    }
-                }
-            }
-            catch(Exception exception)
-            {
-                LoggerUtil.LogFunctionInfo("CreateMinImage");
-                LoggerUtil.LogException(exception.Message);
-            }
-
-            return null;
-
-        }
-
-        //public void ResizeImage(TargetSize targetSize, ResizeMultiplier multiplier, Stream input, Stream output)
-        //{
-        //    using (var image = Image.FromStream(input))
-        //    {
-        //        // Calculate the resize factor
-        //        var scaleFactor = targetSize.CalculateScaleFactor(image.Width, image.Height);
-        //        scaleFactor /= (int)multiplier;
-
-        //        var newWidth = (int)Math.Floor(image.Width / scaleFactor);
-        //        var newHeight = (int)Math.Floor(image.Height / scaleFactor);
-        //        using (var newBitmap = new Bitmap(newWidth, newHeight))
-        //        {
-        //            using (var imageScaler = Graphics.FromImage(newBitmap))
-        //            {
-        //                imageScaler.CompositingQuality = CompositingQuality.HighQuality;
-        //                imageScaler.SmoothingMode = SmoothingMode.HighQuality;
-        //                imageScaler.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-        //                var imageRectangle = new Rectangle(0, 0, newWidth, newHeight);
-        //                imageScaler.DrawImage(image, imageRectangle);
-
-        //                // Fix orientation if needed.
-        //                if (image.PropertyIdList.Contains(OrientationKey))
-        //                {
-        //                    var orientation = (int)image.GetPropertyItem(OrientationKey).Value[0];
-        //                    switch (orientation)
-        //                    {
-        //                        case NotSpecified: // Assume it is good.
-        //                        case NormalOrientation:
-        //                            // No rotation required.
-        //                            break;
-        //                        case MirrorHorizontal:
-        //                            newBitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
-        //                            break;
-        //                        case UpsideDown:
-        //                            newBitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
-        //                            break;
-        //                        case MirrorVertical:
-        //                            newBitmap.RotateFlip(RotateFlipType.Rotate180FlipX);
-        //                            break;
-        //                        case MirrorHorizontalAndRotateRight:
-        //                            newBitmap.RotateFlip(RotateFlipType.Rotate90FlipX);
-        //                            break;
-        //                        case RotateLeft:
-        //                            newBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
-        //                            break;
-        //                        case MirorHorizontalAndRotateLeft:
-        //                            newBitmap.RotateFlip(RotateFlipType.Rotate270FlipX);
-        //                            break;
-        //                        case RotateRight:
-        //                            newBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
-        //                            break;
-        //                        default:
-        //                            throw new NotImplementedException("An orientation of " + orientation + " isn't implemented.");
-        //                    }
-        //                }
-        //                newBitmap.Save(output, image.RawFormat);
-        //            }
-        //        }
-        //    }
-        //}
-
         private static void resizeImage3(TargetSize targetSize, int multiplier, Stream input, Stream output)
         {
             try
             {
+                var image = Image.FromStream(input);
+                // Calculate the resize factor
+                var scaleFactor = targetSize.CalculateScaleFactor(image.Width, image.Height);
+                scaleFactor /= (int)multiplier;
 
-                using (var image = Image.FromStream(input))
+                var newWidth = (int)Math.Floor(image.Width / scaleFactor);
+                var newHeight = (int)Math.Floor(image.Height / scaleFactor);
+                var newBitmap = new Bitmap(newWidth, newHeight);
+                var imageScaler = Graphics.FromImage(newBitmap);
+                imageScaler.CompositingQuality = CompositingQuality.HighSpeed;
+                imageScaler.SmoothingMode = SmoothingMode.HighQuality;
+                imageScaler.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                var imageRectangle = new Rectangle(0, 0, newWidth, newHeight);
+                imageScaler.DrawImage(image, imageRectangle);
+
+                // Fix orientation if needed.
+                if (image.PropertyIdList.Contains(OrientationKey))
                 {
-                    // Calculate the resize factor
-                    var scaleFactor = targetSize.CalculateScaleFactor(image.Width, image.Height);
-                    scaleFactor /= (int)multiplier;
-
-                    var newWidth = (int)Math.Floor(image.Width / scaleFactor);
-                    var newHeight = (int)Math.Floor(image.Height / scaleFactor);
-                    using (var newBitmap = new Bitmap(newWidth, newHeight))
+                    var orientation = (int)image.GetPropertyItem(OrientationKey).Value[0];
+                    switch (orientation)
                     {
-                        using (var imageScaler = Graphics.FromImage(newBitmap))
-                        {
-                            imageScaler.CompositingQuality = CompositingQuality.HighSpeed;
-                            imageScaler.SmoothingMode = SmoothingMode.HighQuality;
-                            imageScaler.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-                            var imageRectangle = new Rectangle(0, 0, newWidth, newHeight);
-                            imageScaler.DrawImage(image, imageRectangle);
-
-                            // Fix orientation if needed.
-                            if (image.PropertyIdList.Contains(OrientationKey))
-                            {
-                                var orientation = (int)image.GetPropertyItem(OrientationKey).Value[0];
-                                switch (orientation)
-                                {
-                                    case NotSpecified: // Assume it is good.
-                                    case NormalOrientation:
-                                        // No rotation required.
-                                        break;
-                                    case MirrorHorizontal:
-                                        newBitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                                        break;
-                                    case UpsideDown:
-                                        newBitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                                        break;
-                                    case MirrorVertical:
-                                        newBitmap.RotateFlip(RotateFlipType.Rotate180FlipX);
-                                        break;
-                                    case MirrorHorizontalAndRotateRight:
-                                        newBitmap.RotateFlip(RotateFlipType.Rotate90FlipX);
-                                        break;
-                                    case RotateLeft:
-                                        newBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                                        break;
-                                    case MirorHorizontalAndRotateLeft:
-                                        newBitmap.RotateFlip(RotateFlipType.Rotate270FlipX);
-                                        break;
-                                    case RotateRight:
-                                        newBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                                        break;
-                                    default:
-                                        throw new NotImplementedException("An orientation of " + orientation + " isn't implemented.");
-                                }
-                            }
-                            newBitmap.Save(output, image.RawFormat);
-                        }
+                        case NotSpecified: // Assume it is good.
+                        case NormalOrientation:
+                            // No rotation required.
+                            break;
+                        case MirrorHorizontal:
+                            newBitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                            break;
+                        case UpsideDown:
+                            newBitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            break;
+                        case MirrorVertical:
+                            newBitmap.RotateFlip(RotateFlipType.Rotate180FlipX);
+                            break;
+                        case MirrorHorizontalAndRotateRight:
+                            newBitmap.RotateFlip(RotateFlipType.Rotate90FlipX);
+                            break;
+                        case RotateLeft:
+                            newBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            break;
+                        case MirorHorizontalAndRotateLeft:
+                            newBitmap.RotateFlip(RotateFlipType.Rotate270FlipX);
+                            break;
+                        case RotateRight:
+                            newBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            break;
+                        default:
+                            throw new NotImplementedException("An orientation of " + orientation + " isn't implemented.");
                     }
                 }
+                newBitmap.Save(output, image.RawFormat);
             }
             catch (Exception ex)
             {
                 LoggerUtil.LogException(ex.Message);
             }
         }
-
-
-        #region old functions
-
-        public static byte[] converterDemo(Image x)
+        public static async Task<ImageDataClass> UploadWebCameraImageAsync(int userId, WebCamImage webCamImage)
         {
-            ImageConverter _imageConverter = new ImageConverter();
-            byte[] xByte = (byte[])_imageConverter.ConvertTo(x, typeof(byte[]));
-            return xByte;
+            if (userId == 0) { return null; }
+            var pathToSave = Path.Combine(ProgramSettings.ImageFolder, webCamImage.itemId.ToString());
+
+            if (!Directory.Exists(pathToSave))
+                Directory.CreateDirectory(pathToSave);
+
+            var fullPath = pathToSave + "\\" + webCamImage.imageId + ".jpeg"; 
+            await File.WriteAllBytesAsync(fullPath, Convert.FromBase64String(webCamImage.image));
+
+            return await SaveImageAsync(fullPath, userId, webCamImage.itemId);
         }
 
-        public static void SaveJpegImage(string imageName, MemoryStream memoryStream)
+        public static Bitmap ResizeImage(Image imgToResize, Size size)
         {
-            var yourImage = Image.FromStream(memoryStream);
-            yourImage.Save(imageName, ImageFormat.Jpeg);
+            //Get the image current width  
+            int sourceWidth = imgToResize.Width;
+            //Get the image current height  
+            int sourceHeight = imgToResize.Height;
+            float nPercent = 0;
+            float nPercentW = 0;
+            float nPercentH = 0;
+            //Calulate  width with new desired size  
+            nPercentW = ((float)size.Width / (float)sourceWidth);
+            //Calculate height with new desired size  
+            nPercentH = ((float)size.Height / (float)sourceHeight);
+            if (nPercentH < nPercentW)
+                nPercent = nPercentH;
+            else
+                nPercent = nPercentW;
+            //New Width  
+            int destWidth = (int)(sourceWidth * nPercent);
+            //New Height  
+            int destHeight = (int)(sourceHeight * nPercent);
+            Bitmap b = new Bitmap(destWidth, destHeight);
+            Graphics g = Graphics.FromImage((System.Drawing.Image)b);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            // Draw image with new width and height  
+            g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
+            g.Dispose();
+            return b;
         }
-        private const int OrientationKey = 0x0112;
-        private const int NotSpecified = 0;
-        private const int NormalOrientation = 1;
-        private const int MirrorHorizontal = 2;
-        private const int UpsideDown = 3;
-        private const int MirrorVertical = 4;
-        private const int MirrorHorizontalAndRotateRight = 5;
-        private const int RotateLeft = 6;
-        private const int MirorHorizontalAndRotateLeft = 7;
-        private const int RotateRight = 8;
-
-        void RenameFolder(int partOld, int partNew)
+        public static async Task<ImageDataClass[]> UploadFiles(HttpRequest httpRequest, int userId)
         {
-            var pathOld = Path.Combine(ProgramSettings.ImageFolder, partOld.ToString());
-            var pathNew = Path.Combine(ProgramSettings.ImageFolder, partNew.ToString());
-        }
-
-        public static Image resizeImage(Image imgToResize, Size size)
-        {
-            return (Image)(new Bitmap(imgToResize, size));
-        }
-
-
-        public static byte[] Test(string image)
-        {
-            Bitmap bmp1 = new Bitmap(image);
-            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-
-            // Create an Encoder object based on the GUID  
-            // for the Quality parameter category.  
-            System.Drawing.Imaging.Encoder myEncoder =
-                System.Drawing.Imaging.Encoder.Quality;
-
-            // Create an EncoderParameters object.  
-            // An EncoderParameters object has an array of EncoderParameter  
-            // objects. In this case, there is only one  
-            // EncoderParameter object in the array.  
-            EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
-            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 25L);
-            myEncoderParameters.Param[0] = myEncoderParameter;
-            using (MemoryStream mStream = new MemoryStream())
-            {
-                bmp1.Save(mStream, jpgEncoder, myEncoderParameters);
-                return mStream.ToArray();
-            }
-
-        }
-        private static ImageCodecInfo GetEncoderInfo(string mimeType)
-        {
-            int j;
-            ImageCodecInfo[] encoders;
-            encoders = ImageCodecInfo.GetImageEncoders();
-            for (j = 0; j < encoders.Length; ++j)
-            {
-                if (encoders[j].MimeType == mimeType)
-                    return encoders[j];
-            }
-            return null;
-        }
-
-        private void GenerateThumbnails(double scaleFactor, Stream sourcePath, string targetPath)
-        {
-            using (var image = Image.FromStream(sourcePath))
-            {
-                var newWidth = (int)(image.Width * scaleFactor);
-                var newHeight = (int)(image.Height * scaleFactor);
-                var thumbnailImg = new Bitmap(newWidth, newHeight);
-                var thumbGraph = Graphics.FromImage(thumbnailImg);
-                thumbGraph.CompositingQuality = CompositingQuality.HighQuality;
-                thumbGraph.SmoothingMode = SmoothingMode.HighQuality;
-                thumbGraph.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                var imageRectangle = new Rectangle(0, 0, newWidth, newHeight);
-                thumbGraph.DrawImage(image, imageRectangle);
-                thumbnailImg.Save(targetPath, image.RawFormat);
-            }
-        }
-        private static ImageCodecInfo GetEncoder(ImageFormat format)
-        {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec;
-                }
-            }
-            return null;
-        }
-
-        #endregion
-
-        private static string GetmainPictureStr(long objectId)
-        {
-            ImageData imageDataItem = new ImageData();
-            string storeProcedureName = "GetMainImageAsync";
-            string mainPicture = "";
-
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+                httpRequest.Form.TryGetValue("partId", out var objectId);
+                var files = httpRequest.Form.Files;
+                var objectIdList = objectId.ToString().Split(',').Select(long.Parse).ToList();
+
+                long id = Convert.ToInt64(objectId.ToString());
+
+                int count = await GetImageCount(id);
+
+                if (ProgramSettings.ImageFolder != null)
                 {
+                    var pathToSave = Path.Combine(ProgramSettings.ImageFolder, objectId.ToString());
 
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = objectId;
-
-                        sqlConnection.Open();
-
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            if (sqlDataReader.Read())
-                            {
-                                mainPicture = (string)sqlDataReader["mainPicture"];
-                            }
-                        }
-                        sqlConnection.Close();
-                        return mainPicture;
-                    }
+                    if (!Directory.Exists(pathToSave))
+                        Directory.CreateDirectory(pathToSave);
                 }
-            }
-            catch (Exception exception)
-            {
-                throw new AppException($"Снимкатите не могат да се заредят {exception.Message}");
-            }
 
-        }
-
-        public static int GetUserId(long id)
-        {
-            int userId = 0;
-            string storeProcedureName = "GetUserId";
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+                if (files.Any(f => f.Length == 0))
                 {
-
-                    using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = id;
-
-                        sqlConnection.Open();
-
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            if (sqlDataReader.Read())
-                            {
-                                userId = (int)sqlDataReader["userId"];
-                            }
-                        }
-                        sqlConnection.Close();
-                        return userId;
-                    }
+                    return null;
                 }
+
+                List<ImageDataClass> images = new List<ImageDataClass>();
+                if (files.Count == 1 && files[0].FileName.ToLower().Contains("businesscard"))
+                {
+                    string fullPath = GetPhotosPath(objectIdList[0]);
+                    Directory.CreateDirectory(fullPath);
+
+                    ImageDataClass businessCardImage = await SaveBusinessCardAsync(files[0], objectId, userId);
+                    images.Add(businessCardImage);
+
+                    return images.ToArray();
+                }
+
+                foreach (var file in files)
+                {
+                    if (count >= ProgramSettings.MaxPictures)
+                    {
+                        throw (new MaxCountPictureException($"Максималният брой снимки за обява от {ProgramSettings.MaxPictures} е достигнат"));
+                    }
+
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName?.Trim('"');
+                    string fullPath = GetPhotosPath(objectIdList[0]);
+                    Directory.CreateDirectory(fullPath);
+
+                    fullPath = fullPath + fileName;
+
+                    await using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    ImageDataClass? image = await SaveImageAsync(fullPath, userId, objectIdList[0].ToString());
+                    if (image != null)
+                        images.Add(image);
+                    else
+                    {
+                        throw new Exception("Failed to save image");
+                    }
+                    File.Delete(fullPath);
+                    count++;
+                }
+
+                CheckImageCount(id);
+                return images.ToArray();
             }
-            catch (Exception exception)
+            catch (MaxCountPictureException exception)
             {
-                LoggerUtil.LogFunctionInfo("GetUserId");
+                LoggerUtil.LogFunctionInfo("Upload");
                 LoggerUtil.LogException(exception.Message);
-                throw new AppException($"Снимкатите не могат да се заредят");
+                throw new Exception(exception.Message);
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogFunctionInfo("Upload");
+                LoggerUtil.LogException(exception.Message);
+                throw new Exception(exception.Message);
             }
         }
 
-        #region Converter
-
-
-        public static void Converter()
-        {
-            return;
-        }
-
-        #endregion
-
+        #region catcha
         public static Catcha GenerateCaptchaImage()
         {
             StringBuilder captchaText = new StringBuilder();
@@ -1548,7 +963,7 @@ namespace Utility
             int height = 100;
             Random rndInt = new Random();
 
-            for (int i=0;i<5;i++)
+            for (int i = 0; i < 5; i++)
             {
                 int number = rndInt.Next(1, 9);
                 captchaText.Append(number.ToString());
@@ -1604,202 +1019,638 @@ namespace Utility
             string base64ImageRepresentation = Convert.ToBase64String(imageArray);
             string imageString = "data:image/jpg;base64," + base64ImageRepresentation;
             Catcha catcha = new Catcha() { imageId = id, imageData = imageString };
-            
+
             return catcha;
         }
 
         public static bool VerifyCatcha(CatchaItem catchaItem)
         {
-            if (catchaCache.ContainsKey(catchaItem.id)) 
+            if (catchaCache.ContainsKey(catchaItem.id))
             {
                 if (catchaCache[catchaItem.id] == catchaItem.catchaText)
-                { 
-                    return true; 
+                {
+                    return true;
                 }
             }
             return false;
         }
+        #endregion
 
-        public static async Task<ImageData> UploadWebImageAsync(int userId, WebCamImage webCamImage)
-        {
-            if (userId == 0) { return null; }
-            var pathToSave = Path.Combine(ProgramSettings.ImageFolder, webCamImage.itemId.ToString());
+        #region not used
+        //private static byte[] getImage(string imageFileName)
+        //{
+        //    try
+        //    {
+        //        long startTime = Environment.TickCount;
+        //        Image img;
+        //        if (File.Exists(imageFileName))
+        //        {
+        //            using (FileStream fileStream = new FileStream(imageFileName, FileMode.Open, FileAccess.Read))
+        //            {
+        //                img = System.Drawing.Image.FromStream(fileStream);
+        //                using (var oututStream = new MemoryStream())
+        //                {
+        //                    img.Save(oututStream, ImageFormat.Jpeg);
+        //                    Task.Run(() => LoggerUtil.Log(string.Format("Load Minimazed Image {0}", Environment.TickCount - startTime), Environment.TickCount));
+        //                    return oututStream.ToArray();
+        //                }
+        //            }
 
-            if (!Directory.Exists(pathToSave))
-                Directory.CreateDirectory(pathToSave);
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        LoggerUtil.Log(exception);
+        //    }
 
-            var fullPath = pathToSave + "\\" + webCamImage.imageId.ToString() + ".jpeg"; 
-            File.WriteAllBytes(fullPath, Convert.FromBase64String(webCamImage.image));
+        //    return null;
+        //}
 
-            return await SaveImageAsync(fullPath, userId, webCamImage.itemId);
-        }
+        //private static byte[] CreateMinImage(string imageFileName)
+        //{
+        //    try
+        //    {
+        //        int startTime = Environment.TickCount;
+        //        string imageFileNameMin = generateMinImageFileName(imageFileName);
 
-        public static Bitmap ResizeImage(Image image, int width, int height)
-        {
-            int sourceWidth = image.Width;
-            //Get the image current height  
-            int sourceHeight = image.Height;
-            float nPercent = 0;
-            float nPercentW = 0;
-            float nPercentH = 0;
-            //Calulate  width with new desired size  
-            nPercentW = ((float)width / (float)sourceWidth);
-            //Calculate height with new desired size  
-            nPercentH = ((float)height / (float)sourceHeight);
-            if (nPercentH < nPercentW)
-                nPercent = nPercentH;
-            else
-                nPercent = nPercentW;
-            //New Width  
-            int destWidth = (int)(sourceWidth * nPercent);
-            //New Height  
-            int destHeight = (int)(sourceHeight * nPercent);
+        //        FileStream fileStream = new FileStream(imageFileName, FileMode.Open, FileAccess.Read);
+        //        Image img = System.Drawing.Image.FromStream(fileStream);
 
 
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
+        //        Task.Run(() => LoggerUtil.Log(string.Format("Read file from disk {0}", Environment.TickCount - startTime), Environment.TickCount));
+        //        ImageConverter _imageConverter = new ImageConverter();
+        //        var inputStream = new MemoryStream();
+        //        var oututStream = new MemoryStream();
+        //        img.Save(inputStream, ImageFormat.Jpeg);
+        //        TargetSize targetSize = new TargetSize(400, 400);
 
-            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+        //        resizeImage3(targetSize, 2, inputStream, oututStream);
+        //        Task.Run(() => LoggerUtil.Log(string.Format("ResizeImage3 {0}", Environment.TickCount - startTime), Environment.TickCount));
+        //        MemoryStream mem = new MemoryStream();
+        //        mem.CopyTo(oututStream);
+        //        var yourImage = Image.FromStream(oututStream);
 
-            using (var graphics = Graphics.FromImage(destImage))
-            {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+        //        yourImage.Save(imageFileNameMin, ImageFormat.Jpeg);
+        //        yourImage.Dispose();
 
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-            }
+        //        return oututStream.ToArray();
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        LoggerUtil.LogFunctionInfo("CreateMinImage");
+        //        LoggerUtil.LogException(exception.Message);
+        //    }
 
-            return destImage;
-        }
+        //    return null;
+        //}
 
-        public static Bitmap ResizeImage(Image imgToResize, Size size)
-        {
-            //Get the image current width  
-            int sourceWidth = imgToResize.Width;
-            //Get the image current height  
-            int sourceHeight = imgToResize.Height;
-            float nPercent = 0;
-            float nPercentW = 0;
-            float nPercentH = 0;
-            //Calulate  width with new desired size  
-            nPercentW = ((float)size.Width / (float)sourceWidth);
-            //Calculate height with new desired size  
-            nPercentH = ((float)size.Height / (float)sourceHeight);
-            if (nPercentH < nPercentW)
-                nPercent = nPercentH;
-            else
-                nPercent = nPercentW;
-            //New Width  
-            int destWidth = (int)(sourceWidth * nPercent);
-            //New Height  
-            int destHeight = (int)(sourceHeight * nPercent);
-            Bitmap b = new Bitmap(destWidth, destHeight);
-            Graphics g = Graphics.FromImage((System.Drawing.Image)b);
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            // Draw image with new width and height  
-            g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
-            g.Dispose();
-            return b;
-        }
+        //public static byte[] converterDemo(Image x)
+        //{
+        //    ImageConverter _imageConverter = new ImageConverter();
+        //    byte[] xByte = (byte[])_imageConverter.ConvertTo(x, typeof(byte[]));
+        //    return xByte;
+        //}
 
-        public static async Task<ImageData[]> UploadFiles(HttpRequest httpRequest, int userId)
-        {
-            try
-            {
-                httpRequest.Form.TryGetValue("partId", out var objectId);
-                var files = httpRequest.Form.Files;
+        //public static void SaveJpegImage(string imageName, MemoryStream memoryStream)
+        //{
+        //    var yourImage = Image.FromStream(memoryStream);
+        //    yourImage.Save(imageName, ImageFormat.Jpeg);
+        //}
 
-                long id = Convert.ToInt64(objectId.ToString());
+        //private static string getMainImageFromDb(long id)
+        //{
+        //    string mainPicture = "";
+        //    int startTime = Environment.TickCount;
+        //    try
+        //    {
+        //        using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+        //        {
+        //            string storedProcedure = "GetMainPicture";
+        //            sqlConnection.Open();
+        //            using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
+        //            {
+        //                sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                int count = await ImageManager.GetImageCount(id);
+        //                sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = id;
 
-                if (ProgramSettings.ImageFolder != null)
-                {
-                    var pathToSave = Path.Combine(ProgramSettings.ImageFolder, objectId.ToString());
+        //                SqlParameter mainPictureParam = sqlCommand.Parameters.Add("@mainPicture", SqlDbType.NVarChar, 200);
+        //                mainPictureParam.Direction = ParameterDirection.Output;
+        //                mainPictureParam.Value = "";
 
-                    if (!Directory.Exists(pathToSave))
-                        Directory.CreateDirectory(pathToSave);
-                }
+        //                SqlParameter returnParameter = sqlCommand.Parameters.Add("@ReturnVal", SqlDbType.Int);
+        //                returnParameter.Direction = ParameterDirection.ReturnValue;
 
-                if (files.Any(f => f.Length == 0))
-                {
-                    return null;
-                }
+        //                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+        //                {
+        //                    sqlDataReader.Read();
 
-                List<ImageData> images = new List<ImageData>();
-                if (files.Count == 1 && files[0].FileName.ToLower().Contains("businesscard"))
-                {
-                    string fullPath = GetPhotosPath(objectId);
-                    Directory.CreateDirectory(fullPath);
+        //                    Task.Run(() => LoggerUtil.Log(string.Format("GetMainPicture SQL {0}", Environment.TickCount - startTime), Environment.TickCount));
+        //                    mainPicture = (string)mainPictureParam.Value;
 
-                    ImageData businessCardImage = await SaveBusinessCardAsync(files[0], objectId, userId);
-                    images.Add(businessCardImage);
+        //                    return mainPicture;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        LoggerUtil.LogFunctionInfo("getMainImageFromDb");
+        //        LoggerUtil.LogException(exception.Message);
+        //    }
+        //    finally
+        //    {
 
-                    return images.ToArray();
-                }
-                else
-                {
-                    foreach (var file in files)
-                    {
-                        if (count >= ProgramSettings.MaxPictures)
-                        {
-                            throw (new MaxCountPictureException($"Максималният брой снимки за обява от {ProgramSettings.MaxPictures} е достигнат"));
-                        }
+        //    }
 
-                        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName?.Trim('"');
-                        string fullPath = GetPhotosPath(objectId);
-                        Directory.CreateDirectory(fullPath);
+        //    return mainPicture;
+        //}
 
-                        fullPath = fullPath + fileName;
+        //private static string getMainImageFromFolder(long id)
+        //{
+        //    string imageFile = "";
+        //    try
+        //    {
+        //        var pathToSave = Path.Combine(ProgramSettings.ImageFolder, id.ToString());
+        //        if (Directory.Exists(pathToSave))
+        //        {
+        //            string[] imageFiles = Directory.GetFiles(pathToSave);
+        //            if (imageFiles.Length > 0)
+        //            {
+        //                imageFile = imageFiles[0];
+        //            }
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        throw new AppException(exception.Message);
+        //    }
 
-                        await using (var stream = new FileStream(fullPath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
+        //    return imageFile;
 
-                        ImageData image = await ImageManager.SaveImageAsync(fullPath, userId, objectId.ToString());
-                        images.Add(image);
+        //}
 
-                        File.Delete(fullPath);
-                        count++;
 
-                    }
-                }
+        //void RenameFolder(int partOld, int partNew)
+        //{
+        //    var pathOld = Path.Combine(ProgramSettings.ImageFolder, partOld.ToString());
+        //    var pathNew = Path.Combine(ProgramSettings.ImageFolder, partNew.ToString());
+        //}
 
-                CheckImageCount(id);
-                return images.ToArray();
-            }
-            catch (MaxCountPictureException exception)
-            {
-                LoggerUtil.LogFunctionInfo("Upload");
-                LoggerUtil.LogException(exception.Message);
-                throw new Exception(exception.Message);
-            }
-            catch (Exception exception)
-            {
-                LoggerUtil.LogFunctionInfo("Upload");
-                LoggerUtil.LogException(exception.Message);
-                throw new Exception(exception.Message);
-            }
-        }
+        //public static Image resizeImage(Image imgToResize, Size size)
+        //{
+        //    return (Image)(new Bitmap(imgToResize, size));
+        //}
+        //private static ImageCodecInfo GetEncoder(ImageFormat format)
+        //{
+        //    ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+        //    foreach (ImageCodecInfo codec in codecs)
+        //    {
+        //        if (codec.FormatID == format.Guid)
+        //        {
+        //            return codec;
+        //        }
+        //    }
+        //    return null;
+        //}
 
+        //public static byte[] Test(string image)
+        //{
+        //    Bitmap bmp1 = new Bitmap(image);
+        //    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+
+        //    // Create an Encoder object based on the GUID  
+        //    // for the Quality parameter category.  
+        //    System.Drawing.Imaging.Encoder myEncoder =
+        //        System.Drawing.Imaging.Encoder.Quality;
+
+        //    // Create an EncoderParameters object.  
+        //    // An EncoderParameters object has an array of EncoderParameter  
+        //    // objects. In this case, there is only one  
+        //    // EncoderParameter object in the array.  
+        //    EncoderParameters myEncoderParameters = new EncoderParameters(1);
+
+        //    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 25L);
+        //    myEncoderParameters.Param[0] = myEncoderParameter;
+        //    using (MemoryStream mStream = new MemoryStream())
+        //    {
+        //        bmp1.Save(mStream, jpgEncoder, myEncoderParameters);
+        //        return mStream.ToArray();
+        //    }
+
+        //}
+        //private static ImageCodecInfo GetEncoderInfo(string mimeType)
+        //{
+        //    int j;
+        //    ImageCodecInfo[] encoders;
+        //    encoders = ImageCodecInfo.GetImageEncoders();
+        //    for (j = 0; j < encoders.Length; ++j)
+        //    {
+        //        if (encoders[j].MimeType == mimeType)
+        //            return encoders[j];
+        //    }
+        //    return null;
+        //}
+        //public static void ArchiveData(byte[] origin)
+        //{
+
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        using var compressor = new GZipStream(memoryStream, CompressionLevel.SmallestSize, leaveOpen: true);
+        //        compressor.Write(origin, 0, origin.Length);
+        //        compressor.Close();
+        //    }
+
+        //    byte[] btZipped = null;
+
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, false))
+        //        {
+
+        //            var entry = archive.CreateEntry("entry.bin");
+
+        //            using (var entryStream = entry.Open())
+        //            using (var streamWriter = new BinaryWriter(entryStream))
+        //            {
+        //                streamWriter.Write(origin, 0, origin.Length);
+        //            }
+
+        //        }
+
+        //        btZipped = memoryStream.ToArray();
+        //    }
+        //}
+
+        //private static byte[] resizeImage(string imageFileName)
+        //{
+        //    try
+        //    {
+        //        string imageFileNameMin = generateMinImageFileName(imageFileName);
+
+        //        int startTime = Environment.TickCount;
+
+        //        if (File.Exists(imageFileNameMin))
+        //        {
+        //            return getImage(imageFileNameMin);
+        //        }
+        //        else
+        //        {
+        //            return CreateMinImage(imageFileName);
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        LoggerUtil.LogException(string.Format("{0} {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, imageFileName));
+        //        LoggerUtil.LogException(exception.Message);
+        //    }
+
+        //    return null;
+        //}
+        //private void GenerateThumbnails(double scaleFactor, Stream sourcePath, string targetPath)
+        //{
+        //    using (var image = Image.FromStream(sourcePath))
+        //    {
+        //        var newWidth = (int)(image.Width * scaleFactor);
+        //        var newHeight = (int)(image.Height * scaleFactor);
+        //        var thumbnailImg = new Bitmap(newWidth, newHeight);
+        //        var thumbGraph = Graphics.FromImage(thumbnailImg);
+        //        thumbGraph.CompositingQuality = CompositingQuality.HighQuality;
+        //        thumbGraph.SmoothingMode = SmoothingMode.HighQuality;
+        //        thumbGraph.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        //        var imageRectangle = new Rectangle(0, 0, newWidth, newHeight);
+        //        thumbGraph.DrawImage(image, imageRectangle);
+        //        thumbnailImg.Save(targetPath, image.RawFormat);
+        //    }
+        //}
+
+        //private static string GetmainPictureStr(long objectId)
+        //{
+        //    ImageDataClass imageDataClassItem = new ImageDataClass();
+        //    string storeProcedureName = "GetMainImageAsync";
+        //    string mainPicture = "";
+
+        //    try
+        //    {
+        //        using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+        //        {
+
+        //            using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
+        //            {
+        //                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+        //                sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = objectId;
+
+        //                sqlConnection.Open();
+
+        //                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+        //                {
+        //                    if (sqlDataReader.Read())
+        //                    {
+        //                        mainPicture = (string)sqlDataReader["mainPicture"];
+        //                    }
+        //                }
+        //                sqlConnection.Close();
+        //                return mainPicture;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        throw new AppException($"Снимкатите не могат да се заредят {exception.Message}");
+        //    }
+
+        //}
+        //public static void RecoverImages()
+        //{
+        //    string storeProcedureName = "ImageDataAll";
+        //    try
+        //    {
+        //        SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+        //        SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LoggerUtil.LogException(ex.Message);
+        //    }
+        //}
+
+        //public static Image String64ToImage(byte[] bytes)
+        //{
+        //    MemoryStream ms = new MemoryStream(bytes);
+        //    Image image = Image.FromStream(ms);
+
+        //    return image;
+        //}
+
+        //public static int GetUserId(long id)
+        //{
+        //    int userId = 0;
+        //    string storeProcedureName = "GetUserId";
+        //    try
+        //    {
+        //        using (SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString))
+        //        {
+
+        //            using (SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection))
+        //            {
+        //                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+        //                sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = id;
+
+        //                sqlConnection.Open();
+
+        //                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+        //                {
+        //                    if (sqlDataReader.Read())
+        //                    {
+        //                        userId = (int)sqlDataReader["userId"];
+        //                    }
+        //                }
+        //                sqlConnection.Close();
+        //                return userId;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        LoggerUtil.LogFunctionInfo("GetUserId");
+        //        LoggerUtil.LogException(exception.Message);
+        //        throw new AppException($"Снимкатите не могат да се заредят");
+        //    }
+        //}
+
+        //public static Bitmap ResizeImage(Image image, int width, int height)
+        //{
+        //    int sourceWidth = image.Width;
+        //    //Get the image current height  
+        //    int sourceHeight = image.Height;
+        //    float nPercent = 0;
+        //    float nPercentW = 0;
+        //    float nPercentH = 0;
+        //    //Calulate  width with new desired size  
+        //    nPercentW = ((float)width / (float)sourceWidth);
+        //    //Calculate height with new desired size  
+        //    nPercentH = ((float)height / (float)sourceHeight);
+        //    if (nPercentH < nPercentW)
+        //        nPercent = nPercentH;
+        //    else
+        //        nPercent = nPercentW;
+        //    //New Width  
+        //    int destWidth = (int)(sourceWidth * nPercent);
+        //    //New Height  
+        //    int destHeight = (int)(sourceHeight * nPercent);
+
+
+        //    var destRect = new Rectangle(0, 0, width, height);
+        //    var destImage = new Bitmap(width, height);
+
+        //    destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+        //    using (var graphics = Graphics.FromImage(destImage))
+        //    {
+        //        graphics.CompositingMode = CompositingMode.SourceCopy;
+        //        graphics.CompositingQuality = CompositingQuality.HighQuality;
+        //        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        //        graphics.SmoothingMode = SmoothingMode.HighQuality;
+        //        graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+        //        using (var wrapMode = new ImageAttributes())
+        //        {
+        //            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+        //            graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+        //        }
+        //    }
+
+        //    return destImage;
+        //}
+        #endregion
     }
-
-
-
-
 }
 
-
-
 #region Commented
+//static private ImageDataClass getMainImage(long id, string imageFile)
+//{
+//    ImageDataClass image = null;
+//    int startTime = Environment.TickCount;
+//    try
+//    {
+//        if (imageFile == "")
+//        {
+//            imageFile = getMainImageFromDb(id);
+//        }
+//        if (imageFile == "")
+//        {
+//            imageFile = getMainImageFromFolder(id);
+//        }
+
+//        image = getMinImage(imageFile);
+//        Task.Run(() => Logger.Log(ToString.Format("GetPicture {0} {1}", Environment.TickCount - startTime, id), Environment.TickCount));
+//        if (image != null) image.imageId = (int)id;
+//    }
+//    catch (Exception exception)
+//    {
+//        throw new AppException(exception.Message);
+//    }
+//    return image;
+//}
+
+
+//static public ImageDataClass[] GetImages(long id)
+//{
+//    try
+//    {
+//        return GetImages(id);
+
+//        #region oldCode
+//        //List<ImageDataClass> images = new List<ImageDataClass>();
+
+//        //var pathToSave = Path.Combine(Program.ImageFolder, id.ToString());
+//        //if (!Directory.Exists(pathToSave))
+//        //    Directory.CreateDirectory(pathToSave);
+
+//        //string[] imageFiles = Directory.GetFiles(pathToSave);
+
+//        //foreach (string imageFile in imageFiles)
+//        //{
+//        //    if (imageFile.Contains("businessCard")) continue;
+//        //    byte[] imageArray = getImage(imageFile);
+//        //    string ImageDataClass = null;
+//        //    if (imageArray != null)
+//        //    {
+//        //        string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+//        //        ImageDataClass = "data:image/jpg;base64," + base64ImageRepresentation;
+//        //    }
+
+//        //    string imgSrc_ = imageFile.Substring(Program.ImageFolder.Length + 1);
+
+//        //    images.Add(new ImageDataClass() { imageSrc = imgSrc_, imageDataClass = ImageDataClass });
+//        //}
+//        //return images.ToArray();
+//        #endregion
+//    }
+//    catch (Exception exception)
+//    {
+//        LoggerUtil.LogFunctionInfo("GetImages");
+//        LoggerUtil.LogException(exception.Message);
+//    }
+
+//    return null;
+//}
+
+//            MemoryStream mem = new MemoryStream();
+//            mem.CopyTo(oututStream);
+//            var yourImage = Image.FromStream(oututStream);
+
+//            yourImage.Save(image, ImageFormat.Jpeg);
+//            yourImage.Dispose();
+////            img = ResizeImage(img, new Size(800, 600));
+
+//            using (var inputStream = new MemoryStream())
+//            {
+//                using (var oututStream = new MemoryStream())
+//                {
+//                    img.Save(inputStream, ImageFormat.Jpeg);
+//                    TargetSize targetSize = new TargetSize(400, 400);
+
+//                    resizeImage3(targetSize, 2, inputStream, oututStream);
+//                    Task.Run(() => LoggerUtil.Log(ToString.Format("ResizeImage3 {0}", Environment.TickCount - startTime), Environment.TickCount));
+//                    MemoryStream mem = new MemoryStream();
+//                    mem.CopyTo(oututStream);
+//                    var yourImage = Image.FromStream(oututStream);
+
+//                    yourImage.Save(imageFileNameMin, ImageFormat.Jpeg);
+//                    yourImage.Dispose();
+
+//                    return oututStream.ToArray();
+//                }
+//            }
+
+
+//        }
+
+
+//       byte[] btDecomp = new byte[btmod.Length];
+
+//using (var memoryStream = new MemoryStream(btZipped))
+//           {
+//               using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
+//               {
+//                   var entry = archive.GetEntry("entry.bin");
+
+//                   using (var entryStream = entry.Open())
+//                   using (var streamReader = new BinaryReader(entryStream))
+//                   {
+//                       streamReader.Read(btDecomp, 0, btDecomp.Length);
+//                   }
+
+//               }
+//           }
+
+
+
+
+//public void ResizeImage(TargetSize targetSize, ResizeMultiplier multiplier, Stream input, Stream output)
+//{
+//    using (var image = Image.FromStream(input))
+//    {
+//        // Calculate the resize factor
+//        var scaleFactor = targetSize.CalculateScaleFactor(image.Width, image.Height);
+//        scaleFactor /= (int)multiplier;
+
+//        var newWidth = (int)Math.Floor(image.Width / scaleFactor);
+//        var newHeight = (int)Math.Floor(image.Height / scaleFactor);
+//        using (var newBitmap = new Bitmap(newWidth, newHeight))
+//        {
+//            using (var imageScaler = Graphics.FromImage(newBitmap))
+//            {
+//                imageScaler.CompositingQuality = CompositingQuality.HighQuality;
+//                imageScaler.SmoothingMode = SmoothingMode.HighQuality;
+//                imageScaler.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+//                var imageRectangle = new Rectangle(0, 0, newWidth, newHeight);
+//                imageScaler.DrawImage(image, imageRectangle);
+
+//                // Fix orientation if needed.
+//                if (image.PropertyIdList.Contains(OrientationKey))
+//                {
+//                    var orientation = (int)image.GetPropertyItem(OrientationKey).Value[0];
+//                    switch (orientation)
+//                    {
+//                        case NotSpecified: // Assume it is good.
+//                        case NormalOrientation:
+//                            // No rotation required.
+//                            break;
+//                        case MirrorHorizontal:
+//                            newBitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
+//                            break;
+//                        case UpsideDown:
+//                            newBitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
+//                            break;
+//                        case MirrorVertical:
+//                            newBitmap.RotateFlip(RotateFlipType.Rotate180FlipX);
+//                            break;
+//                        case MirrorHorizontalAndRotateRight:
+//                            newBitmap.RotateFlip(RotateFlipType.Rotate90FlipX);
+//                            break;
+//                        case RotateLeft:
+//                            newBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+//                            break;
+//                        case MirorHorizontalAndRotateLeft:
+//                            newBitmap.RotateFlip(RotateFlipType.Rotate270FlipX);
+//                            break;
+//                        case RotateRight:
+//                            newBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+//                            break;
+//                        default:
+//                            throw new NotImplementedException("An orientation of " + orientation + " isn't implemented.");
+//                    }
+//                }
+//                newBitmap.Save(output, image.RawFormat);
+//            }
+//        }
+//    }
+//}
+
 //public static Bitmap ResizeImage2(Image image, int maxWidth, int maxHeight)
 //{
 
@@ -1940,7 +1791,7 @@ namespace Utility
 //    return bmPhoto;
 //}
 
-//static ImageData getBusinessCardImage(long userId)
+//static ImageDataClass getBusinessCardImage(long userId)
 //{
 //    return getBusinessCard(userId);
 //    //var pathToSave = Path.Combine(Program.ImageFolder, id.ToString());
@@ -1975,7 +1826,7 @@ namespace Utility
 //}
 //#endregion
 
-//static public ImageData GetMainImageFromFile(long id, string imageFile)
+//static public ImageDataClass GetMainImageFromFile(long id, string imageFile)
 //{
 //    imageFile = imageFile!.Trim();
 //    if (imageFile.Length == 0) return null;
@@ -1993,24 +1844,24 @@ namespace Utility
 //    return null;
 //}
 
-//ImageData getMinImageDataFromFile(long id, string imageFileName)
+//ImageDataClass getMinImageDataFromFile(long id, string imageFileName)
 //{
-//    ImageData imageData = null;
+//    ImageDataClass imageDataClass = null;
 //    try
 //    {
 //        string minImageFileName = generateMinImageFileName(imageFileName);
 
 //        byte[] imageArray = getImage(minImageFileName);
-//        string ImageData = null;
+//        string ImageDataClass = null;
 //        if (imageArray != null)
 //        {
 //            string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-//            ImageData = "data:image/jpg;base64," + base64ImageRepresentation;
+//            ImageDataClass = "data:image/jpg;base64," + base64ImageRepresentation;
 //        }
 
 //        string imgSrc_ = imageFileName.Substring(Program.ImageFolder.Length + 1);
 
-//        imageData = new ImageData() { imageSrc = imgSrc_, imageData = ImageData };
+//        imageDataClass = new ImageDataClass() { imageSrc = imgSrc_, imageDataClass = ImageDataClass };
 //    }
 //    catch (Exception exception)
 //    {
@@ -2018,11 +1869,11 @@ namespace Utility
 
 //    }
 
-//    return imageData;
+//    return imageDataClass;
 //}
 
 //#region Get Main Image part / car 
-//static public ImageData GetMainImageAsync(long id, string imageFile)
+//static public ImageDataClass GetMainImageAsync(long id, string imageFile)
 //{
 //    imageFile = imageFile!.Trim();
 //    if (imageFile.Length == 0) return null;
@@ -2039,7 +1890,7 @@ namespace Utility
 //}
 
 //#endregion
-//static private ImageData getMinImage(string imageFileName)
+//static private ImageDataClass getMinImage(string imageFileName)
 //{
 //    try
 //    {
@@ -2060,7 +1911,7 @@ namespace Utility
 
 //        Task.Run(() => Logger.Log(ToString.Format("Converting Image {0}", Environment.TickCount - startTime), Environment.TickCount));
 
-//        ImageData image = new ImageData() { imageSrc = imgSrc_, imageData = imageString };
+//        ImageDataClass image = new ImageDataClass() { imageSrc = imgSrc_, imageDataClass = imageString };
 //        return image;
 
 //    }
@@ -2072,5 +1923,25 @@ namespace Utility
 //    return null;
 //}
 
+/*
+         public static byte[] ResizeImage(byte[] imageBytes)
+   {
+       try
+       {
+           MemoryStream memoryStream = new MemoryStream(imageBytes);
+           MemoryStream oututStream = new MemoryStream();
+           TargetSize targetSize = new TargetSize(400, 400);
+           resizeImage3(targetSize, 1, memoryStream, oututStream);
+           imageBytes = oututStream.ToArray();
+       }
+       catch (Exception ex)
+       {
+           LoggerUtil.LogException(ex);
+       } 
+
+       return imageBytes;
+   }
+
+*/
 
 #endregion

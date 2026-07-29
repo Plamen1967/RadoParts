@@ -167,7 +167,7 @@ namespace Rado.Controllers.Admin
         public IActionResult updateUser(User value)
         {
             if (UserId != 0)
-                value.userId = UserId;
+                value.UserId = UserId;
             var response = UserDbSet.UpdateUser(value, InsertUpdate.Update);
             return Ok(response);
         }
@@ -181,7 +181,7 @@ namespace Rado.Controllers.Admin
             try
             {
                 User user = UserDbSet.GetUserById(request.userId);
-                string email = user.email;
+                string email = user.Email;
                 email = "plamen1967@gmail.com";
                 string partType = "partId";
                 if (request.isCar)

@@ -41,7 +41,7 @@ namespace Rado.Controllers
 
             try
             {
-                if (car.userId != UserId)
+                if (car.UserId != UserId)
                 {
                     throw new AppException($"UserId does not match car.userId");
                 }
@@ -75,14 +75,14 @@ namespace Rado.Controllers
             try
             {
 
-                if (car.userId != UserId)
+                if (car.UserId != UserId)
                 {
                     throw new AppException($"UserId does not match car.userId");
                 }
 
                 ControlerAuthorization.CheckAuthorizationDealer(UserId);
 
-                car.userId = UserId;
+                car.UserId = UserId;
                 return await CarsDbSet.UpdateCarAsync(car);
             }
             catch (UnauthorizedAccessException exception)
@@ -144,7 +144,7 @@ namespace Rado.Controllers
         [Route("GetCarNameId")]
         public async Task<IEnumerable<CarNameId>> GetCarNameId([FromQuery] Filter filter)
         {
-            filter.userId = UserId;
+            filter.UserId = UserId;
             return await CarsDbSet.GetCarNameId(filter);
         }
 
@@ -152,8 +152,8 @@ namespace Rado.Controllers
         [Route("GetBusNameId")]
         public async Task<IEnumerable<CarNameId>> GetBusNameId([FromQuery] Filter filter)
         {
-            filter.userId = UserId;
-            filter.bus = 1;
+            filter.UserId = UserId;
+            filter.Bus = 1;
             return await CarsDbSet.GetCarNameId(filter);
         }
  
@@ -162,8 +162,8 @@ namespace Rado.Controllers
         public async Task<IEnumerable<Car>> GetCarsByModel([FromQuery] int modelId)
         {
             Filter filter = new Filter();
-            filter.userId = UserId;
-            filter.modelId = modelId;
+            filter.UserId = UserId;
+            filter.ModelId = modelId;
             return await CarsDbSet.GetCars(filter);
         }
 
@@ -213,7 +213,7 @@ namespace Rado.Controllers
         [Route("GetCars")]
         public async Task<IEnumerable<CarView>> GetCars([FromQuery] Filter filter)
         {
-            filter.userId = UserId;
+            filter.UserId = UserId;
             return await CarsDbSet.GetCars(filter);
         }
 

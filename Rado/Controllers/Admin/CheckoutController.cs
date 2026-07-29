@@ -42,7 +42,7 @@ namespace Rado.Controllers.Admin
         [HttpPost]
         public int Post([FromBody] PartView value)
         {
-            value.userId = UserId;
+            value.UserId = UserId;
             return CheckoutDbSet.AddItem(value);
         }
 

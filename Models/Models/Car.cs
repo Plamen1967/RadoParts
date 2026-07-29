@@ -1,43 +1,35 @@
 ﻿using Rado;
 using Rado.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.IO;
 using System.Text.Json.Serialization;
 
 namespace Models.Models
 {
     public class Car : Item
     {
-        public Car()
-        {
-
-        }
-        protected List<ImageData>? images_ = new List<ImageData>();
+        protected List<ImageDataClass>? images_ = new List<ImageDataClass>();
         [Required]
-        public long carId { get; set; }
-        public int? modelId { get; set; }
-        public int? modificationId { get; set; }
-        public int year { get; set; }
-        public string? vin { get; set; }
+        public long CarId { get; set; }
+        public int? ModelId { get; set; }
+        public int? ModificationId { get; set; }
+        public int Year { get; set; }
+        public string? Vin { get; set; }
         [Required]
-        public string regNumber { get; set; }
+        public string RegNumber { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int powerkWh { get; set; }
+        public int PowerkWh { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int powerBHP { get; set; }
+        public int PowerBHP { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int engineType { get; set; }
+        public int EngineType { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string? engineModel { get; set; }
+        public string? EngineModel { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int millage { get; set; }
+        public int Millage { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int gearboxType { get; set; }
-        public int bus { get; set; }
+        public int GearboxType { get; set; }
+        public int Bus { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Part[]? parts { get; set; }
+        public Part[]? Parts { get; set; }
     }
 }

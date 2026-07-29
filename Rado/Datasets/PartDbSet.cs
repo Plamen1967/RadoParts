@@ -267,9 +267,9 @@ namespace Rado.Datasets
         #region Others
         private static async Task FillDetailsFromCar(Part part)
         {
-            if (part.carId != null)
+            if (part.CarId != null)
             {
-                CarView carView = await CarsDbSet.GetCarByIdAsync(part.carId.Value);
+                CarView carView = await CarsDbSet.GetCarByIdAsync(part.CarId.Value);
                 EnrichManager.InitPartViewFromCar(carView, part);
             }
         }
@@ -480,39 +480,39 @@ namespace Rado.Datasets
 
                     foreach(var count in data)
                     {
-                        if (result.Exists(item => count.Item1 == item.categoryId))
+                        if (result.Exists(item => count.Item1 == item.CategoryId))
                         {
-                            NumberPartsPerCategory category = result.Find(item => count.Item1 == item.categoryId);
-                            category.numberParts += count.Item3;
+                            NumberPartsPerCategory category = result.Find(item => count.Item1 == item.CategoryId);
+                            category.NumberParts += count.Item3;
                             int subCategoryId = count.Item2;
-                            string subCategoryName = SubCategoriesDbSet.GetSubCategoryById(count.Item2).subCategoryName;
-                            category.subCategories.Add(new SubCategory()
+                            string subCategoryName = SubCategoriesDbSet.GetSubCategoryById(count.Item2).SubCategoryName;
+                            category.SubCategories.Add(new SubCategory()
                             {
-                                categoryId = category.categoryId,
-                                subCategoryName = subCategoryName,
-                                subCategoryId = subCategoryId,
-                                count = count.Item3,
+                                CategoryId = category.CategoryId,
+                                SubCategoryName = subCategoryName,
+                                SubCategoryId = subCategoryId,
+                                Count = count.Item3,
                             });
                         }
                         else
                         {
                             NumberPartsPerCategory category = new NumberPartsPerCategory()
                             {
-                                categoryId = count.Item1,
-                                categoryName = (await CategoriesDbSet.GetCategoryByIdAsync(count.Item1)).categoryName,
-                                numberParts = count.Item3,
+                                CategoryId = count.Item1,
+                                CategoryName = (await CategoriesDbSet.GetCategoryByIdAsync(count.Item1)).CategoryName,
+                                NumberParts = count.Item3,
                             };
                             int subCategoryId = count.Item2;
-                            string subCategoryName = SubCategoriesDbSet.GetSubCategoryById(subCategoryId).subCategoryName;
-                            category.subCategories =
+                            string subCategoryName = SubCategoriesDbSet.GetSubCategoryById(subCategoryId).SubCategoryName;
+                            category.SubCategories = 
                             [
                                 new SubCategory()
                                 {
-                                    categoryId = category.categoryId,
-                                    subCategoryName = subCategoryName,
-                                    subCategoryId = subCategoryId,
-                                    count = count.Item3,
-                                },
+                                    CategoryId = category.CategoryId,
+                                    SubCategoryName = subCategoryName,
+                                    SubCategoryId = subCategoryId,
+                                    Count = count.Item3,
+                                }
                             ];
 
                             result.Add(category);
@@ -548,47 +548,47 @@ namespace Rado.Datasets
 
         private static async Task ValidatePartAsync(Part part)
         {
-            if (part.bus == 0 && part.modificationId == 0)
+            if (part.Bus == 0 && part.ModificationId == 0)
             {
-                var message = $"ModificationId is not provided if the part is not for a car {part.carId}";
+                var message = $"ModificationId is not provided if the part is not for a car {part.CarId}";
                 await LoggerUtil.Log(message);
                 throw new AppException(message);
             }
 
-            if (part.partId == 0)
+            if (part.PartId == 0)
             {
                 var message = $"PartId is not provided ";
                 await LoggerUtil.Log(message);
                 throw new AppException(message);
             }
 
-            if (part.dealerSubCategoryId == 0)
+            if (part.DealerSubCategoryId == 0)
             {
-                var message = $"DealerSubCategoryId not provided a car {part.carId}";
+                var message = $"DealerSubCategoryId not provided a car {part.CarId}";
                 await LoggerUtil.Log(message);
                 throw new AppException(message);
             }
 
-            if (part.price == 0)
+            if (part.Price == 0)
             {
-                var message = $"Price is not provided for a car {part.carId}";
+                var message = $"Price is not provided for a car {part.CarId}";
                 await LoggerUtil.Log(message);
                 throw new AppException(message);
             }
 
-            if (part.dealerSubCategoryName.Length == 0)
+            if (part.DealerSubCategoryName.Length == 0)
             {
-                var message = $"DealerSubCategoryName is not provided for a car {part.carId}";
+                var message = $"DealerSubCategoryName is not provided for a car {part.CarId}";
                 await LoggerUtil.Log(message);
                 throw new AppException(message);
             }
 
-            part.bus ??= 0;
-            part.carId ??= 0;
-            part.partNumber ??= "";
-            part.description ??= "";
-            part.engineModel ??= "";
-            part.mainPicture ??= "";
+            part.Bus ??= 0;
+            part.CarId ??= 0;
+            part.PartNumber ??= "";
+            part.Description ??= "";
+            part.EngineModel ??= "";
+            part.MainPicture ??= "";
         }
 
         private static async Task<DisplayPartView> AddUpdatePartAsync(Part part, bool update)
@@ -602,14 +602,14 @@ namespace Rado.Datasets
 
             try
             {
-                if (part.carId != 0)
+                if (part.CarId != 0)
                 {
                     await LoggerUtil.Log("Fill car details");
                     await FillDetailsFromCar(part);
                 }
 
-                if (part.modelId == 0 || part.modelId == null && part.bus == 0)
-                    part.modelId = ModificationsDbSet.GetModificationById(part.modificationId).modelId;
+                if (part.ModelId == 0 || part.ModelId == null && part.Bus == 0)
+                    part.ModelId = ModificationsDbSet.GetModificationById(part.ModificationId).ModelId;
 
                 int approved = 0;
                 if (Validation.BlockPart(part))
@@ -623,38 +623,38 @@ namespace Rado.Datasets
                 await using SqlCommand command = new SqlCommand(storeProcedureName, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.Add("@partId"        , System.Data.SqlDbType.BigInt).Value = part.partId;
-                command.Parameters.Add("@carId"         , System.Data.SqlDbType.BigInt).Value = part.carId ?? 0;
+                command.Parameters.Add("@partId"        , SqlDbType.BigInt).Value = part.PartId;
+                command.Parameters.Add("@carId"         , SqlDbType.BigInt).Value = part.CarId ?? 0;
 
-                command.Parameters.Add("@modelId",      System.Data.SqlDbType.Int).Value = part.modelId ?? 0;
-                command.Parameters.Add("@modificationId", System.Data.SqlDbType.Int).Value = part.modificationId;
-                command.Parameters.Add("@dealerSubCategoryId", System.Data.SqlDbType.Int).Value = part.dealerSubCategoryId;
-                command.Parameters.Add("@year"          , System.Data.SqlDbType.Int).Value = part.year;
+                command.Parameters.Add("@modelId",      SqlDbType.Int).Value = part.ModelId ?? 0;
+                command.Parameters.Add("@modificationId", SqlDbType.Int).Value = part.ModificationId;
+                command.Parameters.Add("@dealerSubCategoryId", SqlDbType.Int).Value = part.DealerSubCategoryId;
+                command.Parameters.Add("@year"          , SqlDbType.Int).Value = part.Year;
 
-                command.Parameters.Add("@dealerSubCategoryName", System.Data.SqlDbType.NVarChar).Value = part.dealerSubCategoryName;
+                command.Parameters.Add("@dealerSubCategoryName", SqlDbType.NVarChar).Value = part.DealerSubCategoryName;
 
-                command.Parameters.Add("@partNumber"    , System.Data.SqlDbType.NVarChar).Value = part.partNumber;
-                command.Parameters.Add("@description"   , System.Data.SqlDbType.NVarChar).Value = part.description;
-                command.Parameters.Add("@price"         , System.Data.SqlDbType.Decimal).Value = part.price;
-                command.Parameters.Add("@leftRightPosition", System.Data.SqlDbType.Int).Value = part.leftRightPosition ?? 0;
-                command.Parameters.Add("@frontBackPosition", System.Data.SqlDbType.Int).Value = part.frontBackPosition ?? 0; 
+                command.Parameters.Add("@partNumber"    , SqlDbType.NVarChar).Value = part.PartNumber;
+                command.Parameters.Add("@description"   , SqlDbType.NVarChar).Value = part.Description;
+                command.Parameters.Add("@price"         , SqlDbType.Decimal).Value = part.Price;
+                command.Parameters.Add("@leftRightPosition", SqlDbType.Int).Value = part.LeftRightPosition ?? 0;
+                command.Parameters.Add("@frontBackPosition", SqlDbType.Int).Value = part.FrontBackPosition ?? 0;
 
-                command.Parameters.Add("@engineType"    , System.Data.SqlDbType.Int).Value = part.engineType ?? 0;
-                command.Parameters.Add("@engineModel"   , System.Data.SqlDbType.NVarChar).Value = part.engineModel ?? "";
-                command.Parameters.Add("@gearboxType"   , System.Data.SqlDbType.Int).Value = part.gearboxType ?? 0;
-                command.Parameters.Add("@powerkWh"      , System.Data.SqlDbType.Int).Value = part.powerkWh ?? 0;
-                command.Parameters.Add("@powerBHP"      , System.Data.SqlDbType.Int).Value = part.powerBHP ?? 0;
-                command.Parameters.Add("@millage"        , System.Data.SqlDbType.Int).Value = part.millage ?? 0;
+                command.Parameters.Add("@engineType"    , SqlDbType.Int).Value = part.EngineType ?? 0;
+                command.Parameters.Add("@engineModel"   , SqlDbType.NVarChar).Value = part.EngineModel ?? "";
+                command.Parameters.Add("@gearboxType"   , SqlDbType.Int).Value = part.GearboxType ?? 0;
+                command.Parameters.Add("@powerkWh"      , SqlDbType.Int).Value = part.PowerkWh ?? 0;
+                command.Parameters.Add("@powerBHP"      , SqlDbType.Int).Value = part.PowerBHP ?? 0;
+                command.Parameters.Add("@millage"        , SqlDbType.Int).Value = part.Millage ?? 0;
 
-                command.Parameters.Add("@regionId"      , System.Data.SqlDbType.Int).Value = part.regionId;
-                command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = part.mainPicture ?? "";
-                command.Parameters.Add("@mainImageId", System.Data.SqlDbType.BigInt).Value = part.mainImageId;
+                command.Parameters.Add("@regionId"      , SqlDbType.Int).Value = part.RegionId;
+                command.Parameters.Add("@mainPicture", SqlDbType.NVarChar).Value = part.MainPicture ?? "";
+                command.Parameters.Add("@mainImageId", SqlDbType.BigInt).Value = part.MainImageId;
 
-                command.Parameters.Add("@approved",         System.Data.SqlDbType.Int).Value = approved;
-                command.Parameters.Add("@modifiedTime"  , System.Data.SqlDbType.BigInt).Value = part.modifiedTime;
-                command.Parameters.Add("@userId"        , System.Data.SqlDbType.Int).Value = part.userId;
+                command.Parameters.Add("@approved",         SqlDbType.Int).Value = approved;
+                command.Parameters.Add("@modifiedTime"  , SqlDbType.BigInt).Value = part.ModifiedTime;
+                command.Parameters.Add("@userId"        , SqlDbType.Int).Value = part.UserId;
                 if (!update)
-                    command.Parameters.Add("@bus", System.Data.SqlDbType.Int).Value = part.bus;
+                    command.Parameters.Add("@bus", SqlDbType.Int).Value = part.Bus;
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -663,7 +663,7 @@ namespace Rado.Datasets
                 throw new AppException($" Error in AddUpdatePart : {exception.Message}");
             }
 
-            PartView partView = await GetPartAsync(part.partId);
+            PartView partView = await GetPartAsync(part.PartId);
             return EnrichManager.EnrichDisplayPartView(partView);
         }
 
@@ -683,8 +683,8 @@ namespace Rado.Datasets
                 await using SqlCommand command = new SqlCommand(storeProcedureName, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.Add("@partId", System.Data.SqlDbType.BigInt).Value = partId;
-                command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
+                command.Parameters.Add("@partId", SqlDbType.BigInt).Value = partId;
+                command.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
 
                 int rows = await command.ExecuteNonQueryAsync();
                 if (rows == 0)
@@ -708,7 +708,7 @@ namespace Rado.Datasets
         public static async Task<List<PartView>> getPartsAsync(Filter filterPart)
         {
             string selectCommand = "SELECT * FROM PartFilterView WITH(NOLOCK)";
-            if (filterPart.userId == null) filterPart.userId = 0;
+            if (filterPart.UserId == null) filterPart.UserId = 0;
             string test = "";
             List<string> where = new List<string>();
             List<PartView> parts = new List<PartView>();
@@ -716,110 +716,110 @@ namespace Rado.Datasets
             try
             {
                 await using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
-                if (filterPart.carId != 0)
-                    where.Add($"(carId = {filterPart.carId})");
+                if (filterPart.CarId != 0)
+                    where.Add($"(carId = {filterPart.CarId})");
 
-                if (filterPart.modificationId != 0)
+                if (filterPart.ModificationId != 0)
                 {
-                    where.Add($"(modificationId = {filterPart.modificationId})");
+                    where.Add($"(modificationId = {filterPart.ModificationId})");
                 }
-                else if (filterPart.modelId != 0)
+                else if (filterPart.ModelId != 0)
                 {
-                    if (ModelsDbSet.isGroupModel(filterPart.modelId))
+                    if (ModelsDbSet.isGroupModel(filterPart.ModelId))
                     {
-                        where.Add($"(groupModelId  = {filterPart.modelId})");
+                        where.Add($"(groupModelId  = {filterPart.ModelId})");
                     }
                     else
                     {
-                        where.Add($"(modelId = {filterPart.modelId})");
+                        where.Add($"(modelId = {filterPart.ModelId})");
                     }
                 }
-                else if (filterPart.companyId != 0)
-                    where.Add($"(companyId  = {filterPart.companyId})");
+                else if (filterPart.CompanyId != 0)
+                    where.Add($"(companyId  = {filterPart.CompanyId})");
 
-                if (filterPart.modelsId != null && filterPart.modelsId.Length > 0)
+                if (filterPart.ModelsId != null && filterPart.ModelsId.Length > 0)
                 {
-                    where.Add($"(modelId in ({string.Join(",", filterPart.modelsId)}) or groupModelId in ({string.Join(",", filterPart.modelsId)}))");
+                    where.Add($"(modelId in ({string.Join(",", filterPart.ModelsId)}) or groupModelId in ({string.Join(",", filterPart.ModelsId)}))");
                 }
-                if (filterPart.modificationsId != null && filterPart.modificationsId.Length > 0)
+                if (filterPart.ModificationsId != null && filterPart.ModificationsId.Length > 0)
                 {
-                    where.Add($"(modificationId in ({string.Join(",", filterPart.modificationsId)}))");
+                    where.Add($"(modificationId in ({string.Join(",", filterPart.ModificationsId)}))");
                 }
-                if (filterPart.year != 0)
-                    where.Add($"(year = {filterPart.year})");
+                if (filterPart.Year != 0)
+                    where.Add($"(year = {filterPart.Year})");
 
-                if (filterPart.categoryId != 0)
+                if (filterPart.CategoryId != 0)
                 {
-                    where.Add($"(categoryId = {filterPart.categoryId})");
-                }
-
-                if (filterPart.categoriesId != null && filterPart.categoriesId.Length > 0)
-                {
-                    where.Add($"(categoryId in ({string.Join(",", filterPart.categoriesId)}))");
+                    where.Add($"(categoryId = {filterPart.CategoryId})");
                 }
 
-                if (filterPart.subCategoryId != 0)
+                if (filterPart.CategoriesId != null && filterPart.CategoriesId.Length > 0)
                 {
-                    where.Add($"(subCategoryId = {filterPart.subCategoryId})");
+                    where.Add($"(categoryId in ({string.Join(",", filterPart.CategoriesId)}))");
                 }
 
-                if (filterPart.subCategoriesId != null && filterPart.subCategoriesId.Length > 0)
+                if (filterPart.SubCategoryId != 0)
                 {
-                    where.Add($"(subCategoryId in ({string.Join(",", filterPart.subCategoriesId)}))");
+                    where.Add($"(subCategoryId = {filterPart.SubCategoryId})");
                 }
 
-                if (filterPart.engineType != 0)
-                    where.Add($"(engineType = {filterPart.engineType})");
+                if (filterPart.SubCategoriesId != null && filterPart.SubCategoriesId.Length > 0)
+                {
+                    where.Add($"(subCategoryId in ({string.Join(",", filterPart.SubCategoriesId)}))");
+                }
 
-                if (filterPart.engineModel != null && filterPart.engineModel.Length > 0)
-                    where.Add($"(partNumber like '{filterPart.engineModel}%')");
+                if (filterPart.EngineType != 0)
+                    where.Add($"(engineType = {filterPart.EngineType})");
 
-                if (filterPart.gearboxType != 0)
-                    where.Add($"(gearboxType = {filterPart.gearboxType})");
+                if (filterPart.EngineModel != null && filterPart.EngineModel.Length > 0)
+                    where.Add($"(partNumber like '{filterPart.EngineModel}%')");
 
-                if (filterPart.powerBHP != 0)
-                    where.Add($"(powerBHP = {filterPart.powerBHP})");
+                if (filterPart.GearboxType != 0)
+                    where.Add($"(gearboxType = {filterPart.GearboxType})");
 
-                if (filterPart.regionId != 0)
-                    where.Add($"(regionId = {filterPart.regionId})");
+                if (filterPart.PowerBHP != 0)
+                    where.Add($"(powerBHP = {filterPart.PowerBHP})");
 
-                if (filterPart.bus == -2)
+                if (filterPart.RegionId != 0)
+                    where.Add($"(regionId = {filterPart.RegionId})");
+
+                if (filterPart.Bus == -2)
                     where.Add("carId = 0");
-                if (filterPart.bus == 0 )
+                if (filterPart.Bus == 0)
                 {
                     where.Add("bus = 0");
                 }
-                if (filterPart.bus == 1)
+                if (filterPart.Bus == 1)
                 {
                     where.Add("bus = 1");
                 }
 
-                if (filterPart.adminRun)
+                if (filterPart.AdminRun)
                 {
-                    if (filterPart.approved != ApprovedType.All)
-                        where.Add($"(approved = {(int)filterPart.approved})");
-                    if (filterPart.userId != 0 && filterPart.userId != null)
-                        where.Add($"(userId = {filterPart.userId})");
+                    if (filterPart.Approved != ApprovedType.All)
+                        where.Add($"(approved = {(int)filterPart.Approved})");
+                    if (filterPart.UserId != 0 && filterPart.UserId != null)
+                        where.Add($"(userId = {filterPart.UserId})");
                 }
-                else if (filterPart.userId != 0 && filterPart.userId != null)
-                    where.Add($"(userId = {filterPart.userId})");
-                else if (!filterPart.adminRun)
+                else if (filterPart.UserId != 0 && filterPart.UserId != null)
+                    where.Add($"(userId = {filterPart.UserId})");
+                else if (!filterPart.AdminRun)
                 {
                     where.Add($"(approved <> 2)");
                     where.Add($"(suspended = 0)");
                 }
 
-                if (filterPart.partNumber != null && filterPart.partNumber.Trim().Length > 0)
-                    where.Add($"(partNumber like '{filterPart.partNumber}%')");
+                if (filterPart.PartNumber != null && filterPart.PartNumber.Trim().Length > 0)
+                    where.Add($"(partNumber like '{filterPart.PartNumber}%')");
 
-                if (filterPart.categories?.Length > 0)
+                if (filterPart.Categories?.Length > 0)
                 {
-                    where.Add($"(categoryId in ({string.Join(",", filterPart.categories)}))");
+                    where.Add($"(categoryId in ({string.Join(",", filterPart.Categories)}))");
                 }
 
-                if (filterPart.keyword != null && filterPart.keyword.Length > 0)
+                if (filterPart.Keyword != null && filterPart.Keyword.Length > 0)
                 {
-                    string[] keywords = filterPart.keyword.Split(' ');
+                    string[] keywords = filterPart.Keyword.Split(' ');
                     List<string> or = new List<string>();
                     foreach (string keyword in keywords)
                     {
@@ -902,13 +902,12 @@ namespace Rado.Datasets
             {
                 await using SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 await connection.OpenAsync();
-
                 await using SqlCommand command = new SqlCommand(storeProcedureName, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.Add("@partId", System.Data.SqlDbType.BigInt).Value = partId;
-                command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = mainPicture;
-                command.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = userId;
+                command.Parameters.Add("@partId", SqlDbType.BigInt).Value = partId;
+                command.Parameters.Add("@mainPicture", SqlDbType.NVarChar).Value = mainPicture;
+                command.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -924,7 +923,7 @@ namespace Rado.Datasets
         private static async Task<PartView[]> getParts(Filter filterPart)
         {
             string selectCommand = "SELECT * FROM Parts WITH(NOLOCK)";
-            if (filterPart.userId == null) filterPart.userId = 0;
+            if (filterPart.UserId == null) filterPart.UserId = 0;
             string test = "";
             List<string> where = new List<string>();
             List<PartView> parts = new List<PartView>();
@@ -935,57 +934,57 @@ namespace Rado.Datasets
                 {
                     sqlConnection.Open();
 
-                    if (filterPart.carId != 0)
-                        where.Add($"carId = {filterPart.carId}");
+                    if (filterPart.CarId != 0)
+                        where.Add($"carId = {filterPart.CarId}");
 
-                    if (filterPart.companyId != 0)
-                        where.Add($"modelId IN(SELECT modelId FROM Rado WHERE companyId = {filterPart.companyId}) ");
+                    if (filterPart.CompanyId != 0)
+                        where.Add($"modelId IN(SELECT modelId FROM Rado WHERE companyId = {filterPart.CompanyId}) ");
 
-                    if (filterPart.modelId != 0)
-                        where.Add($"modelId = {filterPart.modelId}");
+                    if (filterPart.ModelId != 0)
+                        where.Add($"modelId = {filterPart.ModelId}");
 
-                    if (filterPart.modificationId != 0)
-                        where.Add($"modificationId = {filterPart.modificationId}");
+                    if (filterPart.ModificationId != 0)
+                        where.Add($"modificationId = {filterPart.ModificationId}");
 
-                    if (filterPart.year != 0)
-                        where.Add($"year = {filterPart.year}");
+                    if (filterPart.Year != 0)
+                        where.Add($"year = {filterPart.Year}");
 
-                    if (filterPart.categoryId != 0)
+                    if (filterPart.CategoryId != 0)
                     {
-                        where.Add($"categoryId = {filterPart.categoryId}");
+                        where.Add($"categoryId = {filterPart.CategoryId}");
                     }
 
-                    if (filterPart.subCategoryId != 0)
+                    if (filterPart.SubCategoryId != 0)
                     {
-                        where.Add($"subCategoryId = {filterPart.subCategoryId}");
+                        where.Add($"subCategoryId = {filterPart.SubCategoryId}");
                     }
 
-                    if (filterPart.engineType != 0)
-                        where.Add($"engineType = {filterPart.engineType}");
+                    if (filterPart.EngineType != 0)
+                        where.Add($"engineType = {filterPart.EngineType}");
 
-                    if (filterPart.gearboxType != 0)
-                        where.Add($"gearboxType = {filterPart.gearboxType}");
+                    if (filterPart.GearboxType != 0)
+                        where.Add($"gearboxType = {filterPart.GearboxType}");
 
-                    if (filterPart.powerBHP != 0)
-                        where.Add($"powerBHP = {filterPart.powerBHP}");
+                    if (filterPart.PowerBHP != 0)
+                        where.Add($"powerBHP = {filterPart.PowerBHP}");
 
-                    if (filterPart.regionId != 0)
-                        where.Add($"regionId = {filterPart.regionId}");
+                    if (filterPart.RegionId != 0)
+                        where.Add($"regionId = {filterPart.RegionId}");
 
-                    if (filterPart.userId != 0 && filterPart.userId != null)
-                        where.Add($"userId = {filterPart.userId}");
+                    if (filterPart.UserId != 0 && filterPart.UserId != null)
+                        where.Add($"userId = {filterPart.UserId}");
 
-                    if (filterPart.partNumber != null && filterPart.partNumber.Trim().Length > 0)
-                        where.Add($"partNumber = {filterPart.partNumber}");
-
-                    if (filterPart.categories?.Length > 0)
+                    if (filterPart.PartNumber != null && filterPart.PartNumber.Trim().Length > 0)
+                        where.Add($"partNumber = {filterPart.PartNumber}");
+                        
+                    if (filterPart.Categories?.Length > 0)
                     {
-                        where.Add($"categoryId in ({filterPart.categories})");
+                        where.Add($"categoryId in ({filterPart.Categories})");
                     }
 
-                    if (filterPart.keyword != null && filterPart.keyword.Length > 0)
+                    if (filterPart.Keyword != null && filterPart.Keyword.Length > 0)
                     {
-                        string[] keywords = filterPart.keyword.Split(' ');
+                        string[] keywords = filterPart.Keyword.Split(' ');
                         List<string> or = new List<string>();
                         foreach (string keyword in keywords)
                         {
@@ -1023,11 +1022,10 @@ namespace Rado.Datasets
                     await LoggerUtil.Log($"PartDbSet::GetParts Read all parts is {Environment.TickCount - startTime} ms");
                 }
 
-
-                if (filterPart.hasImages)
+                if (filterPart.HasImages)
                 {
                     test = test + " Message ";
-                    parts = parts.Where(x => x.numberImages > 0).ToList();
+                    parts = parts.Where(x => x.NumberImages > 0).ToList();
                 }
 
                 await LoggerUtil.Log(String.Format("PartDbSet::GetParts Read all cars is {0} ms", Environment.TickCount - startTime));

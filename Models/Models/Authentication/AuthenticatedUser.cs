@@ -17,14 +17,14 @@ namespace Rado.Models.Authentication
 
         public AuthenticatedUser(User user, string token_)
         {
-            userId = user.userId;
-            userName = user.userName;
-            dealer = user.dealer;
+            userId = user.UserId;
+            userName = user.UserName;
+            dealer = user.Dealer;
             token = token_;
-            regionId = user.regionId;
-            activated = user.activated;
-            blocked = user.blocked;
-            suspended = user.suspended;
+            regionId = user.RegionId;
+            activated = user.Activated;
+            blocked = user.Blocked;
+            suspended = user.Suspended;
         }
 
         public int userId { get; set; }

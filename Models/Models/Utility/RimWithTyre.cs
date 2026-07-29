@@ -13,43 +13,43 @@ namespace Models.Models.Utility
     {
         public RimWithTyre() { }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public ItemType itemType { get; set; }
+        public ItemType ItemType { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public long rimWithTyreId { get; set; }
+        public long RimWithTyreId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int tyreCompanyId { get; set; }
+        public int TyreCompanyId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int tyreWidth { get; set; }
+        public int TyreWidth { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int tyreHeight { get; set; }
+        public int TyreHeight { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int tyreRadius { get; set; }
+        public int TyreRadius { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int tyreType { get; set; }
+        public int TyreType { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int companyId { get; set; }
+        public int CompanyId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int modelId { get; set; }
+        public int ModelId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int rimWidth { get; set; }
+        public int RimWidth { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int rimMaterial { get; set; }
+        public int RimMaterial { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int? rimOffset { get; set; }
+        public int? RimOffset { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int? rimBoltCount { get; set; }
+        public int? RimBoltCount { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int? rimBoltDistance { get; set; }
+        public int? RimBoltDistance { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int? rimCenter { get; set; }
+        public int? RimCenter { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int count { get; set; }
+        public int Count { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int? monthDOT { get; set; }
+        public int? MonthDOT { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int? yearDOT { get; set; }
+        public int? YearDOT { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 
-        public decimal price { get; set; }
+        public decimal Price { get; set; }
     }
 }

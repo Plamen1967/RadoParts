@@ -8,14 +8,14 @@ namespace Rado.Models
     public class RimView : Rim
     {
         public RimView() { }
-        public string sellerName { get; set; }
-        public string sellerPhone { get; set; }
-        public string sellerPhone2 { get; set; }
-        public string sellerViber { get; set; }
-        public string sellerWhats { get; set; }
-        public string sellerWebPage { get; set; }
-        public int numberImages { get; set; }
-        public ImageData mainImageData { get; set; }
+        public string SellerName { get; set; }
+        public string SellerPhone { get; set; }
+        public string SellerPhone2 { get; set; }
+        public string SellerViber { get; set; }
+        public string SellerWhats { get; set; }
+        public string SellerWebPage { get; set; }
+        public int NumberImages { get; set; }
+        public ImageDataClass MainImageDataClass { get; set; }
 
     }
 }
