@@ -179,17 +179,54 @@ namespace Rado.Controllers.Admin
         }
 
         [HttpPost]
+        [Route("adminActivateUser/{userId}")]
         [EnableCors("testingApp")]
-        [Route("recoverPassword")]
-        public string recoverPassword(int userId)
+        public BackendMessage adminActivateUser(int userId)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.IsAdmin())
-            {
-                return AdminDbSet.RecoverPassword(userId);
-            }
+            if (!user.IsAdmin())
+                throw new UnauthorizedAccessException("");
 
-            throw new AppException("You have to be administrator to access this functionality");
+            BackendMessage response = UserDbSet.AdminActivateUser(userId, UserId);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("adminUnLockUser/{userId}")]
+        [EnableCors("testingApp")]
+        public BackendMessage adminUnLockUser(int userId)
+        {
+            User user = UserDbSet.GetUserById(UserId);
+            if (!user.IsAdmin())
+                throw new UnauthorizedAccessException("You have to be administrator to access this functionality");
+
+            BackendMessage response = UserDbSet.AdminUnLockUser(userId, UserId);
+            return response;
+        }
+
+        [HttpPost]
+        [Route($"adminDeleteUser/{{userId}}")]
+        [EnableCors("testingApp")]
+        public string AdminDeleteUser(int userId)
+        {
+            User user = UserDbSet.GetUserById(UserId);
+            if (!user.IsAdmin())
+                throw new UnauthorizedAccessException("You have to be administrator to access this functionality");
+
+            string response = UserDbSet.AdminDeleteUser(userId, UserId);
+            return response;
+        }
+
+        [HttpPost]
+        [Route("recoverPassword")]
+        [EnableCors("testingApp")]
+        public string RecoverPassword(int userId)
+        {
+            User user = UserDbSet.GetUserById(UserId);
+            if (!user.IsAdmin())
+                throw new UnauthorizedAccessException("You have to be administrator to access this functionality");
+
+            return AdminDbSet.RecoverPassword(userId);
         }
 
         [HttpPost]
@@ -198,12 +235,10 @@ namespace Rado.Controllers.Admin
         public bool updatePassword([FromBody] NewPassword newPassword)
         {
             User user = UserDbSet.GetUserById(UserId);
-            if (user.IsAdmin())
-            {
-                return AdminDbSet.UpdatePassword(newPassword);
-            }
+            if (!user.IsAdmin())
+                throw new UnauthorizedAccessException("You have to be administrator to access this functionality");
 
-            return false;
+            return AdminDbSet.UpdatePassword(newPassword);
         }
 
         [HttpPost]

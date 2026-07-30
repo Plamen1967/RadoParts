@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -6,7 +6,6 @@ import { PathService } from '@services/path.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { ItemType } from '@model/enum/itemType.enum'
-import { ImageService } from '@services/image.service'
 import { LocalStorageService } from '@services/storage/localStorage.service'
 import { HomeService } from '@services/home.service'
 import { SearchPartService } from '@services/searchPart.service'
@@ -14,7 +13,6 @@ import { NgClass, NgStyle } from '@angular/common'
 import { TyreService } from '@services/tyre/tyre.service'
 import { PartServiceService } from '@services/part/partService.service'
 import { CarService } from '@services/car.service'
-import { LoginComponent } from '@app/user/login/login.component'
 import { ImageData } from '@model/imageData'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { goTop, isMobile, isPart } from '@app/functions/functions'
@@ -33,12 +31,12 @@ import { Filter } from '@model/filters/filter'
 import { SearchBy } from '@model/enum/searchBy.enum'
 import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
 import { LoggerService } from '@services/authentication/logger.service'
+import { LoginComponent } from '@app/admin/components/admin/user/login/login.component'
 @Component({
     selector: 'app-userviewpart',
     templateUrl: './userViewPart.component.html',
     styleUrls: ['./userViewPart.component.css'],
     // changeDetection: ChangeDetectionStrategy.OnPush,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DataRowComponent, FavouriteComponent, NgStyle, RequestByEmailComponent, UserCardComponent, NgClass, ImageCarouselComponent, UpdateAddComponent],
 })
 export class UserViewPartComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -137,7 +135,6 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
 
     private partService: PartServiceService
     private carService: CarService
-    private imageService: ImageService
     private localStorageService: LocalStorageService
     private homeService: HomeService
     private router: Router
@@ -158,7 +155,6 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         super()
         this.partService = inject(PartServiceService)
         this.carService = inject(CarService)
-        this.imageService = inject(ImageService)
         this.localStorageService = inject(LocalStorageService)
         this.homeService = inject(HomeService)
         this.router = inject(Router)

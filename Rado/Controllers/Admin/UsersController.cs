@@ -224,33 +224,6 @@ namespace Rado.Controllers.Admin
         }
 
         [HttpPost]
-        [Route("adminActivateUser/{userId}")]
-        [EnableCors("testingApp")]
-        public BackendMessage adminActivateUser(int userId)
-        {
-            var response = UserDbSet.AdminActivateUser(userId, UserId);
-            return response;
-        }
-
-        [HttpPost]
-        [Route("adminUnLockUser/{userId}")]
-        [EnableCors("testingApp")]
-        public BackendMessage adminUnLockUser(int userId)
-        {
-            var response = UserDbSet.AdminUnLockUser(userId, UserId);
-            return response;
-        }
-
-        [HttpPost]
-        [Route("adminDeleteUser/{userId}")]
-        [EnableCors("testingApp")]
-        public string adminDeleteUser(int userId)
-        {
-            var response = UserDbSet.AdminDeleteUser(userId, UserId);
-            return response;
-        }
-
-        [HttpPost]
         [Route("registerUser")]
         [EnableCors("testingApp")]
         public BackendMessage registerUser(RegisterUser value)

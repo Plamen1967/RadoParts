@@ -36,6 +36,7 @@ export class UserService {
   setUserCount(userCount: UserCount) {
     this.userCount = userCount;
   }
+
   getAll() {
     return this.http.get<User[]>(`${environment.restAPI}/admin/users`);
   }
@@ -58,35 +59,8 @@ export class UserService {
     .pipe()
   }
 
-  // getUserViewById(id: number) {
-  //   const userView = this.userViews.find(user => user.userId == id);
-  //   if (userView) return of(userView);
-
-  //   return this.http.get<UserView>(`${environment.restAPI}/users/GetUserView?userId=${id}`)
-  //   .pipe(
-  //     map(res => 
-  //       { 
-  //         this.userViews.push(res); 
-  //         return res
-  //       }));
-  // }
-
-
-  registerUser(user: User): Observable<BackendMessage> {
-    return this.http.post<BackendMessage>(`${environment.restAPI}/users/registerUser`, JSON.stringify(user), this.httpHeader).pipe(first());
-  }
-
   getNewUserId(): Observable<number> {
     return this.http.get<number>(`${environment.restAPI}/users/getNewUserId`, this.httpHeader).pipe(first());
-  }
-
-  updateUser(user: User): Observable<boolean> {
-    return this.http.post<boolean>(`${environment.restAPI}/users/updateUser`, JSON.stringify(user), this.httpHeader).pipe(first());
-  }
-
-
-  delete(id: number) {
-    return this.http.delete(`${environment.restAPI}/users/${id}`).pipe(first());
   }
 
   loadCurretUser(userId: number): Observable<User> {
@@ -112,37 +86,16 @@ export class UserService {
   unBlockUser(userName: string) {
     return this.http.post(`${environment.restAPI}/users/unBlockUser/${userName}`, { responseType: 'text' }).pipe(first());
   }
+
   recoverUser(account: string) {
     return this.http.post<BackendMessage>(`${environment.restAPI}/users/recoverUser/${account}`, {}).pipe(first());
-  }
-
-  deleteUser(userId: number) {
-    return this.http.post(`${environment.restAPI}/users/deleteUser`, { id: userId }, { responseType: 'text' }).pipe(first());
   }
 
   getAccountByActivationCode(activationCode: string) {
     return this.http.post<User>(`${environment.restAPI}/users/getAccountByActivationCode`, { activationCode }).pipe(first());
   }
 
-  adminActivateUser(userId: number) {
-    return this.http.post<BackendMessage>(`${environment.restAPI}/users/adminActivateUser/${userId}`, {}).pipe(first());
+  registerUser(user: User): Observable<BackendMessage> {
+    return this.http.post<BackendMessage>(`${environment.restAPI}/users/registerUser`, JSON.stringify(user), this.httpHeader).pipe(first());
   }
-
-  adminUnLockUser(userId: number) {
-    return this.http.post<BackendMessage>(`${environment.restAPI}/users/adminUnLockUser/${userId}`, {}).pipe(first());
-  }
-
-  adminDeleteUser(userId: number) {
-    return this.http.post(`${environment.restAPI}/users/adminDeleteUser/${userId}`, {}, { responseType: 'text' }).pipe(first());
-  }
-
-  userPrivate() {
-    return this.http.post(`${environment.restAPI}/users/userPrivate`, {}, { responseType: 'text' }).pipe(first());
-
-  }
-  userDealer() {
-    return this.http.post(`${environment.restAPI}/users/userDealer`, {}, { responseType: 'text' }).pipe(first());
-
-  }
-
 }

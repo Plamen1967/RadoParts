@@ -1,7 +1,7 @@
 import { Routes, RunGuardsAndResolvers } from '@angular/router'
-import { DealerWebPageComponent } from '@app/user/dealerWebPage/dealerWebPage.component'
+import { DealerWebPageComponent } from '@app/admin/components/admin/user/dealerWebPage/dealerWebPage.component'
+import { LoginComponent } from '@app/admin/components/admin/user/login/login.component'
 import { AuthGuard } from '@app/guard/authGuard'
-import { LoginComponent } from '@app/user/login/login.component'
 import { CheckOutComponent } from '@components/custom-controls/check-out/check-out.component'
 import { UserViewPartComponent } from '@components/parts/userViewPart/userViewPart.component'
 import { ResultComponent } from '@components/result/result.component'
@@ -23,15 +23,15 @@ export const routes: Routes = [
         {path: '', redirectTo:'details', pathMatch:'full'},
         {
             path: 'details', 
-            loadComponent: () => import('../user/children/details/details.component')
+            loadComponent: () => import('../admin/components/admin/user/children/details/details.component')
         },
         {
             path: 'stock', 
-            loadComponent: () => import('../user/children/stock/stock.component')
+            loadComponent: () => import('../admin/components/admin/user/children/stock/stock.component')
         },
         {
             path: 'contact', 
-            loadComponent: () => import('../user/children/contact/contact.component')
+            loadComponent: () => import('../admin/components/admin/user/children/contact/contact.component')
 
         },
     ]},
@@ -116,37 +116,37 @@ export const routes: Routes = [
 // Admin data
     { 
         path: 'admin/company', 
-        loadComponent: () => import('./../components/staticData/company/company.component'),
+        loadComponent: () => import('../admin/components/staticdata/company/company.component'),
         canActivate: [AuthGuard] 
     },
     { 
         path: 'admin/model', 
-        loadComponent: () => import('./../components/staticData/model/model.component'),
+        loadComponent: () => import('../admin/components/staticdata/model/model.component'),
         canActivate: [AuthGuard] 
     },
     { 
         path: 'admin/modification', 
-        loadComponent: () => import('./../components/staticData/modification/modification.component'),
+        loadComponent: () => import('../admin/components/staticdata/modification/modification.component'),
         canActivate: [AuthGuard] 
     },
     { 
         path: 'admin/category', 
-        loadComponent: () => import('./../components/staticData/category/category.component'),
+        loadComponent: () => import('../admin/components/staticdata/category-admin/category.component'),
         canActivate: [AuthGuard] 
     },
     { 
         path: 'admin/subcategory', 
-        loadComponent: () => import('./../components/staticData/subCategory/subCategory.component'),
+        loadComponent: () => import('../admin/components/staticdata/subCategory/subCategory.component'),
         canActivate: [AuthGuard] 
     },
     { 
         path: 'admin/dealersubcategory', 
-        loadComponent: () => import('./../components/staticData/dealerSubCategory/dealerSubCategory.component'),
+        loadComponent: () => import('../admin/components/staticdata/dealerSubCategory/dealerSubCategory.component'),
         canActivate: [AuthGuard] 
     },
     { 
         path: 'admin/users', 
-        loadComponent: () => import('./../components/administration/administration.component'),
+        loadComponent: () => import('../admin/components/admin/administration/administration.component'),
         canActivate: [AuthGuard] 
     },
     //#endregion
@@ -165,32 +165,32 @@ export const routes: Routes = [
     // Recovery Registration
     { 
         path: 'user/recovery', 
-        loadComponent: () => import('../user/recovery/recovery.component'),
+        loadComponent: () => import('../admin/components/admin/user/recovery/recovery.component'),
     },
     { 
         path: 'user/activateUser', 
-        loadComponent: () => import('../user/activation/activation.component'),
+        loadComponent: () => import('../admin/components/admin/user/activation/activation.component'),
     },
     { 
         path: 'user/unLockUser', 
-        loadComponent: () => import('../user/activation/activation.component'),
+        loadComponent: () => import('../admin/components/admin/user/activation/activation.component'),
     },
     { 
         path: 'user/user', 
-        loadComponent: () => import('./../user/user/user.component'),
+        loadComponent: () => import('../admin/components/admin/user/user/user.component'),
     },
     { 
         path: 'user/dealerUpdate', 
-        loadComponent: () => import('../user/dealerUpdate/dealerUpdate.component'),
+        loadComponent: () => import('../admin/components/admin/user/dealerUpdate/dealerUpdate.component'),
     },
     { 
         path: 'user/updatepassword', 
-        loadComponent: () => import('../user/password/password.component'),
+        loadComponent: () => import('../admin/components/admin/user/password/password.component'),
         canActivate: [AuthGuard] 
     },
     { 
         path: 'user/userdetails', 
-        loadComponent: () => import('./../components/custom-controls/admin/updateUser/updateUser.component'),
+        loadComponent: () => import('../admin/components/admin/updateUser/updateUser.component'),
         canActivate: [AuthGuard] 
     },
     { 

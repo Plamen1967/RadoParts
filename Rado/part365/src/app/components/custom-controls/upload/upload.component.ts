@@ -1,6 +1,6 @@
 //#region import
 import { HttpClient, HttpEventType } from '@angular/common/http'
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageService } from '@services/image.service'
 import { WebcamImage } from 'ngx-webcam'
@@ -16,7 +16,6 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-upload',
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CameraComponent],
 })
 //#endregion

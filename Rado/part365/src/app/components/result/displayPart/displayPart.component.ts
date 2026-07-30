@@ -26,7 +26,7 @@ import { ViberComponent } from '@components/custom-controls/viber/viber.componen
 import { PriceComponent } from '@components/custom-controls/price/price.component'
 import { TyreViewComponent } from '@components/result/displayPart/tyreView/tyreView.component'
 import { ImageComponent } from '@components/custom-controls/image/image.component'
-import { AdminPanelComponent } from '@components/custom-controls/admin/adminPanel/adminPanel.component'
+import { AdminPanelComponent } from '@app/admin/components/admin/adminPanel/adminPanel.component'
 import { WhatsComponent } from '@components/custom-controls/whats/whats.component'
 import { FavouriteComponent } from '@components/custom-controls/favourite/favourite.component'
 import { DealerComponent } from '@components/custom-controls/dealer/dealer.component'
