@@ -38,6 +38,7 @@ export class AdminService {
     getCompanyName(): Observable<string> {
         return this.http.get(`${environment.restAPI}/admin`, { responseType: 'text' })
     }
+    
     updateCategory(category: Category): Observable<Category> {
         return this.http.post<Category>(`${environment.restAPI}/admin/updateCategory`, category, this.httpHeader).pipe(
             first(),
