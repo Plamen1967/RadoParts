@@ -1,5 +1,5 @@
 //#region imports
-import { Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy, inject } from '@angular/core'
+import { Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core'
 import { ModalService } from '@services/dialog-api/modal.service'
 //#endregion
 //#region component
@@ -8,6 +8,7 @@ import { ModalService } from '@services/dialog-api/modal.service'
     templateUrl: 'jw-modal.component.html',
     styleUrls: ['jw-modal.component.css'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 //#endregion

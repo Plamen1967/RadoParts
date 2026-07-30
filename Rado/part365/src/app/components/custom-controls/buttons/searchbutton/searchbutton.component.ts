@@ -1,23 +1,23 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { HelperComponent } from '@components/helper.old/helper.component';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core'
+import { HelperComponent } from '@components/helper.old/helper.component'
 
 @Component({
     selector: 'app-searchbutton',
     templateUrl: './searchbutton.component.html',
     styleUrls: ['./searchbutton.component.css'],
-    imports: []
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [],
 })
-export class SearchbuttonComponent extends HelperComponent  {
+export class SearchbuttonComponent extends HelperComponent {
+    // eslint-disable-next-line @angular-eslint/no-output-native
+    @Output() click = new EventEmitter<void>()
 
-  // eslint-disable-next-line @angular-eslint/no-output-native
-  @Output() click = new EventEmitter<void>(); 
+    constructor() {
+        super()
+    }
 
-  constructor() { super() }
-
-  
-
-  generateEvent(event:Event) {
-    event.stopPropagation();
-    this.click.emit();
-  }
+    generateEvent(event: Event) {
+        event.stopPropagation()
+        this.click.emit()
+    }
 }

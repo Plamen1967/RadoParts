@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Input, OnInit, Output, Self, inject } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, EventEmitter, Input, OnInit, Output, Self, inject, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -17,6 +17,7 @@ import { switchMap } from 'rxjs'
     selector: 'app-company-choise',
     templateUrl: './company-choise.component.html',
     styleUrls: ['./company-choise.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion

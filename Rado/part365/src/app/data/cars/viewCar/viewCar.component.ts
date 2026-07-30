@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { UpdateEnum } from '@model/enum/update.enum';
-import AddCarComponent from '../addCar/addcar.component';
+import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { UpdateEnum } from '@model/enum/update.enum'
+import AddCarComponent from '../addCar/addcar.component'
 
 @Component({
     selector: 'app-viewcar',
     templateUrl: './viewCar.component.html',
     styleUrls: ['./viewCar.component.css'],
-    imports: [AddCarComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [AddCarComponent],
 })
 export default class ViewCarComponent {
-
-  mode: UpdateEnum = UpdateEnum.View;
-  
+    mode: UpdateEnum = UpdateEnum.View
 }

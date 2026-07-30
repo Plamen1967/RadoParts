@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, OnInit, Optional, Output, Renderer2, Self, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, OnInit, Optional, Output, Renderer2, Self, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
@@ -9,23 +9,24 @@ import { SelectBaseComponent } from '../select-controls/select/select-base/selec
     selector: 'app-radiogrouplist',
     templateUrl: './radiogrouplist.component.html',
     styleUrls: ['./radiogrouplist.component.scss'],
-    imports: [NgClass, FormsModule, ReactiveFormsModule, SelectBaseComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgClass, FormsModule, ReactiveFormsModule, SelectBaseComponent],
 })
 export class RadioGroupListComponent implements OnInit, ControlValueAccessor, AfterViewInit {
     id?: number
     _radios: RadioButton[] = []
-    _value = 1;
+    _value = 1
     isDisabled = false
-    controlName: string | undefined;
-    selection: SelectOption[] = [];
+    controlName: string | undefined
+    selection: SelectOption[] = []
 
-    @Input() all = true;
-    @Input() groupListDisplay: 'flex' | 'none' | undefined = 'flex';
+    @Input() all = true
+    @Input() groupListDisplay: 'flex' | 'none' | undefined = 'flex'
     @Input() set radios(radioButtons: RadioButton[]) {
         this._radios = [...radioButtons]
-        this.selection = this._radios?.map(radio => { 
-            return { value: radio.id, text: radio.label, count: radio.count}
-    });
+        this.selection = this._radios?.map((radio) => {
+            return { value: radio.id, text: radio.label, count: radio.count }
+        })
     }
     @Input() itemSize = 70
     @Input() label?: string
@@ -33,17 +34,20 @@ export class RadioGroupListComponent implements OnInit, ControlValueAccessor, Af
     @Output() changeRadioGroup: EventEmitter<number> = new EventEmitter<number>()
 
     @ViewChild('radioGroup', { static: false }) radioGroup?: ElementRef
-    @Optional() @Self() public ngControl: NgControl = inject(NgControl, { self: true });
+    @Optional() @Self() public ngControl: NgControl = inject(NgControl, { self: true })
     private renderer: Renderer2 = inject(Renderer2)
     private _el: ElementRef = inject(ElementRef)
 
-    constructor(
-    ) {
+    constructor() {
         if (this.ngControl) this.ngControl.valueAccessor = this
     }
-    private onTouched?() { return; }
+    private onTouched?() {
+        return
+    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    private onChange?(_: unknown) { return; }
+    private onChange?(_: unknown) {
+        return
+    }
 
     ngAfterViewInit(): void {
         if (this.onChange) this.onChange(this._value)

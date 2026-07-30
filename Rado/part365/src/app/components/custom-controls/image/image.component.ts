@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { ImageService } from '@services/image.service'
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
@@ -16,10 +16,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     templateUrl: './image.component.html',
     styleUrls: ['./image.component.css'],
     imports: [NgStyle, NgClass],
-    providers: [NgxGalleryHelperService, MatBadgeModule, MatIconModule, MatButtonModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    providers: [NgxGalleryHelperService, MatBadgeModule, MatIconModule, MatButtonModule],
 })
 export class ImageComponent {
-    
     images: NgxGalleryImage[] = []
     public mainImage?: NgxGalleryImage
     numberImages?: number

@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component, OnDestroy, ViewChild, inject, signal } from '@angular/core'
+import { Component, OnDestroy, ViewChild, inject, signal, ChangeDetectionStrategy } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Router, RouterOutlet } from '@angular/router'
 import { NavMenuComponent } from '@app/menu/navMenu/navMenu.component'
@@ -30,16 +30,31 @@ import { OutsideDirective } from '@app/directive/outside.directive'
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, FooterComponent, OutsideDirective, NavMenuComponent, NgClass, RouterModule, CommonModule, MatIconModule, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule],
+    imports: [
+        RouterOutlet,
+        FooterComponent,
+        OutsideDirective,
+        NavMenuComponent,
+        NgClass,
+        RouterModule,
+        CommonModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatListModule,
+    ],
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnDestroy {
-toggleMenu(event: Event) {
-    event.stopPropagation()
-    event.preventDefault()
-    this.menuService.showMenu.set(!this.menuService.showMenu())
-}
+    toggleMenu(event: Event) {
+        event.stopPropagation()
+        event.preventDefault()
+        this.menuService.showMenu.set(!this.menuService.showMenu())
+    }
     userCount$: Observable<UserCount | undefined>
     title = 'part365'
     opened = false
@@ -119,7 +134,7 @@ toggleMenu(event: Event) {
         return false
     }
     get count() {
-        return this.localStorage.items;
+        return this.localStorage.items
     }
 
     ngOnDestroy(): void {

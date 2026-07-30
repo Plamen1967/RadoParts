@@ -1,5 +1,5 @@
 //#region imports
-import { Component, inject } from '@angular/core'
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { Filter } from '@model/filters/filter'
 import { SaveSearchService } from '@services/saveSearch.service'
 //#endregion
@@ -7,6 +7,7 @@ import { SaveSearchService } from '@services/saveSearch.service'
 @Component({
     selector: 'app-showfilter',
     templateUrl: './showfilter.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./showfilter.component.css'],
 })
 //#endregion

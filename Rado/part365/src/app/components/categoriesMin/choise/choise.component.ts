@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { SelectedItemComponent } from '@components/custom-controls/selectedItem/selecteditem.component'
 import { SelectionItem } from '@model/selectionItem'
 
@@ -6,6 +6,7 @@ import { SelectionItem } from '@model/selectionItem'
     selector: 'app-choise',
     templateUrl: './choise.component.html',
     styleUrls: ['./choise.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SelectedItemComponent],
 })
 export class ChoiseComponent {

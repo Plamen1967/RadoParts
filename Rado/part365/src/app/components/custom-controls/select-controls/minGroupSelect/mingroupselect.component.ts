@@ -1,5 +1,5 @@
 //#region
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { ControlValueAccessor } from '@angular/forms'
 import { TopService } from '@services/top.service'
 import { MatDialog } from '@angular/material/dialog'
@@ -11,13 +11,14 @@ import { BaseControl } from '@components/custom-controls/baseControl'
     selector: 'app-mingroupselect',
     templateUrl: './mingroupselect.component.html',
     styleUrls: ['./mingroupselect.component.css'],
-    imports: []
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [],
 })
 
 //#endregion
 export class MinGroupSelectComponent extends BaseControl<string> implements OnInit, ControlValueAccessor {
     override get contolName(): string {
-      throw new Error('Method not implemented.')
+        throw new Error('Method not implemented.')
     }
     //#region members
     _selection = 'Избери данни'
@@ -35,7 +36,7 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
     @Output() change: EventEmitter<number[]> = new EventEmitter<number[]>()
 
     _data?: InternalValue[]
-    id?: string;
+    id?: string
     ids?: number[]
     selectedItems?: string
     SelectionItems: SelectionItem[] = []
@@ -43,8 +44,7 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
     public dialog: MatDialog = inject(MatDialog)
     //#endregion
     //#region constructor
-    constructor(
-    ) {
+    constructor() {
         super()
     }
     //#endregion
@@ -74,7 +74,6 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
         this._selection = this.default
         this.updateSelection()
     }
-
 
     clear() {
         this.selectedItems = ''

@@ -1,11 +1,11 @@
 //#region Imports
 
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ItemType } from '@model/enum/itemType.enum'
 import { ImageService } from '@services/image.service'
-import { MessageService } from '@app/messages/service/messageService';
+import { MessageService } from '@app/messages/service/messageService'
 import { NgStyle } from '@angular/common'
 import { InputComponent } from '../input/input.component'
 import { TextAreaComponent } from '../textArea/textArea.component'
@@ -18,7 +18,8 @@ import { Catcha } from '@model/catcha'
     selector: 'app-requestbyemail',
     templateUrl: './requestByEmail.component.html',
     styleUrls: ['./requestByEmail.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, InputComponent, TextAreaComponent, CatchaComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, TextAreaComponent, CatchaComponent],
 })
 //#endregion
 export class RequestByEmailComponent extends HelperComponent implements OnInit {
@@ -30,15 +31,14 @@ export class RequestByEmailComponent extends HelperComponent implements OnInit {
     @Input({ required: true }) id!: number
     @Input() itemType?: ItemType
 
-        @Output() messageSent: EventEmitter<boolean> = new EventEmitter<boolean>()
+    @Output() messageSent: EventEmitter<boolean> = new EventEmitter<boolean>()
     private formBuilder: FormBuilder = inject(FormBuilder)
     private messageService: MessageService = inject(MessageService)
     private imageService: ImageService = inject(ImageService)
     private popupService: PopUpService = inject(PopUpService)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
-    constructor()
-    {
+    constructor() {
         super()
         this.requestByEmail = this.formBuilder.group({
             name: ['', Validators.required],

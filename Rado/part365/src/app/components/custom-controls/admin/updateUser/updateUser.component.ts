@@ -1,5 +1,5 @@
 //#region Imports
-import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
@@ -29,6 +29,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule],
 })
 //#endregion
@@ -74,7 +75,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     private destroyRef: DestroyRef = inject(DestroyRef)
     //#endregion
     //#endregion
-    
+
     constructor() {
         super()
         this.regions = [...this.staticSelectionService.Region]

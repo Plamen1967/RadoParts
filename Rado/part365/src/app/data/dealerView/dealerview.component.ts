@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { Router } from '@angular/router'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -29,10 +29,10 @@ import { goToPosition } from '@app/functions/functions'
     selector: 'app-dealerview',
     templateUrl: './dealerview.component.html',
     styleUrls: ['./dealerview.component.css'],
-    imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent],
 })
 //#endregion
-
 export class DealerViewComponent extends HelperComponent implements OnInit, AfterViewInit {
     //#region variables and services
     parts: PartView[] = []
@@ -70,7 +70,7 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
     private alertService: AlertService = inject(AlertService)
     private popupService: PopUpService = inject(PopUpService)
     //#endregion
-    
+
     constructor() {
         super()
     }

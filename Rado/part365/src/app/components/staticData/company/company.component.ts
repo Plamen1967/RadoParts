@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -17,6 +17,7 @@ import { SelectOption } from '@model/selectOption'
     selector: 'app-company',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent],
 })
 //#endregion
@@ -31,7 +32,7 @@ export default class CompanyComponent extends HelperComponent implements OnInit,
     private adminService: AdminService = inject(AdminService)
     private route: ActivatedRoute = inject(ActivatedRoute)
     //#endregion
-    
+
     constructor() {
         super()
         this.companyForm = this.formBuilder.group({

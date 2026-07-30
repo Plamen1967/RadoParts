@@ -1,43 +1,42 @@
-import { Component, ElementRef, inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
-import { DialogData } from '@model/dialogData';
-import { Filter } from '@model/filters/filter';
-import { SelectionItem } from '@model/selectionItem';
-import { SaveSearchService } from '@services/saveSearch.service';
+import { Component, ElementRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
+import { DialogData } from '@model/dialogData'
+import { Filter } from '@model/filters/filter'
+import { SelectionItem } from '@model/selectionItem'
+import { SaveSearchService } from '@services/saveSearch.service'
 
 @Component({
     selector: 'app-filter',
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.css'],
-    imports: [MatDialogContent, MatDialogClose]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [MatDialogContent, MatDialogClose],
 })
 export class FilterComponent implements OnInit {
     //#region members
     value?: string
-    placeHolder?: string = 'Избери предишно търсене';
-    data: Filter[] = [];
-    selectedId? : number; 
-    keywords: Map<string, string> = new Map<string, string>();
+    placeHolder?: string = 'Избери предишно търсене'
+    data: Filter[] = []
+    selectedId?: number
+    keywords: Map<string, string> = new Map<string, string>()
     public dialogData: DialogData
-    public dialogRef: MatDialogRef<FilterComponent>;
-    public saveSearch: SaveSearchService;
-    private elem: ElementRef;
+    public dialogRef: MatDialogRef<FilterComponent>
+    public saveSearch: SaveSearchService
+    private elem: ElementRef
     //#endregion
-    constructor(
-    ) {
-                
-        this.dialogData =  inject(MAT_DIALOG_DATA);
-        this.dialogRef = inject(MatDialogRef<FilterComponent>);
-        this.saveSearch = inject(SaveSearchService);
-        this.elem = inject(ElementRef);
+    constructor() {
+        this.dialogData = inject(MAT_DIALOG_DATA)
+        this.dialogRef = inject(MatDialogRef<FilterComponent>)
+        this.saveSearch = inject(SaveSearchService)
+        this.elem = inject(ElementRef)
     }
 
     ngOnInit() {
-        this.data = this.saveSearch.getSavedItems();
+        this.data = this.saveSearch.getSavedItems()
     }
 
     getKeyWords(keywords?: Map<string, string>) {
-      return keywords;
+        return keywords
     }
 
     close() {
@@ -46,7 +45,7 @@ export class FilterComponent implements OnInit {
     }
 
     clickItem($event: Event, item: SelectionItem) {
-      this.dialogRef.close(item.id)
-      return
-  }
+        this.dialogRef.close(item.id)
+        return
+    }
 }

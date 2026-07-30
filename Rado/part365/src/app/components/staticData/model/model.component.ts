@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle, NgClass } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
+import { AfterViewInit, Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -18,6 +18,7 @@ import { PopUpService } from '@app/dialog/services/popUpService.service'
     selector: 'app-model',
     templateUrl: './model.component.html',
     styleUrls: ['./model.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
 })
 //#endregion
@@ -38,7 +39,7 @@ export default class ModelComponent extends HelperComponent implements AfterView
     private popupService: PopUpService = inject(PopUpService)
     private modelService: ModelService = inject(ModelService)
     //#endregion
-    
+
     constructor() {
         super()
 

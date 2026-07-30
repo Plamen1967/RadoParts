@@ -1,27 +1,28 @@
-import { NgClass } from '@angular/common';
-import { Component, HostListener} from '@angular/core';
-import { goTop } from '@app/functions/functions';
+import { NgClass } from '@angular/common'
+import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core'
+import { goTop } from '@app/functions/functions'
 
 @Component({
     selector: 'app-gotop',
     templateUrl: './goTop.component.html',
     styleUrls: ['./goTop.component.css'],
-    imports: [NgClass]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgClass],
 })
 export class GoTopComponent {
-  scrollToTopFlag = false
+    scrollToTopFlag = false
 
-  // @HostListener('window:scroll', ['$event'])
-  // strollY(event: { currentTarget: { scrollY: number; }; }) {
-  //   this.scrollToTopFlag = (event.currentTarget.scrollY > 0) ? true : false;
-  // }
+    // @HostListener('window:scroll', ['$event'])
+    // strollY(event: { currentTarget: { scrollY: number; }; }) {
+    //   this.scrollToTopFlag = (event.currentTarget.scrollY > 0) ? true : false;
+    // }
 
     @HostListener('click')
-  goTop() {
-    goTop();
-  }
+    goTop() {
+        goTop()
+    }
 
-  moveToTop() {
-    this.goTop()
-  }
+    moveToTop() {
+        this.goTop()
+    }
 }

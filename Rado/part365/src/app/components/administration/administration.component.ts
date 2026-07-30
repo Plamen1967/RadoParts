@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core'
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
@@ -17,6 +17,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
     selector: 'app-administration',
     templateUrl: './administration.component.html',
     styleUrls: ['./administration.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [UserInfoComponent, FormsModule],
 })
 export default class AdministrationComponent extends HelperComponent implements OnInit {

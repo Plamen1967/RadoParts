@@ -1,5 +1,21 @@
 //#region Imports
-import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, QueryList, Renderer2, ViewChildren, OnDestroy, AfterViewInit, DestroyRef, DOCUMENT, inject } from '@angular/core'
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Inject,
+    OnInit,
+    Output,
+    QueryList,
+    Renderer2,
+    ViewChildren,
+    OnDestroy,
+    AfterViewInit,
+    DestroyRef,
+    DOCUMENT,
+    inject,
+    ChangeDetectionStrategy,
+} from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'
@@ -15,6 +31,7 @@ import { CategoryService } from '@services/category-subcategory/category.service
     },
     imports: [],
     templateUrl: './categoriesMin.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./categoriesMin.component.css'],
 })
 //#endregion

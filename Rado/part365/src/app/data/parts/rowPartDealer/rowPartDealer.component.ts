@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { convertDate, positionDescription } from '@app/functions/functions'
 import { RowComponent } from '@components/custom-controls/partRow/row.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -16,6 +16,7 @@ import { InfoLine } from '@model/infoLine'
     selector: 'app-rowpartdealer',
     templateUrl: './rowPartDealer.component.html',
     styleUrls: ['./rowPartDealer.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RowComponent],
 })
 //#endregion

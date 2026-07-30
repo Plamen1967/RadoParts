@@ -1,5 +1,5 @@
 //#region import
-import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild, DOCUMENT, inject } from '@angular/core'
+import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -38,6 +38,7 @@ import { QueryParam } from '@model/queryParam'
     selector: 'app-home',
     templateUrl: './Home.component.html',
     styleUrls: ['./Home.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, TooltipDirective, GoTopComponent],
 })
 //#endregion

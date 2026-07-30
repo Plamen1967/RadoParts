@@ -1,6 +1,21 @@
 //#region import
 
-import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Optional, Output, ViewChild } from '@angular/core'
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    DestroyRef,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    inject,
+    Input,
+    OnInit,
+    Optional,
+    Output,
+    ViewChild,
+    ChangeDetectionStrategy,
+} from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs'
@@ -62,25 +77,26 @@ import { StaticSelectionService } from '@services/staticSelection.service'
     selector: 'app-carfilter',
     templateUrl: './carfilter.component.html',
     styleUrls: ['./carfilter.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
-    CategoriesComponent,
-    RadioGroupComponent,
-    SelectComponent,
-    RadioGroupListComponent,
-    InputComponent,
-    TooltipDirective,
-    NgStyle,
-    CategoriesFooterComponent,
-    ReactiveFormsModule,
-    SearchInputComponent,
-    CompanyChoiseComponent,
-    ModelChoiceComponent,
-    ModificationChoiceComponent,
-    RegionComponent,
-    CategoryChoiseComponent,
-    SubcategoryChoiseComponent,
-    SearchBarComponent
-]
+        CategoriesComponent,
+        RadioGroupComponent,
+        SelectComponent,
+        RadioGroupListComponent,
+        InputComponent,
+        TooltipDirective,
+        NgStyle,
+        CategoriesFooterComponent,
+        ReactiveFormsModule,
+        SearchInputComponent,
+        CompanyChoiseComponent,
+        ModelChoiceComponent,
+        ModificationChoiceComponent,
+        RegionComponent,
+        CategoryChoiseComponent,
+        SubcategoryChoiseComponent,
+        SearchBarComponent,
+    ],
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -208,8 +224,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     public activeRoute: ActivatedRoute
     @Optional() public parent: HomeComponent
 
-    constructor(
-    ) {
+    constructor() {
         super()
         this.formBuilder = inject(FormBuilder)
         this.categoryService = inject(CategoryService)
@@ -229,7 +244,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         this.destroyRef = inject(DestroyRef)
         this.activeRoute = inject(ActivatedRoute)
         this.parent = inject(HomeComponent, { optional: true }) as HomeComponent
-
 
         this.filterForm = this.formBuilder.group({
             result: [],
@@ -575,7 +589,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     goToResult(filter: Filter) {
-        goTop();
+        goTop()
         this.loadingService.open('Зареждане на резултатите')
         this.searchPartService.search(filter).subscribe({
             next: (res) => {

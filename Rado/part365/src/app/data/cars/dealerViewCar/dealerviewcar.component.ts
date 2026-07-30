@@ -1,5 +1,5 @@
 //#region import
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
 import { DealerActionType } from '@model/dealerActionType'
@@ -24,6 +24,7 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-dealerviewcar',
     templateUrl: './dealerviewcar.component.html',
     styleUrls: ['./dealerviewcar.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RowComponent],
 })
 //#endregion
@@ -61,8 +62,7 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
     private staticService: StaticSelectionService
     private loggerService: LoggerService
 
-    constructor(
-    ) {
+    constructor() {
         super()
         this.authernticationService = inject(AuthenticationService)
         this.confirmService = inject(ConfirmServiceService)

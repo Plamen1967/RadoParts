@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, Optional, output, Output, Renderer2, Self, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, Optional, output, Output, Renderer2, Self, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 
@@ -6,6 +6,7 @@ import { RadioButton } from '@model/radioButton'
     selector: 'app-radiogroup',
     templateUrl: './radiogroup.component.html',
     styleUrls: ['./radiogroup.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule],
 })
 export class RadioGroupComponent implements ControlValueAccessor, AfterViewInit {

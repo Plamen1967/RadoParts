@@ -1,5 +1,5 @@
 //#region imports
-import { Component, OnDestroy, AfterViewInit, inject } from '@angular/core'
+import { Component, OnDestroy, AfterViewInit, inject, ChangeDetectionStrategy } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 import { ModalService } from '@services/dialog-api/modal.service'
@@ -10,6 +10,7 @@ import { UserService } from '@services/user.service'
     selector: 'app-activation',
     templateUrl: './activation.component.html',
     styleUrls: ['./activation.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 //#endregion

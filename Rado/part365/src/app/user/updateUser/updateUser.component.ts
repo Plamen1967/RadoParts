@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
@@ -30,6 +30,7 @@ import { globalStaticData } from '@model/staticData'
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [UploadComponent, PictureComponent, NgStyle, TextAreaComponent, InputComponent, ReactiveFormsModule, SelectComponent],
 })
 //#endregion
@@ -89,7 +90,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
         this.route = inject(ActivatedRoute)
         this.confirmationService = inject(ConfirmServiceService)
         //#endregion
-        
+
         this.userForm = this.formBuilder.group({
             userName: ['', [Validators.maxLength(50), Validators.required]],
             companyName: ['', [Validators.maxLength(50)]],

@@ -1,5 +1,5 @@
 //#region imports
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DealerActionType } from '@model/dealerActionType'
@@ -15,6 +15,7 @@ import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.co
     selector: 'app-dealerviewtyre',
     templateUrl: './dealerViewTyre.component.html',
     styleUrls: ['./dealerViewTyre.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DataRowComponent],
 })
 //#endregion
@@ -43,7 +44,7 @@ export class DealerViewTyreComponent extends HelperComponent implements OnInit {
     private router: Router = inject(Router)
     //#endregion
     //#endregion
-    
+
     constructor() {
         super()
     }

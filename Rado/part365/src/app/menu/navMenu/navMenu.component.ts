@@ -1,5 +1,5 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, ChangeDetectionStrategy } from '@angular/core'
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -29,8 +29,8 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatInputModule } from '@angular/material/input'
 import { MediaMatcher } from '@angular/cdk/layout'
 import { inject, signal } from '@angular/core'
-import {MatIconModule} from '@angular/material/icon';
-import { MenuService } from '@services/Menu.service';
+import { MatIconModule } from '@angular/material/icon'
+import { MenuService } from '@services/Menu.service'
 //#endregion
 
 //#region component
@@ -52,6 +52,7 @@ import { MenuService } from '@services/Menu.service';
     ],
     selector: 'app-nav-menu',
     templateUrl: 'navmenu.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['navmenu.component.scss'],
 })
 //#endregion
@@ -72,24 +73,23 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
     @ViewChild('header', { read: ElementRef }) header?: ElementRef
     @ViewChild('mySidenav', { read: ElementRef }) myElement?: ElementRef
     userCount$: Observable<UserCount | undefined>
-    menuService: MenuService;
+    menuService: MenuService
     document!: Document
-    private router: Router;
-    private checkOutService: CheckOutService;
-    private location: Location;
-    private localStorage: LocalStorageService;
-    private userService: UserService;
-    private carService: CarService;
-    private partService: PartServiceService;
-    public pathService: PathService;
-    private activatedRoute: ActivatedRoute;
-    private userCountService: UserCountService;
-    private matDialog: MatDialog;
-    private confirmService: ConfirmServiceService;
-    public staticSelectionService: StaticSelectionService;
+    private router: Router
+    private checkOutService: CheckOutService
+    private location: Location
+    private localStorage: LocalStorageService
+    private userService: UserService
+    private carService: CarService
+    private partService: PartServiceService
+    public pathService: PathService
+    private activatedRoute: ActivatedRoute
+    private userCountService: UserCountService
+    private matDialog: MatDialog
+    private confirmService: ConfirmServiceService
+    public staticSelectionService: StaticSelectionService
 
-    constructor(
-    ) {
+    constructor() {
         super()
         this.router = inject(Router)
         this.checkOutService = inject(CheckOutService)
@@ -105,7 +105,7 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
         this.confirmService = inject(ConfirmServiceService)
         this.staticSelectionService = inject(StaticSelectionService)
         this.document = inject(DOCUMENT)
-        this.menuService = inject(MenuService);
+        this.menuService = inject(MenuService)
         this.checkOutService.checkout.subscribe(() => this.checkoutUpdate())
         this.userService.userPage.subscribe((userId) => {
             this.userId = userId
@@ -144,13 +144,13 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
         event.preventDefault()
         this.menuService.showMenu.set(!this.menuService.showMenu())
     }
-    
+
     collapse() {
         this.isExpanded = false
     }
 
     toggleSideMenu() {
-        return;
+        return
     }
     toggle() {
         this.isExpanded = !this.isExpanded

@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -15,10 +15,10 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-subcategory-choise',
     templateUrl: './subcategory-choise.component.html',
     styleUrls: ['./subcategory-choise.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
 })
 //#endregion
-
 export class SubcategoryChoiseComponent implements ControlValueAccessor, OnInit, AfterViewInit {
     //#region variables and services
     subCategoryForm: FormGroup
@@ -52,7 +52,7 @@ export class SubcategoryChoiseComponent implements ControlValueAccessor, OnInit,
         this.element = inject(ElementRef)
         this.destroyRef = inject(DestroyRef)
         //#endregion
-        
+
         if (this.control) this.control.valueAccessor = this
         this.subCategoryForm = this.formBuilder.group({
             subCategoriesId_int: [''],

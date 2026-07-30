@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle, NgClass } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
+import { AfterViewInit, Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -17,10 +17,10 @@ import { SelectOption } from '@model/selectOption'
     selector: 'app-dealersubcategory',
     templateUrl: './dealerSubCategory.component.html',
     styleUrls: ['./dealerSubCategory.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
 })
 //#endregion
-
 export default class DealerSubCategoryComponent extends HelperComponent implements AfterViewInit {
     //#region variables and services
     dealerSubCategoryForm: FormGroup
@@ -40,7 +40,7 @@ export default class DealerSubCategoryComponent extends HelperComponent implemen
     private dealerSubCategoryService: DealerSubCategoryService = inject(DealerSubCategoryService)
     //#endregion
     //#endregion
-    
+
     constructor() {
         super()
 

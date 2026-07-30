@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import UpdateBusComponent from '@app/data/bus/updateBus/updatebus.component'
 import UpdateCarComponent from '@app/data/cars/updateCar/updateCar.component'
 import UpdatePartComponent from '@app/data/parts/updatepart/updatepart.component'
@@ -10,28 +10,29 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-updateadd',
     templateUrl: './updateadd.component.html',
     styleUrls: ['./updateadd.component.css'],
-    imports: [UpdateCarComponent, UpdateBusComponent, UpdatePartComponent, UpdateTyreComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [UpdateCarComponent, UpdateBusComponent, UpdatePartComponent, UpdateTyreComponent],
 })
 export class UpdateAddComponent implements OnInit {
     @Input() displayPartView?: DisplayPartView
-  
+
     bus?: boolean
     id?: number
     car?: boolean
     tyre?: boolean
     part?: boolean
-  @Output() saved: EventEmitter<number> = new EventEmitter<number>()
-  @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
+    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
+    @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
 
-  backEvent(event: number) {
-    this.noChange.emit(event)
-  }
-  savedEvent(event: number) {
-    this.saved.emit(event)
-  }
+    backEvent(event: number) {
+        this.noChange.emit(event)
+    }
+    savedEvent(event: number) {
+        this.saved.emit(event)
+    }
 
     ngOnInit() {
-      this.id = this.displayPartView?.id;
+        this.id = this.displayPartView?.id
 
         switch (this.displayPartView?.itemType) {
             case ItemType.CarPart: {
@@ -61,7 +62,7 @@ export class UpdateAddComponent implements OnInit {
                 break
             }
             default: {
-              break;
+                break
             }
         }
     }

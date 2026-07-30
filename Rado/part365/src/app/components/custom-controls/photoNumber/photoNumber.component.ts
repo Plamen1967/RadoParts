@@ -1,14 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 
 @Component({
     selector: 'app-photonumber',
     templateUrl: './photoNumber.component.html',
     styleUrls: ['./photoNumber.component.css'],
-    imports: []
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [],
 })
 export class PhotoNumberComponent {
-
-
-  @Input() phone = "";
-
+    @Input() phone = ''
 }

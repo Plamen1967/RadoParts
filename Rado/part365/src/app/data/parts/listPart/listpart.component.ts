@@ -1,6 +1,6 @@
 //#region import
 import { AsyncPipe, NgStyle, ViewportScroller } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, OnInit } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { goToPosition, sortPartView } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -53,6 +53,7 @@ import { UserCount } from '@model/userCount'
     selector: 'app-listpart',
     templateUrl: './listpart.component.html',
     styleUrls: ['./listpart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NavigatorComponent,
         DealerViewComponent,
@@ -149,18 +150,17 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     private userCountService: UserCountService
     private loggerService: LoggerService
 
-    constructor(
-    ) {
+    constructor() {
         super()
         this.modelService = inject(ModelService)
         this.categoryService = inject(CategoryService)
-        this.subCategoryService = inject(SubCategoryService)    
+        this.subCategoryService = inject(SubCategoryService)
         this.popupService = inject(PopUpService)
         this.searchPartService = inject(SearchPartService)
         this.authernticationService = inject(AuthenticationService)
         this.formBuilder = inject(FormBuilder)
         this.partService = inject(PartServiceService)
-        this.staticSelectionService = inject(StaticSelectionService)    
+        this.staticSelectionService = inject(StaticSelectionService)
         this.userService = inject(UserService)
         this.modificationService = inject(ModificationService)
         this.nextIdService = inject(NextIdService)
@@ -171,7 +171,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.route = inject(ActivatedRoute)
         this.carService = inject(CarService)
         this.userCountService = inject(UserCountService)
-        this.loggerService = inject(LoggerService)  
+        this.loggerService = inject(LoggerService)
         this._autoSearch$ = new Subject<Filter>()
         this._autoPartSearch$ = new Subject<Filter>()
         this._debounce = 0

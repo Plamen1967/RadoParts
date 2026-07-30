@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, Self } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { SelectComponent } from '../select-controls/select/select.component'
 import { SelectOption } from '@model/selectOption'
@@ -13,10 +13,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-year',
     templateUrl: './year.component.html',
     styleUrls: ['./year.component.css'],
-    imports: [ReactiveFormsModule, SelectComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [ReactiveFormsModule, SelectComponent],
 })
 //#endregion
-
 export class YearComponent extends HelperComponent implements ControlValueAccessor, AfterViewInit, OnInit {
     isDisabled = false
     yearForm: FormGroup
@@ -34,15 +34,13 @@ export class YearComponent extends HelperComponent implements ControlValueAccess
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
 
-        @Self() public control: NgControl = inject(NgControl)
-        public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
-        public errorService: ErrorService = inject(ErrorService)
-        formBuilder: FormBuilder = inject(FormBuilder)
-        private destroyRef: DestroyRef = inject(DestroyRef)
+    @Self() public control: NgControl = inject(NgControl)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    public errorService: ErrorService = inject(ErrorService)
+    formBuilder: FormBuilder = inject(FormBuilder)
+    private destroyRef: DestroyRef = inject(DestroyRef)
 
-
-    constructor(
-    ) {
+    constructor() {
         super()
         if (this.control) this.control.valueAccessor = this
         this.yearForm = this.formBuilder.group({

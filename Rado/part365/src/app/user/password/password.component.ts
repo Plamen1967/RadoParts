@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, inject, Input, OnInit, Renderer2 } from '@angular/core'
+import { Component, ElementRef, inject, Input, OnInit, Renderer2, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -12,6 +12,7 @@ import { ModalService } from '@services/dialog-api/modal.service'
     selector: 'app-password',
     templateUrl: './password.component.html',
     styleUrls: ['./password.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, ReactiveFormsModule, NgStyle],
 })
 //#endregion

@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { BaseControl } from '../baseControl'
 
@@ -7,7 +7,8 @@ import { BaseControl } from '../baseControl'
     selector: 'app-searchinput',
     templateUrl: './searchInput.component.html',
     styleUrls: ['./searchInput.component.css'],
-    imports: [FormsModule, NgStyle, NgClass]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [FormsModule, NgStyle, NgClass],
 })
 export class SearchInputComponent extends BaseControl<string> {
     filter?: string
@@ -33,19 +34,19 @@ export class SearchInputComponent extends BaseControl<string> {
     filterChange(event: Event) {
         this.filter = (event.target as HTMLInputElement).value
         this.updateCheckBox()
-       if (this.onChange) this.onChange(this.filter!)
-       this.filterChanged.emit(this.filter)
+        if (this.onChange) this.onChange(this.filter!)
+        this.filterChanged.emit(this.filter)
     }
 
     onSearch() {
-       this.Search.emit(this.filter)
+        this.Search.emit(this.filter)
     }
 
     onClearBox() {
         this.filter = ''
         this.updateCheckBox()
         this.filterChanged.emit(this.filter)
-        if (this.onChange) this.onChange('');
+        if (this.onChange) this.onChange('')
     }
 
     updateCheckBox() {

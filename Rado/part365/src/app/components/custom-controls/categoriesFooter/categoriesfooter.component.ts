@@ -1,26 +1,24 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Dropdown } from '@model/dropDown';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Dropdown } from '@model/dropDown'
 
 @Component({
     selector: 'app-categoriesfooter',
     templateUrl: './categoriesfooter.component.html',
     styleUrls: ['./categoriesfooter.component.scss'],
-    imports: []
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [],
 })
 export class CategoriesFooterComponent {
+    @Input() categories?: Dropdown[]
+    @Input() hideFilter?: boolean
 
+    @Output() categoryClick = new EventEmitter<number>()
 
-  @Input() categories?: Dropdown[];
-  @Input() hideFilter?: boolean;
-
-  @Output() categoryClick = new EventEmitter<number>()
-
-  categoryMessage(name?: string) {
-    const message: string = name?.split('-').join(' ') ?? '';
-    return `${message.toLowerCase()}`;
-  }
-  categorySelected(categoryId: number) {
-    this.categoryClick.emit(categoryId)
-  }
-
+    categoryMessage(name?: string) {
+        const message: string = name?.split('-').join(' ') ?? ''
+        return `${message.toLowerCase()}`
+    }
+    categorySelected(categoryId: number) {
+        this.categoryClick.emit(categoryId)
+    }
 }

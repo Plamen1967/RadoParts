@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { HelperComponent } from '../helper/helper.component'
 import { ImageData } from '@model/imageData'
 import { FormsModule } from '@angular/forms'
@@ -14,7 +14,8 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
     selector: 'app-imagelist',
     templateUrl: './imagelist.component.html',
     styleUrls: ['./imagelist.component.css'],
-    imports: [FormsModule, UploadComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [FormsModule, UploadComponent],
 })
 export class ImageListComponent extends HelperComponent implements OnInit {
     mainImageId?: number
@@ -32,9 +33,8 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     private popupService: PopUpService = inject(PopUpService)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private toastService: ToastService = inject(ToastService)
-    
-    constructor(
-    ) {
+
+    constructor() {
         super()
     }
 
@@ -98,5 +98,4 @@ export class ImageListComponent extends HelperComponent implements OnInit {
             },
         })
     }
-
 }

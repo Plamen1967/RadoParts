@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { BaseControl } from '../baseControl'
 import { CONSTANT } from '@app/constant/globalLabels'
@@ -7,7 +7,8 @@ import { NgClass } from '@angular/common'
     selector: 'app-inputpassword',
     templateUrl: './inputpassword.component.html',
     styleUrls: ['./inputpassword.component.css'],
-    imports: [NgClass, FormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgClass, FormsModule],
 })
 export class InputPasswordComponent extends BaseControl<string> {
     @Input() label?: string
@@ -28,7 +29,7 @@ export class InputPasswordComponent extends BaseControl<string> {
     }
 
     override get contolName(): string {
-        return this.control.name?.toString() ??  this.label ?? this.placeHolder ?? '';
+        return this.control.name?.toString() ?? this.label ?? this.placeHolder ?? ''
     }
 
     show() {
@@ -37,7 +38,6 @@ export class InputPasswordComponent extends BaseControl<string> {
     }
 
     change() {
-        if (this.onChange)
-        this.onChange(this.value!)
+        if (this.onChange) this.onChange(this.value!)
     }
 }

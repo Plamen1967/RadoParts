@@ -1,6 +1,6 @@
 //#region import
 import { HttpClient, HttpEventType } from '@angular/common/http'
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageService } from '@services/image.service'
 import { WebcamImage } from 'ngx-webcam'
@@ -16,7 +16,8 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-upload',
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.css'],
-    imports: [CameraComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [CameraComponent],
 })
 //#endregion
 export class UploadComponent extends HelperComponent implements OnInit {
@@ -42,12 +43,11 @@ export class UploadComponent extends HelperComponent implements OnInit {
     private popupService: PopUpService = inject(PopUpService)
     private errorService: ErrorService = inject(ErrorService)
 
-    constructor(
-    ) {
+    constructor() {
         super()
     }
     ngOnInit(): void {
-        this.updateCount();
+        this.updateCount()
     }
     get buttonMessage() {
         if (this.businessCard) return 'Качи Бизнес карта'
@@ -80,16 +80,16 @@ export class UploadComponent extends HelperComponent implements OnInit {
 
     updateCount() {
         if (this.id) {
-            this.imageService.getImageCount(this.id!)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-                next: (count) => (this.imageCount = count),
-                error: (error) => this.errorService.logError(error),
-            })
-            }
-            else {
-                this.imageCount = 0;
-            }
+            this.imageService
+                .getImageCount(this.id!)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe({
+                    next: (count) => (this.imageCount = count),
+                    error: (error) => this.errorService.logError(error),
+                })
+        } else {
+            this.imageCount = 0
+        }
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public uploadFile(event: any) {

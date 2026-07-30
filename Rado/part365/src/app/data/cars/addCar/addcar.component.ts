@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -38,6 +38,7 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-addcar',
     templateUrl: './addcar.component.html',
     styleUrls: ['./addcar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent],
 })
 //#endregion
@@ -57,8 +58,8 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     private popupService: PopUpService = inject(PopUpService)
     private userCountService: UserCountService = inject(UserCountService)
     private toastService: ToastService = inject(ToastService)
-    //#endregion  
-    
+    //#endregion
+
     //#region host listeners
     @HostListener('window:keydown.esc')
     handleKeyDownEscape() {
@@ -141,7 +142,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             mainImageId: [''],
         })
         //#endregion
-        
+
         this.formGroup = this.addCarForm
         this.yearTo = this.currentYear
         this.setYears()

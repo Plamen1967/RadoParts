@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, Self, ViewChild, OnInit, DestroyRef, inject } from '@angular/core'
+import { Component, ElementRef, EventEmitter, Input, Output, Self, ViewChild, OnInit, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core'
 import { ControlValueAccessor, NgControl } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { SelectionItem } from '@model/selectionItem'
@@ -14,7 +14,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-multiselection',
     templateUrl: './multiselection.component.html',
     styleUrls: ['./multiselection.component.css'],
-    imports: [ButtonGroupComponent, NgClass, NgStyle, ChoiseComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [ButtonGroupComponent, NgClass, NgStyle, ChoiseComponent],
 })
 export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
     @ViewChild('minGroup') minGroup?: ElementRef<HTMLInputElement>
@@ -69,8 +70,7 @@ export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
     public errorService: ErrorService = inject(ErrorService)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
-    constructor(
-    ) {
+    constructor() {
         if (this.control) this.control.valueAccessor = this
     }
 

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { BaseControl } from '../baseControl'
 import { FormsModule } from '@angular/forms'
 import { NgClass, NgStyle } from '@angular/common'
@@ -7,7 +7,8 @@ import { NgClass, NgStyle } from '@angular/common'
     selector: 'app-input',
     templateUrl: './input.component.html',
     styleUrls: ['./input.component.scss'],
-    imports: [NgStyle, NgClass, FormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgStyle, NgClass, FormsModule],
 })
 export class InputComponent extends BaseControl<string> {
     @Input() label?: string

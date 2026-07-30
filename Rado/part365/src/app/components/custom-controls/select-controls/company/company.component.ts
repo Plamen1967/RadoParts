@@ -1,5 +1,5 @@
 //#region @Component
-import { Component, ElementRef, HostListener, inject, Inject, OnInit } from '@angular/core'
+import { Component, ElementRef, HostListener, inject, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
 import { SelectBase } from '@components/custom-controls/selectBase'
 import { NgClass } from '@angular/common'
@@ -15,32 +15,32 @@ import { RadioGroupComponent } from '@components/custom-controls/radioGroup/radi
     selector: 'app-company',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    imports: [NgClass, FormsModule, MatDialogContent, MatDialogClose, SearchInputComponent, ChoiseComponent, RadioGroupComponent, ReactiveFormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgClass, FormsModule, MatDialogContent, MatDialogClose, SearchInputComponent, ChoiseComponent, RadioGroupComponent, ReactiveFormsModule],
 })
 //#endregion
 export class CompanyComponent extends SelectBase implements OnInit {
-    @HostListener('window:keydown.enter',['$event']) onClick(event: Event) {
+    @HostListener('window:keydown.enter', ['$event']) onClick(event: Event) {
         event.stopPropagation()
         event.preventDefault()
         this.close()
         return true
-      }
+    }
     //#region members
     value?: string
-    _index = 0;
-    showAll = true;
+    _index = 0
+    showAll = true
     placeHolder?: string
-    showCount?: boolean = true;
+    showCount?: boolean = true
     radios: RadioButton[] = [
         { label: 'Всички', id: 0 },
         { label: 'С обяви', id: 1 },
     ]
-    @Inject(MAT_DIALOG_DATA) public data: DialogData = inject(MAT_DIALOG_DATA);
-    public dialogRef: MatDialogRef<CompanyComponent> = inject(MatDialogRef<CompanyComponent>);
+    @Inject(MAT_DIALOG_DATA) public data: DialogData = inject(MAT_DIALOG_DATA)
+    public dialogRef: MatDialogRef<CompanyComponent> = inject(MatDialogRef<CompanyComponent>)
     private elem: ElementRef = inject(ElementRef)
     //#endregion
-    constructor(
-    ) {
+    constructor() {
         super()
     }
 
@@ -48,8 +48,8 @@ export class CompanyComponent extends SelectBase implements OnInit {
         return this._index++
     }
     ngOnInit() {
-        this.showAll = this.data.showAll;
-        this.showCount = this.data.showCount;
+        this.showAll = this.data.showAll
+        this.showCount = this.data.showCount
         this.useLetter = this.data.useLetter
         this.groupSelection = this.data.groupSelection
         this._value = this.data.value
@@ -72,10 +72,10 @@ export class CompanyComponent extends SelectBase implements OnInit {
     }
 
     clearSelection() {
-        this.selections = [];
+        this.selections = []
         this.letterSelected = undefined
-        this.clear();
-        this._data.forEach(item => item.isSelected = false);
+        this.clear()
+        this._data.forEach((item) => (item.isSelected = false))
         this.updateData()
     }
 
@@ -92,15 +92,12 @@ export class CompanyComponent extends SelectBase implements OnInit {
     clickItem($event: Event, item: InternalValue) {
         if (!item.isSelectable) return
 
-
         if (item.isSelected) {
             const index = this.selections.findIndex((elem) => elem == item.id!)
             item.isSelected = !item.isSelected
             this.selections.splice(index, 1)
-            this.value = ""
-        }
-        else 
-        {
+            this.value = ''
+        } else {
             this.value = item.id!.toString()
             this.selections.push(item.id!)
             item.isSelected = !item.isSelected
@@ -108,10 +105,9 @@ export class CompanyComponent extends SelectBase implements OnInit {
                 this.dialogRef.close(this.value)
             }
         }
-    
+
         this.updateSelection()
     }
-
 
     deleteSelection($event: number) {
         const index = this._data.findIndex((item) => item.id == $event)
@@ -123,8 +119,8 @@ export class CompanyComponent extends SelectBase implements OnInit {
     }
 
     changed(event: number) {
-        this.showCountOnly = event;
+        this.showCountOnly = event
         this.updateData()
-        console.log(event?"С обяви":"Всички")
+        console.log(event ? 'С обяви' : 'Всички')
     }
 }

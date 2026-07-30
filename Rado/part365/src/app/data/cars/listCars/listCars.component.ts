@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, inject, DestroyRef } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, inject, DestroyRef, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { AsyncPipe } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -43,6 +43,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-listcars',
     templateUrl: './listcars.component.html',
     styleUrls: ['./listCars.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         SelectComponent,
         DealerViewComponent,
@@ -129,7 +130,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private alertService: AlertService = inject(AlertService)
     private popupService: PopUpService = inject(PopUpService)
-    private router: Router = inject(Router) 
+    private router: Router = inject(Router)
     private route: ActivatedRoute = inject(ActivatedRoute)
     private loggerService: LoggerService = inject(LoggerService)
     private userCountService: UserCountService = inject(UserCountService)
@@ -176,7 +177,8 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             this.updateParamsFromQuery(params)
             const itemType: ItemType = this.addCarFlag ? ItemType.OnlyCar : this.addBusFlag ? ItemType.OnlyBus : this.bus ? ItemType.BusPart : ItemType.CarPart
             if (this.addCarFlag || this.addPartFlag || this.addBusFlag) {
-                this.nextIdService.getNextId(itemType)
+                this.nextIdService
+                    .getNextId(itemType)
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe({
                         next: (nextId) => {
@@ -185,17 +187,17 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                                     this.back(this.currentCarId!)
                                     return
                                 })
-                        } else {
-                            this.id = nextId.nextId
-                        }
-                    },
-                    error: (error) => {
-                        this.loggerService.logError(error)
-                    },
-                    complete: () => {
-                        return
-                    },
-                })
+                            } else {
+                                this.id = nextId.nextId
+                            }
+                        },
+                        error: (error) => {
+                            this.loggerService.logError(error)
+                        },
+                        complete: () => {
+                            return
+                        },
+                    })
             } else if (this.updateCarFlag || this.updateBusFlag || this.updatePartFlag) {
                 this.mode = UpdateEnum.Update
 
@@ -455,11 +457,12 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     }
 
     loadCar(id: number) {
-        this.carService.fetchCar(id)
+        this.carService
+            .fetchCar(id)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((car) => {
                 this.refreshCar(car)
-                })
+            })
     }
 
     refreshCar(car: CarView) {

@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule, ValidationErrors } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
@@ -8,7 +8,8 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-select-base',
     templateUrl: './select-base.component.html',
     styleUrls: ['./select-base.component.css'],
-    imports: [FormsModule, NgClass, NgStyle]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [FormsModule, NgClass, NgStyle],
 })
 export class SelectBaseComponent {
     value?: number

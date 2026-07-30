@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { BaseControl } from '../baseControl'
@@ -9,6 +9,7 @@ import { AutofocusDirective } from '@app/directive/autofocus.directive'
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AutofocusDirective, NgClass, FormsModule],
 })
 export class UserComponent extends BaseControl<string> {

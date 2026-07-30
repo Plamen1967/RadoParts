@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, DestroyRef, EventEmitter, inject, Output, Self } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Output, Self, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { ClearbuttonComponent } from '@components/custom-controls/buttons/clearbutton/clearbutton.component'
@@ -14,6 +14,7 @@ import { StaticSelectionService } from '@services/staticSelection.service'
     selector: 'app-search-bar',
     templateUrl: './search-bar.component.html',
     styleUrls: ['./search-bar.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule],
 })
 //#endregion
@@ -30,7 +31,7 @@ export class SearchBarComponent extends HelperComponent implements ControlValueA
     private fb: FormBuilder = inject(FormBuilder)
     @Self() public control: NgControl = inject(NgControl)
     //#endregion
-    //#endregion   
+    //#endregion
     constructor() {
         super()
         if (this.control) this.control.valueAccessor = this

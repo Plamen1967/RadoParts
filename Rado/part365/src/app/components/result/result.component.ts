@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, DOCUMENT, inject } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, DOCUMENT, inject, ChangeDetectionStrategy } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
 import { NavigatorComponent } from '@components/result/navigator/navigator.component'
@@ -34,6 +34,7 @@ import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
     selector: 'app-result',
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent],
 })
 //#endregion

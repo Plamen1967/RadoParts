@@ -1,5 +1,5 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, Self } from '@angular/core'
+import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, Self, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -17,6 +17,7 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-modification-choice',
     templateUrl: './modification-choice.component.html',
     styleUrls: ['./modification-choice.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion

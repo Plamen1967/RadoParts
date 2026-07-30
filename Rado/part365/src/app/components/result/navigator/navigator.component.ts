@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core'
+import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { SortType } from '@model/enum/sortType.enum'
 import { RadioButton } from '@model/radioButton'
@@ -10,7 +10,8 @@ import { RadioGroupListComponent } from '../../custom-controls/radioGroupList/ra
     selector: 'app-navigator',
     templateUrl: './navigator.component.html',
     styleUrls: ['./navigator.component.css'],
-    imports: [NgStyle, NgClass, FormsModule, RadioGroupListComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgStyle, NgClass, FormsModule, RadioGroupListComponent],
 })
 export class NavigatorComponent implements OnInit {
     @Input() currentPage = 1
@@ -29,7 +30,6 @@ export class NavigatorComponent implements OnInit {
     ngOnInit() {
         this.calcOffset()
         this.pages = [...Array(this.numberPages).keys()]
-        
     }
 
     radios: RadioButton[] = [
@@ -47,10 +47,10 @@ export class NavigatorComponent implements OnInit {
     arrayPages_: number[] = []
     pages: number[] = []
     previousButton?: ElementRef<HTMLInputElement>
-    taticSelectionService: StaticSelectionService = inject(StaticSelectionService);
+    taticSelectionService: StaticSelectionService = inject(StaticSelectionService)
 
     calcOffset() {
-        const remnainer = this.currentPage % this.itemsPerPages;
+        const remnainer = this.currentPage % this.itemsPerPages
         if (remnainer === 0) {
             this.startPage = this.currentPage - 9
             this.endPage = this.currentPage
@@ -66,7 +66,7 @@ export class NavigatorComponent implements OnInit {
     }
 
     get arrayPages() {
-            this.calcOffset()
+        this.calcOffset()
         return this.arrayPages_
     }
 

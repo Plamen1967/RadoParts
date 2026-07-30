@@ -1,14 +1,13 @@
-import { Component, Input } from '@angular/core';
-import { Catcha } from '@model/catcha';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Catcha } from '@model/catcha'
 
 @Component({
     selector: 'app-catcha',
     templateUrl: './catcha.component.html',
     styleUrls: ['./catcha.component.css'],
-    imports: []
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [],
 })
-export class CatchaComponent{
-
-  @Input() imageData?: Catcha;
-
+export class CatchaComponent {
+    @Input() imageData?: Catcha
 }

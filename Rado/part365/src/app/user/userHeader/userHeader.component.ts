@@ -1,5 +1,5 @@
 //#region imports
-import { Component, inject, Input, OnInit } from '@angular/core'
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { isMobile, viberCallRef, viberChatRef, viberContactRef, viberForwardRef } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageService } from '@services/image.service'
@@ -15,6 +15,7 @@ import { PhoneComponent } from '@components/custom-controls/phone/phone.componen
     selector: 'app-userheader',
     templateUrl: './userHeader.component.html',
     styleUrls: ['./userHeader.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ViberComponent, PhoneComponent, WhatsComponent],
 })
 //#endregion

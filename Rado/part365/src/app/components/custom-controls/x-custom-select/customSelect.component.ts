@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { ControlValueAccessor, ReactiveFormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from '../select-controls/company/company.component'
@@ -13,34 +13,35 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-customselect',
     templateUrl: './customSelect.component.html',
     styleUrls: ['./customSelect.component.css'],
-    imports: [NgClass, NgStyle, ButtonGroupComponent, ReactiveFormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [NgClass, NgStyle, ButtonGroupComponent, ReactiveFormsModule],
 })
 export class CustomSelectComponent extends BaseControl<number> implements ControlValueAccessor {
-
     selectedValue?: number
     letterItem = undefined
     _selection?: string
     data_: OptionItem[] = []
-    clearBox?: boolean;
-    loaded = false;
-   
+    clearBox?: boolean
+    loaded = false
+
     @Output() changeOption: EventEmitter<number> = new EventEmitter<number>()
     @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
 
     @Input() groupSelection = false
-    @Input() set data(data_:  OptionItem[]) {
-        this.data_ = [...data_];
+    @Input() set data(data_: OptionItem[]) {
+        this.data_ = [...data_]
 
         if (this.groupDisabled) {
             this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
         }
         this._selection = this.data_?.find((item) => item.id === this.value)?.description ?? this.placeHolder
-        if (this.data_ && this.data_.length) 
-            this.loaded = true;
-        if (this.value ) { this.writeValue(this.value) }
+        if (this.data_ && this.data_.length) this.loaded = true
+        if (this.value) {
+            this.writeValue(this.value)
+        }
     }
     @Input() tooltip?: string
-    @Input() label = "";
+    @Input() label = ''
     @Input() hint?: string
     @Input() showLetter?: boolean
     @Input() letter?: boolean
@@ -51,25 +52,23 @@ export class CustomSelectComponent extends BaseControl<number> implements Contro
     @Input() useFilter = false
     @Input() multiSelection = false
     @Input() placeHolder?: string
-    @Input() showCount?: boolean = true;
+    @Input() showCount?: boolean = true
     @Input() set select(value: number) {
-        this.writeValue(value);
-    };
-    public dialog: MatDialog = inject(MatDialog);
-    private alertService: AlertService = inject(AlertService);
-    private destroyRef: DestroyRef = inject(DestroyRef);
+        this.writeValue(value)
+    }
+    public dialog: MatDialog = inject(MatDialog)
+    private alertService: AlertService = inject(AlertService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
 
-    constructor(
-    ) {
+    constructor() {
         super()
         this._selection = this.placeHolder
     }
 
-
     override get errorMessage() {
-        return this.errorService.getMessage(this.label, this.control.errors);
-      }
-    
+        return this.errorService.getMessage(this.label, this.control.errors)
+    }
+
     //#region ValueAccessor
     override writeValue(value: number): void {
         this.value = value
@@ -82,13 +81,13 @@ export class CustomSelectComponent extends BaseControl<number> implements Contro
     markAsTouched() {}
 
     change(value?: number) {
-        if (!value) value = 0;
-        this.value = value;
-        if (this.value) this.value = +this.value;
+        if (!value) value = 0
+        this.value = value
+        if (this.value) this.value = +this.value
         this.clearBox = value ? true : false
         this._selection = this.data_?.find((item) => item.id == +value!)?.description ?? this.placeHolder
-        if (this.onChange) this.onChange(+value!);
-        this.changeOption.emit(value!);
+        if (this.onChange) this.onChange(+value!)
+        this.changeOption.emit(value!)
     }
 
     clickSelect() {
@@ -106,15 +105,16 @@ export class CustomSelectComponent extends BaseControl<number> implements Contro
                 placeHolder: this.placeHolder,
                 showCount: this.showCount,
                 useFilter: true,
-                label: ''
+                label: '',
             },
         })
-        dialogRef.afterClosed()
-                .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((result) => {
-            if (result) this.change(result)
-            this.alertService.info(`Dialog result: ${result}`)
-        })
+        dialogRef
+            .afterClosed()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((result) => {
+                if (result) this.change(result)
+                this.alertService.info(`Dialog result: ${result}`)
+            })
     }
 
     clear() {
@@ -122,12 +122,12 @@ export class CustomSelectComponent extends BaseControl<number> implements Contro
         this.change(undefined)
     }
     override get contolName(): string {
-        return this.control.name?.toString() ?? this.placeHolder ?? this.label ?? 'Избери';
+        return this.control.name?.toString() ?? this.placeHolder ?? this.label ?? 'Избери'
     }
 
     updataData() {
         // TODO
-        return;
+        return
     }
     //#endregion
 }

@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import ListCarsComponent from '@app/data/cars/listCars/listCars.component';
+import { Component, ChangeDetectionStrategy } from '@angular/core'
+import ListCarsComponent from '@app/data/cars/listCars/listCars.component'
 
 @Component({
     selector: 'app-bus',
     templateUrl: './bus.component.html',
     styleUrls: ['./bus.component.css'],
-    imports: [ListCarsComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [ListCarsComponent],
 })
-export default class BusComponent{
-}
+export default class BusComponent {}

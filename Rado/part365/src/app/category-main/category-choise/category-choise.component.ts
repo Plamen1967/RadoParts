@@ -1,5 +1,5 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, inject, Input, OnInit, Self } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -15,10 +15,10 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-category-choise',
     templateUrl: './category-choise.component.html',
     styleUrls: ['./category-choise.component.css'],
-    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
 })
 //#endregion
-
 export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
     //#region variables and services
     categoryForm: FormGroup
@@ -42,14 +42,13 @@ export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
     //#endregion
     //#endregion
 
-    constructor(
-    ) {
-    this.categoryService = inject(CategoryService)
-    this.formBuilder = inject(FormBuilder)
-    this.control = inject(NgControl)
-    this.errorService = inject(ErrorService)
-    this.element = inject(ElementRef)
-    this.destroyRef = inject(DestroyRef)
+    constructor() {
+        this.categoryService = inject(CategoryService)
+        this.formBuilder = inject(FormBuilder)
+        this.control = inject(NgControl)
+        this.errorService = inject(ErrorService)
+        this.element = inject(ElementRef)
+        this.destroyRef = inject(DestroyRef)
 
         if (this.control) this.control.valueAccessor = this
         this.categoryForm = this.formBuilder.group({
@@ -57,9 +56,7 @@ export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
         })
     }
     ngOnInit(): void {
-        this.categoryForm.controls['categoriesId_int'].valueChanges
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((f) => {
+        this.categoryForm.controls['categoriesId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
             if (this.onChange) this.onChange(f)
         })
         this.initCategories()
@@ -80,30 +77,31 @@ export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
     }
 
     initCategories() {
-        this.categoryService.fetch()
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((res) => {
-            const categories: Category[] = []
-            res.forEach((item) => {
-                let category = new Category()
-                category = Object.assign(category, item)
-                categories?.push(category)
-                item['count'] = 0
-            })
+        this.categoryService
+            .fetch()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((res) => {
+                const categories: Category[] = []
+                res.forEach((item) => {
+                    let category = new Category()
+                    category = Object.assign(category, item)
+                    categories?.push(category)
+                    item['count'] = 0
+                })
 
-            this.categories = categories.map((item) => {
-                const cat = {
-                    description: item.categoryName,
-                    id: item.categoryId,
-                    count: item.count,
-                    countCars: 0,
-                    countParts: 0,
-                    imageName: item.imageName,
-                    groupModelId: 0,
-                }
-                return cat
+                this.categories = categories.map((item) => {
+                    const cat = {
+                        description: item.categoryName,
+                        id: item.categoryId,
+                        count: item.count,
+                        countCars: 0,
+                        countParts: 0,
+                        imageName: item.imageName,
+                        groupModelId: 0,
+                    }
+                    return cat
+                })
+                this.categories?.unshift({ id: 0, description: 'Избери категория', count: 0, countCars: 0, countParts: 0, groupModelId: 0 })
             })
-            this.categories?.unshift({ id: 0, description: 'Избери категория', count: 0, countCars: 0, countParts: 0, groupModelId: 0 })
-        })
     }
 }

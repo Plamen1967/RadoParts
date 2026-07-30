@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -42,6 +42,7 @@ import { DisplayPartView } from '@model/displayPartView'
     selector: 'app-addtyre',
     templateUrl: './addTyre.component.html',
     styleUrls: ['./addTyre.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         TextAreaComponent,
         ReactiveFormsModule,
@@ -54,7 +55,7 @@ import { DisplayPartView } from '@model/displayPartView'
         CompanyChoiseComponent,
         ModelChoiceComponent,
         ToolBarComponent,
-    ]
+    ],
 })
 export default class AddTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
     @HostListener('window:keydown.esc')
@@ -129,26 +130,25 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
     @Output() back: EventEmitter<number> = new EventEmitter<number>()
     @Output() saved: EventEmitter<number> = new EventEmitter<number>()
-        public staticSelectionService: StaticSelectionService
-        private formBuilder: FormBuilder
-        private popupService: PopUpService
-        private tyreService: TyreService
-        private alerService: AlertService
-        private modelService: ModelService
-        private activatedRoute: ActivatedRoute
-        private router: Router
-        private homeService: HomeService
-        private pathService: PathService
-        private nextIdService: NextIdService
-        private imageService: ImageService
-        private stateServce: StateService
-        private navigationService: NavigationService
-        private confirmService: ConfirmServiceService
-        private loggerService: LoggerService
-        private userCountService: UserCountService
+    public staticSelectionService: StaticSelectionService
+    private formBuilder: FormBuilder
+    private popupService: PopUpService
+    private tyreService: TyreService
+    private alerService: AlertService
+    private modelService: ModelService
+    private activatedRoute: ActivatedRoute
+    private router: Router
+    private homeService: HomeService
+    private pathService: PathService
+    private nextIdService: NextIdService
+    private imageService: ImageService
+    private stateServce: StateService
+    private navigationService: NavigationService
+    private confirmService: ConfirmServiceService
+    private loggerService: LoggerService
+    private userCountService: UserCountService
 
-    constructor(
-    ) {
+    constructor() {
         super()
         this.staticSelectionService = inject(StaticSelectionService)
         this.formBuilder = inject(FormBuilder)
@@ -280,9 +280,8 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
                         if (nextId.error) {
                             this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
                                 this.goBack()
-                            })  
-                        }
-                        else    {
+                            })
+                        } else {
                             this.itemId = nextId.nextId
                         }
                     },
@@ -494,9 +493,8 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
             const value = { id: this.params.id, viewPartId: this.params.viewId, query: this.params.query, userId: this.params.userId, page: 1 }
             this.pathService.navigate(value)
-        }
-        else {
-            history.back();
+        } else {
+            history.back()
         }
     }
 

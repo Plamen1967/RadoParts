@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { Router } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
@@ -23,6 +23,7 @@ import { UserService } from '@services/user.service'
     selector: 'app-userinfo',
     templateUrl: './userInfo.component.html',
     styleUrls: ['./userInfo.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, ButtonMenuComponent],
 })
 //#endregion

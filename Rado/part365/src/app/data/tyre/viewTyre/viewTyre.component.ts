@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { UpdateEnum } from '@model/enum/update.enum';
-import AddTyreComponent from '../addTyre/addTyre.component';
+import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { UpdateEnum } from '@model/enum/update.enum'
+import AddTyreComponent from '../addTyre/addTyre.component'
 
 @Component({
     selector: 'app-viewtyre',
     templateUrl: './viewTyre.component.html',
     styleUrls: ['./viewTyre.component.css'],
-    imports: [AddTyreComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [AddTyreComponent],
 })
 export default class ViewTyreComponent {
-
-  mode: UpdateEnum = UpdateEnum.View;
+    mode: UpdateEnum = UpdateEnum.View
 }

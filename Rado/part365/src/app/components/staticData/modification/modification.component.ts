@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
+import { AfterViewInit, Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -19,10 +19,10 @@ import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
     selector: 'app-modification',
     templateUrl: './modification.component.html',
     styleUrls: ['./modification.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
 })
 //#endregion
-
 export default class ModificationComponent extends HelperComponent implements AfterViewInit {
     //#region variables and services
     modificationForm: FormGroup

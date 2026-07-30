@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -13,6 +13,7 @@ import { AuthenticationService } from '@services/authentication/authentication.s
     selector: 'app-adminpanel',
     templateUrl: './adminPanel.component.html',
     styleUrls: ['./adminPanel.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SelectComponent, FormsModule],
 })
 //#endregion
@@ -28,7 +29,7 @@ export class AdminPanelComponent {
     private destroyRef: DestroyRef = inject(DestroyRef)
     //#endregion
     //#endregion
-    
+
     updateApprovedStatus() {
         this.adminService
             .updateApprovedStatus(this.itemId!, this.approvedStatus!)

@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router, RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router'
 import { User } from '@model/user'
@@ -17,7 +17,8 @@ import { DataManager } from '@model/dataManager'
     selector: 'app-dealerwebpage',
     templateUrl: './dealerWebPage.component.html',
     styleUrls: ['./dealerWebPage.component.css'],
-    imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive],
 })
 //#endregion
 export class DealerWebPageComponent implements OnInit, AfterViewInit {
@@ -26,7 +27,7 @@ export class DealerWebPageComponent implements OnInit, AfterViewInit {
     user?: UserView
     id = 0
     url = ''
-    dataManager?: DataManager   
+    dataManager?: DataManager
     //#region services
     private activeRoute = inject(ActivatedRoute)
     private router = inject(Router)
@@ -35,8 +36,8 @@ export class DealerWebPageComponent implements OnInit, AfterViewInit {
     private destroyRef = inject(DestroyRef)
     public loggerService = inject(LoggerService)
     //#endregion
-    //#endregion    
-    
+    //#endregion
+
     ngOnInit() {
         this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
             this.userId = params['userId']
@@ -77,14 +78,14 @@ export class DealerWebPageComponent implements OnInit, AfterViewInit {
     }
 
     begin() {
-        this.router.navigate(['details'],    { queryParams: {userId :this.userId}, relativeTo: this.activeRoute })
+        this.router.navigate(['details'], { queryParams: { userId: this.userId }, relativeTo: this.activeRoute })
     }
 
     stock() {
-        this.router.navigate(['stock'],    { queryParams: {userId :this.userId}, relativeTo: this.activeRoute })
+        this.router.navigate(['stock'], { queryParams: { userId: this.userId }, relativeTo: this.activeRoute })
     }
 
     contact() {
-        this.router.navigate(['contact'],    { queryParams: {userId :this.userId}, relativeTo: this.activeRoute })
+        this.router.navigate(['contact'], { queryParams: { userId: this.userId }, relativeTo: this.activeRoute })
     }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, Self } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
 import { SelectComponent } from '../select-controls/select/select.component'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { ErrorService } from '@services/error.service'
@@ -12,7 +12,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-region',
     templateUrl: './region.component.html',
     styleUrls: ['./region.component.css'],
-    imports: [SelectComponent, TooltipDirective, ReactiveFormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [SelectComponent, TooltipDirective, ReactiveFormsModule],
 })
 export class RegionComponent extends HelperComponent implements ControlValueAccessor, AfterViewInit, OnInit {
     isDisabled = false
@@ -35,7 +36,6 @@ export class RegionComponent extends HelperComponent implements ControlValueAcce
         this.regionForm = this.formBuilder.group({
             region_int: [0],
         })
-
     }
     writeValue(id: number): void {
         this.regionForm.patchValue({ region_int: id })
@@ -56,11 +56,9 @@ export class RegionComponent extends HelperComponent implements ControlValueAcce
     }
 
     ngOnInit() {
-      this.regions = [...[{ value: 0, text: ' Всички' }], ...this.staticSelectionService.Region]
+        this.regions = [...[{ value: 0, text: ' Всички' }], ...this.staticSelectionService.Region]
 
-        this.regionForm.controls['region_int'].valueChanges
-            .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((f) => {
+        this.regionForm.controls['region_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
             if (f) f = +f
             if (this.onChange) this.onChange(f)
         })

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ChangeDetectionStrategy } from '@angular/core'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { SelectOption } from '@model/selectOption'
@@ -7,6 +7,7 @@ import { SelectOption } from '@model/selectOption'
     selector: 'app-adminfilter',
     templateUrl: './adminFilter.component.html',
     styleUrls: ['./adminFilter.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SelectComponent],
 })
 export class AdminFilterComponent extends HelperComponent {

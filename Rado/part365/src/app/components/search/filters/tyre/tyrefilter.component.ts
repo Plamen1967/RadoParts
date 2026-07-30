@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, HostListener, inject, Input, OnInit, Optional } from '@angular/core'
+import { AfterViewInit, Component, HostListener, inject, Input, OnInit, Optional, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -38,6 +38,7 @@ import { ModelChoiceComponent } from '@app/component-main/model-choice/model-cho
     selector: 'app-tyrefilter',
     templateUrl: './tyrefilter.component.html',
     styleUrls: ['./tyrefilter.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CustomSelectComponent,
         NgClass,
@@ -54,7 +55,6 @@ import { ModelChoiceComponent } from '@app/component-main/model-choice/model-cho
     ],
 })
 //#endregion
-
 export class TyreFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
     //#region variables and services
     categories = [

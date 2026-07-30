@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { ControlValueAccessor } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from './x-company/company.component'
@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-customselect',
     templateUrl: './customSelect.component.html',
     styleUrls: ['./customSelect.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, NgStyle, ButtonGroupComponent],
 })
 export class CustomSelectComponent extends BaseControl<number> implements OnInit, ControlValueAccessor, AfterViewInit {

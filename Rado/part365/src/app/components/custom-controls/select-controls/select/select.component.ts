@@ -1,34 +1,34 @@
-import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core'
+import { Component, ElementRef, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { BaseControl } from '../../baseControl'
-import { SelectBaseComponent } from "./select-base/select-base.component";
+import { SelectBaseComponent } from './select-base/select-base.component'
 
 @Component({
     selector: 'app-select',
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.css'],
-    imports: [FormsModule, ReactiveFormsModule, SelectBaseComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [FormsModule, ReactiveFormsModule, SelectBaseComponent],
 })
-
-export class SelectComponent extends BaseControl<number>{
+export class SelectComponent extends BaseControl<number> {
     @Input() type?: number
     @Input() label?: string
     @Input() hint?: string
     @Input() set data(data_: SelectOption[] | undefined) {
         this._data = data_
         this.selectedValue = this.value
-        this._data?.forEach(element => {
-            element.color = element.value === -1? 'lightgray' :  element.color;
-        });
+        this._data?.forEach((element) => {
+            element.color = element.value === -1 ? 'lightgray' : element.color
+        })
     }
 
     get data() {
-        return this._data;
+        return this._data
     }
 
     @Input() set initialValue(value: number) {
-        this.value = value;
+        this.value = value
         this.writeValue(value)
     }
     @Input() group?: boolean
@@ -45,10 +45,9 @@ export class SelectComponent extends BaseControl<number>{
     first = true
     selectedValue?: number
 
-    constructor(
-    ) {
+    constructor() {
         super()
-        this.control.valueAccessor = this;
+        this.control.valueAccessor = this
     }
 
     override writeValue(obj: number): void {
@@ -58,7 +57,7 @@ export class SelectComponent extends BaseControl<number>{
     }
 
     changeSelectOption(obj: number) {
-        this.selectedValue = obj;
+        this.selectedValue = obj
         this.value = obj
         if (this.onChange) this.onChange(this.value!)
         this.markAsTouched()
@@ -93,11 +92,9 @@ export class SelectComponent extends BaseControl<number>{
         return 'white'
     }
 
-    disabled(element: SelectOption): boolean| undefined {
-        if (!element) 
-            return true
-        if (element.value === -1) 
-            return true
+    disabled(element: SelectOption): boolean | undefined {
+        if (!element) return true
+        if (element.value === -1) return true
 
         this.first = false
         return undefined
@@ -111,14 +108,13 @@ export class SelectComponent extends BaseControl<number>{
         this.onClose.emit()
     }
 
-    override get contolName() : string{
-      return this.control.name?.toString()??"";
+    override get contolName(): string {
+        return this.control.name?.toString() ?? ''
     }
 
     get invalid() {
-        return this.control.invalid ?? false;
+        return this.control.invalid ?? false
     }
-
 }
 
 // data_?.sort((a, b) => {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Inject, Input, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef, inject, Inject, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { CustomSelectComponent } from '../customSelect.component'
 import { TopService } from '@services/top.service'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
@@ -12,6 +12,7 @@ import { InternalValue } from '@model/internalValue'
     selector: 'app-company',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, FormsModule, MatDialogContent, MatDialogClose],
 })
 export class CompanyComponent extends SelectBase implements OnInit {
@@ -27,8 +28,7 @@ export class CompanyComponent extends SelectBase implements OnInit {
     private elem: ElementRef = inject(ElementRef)
     //#endregion
 
-    constructor(
-    ) {
+    constructor() {
         super()
         this.label = this.topService.property?.label ?? this.label
         this.useFilter = this.topService.property?.useFilter ?? this.useFilter

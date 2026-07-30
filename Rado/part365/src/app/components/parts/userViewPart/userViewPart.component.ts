@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -38,6 +38,7 @@ import { LoggerService } from '@services/authentication/logger.service'
     templateUrl: './userViewPart.component.html',
     styleUrls: ['./userViewPart.component.css'],
     // changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DataRowComponent, FavouriteComponent, NgStyle, RequestByEmailComponent, UserCardComponent, NgClass, ImageCarouselComponent, UpdateAddComponent],
 })
 export class UserViewPartComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -159,7 +160,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         this.carService = inject(CarService)
         this.imageService = inject(ImageService)
         this.localStorageService = inject(LocalStorageService)
-        this.homeService = inject(HomeService)  
+        this.homeService = inject(HomeService)
         this.router = inject(Router)
         this.activeRoute = inject(ActivatedRoute)
         this.searchService = inject(SearchPartService)
@@ -172,12 +173,8 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         this.searchPartService = inject(SearchPartService)
         this.alertService = inject(AlertService)
         this.loggerService = inject(LoggerService)
-        this.destroyRef = inject(DestroyRef)             
-        
+        this.destroyRef = inject(DestroyRef)
 
-
-
-        
         this.showNavigation = true
         this.userPage = this.pathService.userPage
         if (this.userPage) this.showFavourite = false

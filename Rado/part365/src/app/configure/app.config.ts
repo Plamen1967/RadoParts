@@ -2,7 +2,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core'
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router'
 
 import { routes } from './app.routes'
-import { provideHttpClient, withInterceptors } from '@angular/common/http'
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http'
 import { authInterceptor } from '@app/intercepter/loggingInreceptor'
 import { provideAnimations } from '@angular/platform-browser/animations'
 
@@ -18,6 +18,6 @@ export const appConfig: ApplicationConfig = {
             withComponentInputBinding()
         ),
         provideAnimations(),
-        provideHttpClient(withInterceptors([authInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
     ],
 }

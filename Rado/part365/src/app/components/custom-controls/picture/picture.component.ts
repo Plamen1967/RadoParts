@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
 import { ImageService } from '@services/image.service'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageData } from '@model/imageData'
@@ -14,15 +14,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-picture',
     templateUrl: './picture.component.html',
     styleUrls: ['./picture.component.css'],
-    imports: [UploadComponent, FormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [UploadComponent, FormsModule],
 })
 export class PictureComponent extends HelperComponent {
     //#region services and variables
-    private imageService: ImageService;
-    private popupService: PopUpService;
-    private alertService: AlertService;
-    private contirmationService: ConfirmServiceService;
-    private destroyRef: DestroyRef;
+    private imageService: ImageService
+    private popupService: PopUpService
+    private alertService: AlertService
+    private contirmationService: ConfirmServiceService
+    private destroyRef: DestroyRef
     //#endregion
     //#region variables
     @Input() updateFlag?: boolean
@@ -30,7 +31,7 @@ export class PictureComponent extends HelperComponent {
     @Input() images: ImageData[] = []
     @Input() currentMainImageId?: number
     @Input() mainImageFlag = true
-    
+
     @Output() mainImageIdChange: EventEmitter<number> = new EventEmitter<number>()
 
     deleteImageId?: number

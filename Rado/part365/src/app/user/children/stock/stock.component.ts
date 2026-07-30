@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, ViewChild } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -27,6 +27,7 @@ import { UserService } from '@services/user.service'
     selector: 'app-stock',
     templateUrl: './stock.component.html',
     styleUrls: ['./stock.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgStyle, RadioGroupListComponent, FormsModule, ResultComponent, UserViewPartComponent],
 })
 //#endregion

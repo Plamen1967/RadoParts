@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -15,10 +15,10 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-model-choice',
     templateUrl: './model-choice.component.html',
     styleUrls: ['./model-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-
 export class ModelChoiceComponent implements ControlValueAccessor, OnInit, AfterViewInit {
     //#region variables and services
     modelForm: FormGroup
@@ -38,8 +38,8 @@ export class ModelChoiceComponent implements ControlValueAccessor, OnInit, After
     @Input() showLetter = true
     @Input() groupSelection = true
     @Input() all = false
-    @Input() submitted = false;
-    @Input() required = false;
+    @Input() submitted = false
+    @Input() required = false
     @Input() userId = 0
     @Input() showCount = false
     @Input() itemType: ItemType = ItemType.All
@@ -49,20 +49,17 @@ export class ModelChoiceComponent implements ControlValueAccessor, OnInit, After
     @Self() public control: NgControl = inject(NgControl)
     public errorService: ErrorService = inject(ErrorService)
     private element: ElementRef = inject(ElementRef)
-    private destroyRef: DestroyRef = inject(DestroyRef)   
-    //#region 
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    //#region
     //#endregion
-    constructor(
-    ) {
+    constructor() {
         if (this.control) this.control.valueAccessor = this
         this.modelForm = this.formBuilder.group({
             modelsId_int: [0],
         })
     }
     ngAfterViewInit(): void {
-        this.modelForm.controls['modelsId_int'].valueChanges
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((f) => {
+        this.modelForm.controls['modelsId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
             if (this.onChange) this.onChange(f)
         })
     }
@@ -96,51 +93,53 @@ export class ModelChoiceComponent implements ControlValueAccessor, OnInit, After
     onCompanyChage(value: number) {
         if (this.userId) {
             if (value) {
-                this.modelService.fetchByCompanyIdByUserId(value)
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe((res) => {
-                    const models = res
-                    models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })
-                    this.models = models
-                        .map((model) => {
-                            return {
-                                id: model.modelId,
-                                description: model.displayModelName,
-                                groupModelId: model.groupModelId ?? 0,
-                                count: model.countCars + model.countParts,
-                                countParts: model.countParts,
-                                countCars: model.countCars,
-                                important: false,
-                            }
-                        })
-                        .filter((item) => this.filter(item))
-                    this.updateCount()
-                })
+                this.modelService
+                    .fetchByCompanyIdByUserId(value)
+                    .pipe(takeUntilDestroyed(this.destroyRef))
+                    .subscribe((res) => {
+                        const models = res
+                        models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })
+                        this.models = models
+                            .map((model) => {
+                                return {
+                                    id: model.modelId,
+                                    description: model.displayModelName,
+                                    groupModelId: model.groupModelId ?? 0,
+                                    count: model.countCars + model.countParts,
+                                    countParts: model.countParts,
+                                    countCars: model.countCars,
+                                    important: false,
+                                }
+                            })
+                            .filter((item) => this.filter(item))
+                        this.updateCount()
+                    })
             } else {
                 this.models = []
             }
         } else {
             if (value) {
-                this.modelService.fetchByCompanyId(value)
+                this.modelService
+                    .fetchByCompanyId(value)
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe((res) => {
-                    const models = res
-                    models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })
-                    this.models = models
-                        .map((model) => {
-                            return {
-                                id: model.modelId,
-                                description: model.displayModelName,
-                                groupModelId: model.groupModelId ?? 0,
-                                count: model.countCars + model.countParts,
-                                countParts: model.countParts,
-                                countCars: model.countCars,
-                                important: false,
-                            }
-                        })
-                        .filter((item) => this.filter(item))
-                    this.updateCount()
-                })
+                        const models = res
+                        models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })
+                        this.models = models
+                            .map((model) => {
+                                return {
+                                    id: model.modelId,
+                                    description: model.displayModelName,
+                                    groupModelId: model.groupModelId ?? 0,
+                                    count: model.countCars + model.countParts,
+                                    countParts: model.countParts,
+                                    countCars: model.countCars,
+                                    important: false,
+                                }
+                            })
+                            .filter((item) => this.filter(item))
+                        this.updateCount()
+                    })
             } else {
                 this.models = []
             }

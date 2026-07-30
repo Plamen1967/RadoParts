@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -21,7 +21,8 @@ import { noop } from 'rxjs'
     selector: 'app-check-out',
     templateUrl: './check-out.component.html',
     styleUrls: ['./check-out.component.css'],
-    imports: [DisplayPartComponent, UserViewPartComponent]
+    changeDetection: ChangeDetectionStrategy.Eager,
+    imports: [DisplayPartComponent, UserViewPartComponent],
 })
 export class CheckOutComponent extends HelperComponent implements OnInit {
     parts?: DisplayPartView[]
@@ -31,9 +32,9 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     selectedPart?: number
     selectedCar?: number
     loading = false
-    id?: string| number;
+    id?: string | number
     mode: UpdateEnum = UpdateEnum.View
-    heigligthed?: number|string
+    heigligthed?: number | string
     checkoutService: CheckOutService = inject(CheckOutService)
     formBulder: FormBuilder = inject(FormBuilder)
     activeRoute: ActivatedRoute = inject(ActivatedRoute)
@@ -45,8 +46,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     destroyRef: DestroyRef = inject(DestroyRef)
 
     @Output() backEvent: EventEmitter<void> = new EventEmitter<void>()
-    constructor(
-    ) {
+    constructor() {
         super()
 
         this.checkoutForm = this.formBulder.group({})
@@ -58,9 +58,8 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     ngOnInit() {
         this.update()
         this.activeRoute.queryParams.subscribe((params) => {
-            this.heigligthed = params['currentId'];
-            if (this.heigligthed)
-                goToPosition(this.heigligthed)
+            this.heigligthed = params['currentId']
+            if (this.heigligthed) goToPosition(this.heigligthed)
         })
     }
 
@@ -77,7 +76,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
                     const existing = res.map((part) => part.id)
                     const notExisting = this.checkoutItems?.filter((checkoutItemId) => existing.findIndex((id) => id === checkoutItemId) === -1)
                     if (notExisting && notExisting.length) notExisting.forEach((id) => this.localStorageService.removeSavedItem(id))
-                    goToPosition(this.id!);
+                    goToPosition(this.id!)
                 },
                 error: (err) => {
                     this.loggerService.logError(err)
@@ -95,7 +94,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
 
     back() {
         this.backEvent.emit()
-        this.router.navigate([`/checkout`], { queryParams: { currentId: `${this.currentId}`} })
+        this.router.navigate([`/checkout`], { queryParams: { currentId: `${this.currentId}` } })
         goToPosition(this.currentId!)
 
         this.currentId = 0
@@ -111,7 +110,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
 
     action(actionType: ActionType) {
         this.currentId = actionType.dispayPartView?.id
-        this.router.navigate([`/checkout`], { queryParams: { id: `${this.currentId}`} })
+        this.router.navigate([`/checkout`], { queryParams: { id: `${this.currentId}` } })
 
         // this.checkoutService.currentId = this.currentId
         // if (actionType.dispayPartView?.isCar) {
@@ -136,5 +135,4 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
         this.update()
         this.router.navigate(['/'])
     }
-
 }

@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
+import { AfterViewInit, Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -19,10 +19,10 @@ import { UserService } from '@services/user.service'
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent],
 })
 //#endregion
-
 export default class UserComponent extends HelperComponent implements AfterViewInit {
     //#region services and variables
     users?: User[]
@@ -41,7 +41,7 @@ export default class UserComponent extends HelperComponent implements AfterViewI
     //#endregion
     constructor() {
         super()
-        //#region inject services 
+        //#region inject services
         this.userService = inject(UserService)
         this.alerService = inject(AlertService)
         this.staticSelectionService = inject(StaticSelectionService)

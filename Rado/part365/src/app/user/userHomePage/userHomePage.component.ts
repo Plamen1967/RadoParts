@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
@@ -28,6 +28,7 @@ import { convertImage, goTop, goToPosition } from '@app/functions/functions'
     selector: 'app-userhomepage',
     templateUrl: './userHomePage.component.html',
     styleUrls: ['./userHomePage.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent],
 })
 //#endregion
