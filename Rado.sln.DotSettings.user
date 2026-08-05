@@ -1,0 +1,2 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/SqlDaemon/FilesAndFoldersSqlDialects/=632A391F_002D2F3B_002D4066_002D8104_002DE397D5FF2BAD_002Fd_003Adbo_002Fd_003AStore_0020Procedures_002Ff_003AGetItemType_002Esql/@EntryIndexedValue">GenericSQL</s:String></wpf:ResourceDictionary>

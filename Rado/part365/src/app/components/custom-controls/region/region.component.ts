@@ -1,30 +1,30 @@
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy, model } from '@angular/core'
 import { SelectComponent } from '../select-controls/select/select.component'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ErrorService } from '@services/error.service'
 import { SelectOption } from '@model/selectOption'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { HelperComponent } from '../helper/helper.component'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { FormValueControl } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-region',
     templateUrl: './region.component.html',
     styleUrls: ['./region.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SelectComponent, TooltipDirective, ReactiveFormsModule],
 })
-export class RegionComponent extends HelperComponent implements ControlValueAccessor, AfterViewInit, OnInit {
+export class RegionComponent extends HelperComponent implements FormValueControl<number|undefined>, AfterViewInit, OnInit {
     isDisabled = false
     regionForm: FormGroup
     regions?: SelectOption[]
+    value = model<number|undefined>(undefined)
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
-    @Self() public control: NgControl = inject(NgControl, { self: true })
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     public errorService: ErrorService = inject(ErrorService)
     formBuilder: FormBuilder = inject(FormBuilder)
@@ -32,7 +32,6 @@ export class RegionComponent extends HelperComponent implements ControlValueAcce
 
     constructor() {
         super()
-        if (this.control) this.control.valueAccessor = this
         this.regionForm = this.formBuilder.group({
             region_int: [0],
         })

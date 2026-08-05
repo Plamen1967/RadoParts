@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -42,7 +42,6 @@ import { DisplayPartView } from '@model/displayPartView'
     selector: 'app-addtyre',
     templateUrl: './addTyre.component.html',
     styleUrls: ['./addTyre.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         TextAreaComponent,
         ReactiveFormsModule,

@@ -5,22 +5,22 @@
                 name="selectedValue"
                 class="form-select form-select-sm shadow"
                 [(ngModel)]="selectedValue"
-                [ngClass]="{ 'is-invalid': submitted && invalid }"
+                [ngClass]="{ 'is-invalid': submitted && isInvalid }"
                 (change)="onChangeSelect()">
                 @for (element of _data; track element.value) {
-                    <option [ngStyle]="{ 'background-color': element.color }" [attr.disabled]="disabled(element)" [ngValue]="element.value">{{ element.text }} {{ element.count }}</option>
+                    <option [ngStyle]="{ 'background-color': element.color }" [attr.disabled]="element.isDisabled" [ngValue]="element.value">{{ element.text }} {{ element.count }}</option>
                 }
             </select>
         </div>
         <div class="select__label">
-            <div [ngClass]="{ required: required }">
+            <div [ngClass]="{ required: isRequired }">
                 {{ label }}
-                @if (label && required) {
+                @if (label && isRequired) {
                     <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
                 }
             </div>
         </div>
-        @if (submitted && invalid) {
+        @if (submitted && isInvalid) {
             <div class="invalid-feedback d-block">
                 <small>{{ errorMessage }}</small>
             </div>

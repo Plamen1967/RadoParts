@@ -1,5 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Staging|AnyCPU'">
+    <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>true</IsPackable>
@@ -16,6 +28,7 @@
     <Configurations>Debug;Release;Staging</Configurations>
     <StartupObject>Rado.Program</StartupObject>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <PublishTrimmed>False</PublishTrimmed>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

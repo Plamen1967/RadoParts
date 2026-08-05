@@ -1,37 +1,33 @@
 //#region
-import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
-import { ControlValueAccessor } from '@angular/forms'
+import { Component, EventEmitter, inject, Input, OnInit, Output, model, input } from '@angular/core'
 import { TopService } from '@services/top.service'
 import { MatDialog } from '@angular/material/dialog'
 import { InternalValue } from '@model/internalValue'
 import { SelectionItem } from '@model/selectionItem'
-import { BaseControl } from '@components/custom-controls/baseControl'
+import { FormValueControl } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-mingroupselect',
     templateUrl: './mingroupselect.component.html',
     styleUrls: ['./mingroupselect.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 
 //#endregion
-export class MinGroupSelectComponent extends BaseControl<string> implements OnInit, ControlValueAccessor {
-    override get contolName(): string {
-        throw new Error('Method not implemented.')
-    }
+export class MinGroupSelectComponent implements OnInit, FormValueControl<string |undefined> {
+    value = model<string|undefined>(undefined)
     //#region members
     _selection = 'Избери данни'
-    @Input() data: InternalValue[] = []
-    @Input() default = 'Избери данни'
-    @Input() useFilter = false
-    @Input() useLetter = false
-    @Input() groupSelection = false
-    @Input() multiSelection = true
-    @Input() groupDisabled = false
-    @Input() set setValue(value: string) {
+    data = input<InternalValue[]>([])
+    default = input('Избери данни')
+    useFilter = input(false)
+    useLetter = input(false)
+    groupSelection = input(false)
+    multiSelection = input(true)
+    groupDisabled = input(false)
+    setValue = input((value: string) => {
         this.writeValue(value)
-    }
+    })
     // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() change: EventEmitter<number[]> = new EventEmitter<number[]>()
 
@@ -43,13 +39,8 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
     private topService: TopService = inject(TopService)
     public dialog: MatDialog = inject(MatDialog)
     //#endregion
-    //#region constructor
-    constructor() {
-        super()
-    }
-    //#endregion
     //#region interface functions
-    override writeValue(obj: string): void {
+    writeValue(obj: string): void {
         this.id = this.selectedItems = obj
         if (this.onChange) this.onChange(obj)
         this.updateSelection()
@@ -69,9 +60,8 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
     //#endregion
 
     ngOnInit() {
-        this._data = this.data
         console.table(this._data)
-        this._selection = this.default
+        this._selection = this.default()
         this.updateSelection()
     }
 
@@ -82,7 +72,7 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
 
     updateSelection() {
         if (!this._data) {
-            this._selection = this.default
+            this._selection = this.default()
             return
         }
         if (this.selectedItems) {
@@ -109,7 +99,7 @@ export class MinGroupSelectComponent extends BaseControl<string> implements OnIn
         this.selectedItems = data.ids
         let arr: number[] = []
         if (this.selectedItems?.length) arr = this.selectedItems?.split(',')?.map((item) => +item) ?? []
-        this.onChange?.(this.selectedItems!)
+        this.onChange?.(this.selectedItems)
         this.change.emit(arr)
         this.updateSelection()
         this.topService.close.next(undefined)

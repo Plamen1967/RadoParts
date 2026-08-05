@@ -28,7 +28,7 @@
                                                 hint="Избери {{ choice }}"
                                                 data-cy="carReference"
                                                 [data]="cars"
-                                                [required]="true"
+                                                [IsRequired]="true"
                                                 (changeOption)="onCarChange($event)"
                                                 [submitted]="submitted"
                                                 (onClose)="focus($event)">
@@ -57,14 +57,14 @@
                             <div class="row mb-1">
                                 <div class="row modell-1000px">
                                     <div class="col-sm-2 min300px">
-                                        <app-company-choise [bus]="bus" [all]="true" [required]="true" [submitted]="submitted" formControlName="companyId" data-cy="companyid"> </app-company-choise>
+                                        <app-company-choise [bus]="bus" [all]="true" [IsRequired]="true" [submitted]="submitted" formControlName="companyId" data-cy="companyid"> </app-company-choise>
                                     </div>
                                     @if (companyId) {
                                         <div class="col-sm-2 min350px">
                                             <app-model-choice
                                                 formControlName="modelId"
                                                 [all]="true"
-                                                [required]="true"
+                                                [IsRequired]="true"
                                                 [companyId]="companyId!"
                                                 [groupSelection]="false"
                                                 [multiselection]="false"
@@ -77,7 +77,7 @@
                                                 <app-modification-choice
                                                     [modelsId]="modelId"
                                                     [all]="true"
-                                                    [required]="true"
+                                                    [IsRequired]="true"
                                                     [multiselection]="false"
                                                     formControlName="modificationId"
                                                     (modifcationChange)="modificatioChanged($event)"
@@ -280,7 +280,7 @@
             </div>
             <div class="row g-3">
                 <div class="d-inline ms-2">
-                    <app-input formControlName="price" placeHolder="{{ labels.PRICE }}" [price]="true" [submitted]="submitted" data-cy="price" [inline]="false" [required]="true"></app-input>
+                    <app-input formControlName="price" placeHolder="{{ labels.PRICE }}" [IsPrice]="true" [submitted]="submitted" data-cy="price" [inline]="false" [IsRequired]="true"></app-input>
                 </div>
             </div>
         </form>

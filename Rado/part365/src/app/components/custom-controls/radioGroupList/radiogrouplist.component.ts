@@ -1,18 +1,19 @@
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, OnInit, Optional, Output, Renderer2, Self, ViewChild, ChangeDetectionStrategy } from '@angular/core'
-import { ControlValueAccessor, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, model, OnInit, Output, Renderer2, ViewChild } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
 import { SelectBaseComponent } from '../select-controls/select/select-base/select-base.component'
+import { FormValueControl } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-radiogrouplist',
     templateUrl: './radiogrouplist.component.html',
     styleUrls: ['./radiogrouplist.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, FormsModule, ReactiveFormsModule, SelectBaseComponent],
 })
-export class RadioGroupListComponent implements OnInit, ControlValueAccessor, AfterViewInit {
+export class RadioGroupListComponent implements FormValueControl<number|undefined>, OnInit, AfterViewInit {
+    value = model<number|undefined>(undefined)
     id?: number
     _radios: RadioButton[] = []
     _value = 1
@@ -34,13 +35,9 @@ export class RadioGroupListComponent implements OnInit, ControlValueAccessor, Af
     @Output() changeRadioGroup: EventEmitter<number> = new EventEmitter<number>()
 
     @ViewChild('radioGroup', { static: false }) radioGroup?: ElementRef
-    @Optional() @Self() public ngControl: NgControl = inject(NgControl, { self: true })
     private renderer: Renderer2 = inject(Renderer2)
     private _el: ElementRef = inject(ElementRef)
 
-    constructor() {
-        if (this.ngControl) this.ngControl.valueAccessor = this
-    }
     private onTouched?() {
         return
     }
@@ -51,17 +48,10 @@ export class RadioGroupListComponent implements OnInit, ControlValueAccessor, Af
 
     ngAfterViewInit(): void {
         if (this.onChange) this.onChange(this._value)
-        this.controlName = this.ngControl?.name?.toString() || ''
     }
 
     writeValue(value: number): void {
         this._value = value
-    }
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
     }
     setDisabledState?(isDisabled: boolean): void {
         this.isDisabled = isDisabled
@@ -81,6 +71,10 @@ export class RadioGroupListComponent implements OnInit, ControlValueAccessor, Af
     }
 
     controlId(id: number) {
-        return this.ngControl.name?.toString() + id.toString()
+        return this.controlName?.toString() + id.toString()
     }
 }
+//     function model<T>(undefined: undefined) {
+//     throw new Error('Function not implemented.')
+// }
+

@@ -1,35 +1,32 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, input, model } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { BaseControl } from '../baseControl'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { NgClass } from '@angular/common'
+import { FormValueControl } from '@angular/forms/signals'
 @Component({
     selector: 'app-inputpassword',
     templateUrl: './inputpassword.component.html',
     styleUrls: ['./inputpassword.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, FormsModule],
 })
-export class InputPasswordComponent extends BaseControl<string> {
-    @Input() label?: string
-    @Input() placeHolder?: string
-    @Input() hint?: string
-    @Input() pattern?: string
-    @Input() submitted = false
+export class InputPasswordComponent implements FormValueControl<string> {
+    value = model<string>('')
 
+    errorMessage = input<string>('')
+    autocomplete = input<string>('')
+    label = input<string>('')
+    placeHolder = input<string>('')
+    hint = input<string>('')
+    submitted = input<boolean>(false)
     showFlag = false
     type = 'password'
-
-    constructor() {
-        super()
-    }
 
     get labels() {
         return CONSTANT
     }
 
-    override get contolName(): string {
-        return this.control.name?.toString() ?? this.label ?? this.placeHolder ?? ''
+    get contolName(): string {
+        return this.label() ?? this.placeHolder() ?? ''
     }
 
     show() {
@@ -38,6 +35,6 @@ export class InputPasswordComponent extends BaseControl<string> {
     }
 
     change() {
-        if (this.onChange) this.onChange(this.value!)
+        this.value.set(this.value())
     }
 }

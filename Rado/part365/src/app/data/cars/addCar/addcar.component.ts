@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, inject, OnInit, Output, ChangeDetectionStrategy, input, effect, signal } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -31,6 +31,7 @@ import { DisplayPartView } from '@model/displayPartView'
 import { ImageData } from '@model/imageData'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
+import { AddCarParam } from './addCarParam'
 //#endregion
 
 //#region metadata
@@ -38,13 +39,12 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-addcar',
     templateUrl: './addcar.component.html',
     styleUrls: ['./addcar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent],
 })
 //#endregion
 export default class AddCarComponent extends HelperComponent implements OnInit, AfterViewInit {
     //#region services
-    label!: string
     public carService: CarService = inject(CarService)
     public modificationService: ModificationService = inject(ModificationService)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
@@ -60,6 +60,20 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     private toastService: ToastService = inject(ToastService)
     //#endregion
 
+    //#region inputs and outputs
+    bus = signal<number | undefined>(0)
+    carId = signal<number | undefined>(undefined)
+    add = signal<boolean>(false)
+    update = signal<boolean>(false)
+    mode = signal<UpdateEnum>(UpdateEnum.New)
+    displayPartView = signal<DisplayPartView | undefined>(undefined)
+
+    addCarParam = input.required<AddCarParam>()
+
+    @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
+    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
+    //#endregion
+
     //#region host listeners
     @HostListener('window:keydown.esc')
     handleKeyDownEscape() {
@@ -72,6 +86,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     //#endregion
 
     //#region properties
+    label!: string
     submitElement?: ElementRef<HTMLInputElement>
     public addCarForm: FormGroup
     car?: CarView
@@ -88,42 +103,53 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     companyId = 0
     userId = 0
     query = 0
-    bus_ = 0
     ad = false
     images: ImageData[] = []
-    _displayPartView?: DisplayPartView
-    //#endregion
+    UpdateFlag = true
+    allowBack = false
 
-    //#region inputs and outputs
-    @Input() set bus(value: number | undefined) {
-        this.bus_ = value ?? 0
-        this.onBusChange(this.bus_)
-    }
-
-    get bus() {
-        return this.bus_
-    }
-
-    @Input() carId?: number
-    @Input() add = false
-    @Input() update = false
-    @Input() mode: UpdateEnum = UpdateEnum.New
-
-    @Input() set displayPartView(value: DisplayPartView) {
-        this._displayPartView = value
-        if (this._displayPartView) {
-            this.images = value.images ?? []
-            this.carId = this._displayPartView.id
-            this.loadCar()
-        }
-    }
-    @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
-    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
     //#endregion
 
     constructor() {
         super()
         //#region form initialization
+
+        effect(() => {
+            if (this.addCarParam()?.displayPartView) {
+                this.displayPartView.set(this.addCarParam()?.displayPartView)
+                this.carId.set(this.addCarParam()?.carId)
+                this.bus.set(this.addCarParam()!.bus)
+                this.mode.set(this.addCarParam()!.mode!)
+                this.add.set(this.addCarParam()?.add ?? false)
+            }
+        })
+        effect(() => {
+            this.bus.set(this.addCarParam()?.bus)
+        })
+
+        effect(() => {
+            this.UpdateFlag = this.mode() !== UpdateEnum.View
+            this.allowBack = this.mode() === UpdateEnum.Update
+        })
+
+        effect(() => {
+            if (this.bus()) {
+                this.addCarForm.controls['modificationId'].clearValidators()
+                this.addCarForm.controls['modificationId'].updateValueAndValidity()
+            } else {
+                this.addCarForm.controls['modificationId'].setValidators([Validators.required])
+            }
+            this.label = this.bus() ? 'Име на бус' : 'Име на кола'
+        })
+
+        effect(() => {
+            if (this.displayPartView() !== undefined) {
+                this.addCarForm.patchValue(this.displayPartView()!)
+                this.mainImageId = this.displayPartView()?.mainImageId
+                this.images = this.displayPartView()?.images ?? []
+            }
+        })
+
         this.addCarForm = this.formBuilder.group({
             companyId: [undefined, Validators.required],
             modelId: [undefined, Validators.required],
@@ -158,7 +184,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     ngOnInit() {
         this.activatedRoute.queryParamMap.subscribe((param) => {
             this.parseQueryParams(param)
-            this.carId = this.queryParams.carId ? this.queryParams.carId : undefined
+            this.carId.set(this.queryParams.carId ? this.queryParams.carId : undefined)
             if (this.queryParams.query) this.query = +this.queryParams.query
             this.ad = this.queryParams.ad ? this.queryParams.ad : false
             this.loadCar()
@@ -174,7 +200,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         if (this.changed) {
             this.changeMessage()
         } else {
-            this.noChange.emit(this.carId)
+            this.noChange.emit(this.carId())
             this.goBack()
         }
     }
@@ -189,17 +215,13 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             return
         }
 
-        if (this.mode == UpdateEnum.New) {
-            this.carService.checkForUniqueness(this.addCarForm.value.regNumber, this.bus ?? 0).subscribe({
+        if (this.mode() == UpdateEnum.New) {
+            this.carService.checkForUniqueness(this.addCarForm.value.regNumber, this.bus() ?? 0).subscribe({
                 next: (res) => {
                     if (res == false) {
-                        const busCar = this.bus ? 'Бус' : 'Кола'
+                        const busCar = this.bus() ? 'Бус' : 'Кола'
                         const message = `${busCar} с това име "${this.addCarForm.value.regNumber}" вече съществува`
                         this.toastService.show(message)
-
-                        // this.popupService.openWithTimeout('Съобщение', message ).subscribe(() => {
-                        //     return;
-                        // })
                     } else {
                         this.addCar()
                     }
@@ -212,15 +234,15 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     //#endregion
 
     //#endregion events
-    onBusChange(f: number) {
-        if (f) {
-            this.addCarForm.controls['modificationId'].clearValidators()
-            this.addCarForm.controls['modificationId'].updateValueAndValidity()
-        } else {
-            this.addCarForm.controls['modificationId'].setValidators([Validators.required])
-        }
-        this.label = this.bus ? 'Име на бус' : 'Име на кола'
-    }
+    // onBusChange(f: number) {
+    //     if (f) {
+    //         this.addCarForm.controls['modificationId'].clearValidators()
+    //         this.addCarForm.controls['modificationId'].updateValueAndValidity()
+    //     } else {
+    //         this.addCarForm.controls['modificationId'].setValidators([Validators.required])
+    //     }
+    //     this.label = this.bus() ? 'Име на бус' : 'Име на кола'
+    // }
 
     onCompanyChange(companyId: number) {
         this.companyId = companyId
@@ -274,20 +296,20 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     loadCar() {
-        if (!this.carId) {
-            this.mode = UpdateEnum.New
+        if (!this.carId()) {
+            this.mode.set(UpdateEnum.New)
         }
-        if (this.update) {
-            this.mode = UpdateEnum.Update
+        if (this.update()) {
+            this.mode.set(UpdateEnum.Update)
         }
-        if (this.carId && this.mode == UpdateEnum.Update) {
-            this.carService.fetchCar(this.carId).subscribe({
+        if (this.carId() && this.mode() == UpdateEnum.Update) {
+            this.carService.fetchCar(this.carId()!).subscribe({
                 next: (res) => {
                     this.car = { ...res }
-                    this.carId = this.car.carId
+                    this.carId.set(this.car.carId)
                     this.mainImageId = this.car.mainImageId
-                    this.bus = this.car.bus
-                    this.mode = UpdateEnum.Update
+                    this.bus.set(this.car.bus)
+                    this.mode.set(UpdateEnum.Update)
 
                     this.clearZeros()
                     this.addCarForm.patchValue(this.car)
@@ -302,10 +324,10 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
                 },
             })
         } else {
-            this.nextIdService.getNextId(this.bus ? ItemType.OnlyBus : ItemType.OnlyCar).subscribe({
+            this.nextIdService.getNextId(this.bus() ? ItemType.OnlyBus : ItemType.OnlyCar).subscribe({
                 next: (id) => {
                     if (id.nextId) {
-                        this.carId = id.nextId
+                        this.carId.set(id.nextId)
                     } else if (id.error) {
                         this.popupService.openWithTimeout('Съобщение', id.error, 2000).subscribe(() => {
                             this.goBack()
@@ -326,10 +348,12 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
                     return
                 },
             })
+
+            this.inialValue = this.addCarForm.value
         }
     }
     get action() {
-        if (this.mode == UpdateEnum.Update) {
+        if (this.mode() == UpdateEnum.Update) {
             return this.labels.UPDATE
         } else {
             return this.labels.SAVE
@@ -339,7 +363,13 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     setYears() {
         const result: SelectOption[] = []
         for (let i = this.yearFrom; i <= this.yearTo; i++) {
-            result.push({ value: i, text: i.toString() })
+            result.push({
+                value: i,
+                text: i.toString(),
+                isDisabled: function (): boolean {
+                    throw new Error('Function not implemented.')
+                },
+            })
         }
         this.years = result
     }
@@ -355,9 +385,9 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     addCar() {
-        const carUpdated: Car = Object.assign(this.addCarForm.value, { bus: this.bus, carId: this.carId, userId: this.userId })
+        const carUpdated: Car = Object.assign(this.addCarForm.value, { bus: this.bus, carId: this.carId(), userId: this.userId })
         this.saving = true
-        this.carService.addUpdateCar(carUpdated, this.mode).subscribe({
+        this.carService.addUpdateCar(carUpdated, this.mode()).subscribe({
             next: (val) => {
                 this.carSaved(val)
             },
@@ -376,8 +406,8 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     carSaved(val: DisplayPartView) {
         this.carService.currentCarId = val.id
         this.saving = false
-        const type = this.bus ? 'Буса' : 'Колата'
-        const mode = this.mode === UpdateEnum.Update ? 'записана' : 'добавена'
+        const type = this.bus() ? 'Буса' : 'Колата'
+        const mode = this.mode() === UpdateEnum.Update ? 'записана' : 'добавена'
         const content = `${type} е успешно ${mode}`
         this.carService.currentCarId = val.carId
         this.userCountService.refresh()
@@ -391,25 +421,13 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.saved.emit(val.id)
             if (this.ad) {
                 this.carService.currentCarId = val.id
-                if (this.bus) {
+                if (this.bus() === 1) {
                     this.router.navigate(['/data/bus'])
                 } else {
                     this.router.navigate(['/data/cars'])
                 }
             } else this.goBack()
         })
-        // const title = 'Съобщение'
-        // this.popupService.openWithTimeout(title, content, 2000).subscribe(() => {
-        // })
-    }
-
-    get UpdateFlag() {
-        if (this.mode === UpdateEnum.View) return false
-        else return true
-    }
-
-    get allowBack() {
-        return this.mode === UpdateEnum.Update
     }
 
     showMessageNotFound() {

@@ -1,5 +1,5 @@
 //#region @Component
-import { Component, ElementRef, HostListener, inject, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ElementRef, HostListener, inject, Inject, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
 import { SelectBase } from '@components/custom-controls/selectBase'
 import { NgClass } from '@angular/common'
@@ -15,7 +15,6 @@ import { RadioGroupComponent } from '@components/custom-controls/radioGroup/radi
     selector: 'app-company',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, FormsModule, MatDialogContent, MatDialogClose, SearchInputComponent, ChoiseComponent, RadioGroupComponent, ReactiveFormsModule],
 })
 //#endregion

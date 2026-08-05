@@ -1,23 +1,24 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { Component, DestroyRef, inject, Input, OnInit, model } from '@angular/core'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { SelectComponent } from '../select-controls/select/select.component'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { HelperComponent } from '../helper/helper.component'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { FormValueControl } from '@angular/forms/signals'
 //#endregion
 //#region services
 @Component({
     selector: 'app-year',
     templateUrl: './year.component.html',
     styleUrls: ['./year.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, SelectComponent],
 })
 //#endregion
-export class YearComponent extends HelperComponent implements ControlValueAccessor, AfterViewInit, OnInit {
+export class YearComponent extends HelperComponent implements FormValueControl<number | undefined>, OnInit {
+    value = model<number | undefined>(undefined);
     isDisabled = false
     yearForm: FormGroup
     yearFrom = 1970
@@ -29,12 +30,6 @@ export class YearComponent extends HelperComponent implements ControlValueAccess
         this.setYears()
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    protected onTouched?() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    protected onChange?(_: number) {}
-
-    @Self() public control: NgControl = inject(NgControl)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     public errorService: ErrorService = inject(ErrorService)
     formBuilder: FormBuilder = inject(FormBuilder)
@@ -42,27 +37,12 @@ export class YearComponent extends HelperComponent implements ControlValueAccess
 
     constructor() {
         super()
-        if (this.control) this.control.valueAccessor = this
         this.yearForm = this.formBuilder.group({
             year_int: [0],
         })
     }
-    writeValue(id: number): void {
-        this.yearForm.patchValue({ year_int: id })
-    }
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
-    }
-
     setDisabledState?(isDisabled: boolean): void {
         this.isDisabled = isDisabled
-    }
-
-    ngAfterViewInit(): void {
-        return
     }
 
     setYears() {
@@ -77,7 +57,7 @@ export class YearComponent extends HelperComponent implements ControlValueAccess
         this.setYears()
         this.yearForm.controls['year_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
             if (f) f = +f
-            if (this.onChange) this.onChange(f)
+            this.value.set(f)
         })
     }
 }

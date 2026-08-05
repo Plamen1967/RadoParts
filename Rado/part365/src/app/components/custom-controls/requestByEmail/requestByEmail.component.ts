@@ -1,6 +1,6 @@
 //#region Imports
 
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, input } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ItemType } from '@model/enum/itemType.enum'
@@ -18,7 +18,6 @@ import { Catcha } from '@model/catcha'
     selector: 'app-requestbyemail',
     templateUrl: './requestByEmail.component.html',
     styleUrls: ['./requestByEmail.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, InputComponent, TextAreaComponent, CatchaComponent],
 })
 //#endregion
@@ -28,8 +27,8 @@ export class RequestByEmailComponent extends HelperComponent implements OnInit {
     requestByEmail: FormGroup
     submitted!: boolean
 
-    @Input({ required: true }) id!: number
-    @Input() itemType?: ItemType
+    id = input.required<number>();
+    itemType = input<ItemType | undefined>()
 
     @Output() messageSent: EventEmitter<boolean> = new EventEmitter<boolean>()
     private formBuilder: FormBuilder = inject(FormBuilder)

@@ -1,7 +1,8 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, Self, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, Self, model } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormValueControl } from '@angular/forms/signals'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { DealerSubCategory } from '@model/category-subcategory/dealerSubCategory'
@@ -14,12 +15,12 @@ import { ErrorService } from '@services/error.service'
     selector: 'app-dealersubcategory-choice',
     templateUrl: './dealersubcategory-choice.component.html',
     styleUrls: ['./dealersubcategory-choice.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
 })
 //#endregion
-export class DealersubcategoryChoiceComponent implements ControlValueAccessor, AfterViewInit {
+export class DealersubcategoryChoiceComponent implements FormValueControl<number | undefined>, AfterViewInit {
     //#region variables and services
+    value = model<number | undefined>(undefined)
     dealerSubCategoryForm: FormGroup
     isDisabled?: boolean
     dealerSubCategories: OptionItem[] = []
@@ -36,7 +37,7 @@ export class DealersubcategoryChoiceComponent implements ControlValueAccessor, A
     }
     @Input() id?: number
     @Input() submitted = false
-    @Input() required = false
+    @Input() IsRequired = false
     @Output() dealerSubCategoryChanged: EventEmitter<DealerSubCategory> = new EventEmitter<DealerSubCategory>()
     //#region services
     public dealerSubCategoryService: DealerSubCategoryService

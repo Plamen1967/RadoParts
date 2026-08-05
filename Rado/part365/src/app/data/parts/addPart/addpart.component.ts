@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, NavigationStart, ParamMap, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -53,7 +53,6 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-addpart',
     templateUrl: './addpart.component.html',
     styleUrls: ['./addpart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         ImageListComponent,
         ReactiveFormsModule,
@@ -423,7 +422,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     // Events
-    onCarChange(f: number) {
+    onCarChange(f: number | undefined) {
         if (f) {
             this.carService.fetchCar(f).subscribe((res) => {
                 this.updateCar(res)

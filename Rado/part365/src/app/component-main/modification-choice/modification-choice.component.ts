@@ -1,7 +1,7 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, Self, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, model } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -11,18 +11,19 @@ import { OptionItem } from '@model/optionitem'
 import { Modification } from '@model/static-data/modification'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { ErrorService } from '@services/error.service'
+import { FormValueControl } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
     selector: 'app-modification-choice',
     templateUrl: './modification-choice.component.html',
     styleUrls: ['./modification-choice.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-export class ModificationChoiceComponent implements ControlValueAccessor {
+export class ModificationChoiceComponent implements FormValueControl<number | undefined> {
     //#region variables and services
+    value = model<number | undefined>(undefined)    
     modifications: OptionItem[] = []
     modificationForm: FormGroup
     models_Id = ''
@@ -37,7 +38,7 @@ export class ModificationChoiceComponent implements ControlValueAccessor {
     @Input() useFilter = true
     @Input() all = false
     @Input() userId = 0
-    @Input() required = false
+    @Input() IsRequired = false
     @Input() submitted = false
     @Input() showCount = false
     @Input() itemType: ItemType = ItemType.All
@@ -49,7 +50,6 @@ export class ModificationChoiceComponent implements ControlValueAccessor {
     //#region services
     private modificationService: ModificationService = inject(ModificationService)
     private formBuilder: FormBuilder = inject(FormBuilder)
-    @Self() public control: NgControl = inject(NgControl)
     public errorService: ErrorService = inject(ErrorService)
     private element: ElementRef = inject(ElementRef)
     private destroyRef: DestroyRef = inject(DestroyRef)
@@ -57,7 +57,6 @@ export class ModificationChoiceComponent implements ControlValueAccessor {
     //#endregion
 
     constructor() {
-        if (this.control) this.control.valueAccessor = this
         this.modificationForm = this.formBuilder.group({
             modificationsId_int: [0],
         })
@@ -72,12 +71,7 @@ export class ModificationChoiceComponent implements ControlValueAccessor {
     writeValue(value: string): void {
         this.modificationForm.patchValue({ modificationsId_int: value })
     }
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
-    }
+
     setDisabledState?(isDisabled: boolean): void {
         this.isDisabled = isDisabled
     }

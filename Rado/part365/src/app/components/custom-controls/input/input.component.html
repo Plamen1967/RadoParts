@@ -6,26 +6,25 @@
                     <span id="id" [ngStyle]="{ 'background-color': 'lightgray' }" class="ps-1 pe-1 form-control-sm">{{ prefix }}</span>
                 }
                 <input
+                    [value]="value()"
                     [type]="number ? 'number' : 'text'"
                     autocomplete="{{ autocomplete }}"
                     placeholder="{{ placeHolder }}"
-                    pattern="{{ pattern }}"
+                    pattern="{{ Pattern }}"
                     min="0"
                     max="20"
                     step="1"
-                    [(ngModel)]="inputValue"
                     class="form-control shadow active"
-                    [ngClass]="{ keywordClass: keyword === true, 'is-invalid': submitted && control.invalid, currency: price, 'form-control': true, 'form-control-sm': small, active: true }"
-                    (change)="onChangeEvent()"
+                    [ngClass]="{ keywordClass: keyword === true, 'is-invalid': submitted && IsInvalid, currency: IsPrice, 'form-control': true,  active: true }"
                     (input)="inputFunc()"
                     id="{{ contolName }}"
-                    aria-describedby="id" 
+                    aria-describedby="id"
                     (focus)="onFocus()"
-                    (blur)="onBlur()">
+                    (blur)="onBlur()" />
 
-                @if (price) {
-                    <span class="currency" [ngClass]="{ 'form-control-sm': small === true, 'form-control': small === undefined }">EURO</span>
-                    @if (required) {
+                @if (IsPrice) {
+                    <span class="currency" [ngClass]="{ 'form-control-sm': true}">EURO</span>
+                    @if (IsRequired) {
                         <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '1px' }">*</span>
                     }
                 }
@@ -33,14 +32,14 @@
                     <span id="id" [ngStyle]="{ 'background-color': 'lightgray' }" class="ps-1 pe-1 form-control-sm">{{ suffix }}</span>
                 }
             </div>
-            <div class="select__label" [ngClass]="{ required: required }">
+            <div class="select__label" [ngClass]="{ required: IsRequired }">
                 {{ label }}
-                @if (label && required) {
+                @if (label && IsRequired) {
                     <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
                 }
             </div>
         </div>
-        @if (submitted && control.invalid) {
+        @if (submitted && IsInvalid) {
             <div class="invalid-feedback d-block">
                 <small>{{ errorMessage }}</small>
             </div>

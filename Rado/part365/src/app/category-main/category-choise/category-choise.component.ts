@@ -1,7 +1,7 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, model } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -9,18 +9,19 @@ import { Category } from '@model/category-subcategory/category'
 import { OptionItem } from '@model/optionitem'
 import { CategoryService } from '@services/category-subcategory/category.service'
 import { ErrorService } from '@services/error.service'
+import { FormValueControl } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
     selector: 'app-category-choise',
     templateUrl: './category-choise.component.html',
     styleUrls: ['./category-choise.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
 })
 //#endregion
-export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
+export class CategoryChoiseComponent implements FormValueControl<number | undefined>, OnInit {
     //#region variables and services
+    value = model<number | undefined>(undefined)
     categoryForm: FormGroup
     isDisabled?: boolean
     categories: OptionItem[] = []
@@ -31,7 +32,7 @@ export class CategoryChoiseComponent implements ControlValueAccessor, OnInit {
     @Input() all = false
     @Input() multiselection = true
     @Input() submitted = false
-    @Input() required = false
+    @Input() IsRequired = false
     //#region services
     public categoryService: CategoryService
     private formBuilder: FormBuilder

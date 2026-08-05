@@ -5,11 +5,9 @@ using Rado.Enrich;
 using Rado.Enums;
 using Rado.Exceptions;
 using Rado.Models;
-using Rado.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Utility;
@@ -18,34 +16,29 @@ namespace Rado.Datasets
 {
     public class SearchDbSet
     {
-        static object dictionaryLock = new object();
-        static private Dictionary<long, SearchResult> dictionaryParts = new Dictionary<long, SearchResult>();
+        private static Dictionary<long, SearchResult> _dictionaryParts = new Dictionary<long, SearchResult>();
 
         #region database operations
-        static public Filter GetFilterById(long filterId)
+
+        private static Filter GetFilterById(long filterId)
         {
             Filter filterPart = new Filter();
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+                SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand("GetFilterById", sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@filterId", SqlDbType.BigInt).Value = filterId;
+                sqlConnection.Open();
+
+                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand("GetFilterById", sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-                        sqlCommand.Parameters.Add("@filterId", SqlDbType.BigInt).Value = filterId;
-                        sqlConnection.Open();
-
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            if (sqlDataReader.Read())
-                                filterPart = Loader.LoadFilter(sqlDataReader);
-                            else
-                                return null;
-                        }
-                        sqlConnection.Close();
-                    }
-
+                    if (sqlDataReader.Read())
+                        filterPart = Loader.LoadFilter(sqlDataReader);
+                    else
+                        return null;
                 }
+                sqlConnection.Close();
             }
             catch (Exception exception)
             {
@@ -55,10 +48,8 @@ namespace Rado.Datasets
             filterPart.Loaded = true;
             return filterPart;
         }
-
-        static public async Task SaveFilter(Filter filterPart)
+        private static async Task SaveFilter(Filter filterPart)
         {
-
             if (filterPart.UserId == null) filterPart.UserId = 0;
             if (filterPart.EngineModel == null) filterPart.EngineModel = "";
             if (filterPart.Description == null) filterPart.Description = "";
@@ -75,69 +66,64 @@ namespace Rado.Datasets
 
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-                {
-                    using (SqlCommand sqlCommand = new SqlCommand("FilterPartIns", sqlConnection))
-                    {
-                        await sqlConnection.OpenAsync();
+                SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                SqlCommand sqlCommand = new SqlCommand("FilterPartIns", sqlConnection);
+                await sqlConnection.OpenAsync();
 
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                        sqlCommand.Parameters.Add("@filterId", SqlDbType.BigInt).Value = filterPart.Id;
-                        sqlCommand.Parameters.Add("@itemType", SqlDbType.Int).Value = filterPart.ItemType;
-                        sqlCommand.Parameters.Add("@carId", SqlDbType.BigInt).Value = filterPart.CarId;
-                        sqlCommand.Parameters.Add("@companyId", SqlDbType.BigInt).Value = filterPart.CompanyId;
-                        sqlCommand.Parameters.Add("@modelId", SqlDbType.Int).Value = filterPart.ModelId;
-                        sqlCommand.Parameters.Add("@modificationId", SqlDbType.Int).Value = filterPart.ModificationId;
-                        sqlCommand.Parameters.Add("@year", SqlDbType.Int).Value = filterPart.Year;
-                        sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int).Value = filterPart.CategoryId;
-                        sqlCommand.Parameters.Add("@categoriesId", SqlDbType.VarChar).Value = filterPart.CategoriesId;
-                        sqlCommand.Parameters.Add("@subCategoryId", SqlDbType.Int).Value = filterPart.SubCategoryId;
-                        sqlCommand.Parameters.Add("@subCategoriesId", SqlDbType.VarChar).Value = filterPart.SubCategoriesId;
-                        sqlCommand.Parameters.Add("@engineType", SqlDbType.Int).Value = filterPart.EngineType;
-                        sqlCommand.Parameters.Add("@engineModel", SqlDbType.NVarChar).Value = filterPart.EngineModel.Trim();
-                        sqlCommand.Parameters.Add("@partNumber", SqlDbType.NVarChar).Value = filterPart.PartNumber.Trim();
-                        sqlCommand.Parameters.Add("@powerkWh", SqlDbType.Int).Value = filterPart.PowerkWh;
-                        sqlCommand.Parameters.Add("@powerBHP", SqlDbType.Int).Value = filterPart.PowerBHP;
-                        sqlCommand.Parameters.Add("@gearboxType", SqlDbType.Int).Value = filterPart.GearboxType;
-                        sqlCommand.Parameters.Add("@categories", SqlDbType.NVarChar).Value = filterPart.Categories.Trim();
-                        sqlCommand.Parameters.Add("@partOnly", SqlDbType.Int).Value = filterPart.PartOnly;
-                        sqlCommand.Parameters.Add("@searchBy", SqlDbType.SmallInt).Value = filterPart.SearchBy;
-                        sqlCommand.Parameters.Add("@regNumber", SqlDbType.NVarChar).Value = filterPart.RegNumber;
-                        sqlCommand.Parameters.Add("@extendedSearch", SqlDbType.SmallInt).Value = filterPart.ExtendedSearch;
-                        sqlCommand.Parameters.Add("@tyreCompanyId", SqlDbType.Int).Value = filterPart.TyreCompanyId;
-                        sqlCommand.Parameters.Add("@tyreWidth", SqlDbType.Int).Value = filterPart.TyreWidth;
-                        sqlCommand.Parameters.Add("@tyreHeight", SqlDbType.Int).Value = filterPart.TyreHeight;
-                        sqlCommand.Parameters.Add("@tyreRadius", SqlDbType.Int).Value = filterPart.TyreRadius;
-                        sqlCommand.Parameters.Add("@tyreType", SqlDbType.Int).Value = filterPart.TyreType;
-                        sqlCommand.Parameters.Add("@rimCompanyId", SqlDbType.Int).Value = filterPart.RimCompanyId;
-                        sqlCommand.Parameters.Add("@rimModelId", SqlDbType.Int).Value = filterPart.RimModelId;
-                        sqlCommand.Parameters.Add("@rimWidth", SqlDbType.Int).Value = filterPart.RimWidth;
-                        sqlCommand.Parameters.Add("@rimMaterial", SqlDbType.Int).Value = filterPart.RimMaterial;
-                        sqlCommand.Parameters.Add("@rimOffset", SqlDbType.Int).Value = filterPart.RimOffset;
-                        sqlCommand.Parameters.Add("@rimBoltCount", SqlDbType.Int).Value = filterPart.RimBoltCount;
-                        sqlCommand.Parameters.Add("@rimBoltDistance", SqlDbType.Int).Value = filterPart.RimBoltDistance;
-                        sqlCommand.Parameters.Add("@rimCenter", SqlDbType.Int).Value = filterPart.RimCenter;
-                        sqlCommand.Parameters.Add("@clientId", SqlDbType.BigInt).Value = filterPart.ClientId;
-                        sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = filterPart.UserId;
-                        sqlCommand.Parameters.Add("@loadMainPicture", SqlDbType.SmallInt).Value = filterPart.LoadMainPicture;
-                        sqlCommand.Parameters.Add("@orderBy", SqlDbType.SmallInt).Value = filterPart.OrderBy;
-                        sqlCommand.Parameters.Add("@regionId", SqlDbType.Int).Value = filterPart.RegionId;
-                        sqlCommand.Parameters.Add("@hasImages", SqlDbType.Int).Value = filterPart.HasImages;
-                        sqlCommand.Parameters.Add("@keyword", SqlDbType.NVarChar).Value = filterPart.Keyword.Trim();
-                        sqlCommand.Parameters.Add("@description", SqlDbType.NVarChar).Value = filterPart.Description.Trim();
-                        sqlCommand.Parameters.Add("@adminRun", SqlDbType.Int).Value = filterPart.AdminRun;
-                        sqlCommand.Parameters.Add("@approved", SqlDbType.Int).Value = filterPart.Approved;
-                        sqlCommand.Parameters.Add("@bus", SqlDbType.Int).Value = filterPart.Bus;
-                        sqlCommand.Parameters.Add("@partForCar", SqlDbType.Int).Value = filterPart.PartForCar;
-                        sqlCommand.Parameters.Add("@modelsId", SqlDbType.NVarChar).Value = filterPart.ModelsId.Trim();
-                        sqlCommand.Parameters.Add("@modificationsId", SqlDbType.NVarChar).Value = filterPart.ModificationsId.Trim();
+                sqlCommand.Parameters.Add("@filterId", SqlDbType.BigInt).Value = filterPart.Id;
+                sqlCommand.Parameters.Add("@itemType", SqlDbType.Int).Value = filterPart.ItemType;
+                sqlCommand.Parameters.Add("@carId", SqlDbType.BigInt).Value = filterPart.CarId;
+                sqlCommand.Parameters.Add("@companyId", SqlDbType.BigInt).Value = filterPart.CompanyId;
+                sqlCommand.Parameters.Add("@modelId", SqlDbType.Int).Value = filterPart.ModelId;
+                sqlCommand.Parameters.Add("@modificationId", SqlDbType.Int).Value = filterPart.ModificationId;
+                sqlCommand.Parameters.Add("@year", SqlDbType.Int).Value = filterPart.Year;
+                sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int).Value = filterPart.CategoryId;
+                sqlCommand.Parameters.Add("@categoriesId", SqlDbType.VarChar).Value = filterPart.CategoriesId;
+                sqlCommand.Parameters.Add("@subCategoryId", SqlDbType.Int).Value = filterPart.SubCategoryId;
+                sqlCommand.Parameters.Add("@subCategoriesId", SqlDbType.VarChar).Value = filterPart.SubCategoriesId;
+                sqlCommand.Parameters.Add("@engineType", SqlDbType.Int).Value = filterPart.EngineType;
+                sqlCommand.Parameters.Add("@engineModel", SqlDbType.NVarChar).Value = filterPart.EngineModel.Trim();
+                sqlCommand.Parameters.Add("@partNumber", SqlDbType.NVarChar).Value = filterPart.PartNumber.Trim();
+                sqlCommand.Parameters.Add("@powerkWh", SqlDbType.Int).Value = filterPart.PowerkWh;
+                sqlCommand.Parameters.Add("@powerBHP", SqlDbType.Int).Value = filterPart.PowerBHP;
+                sqlCommand.Parameters.Add("@gearboxType", SqlDbType.Int).Value = filterPart.GearboxType;
+                sqlCommand.Parameters.Add("@categories", SqlDbType.NVarChar).Value = filterPart.Categories.Trim();
+                sqlCommand.Parameters.Add("@partOnly", SqlDbType.Int).Value = filterPart.PartOnly;
+                sqlCommand.Parameters.Add("@searchBy", SqlDbType.SmallInt).Value = filterPart.SearchBy;
+                sqlCommand.Parameters.Add("@regNumber", SqlDbType.NVarChar).Value = filterPart.RegNumber;
+                sqlCommand.Parameters.Add("@extendedSearch", SqlDbType.SmallInt).Value = filterPart.ExtendedSearch;
+                sqlCommand.Parameters.Add("@tyreCompanyId", SqlDbType.Int).Value = filterPart.TyreCompanyId;
+                sqlCommand.Parameters.Add("@tyreWidth", SqlDbType.Int).Value = filterPart.TyreWidth;
+                sqlCommand.Parameters.Add("@tyreHeight", SqlDbType.Int).Value = filterPart.TyreHeight;
+                sqlCommand.Parameters.Add("@tyreRadius", SqlDbType.Int).Value = filterPart.TyreRadius;
+                sqlCommand.Parameters.Add("@tyreType", SqlDbType.Int).Value = filterPart.TyreType;
+                sqlCommand.Parameters.Add("@rimCompanyId", SqlDbType.Int).Value = filterPart.RimCompanyId;
+                sqlCommand.Parameters.Add("@rimModelId", SqlDbType.Int).Value = filterPart.RimModelId;
+                sqlCommand.Parameters.Add("@rimWidth", SqlDbType.Int).Value = filterPart.RimWidth;
+                sqlCommand.Parameters.Add("@rimMaterial", SqlDbType.Int).Value = filterPart.RimMaterial;
+                sqlCommand.Parameters.Add("@rimOffset", SqlDbType.Int).Value = filterPart.RimOffset;
+                sqlCommand.Parameters.Add("@rimBoltCount", SqlDbType.Int).Value = filterPart.RimBoltCount;
+                sqlCommand.Parameters.Add("@rimBoltDistance", SqlDbType.Int).Value = filterPart.RimBoltDistance;
+                sqlCommand.Parameters.Add("@rimCenter", SqlDbType.Int).Value = filterPart.RimCenter;
+                sqlCommand.Parameters.Add("@clientId", SqlDbType.BigInt).Value = filterPart.ClientId;
+                sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = filterPart.UserId;
+                sqlCommand.Parameters.Add("@loadMainPicture", SqlDbType.SmallInt).Value = filterPart.LoadMainPicture;
+                sqlCommand.Parameters.Add("@orderBy", SqlDbType.SmallInt).Value = filterPart.OrderBy;
+                sqlCommand.Parameters.Add("@regionId", SqlDbType.Int).Value = filterPart.RegionId;
+                sqlCommand.Parameters.Add("@hasImages", SqlDbType.Int).Value = filterPart.HasImages;
+                sqlCommand.Parameters.Add("@keyword", SqlDbType.NVarChar).Value = filterPart.Keyword.Trim();
+                sqlCommand.Parameters.Add("@description", SqlDbType.NVarChar).Value = filterPart.Description.Trim();
+                sqlCommand.Parameters.Add("@adminRun", SqlDbType.Int).Value = filterPart.AdminRun;
+                sqlCommand.Parameters.Add("@approved", SqlDbType.Int).Value = filterPart.Approved;
+                sqlCommand.Parameters.Add("@bus", SqlDbType.Int).Value = filterPart.Bus;
+                sqlCommand.Parameters.Add("@partForCar", SqlDbType.Int).Value = filterPart.PartForCar;
+                sqlCommand.Parameters.Add("@modelsId", SqlDbType.NVarChar).Value = filterPart.ModelsId.Trim();
+                sqlCommand.Parameters.Add("@modificationsId", SqlDbType.NVarChar).Value = filterPart.ModificationsId.Trim();
 
-
-                        await sqlCommand.ExecuteNonQueryAsync();
-                        await sqlConnection.CloseAsync();
-                    }
-                }
+                await sqlCommand.ExecuteNonQueryAsync();
+                await sqlConnection.CloseAsync();
             }
             catch (Exception exception)
             {
@@ -145,30 +131,9 @@ namespace Rado.Datasets
 
             }
         }
-
         #endregion
-        static async public Task<SearchResult> SearchForPartsPerUser(Filter filterPart)
-        {
-            Filter filter = new Filter()
-            {
-                UserId = filterPart.UserId
-            };
 
-            EnrichManager.EnrichFilter(filterPart);
-
-            PartView[] partView = await getCarAndPartsAsync(filterPart);
-            DisplayPartView[] displayPartView = partView.Select((part) => EnrichManager.EnrichDisplayPartView(part)).ToArray();
-
-
-            SearchResult searchResult = new SearchResult();
-            searchResult.data = displayPartView;
-            foreach (var item in searchResult.data) item.Normalize();
-            searchResult.size = displayPartView.Length;
-
-            return await Task.FromResult <SearchResult>(searchResult);
-        }
-
-        static public async Task<SearchResult> SearchPartByNumber(Filter filterPart)
+        public static async Task<SearchResult> SearchPartByNumber(Filter filterPart)
         {
             filterPart.ItemType = ItemType.RegNumber;
             if (filterPart.Id != 0 && !filterPart.Loaded)
@@ -184,31 +149,26 @@ namespace Rado.Datasets
             return await SearchForParts(filterPart);
         }
 
-        static public async Task<SearchResult> SearchForTyres(Filter filterPart)
+        private static async Task<SearchResult> SearchForTyres(Filter filterPart)
         {
             EnrichManager.EnrichFilter(filterPart);
             SearchResult searchResult = RimWithTyreDbSet.SearchForRimTyres(filterPart); ;
             return await Task.FromResult<SearchResult>(searchResult);
         }
 
-
-
-        static public async Task<SearchResult> SearchForParts(Filter filterPart)
+        private static async Task<SearchResult> SearchForParts(Filter filterPart)
         {
             if (filterPart.SearchBy == SearchBy.PartNumber ||
                (filterPart.CategoriesId?.Length > 0 || filterPart.SubCategoriesId?.Length > 0 || filterPart.CategoryId != 0 || filterPart.SubCategoryId != 0))
             {
-                if (filterPart.Bus == 1)
-                    filterPart.ItemType = ItemType.BusPart;
-                else
-                    filterPart.ItemType = ItemType.CarPart;
-
+                filterPart.ItemType = filterPart.Bus == 1 ? ItemType.BusPart : ItemType.CarPart;
             }
 
             EnrichManager.EnrichFilter(filterPart);
-            PartView[] partView = await getCarAndPartsAsync(filterPart);
+            PartView[] partView = await GetCarAndPartsAsync(filterPart);
             int count = 0;
             List<DisplayPartView> parts = new List<DisplayPartView>();
+            List<string> log = new List<string>();
             foreach(var part in partView)
             {
                 parts.Add(EnrichManager.EnrichDisplayPartView(part));
@@ -216,67 +176,19 @@ namespace Rado.Datasets
                 if (count >= Program.ReturnPartCount) break;
             }
 
-            SearchResult searchResult = new SearchResult();
-            searchResult.data = parts.ToArray();
-            foreach (var item in searchResult.data) item.Normalize();
+            SearchResult searchResult = new SearchResult
+            {
+                data = parts.ToArray()
+            };
+            foreach (DisplayPartView item in searchResult.data) item.Normalize();
             searchResult.size = partView.Length;
             searchResult.filter = filterPart;
             return await Task.FromResult<SearchResult>(searchResult); ;
         }
 
-        #region Serach by part number
-        static private PartView[] getPartsByNumber(Filter filterPart)
-        {
-            List<PartView> parts = new List<PartView>();
-            if (filterPart.PartNumber == null && filterPart.PartNumber.Trim().Length == 0)
-            {
-                return parts.ToArray();
-            }
-
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-                {
-                    using (SqlCommand sqlCommand = new SqlCommand("PartByNumberAll", sqlConnection))
-                    {
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-
-                        sqlCommand.Parameters.Add("@partNumber", System.Data.SqlDbType.Int).Value = filterPart.PartNumber.Trim();
-
-                        sqlConnection.Open();
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            Stopwatch stopwatch = new Stopwatch();
-                            stopwatch.Start();
-                            while (sqlDataReader.Read())
-                            {
-                                PartView partView = EnrichManager.EnrichPartView(sqlDataReader);
-
-                                parts.Add(partView);
-                            }
-                            stopwatch.Stop();
-                            Console.WriteLine("Elapsed Time PartsAll is {0} ms", stopwatch.ElapsedMilliseconds);
-                        }
-                        sqlConnection.Close();
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                throw new AppException($" Error in GetParts : {exception.Message}");
-            }
-            finally
-            {
-            }
-
-            return parts.ToArray();
-        }
-
-        #endregion
-
         #region Search for parts
    
-        static private async Task<PartView[]> getCarAndPartsAsync(Filter filterPart)
+        private static async Task<PartView[]> GetCarAndPartsAsync(Filter filterPart)
         {
             var startTime = Environment.TickCount;
             Task<List<PartView>> parts = null;
@@ -309,7 +221,7 @@ namespace Rado.Datasets
                 filterPart.ItemType == ItemType.None ||
                 filterPart.ItemType == ItemType.All ||
                 filterPart.ItemType == ItemType.AllCarAndPart)
-                cars = getCarAsync(filterPart);
+                cars = GetCarAsync(filterPart);
 
             if (filterPart.ItemType == ItemType.CarPart ||
                 filterPart.ItemType == ItemType.BusPart ||
@@ -391,7 +303,7 @@ namespace Rado.Datasets
         }
         #endregion
 
-        private static async Task<List<PartView>> getCarAsync(Filter filterPart)
+        private static async Task<List<PartView>> GetCarAsync(Filter filterPart)
         {
             if (filterPart.PartOnly) return new List<PartView>();
             if (filterPart.SearchBy == SearchBy.PartNumber) return new List<PartView>();
@@ -404,38 +316,24 @@ namespace Rado.Datasets
                 EnrichManager.InitPartViewFromCar(car, partView);
                 parts.Add(partView);
             }
-            return await Task.FromResult<List<PartView>>(parts); ;
+            return parts;
         }
-
-
-
-        public static bool checkItem(DisplayPartView item)
-        {
-            return false;
-        }
-
-        static public async Task<DisplayPartView> GetItemAsync(long id)
+        public static async Task<DisplayPartView> GetItemAsync(long id)
         {
             int itemType = 0;
-            using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+            SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+            SqlCommand sqlCommand = new SqlCommand("GetItemType", sqlConnection);
+            await sqlConnection.OpenAsync();
+
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+            sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = id;
+
+            SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync();
+            if (await sqlDataReader.ReadAsync())
             {
-                using (SqlCommand sqlCommand = new SqlCommand("GetItemType", sqlConnection))
-                {
-                    await sqlConnection.OpenAsync();
-
-                    sqlCommand.CommandType = CommandType.StoredProcedure;
-                    sqlCommand.Parameters.Add("@id", SqlDbType.BigInt).Value = id;
-
-                    using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                    {
-                        if (await sqlDataReader.ReadAsync())
-                        {
-                            itemType = (int)Convert.ToInt64(sqlDataReader["itemType"]);
-                        }
-                    }
-                    await sqlConnection.CloseAsync();
-                }
+                itemType = (int)Convert.ToInt64(sqlDataReader["itemType"]);
             }
+            await sqlConnection.CloseAsync();
 
             PartView partView;
             switch (itemType)
@@ -452,7 +350,6 @@ namespace Rado.Datasets
                     DisplayPartView viewPart = EnrichManager.EnrichDisplayPartView(partView);
                     viewPart.Normalize();
                     return viewPart;
-
                 case 3:
                 case 4:
                 case 5:
@@ -464,98 +361,7 @@ namespace Rado.Datasets
             }
             return null;
         }
-        //static void checkDictionary(long id)
-        //{
-        //    return;
-        //    SearchResult result = dictionaryParts[id];
-        //    List<long> foundIds = new List<long>();
-        //    using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
-        //    {
-        //        using (SqlCommand sqlCommand = new SqlCommand("CheckIds", sqlConnection))
-        //        {
-        //            sqlCommand.CommandType = CommandType.StoredProcedure;
-
-        //            List<long> ids = new List<long>();
-        //            foreach (var item in result.data)
-        //            {
-        //                ids.Add(item.id);
-        //            }
-        //            string stringIds = ToString.Join(",", ids);
-
-        //            sqlCommand.Parameters.Add("@ids", SqlDbType.VarChar).Value = stringIds;
-        //            sqlConnection.Open();
-        //            using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-        //            {
-        //                Stopwatch stopwatch = new Stopwatch();
-        //                while (sqlDataReader.Read())
-        //                {
-        //                    foundIds.Add(Convert.ToInt64(sqlDataReader["id"]));
-        //                }
-        //            }
-        //            sqlConnection.Close();
-        //        }
-        //    }
-
-        //    List<DisplayPartView> list = result.data.ToList<DisplayPartView>();
-
-        //    list.RemoveAll(item => !foundIds.Contains(item.id));
-
-        //    result.data = list.ToArray();
-        //    dictionaryParts[id].data = result.data;
-        //}
-        // Used in Home search 
-
-        static public async Task<SearchResult> updateDictionary(long id)
-        {
-            var dictionary = dictionaryParts[id];
-            List<DisplayPartView> data = new List<DisplayPartView>();
-            foreach (var item in dictionary.data)
-            {
-                if (item.IsCar)
-                {
-                    try
-                    {
-                        CarView carView = await CarsDbSet.GetCarByIdAsync(item.Id);
-                        if (carView != null)
-                        {
-                            PartView partView = new PartView();
-                            EnrichManager.InitPartViewFromCar(carView, partView);
-                            DisplayPartView displayPartView = EnrichManager.EnrichDisplayPartView(partView);
-                            data.Add(displayPartView);
-                        }
-                    }
-                    catch (Exception exeption)
-                    {
-                      LoggerUtil.LogException(exeption);
-                    }
-                }
-                else
-                {
-
-                    try
-                    {
-                        PartView partView = await PartDbSet.GetPartAsync(item.Id);
-                        if (partView != null)
-                        {
-                            DisplayPartView displayPartView = EnrichManager.EnrichDisplayPartView(partView);
-                            data.Add(displayPartView);
-                        }
-                    }
-                    catch (Exception exeption)
-                    {
-                      LoggerUtil.LogException(exeption);
-                    }
-        }
-
-
-            }
-
-            dictionary.data = data.ToArray();
-            foreach (var item in dictionary.data) item.Normalize();
-
-            return dictionary;
-        }
-        static public async Task<Filter> GetFilter(long query)
+        public static async Task<Filter> GetFilter(long query)
         {
             Filter filter = GetFilterById(query);
             if (filter == null)
@@ -566,7 +372,7 @@ namespace Rado.Datasets
             return await Task.FromResult<Filter>(filter);
         }
 
-        static public async Task<SearchResult> GetSearchResult(long query)
+        public static async Task<SearchResult> GetSearchResult(long query)
         {
             Filter filter = GetFilterById(query);
             if (filter == null)
@@ -577,8 +383,7 @@ namespace Rado.Datasets
             SearchResult result = await Search(filter);
             return await Task.FromResult <SearchResult>(result);
         }
-
-        static public async Task<SearchResult> Search(Filter filterPart)
+        public static async Task<SearchResult> Search(Filter filterPart)
         {
             if (filterPart.Id != 0 && !filterPart.Loaded)
                 await SaveFilter(filterPart);
@@ -649,14 +454,14 @@ namespace Rado.Datasets
                         searchResult.size = searchResult.data.Count();
                         searchResult.filter = filterPart;
 
-                        _ = Task.Run(() => LoggerUtil.Log(String.Format("All SearchController::Search Elapsed Time is {0} ms", searchResult.duration)));
+                        _ = Task.Run(() => LoggerUtil.Log(
+                            $"All SearchController::Search Elapsed Time is {searchResult.duration} ms"));
 
-                        if (filterPart.UserId != 0)
-                        {
-                            searchResult.userCount = result;
-                            searchResult.userView = UserDbSet.GetUserViewById(filterPart.UserId.Value);
-                        }
-                        return await Task.FromResult<SearchResult>(searchResult);
+                        if (filterPart.UserId == 0) return await Task.FromResult<SearchResult>(searchResult);
+                        searchResult.userCount = result;
+                        searchResult.userView = UserDbSet.GetUserViewById(filterPart.UserId.Value);
+
+                        return searchResult;
                     }
                 default:
                     {
@@ -666,4 +471,167 @@ namespace Rado.Datasets
         }
 
     }
+
+    #region not used
+    //static void checkDictionary(long id)
+    //{
+    //    return;
+    //    SearchResult result = dictionaryParts[id];
+    //    List<long> foundIds = new List<long>();
+    //    using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+    //    {
+    //        using (SqlCommand sqlCommand = new SqlCommand("CheckIds", sqlConnection))
+    //        {
+    //            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+    //            List<long> ids = new List<long>();
+    //            foreach (var item in result.data)
+    //            {
+    //                ids.Add(item.id);
+    //            }
+    //            string stringIds = ToString.Join(",", ids);
+
+    //            sqlCommand.Parameters.Add("@ids", SqlDbType.VarChar).Value = stringIds;
+    //            sqlConnection.Open();
+    //            using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+    //            {
+    //                Stopwatch stopwatch = new Stopwatch();
+    //                while (sqlDataReader.Read())
+    //                {
+    //                    foundIds.Add(Convert.ToInt64(sqlDataReader["id"]));
+    //                }
+    //            }
+    //            sqlConnection.Close();
+    //        }
+    //    }
+
+    //    List<DisplayPartView> list = result.data.ToList<DisplayPartView>();
+
+    //    list.RemoveAll(item => !foundIds.Contains(item.id));
+
+    //    result.data = list.ToArray();
+    //    dictionaryParts[id].data = result.data;
+    //}
+    // Used in Home search 
+
+    //public static async Task<SearchResult> updateDictionary(long id)
+    //{
+    //    var dictionary = dictionaryParts[id];
+    //    List<DisplayPartView> data = new List<DisplayPartView>();
+    //    foreach (var item in dictionary.data)
+    //    {
+    //        if (item.IsCar)
+    //        {
+    //            try
+    //            {
+    //                CarView carView = await CarsDbSet.GetCarByIdAsync(item.Id);
+    //                if (carView != null)
+    //                {
+    //                    PartView partView = new PartView();
+    //                    EnrichManager.InitPartViewFromCar(carView, partView);
+    //                    DisplayPartView displayPartView = EnrichManager.EnrichDisplayPartView(partView);
+    //                    data.Add(displayPartView);
+    //                }
+    //            }
+    //            catch (Exception exeption)
+    //            {
+    //              LoggerUtil.LogException(exeption);
+    //            }
+    //        }
+    //        else
+    //        {
+
+    //            try
+    //            {
+    //                PartView partView = await PartDbSet.GetPartAsync(item.Id);
+    //                if (partView != null)
+    //                {
+    //                    DisplayPartView displayPartView = EnrichManager.EnrichDisplayPartView(partView);
+    //                    data.Add(displayPartView);
+    //                }
+    //            }
+    //            catch (Exception exeption)
+    //            {
+    //              LoggerUtil.LogException(exeption);
+    //            }
+    //}
+
+
+    //    }
+
+    //    dictionary.data = data.ToArray();
+    //    foreach (var item in dictionary.data) item.Normalize();
+
+    //    return dictionary;
+    //}
+
+    //static private PartView[] GetPartsByNumber(Filter filterPart)
+    //{
+    //    List<PartView> parts = new List<PartView>();
+    //    if (filterPart.PartNumber == null && filterPart.PartNumber.Trim().Length == 0)
+    //    {
+    //        return parts.ToArray();
+    //    }
+
+    //    try
+    //    {
+    //        using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
+    //        {
+    //            using (SqlCommand sqlCommand = new SqlCommand("PartByNumberAll", sqlConnection))
+    //            {
+    //                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+    //                sqlCommand.Parameters.Add("@partNumber", System.Data.SqlDbType.Int).Value = filterPart.PartNumber.Trim();
+
+    //                sqlConnection.Open();
+    //                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+    //                {
+    //                    Stopwatch stopwatch = new Stopwatch();
+    //                    stopwatch.Start();
+    //                    while (sqlDataReader.Read())
+    //                    {
+    //                        PartView partView = EnrichManager.EnrichPartView(sqlDataReader);
+
+    //                        parts.Add(partView);
+    //                    }
+    //                    stopwatch.Stop();
+    //                    Console.WriteLine("Elapsed Time PartsAll is {0} ms", stopwatch.ElapsedMilliseconds);
+    //                }
+    //                sqlConnection.Close();
+    //            }
+    //        }
+    //    }
+    //    catch (Exception exception)
+    //    {
+    //        throw new AppException($" Error in GetParts : {exception.Message}");
+    //    }
+    //    finally
+    //    {
+    //    }
+
+    //    return parts.ToArray();
+    //}
+    //public static async Task<SearchResult> SearchForPartsPerUser(Filter filterPart)
+    //{
+    //    Filter filter = new Filter()
+    //    {
+    //        UserId = filterPart.UserId
+    //    };
+
+    //    EnrichManager.EnrichFilter(filterPart);
+
+    //    PartView[] partView = await GetCarAndPartsAsync(filterPart);
+    //    DisplayPartView[] displayPartView = partView.Select((part) => EnrichManager.EnrichDisplayPartView(part)).ToArray();
+
+
+    //    SearchResult searchResult = new SearchResult();
+    //    searchResult.data = displayPartView;
+    //    foreach (var item in searchResult.data) item.Normalize();
+    //    searchResult.size = displayPartView.Length;
+
+    //    return await Task.FromResult<SearchResult>(searchResult);
+    //}
+
+
+        #endregion
 }

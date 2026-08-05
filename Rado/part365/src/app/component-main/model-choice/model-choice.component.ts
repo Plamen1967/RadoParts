@@ -1,7 +1,7 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, model } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -9,18 +9,19 @@ import { ItemType } from '@model/enum/itemType.enum'
 import { OptionItem } from '@model/optionitem'
 import { ModelService } from '@services/company-model-modification/model.service'
 import { ErrorService } from '@services/error.service'
+import { FormValueControl } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
     selector: 'app-model-choice',
     templateUrl: './model-choice.component.html',
     styleUrls: ['./model-choice.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-export class ModelChoiceComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class ModelChoiceComponent implements FormValueControl<number | undefined>, OnInit, AfterViewInit {
     //#region variables and services
+    value = model<number | undefined>(undefined)
     modelForm: FormGroup
     models: OptionItem[] = []
     isDisabled = false
@@ -39,21 +40,19 @@ export class ModelChoiceComponent implements ControlValueAccessor, OnInit, After
     @Input() groupSelection = true
     @Input() all = false
     @Input() submitted = false
-    @Input() required = false
+    @Input() IsRequired = false
     @Input() userId = 0
     @Input() showCount = false
     @Input() itemType: ItemType = ItemType.All
     //#region services
     public modelService: ModelService = inject(ModelService)
     private formBuilder: FormBuilder = inject(FormBuilder)
-    @Self() public control: NgControl = inject(NgControl)
     public errorService: ErrorService = inject(ErrorService)
     private element: ElementRef = inject(ElementRef)
     private destroyRef: DestroyRef = inject(DestroyRef)
     //#region
     //#endregion
     constructor() {
-        if (this.control) this.control.valueAccessor = this
         this.modelForm = this.formBuilder.group({
             modelsId_int: [0],
         })

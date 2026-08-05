@@ -1,39 +1,40 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, EventEmitter, inject, Input, Output, model, input } from '@angular/core'
 import { FormsModule, ValidationErrors } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
+import {FormValueControl} from '@angular/forms/signals';
 
 @Component({
     selector: 'app-select-base',
     templateUrl: './select-base.component.html',
     styleUrls: ['./select-base.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, NgClass, NgStyle],
 })
-export class SelectBaseComponent {
-    value?: number
+export class SelectBaseComponent implements FormValueControl<number> {
+    value = model(0);
+    value_as_string?: string;
+    readonly disabled = input(false);    
     @Input() type?: number
     @Input() label?: string
     @Input() hint?: string
-    @Input() invalid?: boolean
     @Input() error: ValidationErrors | null = null
     @Input() control?: string
     @Input() set data(data_: SelectOption[] | undefined) {
         this._data = data_
-        this.selectedValue = this.value
+        this.selectedValue = this.value();
         this._data?.forEach((element) => {
             element.color = element.value === -1 ? 'lightgray' : element.color
         })
     }
 
     @Input() set initialValue(value: number) {
-        this.value = value
+        this.value.set(value);
         this.selectedValue = value
     }
+    @Input() isRequired?: boolean;
+    @Input() isInvalid?: boolean
     @Input() group?: boolean
-    @Input() readonly?: boolean
-    @Input() required?: boolean
     @Input() groupSelection = false
     @Input() submitted = false
     @Input() id = 'selectId'
@@ -44,37 +45,13 @@ export class SelectBaseComponent {
     selectedValue?: number
     public errorService: ErrorService = inject(ErrorService)
 
-    // ngOnChanges(changes: SimpleChanges): void {
-    //     if (changes['initialValue']) {
-    //         this.selectedValue = changes['initialValue'].currentValue
-    //     }
-    // }
-
     onChangeSelect() {
-        this.value = this.selectedValue
-        this.changeOption.emit(this.value)
-    }
-
-    onSelect(element: SelectOption) {
-        const value = element.value
-        this.changeOption.emit(value)
-    }
-
-    color(element: SelectOption) {
-        if (!element) return 'white'
-        if (this.disabled(element)) return 'lightgray'
-        return 'white'
+        this.value.set(this.selectedValue ?? 0)
+        this.changeOption.emit(this.value())
     }
 
     get errorMessage() {
         return this.errorService.getMessage(this.label!, this.error!)
     }
-
-    disabled(element: SelectOption): boolean | undefined {
-        if (!element) return true
-        if (element.value === -1) return true
-
-        this.first = false
-        return undefined
-    }
 }
+

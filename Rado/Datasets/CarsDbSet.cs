@@ -246,6 +246,7 @@ namespace Rado.Datasets
                     {
                         carView = EnrichManager.EnrichCarView(sqlDataReader);
                     }
+                    await sqlDataReader.CloseAsync();
                 }
 
                 {
@@ -254,14 +255,13 @@ namespace Rado.Datasets
                     command.Parameters.Add("@carId", SqlDbType.BigInt).Value = carId;
 
                     SqlDataReader sqlDataReader = await command.ExecuteReaderAsync();
+                    if (await sqlDataReader.ReadAsync())
                     {
-                        if (await sqlDataReader.ReadAsync())
-                        {
-                            carView.CountParts = Convert.ToInt32(sqlDataReader["Count"]);
-                        }
+                        carView.CountParts = Convert.ToInt32(sqlDataReader["Count"]);
                     }
-                    await connection.CloseAsync();
+                    await sqlDataReader.CloseAsync();
                 }
+                await connection.CloseAsync();
             }
             catch (Exception e)
             {

@@ -1,22 +1,22 @@
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
-import { ControlValueAccessor, ReactiveFormsModule } from '@angular/forms'
+import { Component, DestroyRef, ElementRef, EventEmitter, inject, Output, model, input, effect } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from '../select-controls/company/company.component'
 import { NgClass, NgStyle } from '@angular/common'
 import { ButtonGroupComponent } from '../buttonGroup/buttongroup.component'
 import { OptionItem } from '@model/optionitem'
-import { BaseControl } from '../baseControl'
 import { AlertService } from '@services/alert.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { FormValueControl } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-customselect',
     templateUrl: './customSelect.component.html',
     styleUrls: ['./customSelect.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, NgStyle, ButtonGroupComponent, ReactiveFormsModule],
 })
-export class CustomSelectComponent extends BaseControl<number> implements ControlValueAccessor {
+export class CustomSelectComponent implements FormValueControl<number | undefined> {
+    value = model<number | undefined>(undefined)
     selectedValue?: number
     letterItem = undefined
     _selection?: string
@@ -27,66 +27,66 @@ export class CustomSelectComponent extends BaseControl<number> implements Contro
     @Output() changeOption: EventEmitter<number> = new EventEmitter<number>()
     @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
 
-    @Input() groupSelection = false
-    @Input() set data(data_: OptionItem[]) {
-        this.data_ = [...data_]
-
-        if (this.groupDisabled) {
-            this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
-        }
-        this._selection = this.data_?.find((item) => item.id === this.value)?.description ?? this.placeHolder
-        if (this.data_ && this.data_.length) this.loaded = true
-        if (this.value) {
-            this.writeValue(this.value)
-        }
-    }
-    @Input() tooltip?: string
-    @Input() label = ''
-    @Input() hint?: string
-    @Input() showLetter?: boolean
-    @Input() letter?: boolean
-    @Input() required?: boolean
-    @Input() submitted?: boolean
-    @Input() showAll = true
-    @Input() groupDisabled = false
-    @Input() useFilter = false
-    @Input() multiSelection = false
-    @Input() placeHolder?: string
-    @Input() showCount?: boolean = true
-    @Input() set select(value: number) {
-        this.writeValue(value)
-    }
+    groupSelection = input<boolean>(false)
+    data = input<OptionItem[]>([])
+    tooltip = input<string | undefined>(undefined)
+    label = input<string | undefined>(undefined)
+    hint = input<string | undefined>(undefined)
+    showLetter = input<boolean | undefined>(undefined)
+    letter = input<boolean | undefined>(undefined)
+    IsRequired = input<boolean | undefined>(undefined)
+    submitted = input<boolean | undefined>(undefined)
+    showAll = input<boolean>(true)
+    groupDisabled = input<boolean>(false)
+    useFilter = input<boolean>(false)
+    multiSelection = input<boolean>(false)
+    placeHolder = input<string | undefined>(undefined)
+    showCount = input<boolean>(true)
+    select = input<number | undefined>(undefined)
+    errorMessage?: string
+    IsInvalid = false
     public dialog: MatDialog = inject(MatDialog)
     private alertService: AlertService = inject(AlertService)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
     constructor() {
-        super()
-        this._selection = this.placeHolder
+        effect(() => {
+            this.writeValue(this.select() ?? 0)
+        })
+
+        effect(() => {
+            this.data_ = [...this.data()]
+
+            if (this.groupDisabled()) {
+                this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
+            }
+            this._selection = this.data_?.find((item) => item.id === this.value())?.description ?? this.placeHolder()
+            if (this.data_ && this.data_.length) this.loaded = true
+            if (this.value) {
+                this.writeValue(this.value()!)
+            }
+        })
+        this._selection = this.placeHolder()
     }
 
-    override get errorMessage() {
-        return this.errorService.getMessage(this.label, this.control.errors)
-    }
+    // get errorMessage() {
+    //     return this.errorService.getMessage(this.label, this.control.errors)
+    // }
 
     //#region ValueAccessor
-    override writeValue(value: number): void {
-        this.value = value
+    writeValue(value: number): void {
+        this.value.set(value)
         this.clearBox = value ? true : false
-        this._selection = this.data_?.find((item) => item.id === value)?.description ?? this.placeHolder
+        this._selection = this.data_?.find((item) => item.id === value)?.description ?? this.placeHolder()
         this.changeOption.emit(value)
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    markAsTouched() {}
-
     change(value?: number) {
         if (!value) value = 0
-        this.value = value
-        if (this.value) this.value = +this.value
+        this.value.set(value)
+        if (this.value) this.value.set(+this.value)
         this.clearBox = value ? true : false
-        this._selection = this.data_?.find((item) => item.id == +value!)?.description ?? this.placeHolder
-        if (this.onChange) this.onChange(+value!)
+        this._selection = this.data_?.find((item) => item.id == +value!)?.description ?? this.placeHolder()
         this.changeOption.emit(value!)
     }
 
@@ -118,16 +118,13 @@ export class CustomSelectComponent extends BaseControl<number> implements Contro
     }
 
     clear() {
-        this._selection = this.placeHolder
+        this._selection = this.placeHolder()
         this.change(undefined)
     }
-    override get contolName(): string {
-        return this.control.name?.toString() ?? this.placeHolder ?? this.label ?? 'Избери'
+    get contolName(): string {
+        return this.contolName ?? this.placeHolder() ?? this.label ?? 'Избери'
     }
 
-    updataData() {
-        // TODO
-        return
-    }
     //#endregion
 }
+

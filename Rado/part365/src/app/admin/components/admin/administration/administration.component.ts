@@ -11,8 +11,7 @@ import { AdminService } from '@app/admin/services/admin.service'
 import { UserService } from '@services/user.service'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
-import { UserInfoComponent } from '../userInfo/userInfo.component'
-
+import { UserInfoComponent } from '../user/userInfo/userInfo.component'
 @Component({
     selector: 'app-administration',
     templateUrl: './administration.component.html',

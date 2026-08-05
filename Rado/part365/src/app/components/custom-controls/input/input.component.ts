@@ -1,28 +1,30 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
-import { BaseControl } from '../baseControl'
+//#region imports
+import { Component, Input, model } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { NgClass, NgStyle } from '@angular/common'
-
+import { FormValueControl } from '@angular/forms/signals'
+//#endregion
+//#region component
 @Component({
     selector: 'app-input',
     templateUrl: './input.component.html',
     styleUrls: ['./input.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgStyle, NgClass, FormsModule],
 })
-export class InputComponent extends BaseControl<string> {
+//#endregion
+export class InputComponent implements FormValueControl<string> {
+    value = model('');
     @Input() label?: string
     @Input() placeHolder?: string
     @Input() hint?: string
-    @Input() pattern?: string
     @Input() border = true
-    @Input() price?: boolean = undefined
+    @Input() IsPrice?: boolean = undefined
     @Input() inline = true
-    @Input() required?: boolean
-    @Input() sizeInput = 'col-sm-10'
+    @Input() Pattern?: string;
+    @Input() IsRequired?: boolean
+    @Input() IsInvalid?: boolean
     @Input() submitted = false
     @Input() floating?: boolean
-    @Input() small = true
     @Input() id = ''
     @Input() keyword?: boolean
     @Input() show?: boolean
@@ -30,43 +32,28 @@ export class InputComponent extends BaseControl<string> {
     @Input() prefix?: string
     @Input() number?: boolean
     @Input() text = 'text'
+    @Input() autocomplete?: string;
+    @Input() errorMessage?: string;
 
-    // prefer inject() over constructor parameter injection
-    constructor() {
-        super()
-    }
-
-    override get contolName(): string {
+    get contolName(): string {
         return this.label || this.placeHolder || ''
     }
 
-    get type() {
-        return this.text
-    }
-    sizeClass() {
-        return this.sizeInput
-    }
-
-    onChangeEvent() {
-        return
-    }
-
     inputFunc() {
-        if (this.onChange) this.onChange(this.inputValue!)
         return
     }
 
     onFocus() {
-        if (this.price) {
-            if (this.inputValue?.toString() == '0') {
-                this.inputValue = ''
+        if (this.IsPrice) {
+            if (this.value()?.toString() == '0') {
+                this.value.set('')
             }
         }
     }
     onBlur() {
-        if (this.price) {
-            if (this.inputValue?.toString() == '') {
-                this.inputValue = '0'
+        if (this.IsPrice) {
+            if (this.value()?.toString() == '') {
+                this.value.set('0')
             }
         }
     }

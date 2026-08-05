@@ -2,7 +2,7 @@
 import { inject, Injectable } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router'
-import { LoginComponent } from '@app/user/login/login.component'
+import { LoginComponent } from '@app/admin/components/admin/user/login/login.component'
 import { UserType } from '@model/enum/userType.enum'
 import { AuthenticationService } from '@services/authentication/authentication.service'
 //#endregion

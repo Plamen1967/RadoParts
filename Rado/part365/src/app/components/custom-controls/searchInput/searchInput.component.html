@@ -1,12 +1,12 @@
 <div [ngClass]="{ select__margin: border }">
     <div [ngClass]="{ select__container: border }">
         <div class="select__label">
-            {{ label }}
+            {{ label() }}
         </div>
         <div [ngClass]="{ select__field: border }">
             <div>
                 <div class="input-2 d-inline-flex">
-                    <input type="text" data-testid="search" [placeholder]="label" [(ngModel)]="filter" required (change)="filterChange($event)" (input)="filterChange($event)" />
+                    <input [value]="value()" type="text" data-testid="search" [placeholder]="placeHolder()" [(ngModel)]="filter" required (input)="filterChange($event)" />
                     <div class="d-inline-flex button-container">
                         <button type="button" (click)="onClearBox()" class="icon" [ngStyle]="{ display: clearBox ? 'block' : 'none' }" >
                             <span class="material-symbols-outlined"> close </span>

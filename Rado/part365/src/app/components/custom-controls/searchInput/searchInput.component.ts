@@ -1,41 +1,44 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, effect, EventEmitter, input, model, Output } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { BaseControl } from '../baseControl'
+import { FormValueControl } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-searchinput',
     templateUrl: './searchInput.component.html',
     styleUrls: ['./searchInput.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, NgStyle, NgClass],
 })
-export class SearchInputComponent extends BaseControl<string> {
+export class SearchInputComponent implements FormValueControl<string> {
+    value = model('');
     filter?: string
     clearBox?: boolean
-    @Input() border = true
-    @Input() label = ''
-    @Input() placeHolder = ''
+    border = input<boolean>(true)
+    label = input<string>('')
+    placeHolder = input<string>('')
 
     @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>()
     @Output() Search: EventEmitter<string> = new EventEmitter<string>()
 
     constructor() {
-        super()
+        effect(() => {
+            this.clearBox = this.value() ? true : false
+            this.filter = this.value()
+            this.updateCheckBox()
+            this.filterChanged.emit(this.filter)
+        })
     }
 
-    override writeValue(obj: string): void {
-        this.value = obj
-        this.inputValue = obj
-        this.filter = obj
-        this.updateCheckBox()
-    }
+    // override writeValue(obj: string): void {
+    //     this.value = obj
+    //     this.inputValue = obj
+    //     this.filter = obj
+    //     this.updateCheckBox()
+    // }
 
     filterChange(event: Event) {
         this.filter = (event.target as HTMLInputElement).value
-        this.updateCheckBox()
-        if (this.onChange) this.onChange(this.filter!)
-        this.filterChanged.emit(this.filter)
+        this.value.set(this.filter ?? '')
     }
 
     onSearch() {
@@ -43,10 +46,7 @@ export class SearchInputComponent extends BaseControl<string> {
     }
 
     onClearBox() {
-        this.filter = ''
-        this.updateCheckBox()
-        this.filterChanged.emit(this.filter)
-        if (this.onChange) this.onChange('')
+        this.value.set('')
     }
 
     updateCheckBox() {

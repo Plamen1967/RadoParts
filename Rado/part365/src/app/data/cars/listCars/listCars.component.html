@@ -115,9 +115,9 @@
         </div>
     </div>
 } @else if (addCarFlag) {
-    <app-addcar [carId]="id" [bus]="0" [add]="addCarFlag" (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
+    <app-addcar [addCarParam]="{ carId: id, bus:0, add: addCarFlag} "  (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
 } @else if (addBusFlag) {
-    <app-addcar [carId]="id" [bus]="1" [add]="addCarFlag" (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
+    <app-addcar [addCarParam]="{ carId: id, bus:1, add: addBusFlag} " (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
 } @else if (addPartFlag) {
     <app-addpart [carId]="id" [bus]="bus" [add]="addPartFlag" (saved)="savedPart($event)" (noChange)="back($event)"></app-addpart>
 } @else if (updateCarFlag) {

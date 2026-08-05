@@ -12,8 +12,8 @@
     public string CompanyName { get; set; }
     public string ImageFolder { get; set; }
     public string PictureHref { get; set; }
-    public string EmailPassword { get; set; }
-    public string HostEmail { get; set; }
+    public string? EmailPassword { get; set; }
+    public string? HostEmail { get; set; }
     public bool SendEmails { get;set;}
     public int MaxPictures { get; set; }
     public int MaxAds { get; set; }

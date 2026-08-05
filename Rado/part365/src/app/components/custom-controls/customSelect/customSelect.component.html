@@ -4,13 +4,13 @@
             <div class="select__field">
                 <app-buttongroup [placeholder]="placeHolder" [clearBox]="clearBox" [selection]="_selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()"> </app-buttongroup>
             </div>
-            <div class="select__label" [ngClass]="{ required: required }">
+            <div class="select__label" [ngClass]="{ required: isRequired }">
                 {{ label }}
-                @if (label && required) {
+                @if (label && isRequired) {
                     <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
                 }
             </div>
-            @if (submitted && control.invalid) {
+            @if (submitted && isInvalid) {
                 <div class="invalid-feedback d-block">
                     <small>{{ errorMessage }}</small>
                 </div>

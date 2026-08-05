@@ -1,7 +1,8 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Input, OnInit, Output, Self, inject, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, EventEmitter, Input, OnInit, Output, Self, inject, model } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormValueControl } from '@angular/forms/signals'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { companyToOptionItem } from '@app/functions/function-chain'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
@@ -17,12 +18,12 @@ import { switchMap } from 'rxjs'
     selector: 'app-company-choise',
     templateUrl: './company-choise.component.html',
     styleUrls: ['./company-choise.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-export class CompanyChoiseComponent implements ControlValueAccessor, AfterViewInit, OnInit {
+export class CompanyChoiseComponent implements FormValueControl<number | undefined>, AfterViewInit, OnInit {
     //#region variables and services
+    value = model<number | undefined>(undefined)
     companies: OptionItem[] = []
     companyId = 0
     isDisabled = false
@@ -53,7 +54,7 @@ export class CompanyChoiseComponent implements ControlValueAccessor, AfterViewIn
     @Input() userId = 0
     @Input() all = false
     @Input() submitted = false
-    @Input() required = false
+    @Input() IsRequired = false
     @Input() set itemType(value: ItemType) {
         this._itemType = value
         this.initCompanies()

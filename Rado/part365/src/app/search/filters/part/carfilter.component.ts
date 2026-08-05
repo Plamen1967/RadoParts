@@ -14,7 +14,6 @@ import {
     Optional,
     Output,
     ViewChild,
-    ChangeDetectionStrategy,
 } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -77,7 +76,6 @@ import { StaticSelectionService } from '@services/staticSelection.service'
     selector: 'app-carfilter',
     templateUrl: './carfilter.component.html',
     styleUrls: ['./carfilter.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CategoriesComponent,
         RadioGroupComponent,

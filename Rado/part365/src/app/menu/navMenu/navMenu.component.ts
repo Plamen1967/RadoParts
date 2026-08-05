@@ -1,6 +1,6 @@
 //#region import
 import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, ChangeDetectionStrategy } from '@angular/core'
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router'
+import { Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { globalStaticData } from '@model/staticData'
@@ -11,7 +11,6 @@ import { UserService } from '@services/user.service'
 import { AsyncPipe, NgClass, NgStyle } from '@angular/common'
 import { CompanyHeaderComponent } from '@components/header-footer/companyHeader/companyHeader.component'
 import { MatDialog } from '@angular/material/dialog'
-import { LoginComponent } from '@app/user/login/login.component'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -31,6 +30,7 @@ import { MediaMatcher } from '@angular/cdk/layout'
 import { inject, signal } from '@angular/core'
 import { MatIconModule } from '@angular/material/icon'
 import { MenuService } from '@services/Menu.service'
+import { LoginComponent } from '@app/admin/components/admin/user/login/login.component'
 //#endregion
 
 //#region component
@@ -73,39 +73,23 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
     @ViewChild('header', { read: ElementRef }) header?: ElementRef
     @ViewChild('mySidenav', { read: ElementRef }) myElement?: ElementRef
     userCount$: Observable<UserCount | undefined>
-    menuService: MenuService
-    document!: Document
-    private router: Router
-    private checkOutService: CheckOutService
-    private location: Location
-    private localStorage: LocalStorageService
-    private userService: UserService
-    private carService: CarService
-    private partService: PartServiceService
-    public pathService: PathService
-    private activatedRoute: ActivatedRoute
-    private userCountService: UserCountService
-    private matDialog: MatDialog
-    private confirmService: ConfirmServiceService
-    public staticSelectionService: StaticSelectionService
+    router = inject(Router)
+    checkOutService = inject(CheckOutService)
+    location = inject(Location)
+    localStorage = inject(LocalStorageService)
+    userService = inject(UserService)
+    carService = inject(CarService)
+    partService = inject(PartServiceService)
+    pathService = inject(PathService)
+    userCountService = inject(UserCountService)
+    matDialog = inject(MatDialog)
+    confirmService = inject(ConfirmServiceService)
+    staticSelectionService = inject(StaticSelectionService)
+    document = inject(DOCUMENT)
+    menuService = inject(MenuService)
 
     constructor() {
         super()
-        this.router = inject(Router)
-        this.checkOutService = inject(CheckOutService)
-        this.location = inject(Location)
-        this.localStorage = inject(LocalStorageService)
-        this.userService = inject(UserService)
-        this.carService = inject(CarService)
-        this.partService = inject(PartServiceService)
-        this.pathService = inject(PathService)
-        this.activatedRoute = inject(ActivatedRoute)
-        this.userCountService = inject(UserCountService)
-        this.matDialog = inject(MatDialog)
-        this.confirmService = inject(ConfirmServiceService)
-        this.staticSelectionService = inject(StaticSelectionService)
-        this.document = inject(DOCUMENT)
-        this.menuService = inject(MenuService)
         this.checkOutService.checkout.subscribe(() => this.checkoutUpdate())
         this.userService.userPage.subscribe((userId) => {
             this.userId = userId

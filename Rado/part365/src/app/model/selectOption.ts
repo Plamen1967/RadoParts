@@ -5,4 +5,8 @@ export class SelectOption {
     color?: string;
     important?: boolean;
     displayText?: string;
+    isDisabled? = () => {
+        return this.value === -1;
+    }
 }
+

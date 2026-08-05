@@ -4,7 +4,6 @@ import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, ViewChild,
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { DealerWebPageComponent } from '@app/user/dealerWebPage/dealerWebPage.component'
 import { RadioGroupListComponent } from '@components/custom-controls/radioGroupList/radiogrouplist.component'
 import { UserViewPartComponent } from '@components/parts/userViewPart/userViewPart.component'
 import { ResultComponent } from '@components/result/result.component'
@@ -21,6 +20,7 @@ import { LoggerService } from '@services/authentication/logger.service'
 import { HomeService } from '@services/home.service'
 import { SearchPartService } from '@services/searchPart.service'
 import { UserService } from '@services/user.service'
+import { DealerWebPageComponent } from '../../dealerWebPage/dealerWebPage.component'
 //#endregion
 //#region component
 @Component({

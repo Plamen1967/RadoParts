@@ -231,6 +231,8 @@ namespace Rado.Enrich
                 {
                     Modification modification = ModificationsDbSet.GetModificationById(partView.ModificationId);
                     partView.ModelId = modification.ModelId;
+                    if (partView.ModelId != null)
+                        partView.ModelName = ModelsDbSet.GetModelNameById(partView.ModelId.Value);
                     if (modification != null) partView.ModificationName = modification?.ModificationName;
                     if (partView.Year == 0 && modification != null)
                     {
@@ -429,7 +431,7 @@ namespace Rado.Enrich
             return user;
         }
 
-        public static void SellerImage(DisplayPartView displayPartView)
+        private static void SellerImage(DisplayPartView displayPartView)
         {
             User user = UserDbSet.GetUserById(displayPartView.UserId);
             displayPartView.SellerCity = user.City;
@@ -692,32 +694,6 @@ namespace Rado.Enrich
             }
         }
 
-        //public static DisplayPartView EnrichDisplayPartView(RimWithTyreView rimWithTyreView)
-        //{
-        //    DisplayPartView displayPartView = new DisplayPartView();
-
-        //    displayPartView.itemType = rimWithTyreView.itemType;
-        //    displayPartView.id = rimWithTyreView.rimWithTyreId;
-        //    displayPartView.rimWithTyre = rimWithTyreView;
-
-        //    displayPartView.price = rimWithTyreView.price;
-        //    displayPartView.MainImageData = rimWithTyreView.MainImageData;
-        //    var imageResult = ImageManager.GetNumberImages(displayPartView.id);
-        //    imageResult.Wait();
-
-        //    displayPartView.numberImages = imageResult.Result;
-        //    displayPartView.userId = rimWithTyreView.userId;
-        //    displayPartView.regionId = rimWithTyreView.regionId;
-        //    displayPartView.approved = rimWithTyreView.approved;
-        //    displayPartView.mainPicture = rimWithTyreView.mainPicture;
-        //    displayPartView.description = rimWithTyreView.description;
-        //    displayPartView.modifiedTime = rimWithTyreView.modifiedTime;
-
-        //    sellerImage(displayPartView);
-
-        //    return displayPartView;
-        //}
-
         public static DisplayPartView EnrichDisplayPartView(PartView part)
         {
             DisplayPartView displayPartView = new DisplayPartView();
@@ -788,3 +764,29 @@ namespace Rado.Enrich
         }
     }
 }
+        //public static DisplayPartView EnrichDisplayPartView(RimWithTyreView rimWithTyreView)
+        //{
+        //    DisplayPartView displayPartView = new DisplayPartView();
+
+        //    displayPartView.itemType = rimWithTyreView.itemType;
+        //    displayPartView.id = rimWithTyreView.rimWithTyreId;
+        //    displayPartView.rimWithTyre = rimWithTyreView;
+
+        //    displayPartView.price = rimWithTyreView.price;
+        //    displayPartView.MainImageData = rimWithTyreView.MainImageData;
+        //    var imageResult = ImageManager.GetNumberImages(displayPartView.id);
+        //    imageResult.Wait();
+
+        //    displayPartView.numberImages = imageResult.Result;
+        //    displayPartView.userId = rimWithTyreView.userId;
+        //    displayPartView.regionId = rimWithTyreView.regionId;
+        //    displayPartView.approved = rimWithTyreView.approved;
+        //    displayPartView.mainPicture = rimWithTyreView.mainPicture;
+        //    displayPartView.description = rimWithTyreView.description;
+        //    displayPartView.modifiedTime = rimWithTyreView.modifiedTime;
+
+        //    sellerImage(displayPartView);
+
+        //    return displayPartView;
+        //}
+

@@ -1,6 +1,6 @@
-@import 'bootstrap/scss/_functions.scss';
-@import 'bootstrap/scss/_variables.scss';
-@import 'bootstrap/scss/mixins/_breakpoints.scss';
+// @import 'bootstrap/scss/_functions.scss';
+// @import 'bootstrap/scss/_variables.scss';
+// @import 'bootstrap/scss/mixins/_breakpoints.scss';
 
 a {
     text-decoration: none;
@@ -582,19 +582,6 @@ nav {
         font-style: italic;
     }
 }
-
-@include media-breakpoint-up(md) {
-    html {
-        font-size: 16px;
-    }
-}
-@include media-breakpoint-up(sm) {
-    .buttonGap {
-        margin-right: 2px;
-        margin-bottom: 0px;
-    }
-}
-
 
 .menu-nav {
     display: flex !important;

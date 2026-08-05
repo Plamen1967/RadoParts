@@ -1,5 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, Self, ViewChild, OnInit, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core'
-import { ControlValueAccessor, NgControl } from '@angular/forms'
+import { Component, ElementRef, EventEmitter, Output, ViewChild, OnInit, DestroyRef, inject, model, input, effect } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { SelectionItem } from '@model/selectionItem'
 import { ErrorService } from '@services/error.service'
@@ -9,21 +8,22 @@ import { ChoiseComponent } from '@components/categoriesMin/choise/choise.compone
 import { ButtonGroupComponent } from '@components/custom-controls/buttonGroup/buttongroup.component'
 import { CompanyComponent } from '../company/company.component'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { FormValueControl } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-multiselection',
     templateUrl: './multiselection.component.html',
     styleUrls: ['./multiselection.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ButtonGroupComponent, NgClass, NgStyle, ChoiseComponent],
 })
-export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
+export class MultiSelectionComponent implements FormValueControl<string | undefined>, OnInit {
+    value = model<string | undefined>(undefined)
     @ViewChild('minGroup') minGroup?: ElementRef<HTMLInputElement>
     @ViewChild('normalGroup') normalGroup?: ElementRef<HTMLInputElement>
     filter = ''
     selectedValue?: number
     _data?: OptionItem[]
-    touched = false
+    IsTouched = false
     isDisabled = false
     _letters: string[] = []
     _selection = ' '
@@ -38,48 +38,39 @@ export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
 
     clearBox?: boolean
     errorMessage?: string
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private onTouched?() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    private onChange?(_: unknown) {}
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     @Output() changeOption: EventEmitter<any> = new EventEmitter<any>()
     @Output() changeOptions: EventEmitter<Set<number>> = new EventEmitter<Set<number>>()
     @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
-    @Input() groupSelection = false
-    @Input() set data(data_: OptionItem[]) {
-        this.setData(data_)
-    }
-    @Input() label?: string
-    @Input() title?: string
-    @Input() hint?: string
-    @Input() showLetter?: boolean
-    @Input() useLetter?: boolean
-    @Input() required?: boolean
-    @Input() submitted?: boolean
-    @Input() showAll = true
-    @Input() groupDisabled = false
-    @Input() useFilter = false
-    @Input() multiSelection = false
-    @Input() placeHolder?: string
-    @Input() showCount = true
-    @Input() showImage = true
-    @Self() public control: NgControl = inject(NgControl)
+    groupSelection = input<boolean>(false)
+    data = input<OptionItem[]>([])
+    label = input<string | undefined>(undefined)
+    title = input<string | undefined>(undefined)
+    hint = input<string | undefined>(undefined)
+    showLetter = input<boolean | undefined>(undefined)
+    useLetter = input<boolean | undefined>(undefined)
+    IsRequired = input<boolean | undefined>(undefined)
+    submitted = input<boolean | undefined>(undefined)
+    showAll = input<boolean>(true)
+    groupDisabled = input<boolean>(false)
+    useFilter = input<boolean>(false)
+    multiSelection = input<boolean>(false)
+    placeHolder = input<string | undefined>(undefined)
+    showCount = input<boolean>(true)
+    showImage = input<boolean>(true)
+    IsInvalid = input<boolean>(false)
     public dialog: MatDialog = inject(MatDialog)
     public errorService: ErrorService = inject(ErrorService)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
     constructor() {
-        if (this.control) this.control.valueAccessor = this
+        effect(() => {
+            const data_ = this.data()
+            this.setData(data_)
+        })
     }
 
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
-    }
     setDisabledState?(isDisabled: boolean): void {
         this.isDisabled = isDisabled
     }
@@ -91,18 +82,18 @@ export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
 
         this.selectedValues = this.getSelectedValues()
         this.setClearBox(!!this.selectedValues?.length)
-        if (this.onChange) this.onChange(this.initialValue)
+        this.value.set(this.initialValue)
     }
 
     setClearBox(clearBox: boolean) {
         this.clearBox = clearBox
-        if (this.clearBox) this.selection = this.placeHolder?.replace('Избери', 'Добави')
-        else this.selection = this.placeHolder
+        if (this.clearBox) this.selection = this.placeHolder()?.replace('Избери', 'Добави')
+        else this.selection = this.placeHolder()
     }
 
     ngOnInit() {
-        this._selection = this.placeHolder ?? ''
-        this.selection = this.placeHolder
+        this._selection = this.placeHolder()?.replace('Избери', 'Добави') ?? ''
+        this.selection = this.placeHolder()
     }
 
     clickSelect() {
@@ -149,19 +140,14 @@ export class MultiSelectionComponent implements ControlValueAccessor, OnInit {
         this.setClearBox(!!this.selectedValues?.length)
     }
 
-    markAsTouched() {
-        if (this.onTouched) {
-            this.onTouched()
-            this.touched = true
-        }
-    }
     change(value: number[]) {
         value = value.map((item) => +item)
         this.initialValue = [...value].join(',')
         this.initialIDs = [...value]
         this.selectedValues = this.getSelectedValues()
         this.setClearBox(!!this.selectedValues?.length)
-        if (this.onChange) this.onChange(this.initialValue)
+        this.value.set(this.initialValue)
+        this.changeOptions.emit(new Set([...value]))
     }
 
     getSelectedValues(): SelectionItem[] {

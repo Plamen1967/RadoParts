@@ -1,7 +1,7 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, model } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -9,18 +9,19 @@ import { SubCategory } from '@model/category-subcategory/subCategory'
 import { OptionItem } from '@model/optionitem'
 import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
 import { ErrorService } from '@services/error.service'
+import { FormValueControl } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
     selector: 'app-subcategory-choise',
     templateUrl: './subcategory-choise.component.html',
     styleUrls: ['./subcategory-choise.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
 })
 //#endregion
-export class SubcategoryChoiseComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class SubcategoryChoiseComponent implements FormValueControl<number | undefined>, OnInit, AfterViewInit {
     //#region variables and services
+    value = model<number | undefined>(undefined)
     subCategoryForm: FormGroup
     isDisabled?: boolean
     subCategories: OptionItem[] = []
@@ -32,7 +33,7 @@ export class SubcategoryChoiseComponent implements ControlValueAccessor, OnInit,
     @Input() multiselection = true
     @Input({ required: true }) categoriesId!: string
     @Input() submitted = false
-    @Input() required = false
+    @Input() IsRequired = false
     //#region services
     public subCategoryService: SubCategoryService
     private formBuilder: FormBuilder
@@ -60,7 +61,7 @@ export class SubcategoryChoiseComponent implements ControlValueAccessor, OnInit,
     }
     ngAfterViewInit(): void {
         this.subCategoryForm.controls['subCategoriesId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
-            if (this.onChange) this.onChange(f)
+            this.value.set(f)
         })
     }
     ngOnInit(): void {

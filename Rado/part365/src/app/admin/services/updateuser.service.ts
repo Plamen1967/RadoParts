@@ -16,6 +16,10 @@ export class UpdateUserService {
     })
   }
 
+  constructor() { 
+    console.log('UpdateUserService constructor')
+  }
+  
   updateUser(user: User): Observable<boolean> {
     return this.http.post<boolean>(`${environment.restAPI}/users/updateUser`, JSON.stringify(user), this.httpHeader);
   }

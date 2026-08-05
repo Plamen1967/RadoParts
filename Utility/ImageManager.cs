@@ -293,15 +293,13 @@ namespace Utility
         public static async Task<ImageDataClass[]> GetImagesAsync(long objectId)
         {
             List<ImageDataClass> imageDataList = new List<ImageDataClass>();
-            string storeProcedureName = $"SELECT  * FROM ImageData WHERE objectId = {@objectId} and imageType <> 2 AND deleted = 0";
+            string storeProcedureName = $"SELECT  imageId, userId, imageFile, imageType " +
+                                        $"FROM ImageData WHERE objectId = {objectId} and " +
+                                        $"imageType <> 2 AND deleted = 0";
 
             try
             {
                 SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
-                SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
-                sqlCommand.CommandType = CommandType.Text;
-
-                sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
 
                 await sqlConnection.OpenAsync();
 

@@ -1,7 +1,7 @@
 <form [formGroup]="subCategoryForm">
     @if (multiselection) {
         <app-multiselection
-            [required]="required"
+            [required]="IsRequired"
             id="subCategoriesId_int"
             label="Избери подкатегория"
             formControlName="subCategoriesId_int"
@@ -17,7 +17,7 @@
         </app-multiselection>
     } @else {
         <app-customselect
-            [required]="required"
+            [required]="IsRequired"
             id="subCategoriesId"
             title="Избери подкатегория"
             placeHolder="Избери подкатегория"

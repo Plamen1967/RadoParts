@@ -1,7 +1,8 @@
 //#region Imports
-import { Component, DestroyRef, EventEmitter, inject, Output, Self, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, EventEmitter, inject, Output, Self, model } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormValueControl } from '@angular/forms/signals'
 import { ClearbuttonComponent } from '@components/custom-controls/buttons/clearbutton/clearbutton.component'
 import { SearchbuttonComponent } from '@components/custom-controls/buttons/searchbutton/searchbutton.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -14,12 +15,12 @@ import { StaticSelectionService } from '@services/staticSelection.service'
     selector: 'app-search-bar',
     templateUrl: './search-bar.component.html',
     styleUrls: ['./search-bar.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule],
 })
 //#endregion
-export class SearchBarComponent extends HelperComponent implements ControlValueAccessor {
+export class SearchBarComponent extends HelperComponent implements FormValueControl<number|undefined> {
     //#region variables and services
+    value = model<number | undefined>(undefined)
     sort?: SelectOption[]
     sortForm: FormGroup
     isDisabled?: boolean
@@ -34,31 +35,15 @@ export class SearchBarComponent extends HelperComponent implements ControlValueA
     //#endregion
     constructor() {
         super()
-        if (this.control) this.control.valueAccessor = this
         this.sortForm = this.fb.group({
             orderBy: [],
         })
 
         this.sort = this.staticSelectionService.Sort
         this.controls['orderBy'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
-            if (this.onChange) this.onChange(f)
+            this.value.set(f)
         })
     }
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    protected onTouched?() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    protected onChange?(_: number) {}
-
-    writeValue(id: number): void {
-        this.sortForm.patchValue({ orderBy: id })
-    }
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
-    }
-
     setDisabledState?(isDisabled: boolean): void {
         this.isDisabled = isDisabled
     }

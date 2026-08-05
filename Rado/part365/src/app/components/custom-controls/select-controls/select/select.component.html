@@ -5,12 +5,11 @@
     [data]="data"
     [initialValue]="selectedValue!"
     [group]="group"
-    [readonly]="readonly"
-    [required]="required"
+    [isRequired]="IsRequired()"
     [groupSelection]="groupSelection"
     [submitted]="submitted"
-    [invalid]="invalid"
+    [isInvalid]="IsInvalid()"
     [id]="id"
-    [error]="control.errors"
+    [error]="error()"
     (changeOption)="changeSelectOption($event)">
 </app-select-base>

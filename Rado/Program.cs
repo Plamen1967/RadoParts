@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
-using Rado.Datasets;
 using Settings;
 using System;
 using System.IO;
@@ -34,14 +32,14 @@ namespace Rado
         public static int ReturnPartCount = 100;
         public static int MaxSize = 50000;
         public static int MaxPictures = 10;
-        static public string api = "https://radoparts.com";
+        public static string api = "https://radoparts.com";
         public static void Main(string[] args)
         {
             ProgramSettings.LogFolder = LogFolder;
             CreateHostBuilder(args).Build().Run();
         }
 
-        static public void ReConfigure()
+        public static void ReConfigure()
         {
             api = "http://localhost:4200";
             ServerName = "MIC12708\\SQL2K19"; ;
@@ -54,12 +52,12 @@ namespace Rado
             MailManager.addressFrom = new MailAddress(  MailManager.hostEmail);
         }
 
-        static public void Configure(IConfiguration configuration)
+        public static void Configure(IConfiguration configuration)
         {
             var directory = Directory.GetCurrentDirectory();
             try
             {
-                string startMessage = string.Format("System Starts: {0}", DateTime.Now.ToString());
+                string startMessage = $"System Starts: {DateTime.Now.ToString()}";
                 LoggerUtil.LogInfo(startMessage);
                 var text = File.ReadAllText(@"secrets.json");
                 if (text != null)
@@ -125,7 +123,7 @@ namespace Rado
             //}
 
         }
-        static public string ConnectionString
+        public static string ConnectionString
         {
             get
             {

@@ -1,32 +1,36 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input, model } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { BaseControl } from '../baseControl'
 import { NgClass, NgStyle } from '@angular/common'
+import { FormValueControl } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-textarea',
     templateUrl: './textArea.component.html',
     styleUrls: ['./textArea.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, NgStyle, FormsModule],
 })
-export class TextAreaComponent extends BaseControl<string> {
+export class TextAreaComponent implements FormValueControl<string> {
+    value = model<string>('')
     @Input() label?: string
     @Input() rows = 2
     @Input() border = true
     @Input() submitted = false
     @Input() length = 500
     @Input() placeHolder = ''
-    @Input() required?: boolean
+    @Input() IsRequired?: boolean
 
-    constructor() {
-        super()
-    }
+    IsInvalid = false
+    errorMessage = 'This field is required'
+    inputValue = ''
 
-    override get contolName(): string {
+
+    get contolName(): string {
         return this.label ?? this.placeHolder
     }
     onTextChange() {
-        if (this.onChange) this.onChange(this.inputValue!)
+        this.value.set(this.inputValue)
+        if (this.IsRequired) {
+            this.IsInvalid = this.inputValue.trim() === ''
+        }
     }
 }

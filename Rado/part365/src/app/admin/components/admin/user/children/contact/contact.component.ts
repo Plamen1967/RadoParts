@@ -1,9 +1,9 @@
 //#region
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core'
-import { DealerWebPageComponent } from '@app/user/dealerWebPage/dealerWebPage.component'
-import { UserHeaderComponent } from '@app/user/userHeader/userHeader.component'
 import { User } from '@model/user'
 import { UserService } from '@services/user.service'
+import { UserHeaderComponent } from '../../userHeader/userHeader.component'
+import { DealerWebPageComponent } from '../../dealerWebPage/dealerWebPage.component'
 //#endregion
 //#region component
 @Component({

@@ -23,6 +23,7 @@ export class DisplayPartView {
   mainImageData?    : ImageData;
   images?           : ImageData[];
   mainImage?        : NgxGalleryImage;
+  mainImageId?      : number;
 
   userId?           : number;
   regionId?         : number;
