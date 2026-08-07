@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, effect, EventEmitter, HostListener, inject, input, OnInit, output } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
@@ -19,42 +19,28 @@ import { PathService } from '@services/path.service'
 import { ImageData } from '@model/imageData'
 import { ImageCarouselComponent } from '@components/custom-controls/image-carousel/image-carousel.component'
 import { UserHeaderComponent } from '../userHeader/userHeader.component'
-import { SelectComponent } from '../../components/custom-controls/select-controls/select/select.component'
 import { SelectOption } from '@model/selectOption'
 import { convertImage, goTop, goToPosition } from '@app/functions/functions'
+import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 //#endregion
 //#region component
 @Component({
     selector: 'app-userhomepage',
     templateUrl: './userHomePage.component.html',
     styleUrls: ['./userHomePage.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent],
 })
 //#endregion
 export class UserHomePageComponent extends HelperComponent implements OnInit, AfterViewInit {
     //#region variables and services
-    @Input() set countItems(value: CountItems) {
-        if (value) {
-            if (value.Total()) this.radios.push({ label: `Всички ${value.Total()}` })
-            if (value.countCar) this.radios.push({ label: `Част Кола ${value.countCar}` })
-            if (value.countBus) this.radios.push({ label: `Част Бус ${value.countBus}` })
-            if (value.countCar) this.radios.push({ label: `Коли на части ${value.countCar}` })
-            if (value.countCar) this.radios.push({ label: `Бус на части ${value.countCar}` })
-            if (value.countTyre) this.radios.push({ label: `Гуми ${value.countTyre}` })
-            if (value.countRim) this.radios.push({ label: `Джанта ${value.countRim}` })
-            if (value.countTyreWithRim) this.radios.push({ label: `Джанта с гума ${value.countTyreWithRim}` })
-        }
-    }
+    countItems = input<CountItems>()
     _user: UserView | undefined
-    @Input() userId?: number
-    @Input() set user(value: UserView | undefined) {
-        this._user = value
-        if (value) this.loadUser(value)
-    }
+    userId = input<number>()
+    user = input<UserView | undefined>()
+
     defaultType = ItemType.All
 
-    @Output() type = new EventEmitter<ItemType>()
+    type = output<EventEmitter<ItemType>>()
     radios: RadioButton[] = [
         { label: 'Всички', id: ItemType.All },
         { label: 'Част Кола', id: ItemType.CarPart },
@@ -91,6 +77,23 @@ export class UserHomePageComponent extends HelperComponent implements OnInit, Af
 
     constructor() {
         super()
+        effect(() => {
+            this._user = this.user()
+            if (this._user) this.loadUser(this._user)
+
+        if (this.countItems()) {
+            if (this.countItems()?.Total()) this.radios.push({ label: `Всички ${this.countItems()?.Total()}` })
+            if (this.countItems()?.countCar) this.radios.push({ label: `Част Кола ${this.countItems()?.countCar}` })
+            if (this.countItems()?.countBus) this.radios.push({ label: `Част Бус ${this.countItems()?.countBus}` })
+            if (this.countItems()?.countCar) this.radios.push({ label: `Коли на части ${this.countItems()?.countCar}` })
+            if (this.countItems()?.countCar) this.radios.push({ label: `Бус на части ${this.countItems()?.countCar}` })
+            if (this.countItems()?.countTyre) this.radios.push({ label: `Гуми ${this.countItems()?.countTyre}` })
+            if (this.countItems()?.countRim) this.radios.push({ label: `Джанта ${this.countItems()?.countRim}` })
+            if (this.countItems()?.countTyreWithRim) this.radios.push({ label: `Джанта с гума ${this.countItems()?.countTyreWithRim}` })
+        }
+
+    })  
+
         //#region inject services
         this.homeService = inject(HomeService)
         this.router = inject(Router)
@@ -125,12 +128,12 @@ export class UserHomePageComponent extends HelperComponent implements OnInit, Af
         return images ?? []
     }
     get dataManager() {
-        if (this.user?.userId) return this.homeService.getDataManager(this.user.userId)
+        const userId = this.user()?.userId
+        if (userId) return this.homeService.getDataManager(userId)
         return null
     }
 
     loadUser(user: UserView) {
-        this.userId = user.userId
         this.images = user.images
         const images_: NgxGalleryImage[] = []
         this.images?.forEach((image) => {

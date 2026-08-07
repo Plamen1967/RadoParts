@@ -18,6 +18,7 @@ export class InputPasswordComponent implements FormValueControl<string> {
     placeHolder = input<string>('')
     hint = input<string>('')
     submitted = input<boolean>(false)
+    errors_ = input<Map<string, string>>()
     showFlag = false
     type = 'password'
 

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, computed, DestroyRef, effect, inject, input, output } from '@angular/core'
 import { ImageService } from '@services/image.service'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageData } from '@model/imageData'
@@ -14,26 +14,26 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-picture',
     templateUrl: './picture.component.html',
     styleUrls: ['./picture.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [UploadComponent, FormsModule],
 })
 export class PictureComponent extends HelperComponent {
     //#region services and variables
-    private imageService: ImageService
-    private popupService: PopUpService
-    private alertService: AlertService
-    private contirmationService: ConfirmServiceService
-    private destroyRef: DestroyRef
+    private imageService: ImageService = inject(ImageService)
+    private popupService: PopUpService = inject(PopUpService)
+    private alertService: AlertService = inject(AlertService)
+    private contirmationService: ConfirmServiceService = inject(ConfirmServiceService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
     //#endregion
     //#region variables
-    @Input() updateFlag?: boolean
-    @Input({ required: true }) id?: number
-    @Input() images: ImageData[] = []
-    @Input() currentMainImageId?: number
-    @Input() mainImageFlag = true
+    updateFlag = input<boolean>(false)
+    id = input<number | undefined>(undefined)
+    images = input<ImageData[]>([])
+    currentMainImageId = input<number | undefined>(undefined)
+    mainImageFlag = input<boolean>(true)
 
-    @Output() mainImageIdChange: EventEmitter<number> = new EventEmitter<number>()
-
+    images_: ImageData[] = []
+    mainImageIdChange = output<number>()
+    currentMainImageId_?: number;
     deleteImageId?: number
     message?: string
     //#endregion
@@ -41,21 +41,21 @@ export class PictureComponent extends HelperComponent {
     constructor() {
         super()
         //#region inject services
-        this.imageService = inject(ImageService)
-        this.popupService = inject(PopUpService)
-        this.alertService = inject(AlertService)
-        this.contirmationService = inject(ConfirmServiceService)
-        this.destroyRef = inject(DestroyRef)
+        effect(() => {
+            this.images_ = computed(() => this.images())()
+            this.currentMainImageId_ = computed(() => this.currentMainImageId())()
+        })
         //#endregion
     }
 
     imageAdded(image: ImageData[]) {
         image.forEach((x) => {
-            this.images.push(x)
+            this.images_.push(x)
         })
-        if (this.images.length == 1 || this.images.findIndex((image) => image.imageId === this.currentMainImageId) === -1) {
-            this.currentMainImageId = this.images[0].imageId
-            this.mainImageIdChange.emit(this.images[0].imageId)
+        if (this.images.length == 1 || this.images_.findIndex((image) => image.imageId === this.currentMainImageId()) === -1) {
+            const id = this.images_[0].imageId ?? 0
+            this.currentMainImageId_ = this.images_[0].imageId
+            this.mainImageIdChange.emit(id)
         }
     }
 
@@ -80,19 +80,19 @@ export class PictureComponent extends HelperComponent {
                     this.popupService.openWithTimeout(this.labels.MESSAGE, 'Снимката e успешно изтрита')
 
                     let imageChanged
-                    const index = this.images.findIndex((image) => image.imageId === this.deleteImageId)
+                    const index = this.images_.findIndex((image) => image.imageId === this.deleteImageId)
                     if (index || index === 0) {
-                        this.images.splice(index, 1)
+                        this.images_.splice(index, 1)
                     }
-                    if (this.currentMainImageId == this.deleteImageId) {
-                        if (this.images.length > 0) imageChanged = this.images[0].imageId
+                    if (this.currentMainImageId() == this.deleteImageId) {
+                        if (this.images.length > 0) imageChanged = this.images_[0].imageId
                         else imageChanged = 0
                     }
 
-                    if (this.images.length == 1) imageChanged = this.images[0].imageId
+                    if (this.images.length == 1) imageChanged = this.images_[0].imageId
 
-                    this.currentMainImageId = imageChanged
-                    this.mainImageIdChange.emit(this.currentMainImageId)
+                    this.currentMainImageId_ = imageChanged
+                    this.mainImageIdChange.emit(this.currentMainImageId_!)
                 },
                 error: (error) => {
                     this.popupService.openWithTimeout(this.labels.MESSAGE, 'Снимката не може да бъде изтрита')
@@ -110,7 +110,7 @@ export class PictureComponent extends HelperComponent {
     }
 
     onChange($event: number) {
-        this.currentMainImageId = $event
-        this.mainImageIdChange.emit(this.currentMainImageId)
+        this.currentMainImageId_ = $event
+        this.mainImageIdChange.emit(this.currentMainImageId_)
     }
 }

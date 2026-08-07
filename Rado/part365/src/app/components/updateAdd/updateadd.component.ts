@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, input, OnInit, output } from '@angular/core'
 import UpdateBusComponent from '@app/data/bus/updateBus/updatebus.component'
 import UpdateCarComponent from '@app/data/cars/updateCar/updateCar.component'
 import UpdatePartComponent from '@app/data/parts/updatepart/updatepart.component'
@@ -10,19 +10,18 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-updateadd',
     templateUrl: './updateadd.component.html',
     styleUrls: ['./updateadd.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [UpdateCarComponent, UpdateBusComponent, UpdatePartComponent, UpdateTyreComponent],
 })
 export class UpdateAddComponent implements OnInit {
-    @Input() displayPartView?: DisplayPartView
+    displayPartView = input<DisplayPartView | undefined>()
 
     bus?: boolean
     id?: number
     car?: boolean
     tyre?: boolean
     part?: boolean
-    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
-    @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
+    saved = output<number>()
+    noChange = output<number>()
 
     backEvent(event: number) {
         this.noChange.emit(event)
@@ -32,9 +31,9 @@ export class UpdateAddComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.id = this.displayPartView?.id
+        this.id = this.displayPartView()?.id
 
-        switch (this.displayPartView?.itemType) {
+        switch (this.displayPartView()?.itemType) {
             case ItemType.CarPart: {
                 this.bus = false
                 this.part = true

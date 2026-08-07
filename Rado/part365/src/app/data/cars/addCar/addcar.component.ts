@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, inject, OnInit, Output, ChangeDetectionStrategy, input, effect, signal } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, HostListener, inject, OnInit, ChangeDetectionStrategy, input, effect, output, computed } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -59,19 +59,24 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     private userCountService: UserCountService = inject(UserCountService)
     private toastService: ToastService = inject(ToastService)
     //#endregion
-
+    carId_? : number;
+    bus_ = 0
+    add_ = false
+    update_ = false
+    mode_: UpdateEnum = UpdateEnum.New
+    displayPartView_? : DisplayPartView;
     //#region inputs and outputs
-    bus = signal<number | undefined>(0)
-    carId = signal<number | undefined>(undefined)
-    add = signal<boolean>(false)
-    update = signal<boolean>(false)
-    mode = signal<UpdateEnum>(UpdateEnum.New)
-    displayPartView = signal<DisplayPartView | undefined>(undefined)
+    bus = input<number | undefined>(0)
+    carId = input<number | undefined>(undefined)
+    add = input<boolean>(false)
+    update = input<boolean>(false)
+    mode = input<UpdateEnum>(UpdateEnum.New)
+    displayPartView = input<DisplayPartView | undefined>(undefined)
 
     addCarParam = input.required<AddCarParam>()
 
-    @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
-    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
+    noChange = output<number|undefined>()
+    saved = output<number>()
     //#endregion
 
     //#region host listeners
@@ -115,16 +120,17 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         //#region form initialization
 
         effect(() => {
-            if (this.addCarParam()?.displayPartView) {
-                this.displayPartView.set(this.addCarParam()?.displayPartView)
-                this.carId.set(this.addCarParam()?.carId)
-                this.bus.set(this.addCarParam()!.bus)
-                this.mode.set(this.addCarParam()!.mode!)
-                this.add.set(this.addCarParam()?.add ?? false)
+            if (this.displayPartView()) {
+                this.displayPartView_ = this.displayPartView()
+                this.carId_ = this.displayPartView_!.carId
+                this.bus_ = this.displayPartView_!.bus!
             }
+            this.mode_ = computed(() => this.mode())()
+            this.add_ = computed(() => this.add())()
         })
         effect(() => {
-            this.bus.set(this.addCarParam()?.bus)
+            this.carId_ = computed(() => this.carId())()
+            this.mode_ = computed(() => this.mode())()
         })
 
         effect(() => {
@@ -184,7 +190,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     ngOnInit() {
         this.activatedRoute.queryParamMap.subscribe((param) => {
             this.parseQueryParams(param)
-            this.carId.set(this.queryParams.carId ? this.queryParams.carId : undefined)
+            this.carId_ = this.queryParams.carId ? this.queryParams.carId : undefined
             if (this.queryParams.query) this.query = +this.queryParams.query
             this.ad = this.queryParams.ad ? this.queryParams.ad : false
             this.loadCar()
@@ -297,19 +303,19 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     loadCar() {
         if (!this.carId()) {
-            this.mode.set(UpdateEnum.New)
+            this.mode_ = UpdateEnum.New
         }
         if (this.update()) {
-            this.mode.set(UpdateEnum.Update)
+            this.mode_ = UpdateEnum.Update
         }
         if (this.carId() && this.mode() == UpdateEnum.Update) {
             this.carService.fetchCar(this.carId()!).subscribe({
                 next: (res) => {
                     this.car = { ...res }
-                    this.carId.set(this.car.carId)
+                    this.carId_ = this.car.carId
                     this.mainImageId = this.car.mainImageId
-                    this.bus.set(this.car.bus)
-                    this.mode.set(UpdateEnum.Update)
+                    this.bus_ = this.car.bus!
+                    this.mode_ = UpdateEnum.Update
 
                     this.clearZeros()
                     this.addCarForm.patchValue(this.car)
@@ -327,7 +333,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.nextIdService.getNextId(this.bus() ? ItemType.OnlyBus : ItemType.OnlyCar).subscribe({
                 next: (id) => {
                     if (id.nextId) {
-                        this.carId.set(id.nextId)
+                        this.carId_ = id.nextId
                     } else if (id.error) {
                         this.popupService.openWithTimeout('Съобщение', id.error, 2000).subscribe(() => {
                             this.goBack()
@@ -418,7 +424,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             })
             this.homeService.updateDisplayPartView(val)
             this.submitted = false
-            this.saved.emit(val.id)
+            this.saved.emit(val.id!)
             if (this.ad) {
                 this.carService.currentCarId = val.id
                 if (this.bus() === 1) {

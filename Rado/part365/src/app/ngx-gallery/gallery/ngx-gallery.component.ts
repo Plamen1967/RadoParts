@@ -15,98 +15,98 @@ import { NgxGalleryThumbnailsComponent } from '../thumbnails/ngx-gallery-thumbna
     standalone: true,
     selector: 'app-ngx-gallery',
     template: `
-        <div class="ngx-gallery-layout {{ currentOptions?.layout }}">
-            @if (currentOptions?.image) {
+        <div class="ngx-gallery-layout {{ currentOptions!.layout }}">
+            @if (currentOptions!.image) {
                 <app-ngx-gallery-image
                     [style.height]="getImageHeight()"
                     [images]="mediumImages"
-                    [clickable]="currentOptions?.preview"
+                    [clickable]="currentOptions!.preview"
                     [selectedIndex]="selectedIndex"
-                    [arrows]="currentOptions?.imageArrows"
-                    [arrowsAutoHide]="currentOptions?.imageArrowsAutoHide"
-                    [arrowPrevIcon]="currentOptions?.arrowPrevIcon"
-                    [arrowNextIcon]="currentOptions?.arrowNextIcon"
-                    [swipe]="currentOptions?.imageSwipe"
-                    [animation]="currentOptions?.imageAnimation"
-                    [size]="currentOptions?.imageSize"
-                    [autoPlay]="currentOptions?.imageAutoPlay"
-                    [autoPlayInterval]="currentOptions?.imageAutoPlayInterval"
-                    [autoPlayPauseOnHover]="currentOptions?.imageAutoPlayPauseOnHover"
-                    [infinityMove]="currentOptions?.imageInfinityMove"
-                    [lazyLoading]="currentOptions?.lazyLoading"
-                    [actions]="currentOptions?.imageActions"
+                    [arrows]="currentOptions!.imageArrows"
+                    [arrowsAutoHide]="currentOptions!.imageArrowsAutoHide"
+                    [arrowPrevIcon]="currentOptions!.arrowPrevIcon"
+                    [arrowNextIcon]="currentOptions!.arrowNextIcon"
+                    [swipe]="currentOptions!.imageSwipe"
+                    [animation]="currentOptions!.imageAnimation"
+                    [size]="currentOptions!.imageSize"
+                    [autoPlay]="currentOptions!.imageAutoPlay"
+                    [autoPlayInterval]="currentOptions!.imageAutoPlayInterval"
+                    [autoPlayPauseOnHover]="currentOptions!.imageAutoPlayPauseOnHover"
+                    [infinityMove]="currentOptions!.imageInfinityMove"
+                    [lazyLoading]="currentOptions!.lazyLoading"
+                    [actions]="currentOptions!.imageActions"
                     [descriptions]="descriptions"
-                    [showDescription]="currentOptions?.imageDescription"
-                    [bullets]="currentOptions?.imageBullets"
-                    (onClick)="openPreview($event)"
-                    (onActiveChange)="selectFromImage($event)"></app-ngx-gallery-image>
+                    [showDescription]="currentOptions!.imageDescription"
+                    [bullets]="currentOptions!.imageBullets"
+                    (clickEvent)="openPreview($any($event))"
+                    (activeChangeEvent)="selectFromImage($any($event))"></app-ngx-gallery-image>
             }
 
-            @if (currentOptions?.thumbnails) {
+            @if (currentOptions!.thumbnails) {
                 <app-ngx-gallery-thumbnails
                     [style.marginTop]="getThumbnailsMarginTop()"
                     [style.marginBottom]="getThumbnailsMarginBottom()"
                     [style.height]="getThumbnailsHeight()"
                     [images]="smallImages"
-                    [links]="currentOptions?.thumbnailsAsLinks ? links : []"
+                    [links]="currentOptions!.thumbnailsAsLinks ? links : []"
                     [labels]="labels"
-                    [linkTarget]="currentOptions?.linkTarget"
+                    [linkTarget]="currentOptions!.linkTarget"
                     [selectedIndex]="selectedIndex"
-                    [columns]="currentOptions?.thumbnailsColumns"
-                    [rows]="currentOptions?.thumbnailsRows"
-                    [margin]="currentOptions?.thumbnailMargin"
-                    [arrows]="currentOptions?.thumbnailsArrows"
-                    [arrowsAutoHide]="currentOptions?.thumbnailsArrowsAutoHide"
-                    [arrowPrevIcon]="currentOptions?.arrowPrevIcon"
-                    [arrowNextIcon]="currentOptions?.arrowNextIcon"
-                    [clickable]="currentOptions?.image || currentOptions?.preview"
-                    [swipe]="currentOptions?.thumbnailsSwipe"
-                    [size]="currentOptions?.thumbnailSize"
-                    [moveSize]="currentOptions?.thumbnailsMoveSize"
-                    [order]="currentOptions?.thumbnailsOrder"
-                    [remainingCount]="currentOptions?.thumbnailsRemainingCount"
-                    [lazyLoading]="currentOptions?.lazyLoading"
-                    [actions]="currentOptions?.thumbnailActions"
-                    (onActiveChange)="selectFromThumbnails($event)"></app-ngx-gallery-thumbnails>
+                    [columns]="currentOptions!.thumbnailsColumns"
+                    [rows]="currentOptions!.thumbnailsRows"
+                    [margin]="currentOptions!.thumbnailMargin"
+                    [arrows]="currentOptions!.thumbnailsArrows"
+                    [arrowsAutoHide]="currentOptions!.thumbnailsArrowsAutoHide"
+                    [arrowPrevIcon]="currentOptions!.arrowPrevIcon"
+                    [arrowNextIcon]="currentOptions!.arrowNextIcon"
+                    [clickable]="currentOptions!.image || currentOptions!.preview"
+                    [swipe]="currentOptions!.thumbnailsSwipe"
+                    [size]="currentOptions!.thumbnailSize"
+                    [moveSize]="currentOptions!.thumbnailsMoveSize"
+                    [order]="currentOptions!.thumbnailsOrder"
+                    [remainingCount]="currentOptions!.thumbnailsRemainingCount"
+                    [lazyLoading]="currentOptions!.lazyLoading"
+                    [actions]="currentOptions!.thumbnailActions"
+                    (activeChangeEvent)="selectFromThumbnails($any($event))"></app-ngx-gallery-thumbnails>
             }
             <app-ngx-gallery-preview
                 [images]="bigImages"
                 [descriptions]="descriptions"
-                [showDescription]="currentOptions?.previewDescription"
-                [arrowPrevIcon]="currentOptions?.arrowPrevIcon"
-                [arrowNextIcon]="currentOptions?.arrowNextIcon"
-                [closeIcon]="currentOptions?.closeIcon"
-                [fullscreenIcon]="currentOptions?.fullscreenIcon"
-                [spinnerIcon]="currentOptions?.spinnerIcon"
-                [arrows]="currentOptions?.previewArrows"
-                [arrowsAutoHide]="currentOptions?.previewArrowsAutoHide"
-                [swipe]="currentOptions?.previewSwipe"
-                [fullscreen]="currentOptions?.previewFullscreen"
-                [forceFullscreen]="currentOptions?.previewForceFullscreen"
-                [closeOnClick]="currentOptions?.previewCloseOnClick"
-                [closeOnEsc]="currentOptions?.previewCloseOnEsc"
-                [keyboardNavigation]="currentOptions?.previewKeyboardNavigation"
-                [animation]="currentOptions?.previewAnimation"
-                [autoPlay]="currentOptions?.previewAutoPlay"
-                [autoPlayInterval]="currentOptions?.previewAutoPlayInterval"
-                [autoPlayPauseOnHover]="currentOptions?.previewAutoPlayPauseOnHover"
-                [infinityMove]="currentOptions?.previewInfinityMove"
-                [zoom]="currentOptions?.previewZoom"
-                [zoomStep]="currentOptions?.previewZoomStep"
-                [zoomMax]="currentOptions?.previewZoomMax"
-                [zoomMin]="currentOptions?.previewZoomMin"
-                [zoomInIcon]="currentOptions?.zoomInIcon"
-                [zoomOutIcon]="currentOptions?.zoomOutIcon"
-                [actions]="currentOptions?.actions"
-                [rotate]="currentOptions?.previewRotate"
-                [rotateLeftIcon]="currentOptions?.rotateLeftIcon"
-                [rotateRightIcon]="currentOptions?.rotateRightIcon"
-                [download]="currentOptions?.previewDownload"
-                [downloadIcon]="currentOptions?.downloadIcon"
-                [bullets]="currentOptions?.previewBullets"
-                (onClose)="onPreviewClose()"
-                (onOpen)="onPreviewOpen()"
-                (onActiveChange)="previewSelect($event)"
+                [showDescription]="currentOptions!.previewDescription"
+                [arrowPrevIcon]="currentOptions!.arrowPrevIcon"
+                [arrowNextIcon]="currentOptions!.arrowNextIcon"
+                [closeIcon]="currentOptions!.closeIcon"
+                [fullscreenIcon]="currentOptions!.fullscreenIcon"
+                [spinnerIcon]="currentOptions!.spinnerIcon"
+                [arrows]="currentOptions!.previewArrows"
+                [arrowsAutoHide]="currentOptions!.previewArrowsAutoHide"
+                [swipe]="currentOptions!.previewSwipe"
+                [fullscreen]="currentOptions!.previewFullscreen"
+                [forceFullscreen]="currentOptions!.previewForceFullscreen"
+                [closeOnClick]="currentOptions!.previewCloseOnClick"
+                [closeOnEsc]="currentOptions!.previewCloseOnEsc"
+                [keyboardNavigation]="currentOptions!.previewKeyboardNavigation"
+                [animation]="currentOptions!.previewAnimation"
+                [autoPlay]="currentOptions!.previewAutoPlay"
+                [autoPlayInterval]="currentOptions!.previewAutoPlayInterval"
+                [autoPlayPauseOnHover]="currentOptions!.previewAutoPlayPauseOnHover"
+                [infinityMove]="currentOptions!.previewInfinityMove"
+                [zoom]="currentOptions!.previewZoom"
+                [zoomStep]="currentOptions!.previewZoomStep"
+                [zoomMax]="currentOptions!.previewZoomMax"
+                [zoomMin]="currentOptions!.previewZoomMin"
+                [zoomInIcon]="currentOptions!.zoomInIcon"
+                [zoomOutIcon]="currentOptions!.zoomOutIcon"
+                [actions]="currentOptions!.actions"
+                [rotate]="currentOptions!.previewRotate"
+                [rotateLeftIcon]="currentOptions!.rotateLeftIcon"
+                [rotateRightIcon]="currentOptions!.rotateRightIcon"
+                [download]="currentOptions!.previewDownload"
+                [downloadIcon]="currentOptions!.downloadIcon"
+                [bullets]="currentOptions!.previewBullets"
+                (onCloseEvent)="onPreviewClose()"
+                (openEvent)="onPreviewOpen()"
+                (activeChangeEvent)="previewSelect($any($event))"
                 [class.ngx-gallery-active]="previewEnabled"></app-ngx-gallery-preview>
         </div>
     `,
@@ -141,7 +141,7 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
     selectedIndex = 0
     previewEnabled?: boolean
 
-    currentOptions?: NgxGalleryOptions
+    currentOptions!: NgxGalleryOptions
 
     private breakpoint: number | undefined = undefined
     private prevBreakpoint: number | undefined = undefined
@@ -199,7 +199,7 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
                 this.image.reset(this.currentOptions.startIndex as number)
             }
 
-            if (this.currentOptions?.thumbnailsAutoHide && this.currentOptions?.thumbnails && (this.images?.length ?? 0) <= 1) {
+            if (this.currentOptions!.thumbnailsAutoHide && this.currentOptions!.thumbnails && (this.images?.length ?? 0) <= 1) {
                 this.currentOptions.thumbnails = false
                 this.currentOptions.imageArrows = false
             }
@@ -260,7 +260,7 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
     }
 
     openPreview(index: number): void {
-        if (this.currentOptions?.previewCustom) {
+        if (this.currentOptions!.previewCustom) {
             this.currentOptions.previewCustom(index)
         } else {
             this.previewEnabled = true
@@ -271,7 +271,7 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
     onPreviewOpen(): void {
         this.previewOpen.emit()
 
-        if (this.image && this.image.autoPlay) {
+        if (this.image && this.image?.autoPlay()) {
             this.image.stopAutoPlay()
         }
     }
@@ -280,7 +280,7 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
         this.previewEnabled = false
         this.previewClose.emit()
 
-        if (this.image && this.image.autoPlay) {
+        if (this.image && this.image?.autoPlay()) {
             this.image.startAutoPlay()
         }
     }
@@ -353,7 +353,7 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
 
     private resetThumbnails() {
         if (this.thubmnails) {
-            this.thubmnails.reset(this.currentOptions?.startIndex as number)
+            this.thubmnails.reset(this.currentOptions!.startIndex as number)
         }
     }
 
@@ -420,6 +420,12 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit {
     }
 
     private combineOptions(first: NgxGalleryOptions, second: NgxGalleryOptions) {
-        Object.keys(second).map((val) => (first[val] = second[val] !== undefined ? second[val] : first[val]))
+        const firstOptions = first as unknown as Record<string, unknown>
+        const secondOptions = second as unknown as Record<string, unknown>
+
+        Object.keys(secondOptions).forEach((val) => {
+            const value = secondOptions[val]
+            firstOptions[val] = value !== undefined ? value : firstOptions[val]
+        })
     }
 }

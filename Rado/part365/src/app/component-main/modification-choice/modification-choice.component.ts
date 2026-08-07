@@ -1,5 +1,5 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, model } from '@angular/core'
+import { Component, DestroyRef, inject, model, input, effect, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -34,24 +34,22 @@ export class ModificationChoiceComponent implements FormValueControl<number | un
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
-    @Input() multiselection = true
-    @Input() useFilter = true
-    @Input() all = false
-    @Input() userId = 0
-    @Input() IsRequired = false
-    @Input() submitted = false
-    @Input() showCount = false
-    @Input() itemType: ItemType = ItemType.All
-    @Input() set modelsId(value: string | number) {
-        this.modelChange(value.toString())
-    }
+    multiselection = input<boolean>(true)
+    useFilter = input<boolean>(true)
+    all = input<boolean>(false)
+    userId = input<number>(0)
+    IsRequired = input<boolean>(false)
+    submitted = input<boolean>(false)
+    showCount = input<boolean>(false)
+    itemType = input<ItemType>(ItemType.All) 
+    modelsId = input<string | number>('')
 
-    @Output() modifcationChange: EventEmitter<Modification> = new EventEmitter<Modification>()
+
+    modifcationChange = output<Modification>()
     //#region services
     private modificationService: ModificationService = inject(ModificationService)
     private formBuilder: FormBuilder = inject(FormBuilder)
     public errorService: ErrorService = inject(ErrorService)
-    private element: ElementRef = inject(ElementRef)
     private destroyRef: DestroyRef = inject(DestroyRef)
     //#endregion
     //#endregion
@@ -61,9 +59,12 @@ export class ModificationChoiceComponent implements FormValueControl<number | un
             modificationsId_int: [0],
         })
 
+        effect(() => {
+            if (this.modelsId()) this.modelChange(this.modelsId().toString())
+        })
         this.modificationForm.controls['modificationsId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
             const modification = this.originalModification.find((modification) => modification.modificationId == f)
-            this.modifcationChange.emit(modification)
+            this.modifcationChange.emit(modification!)
             if (this.onChange) this.onChange(f)
         })
     }
@@ -77,7 +78,7 @@ export class ModificationChoiceComponent implements FormValueControl<number | un
     }
     modelChange(value: string) {
         this.models_Id = value
-        if (this.userId) {
+        if (this.userId()) {
             if (value) {
                 this.modificationService
                     .fetchModificationsByUserId(value)
@@ -177,8 +178,8 @@ export class ModificationChoiceComponent implements FormValueControl<number | un
         return
     }
     updateCount() {
-        if (this.itemType == ItemType.OnlyBus || this.itemType == ItemType.OnlyCar) this.modifications.forEach((item) => (item.count = item.countCars))
-        else if (this.itemType == ItemType.CarPart || this.itemType == ItemType.BusPart) this.modifications.forEach((item) => (item.count = item.countParts))
+        if (this.itemType() == ItemType.OnlyBus || this.itemType() == ItemType.OnlyCar) this.modifications.forEach((item) => (item.count = item.countCars))
+        else if (this.itemType() == ItemType.CarPart || this.itemType() == ItemType.BusPart) this.modifications.forEach((item) => (item.count = item.countParts))
         else this.modifications.forEach((item) => (item.count = item.countParts + item.countCars))
     }
 }

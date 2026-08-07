@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, input, model, output, Output, Renderer2, ViewChild } from '@angular/core'
+import { Component, ElementRef, inject, input, model, output, Renderer2, ViewChild } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { FormValueControl } from '@angular/forms/signals'
 import { RadioButton } from '@model/radioButton'
@@ -12,7 +12,7 @@ import { RadioButton } from '@model/radioButton'
 export class RadioGroupComponent implements FormValueControl<number|undefined> {
     value = model<number|undefined>(undefined)
     radios = input<RadioButton[]>([])
-    @Output() changeRadioGroup: EventEmitter<number> = new EventEmitter<number>()
+    changeRadioGroup = output<number>()
     panelClosed = output<number>()
     IsDisabled = input<boolean>(false)
     controlName = input<string | number>()

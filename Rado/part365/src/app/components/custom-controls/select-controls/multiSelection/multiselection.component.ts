@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild, OnInit, DestroyRef, inject, model, input, effect } from '@angular/core'
+import { Component, ElementRef, ViewChild, OnInit, DestroyRef, inject, model, input, effect, output } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { SelectionItem } from '@model/selectionItem'
 import { ErrorService } from '@services/error.service'
@@ -40,9 +40,9 @@ export class MultiSelectionComponent implements FormValueControl<string | undefi
     errorMessage?: string
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    @Output() changeOption: EventEmitter<any> = new EventEmitter<any>()
-    @Output() changeOptions: EventEmitter<Set<number>> = new EventEmitter<Set<number>>()
-    @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
+    changeOption = output<any>()
+    changeOptions = output<Set<number>>()
+    closeDialog = output<ElementRef>()
     groupSelection = input<boolean>(false)
     data = input<OptionItem[]>([])
     label = input<string | undefined>(undefined)

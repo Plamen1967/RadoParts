@@ -1,10 +1,9 @@
-import { Component, HostListener, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, HostListener, input } from '@angular/core'
 
 @Component({
     selector: 'app-dealer',
     templateUrl: './dealer.component.html',
     styleUrls: ['./dealer.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 export class DealerComponent {
@@ -13,8 +12,8 @@ export class DealerComponent {
     click(event: any) {
         event.stopPropagation()
     }
-    @Input() companyName?: string
-    @Input() sellerLogo?: string
-    @Input() dealer?: boolean
-    @Input() sellerWebPage = ''
+    companyName = input<string | undefined>(undefined)
+    sellerLogo = input<string | undefined>(undefined)
+    dealer = input<boolean | undefined>(undefined)
+    sellerWebPage = input<string>('')
 }

@@ -1,14 +1,14 @@
-@if (value && value.length) {
+@if (value() && value()?.length) {
     <div class="parent line">
-        <div data-cy="label" class="labelText small col-sm-6">{{ label }}</div>
+        <div data-cy="label" class="labelText small col-sm-6">{{ label() }}</div>
         <div class="small fontWeight">
-            @if (price) {
+            @if (price()) {
                 <div class="param">
-                    <div class="price">{{ value }} EURO.</div>
+                    <div class="price">{{ value() }} EURO.</div>
                 </div>
             }
             @else {
-            {{ value }}
+            {{ value() }}
             }
             <ng-content select=".param"></ng-content>
         </div>

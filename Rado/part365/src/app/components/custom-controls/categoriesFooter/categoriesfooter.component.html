@@ -1,5 +1,5 @@
-<div class="containerFlex text-center" [hidden]="hideFilter">
-    @for(category of categories; track category.id; let i = $index) {
+<div class="containerFlex text-center" [hidden]="hideFilter()">
+    @for(category of categories(); track category.id; let i = $index) {
         @if(category.count) {
             <button style="width: 150px; " class="m-1 category" (click)="categorySelected(category.id!)">
                 <div class="count"><div class="number">{{category.count}}</div></div>

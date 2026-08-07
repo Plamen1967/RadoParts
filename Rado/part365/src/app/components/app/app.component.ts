@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component, OnDestroy, ViewChild, inject, signal, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnDestroy, ViewChild, inject, signal } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Router, RouterOutlet } from '@angular/router'
 import { NavMenuComponent } from '@app/menu/navMenu/navMenu.component'
@@ -46,7 +46,6 @@ import { OutsideDirective } from '@app/directive/outside.directive'
         MatListModule,
     ],
     templateUrl: './app.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnDestroy {

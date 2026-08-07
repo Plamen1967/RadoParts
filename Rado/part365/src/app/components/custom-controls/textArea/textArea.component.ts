@@ -1,4 +1,4 @@
-import { Component, Input, model } from '@angular/core'
+import { Component, input, model } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { NgClass, NgStyle } from '@angular/common'
 import { FormValueControl } from '@angular/forms/signals'
@@ -11,13 +11,13 @@ import { FormValueControl } from '@angular/forms/signals'
 })
 export class TextAreaComponent implements FormValueControl<string> {
     value = model<string>('')
-    @Input() label?: string
-    @Input() rows = 2
-    @Input() border = true
-    @Input() submitted = false
-    @Input() length = 500
-    @Input() placeHolder = ''
-    @Input() IsRequired?: boolean
+    label = input<string | undefined>()
+    rows = input(2)
+    border = input(true)
+    submitted = input(false)
+    length = input(500)
+    placeHolder = input('')
+    IsRequired = input<boolean | undefined>()
 
     IsInvalid = false
     errorMessage = 'This field is required'
@@ -25,11 +25,11 @@ export class TextAreaComponent implements FormValueControl<string> {
 
 
     get contolName(): string {
-        return this.label ?? this.placeHolder
+        return this.label() ?? this.placeHolder()
     }
     onTextChange() {
         this.value.set(this.inputValue)
-        if (this.IsRequired) {
+        if (this.IsRequired()) {
             this.IsInvalid = this.inputValue.trim() === ''
         }
     }

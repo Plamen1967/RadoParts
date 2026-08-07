@@ -1,5 +1,5 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, inject, Input, OnInit, Self, model } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, OnInit, Self, model, input } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -29,10 +29,10 @@ export class CategoryChoiseComponent implements FormValueControl<number | undefi
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
-    @Input() all = false
-    @Input() multiselection = true
-    @Input() submitted = false
-    @Input() IsRequired = false
+    all = input<boolean>(false)
+    multiselection = input<boolean>(true)
+    submitted = input<boolean>(false)
+    IsRequired = input<boolean>(false)
     //#region services
     public categoryService: CategoryService
     private formBuilder: FormBuilder

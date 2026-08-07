@@ -1,5 +1,5 @@
 //#region imports
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core'
+import { Component, Input, ChangeDetectionStrategy, inject, output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DisplayPartView } from '@model/displayPartView'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -21,7 +21,7 @@ export class PartViewComponent extends HelperComponent {
     year?: string
     position?: string
     fields = ['Двигател', 'Скоростна кутия', 'Вид двигател', 'Номер на частта', 'Код двигател', 'Позиция', 'Мощност', 'VIN', 'Пробег']
-    @Output() view = new EventEmitter()
+    view = output()
     @Input() set part(value: DisplayPartView) {
         this._viewPart = value
     }

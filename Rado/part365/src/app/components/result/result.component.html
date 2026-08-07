@@ -11,17 +11,17 @@
             <div class="top" style="max-width: 920px; justify-content: center;display: flex;">
                 <div class="rowCar" id="top">
                     <div class="d-flex justify-content-center text-center mb-1 mt-1 filter-button">
-                        @if (!userId) {
+                        @if (!userId_) {
                             <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goBack()">{{ labels.GOHOME }}</button>
                             <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goSearch()">{{ labels.TOSEARCH }}</button>
                         }
                     </div>
                     <app-navigator
                         class="me-1"
-                        [hasSort]="hasSort"
+                        [hasSort]="hasSort()"
                         [numberPages]="numberPages!"
                         [currentPage]="currentPage!"
-                        [sortByValue]="sortType!"
+                        [sortByValue]="sortType_!"
                         (moveToPage)="moveToPage($event)"
                         (sortBy)="sortData($event)">
                     </app-navigator>
@@ -31,13 +31,13 @@
                             @for (part of parts; track part.id; let i = $index) {
                                 <div id="{{ part.id }}">
                                     <app-displaypart
-                                        [showDealer]="showDealer"
-                                        [showPhones]="showPhones"
+                                        [showDealer]="showDealer()"
+                                        [showPhones]="showPhones()"
                                         [part]="part"
                                         (action)="action($event)"
                                         [highlighted]="gethighlighted()"
                                         [allowUpdate]="false"
-                                        [showFavourite]="showFavourite"
+                                        [showFavourite]="showFavourite()"
                                         (filterByDealer)="filterByDealer($event)">
                                     </app-displaypart>
                                 </div>
@@ -49,7 +49,7 @@
                         <app-navigator [numberPages]="numberPages!" [currentPage]="currentPage!" (moveToPage)="moveToPage($event)"> </app-navigator>
                     }
 
-                    @if (!userId) {
+                    @if (!userId_) {
                         <div class="d-flex justify-content-center text-center mb-1 mt-1">
                             <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goBack()">{{ labels.GOHOME }}</button>
                             <button type="button" class="button btn-primary btn-sm active button-style" (click)="goSearch()">{{ labels.TOSEARCH }}</button>

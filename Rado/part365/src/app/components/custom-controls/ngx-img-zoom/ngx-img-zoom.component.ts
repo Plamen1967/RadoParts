@@ -1,4 +1,4 @@
-import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit, Input, HostListener, OnDestroy, inject } from '@angular/core'
+import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit, Input, HostListener, OnDestroy, inject, input } from '@angular/core'
 import { NgStyle } from '@angular/common'
 import { NgxImgZoomMode } from '../zoom/mode.enum'
 import { NgxImgZoomService } from '../zoom/ngx-img-zoom.service';
@@ -48,7 +48,7 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
     @ViewChild('result', { static: false }) resultElmRef?: ElementRef
     @ViewChild('container', { static: false }) containerElmRef?: ElementRef
 
-    @Input() enableZoom = false
+    enableZoom = input<boolean>(false)
     @Input() set imgStyle(val) {
         this._imgStyle = val
     }
@@ -110,7 +110,7 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
     }
 
     handleZoomOutOnMouseWheelUp() {
-        if (this.enableZoom && this.zoomBreakPoints) {
+        if (this.enableZoom() && this.zoomBreakPoints) {
             if (this.zoomBreakPoints.length - 1 > this.zoomIndex) {
                 this.zoomIndex++
             }
@@ -121,7 +121,7 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
     }
 
     handleZoomInOnMouseWheelUp() {
-        if (this.enableZoom && this.zoomBreakPoints) {
+        if (this.enableZoom() && this.zoomBreakPoints) {
             if (this.zoomIndex > 0) {
                 this.zoomIndex--
             }
@@ -152,7 +152,7 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
 
         this.renderer.setStyle(this.lens, 'visibility', 'hidden')
 
-        if (this.enableZoom && !this.zoomBreakPoints) {
+        if (this.enableZoom() && !this.zoomBreakPoints) {
             console.warn('The enableZoom options only works if zoomBreakPoints are passed using NgxImgZoomService. Kindly refer the Docs.')
         }
     }

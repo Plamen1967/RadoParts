@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose } from '@angular/material/dialog'
 import { ConfirmDialogData, OKCancelOption } from '../../model/confirmDialogData'
 
@@ -6,7 +6,6 @@ import { ConfirmDialogData, OKCancelOption } from '../../model/confirmDialogData
     selector: 'app-confirmdialog',
     templateUrl: './confirmDialog.component.html',
     styleUrls: ['./confirmDialog.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogActions, MatDialogClose],
 })
 export class ConfirmDialogComponent {

@@ -1,5 +1,5 @@
 //#region imports
-import { Component, inject, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, Inject, OnInit } from '@angular/core'
 import { SelectBase } from '../../selectBase'
 import { TopService } from '@services/top.service'
 import { Subscription } from 'rxjs'
@@ -15,7 +15,6 @@ import { DialogData } from '@model/dialogData'
     selector: 'app-model',
     templateUrl: './minmodel.component.html',
     styleUrls: ['./minmodel.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogContent, ChoiseComponent, MatDialogClose, NgClass, SearchInputComponent],
 })
 //#endregion

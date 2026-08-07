@@ -17,7 +17,7 @@
                                 label="{{ labels.USERNAME }}"
                                 valueProperty="userId"
                                 [data]="users"
-                                (onClose)="focus()"
+                                (onCloseEvent)="focus()"
                                 displayProperty="userName">
                             </app-select>
                         </div>
@@ -29,7 +29,7 @@
                                 label="{{ labels.APPROVEAD }}"
                                 valueProperty="id"
                                 [data]="approvedTypes"
-                                (onClose)="focus()"
+                                (onCloseEvent)="focus()"
                                 displayProperty="value">
                             </app-select>
                         </div>
@@ -45,37 +45,37 @@
 
             <div class="row" [ngClass]="{ show: displayAll, noShow: !displayAll }">
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 min200px">
-                    <app-customselect formControlName="tyreCompanyId" [useFilter]="true" label="{{ labels.TYRE_PRODUCER }}" data-cy="tyreCompanyId" [data]="tyreProducers" (onClose)="focus()">
+                    <app-customselect formControlName="tyreCompanyId" [useFilter]="true" label="{{ labels.TYRE_PRODUCER }}" data-cy="tyreCompanyId" [data]="tyreProducers" (onCloseEvent)="focus()">
                     </app-customselect>
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayRim, noShow: !displayRim }">
                 <div class="col-sm-3 control min200px">
                     <div class="max300px">
-                        <app-company-choise [itemType]="itemType" [userId]="userId!" [bus]="0" data-cy="companyId" [all]="true" formControlName="companyId"> </app-company-choise>
+                        <app-company-choise [itemType]="itemType" [userId]="userId()" [bus]="0" data-cy="companyId" [all]="true" formControlName="companyId"> </app-company-choise>
                     </div>
                 </div>
                 @if (companyId) {
@@ -94,7 +94,7 @@
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimWidth"
-                        (onClose)="focus()">
+                        (onCloseEvent)="focus()">
                     </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px ">
@@ -107,7 +107,7 @@
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimMaterial"
-                        (onClose)="focus()">
+                        (onCloseEvent)="focus()">
                     </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px ">
@@ -120,13 +120,13 @@
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimOffset"
-                        (onClose)="focus()">
+                        (onCloseEvent)="focus()">
                     </app-select>
                 </div>
             </div>
             <div class="row mt-1">
                 <div class="col-sm-3 max200px">
-                    <app-select formControlName="regionId" data-cy="regionId" label="{{ labels.REGION }}" [data]="regions" (onClose)="focus()"> </app-select>
+                    <app-select formControlName="regionId" data-cy="regionId" label="{{ labels.REGION }}" [data]="regions" (onCloseEvent)="focus()"> </app-select>
                 </div>
             </div>
             <div class="row ms-1 mt-1">

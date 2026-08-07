@@ -19,7 +19,7 @@ import { RadioGroupComponent } from '@components/custom-controls/radioGroup/radi
 })
 //#endregion
 export class CompanyComponent extends SelectBase implements OnInit {
-    @HostListener('window:keydown.enter', ['$event']) onClick(event: Event) {
+    @HostListener('window:keydown.enter', ['$event']) clickEvent(event: Event) {
         event.stopPropagation()
         event.preventDefault()
         this.close()

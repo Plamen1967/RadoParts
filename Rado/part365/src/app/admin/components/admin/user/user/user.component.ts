@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -20,7 +20,6 @@ import { UpdateUserService } from '@app/admin/services/updateuser.service'
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent],
 })
 //#endregion

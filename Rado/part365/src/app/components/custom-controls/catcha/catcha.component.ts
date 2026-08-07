@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, input } from '@angular/core'
 import { Catcha } from '@model/catcha'
 
 @Component({
@@ -8,5 +8,5 @@ import { Catcha } from '@model/catcha'
     imports: [],
 })
 export class CatchaComponent {
-    @Input() imageData?: Catcha
+    imageData = input<Catcha>()
 }

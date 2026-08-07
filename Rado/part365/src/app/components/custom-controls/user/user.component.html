@@ -15,10 +15,10 @@
 </div>
 @if (submitted() && hasErrors()) {
     <div class="text-danger"  style="line-height: normal;">
-        @if (control.errors['required']) {
+        @if (errors_()?.get('required')) {
             <div data-cy="userNameRequiredError">Въведи {{ placeHolder() }}</div>
         }
-        @else if (control.errors['pattern'] || control.errors['maxlength'] || control.errors['minlength']) {
+        @else if (errors_()?.get('pattern') || errors_()?.get('maxlength') || errors_()?.get('minlength')) {
             <div>Телефоният номер трябва да се най-малко 10 цифри</div>
         }
         @else {

@@ -2,10 +2,10 @@ import { Routes, RunGuardsAndResolvers } from '@angular/router'
 import { DealerWebPageComponent } from '@app/admin/components/admin/user/dealerWebPage/dealerWebPage.component'
 import { LoginComponent } from '@app/admin/components/admin/user/login/login.component'
 import { AuthGuard } from '@app/guard/authGuard'
+import { HomeComponent } from '@app/search/home/Home.component'
 import { CheckOutComponent } from '@components/custom-controls/check-out/check-out.component'
 import { UserViewPartComponent } from '@components/parts/userViewPart/userViewPart.component'
 import { ResultComponent } from '@components/result/result.component'
-import { HomeComponent } from '@components/search/home/Home.component'
 
 const runGuardsAndResolvers: RunGuardsAndResolvers = 'paramsOrQueryParamsChange'
 

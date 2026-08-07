@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatButtonModule } from '@angular/material/button'
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog'
@@ -8,7 +8,6 @@ import { LoadinData } from '@model/loadinData'
     selector: 'app-loading-dialog',
     templateUrl: './loading-dialog.component.html',
     imports: [MatProgressSpinnerModule, MatDialogModule, MatButtonModule],
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./loading-dialog.component.css'],
 })
 export class LoadingDialogComponent {

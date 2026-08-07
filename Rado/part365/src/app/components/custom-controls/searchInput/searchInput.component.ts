@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, effect, EventEmitter, input, model, Output } from '@angular/core'
+import { Component, effect, input, model, output } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { FormValueControl } from '@angular/forms/signals'
 
@@ -17,8 +17,8 @@ export class SearchInputComponent implements FormValueControl<string> {
     label = input<string>('')
     placeHolder = input<string>('')
 
-    @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>()
-    @Output() Search: EventEmitter<string> = new EventEmitter<string>()
+    filterChanged = output<string>()
+    Search = output<string>()
 
     constructor() {
         effect(() => {
@@ -42,7 +42,7 @@ export class SearchInputComponent implements FormValueControl<string> {
     }
 
     onSearch() {
-        this.Search.emit(this.filter)
+        this.Search.emit(this.filter!)
     }
 
     onClearBox() {

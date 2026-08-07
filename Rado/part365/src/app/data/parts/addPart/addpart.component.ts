@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, NavigationStart, ParamMap, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -10,11 +10,6 @@ import { FilterCar } from '@model/filters/filterCar'
 import { PartView } from '@model/part/partView'
 import { SelectOption } from '@model/selectOption'
 import { CarService } from '@services/car.service'
-import { CategoryService } from '@services/category-subcategory/category.service'
-import { DealerSubCategoryService } from '@services/category-subcategory/dealerSubCategory.service'
-import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
-import { ModelService } from '@services/company-model-modification/model.service'
-import { ModificationService } from '@services/company-model-modification/modification.service'
 import { ImageService } from '@services/image.service'
 import { NextIdService } from '@services/nextId.service'
 import { PartServiceService } from '@services/part/partService.service'
@@ -79,11 +74,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     handleKeyDownEnter() {
         this.onSubmit()
     }
-    // @HostListener('keydown.esc', ['$event'])
-    // handleKeyDown(event: KeyboardEvent) {
-    //     if (event.key === "Escape") {
-    //         this.goBack();
-    //       }    }
     //#region members
     addPartForm: FormGroup
     cars?: SelectOption[]
@@ -124,74 +114,46 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     categoryId?: number
     choice?: string
     _displayPartView?: DisplayPartView
+    carId_? : number;
+    partId_?: number;
+    bus_ = 0;
+    mode_: UpdateEnum = UpdateEnum.New
+    add_ = false;
     //#endregion
     //#region input/output
-    @Input() viewPartId?: number
-    @Input() carId?: number
-    @Input() partId?: number
-    @Input() mode: UpdateEnum = UpdateEnum.New
-    @Input() bus = 0
-    @Input() set displayPartView(value: DisplayPartView) {
-        this._displayPartView = value
-        if (this._displayPartView) {
-            this.images = value.images ?? []
-            this.partId = this._displayPartView.id
-            this.loadPart()
-        }
-    }
-    @Input() add = false
-    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
-    @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
+    viewPartId = input<number | undefined>()
+    carId = input<number | undefined>()
+    partId = input<number | undefined>()
+    mode = input<UpdateEnum>(UpdateEnum.New)
+    bus = input<number>(0)
+    add = input<boolean>(false)
+
+    displayPartView = input<DisplayPartView | undefined>()
+    saved = output<number>()
+    noChange = output<number>()
     description = ''
     //#endregion
     //#region
-    private formBuilder: FormBuilder
-    private modelService: ModelService
-    private carService: CarService
-    private categoryService: CategoryService
-    private subCategoryService: SubCategoryService
-    private partService: PartServiceService
-    public staticSelectionService: StaticSelectionService
-    private activatedRoute: ActivatedRoute
-    private router: Router
-    private homeService: HomeService
-    private confirmService: ConfirmServiceService
-    private modificationService: ModificationService
-    private userService: UserService
-    private nextIdService: NextIdService
-    private dealerSubCategoryService: DealerSubCategoryService
-    private imageService: ImageService
-    private route: ActivatedRoute
-    private loggerService: LoggerService
-    public popupService: PopUpService
-    private userCountService: UserCountService
-    private toastService: ToastService
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    private carService: CarService = inject(CarService)
+    private partService: PartServiceService = inject(PartServiceService)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    private router: Router= inject(Router)
+    private homeService: HomeService = inject(HomeService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private userService: UserService = inject(UserService)
+    private nextIdService: NextIdService = inject(NextIdService)
+    private imageService: ImageService = inject(ImageService)
+    private route: ActivatedRoute = inject(ActivatedRoute)
+    private loggerService: LoggerService = inject(LoggerService)
+    public popupService: PopUpService = inject(PopUpService)
+    private userCountService: UserCountService = inject(UserCountService)
+    private toastService: ToastService = inject(ToastService)
 
     constructor() { //#endregion
         super()
         //#region fromgroup
-        this.modelService = inject(ModelService)
-        this.carService = inject(CarService)
-        this.categoryService = inject(CategoryService)
-        this.subCategoryService = inject(SubCategoryService)
-        this.partService = inject(PartServiceService)
-        this.staticSelectionService = inject(StaticSelectionService)
-        this.activatedRoute = inject(ActivatedRoute)
-        this.router = inject(Router)
-        this.homeService = inject(HomeService)
-        this.confirmService = inject(ConfirmServiceService)
-        this.modificationService = inject(ModificationService)
-        this.userService = inject(UserService)
-        this.nextIdService = inject(NextIdService)
-        this.dealerSubCategoryService = inject(DealerSubCategoryService)
-        this.imageService = inject(ImageService)
-        this.route = inject(ActivatedRoute)
-        this.loggerService = inject(LoggerService)
-        this.popupService = inject(PopUpService)
-        this.userCountService = inject(UserCountService)
-        this.toastService = inject(ToastService)
-        this.formBuilder = inject(FormBuilder)
-
         this.addPartForm = this.formBuilder.group({
             partForCar: [true],
             carId: [undefined, [Validators.required, Validators.min(1)]],
@@ -230,43 +192,54 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         })
 
         this.addPartForm.patchValue({ regionId: this.regionId })
+        effect(() => {
+            if (this.displayPartView()) {
+                this.images = this.displayPartView()!.images ?? []
+                this.partId_ = this.displayPartView()!.id
+                this.loadPart()
+            }
+
+            this.carId_ = computed(() => this.carId())();
+            this.bus_ = computed(() => this.bus())();
+            this.add_ = computed(() => this.add())()
+        })            
     }
     ngOnInit(): void {
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             const carId = params.get('carId')
-            if (carId) this.carId = +carId
-            else this.carId = undefined
+            if (carId) this.carId_ = +carId
+            else this.carId_ = undefined
 
             this.addPartForm.patchValue({ carId: this.carId })
-            this.bus = +(params.get('bus') ?? 0)
+            this.bus_ = +(params.get('bus') ?? 0)
             this.populateData()
             this.addPartForm.controls['partId'].setValue(this.partId)
 
             this.bus = this.bus ?? 0
-            this.setBus(this.bus)
+            this.setBus(this.bus_)
             const id = this.activatedRoute.snapshot.queryParamMap.get('id')
             const partid = this.activatedRoute.snapshot.queryParamMap.get('partId')
             if (id) {
-                this.partId = +id
+                this.partId_ = +id
             } else if (partid) {
-                this.partId = +partid
+                this.partId_ = +partid
             }
 
             const ad = this.activatedRoute.snapshot.queryParamMap.get('ad')
             if (ad) {
-                this.add = true
-                this.mode = UpdateEnum.New
+                this.add_ = true
+                this.mode_ = UpdateEnum.New
             }
 
             this.partId = this.partId ?? this.viewPartId
-            if (this.mode === UpdateEnum.View) this.updateFlag = false
+            if (this.mode_ === UpdateEnum.View) this.updateFlag = false
             else this.updateFlag = true
 
-            if (this.add) {
+            if (this.add_) {
                 this.addPartForm.patchValue({ regionId: this.regionId })
                 if (!this.partId) {
                     this.nextIdService
-                        .getNextId(this.bus ? ItemType.BusPart : ItemType.CarPart)
+                        .getNextId(this.bus_ ? ItemType.BusPart : ItemType.CarPart)
                         .pipe()
                         .subscribe({
                             next: (nextId) => {
@@ -275,7 +248,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                                         this.goBack()
                                     })
                                 } else {
-                                    this.partId = nextId.nextId
+                                    this.partId_ = nextId.nextId
                                 }
                             },
                             error: (error) => {
@@ -322,7 +295,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     get newPart(): boolean {
-        return this.mode === UpdateEnum.New
+        return this.mode_ === UpdateEnum.New
     }
     //#endregion
 
@@ -384,19 +357,19 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             this.addPartForm.controls['modelId'].setValidators([Validators.required])
             this.addPartForm.controls['modificationId'].setValidators([Validators.required])
             this.car = undefined
-            this.carId = undefined
+            this.carId_ = undefined
         }
 
         this.addPartForm.controls['carId'].updateValueAndValidity()
         this.addPartForm.controls['companyId'].updateValueAndValidity()
         this.addPartForm.controls['modelId'].updateValueAndValidity()
         this.addPartForm.controls['modificationId'].updateValueAndValidity()
-        this.setBus(this.bus)
+        this.setBus(this.bus_)
         this.addPartForm.patchValue({ carId: this.carId })
     }
 
     get action() {
-        if (this.mode == UpdateEnum.Update) {
+        if (this.mode_ == UpdateEnum.Update) {
             return this.labels.UPDATE
         } else {
             return this.labels.SAVE
@@ -432,11 +405,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
     updateCar(car: CarView) {
         this.car = car
-        this.carId = this.car?.carId
+        this.carId_ = this.car?.carId
         if (this.car?.engineType) this.engineTypeName = this.staticSelectionService.EngineType.find((x) => x.value === this.car?.engineType)?.text
         else this.engineTypeName = ''
         this.description = `${this.car.companyName} ${this.car.modelName} `
-        this.bus = car.bus!
+        this.bus_ = car.bus!
         if (!this.bus) this.description = `${this.description} ${this.car.modificationName}`
         this.description = `${this.description} ${this.engineTypeName} ${this.car.engineModel} ${this.car.year}`
     }
@@ -455,9 +428,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     setBus(bus: number) {
-        this.bus = bus
-        this.choice = this.bus ? 'бус' : 'кола'
-        if (this.bus) {
+        this.bus_ = bus
+        this.choice = this.bus_ ? 'бус' : 'кола'
+        if (this.bus_) {
             this.addPartForm.controls['modificationId'].clearValidators()
             this.addPartForm.patchValue({ modificationId: undefined })
         } else {
@@ -482,7 +455,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     populateCars() {
-        this.carService.fetchCarNameId(this.bus).subscribe(
+        this.carService.fetchCarNameId(this.bus_).subscribe(
             (res) =>
                 (this.cars = res.map((car) => {
                     return {
@@ -503,19 +476,19 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     //#endregion
 
     loadPart() {
-        this.partService.fetch(this.partId!).subscribe({
+        this.partService.fetch(this.partId_!).subscribe({
             next: (res) => {
-                this.carId = this.carService.currentCarId = res.carId
+                this.carId_ = this.carService.currentCarId = res.carId
                 this.addPartForm.patchValue({ carId: this.carId ?? 0 })
                 this.partView = { ...res }
                 this.dealerSubCategoryName = this.partView.dealerSubCategoryName
                 this.images = []
                 this.mainImageId = this.partView.mainImageId
-                this.mode = UpdateEnum.Update
+                this.mode_ = UpdateEnum.Update
                 this.loading = false
                 this.dealerSubCategoryId = this.partView.dealerSubCategoryId
                 this.addPartForm.patchValue(this.partView)
-                this.imageService.getImages(this.partId!).subscribe((res) => (this.images = res))
+                this.imageService.getImages(this.partId_!).subscribe((res) => (this.images = res))
                 this.initialState = { ...this.addPartForm.value }
             },
             error: (error) => {
@@ -539,7 +512,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         if (this.changed) {
             this.changeMessage()
         } else {
-            this.noChange.emit(this.partId)
+            this.noChange.emit(this.partId_!)
             this.goBack()
         }
     }
@@ -558,13 +531,13 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.saving = true
         part.bus = this.bus
 
-        this.partService.addUpdatePart(part, this.mode === UpdateEnum.Update).subscribe({
+        this.partService.addUpdatePart(part, this.mode() === UpdateEnum.Update).subscribe({
             next: (part) => {
                 if (part.carId) this.carService.currentCarId = part.carId
                 this.partService.currentId.next(part.id!)
                 this.carService.currentCarId = part.carId
                 this.saving = false
-                if (this.mode === UpdateEnum.Update) {
+                if (this.mode() === UpdateEnum.Update) {
                     this.message = 'Частта е записана'
                     this.homeService.updateItem(part.id!, part)
                 } else this.message = 'Частта е добавена'
@@ -572,7 +545,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 const snackBarRef = this.toastService.showToast(this.message!, 1)
 
                 snackBarRef.afterDismissed().subscribe(() => {
-                    if (this.mode === UpdateEnum.New) {
+                    if (this.mode() === UpdateEnum.New) {
                         this.images = []
                         this.submitted = false
                         const partForCar = this.addPartForm.controls['partForCar'].value
@@ -584,11 +557,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                         this.initialState.regionId = this.regionId
                         if (partForCar === false) this.addPartForm.patchValue({ partForCar: false })
                         this.numberOfPartsPerUser++
-                        this.saved.emit(part.id)
+                        this.saved.emit(part.id!)
                         this.goBack()
                         this.resetScreen()
                     } else {
-                        this.saved.emit(part.id)
+                        this.saved.emit(part.id!)
                         this.goBack()
                     }
                 })

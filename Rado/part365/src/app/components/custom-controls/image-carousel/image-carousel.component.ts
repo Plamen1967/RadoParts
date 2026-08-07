@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterContentInit, ChangeDetectionStrategy, Component, inject, Input } from '@angular/core'
+import { AfterContentInit, ChangeDetectionStrategy, Component, inject, input } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { ZoomComponent } from '../zoom/zoom/zoom.component'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
@@ -23,8 +23,8 @@ export class ImageCarouselComponent implements AfterContentInit {
     }
     active = false
 
-    @Input({ required: true }) images!: NgxGalleryImage[]
-    @Input() previewButton = true;
+    images = input.required<NgxGalleryImage[]>()
+    previewButton = input<boolean>(true);
     isActive(index: number) {
         if (!this.active && index === 0) {
             this.active = true
@@ -39,13 +39,13 @@ export class ImageCarouselComponent implements AfterContentInit {
         if (!currentCollection) return undefined;
 
         const current = currentCollection.id;
-        const image: NgxGalleryImage = this.images[+current];
+        const image: NgxGalleryImage = this.images()[+current];
         this.preview(image)
 
     }
 
     preview(image: NgxGalleryImage) {
-        if (!this.previewButton) return
+        if (!this.previewButton()) return
         this.matDialog.open(ZoomComponent, {
             width: '500px',
             height: '500px',

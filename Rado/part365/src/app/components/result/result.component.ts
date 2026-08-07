@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, DOCUMENT, inject, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, Inject, Input, OnDestroy, OnInit, DOCUMENT, inject, input, output, effect, computed } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
 import { NavigatorComponent } from '@components/result/navigator/navigator.component'
@@ -34,30 +34,35 @@ import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
     selector: 'app-result',
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent],
 })
 //#endregion
 export class ResultComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
     //#region variables and services
-    @Input() id!: number
+    id = input<number>()
     @Input() set currentId(value: number) {
         this.highlighted = value
     }
-    @Input() sortType?: SortType = SortType.YearAsc
-    @Input() hasSort = true
-    @Input() showPhones = true
-    @Input() showFavourite = true
-    @Input() showDealer = true
-    @Input() query?: number
-    @Input() userId?: number
-    @Input() page = 1
+    sortType = input<SortType>(SortType.YearAsc);
+    hasSort = input<boolean>(true)
+    showPhones = input<boolean>(true)
+    showFavourite = input<boolean>(true)
+    showDealer = input<boolean>(true)
+    query = input<number | undefined>()
+    userId = input<number | undefined>()    
+    page = input<number>(1)
+
+    page_ = 1
+    query_? : number
+    userId_?: number
+    sortType_ :SortType = SortType.YearAsc
+
     @Input() set itemType(value: ItemType) {
         this.type = value
         this.changeType(value)
     }
-    @Output() viewPart: EventEmitter<number> = new EventEmitter<number>()
-    @Output() pageChanged: EventEmitter<number> = new EventEmitter<number>()
+    viewPart = output<number>()
+    pageChanged = output<number>()
 
     type = ItemType.AllCarAndPart
     allParts: DisplayPartView[] = []
@@ -91,6 +96,12 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
     constructor() {
         super()
+        effect(() =>{
+            this.page_ = computed(() => this.page())()
+            this.query_ = computed(() => this.query())()
+            this.userId_ = computed(() => this.userId())()
+            this.sortType_ = computed(() => this.sortType())()
+        })
     }
 
     ngOnInit() {
@@ -98,7 +109,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
         this.showPhones = this.showPhones ?? true
         this.showFavourite = this.showFavourite ?? true
         this.notPositioned = true
-        if (this.userId) this.userService.userPageObj.next(this.userId)
+        if (this.userId) this.userService.userPageObj.next(this.userId()!)
         else this.userService.userPageObj.next(0)
         this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params: QueryParam) => {
             if (params.id) {
@@ -114,7 +125,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
             if (params.itemType) this.itemType = +params.itemType
 
-            if (params.page) this.page = +params.page
+            if (params.page) this.page_ = +params.page
 
             if (params.id || params.currentId) {
                 this.highlighted = this.currentId = params.id ?? params.currentId ?? 0
@@ -135,15 +146,15 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                     },
                 })
             } else if (params.query) {
-                this.query = +params.query
+                this.query_ = +params.query
                 this.dataManager = this.homeService.getDataManager(+this.query)
 
-                if (params.page) this.page = +params.page
-                else if (this.dataManager?.currentPage) this.page = this.dataManager.currentPage
-                else this.page = 1
+                if (params.page) this.page_ = +params.page
+                else if (this.dataManager?.currentPage) this.page_ = this.dataManager.currentPage
+                else this.page_ = 1
                 this.results()
             } else if (params.userId) {
-                this.userId = params.userId
+                this.userId_ = params.userId
                 this.results()
             } else {
                 this.loggerService.logError(`Something wrong in result web page ${params}`)
@@ -173,14 +184,14 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     results() {
         this.loading = true
         this.dataManager = this.homeService.getDataManager(0)
-        if (this.userId) {
+        if (this.userId()) {
             this.loadUserParts()
         } else if (this.query) {
             this.dataManager = this.homeService.getDataManager(+this.query)
             if (this.dataManager) {
                 this.setHighlight(this.dataManager.currentId)
-                this.sortType = this.dataManager.searchResult?.filter?.orderBy
-                this.dataManager.currentPage = this.page
+                this.sortType_ = this.dataManager.searchResult?.filter?.orderBy ?? SortType.PriceAsc
+                this.dataManager.currentPage = this.page()
                 this.dataManager.dataSubject.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
                     next: (parts) => {
                         this.parts = parts
@@ -219,7 +230,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
     loadResults() {
         this.searchPartService
-            .getSearchResult(this.query!)
+            .getSearchResult(this.query()!)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (result) => {
@@ -232,8 +243,8 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                     this.dataManager = this.homeService.getDataManager(+this.query!)
                     if (this.dataManager) {
                         this.dataManager.searchResult = result
-                        this.sortType = this.dataManager.searchResult?.filter?.orderBy
-                        this.dataManager.currentPage = this.page
+                        this.sortType_ = this.dataManager.searchResult?.filter?.orderBy ?? SortType.PriceAsc
+                        this.dataManager.currentPage = this.page()
                         this.dataManager.dataSubject.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((parts) => {
                             this.parts = parts
                             this.setValues()
@@ -252,17 +263,17 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     loadUserParts() {
-        const filter: Filter = { id: 0, userId: this.userId, searchBy: SearchBy.Filter, bus: -1 }
-        filter.userId = this.userId
-        this.dataManager = this.homeService.getDataManager(this.userId!)
+        const filter: Filter = { id: 0, userId: this.userId()!, searchBy: SearchBy.Filter, bus: -1 }
+        filter.userId = this.userId()!
+        this.dataManager = this.homeService.getDataManager(this.userId()!)
         if (!this.dataManager) {
             this.searchPartService
                 .search(filter)
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe({
                     next: (res) => {
-                        this.homeService.addDataManager(this.userId!, res)
-                        this.dataManager = this.homeService.getDataManager(this.userId!)
+                        this.homeService.addDataManager(this.userId()!, res)
+                        this.dataManager = this.homeService.getDataManager(this.userId()!)
                         this.showData()
                     },
                     error: (error) => {
@@ -374,7 +385,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
         if (this.dataManager) {
             this.dataManager.currentPage = event
             this.currentPage = this.dataManager.currentPage
-            if (this.userId) {
+            if (this.userId()) {
                 this.dataManager.getPageData()
                 this.parts = this.dataManager.pageParts ?? []
             } else {
@@ -495,7 +506,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     viewItem(id: number) {
-        if (this.userId) {
+        if (this.userId()) {
             this.viewPart.emit(id)
         } else this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query}`, id: `${id}` } })
     }

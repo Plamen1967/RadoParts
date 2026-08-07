@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, output } from '@angular/core'
 import { HelperComponent } from '@components/helper.old/helper.component'
 
 @Component({
@@ -6,11 +6,10 @@ import { HelperComponent } from '@components/helper.old/helper.component'
     selector: 'app-clearbutton',
     templateUrl: './clearbutton.component.html',
     styleUrls: ['./clearbutton.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 export class ClearbuttonComponent extends HelperComponent {
-    @Output() clickButton: EventEmitter<void> = new EventEmitter<void>()
+    clickButton = output<void>()
 
     constructor() {
         super()

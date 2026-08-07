@@ -1,9 +1,9 @@
 <div class="hstack gap-1 p-1 d-inline-flex justify-content-end">
-    @if (canSave) {
-        <app-cancelbutton [label]="cancelName" (cancelEvent)="clickCancel()"></app-cancelbutton>
+    @if (canSave()) {
+        <app-cancelbutton [label]="cancelName()" (cancelEvent)="clickCancel()"></app-cancelbutton>
     }
-    @if (canSave) {
-        <app-savebutton class="me-2" [changed]="isChanged" [label]="saveName" (saveEvent)="clickSave()"></app-savebutton>
+    @if (canSave()) {
+        <app-savebutton class="me-2" [changed]="isChanged()" [label]="saveName()" (saveEvent)="clickSave()"></app-savebutton>
     }
 
 

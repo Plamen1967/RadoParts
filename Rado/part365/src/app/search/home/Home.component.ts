@@ -1,5 +1,5 @@
 //#region import
-import { Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, input } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -38,7 +38,6 @@ import { QueryParam } from '@model/queryParam'
     selector: 'app-home',
     templateUrl: './Home.component.html',
     styleUrls: ['./Home.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, TooltipDirective, GoTopComponent],
 })
 //#endregion
@@ -75,10 +74,10 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     @ViewChild(CarFilterComponent) carFilter!: CarFilterComponent
     @ViewChild(TyreFilterComponent) tyreFilter: TyreFilterComponent | undefined
     @ViewChild(AppComponent) appComponent?: AppComponent
-    @Input() itemType?: number
-    @Input() userId?: number
-    @Input() query?: number
-    @Input() searchType?: number = 1
+    itemType = input<number | undefined>(undefined)
+    userId = input<number | undefined>(undefined)
+    query = input<number | undefined>(undefined)
+    searchType = input<number>(1)
     formBuilder: FormBuilder = inject(FormBuilder)
     public partService: PartServiceService = inject(PartServiceService)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
@@ -122,11 +121,11 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     }
     ngOnInit() {
         goTop()
-        if (this.itemType) this.setSelection(this.itemType)
+        if (this.itemType()) this.setSelection(this.itemType())
         this.route.queryParams.subscribe((params: QueryParam) => {
             if (params.query) {
-                if (this.query) {
-                    const filterSubscription = this.searchService.getFilter(this.query).subscribe((filter) => {
+                if (this.query()) {
+                    const filterSubscription = this.searchService.getFilter(this.query()!).subscribe((filter) => {
                         this.filter = filter
                         this.setSelection(this.filter?.itemType)
                     })
@@ -181,7 +180,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
 
     typeClick(selection: number) {
         if (this.selection === selection) return
-        if (this.query) {
+        if (this.query()) {
             this.router.navigate(['/'])
         }
         this.selection = selection

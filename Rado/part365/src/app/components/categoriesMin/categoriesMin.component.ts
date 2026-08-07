@@ -1,21 +1,5 @@
 //#region Imports
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Inject,
-    OnInit,
-    Output,
-    QueryList,
-    Renderer2,
-    ViewChildren,
-    OnDestroy,
-    AfterViewInit,
-    DestroyRef,
-    DOCUMENT,
-    inject,
-    ChangeDetectionStrategy,
-} from '@angular/core'
+import { Component, ElementRef, Inject, OnInit, QueryList, Renderer2, ViewChildren, OnDestroy, AfterViewInit, DestroyRef, DOCUMENT, inject, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'
@@ -31,7 +15,6 @@ import { CategoryService } from '@services/category-subcategory/category.service
     },
     imports: [],
     templateUrl: './categoriesMin.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./categoriesMin.component.css'],
 })
 //#endregion
@@ -39,7 +22,7 @@ export class CategoriesMinComponent implements OnInit, OnDestroy, AfterViewInit 
     //#region variables and services
     @ViewChildren('sub-menu', { read: ElementRef }) subMenuChildren?: QueryList<ElementRef>
     @ViewChildren('menu', { read: ElementRef }) menuChildren?: QueryList<ElementRef>
-    @Output() selection: EventEmitter<CategorySubcategory> = new EventEmitter<CategorySubcategory>()
+    selection = output<CategorySubcategory>()
 
     showCategory = true
     categories?: Dropdown[]
@@ -128,7 +111,7 @@ export class CategoriesMinComponent implements OnInit, OnDestroy, AfterViewInit 
         console.table(this.category?.children)
     }
 
-    onClick(event: Event, subcategoryId: number) {
+    clickEvent(event: Event, subcategoryId: number) {
         event.stopPropagation()
         this.currentCategory = undefined
         this.dialogRef.close({ categoryId: 0, subcategoryId: subcategoryId })

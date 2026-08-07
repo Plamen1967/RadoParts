@@ -1,5 +1,5 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, ChangeDetectionStrategy } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT } from '@angular/core'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -52,7 +52,6 @@ import { LoginComponent } from '@app/admin/components/admin/user/login/login.com
     ],
     selector: 'app-nav-menu',
     templateUrl: 'navmenu.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['navmenu.component.scss'],
 })
 //#endregion

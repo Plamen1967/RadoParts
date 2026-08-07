@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DisplayPartView } from '@model/displayPartView'
 import { ItemType } from '@model/enum/itemType.enum'
@@ -34,7 +34,7 @@ export class TyreViewComponent extends HelperComponent implements OnInit {
     get itemType(): ItemType {
         return this.item?.itemType ?? ItemType.Tyre
     }
-    @Output() unchecked: EventEmitter<number> = new EventEmitter<number>()
+    unchecked = output<number>()
 
     item?: DisplayPartView
     isTyre?: boolean

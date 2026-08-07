@@ -1,4 +1,4 @@
-@if (!id) {
+@if (!id()) {
     <div class="container">
         @if (userCount$ | async; as userCount) {
             @if (userCount && userCount.partCarCount + userCount.partBusCount) {
@@ -44,7 +44,7 @@
                                 [groupSelection]="false"
                                 [multiselection]="false"
                                 data-cy="modelId"
-                                (onClose)="focus()">
+                                (onCloseEvent)="focus()">
                             </app-model-choice>
                         </div>
                     }
@@ -60,13 +60,13 @@
                                 formControlName="modificationId"
                                 (modifcationChange)="modificatioChanged($event)"
                                 data-cy="modificationId"
-                                (onClose)="focus()">
+                                (onCloseEvent)="focus()">
                                 >
                             </app-modification-choice>
                         </div>
                     }
                     <div class="col-sm-2">
-                        <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" (onClose)="focus()"> </app-select>
+                        <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" (onCloseEvent)="focus()"> </app-select>
                     </div>
                 </div>
                 <div class="row g-3">
@@ -145,6 +145,6 @@
         }
     </div>
 } @else {
-    <app-addpart [partId]="id" [bus]="bus" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+    <app-addpart [partId]="id_" [bus]="bus" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
 }
 <app-gotop></app-gotop>

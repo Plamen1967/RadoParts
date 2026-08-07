@@ -1,5 +1,5 @@
 //#region imports
-import { inject, ChangeDetectorRef, Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ElementRef, HostListener, ViewChild, Renderer2 } from '@angular/core'
+import { inject, ChangeDetectorRef, Component, OnInit, OnChanges, SimpleChanges, ElementRef, HostListener, ViewChild, Renderer2, input, output, computed } from '@angular/core'
 import { SafeResourceUrl, DomSanitizer, SafeUrl, SafeStyle } from '@angular/platform-browser'
 
 import { NgxGalleryAction } from './../action/ngx-gallery-action.model'
@@ -19,6 +19,48 @@ import { NgxGalleryArrowsComponent } from '../arrows/ngx-gallery-arrows.componen
 //#endregion
 export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     //#region variables and services
+    images = input<string[] | SafeResourceUrl[]>()
+    descriptions = input<string[]>()
+    showDescription = input<boolean>()
+    arrows = input<boolean>()
+    arrowsAutoHide = input<boolean>()
+    swipe = input<boolean>()
+    fullscreen = input<boolean>()
+    forceFullscreen = input<boolean>()
+    closeOnClick = input<boolean>()
+    closeOnEsc = input<boolean>()
+    keyboardNavigation = input<boolean>()
+    arrowPrevIcon = input<string>()
+    arrowNextIcon = input<string>()
+    closeIcon = input<string>()
+    fullscreenIcon = input<string>()
+    spinnerIcon = input<string>()
+    autoPlay = input<boolean>()
+    autoPlayInterval = input<number>()
+    autoPlayPauseOnHover = input<boolean>()
+    infinityMove = input<boolean>()
+    zoom = input<boolean>()
+    zoomStep = input<number>()
+    zoomMax = input<number>()
+    zoomMin = input<number>()
+    zoomInIcon = input<string>()
+    zoomOutIcon = input<string>()
+    animation = input<boolean>()
+    actions = input<NgxGalleryAction[]>()
+    rotate = input<boolean>()
+    rotateLeftIcon = input<string>()
+    rotateRightIcon = input<string>()
+    download = input<boolean>()
+    downloadIcon = input<string>()
+    bullets = input<boolean>()
+    arrows_?: boolean
+    openEvent = output<number|undefined>()
+    closeEvent = output<number|undefined>()
+    activeChangeEvent = output<number|undefined>()
+
+    @ViewChild('previewImage') previewImage?: ElementRef
+
+    images_: string[] | SafeResourceUrl[] = []
     src?: SafeUrl
     srcIndex?: number
     description?: string
@@ -29,51 +71,6 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     loading = false
     rotateValue = 0
     index = 0
-
-    @Input() images?: string[] | SafeResourceUrl[]
-    @Input() descriptions?: string[]
-    @Input() showDescription?: boolean
-    @Input() arrows?: boolean
-    @Input() arrowsAutoHide?: boolean
-    @Input() swipe?: boolean
-    @Input() fullscreen?: boolean
-    @Input() forceFullscreen?: boolean
-    @Input() closeOnClick?: boolean
-    @Input() closeOnEsc?: boolean
-    @Input() keyboardNavigation?: boolean
-    @Input() arrowPrevIcon?: string
-    @Input() arrowNextIcon?: string
-    @Input() closeIcon?: string
-    @Input() fullscreenIcon?: string
-    @Input() spinnerIcon?: string
-    @Input() autoPlay?: boolean
-    @Input() autoPlayInterval?: number
-    @Input() autoPlayPauseOnHover?: boolean
-    @Input() infinityMove?: boolean
-    @Input() zoom?: boolean
-    @Input() zoomStep?: number
-    @Input() zoomMax?: number
-    @Input() zoomMin?: number
-    @Input() zoomInIcon?: string
-    @Input() zoomOutIcon?: string
-    @Input() animation?: boolean
-    @Input() actions?: NgxGalleryAction[]
-    @Input() rotate?: boolean
-    @Input() rotateLeftIcon?: string
-    @Input() rotateRightIcon?: string
-    @Input() download?: boolean
-    @Input() downloadIcon?: string
-    @Input() bullets?: boolean
-
-    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onOpen = new EventEmitter()
-    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onClose = new EventEmitter()
-    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onActiveChange = new EventEmitter<number>()
-
-    @ViewChild('previewImage') previewImage?: ElementRef
-
     private isOpen = false
     private timer?: number
     private initialX = 0
@@ -81,8 +78,22 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     private initialLeft = 0
     private initialTop = 0
     private isMove = false
-
+    //#endregion
+    //#region event
     //private keyDownListener: Function;
+    @HostListener('mouseenter') onMouseEnter() {
+        if (this.arrowsAutoHide() && !this.arrows_) {
+            this.arrows_ = true
+        }
+    }
+
+    @HostListener('mouseleave') onMouseLeave() {
+        if (this.arrowsAutoHide() && this.arrows_) {
+            this.arrows_ = false
+        }
+    }
+    //#endregion
+
     //#region services
     private sanitization = inject(DomSanitizer)
     private elementRef = inject(ElementRef)
@@ -92,16 +103,20 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     //#endregion
     //#endregion
 
+    constructor() {
+        this.arrows_ = computed(() => this.arrows())()
+        this.images_ = computed(() => this.images())()!
+    }
     ngOnInit(): void {
-        if (this.arrows && this.arrowsAutoHide) {
-            this.arrows = false
+        if (this.arrows_ && this.arrowsAutoHide()) {
+            this.arrows_ = false
         }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['swipe']) {
             this.helperService.manageSwipe(
-                this.swipe!,
+                this.swipe()!,
                 this.elementRef,
                 'preview',
                 () => this.showNext(),
@@ -110,41 +125,29 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
         }
     }
 
-    @HostListener('mouseenter') onMouseEnter() {
-        if (this.arrowsAutoHide && !this.arrows) {
-            this.arrows = true
-        }
-    }
-
-    @HostListener('mouseleave') onMouseLeave() {
-        if (this.arrowsAutoHide && this.arrows) {
-            this.arrows = false
-        }
-    }
-
     onKeyDown(e: KeyboardEvent) {
         if (this.isOpen) {
-            if (this.keyboardNavigation) {
+            if (this.keyboardNavigation()) {
                 if (this.isKeyboardPrev(e)) {
                     this.showPrev()
                 } else if (this.isKeyboardNext(e)) {
                     this.showNext()
                 }
             }
-            if (this.closeOnEsc && this.isKeyboardEsc(e)) {
+            if (this.closeOnEsc() && this.isKeyboardEsc(e)) {
                 this.close()
             }
         }
     }
 
     open(index: number): void {
-        this.onOpen.emit()
+        this.openEvent.emit(index)
 
         this.index = index
         this.isOpen = true
         this.show(true)
 
-        if (this.forceFullscreen) {
+        if (this.forceFullscreen()) {
             this.manageFullscreen()
         }
 
@@ -154,7 +157,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     close(): void {
         this.isOpen = false
         this.closeFullscreen()
-        this.onClose.emit()
+        this.closeEvent.emit(undefined)
 
         this.stopAutoPlay()
 
@@ -164,19 +167,19 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     }
 
     imageMouseEnter(): void {
-        if (this.autoPlay && this.autoPlayPauseOnHover) {
+        if (this.autoPlay() && this.autoPlayPauseOnHover()) {
             this.stopAutoPlay()
         }
     }
 
     imageMouseLeave(): void {
-        if (this.autoPlay && this.autoPlayPauseOnHover) {
+        if (this.autoPlay() && this.autoPlayPauseOnHover()) {
             this.startAutoPlay()
         }
     }
 
     startAutoPlay(): void {
-        if (this.autoPlay) {
+        if (this.autoPlay()) {
             this.stopAutoPlay()
 
             this.timer = setTimeout(() => {
@@ -184,7 +187,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
                     this.index = -1
                     this.showNext()
                 }
-            }, this.autoPlayInterval)
+            }, this.autoPlayInterval())
         }
     }
 
@@ -230,7 +233,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
         if (this.loading) {
             return false
         } else if (this.images) {
-            return this.infinityMove || this.index < this.images.length - 1 ? true : false
+            return this.infinityMove() || this.index < this.images.length - 1 ? true : false
         } else {
             return false
         }
@@ -239,15 +242,15 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     canShowPrev(): boolean {
         if (this.loading) {
             return false
-        } else if (this.images) {
-            return this.infinityMove || this.index > 0 ? true : false
+        } else if (this.images()) {
+            return this.infinityMove() || this.index > 0 ? true : false
         } else {
             return false
         }
     }
 
     manageFullscreen(): void {
-        if (this.fullscreen || this.forceFullscreen) {
+        if (this.fullscreen() || this.forceFullscreen()) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const doc = document as any
 
@@ -265,20 +268,20 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
 
     zoomIn(): void {
         if (this.canZoomIn()) {
-            this.zoomValue += this.zoomStep!
+            this.zoomValue += this.zoomStep()!
 
-            if (this.zoomValue > this.zoomMax!) {
-                this.zoomValue = this.zoomMax!
+            if (this.zoomValue > this.zoomMax()!) {
+                this.zoomValue = this.zoomMax()!
             }
         }
     }
 
     zoomOut(): void {
         if (this.canZoomOut()) {
-            this.zoomValue -= this.zoomStep!
+            this.zoomValue -= this.zoomStep()!
 
-            if (this.zoomValue < this.zoomMin!) {
-                this.zoomValue = this.zoomMin!
+            if (this.zoomValue < this.zoomMin()!) {
+                this.zoomValue = this.zoomMin()!
             }
 
             if (this.zoomValue <= 1) {
@@ -300,15 +303,15 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     }
 
     canZoomIn(): boolean {
-        return this.zoomValue < this.zoomMax! ? true : false
+        return this.zoomValue < this.zoomMax()! ? true : false
     }
 
     canZoomOut(): boolean {
-        return this.zoomValue > this.zoomMin! ? true : false
+        return this.zoomValue > this.zoomMin()! ? true : false
     }
 
     canDragOnZoom() {
-        return this.zoom && this.zoomValue > 1
+        return this.zoom() && this.zoomValue > 1
     }
 
     mouseDownHandler(e: MouseEvent | TouchEvent): void {
@@ -352,7 +355,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     }
 
     private resetPosition() {
-        if (this.zoom) {
+        if (this.zoom()) {
             this.positionLeft = 0
             this.positionTop = 0
         }
@@ -413,7 +416,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
         this.loading = true
         this.stopAutoPlay()
 
-        this.onActiveChange.emit(this.index)
+        this.activeChangeEvent.emit(this.index)
 
         if (first || !this.animation) {
             this._show()
@@ -427,11 +430,11 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
         this.rotateValue = 0
         this.resetPosition()
 
-        if (this.images && this.images[this.index]) {
-            this.src = this.getSafeUrl(this.images[this.index] as string)
+        if (this.images_ && this.images_[this.index]) {
+            this.src = this.getSafeUrl(this.images_[this.index] as string)
         }
         this.srcIndex = this.index
-        this.description = this.descriptions?.[this.index]
+        this.description = this.descriptions()?.[this.index]
         this.changeDetectorRef.markForCheck()
 
         setTimeout(() => {

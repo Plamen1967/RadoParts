@@ -1,5 +1,5 @@
 //#region imports
-import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, inject, OnInit } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ActivatedRoute } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
@@ -21,7 +21,6 @@ import { DealerWebPageComponent } from '../../dealerWebPage/dealerWebPage.compon
     selector: 'app-details',
     templateUrl: './details.component.html',
     styleUrls: ['./details.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ImageCarouselComponent],
 })
 //#endregion

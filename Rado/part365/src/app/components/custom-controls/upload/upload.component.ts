@@ -1,6 +1,6 @@
 //#region import
-import { HttpClient, HttpEventType } from '@angular/common/http'
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
+import { HttpEventType } from '@angular/common/http'
+import { Component, DestroyRef, inject, input, OnInit, output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageService } from '@services/image.service'
 import { WebcamImage } from 'ngx-webcam'
@@ -28,15 +28,14 @@ export class UploadComponent extends HelperComponent implements OnInit {
     maxPictures = 10
     imageCount?: number
 
-    @Input({ required: true }) id?: number
-    @Input({ required: true }) businessCard?: boolean
-    @Input({ required: true }) addPicture?: string = 'Добави снимка'
-    @Input() multiple?: boolean
-    @Input() camera = true
+    id = input.required<number>()
+    businessCard = input.required<boolean | undefined>()
+    addPicture = input<string | undefined>('Добави снимка')
+    multiple = input<boolean | undefined>()
+    camera = input<boolean | undefined>(true)
 
-    @Output() uploadFinished = new EventEmitter<ImageData[]>()
-    @Output() uploadProcess = new EventEmitter<number>()
-    private http: HttpClient = inject(HttpClient)
+    uploadFinished = output<ImageData[]>()
+    uploadProcess = output<number>()
     private imageService: ImageService = inject(ImageService)
     private destroyRef: DestroyRef = inject(DestroyRef)
     private popupService: PopUpService = inject(PopUpService)
@@ -49,7 +48,7 @@ export class UploadComponent extends HelperComponent implements OnInit {
         this.updateCount()
     }
     get buttonMessage() {
-        if (this.businessCard) return 'Качи Бизнес карта'
+        if ((this.businessCard())) return 'Качи Бизнес карта'
         else return this.labels.UPLOAD
     }
 
@@ -60,7 +59,7 @@ export class UploadComponent extends HelperComponent implements OnInit {
             this.popupService.openWithTimeout(CONSTANT.MESSAGE, 'Максималният брой снимки 10 е достигнат')
         } else {
             this.imageService
-                .uploadWebImage(this.id!, imageId, webcamImage.imageAsBase64)
+                .uploadWebImage(this.id!(), imageId, webcamImage.imageAsBase64)
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe({
                     next: (image) => {
@@ -78,9 +77,9 @@ export class UploadComponent extends HelperComponent implements OnInit {
     }
 
     updateCount() {
-        if (this.id) {
+        if (this.id()) {
             this.imageService
-                .getImageCount(this.id!)
+                .getImageCount(this.id()!)
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe({
                     next: (count) => (this.imageCount = count),
@@ -101,7 +100,7 @@ export class UploadComponent extends HelperComponent implements OnInit {
         else {
             try {
                 this.imageService
-                    .uploadImages(event.target.files, this.id!, this.businessCard!)
+                    .uploadImages(event.target.files, this.id()!, this.businessCard()!)
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe({
                         next: (event) => {

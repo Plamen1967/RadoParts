@@ -1,5 +1,6 @@
+//#region import
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
+import { AfterViewInit, Component, effect, HostListener, inject, input, OnInit, output } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -14,8 +15,6 @@ import { QueryParam } from '@model/queryParam'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
 import { RimWithTyre } from '@model/tyre/rimWithTyre'
-import { AlertService } from '@services/alert.service'
-import { ModelService } from '@services/company-model-modification/model.service'
 import { HomeService } from '@services/home.service'
 import { ImageService } from '@services/image.service'
 import { NavigationService } from '@services/navigation.service'
@@ -37,7 +36,9 @@ import { goTop } from '@app/functions/functions'
 import { LoggerService } from '@services/authentication/logger.service'
 import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
+//#endregion
 
+//#region component
 @Component({
     selector: 'app-addtyre',
     templateUrl: './addTyre.component.html',
@@ -65,7 +66,38 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     handleKeyDownEnter() {
         this.onSubmit()
     }
+    //#endregion
 
+    //#region input/output
+    mode = input<UpdateEnum>(UpdateEnum.New)
+    itemId = input<number | undefined>()
+    displayPartView = input<DisplayPartView>()
+
+    back = output<number>()
+    saved = output<number>()
+    //#endregion
+
+    //#region services
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    private popupService: PopUpService = inject(PopUpService)
+    private tyreService: TyreService = inject(TyreService)
+    private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
+    private router: Router = inject(Router)
+    private homeService: HomeService = inject(HomeService)
+    private pathService: PathService = inject(PathService)
+    private nextIdService: NextIdService = inject(NextIdService)
+    private imageService: ImageService = inject(ImageService)
+    private stateServce: StateService = inject(StateService)
+    private navigationService: NavigationService = inject(NavigationService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private loggerService: LoggerService = inject(LoggerService)
+    private userCountService: UserCountService = inject(UserCountService)
+    //#endregion
+
+    //#region members
+    itemId_?: number
+    mode_?: UpdateEnum
     addForm: FormGroup
     submitted = false
     saving = false
@@ -115,57 +147,11 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         { label: 'Джанти', id: 4 },
         { label: 'Джанти с гуми', id: 5 },
     ]
-
-    @Input() mode: UpdateEnum = UpdateEnum.New
-    @Input() itemType?: ItemType
-    @Input() itemId?: number
-    @Input() set displayPartView(value: DisplayPartView) {
-        this._displayPartView = value
-        if (this._displayPartView) {
-            this.images = value.images ?? []
-            this.itemId = this._displayPartView.id
-            this.loadTyre(this.itemId!)
-        }
-    }
-    @Output() back: EventEmitter<number> = new EventEmitter<number>()
-    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
-    public staticSelectionService: StaticSelectionService
-    private formBuilder: FormBuilder
-    private popupService: PopUpService
-    private tyreService: TyreService
-    private alerService: AlertService
-    private modelService: ModelService
-    private activatedRoute: ActivatedRoute
-    private router: Router
-    private homeService: HomeService
-    private pathService: PathService
-    private nextIdService: NextIdService
-    private imageService: ImageService
-    private stateServce: StateService
-    private navigationService: NavigationService
-    private confirmService: ConfirmServiceService
-    private loggerService: LoggerService
-    private userCountService: UserCountService
+    itemType: ItemType | undefined
+    //#endregion
 
     constructor() {
         super()
-        this.staticSelectionService = inject(StaticSelectionService)
-        this.formBuilder = inject(FormBuilder)
-        this.popupService = inject(PopUpService)
-        this.tyreService = inject(TyreService)
-        this.alerService = inject(AlertService)
-        this.modelService = inject(ModelService)
-        this.activatedRoute = inject(ActivatedRoute)
-        this.router = inject(Router)
-        this.homeService = inject(HomeService)
-        this.pathService = inject(PathService)
-        this.nextIdService = inject(NextIdService)
-        this.imageService = inject(ImageService)
-        this.stateServce = inject(StateService)
-        this.navigationService = inject(NavigationService)
-        this.confirmService = inject(ConfirmServiceService)
-        this.loggerService = inject(LoggerService)
-        this.userCountService = inject(UserCountService)
         this.addForm = this.formBuilder.group({
             itemType: [0, [Validators.required, Validators.min(1)]],
             tyreWidth: [0, [Validators.required, Validators.min(1)]],
@@ -203,8 +189,27 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.regions = [{ value: 0, text: 'Избери регион' }, ...this.staticSelectionService.Region]
         this.initValue = this.addForm.value
         this.formGroup = this.addForm
+
+        effect(() => {
+            if (this.displayPartView()) {
+                this._displayPartView = { ...this.displayPartView() }
+                this.images = this.displayPartView()!.images ?? []
+                this.itemId_ = this.displayPartView()!.id
+                if (this.itemId_) this.loadTyre(this.itemId_!)
+            }
+
+            this.itemId_ = this.itemId()
+            this.mode_ = this.mode()
+        })
     }
 
+    get action() {
+        if (this.mode_ === UpdateEnum.New) {
+            return this.labels.ADD
+        } else {
+            return this.labels.SAVE
+        }
+    }
     get allowanceNotReached(): boolean {
         if (this.seller) return true
 
@@ -213,7 +218,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         return false
     }
     ngAfterViewInit(): void {
-        if (this.mode === UpdateEnum.New) {
+        if (this.mode_ === UpdateEnum.New) {
             this.addForm.patchValue({ regionId: this.regionId })
         }
 
@@ -224,8 +229,8 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.addForm.patchValue({ itemType: this.itemType })
         this.displaySections()
 
-        if (this.mode === UpdateEnum.Update || this.mode === UpdateEnum.View) {
-            this.loadTyre(this.itemId!)
+        if (this.mode_ === UpdateEnum.Update || this.mode_ === UpdateEnum.View) {
+            this.loadTyre(this.itemId_!)
         }
 
         this.addForm.controls['itemType'].valueChanges.subscribe((f) => this.onItemTypeChange(f))
@@ -248,29 +253,29 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
     ngOnInit() {
         this.mode = this.mode ?? UpdateEnum.New
-        this.updateFlag = this.mode != UpdateEnum.View
+        this.updateFlag = this.mode() != UpdateEnum.View
 
         this.displaySections()
         window.scroll(0, 0)
         this.activatedRoute.queryParams.subscribe((params) => {
             this.params = params
-            if (this.params.id) this.itemId = +this.params.id
+            if (this.params.id) this.itemId_ = +this.params.id
 
-            if (this.params.viewId) this.itemId = this.viewId = +this.params.viewId
-            if (this.params.update) this.mode = UpdateEnum.Update
+            if (this.params.viewId) this.itemId_ = this.viewId = +this.params.viewId
+            if (this.params.update) this.mode_ = UpdateEnum.Update
             if (this.params.query) {
                 this.query = +this.params.query
             }
             if (this.params.userId) {
                 this.userId = +this.params.userId
             }
-            if (this.viewId) this.itemId = this.viewId
+            if (this.viewId) this.itemId_ = this.viewId
 
             if (this.params.ad) {
-                this.itemId = undefined
+                this.itemId_ = undefined
             }
-            if (this.itemId) {
-                this.loadTyre(this.itemId)
+            if (this.itemId_) {
+                this.loadTyre(this.itemId_)
             } else if (this.viewId) {
                 this.loadTyre(this.viewId)
             } else if (!this.itemId) {
@@ -281,7 +286,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
                                 this.goBack()
                             })
                         } else {
-                            this.itemId = nextId.nextId
+                            this.itemId_ = nextId.nextId
                         }
                     },
                     error: (error) => {
@@ -375,27 +380,19 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         }
 
         const item: RimWithTyre = Object.assign({}, this.addForm.value)
-        item.rimWithTyreId = this.itemId
-        item.itemType = this.itemType
-        this.tyreService.addUpdateItem(item, this.mode).subscribe(() => {
+        item.rimWithTyreId = this.itemId()
+        item.itemType = this.itemType!
+        this.tyreService.addUpdateItem(item, this.mode()).subscribe(() => {
             let message
-            if (this.mode == UpdateEnum.Update) message = `Обявата е успешно записана`
+            if (this.mode() == UpdateEnum.Update) message = `Обявата е успешно записана`
             else message = `Обявата е успешно добавена`
             this.userCountService.refresh()
-            this.saved.emit(item.rimWithTyreId)
+            this.saved.emit(item.rimWithTyreId!)
             this.popupService.openWithTimeout(this.labels.MESSAGE, message)
             setTimeout(() => {
                 this.goBack()
             }, 2000)
         })
-    }
-
-    get action() {
-        if (this.mode === UpdateEnum.New) {
-            return this.labels.ADD
-        } else {
-            return this.labels.SAVE
-        }
     }
 
     get moreImages() {
@@ -478,9 +475,9 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         } else this.goBack()
     }
     goBack() {
-        this.back.emit(this.itemId)
-        this.stateServce.currentId = this.itemId
-        if (this.mode == UpdateEnum.New) {
+        this.back.emit(this.itemId()!)
+        this.stateServce.currentId = this.itemId()
+        if (this.mode() == UpdateEnum.New) {
             if (this.params?.ad) {
                 this.router.navigate(['/data/tyres'])
                 return

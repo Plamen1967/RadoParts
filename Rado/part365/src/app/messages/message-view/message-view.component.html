@@ -1,12 +1,12 @@
-@if (message) {
+@if (message()) {
     <div class="message-style">
         <div class="title">
             <div class="header">
-                {{ message.senderName }}
+                {{ message().senderName }}
             </div>
             <div class="header" style="display: inline-flex">
-                <div class="date">{{ message.messageDateString }}</div>
-                @if (message.isRead) {
+                <div class="date">{{ message().messageDateString }}</div>
+                @if (message().isRead) {
                   <button (click)="markRead(false)" class="button-style mark-unread-button me-2">
                       <span class="material-symbols-outlined"> mark_as_unread </span>
                   </button>
@@ -21,8 +21,8 @@
             </div>
         </div>
         <div>
-            <div class="content" [innerHTML]="message.message"></div>
+            <div class="content" [innerHTML]="message().message"></div>
         </div>
-        <a class="btn btn-primary" href="mailto:{{ message.email }}?body=''" target="_blank">Reply</a>
+        <a class="btn btn-primary" href="mailto:{{ message().email }}?body=''" target="_blank">Reply</a>
     </div>
 }

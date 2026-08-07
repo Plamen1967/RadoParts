@@ -1,12 +1,12 @@
-import { Directive, Output, HostListener, EventEmitter } from '@angular/core';
+import { Directive, HostListener, output } from '@angular/core';
 
 @Directive({
   selector: '[appLibMousewheel]'
 })
 export class MouseWheelDirective {
 
-  @Output() mouseWheelUp = new EventEmitter();
-  @Output() mouseWheelDown = new EventEmitter();
+  mouseWheelUp = output();
+  mouseWheelDown = output();
 
   @HostListener('mousewheel', ['$event']) onMouseWheelChrome(event: Event) {
     this.mouseWheelFunc(event);

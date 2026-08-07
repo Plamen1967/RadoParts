@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, model, OnInit, Output, Renderer2, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, effect, ElementRef, inject, input, model, OnInit, output, Renderer2, ViewChild } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
@@ -21,23 +21,26 @@ export class RadioGroupListComponent implements FormValueControl<number|undefine
     controlName: string | undefined
     selection: SelectOption[] = []
 
-    @Input() all = true
-    @Input() groupListDisplay: 'flex' | 'none' | undefined = 'flex'
-    @Input() set radios(radioButtons: RadioButton[]) {
-        this._radios = [...radioButtons]
-        this.selection = this._radios?.map((radio) => {
-            return { value: radio.id, text: radio.label, count: radio.count }
-        })
-    }
-    @Input() itemSize = 70
-    @Input() label?: string
-    @Input() style = 1
-    @Output() changeRadioGroup: EventEmitter<number> = new EventEmitter<number>()
+    all = input<boolean>(true)
+    groupListDisplay = input<'flex' | 'none' | undefined>('flex')
+    radios = input<RadioButton[]>([])
+    itemSize = input<number>(70)
+    label = input<string | undefined>(undefined)
+    style = input<number>(1)
+    changeRadioGroup = output<number>()
 
     @ViewChild('radioGroup', { static: false }) radioGroup?: ElementRef
     private renderer: Renderer2 = inject(Renderer2)
     private _el: ElementRef = inject(ElementRef)
 
+    constructor() {
+        effect(() => {
+            this._radios = [...this.radios()]
+            this.selection = this._radios.map((item) => {
+                return { value: item.id, text: item.label }
+            })
+        })
+    }
     private onTouched?() {
         return
     }

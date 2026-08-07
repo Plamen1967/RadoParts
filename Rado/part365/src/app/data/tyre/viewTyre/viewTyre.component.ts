@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component } from '@angular/core'
 import { UpdateEnum } from '@model/enum/update.enum'
 import AddTyreComponent from '../addTyre/addTyre.component'
 
@@ -6,7 +6,6 @@ import AddTyreComponent from '../addTyre/addTyre.component'
     selector: 'app-viewtyre',
     templateUrl: './viewTyre.component.html',
     styleUrls: ['./viewTyre.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AddTyreComponent],
 })
 export default class ViewTyreComponent {

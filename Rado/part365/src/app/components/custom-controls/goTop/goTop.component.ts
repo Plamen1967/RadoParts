@@ -1,12 +1,11 @@
 import { NgClass } from '@angular/common'
-import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core'
+import { Component, HostListener } from '@angular/core'
 import { goTop } from '@app/functions/functions'
 
 @Component({
     selector: 'app-gotop',
     templateUrl: './goTop.component.html',
     styleUrls: ['./goTop.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass],
 })
 export class GoTopComponent {

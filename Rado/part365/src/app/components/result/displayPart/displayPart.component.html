@@ -16,7 +16,7 @@
             role="none"
             title="Повече детайли за частта"
             style="cursor: pointer">
-            <app-imagecomponent [dispayPartView]="part" [displayMain]="true" (imagesLoaded)="updateImages($event)" [height]="'100%'" [showNumberPhotos]="true" [width]="'100%'" role="none">
+            <app-imagecomponent [dispayPartView]="part" [displayMain]="true" (imagesLoaded)="updateImages($event)" [showNumberPhotos]="true" role="none">
             </app-imagecomponent>
         </div>
         <div class="detailsClass pe-0 flex-column justify-content-between" [ngClass]="{ detailsClass: !this.dealerWebPage, deatailsDealerWebPage: this.dealerWebPage }">
@@ -52,7 +52,7 @@
                     }
                 </div>
             </div>
-            @if (showPhones) {
+            @if (showPhones()) {
                 <div class="d-flex mb-1">
                     <div class="row1 phone-distance">
                         @if (phone1) {
@@ -82,12 +82,12 @@
             }
         </div>
 
-        @if (showFavourite) {
+        @if (showFavourite()) {
             <div class="favouriteClass pe-1">
                 <app-favourite (unchecked)="removeFromCheckOut(part.id!)" [id]="part.id"></app-favourite>
             </div>
         }
-        @if (showDealer) {
+        @if (showDealer()) {
             <div class="dealerClass">
                 <div class="dealer-style">
                     <app-dealer [sellerLogo]="part.sellerLogo" [dealer]="dealer" [companyName]="part.sellerName" [sellerWebPage]="sellerWebPage"></app-dealer>

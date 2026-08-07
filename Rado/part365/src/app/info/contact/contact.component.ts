@@ -1,11 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component } from '@angular/core'
 
 @Component({
     selector: 'app-contact',
     templateUrl: './contact.component.html',
-    styleUrls: ['./contact.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [],
+    styleUrls: ['./contact.component.css']
 })
 export default class ContactComponent {
     email = 'info@parts365.bg'

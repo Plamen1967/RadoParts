@@ -1,23 +1,23 @@
 <form [formGroup]="subCategoryForm">
-    @if (multiselection) {
+    @if (multiselection()) {
         <app-multiselection
-            [required]="IsRequired"
+            [required]="IsRequired()"
             id="subCategoriesId_int"
             label="Избери подкатегория"
             formControlName="subCategoriesId_int"
             placeHolder="Избери подкатегория"
             [appToolTip]="'Избери подкатегория'"
             [data]="subCategories"
-            [multiSelection]="multiselection"
+            [multiSelection]="multiselection()"
             data-cy="subCategoriesId_int"
             data-bs-toggle="tooltip"
             data-bs-placement="right"
-            [submitted]="submitted"
+            [submitted]="submitted()"
             title="Избери подкатегория">
         </app-multiselection>
     } @else {
         <app-customselect
-            [required]="IsRequired"
+            [required]="IsRequired()"
             id="subCategoriesId"
             title="Избери подкатегория"
             placeHolder="Избери подкатегория"
@@ -26,7 +26,7 @@
             [data]="subCategories"
             [groupSelection]="false"
             [appToolTip]="'Избери подкатегория'"
-            [submitted]="submitted"
+            [submitted]="submitted()"
             data-cy="subCategoriesId"
             data-bs-toggle="tooltip"
             data-bs-placement="right">

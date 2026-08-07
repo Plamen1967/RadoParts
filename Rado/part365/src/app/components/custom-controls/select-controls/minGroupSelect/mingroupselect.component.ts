@@ -1,5 +1,5 @@
 //#region
-import { Component, EventEmitter, inject, Input, OnInit, Output, model, input } from '@angular/core'
+import { Component, inject, OnInit, model, input, effect, output } from '@angular/core'
 import { TopService } from '@services/top.service'
 import { MatDialog } from '@angular/material/dialog'
 import { InternalValue } from '@model/internalValue'
@@ -25,11 +25,9 @@ export class MinGroupSelectComponent implements OnInit, FormValueControl<string 
     groupSelection = input(false)
     multiSelection = input(true)
     groupDisabled = input(false)
-    setValue = input((value: string) => {
-        this.writeValue(value)
-    })
+    setValue = input<string>()
     // eslint-disable-next-line @angular-eslint/no-output-native
-    @Output() change: EventEmitter<number[]> = new EventEmitter<number[]>()
+    change = output<number[]>()
 
     _data?: InternalValue[]
     id?: string
@@ -42,8 +40,16 @@ export class MinGroupSelectComponent implements OnInit, FormValueControl<string 
     //#region interface functions
     writeValue(obj: string): void {
         this.id = this.selectedItems = obj
-        if (this.onChange) this.onChange(obj)
         this.updateSelection()
+    }
+
+    constructor() {
+        effect(() => {
+            this._data = this.data()
+            if (this.setValue()) {
+                this.writeValue(this.setValue()!)
+            }
+        })
     }
 
     // Function to call when the rating changes.
@@ -99,7 +105,6 @@ export class MinGroupSelectComponent implements OnInit, FormValueControl<string 
         this.selectedItems = data.ids
         let arr: number[] = []
         if (this.selectedItems?.length) arr = this.selectedItems?.split(',')?.map((item) => +item) ?? []
-        this.onChange?.(this.selectedItems)
         this.change.emit(arr)
         this.updateSelection()
         this.topService.close.next(undefined)

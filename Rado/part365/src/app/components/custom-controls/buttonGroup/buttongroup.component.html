@@ -1,11 +1,11 @@
-<div class="selected shadow form-select-sm d-flex justify-content-between" [ngStyle]="{ 'background-color': clearBox ? 'var(--filled)' : 'white' }">
-    @if (!useFilter) {
-        <div class="selection" data-testid="selection" (click)="onClickSelect($event)" role="presentation">{{ selection }}</div>
+<div class="selected shadow form-select-sm d-flex justify-content-between" [ngStyle]="{ 'background-color': clearBox() ? 'var(--filled)' : 'white' }">
+    @if (!useFilter()) {
+        <div class="selection" data-testid="selection" (click)="onClickSelect($event)" role="presentation">{{ selection() }}</div>
     } @else {
-        <input #filterElem type="text" data-testid="filter" [ngModel]="filter" [ngModelOptions]="{ standalone: true }" class="selection" placeholder="{{ placeholder }}" (ngModelChange)="onFilterChanged($event)" />
+        <input #filterElem type="text" data-testid="filter" [ngModel]="filter" [ngModelOptions]="{ standalone: true }" class="selection" placeholder="{{ placeholder() }}" (ngModelChange)="onFilterChanged($event)" />
     }
     <div class="button-group">
-        @if (clearBox) {
+        @if (clearBox()) {
             <div class="close-button" data-testid="clear" data-toggle="tooltip" data-placement="top" title="Изчисти избора" role="presentation" (click)="onClear($event)">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16" height="16" viewBox="0 0 50 50">
                     <path

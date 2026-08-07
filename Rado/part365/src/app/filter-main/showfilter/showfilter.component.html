@@ -1,15 +1,11 @@
-<form [formGroup]="filterForm">
   <app-customselect 
       id="filterId"
       label="Филтър"
       [appToolTip]="'Избери филтър'"
       [placeHolder]="'Избери филтър'"
       formControlName="filterId_int"
-      [select]="filterId"
       data-cy="companyId"
       [useFilter]="false"
-      [required]="false"
-      [submitted]="false"
-      [data]="filters">
+      [isRequired]="false"
+      [submitted]="false">
   </app-customselect>
-</form>

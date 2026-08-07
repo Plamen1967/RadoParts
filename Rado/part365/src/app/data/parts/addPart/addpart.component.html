@@ -31,7 +31,7 @@
                                                 [IsRequired]="true"
                                                 (changeOption)="onCarChange($event)"
                                                 [submitted]="submitted"
-                                                (onClose)="focus($event)">
+                                                (onCloseEvent)="focus($event)">
                                             </app-select>
                                         </div>
                                     </div>
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                     }
-                    @if (partForCar && car && carId) {
+                    @if (partForCar && car && carId_) {
                         <div class="mt-2 p-2 d-inline-flex fs-5 text justify-content-center" style="background-color: aqua; width: 100%">
                             <div class="d-flex justify-content-center" style="text-align: center">{{ description }}</div>
                         </div>
@@ -57,7 +57,7 @@
                             <div class="row mb-1">
                                 <div class="row modell-1000px">
                                     <div class="col-sm-2 min300px">
-                                        <app-company-choise [bus]="bus" [all]="true" [IsRequired]="true" [submitted]="submitted" formControlName="companyId" data-cy="companyid"> </app-company-choise>
+                                        <app-company-choise [bus]="bus_" [all]="true" [IsRequired]="true" [submitted]="submitted" formControlName="companyId" data-cy="companyid"> </app-company-choise>
                                     </div>
                                     @if (companyId) {
                                         <div class="col-sm-2 min350px">
@@ -69,7 +69,7 @@
                                                 [groupSelection]="false"
                                                 [multiselection]="false"
                                                 [submitted]="submitted"
-                                                (onClose)="focus($event)">
+                                                (onCloseEvent)="focus($event)">
                                             </app-model-choice>
                                         </div>
                                         @if (!bus && modelId) {
@@ -83,14 +83,14 @@
                                                     (modifcationChange)="modificatioChanged($event)"
                                                     data-cy="modificationId"
                                                     [submitted]="submitted"
-                                                    (onClose)="focus($event)">
+                                                    (onCloseEvent)="focus($event)">
                                                     >
                                                 </app-modification-choice>
                                             </div>
                                         }
                                     }
                                     <div class="col-sm-2 min200px">
-                                        <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" [submitted]="submitted" (onClose)="focus($event)"> </app-select>
+                                        <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" [submitted]="submitted" (onCloseEvent)="focus($event)"> </app-select>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                     [submitted]="submitted"
                                     data-cy="engineType"
                                     [data]="staticSelectionService.EngineType"
-                                    (onClose)="focus($event)">
+                                    (onCloseEvent)="focus($event)">
                                 </app-select>
                             </div>
                             <div class="col-sm-2">
@@ -144,7 +144,7 @@
                                     data-cy="engineModel"
                                     placeHolder="{{ labels.CODE_ENGINE }}"
                                     [submitted]="submitted"
-                                    (onClose)="focus($event)">
+                                    (onCloseEvent)="focus($event)">
                                 </app-input>
                             </div>
                             <div class="col-sm-2">
@@ -154,7 +154,7 @@
                                     data-cy="gearboxType"
                                     [submitted]="submitted"
                                     [data]="staticSelectionService.GearboxType"
-                                    (onClose)="focus($event)">
+                                    (onCloseEvent)="focus($event)">
                                 </app-select>
                             </div>
                         </div>
@@ -166,7 +166,7 @@
                                     [submitted]="submitted"
                                     data-cy="region"
                                     [data]="staticSelectionService.Region"
-                                    (onClose)="focus($event)">
+                                    (onCloseEvent)="focus($event)">
                                 </app-select>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                 [multiselection]="false"
                                 [submitted]="submitted"
                                 (dealerSubCategoryChanged)="dealerSubCategoryIdChanged($event)"
-                                (onClose)="focus($event)">
+                                (onCloseEvent)="focus($event)">
                             </app-dealersubcategory-choice>
                         </div>
                         @if (dealerSubCategoryId) {
@@ -236,7 +236,7 @@
                                     [submitted]="submitted"
                                     data-cy="region"
                                     [data]="staticSelectionService.LeftRight"
-                                    (onClose)="focus($event)">
+                                    (onCloseEvent)="focus($event)">
                                 </app-select>
 
                                 <!-- <div class="d-inline-flex pe-2">
@@ -259,7 +259,7 @@
                                     [submitted]="submitted"
                                     data-cy="region"
                                     [data]="staticSelectionService.FrontBack"
-                                    (onClose)="focus($event)">
+                                    (onCloseEvent)="focus($event)">
                                 </app-select>
                                 <!-- <div class="d-inline-flex pe-2">
                                     <input id="NoneFB" type="radio" class="custom-control-input" [value]="0" data-cy="positionFBNone" name="frontBackPosition" formControlName="frontBackPosition" />
@@ -286,7 +286,7 @@
         </form>
     }
         <div class="row mt-3" style="position: relative">
-            <app-imagelist [id]="partId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+            <app-imagelist [id]="partId_!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
                 <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>

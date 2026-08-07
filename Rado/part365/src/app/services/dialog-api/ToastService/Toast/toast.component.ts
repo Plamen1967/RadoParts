@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { MatButtonModule } from '@angular/material/button'
 import { MAT_SNACK_BAR_DATA, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar'
 
@@ -6,7 +6,6 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarAction, MatSnackBarActions, MatSnackBarL
     selector: 'app-toast',
     templateUrl: './toast.component.html',
     styleUrls: ['./toast.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatButtonModule, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
 })
 export class ToastComponent {

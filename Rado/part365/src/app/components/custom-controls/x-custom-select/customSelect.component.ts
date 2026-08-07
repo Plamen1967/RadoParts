@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Output, model, input, effect } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, model, input, effect, output } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from '../select-controls/company/company.component'
@@ -24,8 +24,8 @@ export class CustomSelectComponent implements FormValueControl<number | undefine
     clearBox?: boolean
     loaded = false
 
-    @Output() changeOption: EventEmitter<number> = new EventEmitter<number>()
-    @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
+    changeOption = output<number>()
+    closeDialog = output<ElementRef>()
 
     groupSelection = input<boolean>(false)
     data = input<OptionItem[]>([])

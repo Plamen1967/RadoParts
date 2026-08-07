@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog'
 import { PopUpDialogData } from '../../model/popUpDialogData'
 
@@ -6,7 +6,6 @@ import { PopUpDialogData } from '../../model/popUpDialogData'
     selector: 'app-popupmessage',
     templateUrl: './popUpMessage.component.html',
     styleUrls: ['./popUpMessage.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 export class PopUpMessageComponent implements OnInit {

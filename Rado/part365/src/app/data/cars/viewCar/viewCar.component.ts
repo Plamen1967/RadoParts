@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component } from '@angular/core'
 import { UpdateEnum } from '@model/enum/update.enum'
 import AddCarComponent from '../addCar/addcar.component'
 
@@ -6,7 +6,6 @@ import AddCarComponent from '../addCar/addcar.component'
     selector: 'app-viewcar',
     templateUrl: './viewCar.component.html',
     styleUrls: ['./viewCar.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AddCarComponent],
 })
 export default class ViewCarComponent {

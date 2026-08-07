@@ -1,17 +1,17 @@
-import {Directive, ElementRef, HostListener, inject, Input} from '@angular/core';
+import {Directive, ElementRef, HostListener, inject, input} from '@angular/core';
 @Directive({
   standalone: true,  
   selector: '[appHighlight]',
 })
 export class HighlightDirective {
   private el = inject(ElementRef);
-  @Input() highlightColor = 'yellow';
+  highlightColor = input<string>('yellow');
   constructor() {
-    this.el.nativeElement.style.backgroundColor = 'yellow';
+    this.el.nativeElement.style.backgroundColor = this.highlightColor();
   }
 
   @HostListener('mouseenter') onMouseEnter() {
-    this.highlight(this.highlightColor || 'yellow');
+    this.highlight(this.highlightColor() || 'yellow');
   }
 
   @HostListener('mouseleave') onMouseLeave() {

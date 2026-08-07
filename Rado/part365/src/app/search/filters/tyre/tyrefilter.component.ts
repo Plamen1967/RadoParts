@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, HostListener, inject, Input, OnInit, Optional, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -10,7 +10,6 @@ import { RadioGroupListComponent } from '@components/custom-controls/radioGroupL
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
-import { HomeComponent } from '@components/search/home/Home.component'
 import { CountTyres } from '@model/countTyres'
 import { ItemType } from '@model/enum/itemType.enum'
 import { SearchBy } from '@model/enum/searchBy.enum'
@@ -32,13 +31,13 @@ import { CategoriesComponent } from '@components/custom-controls/categories/cate
 import { Dropdown } from '@model/dropDown'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
+import { HomeComponent } from '@app/search/home/Home.component'
 //#endregion
 //#region component
 @Component({
     selector: 'app-tyrefilter',
     templateUrl: './tyrefilter.component.html',
     styleUrls: ['./tyrefilter.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CustomSelectComponent,
         NgClass,
@@ -55,6 +54,7 @@ import { ModelChoiceComponent } from '@app/component-main/model-choice/model-cho
     ],
 })
 //#endregion
+
 export class TyreFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
     //#region variables and services
     categories = [
@@ -109,13 +109,11 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         { label: 'Джанти с гуми', id: 5 },
     ]
 
-    @Input() set filter(value: Filter) {
-        this.setFilter(value)
-    }
+    filter = input<Filter | undefined>(undefined)
+    userId = input<number | undefined>(undefined)
+    query = input<number | undefined>(undefined)
+    searchType = input<SearchBy>(SearchBy.Filter)
 
-    @Input() userId?: number
-    @Input() query?: number
-    @Input() searchType = SearchBy.Filter
     @HostListener('window:keydown', ['$event'])
     submitEvent(event: KeyboardEvent) {
         if (event.key === 'Enter') {
@@ -139,6 +137,12 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
 
     constructor() {
         super()
+        effect(() => {
+            if (this.filter()) {
+                this.setFilter(this.filter()!)
+            }
+        })
+
         this.filterForm = this.formBuilder.group({
             itemType: [ItemType.AllTyre],
             userId: [0],

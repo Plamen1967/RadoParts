@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, inject, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DisplayPartView } from '@model/displayPartView'
@@ -19,7 +19,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     selector: 'app-usercard',
     templateUrl: './userCard.component.html',
     styleUrls: ['./userCard.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [PhoneComponent, DataRowComponent, ViberComponent, WhatsComponent],
 })
 export class UserCardComponent extends HelperComponent {

@@ -2,7 +2,7 @@
 import { ActivatedRoute, Router } from '@angular/router'
 import { first } from 'rxjs/operators'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { AuthenticationService } from '@services/authentication/authentication.service'
 import { UserService } from '@services/user.service'
 import { AlertService } from '@services/alert.service'
@@ -16,7 +16,6 @@ import UpdateUserComponent from '@app/admin/components/admin/updateUser/updateUs
     selector: 'app-dealerupdate',
     templateUrl: './dealerUpdate.component.html',
     styleUrls: ['./dealerUpdate.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [UpdateUserComponent],
 })
 //#endregion

@@ -1,5 +1,5 @@
 //#region imports
-import { Component, Input, Output, EventEmitter, HostListener, ElementRef, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core'
+import { Component, HostListener, ElementRef, OnInit, OnChanges, SimpleChanges, inject, input, output, effect, computed } from '@angular/core'
 import { DomSanitizer, SafeStyle, SafeUrl } from '@angular/platform-browser'
 
 import { NgxGalleryHelperService } from '../services/ngx-gallery-helper.service'
@@ -16,46 +16,46 @@ import { NgxGalleryBulletsComponent } from '../bullets/ngx-gallery-bullets.compo
     standalone: true,
     selector: 'app-ngx-gallery-image',
     template: `
-        <div class="ngx-gallery-image-wrapper ngx-gallery-animation-{{ animation }} ngx-gallery-image-size-{{ size }}">
+        <div class="ngx-gallery-image-wrapper ngx-gallery-animation-{{ animation() }} ngx-gallery-image-size-{{ size() }}">
             @for (image of getImages(); track $index) {
                 <div
                     role="none"
                     class="ngx-gallery-image"
                     [ngClass]="{
-                        'ngx-gallery-active': selectedIndex === image.index,
-                        'ngx-gallery-inactive-left': (selectedIndex ?? 0) > image.index,
-                        'ngx-gallery-inactive-right': selectedIndex ?? 0 < image.index,
+                        'ngx-gallery-active': selectedIndex() === image.index,
+                        'ngx-gallery-inactive-left': (selectedIndex() ?? 0) > image.index,
+                        'ngx-gallery-inactive-right': selectedIndex() ?? 0 < image.index,
                         'ngx-gallery-clickable': clickable,
                     }"
                     [style.background-image]="getSafeUrl(image.src)"
                     (click)="handleClick($event, image.index)">
                     <div class="ngx-gallery-icons-wrapper">
-                        @for (action of actions; track $index) {
+                        @for (action of actions(); track $index) {
                         <app-ngx-gallery-action
                             [icon]="action.icon"
                             [disabled]="action.disabled!"
                             [titleText]="action.titleText!"
-                            (onClick)="action.onClick($event, image.index)"></app-ngx-gallery-action>
+                            (clickEvent)="action.clickEvent($event, image.index)"></app-ngx-gallery-action>
                         }
                     </div>
-                    @if (showDescription && descriptions && descriptions[image.index!]) {
-                        <div class="ngx-gallery-image-text" [innerHTML]="descriptions[image.index]" (click)="$event.stopPropagation()" role="none"></div>
+                    @if (showDescription() && descriptions() && descriptions()![image.index!]) {
+                        <div class="ngx-gallery-image-text" [innerHTML]="descriptions()![image.index]" (click)="$event.stopPropagation()" role="none"></div>
                     }
                 </div>
             }
         </div>
-        @if(bullets) {
-            <app-ngx-gallery-bullets [count]="images?.length" [active]="selectedIndex" (onChange)="show($event)"></app-ngx-gallery-bullets>
+        @if(bullets()) {
+            <app-ngx-gallery-bullets [count]="images()!.length" [active]="selectedIndex()!" (onChange)="show($event)"></app-ngx-gallery-bullets>
         }
-        @if (arrows) {
+        @if (arrows()) {
         <app-ngx-gallery-arrows
-            class="ngx-gallery-image-size-{{ size }}"
+            class="ngx-gallery-image-size-{{ size() }}"
             (onPrevClick)="showPrev()"
             (onNextClick)="showNext()"
             [prevDisabled]="!canShowPrev()"
             [nextDisabled]="!canShowNext()"
-            [arrowPrevIcon]="arrowPrevIcon"
-            [arrowNextIcon]="arrowNextIcon"></app-ngx-gallery-arrows>
+            [arrowPrevIcon]="arrowPrevIcon()!"
+            [arrowNextIcon]="arrowNextIcon()!"></app-ngx-gallery-arrows>
         }
     `,
     styleUrls: ['./ngx-gallery-image.component.scss'],
@@ -64,31 +64,32 @@ import { NgxGalleryBulletsComponent } from '../bullets/ngx-gallery-bullets.compo
 //#endregion
 export class NgxGalleryImageComponent implements OnInit, OnChanges {
     //#region variables and services
-    @Input() images?: NgxGalleryOrderedImage[]
-    @Input() clickable?: boolean
-    @Input() selectedIndex?: number
-    @Input() arrows?: boolean
-    @Input() arrowsAutoHide?: boolean
-    @Input() swipe?: boolean
-    @Input() animation?: string
-    @Input() size?: string
-    @Input() arrowPrevIcon?: string
-    @Input() arrowNextIcon?: string
-    @Input() autoPlay?: boolean
-    @Input() autoPlayInterval?: number
-    @Input() autoPlayPauseOnHover?: boolean
-    @Input() infinityMove?: boolean
-    @Input() lazyLoading?: boolean
-    @Input() actions?: NgxGalleryAction[]
-    @Input() descriptions?: string[]
-    @Input() showDescription?: boolean
-    @Input() bullets?: boolean
+    images = input<NgxGalleryOrderedImage[]|undefined>()
+    clickable = input<boolean |undefined>()
+    selectedIndex = input<number | undefined>()
+    arrows = input<boolean |undefined>()
+    arrowsAutoHide = input<boolean |undefined>()
+    swipe = input<boolean |undefined>()
+    animation = input<string|undefined>()
+    size = input<string|undefined>()
+    arrowPrevIcon = input<string|undefined>()
+    arrowNextIcon = input<string|undefined>()
+    autoPlay = input<boolean |undefined>()
+    autoPlayInterval = input<number | undefined>()
+    autoPlayPauseOnHover = input<boolean |undefined>()
+    infinityMove = input<boolean |undefined>()
+    lazyLoading = input<boolean |undefined>()
+    actions = input<NgxGalleryAction[] | undefined>()
+    descriptions = input<string[] | undefined>()
+    showDescription = input<boolean |undefined>()
+    bullets = input<boolean |undefined>()
 
-    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onClick = new EventEmitter()
-    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onActiveChange = new EventEmitter()
+    selectedIndex_?: number
+    arrows_?: boolean
+    clickEvent = output<number|undefined>()
+    activeChangeEvent = output<number|undefined>()
 
+    autoPlay_?: boolean |undefined
     canChangeImage = true
     //#region services
     private timer?: number
@@ -98,12 +99,18 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
     //#endregion
     //#endregion
 
+    constructor() {
+        effect(() => {
+            this.arrows_ = computed(() => this.arrows())()
+            this.selectedIndex_ = computed(() => this.selectedIndex())()
+        })
+    }
     ngOnInit(): void {
-        if (this.arrows && this.arrowsAutoHide) {
-            this.arrows = false
+        if (this.arrows_ && this.arrowsAutoHide()) {
+            this.arrows_ = false
         }
 
-        if (this.autoPlay) {
+        if (this.autoPlay()) {
             this.startAutoPlay()
         }
     }
@@ -111,7 +118,7 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['swipe']) {
             this.helperService.manageSwipe(
-                this.swipe!,
+                this.swipe()!,
                 this.elementRef,
                 'image',
                 () => this.showNext(),
@@ -121,27 +128,27 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
     }
 
     @HostListener('mouseenter') onMouseEnter() {
-        if (this.arrowsAutoHide && !this.arrows) {
-            this.arrows = true
+        if (this.arrowsAutoHide() && !this.arrows_) {
+            this.arrows_ = true
         }
 
-        if (this.autoPlay && this.autoPlayPauseOnHover) {
+        if (this.autoPlay() && this.autoPlayPauseOnHover()) {
             this.stopAutoPlay()
         }
     }
 
     @HostListener('mouseleave') onMouseLeave() {
-        if (this.arrowsAutoHide && this.arrows) {
-            this.arrows = false
+        if (this.arrowsAutoHide() && this.arrows_) {
+            this.arrows_ = false
         }
 
-        if (this.autoPlay && this.autoPlayPauseOnHover) {
+        if (this.autoPlay() && this.autoPlayPauseOnHover()) {
             this.startAutoPlay()
         }
     }
 
     reset(index: number): void {
-        this.selectedIndex = index
+        this.selectedIndex_ = index
     }
 
     getImages(): NgxGalleryOrderedImage[] {
@@ -149,27 +156,27 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
             return []
         }
 
-        if (this.lazyLoading) {
-            const indexes = [this.selectedIndex]
-            const prevIndex = this.selectedIndex! - 1
+        if (this.lazyLoading()) {
+            const indexes = [this.selectedIndex()]
+            const prevIndex = this.selectedIndex_! - 1
 
-            if (prevIndex === -1 && this.infinityMove) {
-                indexes.push(this.images.length - 1)
+            if (prevIndex === -1 && this.infinityMove()) {
+                indexes.push(this.images()!.length - 1)
             } else if (prevIndex >= 0) {
                 indexes.push(prevIndex)
             }
 
-            const nextIndex = this.selectedIndex! + 1
+            const nextIndex = this.selectedIndex_! + 1
 
-            if (nextIndex == this.images.length && this.infinityMove) {
+            if (nextIndex == this.images.length && this.infinityMove()) {
                 indexes.push(0)
             } else if (nextIndex < this.images.length) {
                 indexes.push(nextIndex)
             }
 
-            return this.images.filter((img, i) => indexes.indexOf(i) != -1)
+            return this.images()!.filter((img, i) => indexes.indexOf(i) != -1)
         } else {
-            return this.images
+            return this.images()!
         }
     }
 
@@ -178,10 +185,10 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
 
         this.timer = setInterval(() => {
             if (!this.showNext()) {
-                this.selectedIndex = -1
+                this.selectedIndex_ = -1
                 this.showNext()
             }
-        }, this.autoPlayInterval)
+        }, this.autoPlayInterval())
     }
 
     stopAutoPlay() {
@@ -191,8 +198,8 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
     }
 
     handleClick(event: Event, index: number): void {
-        if (this.clickable) {
-            this.onClick.emit(index)
+        if (this.clickable()) {
+            this.clickEvent.emit(index)
 
             event.stopPropagation()
             event.preventDefault()
@@ -200,20 +207,20 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
     }
 
     show(index: number) {
-        this.selectedIndex = index
-        this.onActiveChange.emit(this.selectedIndex)
+        this.selectedIndex_ = index
+        this.activeChangeEvent.emit(this.selectedIndex_)
         this.setChangeTimeout()
     }
 
     showNext(): boolean {
         if (this.canShowNext() && this.canChangeImage) {
-            this.selectedIndex!++
+            this.selectedIndex_!++
 
-            if (this.selectedIndex === this.images?.length) {
-                this.selectedIndex = 0
+            if (this.selectedIndex_ === this.images?.length) {
+                this.selectedIndex_ = 0
             }
 
-            this.onActiveChange.emit(this.selectedIndex)
+            this.activeChangeEvent.emit(this.selectedIndex_!)
             this.setChangeTimeout()
 
             return true
@@ -224,13 +231,13 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
 
     showPrev(): void {
         if (this.canShowPrev() && this.canChangeImage) {
-            this.selectedIndex!--
+            this.selectedIndex_!--
 
-            if (this.selectedIndex! < 0 && this.images) {
-                this.selectedIndex = this.images?.length - 1
+            if (this.selectedIndex_! < 0 && this.images) {
+                this.selectedIndex_ = this.images?.length - 1
             }
 
-            this.onActiveChange.emit(this.selectedIndex)
+            this.activeChangeEvent.emit(this.selectedIndex_)
             this.setChangeTimeout()
         }
     }
@@ -239,7 +246,7 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
         this.canChangeImage = false
         let timeout = 1000
 
-        if (this.animation === NgxGalleryAnimation.Slide || this.animation === NgxGalleryAnimation.Fade) {
+        if (this.animation() === NgxGalleryAnimation.Slide || this.animation() === NgxGalleryAnimation.Fade) {
             timeout = 500
         }
 
@@ -250,15 +257,15 @@ export class NgxGalleryImageComponent implements OnInit, OnChanges {
 
     canShowNext(): boolean {
         if (this.images) {
-            return this.infinityMove || this.selectedIndex! < this.images.length - 1 ? true : false
+            return this.infinityMove() || this.selectedIndex_! < this.images.length - 1 ? true : false
         } else {
             return false
         }
     }
 
     canShowPrev(): boolean {
-        if (this.images) {
-            return this.infinityMove || this.selectedIndex! > 0 ? true : false
+        if (this.images()) {
+            return this.infinityMove() || this.selectedIndex_! > 0 ? true : false
         } else {
             return false
         }

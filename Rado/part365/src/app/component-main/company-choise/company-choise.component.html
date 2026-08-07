@@ -9,9 +9,9 @@
         [select]="companyId"
         data-cy="companyId"
         [useFilter]="true"
-        [required]="IsRequired"
-        [submitted]="submitted"
+        [required]="IsRequired()"
+        [submitted]="submitted()"
         [data]="companies"
-        [showCount]="showCount">
+        [showCount]="showCount()">
     </app-customselect>
 </form>

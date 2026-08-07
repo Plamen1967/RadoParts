@@ -12,11 +12,11 @@
                 <div class="row g-3">
                     <div class="row g-2 mt-2">
                         <div class="col-sm-2">
-                            <app-select formControlName="carId" label="{{ label }}" [data]="carsList" (onClose)="focus()"> </app-select>
+                            <app-select formControlName="carId" label="{{ label }}" [data]="carsList" (onCloseEvent)="focus()"> </app-select>
                         </div>
                     </div>
                     <div class="max300px">
-                        <app-company-choise [config]="{ itemType: itemType, userId: userId!, bus: bus }" [showCount]="true" [all]="true" formControlName="companyId"> </app-company-choise>
+                        <app-company-choise [config]="{ itemType: itemType, userId: userId!, bus: bus() }" [showCount]="true" [all]="true" formControlName="companyId"> </app-company-choise>
                     </div>
                     @if (companyId) {
                         <div class="max300px">
@@ -29,7 +29,7 @@
                                 [groupSelection]="false"
                                 [multiselection]="false"
                                 [showCount]="true"
-                                (onClose)="focus()">
+                                (onCloseEvent)="focus()">
                             </app-model-choice>
                         </div>
                         @if (!bus && modelId) {
@@ -43,7 +43,7 @@
                                     formControlName="modificationId"
                                     [showCount]="true"
                                     (modifcationChange)="modificatioChanged($event)"
-                                    (onClose)="focus()">
+                                    (onCloseEvent)="focus()">
                                     >
                                 </app-modification-choice>
                             </div>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                    @if (bus) {
+                    @if (bus()) {
                         <div>
                             <button type="button" class="btn btn-success btn-sm" data-cy="addCar" (click)="addBus()">{{ labels.ADD }} {{ labels.BUS }}</button>
                         </div>
@@ -115,11 +115,11 @@
         </div>
     </div>
 } @else if (addCarFlag) {
-    <app-addcar [addCarParam]="{ carId: id, bus:0, add: addCarFlag} "  (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
+    <app-addcar [addCarParam]="{ carId: id, bus:0, add: addCarFlag} "  (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
 } @else if (addBusFlag) {
-    <app-addcar [addCarParam]="{ carId: id, bus:1, add: addBusFlag} " (saved)="saved($event)" (noChange)="back($event)"></app-addcar>
+    <app-addcar [addCarParam]="{ carId: id, bus:1, add: addBusFlag} " (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
 } @else if (addPartFlag) {
-    <app-addpart [carId]="id" [bus]="bus" [add]="addPartFlag" (saved)="savedPart($event)" (noChange)="back($event)"></app-addpart>
+    <app-addpart [carId]="id" [bus]="bus()" [add]="addPartFlag" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
 } @else if (updateCarFlag) {
     <app-updatecar [id]="id" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
 } @else if (updateBusFlag) {

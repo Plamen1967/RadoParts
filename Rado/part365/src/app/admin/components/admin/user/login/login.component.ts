@@ -1,6 +1,6 @@
 //#region import
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit, Renderer2, DOCUMENT, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit, Renderer2, DOCUMENT } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
@@ -19,7 +19,6 @@ import { ConfirmServiceService } from '@app/dialog/services/confirmService.servi
     imports: [UserComponent, FormsModule, ReactiveFormsModule, NgClass, RouterLink, NgStyle, InputPasswordComponent],
     selector: 'app-login',
     templateUrl: './login.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./login.component.css'],
 })
 //#endregion

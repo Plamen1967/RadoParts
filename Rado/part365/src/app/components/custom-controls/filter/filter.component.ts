@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ElementRef, inject, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
 import { DialogData } from '@model/dialogData'
 import { Filter } from '@model/filters/filter'
@@ -9,7 +9,6 @@ import { SaveSearchService } from '@services/saveSearch.service'
     selector: 'app-filter',
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogContent, MatDialogClose],
 })
 export class FilterComponent implements OnInit {

@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, input } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router, RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router'
 import { User } from '@model/user'
@@ -17,13 +17,12 @@ import { DataManager } from '@model/dataManager'
     selector: 'app-dealerwebpage',
     templateUrl: './dealerWebPage.component.html',
     styleUrls: ['./dealerWebPage.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive],
 })
 //#endregion
 export class DealerWebPageComponent implements OnInit, AfterViewInit {
     //#region variables and services
-    @Input() userId = 0
+    userId = input<number>(0)
     user?: UserView
     id = 0
     url = ''
@@ -41,16 +40,16 @@ export class DealerWebPageComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
             this.userId = params['userId']
-            if (!this.homeService.getDataManager(+this.userId)) {
-                const filter: Filter = { id: 0, userId: this.userId, searchBy: SearchBy.Filter, bus: -1 }
-                filter.userId = this.userId
+            if (!this.homeService.getDataManager(+this.userId())) {
+                const filter: Filter = { id: 0, userId: this.userId(), searchBy: SearchBy.Filter, bus: -1 }
+                filter.userId = this.userId()
                 this.searchPartService
                     .search(filter)
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe({
                         next: (res) => {
-                            this.homeService.addDataManager(this.userId!, res)
-                            this.dataManager = this.homeService.getDataManager(this.userId!)
+                            this.homeService.addDataManager(this.userId(), res)
+                            this.dataManager = this.homeService.getDataManager(this.userId())
                             if (res.userView) {
                                 this.user = { ...res.userView }
                                 this.loadUser(this.user)

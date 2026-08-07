@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -14,7 +14,6 @@ import { CategoryService } from '@services/category-subcategory/category.service
     selector: 'app-category-admin',
     templateUrl: './category.component.html',
     styleUrls: ['./category.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent, NgClass],
 })
 //#endregion

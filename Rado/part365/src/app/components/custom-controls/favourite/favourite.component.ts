@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component, EventEmitter, HostListener, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, HostListener, inject, OnInit, input, effect, output } from '@angular/core'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { LocalStorageService } from '@services/storage/localStorage.service'
 
@@ -7,7 +7,6 @@ import { LocalStorageService } from '@services/storage/localStorage.service'
     selector: 'app-favourite',
     templateUrl: './favourite.component.html',
     styleUrls: ['./favourite.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass],
 })
 export class FavouriteComponent implements OnInit {
@@ -19,24 +18,30 @@ export class FavouriteComponent implements OnInit {
         event.stopPropagation()
     }
 
-    @Input() set id(value: number | undefined) {
-        this._id = value!
-        this.isSaved = this.localStorageService.isSaved(this._id)
-    }
-    @Input() positionEnd?: number = 1
+    positionEnd = input<number>(1)
+    id = input<number | undefined>() 
 
-    @Output() unchecked: EventEmitter<number> = new EventEmitter<number>()
+    unchecked = output<number>()
     isSaved?: boolean
-    _id = 0
+
+
+    constructor() {
+        effect(() => {
+
+            if (this.id()) {
+                this.isSaved = this.localStorageService.isSaved(this.id()!)
+            }
+        })
+    }
 
     ngOnInit() {
-        this.isSaved = this.localStorageService.isSaved(this._id)
+        this.isSaved = this.localStorageService.isSaved(this.id()!)
     }
 
     unsave() {
-        this.localStorageService.removeSavedItem(this._id)
-        this.unchecked.emit(this._id)
-        this.isSaved = this.localStorageService.isSaved(this._id)
+        this.localStorageService.removeSavedItem(this.id()!)
+        this.unchecked.emit(this.id()!)
+        this.isSaved = this.localStorageService.isSaved(this.id()!)
     }
 
     save() {
@@ -46,7 +51,7 @@ export class FavouriteComponent implements OnInit {
             return
         }
 
-        this.localStorageService.addSavedItem(this._id)
-        this.isSaved = this.localStorageService.isSaved(this._id)
+        this.localStorageService.addSavedItem(this.id()!)
+        this.isSaved = this.localStorageService.isSaved(this.id()!)
     }
 }

@@ -19,6 +19,7 @@ export class UserComponent implements FormValueControl<string> {
     submitted = input<boolean>(false)
     prefix = input<string>('')
     controlName = input<string>('')
+    errors_ = input<Map<string, string>>()
     readonly control = input<FormField<string> | null>(null);
     readonly isDisabled = input(false);
     readonly isInvalid = input(false);

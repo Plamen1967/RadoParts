@@ -6,7 +6,7 @@ import { MenuService } from '@services/Menu.service'
 @Directive({
     selector: '[appOutside]',
     host: {
-        '(document:click)': 'onClick($event)',
+        '(document:click)': 'clickEvent($event)',
     },
 })
 //#endregion
@@ -20,7 +20,7 @@ export class OutsideDirective {
         this.menuService = inject(MenuService)
     }
 
-    onClick(event: Event) {
+    clickEvent(event: Event) {
         const clickedInside = this.hostElement.nativeElement.contains(event.target)
         const isShown = this.menuService.showMenu()
         if (isShown && !clickedInside) {

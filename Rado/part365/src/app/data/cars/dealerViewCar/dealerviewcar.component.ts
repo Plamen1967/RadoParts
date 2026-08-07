@@ -1,5 +1,5 @@
 //#region import
-import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, Input, OnInit, output, input, computed, effect } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
 import { DealerActionType } from '@model/dealerActionType'
@@ -8,7 +8,6 @@ import { PartView } from '@model/part/partView'
 import { AuthenticationService } from '@services/authentication/authentication.service'
 import { NextIdService } from '@services/nextId.service'
 import { CarService } from '@services/car.service'
-import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { AlertService } from '@services/alert.service'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { Router } from '@angular/router'
@@ -24,7 +23,6 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-dealerviewcar',
     templateUrl: './dealerviewcar.component.html',
     styleUrls: ['./dealerviewcar.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RowComponent],
 })
 //#endregion
@@ -47,33 +45,27 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
         return this._carView!
     }
 
-    @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
-    @Output() addPartCarId: EventEmitter<number> = new EventEmitter<number>()
-    @Input() showParts = false
-    @Input() highlighted?: number
-    private authernticationService: AuthenticationService
-    private confirmService: ConfirmServiceService
-    private router: Router
-    private partService: PartServiceService
-    private nextIdService: NextIdService
-    private carService: CarService
-    private alertService: AlertService
-    private popupService: PopUpService
-    private staticService: StaticSelectionService
-    private loggerService: LoggerService
+    showParts_ = false
+    action = output<DealerActionType>()
+    addPartCarId = output<number | undefined>()
+    showParts = input<boolean>(false)
+    highlighted = input<number>()
+    private authernticationService: AuthenticationService = inject(AuthenticationService)
+    private router: Router = inject(Router)
+    private partService: PartServiceService = inject(PartServiceService)
+    private nextIdService: NextIdService = inject(NextIdService)
+    private carService: CarService = inject(CarService)
+    private alertService: AlertService = inject(AlertService)
+    private popupService: PopUpService = inject(PopUpService)
+    private staticService: StaticSelectionService = inject(StaticSelectionService)
+    private loggerService: LoggerService = inject(LoggerService)
 
     constructor() {
         super()
-        this.authernticationService = inject(AuthenticationService)
-        this.confirmService = inject(ConfirmServiceService)
-        this.router = inject(Router)
-        this.partService = inject(PartServiceService)
-        this.nextIdService = inject(NextIdService)
-        this.carService = inject(CarService)
-        this.alertService = inject(AlertService)
-        this.popupService = inject(PopUpService)
-        this.staticService = inject(StaticSelectionService)
-        this.loggerService = inject(LoggerService)
+
+        effect(() => {
+            this.showParts_ = computed(() => this.showParts())()
+        })
     }
     ngOnInit(): void {
         this.refreshView()
@@ -100,7 +92,7 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
         if (this.carView.gearboxType) this.lines.push({ label: 'Скоростна кутия', value: this.staticService.GearboxType[this.carView.gearboxType].text!, price: false })
         if (this.carView.regionId) this.lines.push({ label: 'Регион', value: this.staticService.Region.find((x) => x.value === this.carView.regionId!)!.text!, price: false })
 
-        this.isHighlighted = this.highlighted == this.carView.carId
+        this.isHighlighted = this.highlighted() == this.carView.carId
     }
     updateCar(event: number) {
         this.action.emit({ action: UpdateEnum.Update, id: event, car: true })
@@ -112,7 +104,7 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
 
     displayCars(event: number) {
         if (!this.showParts) this.carService.getPartsByCarId(event).subscribe((parts_: PartView[]) => (this.parts = parts_))
-        this.showParts = !this.showParts
+        this.showParts_ = !this.showParts
     }
 
     label() {

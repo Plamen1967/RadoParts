@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 @Component({
     standalone: true,
     selector: 'app-ngx-gallery-action',
     template: `
-        <div class="ngx-gallery-icon" [class.ngx-gallery-icon-disabled]="disabled"
+        <div class="ngx-gallery-icon" [class.ngx-gallery-icon-disabled]="disabled()"
             aria-hidden="true"
-            title="{{ titleText }}"
+            title="{{ titleText() }}"
             (click)="handleClick($event)">
-                <i class="ngx-gallery-icon-content {{ icon }}"></i>
+                <i class="ngx-gallery-icon-content {{ icon() }}"></i>
         </div>`,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -22,16 +22,15 @@ export class NgxGalleryActionComponent {
     //   }
     // }
     
-    @Input() icon?: string;
-    @Input() disabled = false;
-    @Input() titleText = '';
+    icon = input<string>();
+    disabled = input<boolean>(false);
+    titleText = input<string>('');
 
-    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onClick = new EventEmitter<Event>();
+    clickEvent = output<Event>();
 
     handleClick(event: Event) {
         if (!this.disabled) {
-            this.onClick.emit(event);
+            this.clickEvent.emit(event);
         }
 
         event.stopPropagation();

@@ -1,4 +1,4 @@
-import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit, Input, HostListener, OnDestroy, inject } from '@angular/core';
+import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit, Input, HostListener, OnDestroy, inject, input, output } from '@angular/core';
 import { NgxImgZoomService } from './ngx-img-zoom.service';
 import { NgxImgZoomMode } from './mode.enum';
 import { NgStyle } from '@angular/common';
@@ -55,7 +55,7 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
     @ViewChild('container', { static: false }) containerElmRef?: ElementRef;
 
 
-    @Input() enableZoom = false;
+    enableZoom = input<boolean>(false);
     @Input() set imgStyle(val) {
       this._imgStyle = val;
     }
@@ -79,7 +79,7 @@ export class NgxImgZoomComponent implements AfterViewInit, OnDestroy {
     get lensStyle() {
       return this._lensStyle;
     }
-    @Input() containerStyle?: string;
+    containerStyle = output<string |undefined>();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @HostListener('window:scroll', ['$event']) onscroll(event: Event) {

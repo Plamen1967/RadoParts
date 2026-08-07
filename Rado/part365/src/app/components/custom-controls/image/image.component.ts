@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, inject, input, effect, output } from '@angular/core'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { ImageService } from '@services/image.service'
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
@@ -16,7 +16,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     templateUrl: './image.component.html',
     styleUrls: ['./image.component.css'],
     imports: [NgStyle, NgClass],
-    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NgxGalleryHelperService, MatBadgeModule, MatIconModule, MatButtonModule],
 })
 export class ImageComponent {
@@ -32,21 +31,64 @@ export class ImageComponent {
     private alertService: AlertService = inject(AlertService)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
-    @Input() height = '8em'
-    @Input() width = '6em'
-    @Input() showDetails = true
-    @Input() id?: number
-    @Input() showNumberPhotos = false
-    @Input() set numberPhotos(value: number) {
-        this.numberImages = value
+    // @Input() height = '8em'
+    // @Input() width = '6em'
+    showDetails = input<boolean>(true)
+    id = input<number | undefined>()
+    showNumberPhotos = input<boolean>(false)
+    numberPhotos = input<number>(0)
+    showImage = input<string>()
+    dispayPartView = input<DisplayPartView>()
+    imageNumbers = input<number>(0)
+    displayMain = input<boolean>(false)
+    mainImageLoaded = output<NgxGalleryImage>() 
+    imagesLoaded = output<NgxGalleryImage[]>()
+
+    partId = input<number>(0)
+
+    constructor() {
+        effect(() => {
+            if (this.id()) {
+                this.showIcon = this.id() === this._partId
+            }
+            if (this.showImage()) {
+                this.mainImage = { small: this.showImage(), medium: this.showImage(), big: this.showImage() }
+            }
+            if (this.dispayPartView()) {
+                this.updateDisplayPartView(this.dispayPartView()!)
+            }
+            if (this.partId()) {
+                this.updatePartId(this.partId()!)
+            }   
+        })
     }
 
-    @Input() set showImage(value: string) {
-        this.mainImage = { small: value, medium: value, big: value }
-    }
+    updatePartId(value: number) {
+        if (this._partId === value) return
 
-    @Input() set dispayPartView(value: DisplayPartView) {
-        this._partId = value.id
+        if (value === 0) {
+            this.imagesLoaded.emit(this.images)
+            return
+        }
+
+        this._partId = value
+
+        this.imageService
+            .getMainPicture(this.partId())
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((res) => {
+                if (res) {
+                    this.mainImage = convertImage(res)
+                    this.mainImageLoaded.emit(this.mainImage!)
+                }
+
+                setTimeout(() => {
+                    this.restImages()
+                }, 1000)
+            })
+    }
+    updateDisplayPartView(value: DisplayPartView) {
+            this._partId = value.id
         this.mainImage = value.mainImage
         this.numberImages = value.numberImages
         if (value.mainPicture) {
@@ -65,7 +107,7 @@ export class ImageComponent {
                     .subscribe((res) => {
                         if (res !== null) {
                             this.mainImage = convertImage(res!)
-                            this.mainImageLoaded.emit(this.mainImage)
+                            this.mainImageLoaded.emit(this.mainImage!)
                         }
                         // if (!value.images && value.numberImages)
                         //   setTimeout(() => { this.restImages() }, 1000);
@@ -74,37 +116,6 @@ export class ImageComponent {
         }
         this.images = value.ngImages!
     }
-
-    @Input() imageNumbers?: number
-    @Input() displayMain = false
-    @Output() mainImageLoaded: EventEmitter<NgxGalleryImage> = new EventEmitter<NgxGalleryImage>()
-    @Output() imagesLoaded: EventEmitter<NgxGalleryImage[]> = new EventEmitter<NgxGalleryImage[]>()
-
-    @Input() set partId(value: number) {
-        if (this._partId === value) return
-
-        if (value === 0) {
-            this.imagesLoaded.emit(this.images)
-            return
-        }
-
-        this._partId = value
-
-        this.imageService
-            .getMainPicture(this.partId)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((res) => {
-                if (res) {
-                    this.mainImage = convertImage(res)
-                    this.mainImageLoaded.emit(this.mainImage)
-                }
-
-                setTimeout(() => {
-                    this.restImages()
-                }, 1000)
-            })
-    }
-
     background(image: NgxGalleryImage) {
         const str = "{'background-image': 'url(" + `"${image.medium}"` + ")'}"
         return str
@@ -122,7 +133,7 @@ export class ImageComponent {
 
     restImages() {
         this.imageService
-            .getImages(this.partId)
+            .getImages(this.partId())
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
                 this.images = convertImages(res!)

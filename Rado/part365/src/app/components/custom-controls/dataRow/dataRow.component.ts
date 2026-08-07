@@ -1,15 +1,14 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, input } from '@angular/core'
 
 @Component({
     selector: 'app-datarow',
     templateUrl: './dataRow.component.html',
     styleUrls: ['./dataRow.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 export class DataRowComponent {
-    @Input() label?: string
-    @Input() value?: string
-    @Input() price?: boolean
-    @Input() normal = false
+    label = input<string>('')
+    value = input<string | undefined>(undefined)
+    price = input<boolean | undefined>(undefined)
+    normal = input<boolean>(false)
 }

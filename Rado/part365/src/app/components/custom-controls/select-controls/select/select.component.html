@@ -1,15 +1,15 @@
 <app-select-base
-    [type]="type"
-    [label]="label"
-    [hint]="hint"
+    [type]="type()"
+    [label]="label()"
+    [hint]="hint()"
     [data]="data"
     [initialValue]="selectedValue!"
-    [group]="group"
+    [group]="group()"
     [isRequired]="IsRequired()"
-    [groupSelection]="groupSelection"
-    [submitted]="submitted"
+    [groupSelection]="groupSelection()"
+    [submitted]="submitted()"
     [isInvalid]="IsInvalid()"
-    [id]="id"
+    [id]="id()"
     [error]="error()"
     (changeOption)="changeSelectOption($event)">
 </app-select-base>

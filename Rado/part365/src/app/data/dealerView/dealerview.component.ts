@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit, input, output, effect } from '@angular/core'
 import { Router } from '@angular/router'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -29,7 +29,6 @@ import { goToPosition } from '@app/functions/functions'
     selector: 'app-dealerview',
     templateUrl: './dealerview.component.html',
     styleUrls: ['./dealerview.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent],
 })
 //#endregion
@@ -44,23 +43,15 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
     id!: number
     getOnlyNumbers = 0
     isHighlighted = false
-    @Input() set carView(value: CarView) {
-        this._carView = { ...value }
-    }
-
-    get carView(): CarView | undefined {
-        return this._carView
-    }
-    @Input() partView?: PartView
-    @Input() allowUpdate = false
-    @Input() rimWithTyreView?: DisplayPartView
-    @Input() mainPicture?: string
-    @Input() set highlighted(value: number | undefined) {
-        this.highlighted_ = value
-    }
-    @Input() showPart!: boolean
-    @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
-    @Output() addPartCarId: EventEmitter<number> = new EventEmitter<number>()
+    carView = input<CarView>()
+    partView = input<PartView | undefined>()
+    allowUpdate = input<boolean>(false)
+    rimWithTyreView = input<DisplayPartView | undefined>()
+    mainPicture = input<string | undefined>()
+    highlighted = input<number | undefined>()
+    showPart = input<boolean>(false)
+    action = output<DealerActionType>()
+    addPartCarId = output<number>()
     private authernticationService: AuthenticationService = inject(AuthenticationService)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private router: Router = inject(Router)
@@ -73,31 +64,33 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
 
     constructor() {
         super()
+        effect(() => {
+        if (this.carView()) {
+            this.id = this.carView()!.carId!
+            this.getOnlyNumbers = this.carView()?.numberImages || 0
+        } else if (this.partView()) {
+            this.id = this.partView()!.partId!
+            this.getOnlyNumbers = this.partView()!.numberImages || 0
+        } else if (this.rimWithTyreView()) {
+            this.id = this.rimWithTyreView()!.id!
+            this.getOnlyNumbers = this.rimWithTyreView()!.numberImages || 0
+        }
+        })
     }
 
     ngAfterViewInit(): void {
         if (this.isHighlighted) goToPosition(this.id)
     }
     ngOnInit(): void {
-        if (this.carView) {
-            this.id = this.carView.carId!
-            this.getOnlyNumbers = this.carView?.numberImages || 0
-        } else if (this.partView) {
-            this.id = this.partView.partId!
-            this.getOnlyNumbers = this.partView?.numberImages || 0
-        } else if (this.rimWithTyreView) {
-            this.id = this.rimWithTyreView.id!
-            this.getOnlyNumbers = this.rimWithTyreView?.numberImages || 0
-        }
         this.isHighlighted = this.highlighted_ == this.id
         // console.log('Dealer view init', this.isHighlighted, this.id, this.highlighted_)
     }
     //#endregion
 
     updateItem(event: number) {
-        if (this.carView) this.action.emit({ action: UpdateEnum.Update, id: event, car: true })
-        else if (this.partView) this.action.emit({ action: UpdateEnum.Update, id: event, car: false })
-        else if (this.rimWithTyreView) this.action.emit({ action: UpdateEnum.Update, id: event, car: false })
+        if (this.carView()) this.action.emit({ action: UpdateEnum.Update, id: event, car: true })
+        else if (this.partView()) this.action.emit({ action: UpdateEnum.Update, id: event, car: false })
+        else if (this.rimWithTyreView()) this.action.emit({ action: UpdateEnum.Update, id: event, car: false })
     }
 
     deleteItem(event: number) {
@@ -164,7 +157,6 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
             }
         }
         this.currentPartId = undefined
-        this.addPartCarId.emit(undefined)
     }
 
     get user() {

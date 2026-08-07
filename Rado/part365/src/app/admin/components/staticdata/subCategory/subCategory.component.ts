@@ -1,6 +1,6 @@
 //#region Imports
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, inject } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -16,7 +16,6 @@ import { SelectOption } from '@model/selectOption'
     selector: 'app-subcategory-admin',
     templateUrl: './subCategory.component.html',
     styleUrls: ['./subCategory.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, InputComponent, NgStyle, SelectComponent, NgClass],
 })
 //#endregion

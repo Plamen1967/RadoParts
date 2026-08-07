@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, DestroyRef, EventEmitter, inject, Output, Self, model } from '@angular/core'
+import { Component, DestroyRef, inject, Self, model, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { FormValueControl } from '@angular/forms/signals'
@@ -24,8 +24,8 @@ export class SearchBarComponent extends HelperComponent implements FormValueCont
     sort?: SelectOption[]
     sortForm: FormGroup
     isDisabled?: boolean
-    @Output() submitEvent: EventEmitter<void> = new EventEmitter<void>()
-    @Output() clearEvent: EventEmitter<void> = new EventEmitter<void>()
+    submitEvent = output<void>()
+    clearEvent = output<void>()
     //#region services
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     private destroyRef: DestroyRef = inject(DestroyRef)

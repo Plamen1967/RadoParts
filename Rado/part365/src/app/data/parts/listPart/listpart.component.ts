@@ -1,6 +1,6 @@
 //#region import
-import { AsyncPipe, NgStyle, ViewportScroller } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, inject, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AsyncPipe, NgStyle } from '@angular/common'
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, input, effect } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { goToPosition, sortPartView } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -19,7 +19,6 @@ import { CarService } from '@services/car.service'
 import { CategoryService } from '@services/category-subcategory/category.service'
 import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
 import { ModelService } from '@services/company-model-modification/model.service'
-import { ModificationService } from '@services/company-model-modification/modification.service'
 import { NextIdService } from '@services/nextId.service'
 import { PartServiceService } from '@services/part/partService.service'
 import { SearchPartService } from '@services/searchPart.service'
@@ -53,7 +52,6 @@ import { UserCount } from '@model/userCount'
     selector: 'app-listpart',
     templateUrl: './listpart.component.html',
     styleUrls: ['./listpart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NavigatorComponent,
         DealerViewComponent,
@@ -114,7 +112,8 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     userId?: number
     addPartFlag = false
     categoriesId!: string
-    @Input() id?: number
+    id_? : number;
+    id = input<number | undefined>()
     public todos$?: Observable<CarView[]>
     public todosPart$?: Observable<PartView[]>
     private readonly _autoSearch$: Subject<Filter>
@@ -123,55 +122,31 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     private readonly _debounceParts: number
     private readonly _destroy$: Subject<boolean>
     userCount$: Observable<UserCount | undefined>
-    popupService: PopUpService
-
     //#region members
 
     //#endregion
 
     //#region c'tor
-    public modelService: ModelService
-    public categoryService: CategoryService
-    public subCategoryService: SubCategoryService
-    public searchPartService: SearchPartService
-    private authernticationService: AuthenticationService
-    private formBuilder: FormBuilder
-    private partService: PartServiceService
-    public staticSelectionService: StaticSelectionService
-    private userService: UserService
-    private modificationService: ModificationService
-    private nextIdService: NextIdService
-    private scroller: ViewportScroller
-    private confirmService: ConfirmServiceService
-    private popupMessage: PopUpService
-    private router: Router
-    private route: ActivatedRoute
-    private carService: CarService
-    private userCountService: UserCountService
-    private loggerService: LoggerService
-
+    public modelService: ModelService = inject(ModelService)
+    public categoryService: CategoryService = inject(CategoryService)
+    public subCategoryService: SubCategoryService = inject(SubCategoryService)
+    public searchPartService: SearchPartService = inject(SearchPartService)
+    private authernticationService: AuthenticationService = inject(AuthenticationService)
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    private partService: PartServiceService = inject(PartServiceService)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private userService: UserService = inject(UserService)
+    private nextIdService: NextIdService = inject(NextIdService)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private popupMessage: PopUpService = inject(PopUpService)
+    private router: Router = inject(Router)
+    private route: ActivatedRoute = inject(ActivatedRoute)
+    private carService: CarService = inject(CarService)
+    private userCountService: UserCountService = inject(UserCountService)
+    private loggerService: LoggerService = inject(LoggerService)
+    
     constructor() {
         super()
-        this.modelService = inject(ModelService)
-        this.categoryService = inject(CategoryService)
-        this.subCategoryService = inject(SubCategoryService)
-        this.popupService = inject(PopUpService)
-        this.searchPartService = inject(SearchPartService)
-        this.authernticationService = inject(AuthenticationService)
-        this.formBuilder = inject(FormBuilder)
-        this.partService = inject(PartServiceService)
-        this.staticSelectionService = inject(StaticSelectionService)
-        this.userService = inject(UserService)
-        this.modificationService = inject(ModificationService)
-        this.nextIdService = inject(NextIdService)
-        this.scroller = inject(ViewportScroller)
-        this.confirmService = inject(ConfirmServiceService)
-        this.popupMessage = inject(PopUpService)
-        this.router = inject(Router)
-        this.route = inject(ActivatedRoute)
-        this.carService = inject(CarService)
-        this.userCountService = inject(UserCountService)
-        this.loggerService = inject(LoggerService)
         this._autoSearch$ = new Subject<Filter>()
         this._autoPartSearch$ = new Subject<Filter>()
         this._debounce = 0
@@ -189,6 +164,10 @@ export default class ListPartComponent extends HelperComponent implements OnInit
             subCategoryId: [0],
             partNumber: [''],
             sortOrder: [0],
+        })
+
+        effect(() => {
+            this.id_ = this.id();
         })
     }
     ngAfterViewInit(): void {
@@ -377,11 +356,11 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.nextIdService.getNextId(this.bus ? ItemType.BusPart : ItemType.CarPart).subscribe({
             next: (nextId) => {
                 if (nextId.error) {
-                    this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
+                    this.popupMessage.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
                         this.router.navigate(['/data/parts'])
                     })
                 } else {
-                    this.id = nextId.nextId
+                    this.id_ = nextId.nextId
                 }
             },
         })
@@ -500,7 +479,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     //#endregion
 
     saved(event: number) {
-        this.id = undefined
+        this.id_ = undefined
         this.loadPart(event)
         this.currentId = event
 
@@ -510,7 +489,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     back(id: number) {
         this.currentId = id
         this.partService.currentId.next(id)
-        this.id = undefined
+        this.id_ = undefined
 
         goToPosition(id)
     }

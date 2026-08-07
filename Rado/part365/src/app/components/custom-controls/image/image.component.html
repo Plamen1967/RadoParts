@@ -1,15 +1,15 @@
 <div class="ms-1 mt-1 pe-2 image-cursor" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Покажи детайлите w-100" >
-    @if (displayMain) {
+    @if (displayMain()) {
         @if (image) {
             <div>
                 <div class="image imageClass maxSize" matBadge="4" matBadgeOverlap="false">
                     <img src="{{ image }}" loading="lazy" class="img-thumbnail imageSize" alt="" />
-                    @if (showDetails) {
+                    @if (showDetails()) {
                         @if (showIcon) {
                             <a class="small d-flex">{{ details }}</a>
                         }
                     }
-                    @if (showNumberPhotos && numberImages) {
+                    @if (showNumberPhotos() && numberImages) {
                         <div class="image-number">
                             <span class="material-symbols-outlined image-icon"> photo_camera </span>
                             <div class="image-text ps-2">{{ getNumberImages }}</div>
@@ -22,7 +22,7 @@
         }
     } @else {
         @if (images.length) {
-            <div id="part{{ partId }}" class="carousel slide" data-ride="carousel">
+            <div id="part{{ partId() }}" class="carousel slide" data-ride="carousel">
                 <div class="carousel-indicators">
                     @for (image of images; track image.url; let i = $index) {
                         <button
@@ -37,7 +37,7 @@
                 <div class="carousel-inner">
                     @for (image of images; track image.url; let i = $index) {
                         <div class="carousel-item" [ngClass]="{ active: i === 0 }">
-                            <img class="d-block w-100" loading="lazy" [ngStyle]="{ height: height, width: width }" src="{{ image.medium }}" alt="First slide" />
+                            <img class="d-block w-100" loading="lazy" [ngStyle]="{ height: '100%', width: '100%' }" src="{{ image.medium }}" alt="First slide" />
                         </div>
                     }
                 </div>

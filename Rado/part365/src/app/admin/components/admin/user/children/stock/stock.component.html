@@ -15,6 +15,6 @@
             }
         </div>
     } @else {
-        <app-userviewpart (back)="back($event)" (changeNext)="next($event)" (changePrev)="prev($event)"></app-userviewpart>
+        <app-userviewpart (back)="back($event!)" (changeNext)="next($event)" (changePrev)="prev($event)"></app-userviewpart>
     }
 </div>

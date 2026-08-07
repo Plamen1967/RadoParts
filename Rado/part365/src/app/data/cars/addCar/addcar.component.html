@@ -28,7 +28,7 @@
                                 [companyId]="companyId!"
                                 [groupSelection]="false"
                                 [multiselection]="false"
-                                (onClose)="focus()">
+                                (onCloseEvent)="focus()">
                             </app-model-choice>
                         </div>
                         @if (!bus && modelId) {
@@ -42,12 +42,12 @@
                                     [submitted]="submitted"
                                     formControlName="modificationId"
                                     (modifcationChange)="modificatioChanged($event)"
-                                    (onClose)="focus()">
+                                    (onCloseEvent)="focus()">
                                     >
                                 </app-modification-choice>
                             </div>
                             <div class="col-sm-2 min150px">
-                                <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" [submitted]="submitted" (onClose)="focus()"> </app-select>
+                                <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" [submitted]="submitted" (onCloseEvent)="focus()"> </app-select>
                             </div>
                         }
                     }
@@ -94,7 +94,7 @@
         </div>
     }
     <div class="row mt-3" style="position: relative">
-        <app-imagelist [id]="carId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+        <app-imagelist [id]="carId()!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
         <div class="d-inline-flex justify-content-end position-buttons w-100">
             <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="UpdateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div>

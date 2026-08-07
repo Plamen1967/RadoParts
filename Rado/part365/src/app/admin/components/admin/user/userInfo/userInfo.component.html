@@ -1,30 +1,30 @@
-@if (user) {
+@if (user()) {
     <div [ngClass]="{ userInfo: true }">
         <app-buttonmenu class="menuClass" [menuOptions]="[]"></app-buttonmenu>
         <div class="row mb-2 header mt-2">
-            <div class="col-sm-">{{ user.userName }} {{ user.companyName }} {{ user.phone }} {{ user.email }}</div>
+            <div class="col-sm-">{{ user()!.userName }} {{ user()!.companyName }} {{ user()!.phone }} {{ user()!.email }}</div>
         </div>
         <div class="row ms-2">
             <div class="btn btn-primary max40 me-3 col-sm-2 button-background-blue" (click)="showDetails()" role="none">Детайли</div>
-            <div class="btn btn-primary max40 me-3 col-sm-2 button-background-red" (click)="delete(user.userId!)" role="none">Изтрий</div>
-            @if (!user.activated) {
-                <div class="btn max40 btn-primary me-3 col-sm-2" (click)="activateUser(user.userId!)" role="none">Активирай</div>
+            <div class="btn btn-primary max40 me-3 col-sm-2 button-background-red" (click)="delete(user()!.userId!)" role="none">Изтрий</div>
+            @if (!user()!.activated) {
+                <div class="btn max40 btn-primary me-3 col-sm-2" (click)="activateUser(user()!.userId!)" role="none">Активирай</div>
             }
-            @if (user.blocked) {
-                <div class="btn max40 btn-primary me-3 col-sm-2" (click)="unLockUser(user.userId!)" role="none">Отблокирай</div>
+            @if (user()!.blocked) {
+                <div class="btn max40 btn-primary me-3 col-sm-2" (click)="unLockUser(user()!.userId!)" role="none">Отблокирай</div>
             }
-            @if (user.suspended) {
-                <div class="btn max40 btn-primary me-3 col-sm-2" (click)="unSuspendUser(user)" role="none">Пусни</div>
+            @if (user()!.suspended) {
+                <div class="btn max40 btn-primary me-3 col-sm-2" (click)="unSuspendUser(user()!)" role="none">Пусни</div>
             } @else {
-                <div class="btn max40 btn-primary me-3 button-background-green col-sm-2" (click)="suspendUser(user)" role="none">Спри</div>
+                <div class="btn max40 btn-primary me-3 button-background-green col-sm-2" (click)="suspendUser(user()!)" role="none">Спри</div>
             }
             <div class="col-sm-4">
-                @if(user.suspendedDateTime) {
-                    <div >Скрит на:{{ showDate(user) }}</div>
+                @if(user()!.suspendedDateTime) {
+                    <div >Скрит на:{{ showDate(user()!) }}</div>
                 }
             </div>
         </div>
-        @if(selected === user.userId) {
+        @if(selected() === user()!.userId) {
             @if(userTrades) {
                 <h5 class="mt-1 ms-1">Статистика</h5>
                 <div class="stats">
@@ -42,39 +42,39 @@
                 <h5 class="mt-1">Детайли</h5>
                 <div class="row line">
                     <div class="col-sm-4">User Name</div>
-                    <div class="col-sm-8">{{ user.userName }}</div>
+                    <div class="col-sm-8">{{ user()!.userName }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">Дата на регистрация</div>
-                    <div class="col-sm-8">{{ user.creationDate }}</div>
+                    <div class="col-sm-8">{{ user()!.creationDate }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">Име</div>
-                    <div class="col-sm-8">{{ user.firstName }} {{ user.lastName }}</div>
+                    <div class="col-sm-8">{{ user()!.firstName }} {{ user()!.lastName }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">Компания</div>
-                    <div class="col-sm-8">{{ user.companyName }}</div>
+                    <div class="col-sm-8">{{ user()!.companyName }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">Дилър</div>
-                    <div class="col-sm-8">{{ dealer(user.dealer === 1) }}</div>
+                    <div class="col-sm-8">{{ dealer(user()!.dealer === 1) }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">E-mail</div>
-                    <div class="col-sm-8">{{ user.email }}</div>
+                    <div class="col-sm-8">{{ user()!.email }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">Телефон</div>
-                    <div class="col-sm-8">{{ user.phone }}</div>
+                    <div class="col-sm-8">{{ user()!.phone }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">Телефон 2</div>
-                    <div class="col-sm-8">{{ user.phone2 }}</div>
+                    <div class="col-sm-8">{{ user()!.phone2??'' }}</div>
                 </div>
                 <div class="row line">
                     <div class="col-sm-4">Активиран</div>
-                    <div class="col-sm-8">{{ activated(user.activated === 1) }}</div>
+                    <div class="col-sm-8">{{ activated(user()!.activated === 1) }}</div>
                 </div>
             </div>
         }

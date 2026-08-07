@@ -1,5 +1,5 @@
 //#region imports
-import { Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ViewEncapsulation, ElementRef, OnInit, OnDestroy, inject, input } from '@angular/core'
 import { ModalService } from '@services/dialog-api/modal.service'
 //#endregion
 //#region component
@@ -8,13 +8,12 @@ import { ModalService } from '@services/dialog-api/modal.service'
     templateUrl: 'jw-modal.component.html',
     styleUrls: ['jw-modal.component.css'],
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 //#endregion
 export class ModalComponent implements OnInit, OnDestroy {
     //#region variables and services
-    @Input() id?: string
+    id = input<string | undefined>()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private element: any
     private modalService: ModalService = inject(ModalService)

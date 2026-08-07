@@ -1,10 +1,10 @@
 <div class="container mt-2">
     <div style="background: 'none'">
-        @if (numberPages && numberPages > 1) {
+        @if (numberPages() && numberPages() > 1) {
             <div class="mobile">
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="text-center row parent" [ngStyle]="{ left: '0px', 'background-color': 'transparent', 'flex-wrap': 'nowrap' }">
-                        <button #previousButton tooltip="'Предишна страница'" type="button" class="btn btn-primary" [disabled]="currentPage < 2" (click)="previousPage()">
+                        <button #previousButton tooltip="'Предишна страница'" type="button" class="btn btn-primary" [disabled]="currentPage() < 2" (click)="previousPage()">
                             <span class="material-symbols-outlined arrow-font"> arrow_back </span>
                         </button>
                         <div></div>
@@ -14,10 +14,10 @@
                                     <option value="{{ i + 1 }}">{{ i + 1 }}</option>
                                 }
                             </select>
-                            <div>от {{ numberPages }}</div>
+                            <div>от {{ numberPages() }}</div>
                         </div>
                         <div></div>
-                        <button type="button" tooltip="'Следваща страница'" [ngStyle]="{ right: '0px' }" class="btn btn-primary" [disabled]="currentPage === numberPages" (click)="nextPage()">
+                        <button type="button" tooltip="'Следваща страница'" [ngStyle]="{ right: '0px' }" class="btn btn-primary" [disabled]="currentPage() === numberPages()" (click)="nextPage()">
                             <span class="material-symbols-outlined arrow-font"> arrow_forward </span>
                         </button>
                     </div>
@@ -26,13 +26,13 @@
             <div class="noMobile">
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="text-center" [ngStyle]="{ 'background-color': 'transparent' }">
-                        <button #previousButton tooltip="'Предишна страница'" type="button" class="btn btn-primary" [hidden]="currentPage < 2" (click)="previousPage()">
+                        <button #previousButton tooltip="'Предишна страница'" type="button" class="btn btn-primary" [hidden]="currentPage() < 2" (click)="previousPage()">
                             <span class="material-symbols-outlined arrow-font"> arrow_back </span>
                         </button>
                         @for (item of arrayPages; track item) {
                             <button
                                 class="ms-1 me-1 pe-1 ps-1 btn-sm btn btnSize"
-                                [ngClass]="{ 'btn-primary': currentPage !== item, 'border-primary': currentPage === item, 'btn-light': currentPage === item }"
+                                [ngClass]="{ 'btn-primary': currentPage_ !== item, 'border-primary': currentPage_ === item, 'btn-light': currentPage_ === item }"
                                 (click)="click(item)">
                                 {{ item }}
                             </button>
@@ -44,7 +44,7 @@
                 </div>
             </div>
         }
-        @if (hasSort) {
+        @if (hasSort()) {
             <div class="mb-1 mt-2" [ngStyle]="{ padding: '0px', display: 'flex', 'justify-content': 'flex-end' }">
                 <div>
                     <div class="row">

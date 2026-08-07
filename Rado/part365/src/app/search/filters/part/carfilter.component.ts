@@ -1,20 +1,6 @@
 //#region import
 
-import {
-    AfterViewInit,
-    ChangeDetectorRef,
-    Component,
-    DestroyRef,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    inject,
-    Input,
-    OnInit,
-    Optional,
-    Output,
-    ViewChild,
-} from '@angular/core'
+import { AfterViewInit, ChangeDetectorRef, Component, computed, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, ViewChild } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs'
@@ -59,7 +45,6 @@ import { SearchPartService } from '@services/searchPart.service'
 import { SearchInputComponent } from '@components/custom-controls/searchInput/searchInput.component'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { HomeComponent } from '@components/search/home/Home.component'
 import { CompanyChoiseComponent } from '@app/component-main/company-choise/company-choise.component'
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
 import { ModificationChoiceComponent } from '@app/component-main/modification-choice/modification-choice.component'
@@ -69,6 +54,7 @@ import { SubcategoryChoiseComponent } from '@app/category-main/subcategory-chois
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { SearchBarComponent } from '@components/search-bar/search-bar.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
+import { HomeComponent } from '@app/search/home/Home.component'
 //#endregion
 //#region @Component
 @Component({
@@ -176,23 +162,21 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#region Output/Input
 
-    @Input() set filter(value: Filter) {
-        this._filter = value
-
-        this.updateForm(this._filter)
-    }
+    filter = input<Filter>()
     @ViewChild('categoriesElem') set categoriesRef(elRef: ElementRef<HTMLInputElement>) {
         if (elRef) {
             this.categoriesElement = elRef
         }
     }
-    @Output() changes: EventEmitter<object> = new EventEmitter<object>()
-    @Input() userId?: string
-    @Input() itemType?: number
-    @Input() query?: string
-    @Input() bus?: number
+    changes = output<object>()
+    userId = input<string | undefined>(undefined)
+    itemType = input<ItemType | undefined>(undefined)
+    query = input<string | undefined>(undefined)
+    bus = input<number | undefined>(undefined)
 
-    @Output() dropDownItems: EventEmitter<Dropdown[]> = new EventEmitter<Dropdown[]>()
+    bus_ = 0;
+    itemType_? : ItemType;
+    dropDownItems = output<Dropdown[]>()
     @HostListener('window:keydown', ['$event'])
     submitEvent(event: KeyboardEvent) {
         if (event.key === 'Enter') {
@@ -203,45 +187,36 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion
 
     //#region constructor
-    private formBuilder: FormBuilder
-    public categoryService: CategoryService
-    public subCategoryService: SubCategoryService
-    private userService: UserService
-    private homeService: HomeService
-    public modelService: ModelService
-    public popupService: PopUpService
-    public loadingService: LoadingService
-    public staticSelectionService: StaticSelectionService
-    private router: Router
-    private confirmService: ConfirmServiceService
-    private topService: TopService
-    private changeDetector: ChangeDetectorRef
-    private searchPartService: SearchPartService
-    public dialog: MatDialog
-    private destroyRef: DestroyRef
-    public activeRoute: ActivatedRoute
-    @Optional() public parent: HomeComponent
+    private formBuilder: FormBuilder = inject(FormBuilder)
+    public categoryService: CategoryService = inject(CategoryService)
+    public subCategoryService: SubCategoryService = inject(SubCategoryService)
+    private userService: UserService = inject(UserService)
+    private homeService: HomeService = inject(HomeService)
+    public modelService: ModelService = inject(ModelService)
+    public popupService: PopUpService = inject(PopUpService)
+    public loadingService: LoadingService = inject(LoadingService)
+    public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
+    private router: Router = inject(Router)
+    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    private topService: TopService = inject(TopService)
+    private changeDetector: ChangeDetectorRef = inject(ChangeDetectorRef)
+    private searchPartService: SearchPartService = inject(SearchPartService)
+    public dialog: MatDialog = inject(MatDialog)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    public activeRoute: ActivatedRoute = inject(ActivatedRoute)
+    public parent: HomeComponent = inject(HomeComponent, { optional: true }) as HomeComponent
 
     constructor() {
         super()
-        this.formBuilder = inject(FormBuilder)
-        this.categoryService = inject(CategoryService)
-        this.subCategoryService = inject(SubCategoryService)
-        this.userService = inject(UserService)
-        this.homeService = inject(HomeService)
-        this.modelService = inject(ModelService)
-        this.popupService = inject(PopUpService)
-        this.loadingService = inject(LoadingService)
-        this.staticSelectionService = inject(StaticSelectionService)
-        this.router = inject(Router)
-        this.confirmService = inject(ConfirmServiceService)
-        this.topService = inject(TopService)
-        this.changeDetector = inject(ChangeDetectorRef)
-        this.searchPartService = inject(SearchPartService)
-        this.dialog = inject(MatDialog)
-        this.destroyRef = inject(DestroyRef)
-        this.activeRoute = inject(ActivatedRoute)
-        this.parent = inject(HomeComponent, { optional: true }) as HomeComponent
+        effect(() => {
+            const filter = this.filter()
+            if (filter) {
+                this.updateForm(filter)
+            }
+
+            this.bus_ = computed(() => this.bus())() ?? 0;
+            this.itemType_ = computed(() => this.itemType())();
+        })
 
         this.filterForm = this.formBuilder.group({
             result: [],
@@ -292,20 +267,20 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     onBusChange(f: number): void {
-        this.bus = f
+        this.bus_ = f
 
-        if (this.bus) {
-            if (this.itemType != ItemType.AllBusAndPart && this.itemType != ItemType.OnlyBus && this.itemType != ItemType.BusPart) this.itemType = ItemType.AllBusAndPart
+        if (this.bus_) {
+            if (this.itemType_ != ItemType.AllBusAndPart && this.itemType_ != ItemType.OnlyBus && this.itemType_ != ItemType.BusPart) this.itemType_ = ItemType.AllBusAndPart
         } else {
-            if (this.itemType != ItemType.AllCarAndPart && this.itemType != ItemType.OnlyCar && this.itemType != ItemType.CarPart) this.itemType = ItemType.AllCarAndPart
+            if (this.itemType_ != ItemType.AllCarAndPart && this.itemType_ != ItemType.OnlyCar && this.itemType_ != ItemType.CarPart) this.itemType_ = ItemType.AllCarAndPart
         }
 
         this.filterForm.patchValue({ companyId: 0, modelsId: '', modificationsId: '', itemType: this.itemType })
-        this.onItemType(this.itemType)
+        this.onItemType(this.itemType_)
     }
 
     getRadios() {
-        if (this.bus) {
+        if (this.bus_) {
             return this.busRadios
         } else {
             return this.carRadios
@@ -319,9 +294,9 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     onItemType(f?: number): void {
-        this.itemType = f
-        if (this.bus) {
-            if (this.itemType == ItemType.BusPart) {
+        this.itemType_ = f
+        if (this.bus_) {
+            if (this.itemType_ == ItemType.BusPart) {
                 this.header = 'Търси част за бус'
                 this.countProperty = 'countParts'
             } else {
@@ -329,7 +304,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
                 this.countProperty = 'countCarBus'
             }
         } else {
-            if (this.itemType == ItemType.CarPart) {
+            if (this.itemType_ == ItemType.CarPart) {
                 this.header = 'Търси част за кола'
                 this.countProperty = 'countParts'
             } else {
@@ -338,14 +313,14 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             }
         }
 
-        if (this.itemType === ItemType.OnlyCar || this.itemType === ItemType.OnlyBus) this.showCategory = false
+        if (this.itemType_ === ItemType.OnlyCar || this.itemType_ === ItemType.OnlyBus) this.showCategory = false
         else this.showCategory = true
         this.parent.setShowCategory(this.showCategory)
     }
 
     ngOnInit() {
         this.subscribeEvents()
-        this.onItemType(this.itemType)
+        this.onItemType(this.itemType_)
         this.engineTypes = this.staticSelectionService.EngineType.map(replaceFirst)
         this.gearBoxTypes = this.staticSelectionService.GearboxType.map(replaceFirst)
         this.categoryService.fetch().subscribe((res) => {

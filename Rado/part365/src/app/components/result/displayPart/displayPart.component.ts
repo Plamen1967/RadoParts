@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, HostListener, inject, input, Input, OnDestroy, OnInit, output } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -57,11 +57,10 @@ import { PathService } from '@services/path.service'
         PriceComponent,
         PartViewComponent,
         TyreViewComponent,
-        NgStyle
-    ]
+        NgStyle,
+    ],
 })
 
-  
 //#endregion
 export class DisplayPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
     //#region members
@@ -96,13 +95,13 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     isPart?: boolean
     isTyre?: boolean
     notLoaded = true
-    dealerWebPage = false;
-    updateId?: number;
-    highlighted_?: number;
+    dealerWebPage = false
+    updateId?: number
+    highlighted_?: number
 
-    @HostListener('click',)
+    @HostListener('click')
     onclick() {
-        this.view();
+        this.view()
     }
 
     galleryOptions: NgxGalleryOptions[] = [
@@ -114,41 +113,28 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     ]
     //#endregion
     //#region Input/Output
-    @Input() showPhones = true;
-    @Input() checkoutId?: number
-    @Input() allowUpdate = true
-    @Input() allowBuy = true
-    @Input() allowView = true
-    @Input() set highlighted(value) {
-        this.highlighted_ = value;
-    }
+    showPhones = input<boolean>(true)
+    checkoutId = input<number | undefined>(undefined)
+    allowUpdate = input<boolean>(true)
+    allowBuy = input<boolean>(true)
+    allowView = input<boolean>(true)
+    highlighted = input<number | undefined>(undefined)
+    next = input<boolean>(false)
+    previous = input<boolean>(false)
 
-    get highlighted() {
-        return this.highlighted_
-    }
-    @Input() set next(value: boolean) {
-        if (!value) this.nextArrow = true
-        else this.nextArrow = undefined
-    }
-    @Input() userId?: number
-    @Input() query?: number
-    @Input() showFavourite = true;
+    userId = input<number>()
+    query = input<number>()
+    showFavourite = input<boolean>(true)
+
     public show() {
         // console.log(`Party is visible ${this.part.companyName} ${this.part.modelName} ${this.part.modificationName} ${this.part.price}`)
     }
 
-
-    @Input() set previous(value: boolean) {
-        if (!value) this.previousArrow = true
-        else this.previousArrow = undefined
-    }
-
-    @Input({required: true}) showDealer?: boolean = true;
-    @Output() filterByDealer = new EventEmitter<number>()
-    @Output() action = new EventEmitter<ActionType>()
-    @Output() checkoutUpdated = new EventEmitter()
-
-    @Output() dealerClick: EventEmitter<number> = new EventEmitter<number>()
+    showDealer = input.required<boolean>()
+    filterByDealer = output<number>()
+    action = output<ActionType>()
+    checkoutUpdated = output()
+    dealerClick = output<number>()
     @Input() set part(value: DisplayPartView) {
         this.item = value
         this.approvedStatus = this.item.approved
@@ -158,9 +144,8 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         this.description = this.item.description
         this.user = this.authernticationService.currentUserValue
         this.currency = this.labels.CURRENCY
-        this.dealer = this.item.dealer === 1; // TODO this.item.dealer === 1
-        if (this.item.itemType)
-            this.isPart = isPart(this.item.itemType);
+        this.dealer = this.item.dealer === 1 // TODO this.item.dealer === 1
+        if (this.item.itemType) this.isPart = isPart(this.item.itemType)
         this.isTyre = this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre
         this.isMobile = isMobile()
         this.region = this.getRegion()
@@ -178,40 +163,47 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         this.sellerNamePhones = `${this.sellerName} ${this.phones}`
     }
     get part() {
-        return this.item;
+        return this.item
     }
 
     get isHeighligthed() {
-        return this.highlighted === this.part.id; 
+        return this.highlighted() === this.part.id
     }
-        private authernticationService: AuthenticationService = inject(AuthenticationService)
-        public partService: PartServiceService = inject(PartServiceService)
-        private carService: CarService = inject(CarService)
-        private checkoutService: CheckOutService = inject(CheckOutService)
-        private popupService: PopUpService = inject(PopUpService)
-        private localStorageService: LocalStorageService = inject(LocalStorageService)  
-        private homeService: HomeService = inject(HomeService)
-        public breakpointObserver: BreakpointObserver = inject(BreakpointObserver)
-        private router: Router = inject(Router) 
-        private staticService: StaticSelectionService = inject(StaticSelectionService)
-        private tyreService: TyreService = inject(TyreService)
-        public loadingService: LoadingService = inject(LoadingService)
-        public searchPartService: SearchPartService = inject(SearchPartService)
-        private confirmationService: ConfirmServiceService = inject(ConfirmServiceService)
-        private alertService: AlertService = inject(AlertService)
-        private pathService: PathService = inject(PathService)
-        private route: ActivatedRoute = inject(ActivatedRoute)
+    private authernticationService: AuthenticationService = inject(AuthenticationService)
+    public partService: PartServiceService = inject(PartServiceService)
+    private carService: CarService = inject(CarService)
+    private checkoutService: CheckOutService = inject(CheckOutService)
+    private popupService: PopUpService = inject(PopUpService)
+    private localStorageService: LocalStorageService = inject(LocalStorageService)
+    private homeService: HomeService = inject(HomeService)
+    public breakpointObserver: BreakpointObserver = inject(BreakpointObserver)
+    private router: Router = inject(Router)
+    private staticService: StaticSelectionService = inject(StaticSelectionService)
+    private tyreService: TyreService = inject(TyreService)
+    public loadingService: LoadingService = inject(LoadingService)
+    public searchPartService: SearchPartService = inject(SearchPartService)
+    private confirmationService: ConfirmServiceService = inject(ConfirmServiceService)
+    private alertService: AlertService = inject(AlertService)
+    private pathService: PathService = inject(PathService)
+    private route: ActivatedRoute = inject(ActivatedRoute)
 
     //#endregion
     //#region ctor
     constructor() {
+        effect(() => {
+            if (!this.next()) this.nextArrow = true
+            else this.nextArrow = undefined
+
+            if (!this.previous()) this.previousArrow = true
+            else this.previousArrow = undefined
+        })
         super()
-        this.dealerWebPage = this.pathService.userPage;
+        this.dealerWebPage = this.pathService.userPage
     }
     ngAfterViewInit(): void {
-        if (this.isHeighligthed) goToPosition(this.highlighted )
+        if (this.isHeighligthed) goToPosition(this.highlighted())
 
-        return;
+        return
     }
 
     ngOnDestroy(): void {
@@ -219,7 +211,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
 
     ngOnInit() {
-        return;
+        return
         // this.route.queryParams.pipe().subscribe((params) => {
         // })
         // this.breakpointObserver.observe(['(min-width: 560px)']).subscribe((state: BreakpointState) => {
@@ -238,8 +230,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
 
     updateImages($event: NgxGalleryImage[]) {
         this.notLoaded = false
-        if (this.item)
-        {
+        if (this.item) {
             this.item.ngImages = $event
             this.numberImages = this.item.numberImages
         }
@@ -255,7 +246,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         return ''
     }
     view() {
-        const manager = this.homeService.getDataManager(this.query!)
+        const manager = this.homeService.getDataManager(this.query()!)
         if (manager) manager.currentId = this.part.id!
         this.viewItem()
     }
@@ -281,40 +272,40 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
 
     get approved() {
         if (this.authernticationService.admin) return this.part.approved
-        if (this.highlighted) return undefined
+        if (this.highlighted()) return undefined
         return -1
     }
 
     get sellerWebPage() {
         if (this.item.dealer) {
-            const sellerWebPage = this.part.sellerWebPage ? `${this.part.sellerWebPage}` : `/dealerwebpage?userId=${this.item?.userId}`;
-            return sellerWebPage;
-            }
-        return "";
+            const sellerWebPage = this.part.sellerWebPage ? `${this.part.sellerWebPage}` : `/dealerwebpage?userId=${this.item?.userId}`
+            return sellerWebPage
+        }
+        return ''
     }
     dealerClicked() {
         const filter: Filter = Object.assign({}, { id: 0, userId: this.item?.userId })
         this.loadingService.open('Зареждане на резултатите')
-        this.searchPartService.search(filter).subscribe(
-            (res) => {
+        this.searchPartService.search(filter).subscribe({
+            next: (res) => {
                 this.loadingService.close()
                 const dataManager = this.homeService.updateData(res.filter?.id ?? 0, filter)
                 dataManager.updateData(res)
                 if (dataManager.noParts()) {
-                    this.confirmationService.OKCancel('Съобщение', this.labels.NORESULTS);
+                    this.confirmationService.OKCancel('Съобщение', this.labels.NORESULTS)
                 } else {
                     if (res.filter?.id) this.router.navigate(['/dealerwebpage'], { queryParams: { query: res.filter.id, userId: this.item?.userId } })
                     else this.router.navigate(['/dealerwebpage'], { queryParams: { userId: this.item?.userId } })
                 }
             },
-            (error) => {
+            error: (error) => {
                 this.loadingService.close()
                 console.log(error)
             },
-            () => {
-              return
-            }
-        )
+            complete: () => {
+                return
+            },
+        })
         // event.stopPropagation();
         // this.filterByDealer.emit(this.part.userId)
     }
@@ -328,10 +319,9 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     // }
 
     getRegion() {
-        const region = this.part.partTagsMap?.get("Регион");
+        const region = this.part.partTagsMap?.get('Регион')
 
-        if (region)  
-            return region
+        if (region) return region
         return ''
     }
 
@@ -344,8 +334,8 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
 
     get canEdit() {
-        if (this.allowUpdate == false) return false;
-        if (this.pathService.userPage) return false;
+        if (this.allowUpdate() == false) return false
+        if (this.pathService.userPage) return false
         return this.logged && this.authernticationService.currentUserValue?.userId === this.part.userId && !this.userId
     }
 
@@ -377,7 +367,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         else if (part.itemType === ItemType.RimWithTyre) this.message = `Искате ли да изтриете Джантата с гума?`
 
         this.message = `Искате ли да изтриете обявата?`
-        this.confirmationService.OKCancel(this.labels.MESSAGE, this.message).subscribe(result => {
+        this.confirmationService.OKCancel(this.labels.MESSAGE, this.message).subscribe((result) => {
             if (result === OKCancelOption.OK) {
                 this.ok()
             }
@@ -392,7 +382,6 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         else if (this.item.itemType === ItemType.CarPart || this.item.itemType === ItemType.BusPart) this.deletePart()
         else if (this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre) this.deleteTyre()
     }
-
 
     deleteCar() {
         this.carService.deleteCar(this.part.id!).subscribe({
@@ -422,14 +411,14 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
                 this.alertService.error(error)
             },
             complete: () => {
-              return
+                return
             },
         })
     }
 
     deleteTyre() {
         if (this.item?.id === undefined) return
-        const id = this.item?.id;
+        const id = this.item?.id
 
         this.tyreService.deleteItem(id).subscribe({
             next: () => {
@@ -441,7 +430,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
                 this.alertService.error(error)
             },
             complete: () => {
-              return
+                return
             },
         })
     }

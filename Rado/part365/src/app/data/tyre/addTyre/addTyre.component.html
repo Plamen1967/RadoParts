@@ -22,7 +22,7 @@
             <h5>Гума</h5>
             <div class="row">
                 <div class="col-sm-2 min150px">
-                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" [submitted]="submitted" [required]="true" data-cy="tyreWidth" [data]="tyreWidth" (onClose)="focus($event)">
+                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" [submitted]="submitted" [required]="true" data-cy="tyreWidth" [data]="tyreWidth" (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
                 <div class="col-sm-2 min200px">
@@ -33,7 +33,7 @@
                         [required]="true"
                         data-cy="tyreHeight"
                         [data]="tyreHeight"
-                        (onClose)="focus($event)">
+                        (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
                 <div class="col-sm-2 min150px">
@@ -44,7 +44,7 @@
                         [required]="true"
                         data-cy="tyreRadius"
                         [data]="tyreRadius"
-                        (onClose)="focus($event)">
+                        (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
                 @if (itemType === 3) {
@@ -53,7 +53,7 @@
                     </div>
                 }
                 <div class="col-sm-2 min150px">
-                    <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" [submitted]="submitted" data-cy="tyreType" [data]="tyreTypes" (onClose)="focus($event)" [required]="true">
+                    <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" [submitted]="submitted" data-cy="tyreType" [data]="tyreTypes" (onCloseEvent)="focus($event)" [required]="true">
                     </app-select>
                 </div>
                 <div class="col-sm-3 min200px">
@@ -64,7 +64,7 @@
                         label="{{ labels.TYRE_PRODUCER }}"
                         [data]="tyreProducers"
                         [submitted]="submitted"
-                        (onClose)="focus($event)"
+                        (onCloseEvent)="focus($event)"
                         [required]="false">
                     </app-select>
                 </div>
@@ -74,11 +74,11 @@
             <div class="row mb-2">
                 <div class="d-inline-flex align-items-end">
                     <div class="col-sm-1 control min50px max100px me-2">
-                        <app-select id="month" tooltip="'Mесец DOT'" formControlName="monthDOT" data-cy="month" label="DOT" [data]="months" (onClose)="focus($event)" [submitted]="submitted">
+                        <app-select id="month" tooltip="'Mесец DOT'" formControlName="monthDOT" data-cy="month" label="DOT" [data]="months" (onCloseEvent)="focus($event)" [submitted]="submitted">
                         </app-select>
                     </div>
                     <div class="col-sm-1 control min50px max100px">
-                        <app-select id="year" formControlName="yearDOT" data-cy="year" [data]="years" (onClose)="focus($event)" [submitted]="submitted"> </app-select>
+                        <app-select id="year" formControlName="yearDOT" data-cy="year" [data]="years" (onCloseEvent)="focus($event)" [submitted]="submitted"> </app-select>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
             <h5>Джанта</h5>
             <div class="row">
                 <div class="col-sm-4 control max250px">
-                    <app-company-choise id="companyId" [showCount]="false" formControlName="companyId" data-cy="companyId" [all]="true" (onClose)="focus($event)" [required]="true">
+                    <app-company-choise id="companyId" [showCount]="false" formControlName="companyId" data-cy="companyId" [all]="true" (onCloseEvent)="focus($event)" [required]="true">
                     </app-company-choise>
                 </div>
                 @if (this.companyId) {
@@ -114,7 +114,7 @@
                             [required]="true"
                             data-cy="tyreRadius"
                             [data]="tyreRadius"
-                            (onClose)="focus($event)">
+                            (onCloseEvent)="focus($event)">
                         </app-select>
                     </div>
                 }
@@ -128,7 +128,7 @@
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimMaterial"
-                        (onClose)="focus($event)"
+                        (onCloseEvent)="focus($event)"
                         [submitted]="submitted">
                     </app-select>
                 </div>
@@ -142,7 +142,7 @@
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimOffset"
-                        (onClose)="focus($event)"
+                        (onCloseEvent)="focus($event)"
                         [submitted]="submitted">
                     </app-select>
                 </div>
@@ -154,7 +154,7 @@
                         data-cy="rimBoltCount"
                         label="Брой Болтове"
                         [data]="rimBoltCount"
-                        (onClose)="focus($event)"
+                        (onCloseEvent)="focus($event)"
                         [required]="true"
                         [submitted]="submitted">
                     </app-select>
@@ -167,7 +167,7 @@
                         data-cy="rimBoltDistance"
                         label="Междуболтово разстояние"
                         [data]="rimBoltDistances"
-                        (onClose)="focus($event)"
+                        (onCloseEvent)="focus($event)"
                         [submitted]="submitted">
                     </app-select>
                 </div>
@@ -179,7 +179,7 @@
                         data-cy="rimCenter"
                         label="Център"
                         [data]="rimCenters"
-                        (onClose)="focus($event)"
+                        (onCloseEvent)="focus($event)"
                         [submitted]="submitted">
                     </app-select>
                 </div>
@@ -192,7 +192,7 @@
         </div>
         <div class="row mb-2">
             <div class="col-sm-4">
-                <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" data-cy="region" [data]="regions" (onClose)="focus($event)" [submitted]="submitted">
+                <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" data-cy="region" [data]="regions" (onCloseEvent)="focus($event)" [submitted]="submitted">
                 </app-select>
             </div>
         </div>
@@ -217,7 +217,7 @@
             <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div> -->
         <div class="row mt-3" style="position: relative">
-            <app-imagelist [id]="itemId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+            <app-imagelist [id]="itemId_!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
                 <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>

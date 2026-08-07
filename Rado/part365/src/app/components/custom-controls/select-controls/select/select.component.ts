@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, EventEmitter, input, Input, model, Output } from '@angular/core'
+import { Component, effect, input, Input, model, output } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { SelectBaseComponent } from './select-base/select-base.component'
@@ -12,16 +12,27 @@ import { FormValueControl } from '@angular/forms/signals'
 })
 export class SelectComponent implements FormValueControl<number | undefined> {
     value = model<number | undefined>(undefined);
-    @Input() type?: number
-    @Input() label?: string
-    @Input() hint?: string
-    readonly hasError = input(false);
-    readonly isDisabled = input(false);
-    readonly IsInvalid = input(false);
-    readonly IsRequired = input(false);
+    type = input<number>(0);
+    label = input<string | undefined>();
+    hint = input<string | undefined>();
+    hasError = input(false);
+    isDisabled = input(false);
+    IsInvalid = input(false);
+    IsRequired = input(false);
+    group = input<boolean | undefined>()
+    groupSelection = input(false)
+    submitted = input(false)
+    id = input('selectId')
     // readonly error = input(ValidationErrors | null);
 
-
+    error() {
+        return this.hasError() ? { required: true } : null
+    }
+    
+    @Input() set initialValue(value: number | undefined) {
+        this.value.set(value)
+        this.selectedValue = value
+    }
     @Input() set data(data_: SelectOption[] | undefined) {
         this._data = data_
         this.selectedValue = this.value();
@@ -34,22 +45,9 @@ export class SelectComponent implements FormValueControl<number | undefined> {
         return this._data
     }
 
-    error() {
-        return this.hasError() ? { required: true } : null
-    }
-    
-    @Input() set initialValue(value: number | undefined) {
-        this.value.set(value)
-        this.selectedValue = value
-    }
-    @Input() group?: boolean
-    @Input() groupSelection = false
-    @Input() submitted = false
-    @Input() id = 'selectId'
 
-    @Output() changeOption: EventEmitter<number | undefined> = new EventEmitter<number | undefined>()
-    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-    @Output() onClose: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
+    changeOption = output<number | undefined>()
+    closeEvent = output()
     _data?: SelectOption[] = []
     first = true
     selectedValue?: number | undefined
@@ -110,7 +108,7 @@ export class SelectComponent implements FormValueControl<number | undefined> {
     // }
 
     close() {
-        this.onClose.emit()
+        this.closeEvent.emit(undefined)
     }
 
     // override get contolName(): string {

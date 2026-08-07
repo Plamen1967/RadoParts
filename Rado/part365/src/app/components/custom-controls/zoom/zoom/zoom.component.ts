@@ -1,5 +1,5 @@
 //#region imports
-import { Component, inject, Inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, Inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { NgxImageZoomModule } from 'ngx-image-zoom'
 //#endregion
@@ -8,7 +8,6 @@ import { NgxImageZoomModule } from 'ngx-image-zoom'
     selector: 'app-zoom',
     templateUrl: './zoom.component.html',
     styleUrls: ['./zoom.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgxImageZoomModule],
 })
 //#endregion

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DisplayPartView } from '@model/displayPartView'
@@ -8,7 +8,6 @@ import { ItemType } from '@model/enum/itemType.enum'
     selector: 'app-tyredetailview',
     templateUrl: './tyreDetailView.component.html',
     styleUrls: ['./tyreDetailView.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DataRowComponent],
 })
 export class TyreDetailViewComponent extends HelperComponent {

@@ -1,11 +1,10 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { AuthenticationService } from '@services/authentication/authentication.service'
 
 @Component({
     selector: 'app-suspended',
     templateUrl: './suspended.component.html',
     styleUrls: ['./suspended.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 export class SuspendedComponent {

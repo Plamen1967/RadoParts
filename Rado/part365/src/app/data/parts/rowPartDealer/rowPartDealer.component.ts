@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, effect, inject, input, output } from '@angular/core'
 import { convertDate, positionDescription } from '@app/functions/functions'
 import { RowComponent } from '@components/custom-controls/partRow/row.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -11,12 +11,12 @@ import { PartServiceService } from '@services/part/partService.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { Router } from '@angular/router'
 import { InfoLine } from '@model/infoLine'
-
+//#endregion
+//#region component
 @Component({
     selector: 'app-rowpartdealer',
     templateUrl: './rowPartDealer.component.html',
     styleUrls: ['./rowPartDealer.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RowComponent],
 })
 //#endregion
@@ -32,27 +32,12 @@ export class RowPartDealerComponent extends HelperComponent {
     lines: InfoLine[] = []
     description!: string
 
-    @Input() set part(val: PartView) {
-        this.partView_ = val
-        this.engineTypeDesc_ = this.staticService.engineTypeDescription(this.partView_.engineType!)
-        this.gearboxDesc_ = this.staticService.GearboxType.filter((x) => x.value === this.partView_?.gearboxType)[0]?.text
-        this.positionDesc_ = positionDescription(this.partView_)
-        this.modifiedTime_ = convertDate(this.partView_.modifiedTime!)
-        const _phones = []
-        if (this.partView_.sellerPhone) _phones.push(this.partView_.sellerPhone)
-        if (this.partView_.sellerPhone2) _phones.push(this.partView_.sellerPhone2)
+    part = input<PartView>()
 
-        this.phones_ = _phones.join('/')
-        const index = this.staticService.Region.findIndex((x) => x.value === this.partView_?.regionId)
-        if (this.partView_ && index !== -1) this.region_ = this.staticService.Region.find((x) => x.value === this.partView_?.regionId)?.text
-
-        this.generatelines()
-    }
-
-    @Input() checkoutId?: number
-    @Input() highlighted?: boolean = false
-    @Input() allowUpdate?: boolean
-    @Output() action = new EventEmitter<DealerActionType>()
+    checkoutId = input<number>()
+    highlighted = input<boolean | undefined>(false)
+    allowUpdate = input<boolean | undefined>()
+    action = output<DealerActionType>()
     private authernticationService: AuthenticationService = inject(AuthenticationService)
     private router: Router = inject(Router)
     public partService: PartServiceService = inject(PartServiceService)
@@ -63,6 +48,26 @@ export class RowPartDealerComponent extends HelperComponent {
     //#region c'tor
     constructor() {
         super()
+        effect(() =>
+        {
+            if (this.part())
+            {
+                this.partView_ = this.part()
+                this.engineTypeDesc_ = this.staticService.engineTypeDescription(this.partView_!.engineType!)
+                this.gearboxDesc_ = this.staticService.GearboxType.filter((x) => x.value === this.partView_?.gearboxType)[0]?.text
+                this.positionDesc_ = positionDescription(this.partView_!)
+                this.modifiedTime_ = convertDate(this.partView_!.modifiedTime!)
+                const _phones = []
+                if (this.partView_!.sellerPhone) _phones.push(this.partView_!.sellerPhone)
+                if (this.partView_!.sellerPhone2) _phones.push(this.partView_!.sellerPhone2)
+
+                this.phones_ = _phones.join('/')
+                const index = this.staticService.Region.findIndex((x) => x.value === this.partView_?.regionId)
+                if (this.partView_ && index !== -1) this.region_ = this.staticService.Region.find((x) => x.value === this.partView_?.regionId)?.text
+
+                this.generatelines()
+            }
+        })
     }
 
     //#endregion

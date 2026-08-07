@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, inject, OnInit, ViewChild, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -27,7 +27,6 @@ import { DealerWebPageComponent } from '../../dealerWebPage/dealerWebPage.compon
     selector: 'app-stock',
     templateUrl: './stock.component.html',
     styleUrls: ['./stock.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgStyle, RadioGroupListComponent, FormsModule, ResultComponent, UserViewPartComponent],
 })
 //#endregion
@@ -46,7 +45,7 @@ export default class StockComponent implements OnInit {
     dataManager?: DataManager
 
     @ViewChild(ResultComponent) result: ResultComponent | undefined
-    @Output() type = new EventEmitter<ItemType>()
+    type = output<ItemType>()
     radios: RadioButton[] = [
         { label: 'Всички', id: ItemType.All, count: 0 },
         { label: 'Част Кола', id: ItemType.CarPart, count: 0 },

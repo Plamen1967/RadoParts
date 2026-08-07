@@ -3,7 +3,7 @@ export interface INgxGalleryAction {
     disabled?: boolean;
     titleText?: string;
 
-    onClick: (event: Event, index: number) => void;
+    clickEvent: (event: Event, index: number) => void;
 }
 
 export class NgxGalleryAction implements INgxGalleryAction {
@@ -11,13 +11,13 @@ export class NgxGalleryAction implements INgxGalleryAction {
     disabled?: boolean;
     titleText?: string;
 
-    onClick: (event: Event, index: number) => void;
+    clickEvent: (event: Event, index: number) => void;
 
     constructor(action: INgxGalleryAction) {
         this.icon = action.icon;
         this.disabled = action.disabled ? action.disabled : false;
         this.titleText = action.titleText ? action.titleText : '';
 
-        this.onClick = action.onClick;
+        this.clickEvent = action.clickEvent;
     }
 }

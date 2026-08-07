@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { Observable, Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators'
@@ -48,7 +48,6 @@ import { MenuOption } from '@model/menuOption'
     selector: 'app-listtyre',
     templateUrl: './listTyre.component.html',
     styleUrls: ['./listTyre.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         AsyncPipe,
         RadioGroupListComponent,

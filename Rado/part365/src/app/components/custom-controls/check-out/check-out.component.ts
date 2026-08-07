@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, inject, OnInit, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -21,7 +21,6 @@ import { noop } from 'rxjs'
     selector: 'app-check-out',
     templateUrl: './check-out.component.html',
     styleUrls: ['./check-out.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DisplayPartComponent, UserViewPartComponent],
 })
 export class CheckOutComponent extends HelperComponent implements OnInit {
@@ -45,7 +44,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     loggerService: LoggerService = inject(LoggerService)
     destroyRef: DestroyRef = inject(DestroyRef)
 
-    @Output() backEvent: EventEmitter<void> = new EventEmitter<void>()
+    backEvent = output<void>()
     constructor() {
         super()
 

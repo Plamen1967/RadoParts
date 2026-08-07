@@ -1,5 +1,5 @@
 //#region imports
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthenticationService } from '@services/authentication/authentication.service'
 //#endregion
@@ -8,7 +8,6 @@ import { AuthenticationService } from '@services/authentication/authentication.s
     imports: [],
     selector: 'app-addnew',
     templateUrl: './add-new.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./add-new.component.css'],
 })
 //#endregion

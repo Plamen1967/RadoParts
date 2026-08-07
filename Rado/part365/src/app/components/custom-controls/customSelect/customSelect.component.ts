@@ -1,5 +1,5 @@
 //#region  Imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, inject, Input, OnInit, Output, model, effect, input } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, OnInit, model, effect, input, output } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { NgClass, NgStyle } from '@angular/common'
 import { ButtonGroupComponent } from '../buttonGroup/buttongroup.component'
@@ -26,34 +26,27 @@ export class CustomSelectComponent implements OnInit, AfterViewInit, FormValueCo
     data_: OptionItem[] = []
     clearBox?: boolean
 
-    @Output() changeOption: EventEmitter<number | undefined> = new EventEmitter<number | undefined>()
-    @Output() closeDialog: EventEmitter<ElementRef> = new EventEmitter<ElementRef>()
-    @Input() displayProperty = 'text'
-    @Input() valueProperty = 'value'
-    @Input() countProperty = 'count'
-    @Input() groupSelection = false
-    @Input() set data(data_: OptionItem[]) {
-        this.data_ = [...data_]
-
-        if (this.groupDisabled) {
-            this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
-        }
-        this._selection = this.data_?.find((item) => item.id === this.value())?.description ?? this.placeHolder
-    }
-    @Input() tooltip?: string
-    @Input() label?: string
-    @Input() hint?: string
-    @Input() showLetter?: boolean
-    @Input() letter?: boolean
-    @Input() submitted?: boolean
-    @Input() isRequired?: boolean
-    @Input() isInvalid?: boolean
-    @Input() showAll = true
-    @Input() groupDisabled = false
-    @Input() useFilter = false
-    @Input() multiSelection = false
-    @Input() placeHolder?: string
-    readonly isDisabled = input(false);
+    changeOption = output<number | undefined>()
+    closeDialog = output<ElementRef>()
+    displayProperty = input<string>('text')
+    valueProperty = input<string>('value')
+    countProperty = input<string>('count')
+    groupSelection = input<boolean>(false)
+    tooltip = input<string | undefined>(undefined)
+    label = input<string | undefined>(undefined)
+    hint = input<string | undefined>(undefined)
+    showLetter = input<boolean | undefined>(undefined)
+    letter = input<boolean | undefined>(undefined)
+    submitted = input<boolean | undefined>(undefined)
+    isRequired = input<boolean | undefined>(undefined)
+    isInvalid = input<boolean | undefined>(undefined)
+    showAll = input<boolean>(true)
+    groupDisabled = input<boolean>(false)
+    useFilter = input<boolean>(false)
+    multiSelection = input<boolean>(false)
+    placeHolder = input<string | undefined>(undefined)
+    isDisabled = input(false);
+    data = input<OptionItem[] | undefined>(undefined)
     public dialog: MatDialog = inject(MatDialog)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
@@ -61,12 +54,21 @@ export class CustomSelectComponent implements OnInit, AfterViewInit, FormValueCo
         effect(() => {
             this.clearBox = this.value() ? true : false
             this.selectedValue = this.value()
-            this._selection = this.data_?.find((item) => item.id === this.value())?.description ?? this.placeHolder
+            this._selection = this.data_?.find((item) => item.id === this.value())?.description ?? this.placeHolder()
             this.changeOption.emit(this.value())
+            if (this.data()) 
+            {
+                this.data_ = [...this.data()]
+
+            if (this.groupDisabled()) {
+                this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
+            }
+                this._selection = this.data_?.find((item) => item.id === this.value())?.description ?? this.placeHolder()
+            }
         })
     }   
     ngOnInit() {
-        this._selection = this.placeHolder
+        this._selection = this.placeHolder()
     }
 
     ngAfterViewInit(): void {
@@ -75,11 +77,11 @@ export class CustomSelectComponent implements OnInit, AfterViewInit, FormValueCo
 
     get errorMessage() {
         const errorService: ErrorService = inject(ErrorService)
-        return errorService.getMessage(this.label!, this.isInvalid ? { required: true } : null)
+        return errorService.getMessage(this.label() ?? '', this.isInvalid() ? { required: true } : null)
     }
 
     get controlName(): string {
-        return this.label ?? this.placeHolder ?? 'Избери'
+        return this.label() ?? this.placeHolder() ?? 'Избери'
     }
     clickSelect() {
         if (!this.data_) return
@@ -107,7 +109,7 @@ export class CustomSelectComponent implements OnInit, AfterViewInit, FormValueCo
     }
 
     clear() {
-        this._selection = this.placeHolder
+        this._selection = this.placeHolder()
         this.value.set(undefined)
     }
     // get contolName(): string {

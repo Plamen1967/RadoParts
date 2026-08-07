@@ -1,15 +1,15 @@
 <form [formGroup]="categoryForm">
-    @if (multiselection) {
+    @if (multiselection()) {
         <app-multiselection
-        [required]="IsRequired"
+        [required]="IsRequired()"
         id="categoriesId_int"
         label="Избери категория"
         formControlName="categoriesId_int"
         placeHolder="Избери категория"
-        [submitted]="submitted"
+        [submitted]="submitted()"
         [appToolTip]="'Избери категория'"
             [data]="categories"
-            [multiSelection]="multiselection"
+            [multiSelection]="multiselection()"
             data-cy="categoriesId"
             data-bs-toggle="tooltip"
             data-bs-placement="right"
@@ -18,8 +18,8 @@
         </app-multiselection>
     } @else {
         <app-customselect
-        [IsRequired]="IsRequired"
-        [submitted]="submitted"
+        [IsRequired]="IsRequired()"
+        [submitted]="submitted()"
         id="categoriesId_int"
         title="Избери категория"
             placeHolder="Избери категория"

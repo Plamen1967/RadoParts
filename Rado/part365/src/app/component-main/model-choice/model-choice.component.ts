@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, Input, OnInit, model } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, OnInit, model, input, effect } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -30,20 +30,18 @@ export class ModelChoiceComponent implements FormValueControl<number | undefined
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
 
-    @Input() multiselection = true
-    @Input() set companyId(value: number) {
-        this.onCompanyChage(value)
-    }
-    @Input() useFilter = true
-    @Input() useLetter = true
-    @Input() showLetter = true
-    @Input() groupSelection = true
-    @Input() all = false
-    @Input() submitted = false
-    @Input() IsRequired = false
-    @Input() userId = 0
-    @Input() showCount = false
-    @Input() itemType: ItemType = ItemType.All
+    multiselection = input<boolean>(true)
+    companyId = input<number>(0)
+    useFilter = input<boolean>(true)
+    useLetter = input<boolean>(true)
+    showLetter = input<boolean>(true)
+    groupSelection = input<boolean>(true)
+    all = input<boolean>(false)
+    submitted = input<boolean>(false)
+    IsRequired = input<boolean>(false)
+    userId = input<number | undefined>(undefined)
+    showCount = input<boolean>(false)
+    itemType = input<ItemType>(ItemType.All)
     //#region services
     public modelService: ModelService = inject(ModelService)
     private formBuilder: FormBuilder = inject(FormBuilder)
@@ -55,6 +53,9 @@ export class ModelChoiceComponent implements FormValueControl<number | undefined
     constructor() {
         this.modelForm = this.formBuilder.group({
             modelsId_int: [0],
+        })
+        effect(() => {
+            if (this.companyId()) this.onCompanyChage(this.companyId())
         })
     }
     ngAfterViewInit(): void {
@@ -84,13 +85,13 @@ export class ModelChoiceComponent implements FormValueControl<number | undefined
 
     filter(item: OptionItem) {
         if (!this.groupSelection && item.id == item.groupModelId) return false
-        if (this.all) return true
+        if (this.all()) return true
 
         return item.count != 0 || item.id == 0
     }
 
     onCompanyChage(value: number) {
-        if (this.userId) {
+        if (this.userId()) {
             if (value) {
                 this.modelService
                     .fetchByCompanyIdByUserId(value)
@@ -145,8 +146,8 @@ export class ModelChoiceComponent implements FormValueControl<number | undefined
         }
     }
     updateCount() {
-        if (this.itemType == ItemType.OnlyBus || this.itemType == ItemType.OnlyCar) this.models.forEach((item) => (item.count = item.countCars))
-        else if (this.itemType == ItemType.CarPart || this.itemType == ItemType.BusPart) this.models.forEach((item) => (item.count = item.countParts))
+        if (this.itemType() == ItemType.OnlyBus || this.itemType() == ItemType.OnlyCar) this.models.forEach((item) => (item.count = item.countCars))
+        else if (this.itemType() == ItemType.CarPart || this.itemType() == ItemType.BusPart) this.models.forEach((item) => (item.count = item.countParts))
         else this.models.forEach((item) => (item.count = item.countParts + item.countCars))
     }
 }

@@ -1,5 +1,5 @@
 //#region
-import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { User } from '@model/user'
 import { UserService } from '@services/user.service'
 import { UserHeaderComponent } from '../../userHeader/userHeader.component'
@@ -10,7 +10,6 @@ import { DealerWebPageComponent } from '../../dealerWebPage/dealerWebPage.compon
     selector: 'app-contact',
     templateUrl: './contact.component.html',
     styleUrls: ['./contact.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [UserHeaderComponent],
 })
 //#endregion

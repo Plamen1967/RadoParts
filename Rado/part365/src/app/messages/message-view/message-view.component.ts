@@ -1,4 +1,4 @@
-import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, input } from '@angular/core'
 import { Message } from '../model/Message'
 import { MessageService } from '../service/messageService'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -7,19 +7,18 @@ import { LoggerService } from '@services/authentication/logger.service'
 @Component({
     selector: 'app-message-view',
     templateUrl: './message-view.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./message-view.component.css'],
 })
 export class MessageViewComponent {
-    @Input({ required: true }) message: Message | undefined
+    message = input.required<Message>()
     messageService = inject(MessageService)
     private popupService: PopUpService = inject(PopUpService)
     private loggerService: LoggerService = inject(LoggerService)
 
     markRead(isRead: boolean) {
-        this.messageService.markAsRead(this.message!.id, isRead).subscribe({
+        this.messageService.markAsRead(this.message().id, isRead).subscribe({
             next: () => {
-                this.message!.isRead = isRead ? 1 : 0
+                this.message()!.isRead = isRead ? 1 : 0
                 this.popupService.openWithTimeout('Съобщение', `Съобщението е маркирано като прочетено.`, 2000)
             },
             error: (error) => {
@@ -29,7 +28,7 @@ export class MessageViewComponent {
         })
     }
     delete_message() {
-        this.messageService.deleteMessage(this.message!.id).subscribe({
+        this.messageService.deleteMessage(this.message().id).subscribe({
             next: () => {
                 this.popupService.openWithTimeout('Съобщение', `Съобщението е изтрито успешно.`, 2000)
             },

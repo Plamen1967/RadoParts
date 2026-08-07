@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -17,7 +17,6 @@ import { SelectOption } from '@model/selectOption'
     selector: 'app-company-admin',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent],
 })
 //#endregion

@@ -1,5 +1,5 @@
 //#region imports
-import { Directive, ElementRef, HostListener, inject, Input, OnDestroy } from '@angular/core'
+import { Directive, ElementRef, HostListener, inject, input, OnDestroy } from '@angular/core'
 //#endregion
 //#region directive
 @Directive({
@@ -10,7 +10,7 @@ import { Directive, ElementRef, HostListener, inject, Input, OnDestroy } from '@
 
 export class TooltipDirective implements OnDestroy {
     //#region variables and services
-    @Input() appToolTip = '' // The text for the tooltip to display
+    appToolTip = input<string>('') // The text for the tooltip to display
 
     private myPopup?: HTMLElement
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,7 +46,7 @@ export class TooltipDirective implements OnDestroy {
         this.popup = document.createElement('div')
         this.myPopup = this.popup
         this.myPopup.id = 'tooltip'
-        this.popup.innerHTML = this.appToolTip
+        this.popup.innerHTML = this.appToolTip()
         this.popup.classList.add('tooltip-container')
         this.popup.style.width = 'auto'
         this.el.nativeElement.style.position = 'relative'

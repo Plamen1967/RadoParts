@@ -1,7 +1,7 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, EventEmitter, inject, Input, Output, Self, model } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, model, input, output, effect } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { FormValueControl } from '@angular/forms/signals'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
@@ -30,19 +30,17 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
-    @Input() all = false
-    @Input() multiselection = true
-    @Input({ required: true }) set categoryId(value: number) {
-        this.initCategories(value)
-    }
-    @Input() id?: number
-    @Input() submitted = false
-    @Input() IsRequired = false
-    @Output() dealerSubCategoryChanged: EventEmitter<DealerSubCategory> = new EventEmitter<DealerSubCategory>()
+    all = input<boolean>(false)
+    multiselection = input<boolean>(true)
+    submitted = input<boolean>(false)
+    IsRequired = input<boolean>(false)
+    categoryId = input<number>() 
+    id = input<number | undefined>(undefined)
+    
+    dealerSubCategoryChanged = output<DealerSubCategory>()
     //#region services
     public dealerSubCategoryService: DealerSubCategoryService
     private formBuilder: FormBuilder
-    @Self() public control: NgControl
     public errorService: ErrorService
     private element: ElementRef
     private destroyRef: DestroyRef
@@ -52,32 +50,27 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
         //#region inject services
         this.dealerSubCategoryService = inject(DealerSubCategoryService)
         this.formBuilder = inject(FormBuilder)
-        this.control = inject(NgControl)
         this.errorService = inject(ErrorService)
         this.element = inject(ElementRef)
         this.destroyRef = inject(DestroyRef)
         //#endregion
-        if (this.control) this.control.valueAccessor = this
         this.dealerSubCategoryForm = this.formBuilder.group({
             dealerSubCategoriesId_int: [''],
+        })
+
+        effect(() => {
+            this.initCategories(this.categoryId()!)
         })
     }
     ngAfterViewInit(): void {
         this.dealerSubCategoryForm.controls['dealerSubCategoriesId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
             const dealerSubCategory = this.dealercategories.find((item) => item.dealerSubCategoryId === f)
-            this.dealerSubCategoryChanged.emit(dealerSubCategory)
+            this.dealerSubCategoryChanged.emit(dealerSubCategory!)
             if (this.onChange) this.onChange(f)
         })
     }
     writeValue(id: number): void {
-        this.id = id
-        this.dealerSubCategoryForm.patchValue({ dealerSubCategoriesId_int: this.id })
-    }
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
+        this.dealerSubCategoryForm.patchValue({ dealerSubCategoriesId_int: id })
     }
 
     setDisabledState?(isDisabled: boolean): void {

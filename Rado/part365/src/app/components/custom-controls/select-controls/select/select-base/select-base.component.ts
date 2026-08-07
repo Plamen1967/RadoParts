@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, EventEmitter, inject, Input, Output, model, input } from '@angular/core'
+import { Component, inject, Input, model, input, output } from '@angular/core'
 import { FormsModule, ValidationErrors } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
@@ -15,11 +15,11 @@ export class SelectBaseComponent implements FormValueControl<number> {
     value = model(0);
     value_as_string?: string;
     readonly disabled = input(false);    
-    @Input() type?: number
-    @Input() label?: string
-    @Input() hint?: string
-    @Input() error: ValidationErrors | null = null
-    @Input() control?: string
+    type = input<number | undefined>();
+    label = input<string | undefined>();
+    hint = input<string | undefined>();
+    error = input<ValidationErrors | null>(null);
+    control = input<string | undefined>();
     @Input() set data(data_: SelectOption[] | undefined) {
         this._data = data_
         this.selectedValue = this.value();
@@ -32,14 +32,14 @@ export class SelectBaseComponent implements FormValueControl<number> {
         this.value.set(value);
         this.selectedValue = value
     }
-    @Input() isRequired?: boolean;
-    @Input() isInvalid?: boolean
-    @Input() group?: boolean
-    @Input() groupSelection = false
-    @Input() submitted = false
-    @Input() id = 'selectId'
+    isRequired = input<boolean | undefined>();
+    isInvalid = input<boolean | undefined>();
+    group = input<boolean | undefined>();
+    groupSelection = input(false);
+    submitted = input(false);
+    id = input('selectId');
 
-    @Output() changeOption: EventEmitter<number> = new EventEmitter<number>()
+    changeOption = output<number>()
     _data?: SelectOption[] = []
     first = true
     selectedValue?: number
@@ -51,7 +51,7 @@ export class SelectBaseComponent implements FormValueControl<number> {
     }
 
     get errorMessage() {
-        return this.errorService.getMessage(this.label!, this.error!)
+        return this.errorService.getMessage(this.label()!, this.error!)
     }
 }
 

@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, EventEmitter, Input, OnInit, Output, Self, inject, model } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, OnInit, Self, computed, effect, inject, input, model, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { FormValueControl } from '@angular/forms/signals'
@@ -36,35 +36,23 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
 
-    @Input() set bus(value: number) {
-        this._bus = value
-        this.initCompanies()
-    }
-    get bus() {
-        return this._bus
-    }
-    @Input() set config(value: CompanyControlConfig) {
-        this.userId = value.userId ?? 0
-        this._bus = value.bus ?? 0
-        this._itemType = value.itemType ?? ItemType.All
-        this.initCompanies()
-    }
+    bus = input<number>(0)
 
-    @Input() showCount = false
-    @Input() userId = 0
-    @Input() all = false
-    @Input() submitted = false
-    @Input() IsRequired = false
-    @Input() set itemType(value: ItemType) {
-        this._itemType = value
-        this.initCompanies()
-    }
+    config = input<CompanyControlConfig>()
 
-    get itemType() {
-        return this._itemType
-    }
+    showCount = input<boolean>(false)
+    userId = input<number | undefined>(undefined)
+    all = input<boolean>(false)
+    submitted = input<boolean>(false)
+    IsRequired = input<boolean>(false)
+    itemType = input<ItemType>(ItemType.All)
 
-    @Output() countPerUser: EventEmitter<number> = new EventEmitter<number>()
+    itemType_ = ItemType.All
+    userId_?: number
+    bus_ = 0
+    all_ = false
+
+    countPerUser = output<number>()
     //#region services
     public companyService: CompanyService
     formBuilder: FormBuilder
@@ -85,6 +73,22 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
         this.companyForm = this.formBuilder.group({
             companyId_int: [0],
         })
+
+        effect(() => {
+            if (this.bus()) this.initCompanies()
+            if (this.config()) {
+                if (this.config()!.userId) this.userId_ = this.config()!.userId
+                if (this.config()!.bus) this.bus_ = this.config()!.bus!
+                if (this.config()!.itemType) this.itemType_ = this.config()!.itemType!
+                if (this.config()!.all) this.all_ = this.config()!.all!
+            }
+
+            if (this.itemType()) this.initCompanies()
+
+            this.itemType_ = computed(() => this.itemType())()
+            this.bus_ = computed(() => this.bus())()
+            this.all_ = computed(() => this.all())()
+        })
     }
     ngOnInit(): void {
         this.initCompanies()
@@ -100,7 +104,7 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
     }
 
     initCompanies() {
-        if (this.userId) this.populateCompaniesByUserId()
+        if (this.userId()) this.populateCompaniesByUserId()
         else this.populateCompanies()
     }
 
@@ -119,7 +123,7 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
     }
 
     populateCompanies() {
-        if (this.bus) {
+        if (this.bus()) {
             this.companyService
                 .fetchBusCompanies()
                 .pipe(switchMap((res) => companyToOptionItem(res)))
@@ -142,7 +146,7 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
         }
     }
     populateCompaniesByUserId() {
-        if (this.bus) {
+        if (this.bus_) {
             this.companyService
                 .fetchBusCompaniesByUserId()
                 .pipe(switchMap((res) => companyToOptionItem(res)))
@@ -164,8 +168,8 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
     }
 
     updateCount() {
-        if (this.itemType == ItemType.OnlyBus || this.itemType == ItemType.OnlyCar) this.companies.forEach((item) => (item.count = item.countCars))
-        else if (this.itemType == ItemType.CarPart || this.itemType == ItemType.BusPart) this.companies.forEach((item) => (item.count = item.countParts))
+        if (this.itemType_ == ItemType.OnlyBus || this.itemType_ == ItemType.OnlyCar) this.companies.forEach((item) => (item.count = item.countCars))
+        else if (this.itemType_ == ItemType.CarPart || this.itemType_ == ItemType.BusPart) this.companies.forEach((item) => (item.count = item.countParts))
         else this.companies.forEach((item) => (item.count = item.countParts + item.countCars))
 
         let count = 0

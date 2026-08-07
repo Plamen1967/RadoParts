@@ -1,5 +1,5 @@
 //#region imports
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { Message } from '../model/Message'
 import { MessageService } from '../service/messageService'
 import { MessageViewComponent } from '../message-view/message-view.component'
@@ -10,7 +10,6 @@ import { MessageViewComponent } from '../message-view/message-view.component'
     selector: 'app-list-message',
     templateUrl: './list-message.component.html',
     styleUrls: ['./list-message.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MessageViewComponent],
 })
 //#endregion

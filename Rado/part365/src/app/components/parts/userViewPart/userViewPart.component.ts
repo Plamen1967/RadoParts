@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, DestroyRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core'
+//#region import
+import { AfterViewInit, Component, computed, DestroyRef, effect, HostListener, inject, input, Input, OnInit, output } from '@angular/core'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -32,13 +33,16 @@ import { SearchBy } from '@model/enum/searchBy.enum'
 import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
 import { LoggerService } from '@services/authentication/logger.service'
 import { LoginComponent } from '@app/admin/components/admin/user/login/login.component'
+//#endregion
+
+//#region component
 @Component({
     selector: 'app-userviewpart',
     templateUrl: './userViewPart.component.html',
     styleUrls: ['./userViewPart.component.css'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [DataRowComponent, FavouriteComponent, NgStyle, RequestByEmailComponent, UserCardComponent, NgClass, ImageCarouselComponent, UpdateAddComponent],
 })
+//#endregion
 export class UserViewPartComponent extends HelperComponent implements OnInit, AfterViewInit {
     item?: DisplayPartView
     isSaved = false
@@ -86,14 +90,15 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         },
     ]
 
-    @Input() id!: number
-    @Input() userId!: number
-    @Input() query!: number
-    @Input() checkout?: boolean
-    @Input() set currentViewId(value: number) {
-        this.id = value
-        this.fetchPart()
-    }
+    id = input<number>()
+    userId = input<number>()
+    query = input<number>()
+    checkout = input<boolean>()
+
+    query_? : number
+    id_?: number
+    userId_?: number
+    currentViewId = input<number>()
 
     @Input() set next(value: boolean) {
         if (!value) this.nextArrow = true
@@ -105,23 +110,13 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         else this.previousArrow = undefined
     }
 
-    @Input() hideButton = false
-    @Input()
-    set partView(value: DisplayPartView) {
-        if (!value) return
-
-        this.item = value
-        this.id = this.item.id!
-        this.isPart = isPart(this.item.itemType!)
-        this.isTyre = this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre
-
-        this.isSaved = this.localStorageService.isSaved(this.id!)
-    }
-    @Output() uncheck: EventEmitter<number> = new EventEmitter<number>()
-    @Output() back: EventEmitter<number> = new EventEmitter<number>()
-    @Output() highLight: EventEmitter<number> = new EventEmitter<number>()
-    @Output() changePrev: EventEmitter<number> = new EventEmitter<number>()
-    @Output() changeNext: EventEmitter<number> = new EventEmitter<number>()
+    hideButton = input<boolean>(false)
+    partView = input<DisplayPartView>()
+    uncheck = output<number>()
+    back = output<number|undefined>()
+    highLight = output<number>()
+    changePrev = output<number>()
+    changeNext = output<number>()
     @HostListener('document:keydown', ['$event']) clickout(event: KeyboardEvent) {
         const keyCode = event.keyCode
         if (keyCode === 13) {
@@ -132,49 +127,49 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
             this.nextElem()
         }
     }
-
-    private partService: PartServiceService
-    private carService: CarService
-    private localStorageService: LocalStorageService
-    private homeService: HomeService
-    private router: Router
-    private activeRoute: ActivatedRoute
-    private searchService: SearchPartService
-    public breakpointObserver: BreakpointObserver
-    private popupService: PopUpService
-    private tyreService: TyreService
-    public pathService: PathService
-    private matDialog: MatDialog
-    private contirmationService: ConfirmServiceService
-    private searchPartService: SearchPartService
-    private alertService: AlertService
-    public loggerService: LoggerService
-    private destroyRef: DestroyRef
+    //#region services
+    private partService: PartServiceService = inject(PartServiceService)
+    private carService: CarService = inject(CarService)
+    private localStorageService: LocalStorageService = inject(LocalStorageService)
+    private homeService: HomeService = inject(HomeService)
+    private router: Router = inject(Router)
+    private activeRoute: ActivatedRoute = inject(ActivatedRoute)
+    private searchService: SearchPartService = inject(SearchPartService)
+    public breakpointObserver: BreakpointObserver = inject(BreakpointObserver)
+    private popupService: PopUpService = inject(PopUpService)
+    private tyreService: TyreService = inject(TyreService)
+    public pathService: PathService = inject(PathService)
+    private matDialog: MatDialog = inject(MatDialog)
+    private contirmationService: ConfirmServiceService = inject(ConfirmServiceService)
+    private searchPartService: SearchPartService = inject(SearchPartService)
+    private alertService: AlertService = inject(AlertService)
+    public loggerService: LoggerService = inject(LoggerService)
+    private destroyRef: DestroyRef = inject(DestroyRef)
+    //#endregion
 
     constructor() {
         super()
-        this.partService = inject(PartServiceService)
-        this.carService = inject(CarService)
-        this.localStorageService = inject(LocalStorageService)
-        this.homeService = inject(HomeService)
-        this.router = inject(Router)
-        this.activeRoute = inject(ActivatedRoute)
-        this.searchService = inject(SearchPartService)
-        this.breakpointObserver = inject(BreakpointObserver)
-        this.popupService = inject(PopUpService)
-        this.tyreService = inject(TyreService)
-        this.pathService = inject(PathService)
-        this.matDialog = inject(MatDialog)
-        this.contirmationService = inject(ConfirmServiceService)
-        this.searchPartService = inject(SearchPartService)
-        this.alertService = inject(AlertService)
-        this.loggerService = inject(LoggerService)
-        this.destroyRef = inject(DestroyRef)
-
         this.showNavigation = true
         this.userPage = this.pathService.userPage
         if (this.userPage) this.showFavourite = false
         if (this.pathService.userPage) this.canEdit = false
+        effect(() => {
+            this.id_ = this.id()
+            if (this.partView()) {
+                this.item = this.partView()
+                this.id_ = this.item!.id!
+                this.isPart = isPart(this.item!.itemType!)
+                this.isTyre = this.item!.itemType === ItemType.Tyre || this.item!.itemType === ItemType.Rim || this.item!.itemType === ItemType.RimWithTyre
+                this.isSaved = this.localStorageService.isSaved(this.id_!)
+            }
+            if (this.currentViewId()) {
+                this.id_ = this.currentViewId()
+                this.fetchPart()
+            }
+
+            this.query_ = computed(() => this.query())()
+            this.userId_ = computed(() => this.userId())()
+        })
     }
 
     ngAfterViewInit(): void {
@@ -191,10 +186,10 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     ngOnInit(): void {
         goTop()
         this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
-            if (params['query']) this.query = +params['query']
-            if (params['id']) this.id = +params['id']
-            if (params['userId']) this.userId = +params['userId']
-            if (params['currentId']) this.id = +params['currentId']
+            if (params['query']) this.query_ = +params['query']
+            if (params['id']) this.id_ = +params['id']
+            if (params['userId']) this.userId_ = +params['userId']
+            if (params['currentId']) this.id_ = +params['currentId']
 
             if (params['updateId']) {
                 this.updateId = +params['updateId']
@@ -226,25 +221,25 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                                 const dataManager = this.homeService.getDataManager(+id)
                                 if (dataManager) {
                                     dataManager.searchResult = result
-                                    dataManager.currentId = this.id!
+                                    dataManager.currentId = this.id_!
                                 }
                                 this.init()
                             },
                             error: (error) => {
-                                this.query = 0
+                                this.query_ = 0
                                 console.log(error)
                             },
                             complete: () => (this.loading = false),
                         })
                 } else {
                     console.log('Cash')
-                    this.dataManager.currentId = this.id!
+                    this.dataManager.currentId = this.id_!
                     this.init()
                 }
-            } else if (this.userId) {
+            } else if (this.userId_) {
                 this.loading = true
-                const id = this.userId
-                const filter: Filter = { id: 0, userId: this.userId, searchBy: SearchBy.Filter, bus: -1 }
+                const id = this.userId_
+                const filter: Filter = { id: 0, userId: this.userId_, searchBy: SearchBy.Filter, bus: -1 }
                 if (!this.dataManager || this.dataManager.noParts()) {
                     this.searchService
                         .search(filter)
@@ -255,22 +250,22 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                                 const dataManager = this.homeService.getDataManager(+id)
                                 if (dataManager) {
                                     dataManager.searchResult = result
-                                    dataManager.currentId = this.id!
+                                    dataManager.currentId = this.id_!
                                 }
                                 this.init()
                             },
                             error: (error) => {
-                                this.query = 0
+                                this.query_ = 0
                                 console.log(error)
                             },
                             complete: () => (this.loading = false),
                         })
                 } else {
                     console.log('Cash')
-                    this.dataManager.currentId = this.id!
+                    this.dataManager.currentId = this.id_!
                     this.init()
                 }
-            } else if (this.id) {
+            } else if (this.id_) {
                 this.showNavigation = false
                 this.fetchPart()
             } else {
@@ -285,13 +280,13 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     }
 
     private fetchPart() {
-        if (this.id) {
+        if (this.id_) {
             this.partService
-                .fetchDisplayPartView(this.id!)
+                .fetchDisplayPartView(this.id_!)
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe({
                     next: (displayView) => {
-                        this.partService.currentPartId = this.id
+                        this.partService.currentPartId = this.id_!
                         this.item = displayView
                         this.initPart(this.item)
                     },
@@ -359,7 +354,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         }
         if (!this.item) {
             this.partService
-                .fetchDisplayPartView(this.id)
+                .fetchDisplayPartView(this.id_!)
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe(
                     (res) => {
@@ -418,7 +413,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     }
     get dataManager() {
         if (this.homeService.getDataManager(+this.query!)) return this.homeService.getDataManager(+this.query!)
-        else if (this.homeService.getDataManager(this.userId)) return this.homeService.getDataManager(this.userId)
+        else if (this.homeService.getDataManager(this.userId()!)) return this.homeService.getDataManager(this.userId()!)
 
         return undefined
     }
@@ -426,24 +421,24 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     //#region button actions
     get displayButton() {
         if (this.pathService.userPage) return false
-        if (this.hideButton === true) return false
-        if (this.query || this.userId || this.id) return true
+        if (this.hideButton() === true) return false
+        if (this.query() || this.userId() || this.id_) return true
         return false
     }
     //#endregion
 
     //#region faviorite
     save() {
-        const id = this.id
+        const id = this.id_
         this.localStorageService.addSavedItem(id!)
         this.isSaved = this.localStorageService.isSaved(id!)
     }
 
     unsave() {
-        const id = this.id
+        const id = this.id_
         this.localStorageService.removeSavedItem(id!)
         this.isSaved = this.localStorageService.isSaved(id!)
-        this.uncheck.emit(id)
+        this.uncheck.emit(id!)
     }
     //#endregion
 
@@ -461,7 +456,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     //#region move through list
     previousElem() {
         if (this.dataManager) {
-            this.dataManager.currentId = this.id
+            this.dataManager.currentId = this.id_!
             const datamanager = this.dataManager
             const part: DisplayPartView | undefined = datamanager?.previous()
             console.log(part)
@@ -472,7 +467,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
 
     nextElem() {
         if (this.dataManager) {
-            this.dataManager.currentId = this.id
+            this.dataManager.currentId = this.id_!
             const datamanager = this.dataManager
             const part: DisplayPartView | undefined = datamanager.next()
             console.log(part)
@@ -678,7 +673,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         }
         if (this.query) {
             this.router.navigate([`/results/`], { queryParams: { query: this.query, id: this.item?.id } })
-            this.back.emit(this.query)
+            this.back.emit(this.query()!)
             return
         }
         this.back.emit(undefined)

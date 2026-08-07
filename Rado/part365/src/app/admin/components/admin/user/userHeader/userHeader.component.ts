@@ -1,5 +1,5 @@
 //#region imports
-import { Component, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, input, OnInit } from '@angular/core'
 import { isMobile, viberCallRef, viberChatRef, viberContactRef, viberForwardRef } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageService } from '@services/image.service'
@@ -15,13 +15,12 @@ import { PhoneComponent } from '@components/custom-controls/phone/phone.componen
     selector: 'app-userheader',
     templateUrl: './userHeader.component.html',
     styleUrls: ['./userHeader.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ViberComponent, PhoneComponent, WhatsComponent],
 })
 //#endregion
 export class UserHeaderComponent extends HelperComponent implements OnInit {
     //#region variables and services
-    @Input({ required: true }) user!: UserView
+    user = input.required<UserView>()
     businessCardimage?: ImageData
     phone1 = ''
     phone2 = ''
@@ -47,28 +46,28 @@ export class UserHeaderComponent extends HelperComponent implements OnInit {
         this.staticService = inject(StaticSelectionService)
     }
     ngOnInit(): void {
-        this.description = this.user.description
-        this.businessCardimage = this.user.busimessCard
+        this.description = this.user().description
+        this.businessCardimage = this.user().busimessCard
         this.setPhones()
         this.getBusinessCars()
-        this.region = this.staticService.Region.find((x) => x.value === this.user?.regionId)?.text ?? ''
+        this.region = this.staticService.Region.find((x) => x.value === this.user()?.regionId)?.text ?? ''
         this.isMobile = true
-        console.log(this.user)
+        console.log(this.user())
         console.log(this.businessCardimage)
         console.log(this.phones)
     }
 
     setPhones() {
-        if (!this.user) return
+        if (!this.user()) return
 
-        if (this.user.phone && this.user.phone2 && this.user.viber) this.phones = `${this.user.phone} , ${this.user.phone2} , ${this.user.viber}`
-        else if (this.user.phone) this.phones = `${this.user.phone}`
-        else if (this.user.phone2) this.phones = `${this.user.phone2}`
+        if (this.user().phone && this.user().phone2 && this.user().viber) this.phones = `${this.user().phone} , ${this.user().phone2} , ${this.user().viber}`
+        else if (this.user().phone) this.phones = `${this.user().phone}`
+        else if (this.user().phone2) this.phones = `${this.user().phone2}`
 
-        this.phone1 = this.user.phone ?? ''
-        this.phone2 = this.user.phone2 ?? ''
-        this.viber = this.user.viber ?? ''
-        this.whats = this.user.whats ?? ''
+        this.phone1 = this.user().phone ?? ''
+        this.phone2 = this.user().phone2 ?? ''
+        this.viber = this.user().viber ?? ''
+        this.whats = this.user().whats ?? ''
 
         this.refPhone1 = `tel:${this.phone1}`
         this.refPhone2 = `tel:${this.phone2}`
@@ -79,6 +78,6 @@ export class UserHeaderComponent extends HelperComponent implements OnInit {
     }
 
     getBusinessCars() {
-        this.businessCardimage = this.user.busimessCard
+        this.businessCardimage = this.user().busimessCard
     }
 }

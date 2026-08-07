@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -12,7 +12,6 @@ import { UserService } from '@services/user.service'
     selector: 'app-recovery',
     templateUrl: './recovery.component.html',
     styleUrls: ['./recovery.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, NgStyle, NgClass],
 })
 //#endregion

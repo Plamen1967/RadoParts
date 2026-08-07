@@ -1,5 +1,5 @@
 import { NgStyle } from '@angular/common'
-import { Component, ElementRef, EventEmitter, inject, Input, Output, QueryList, Renderer2, ViewChildren, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ElementRef, inject, QueryList, Renderer2, ViewChildren, input, output } from '@angular/core'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'
 import { Dropdown } from '@model/dropDown'
 
@@ -7,7 +7,6 @@ import { Dropdown } from '@model/dropDown'
     selector: 'app-categories',
     templateUrl: './categories.component.html',
     styleUrls: ['./categories.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgStyle],
 })
 export class CategoriesComponent {
@@ -15,8 +14,8 @@ export class CategoriesComponent {
     @ViewChildren('menu', { read: ElementRef }) menuChildren?: QueryList<ElementRef>
 
     alreadySent?: boolean
-    @Input() dropDowns: Dropdown[] = []
-    @Output() selection: EventEmitter<CategorySubcategory> = new EventEmitter<CategorySubcategory>()
+    dropDowns = input<Dropdown[]>([])
+    selection = output<CategorySubcategory>()
 
     element: ElementRef = inject(ElementRef)
     renderer: Renderer2 = inject(Renderer2)
@@ -30,7 +29,7 @@ export class CategoriesComponent {
         this.subMenuChildren?.forEach((elem) => this.renderer.setStyle(elem.nativeElement, 'display', 'none'))
     }
 
-    onClick(event: Event, subcategoryId: number) {
+    clickEvent(event: Event, subcategoryId: number) {
         event.stopPropagation()
         this.selection.emit({ categoryId: 0, subcategoryId: subcategoryId })
         this.subMenuChildren?.forEach((elem) => this.renderer.setStyle(elem.nativeElement, 'display', 'none'))

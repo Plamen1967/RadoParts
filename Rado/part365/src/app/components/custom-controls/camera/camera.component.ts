@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common'
-import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, output } from '@angular/core'
 import { isMobile } from '@app/functions/functions'
 import { WebcamImage, WebcamInitError, WebcamModule, WebcamUtil } from 'ngx-webcam'
 import { Observable, Subject } from 'rxjs'
@@ -8,11 +8,10 @@ import { Observable, Subject } from 'rxjs'
     selector: 'app-camera',
     templateUrl: './camera.component.html',
     styleUrls: ['./camera.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [WebcamModule, JsonPipe],
 })
 export class CameraComponent implements OnInit {
-    @Output() getPicture = new EventEmitter<WebcamImage>()
+    getPicture = output<WebcamImage>()
     showWebcam = isMobile()
     isCameraExist = true
     mediaDevices?: MediaDeviceInfo[]

@@ -1,11 +1,9 @@
-import { Component, HostListener, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
-import { isMobile } from '@app/functions/functions'
+import { Component, HostListener, OnInit, input } from '@angular/core'
 
 @Component({
     selector: 'app-phone',
     templateUrl: './phone.component.html',
     styleUrls: ['./phone.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 export class PhoneComponent implements OnInit {
@@ -15,12 +13,11 @@ export class PhoneComponent implements OnInit {
         event.stopPropagation()
     }
 
-    @Input() phone?: string
-    isMobile?: boolean
-    refPhone?: string
+    phone = input<string | undefined>()
+    isMobile = input<boolean | undefined>()
+    refPhone? : string;
 
     ngOnInit() {
-        this.isMobile = isMobile()
         this.refPhone = `tel:${this.phone}`
     }
 }

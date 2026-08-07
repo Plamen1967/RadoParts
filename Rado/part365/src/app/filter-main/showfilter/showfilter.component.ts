@@ -1,5 +1,7 @@
 //#region imports
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject } from '@angular/core'
+import { TooltipDirective } from '@app/directive/tooltip.directive'
+import { CustomSelectComponent } from '@components/custom-controls/customSelect/customSelect.component'
 import { Filter } from '@model/filters/filter'
 import { SaveSearchService } from '@services/saveSearch.service'
 //#endregion
@@ -7,8 +9,8 @@ import { SaveSearchService } from '@services/saveSearch.service'
 @Component({
     selector: 'app-showfilter',
     templateUrl: './showfilter.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./showfilter.component.css'],
+    imports: [CustomSelectComponent, TooltipDirective]
 })
 //#endregion
 export class ShowfilterComponent {

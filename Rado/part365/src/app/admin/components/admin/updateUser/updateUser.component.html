@@ -137,7 +137,7 @@
             <div class="row">
                 @if (!businessCardimage) {
                     <div class="row">
-                        <app-upload [id]="userId" [multiple]="false" [businessCard]="true" (uploadFinished)="addBusinessCard($event)" [addPicture]="'Качете бизнес карта'"> </app-upload>
+                        <app-upload [id]="userId()!" [multiple]="false" [businessCard]="true" (uploadFinished)="addBusinessCard($event)" [addPicture]="'Качете бизнес карта'"> </app-upload>
                     </div>
                 }
                 @if (businessCardimage) {
@@ -148,10 +148,10 @@
                     <h5>Качете Вашите фирмени снимки</h5>
                 </div>
                 <div class="row">
-                    <app-upload [id]="userId" [multiple]="true" [businessCard]="false" (uploadFinished)="imagesAdded($event)" [camera]="true" [addPicture]="'Качете снимка'"> </app-upload>
+                    <app-upload [id]="userId()!" [multiple]="true" [businessCard]="false" (uploadFinished)="imagesAdded($event)" [camera]="true" [addPicture]="'Качете снимка'"> </app-upload>
                 </div>
                 <div class="row mt-2">
-                    <app-picture [id]="userId" [images]="images" [updateFlag]="true" [mainImageFlag]="false"></app-picture>
+                    <app-picture [id]="userId()" [images]="images" [updateFlag]="true" [mainImageFlag]="false"></app-picture>
                 </div>
         </div>
         }

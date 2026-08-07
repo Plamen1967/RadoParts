@@ -1,5 +1,5 @@
 //#region imports
-import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, Input, OnInit, input, output } from '@angular/core'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DealerActionType } from '@model/dealerActionType'
@@ -15,7 +15,6 @@ import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.co
     selector: 'app-dealerviewtyre',
     templateUrl: './dealerViewTyre.component.html',
     styleUrls: ['./dealerViewTyre.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DataRowComponent],
 })
 //#endregion
@@ -37,8 +36,8 @@ export class DealerViewTyreComponent extends HelperComponent implements OnInit {
         this.isTyre = this.item_.itemType == ItemType.Tyre || this.item_.itemType == ItemType.RimWithTyre
         this.isRim = this.item_.itemType == ItemType.Rim || this.item_.itemType == ItemType.RimWithTyre
     }
-    @Input() highlighted?: boolean
-    @Output() action: EventEmitter<DealerActionType> = new EventEmitter<DealerActionType>()
+    highlighted = input<boolean | undefined>()
+    action = output<DealerActionType>()
     //#region services
     private staticService: StaticSelectionService = inject(StaticSelectionService)
     private router: Router = inject(Router)

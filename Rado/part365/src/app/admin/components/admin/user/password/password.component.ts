@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, inject, Input, OnInit, Renderer2 } from '@angular/core'
+import { Component, ElementRef, inject, input, OnInit, Renderer2 } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -16,7 +16,7 @@ import { ModalService } from '@services/dialog-api/modal.service'
 //#endregion
 export default class PasswordComponent extends HelperComponent implements OnInit {
     //#region variables and services
-    @Input() id?: string
+    id = input<string>()
     passwordForm: FormGroup
     submitted = false
     message = 'Паролата успешно е променена!'

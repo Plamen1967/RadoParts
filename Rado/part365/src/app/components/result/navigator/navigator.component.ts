@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ElementRef, computed, inject, OnInit, ViewChild, input, output, effect } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { SortType } from '@model/enum/sortType.enum'
 import { RadioButton } from '@model/radioButton'
@@ -10,17 +10,18 @@ import { RadioGroupListComponent } from '../../custom-controls/radioGroupList/ra
     selector: 'app-navigator',
     templateUrl: './navigator.component.html',
     styleUrls: ['./navigator.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgStyle, NgClass, FormsModule, RadioGroupListComponent],
 })
 export class NavigatorComponent implements OnInit {
-    @Input() currentPage = 1
-    @Input() numberPages = 0
-    @Input() hasSort = false
-    @Input() sortByValue?: SortType
+    currentPage = input<number>(1)
+    numberPages = input<number>(0)
+    hasSort = input<boolean>(false)
+    sortByValue = input<SortType|undefined>()
+    sortBy = output<number>()
+    moveToPage = output<number>()
 
-    @Output() sortBy: EventEmitter<number> = new EventEmitter<number>()
-    @Output() moveToPage: EventEmitter<number> = new EventEmitter<number>()
+    currentPage_! : number
+
     @ViewChild('previousButton') set inputElRef(elRef: ElementRef<HTMLInputElement>) {
         if (elRef) {
             this.previousButton = elRef
@@ -49,17 +50,23 @@ export class NavigatorComponent implements OnInit {
     previousButton?: ElementRef<HTMLInputElement>
     taticSelectionService: StaticSelectionService = inject(StaticSelectionService)
 
+    constructor() {
+        effect(() =>
+        {
+            this.currentPage_ = computed(() => this.currentPage())();
+        })
+    }
     calcOffset() {
-        const remnainer = this.currentPage % this.itemsPerPages
+        const remnainer = this.currentPage_ % this.itemsPerPages
         if (remnainer === 0) {
-            this.startPage = this.currentPage - 9
-            this.endPage = this.currentPage
+            this.startPage = this.currentPage_ - 9
+            this.endPage = this.currentPage_
         } else {
-            this.startPage = Math.floor(this.currentPage / this.itemsPerPages) * this.itemsPerPages + 1
-            this.endPage = Math.ceil(this.currentPage / this.itemsPerPages) * this.itemsPerPages
+            this.startPage = Math.floor(this.currentPage_ / this.itemsPerPages) * this.itemsPerPages + 1
+            this.endPage = Math.ceil(this.currentPage_ / this.itemsPerPages) * this.itemsPerPages
         }
 
-        if (this.endPage > this.numberPages) this.endPage = this.numberPages
+        if (this.endPage > this.numberPages()) this.endPage = this.numberPages()
         const arr = []
         for (let i = this.startPage; i <= this.endPage; i++) arr.push(i)
         this.arrayPages_ = arr
@@ -71,44 +78,41 @@ export class NavigatorComponent implements OnInit {
     }
 
     get currentPageSelected() {
-        return this.currentPage
+        return this.currentPage_
     }
 
     set currentPageSelected(value: number) {
-        this.currentPage = value
+        this.currentPage_ = value
         this.calcOffset()
-        this.moveToPage.emit(this.currentPage)
+        this.moveToPage.emit(this.currentPage_)
     }
 
     nextPage() {
-        this.currentPage++
+        this.currentPage_ = this.currentPage_ + 1
         this.calcOffset()
-        this.moveToPage.emit(this.currentPage)
+        this.moveToPage.emit(this.currentPage_)
     }
 
     previousPage() {
-        this.currentPage--
+        this.currentPage_ = this.currentPage_ - 1
         this.calcOffset()
-        this.moveToPage.emit(this.currentPage)
+        this.moveToPage.emit(this.currentPage_)
     }
 
     click(event: number) {
-        this.currentPage = event
-        this.moveToPage.emit(this.currentPage)
+        this.currentPage_ = event
+        this.moveToPage.emit(this.currentPage_)
     }
     pageChange() {
-        this.currentPage = this.currentPageSelected
-        this.moveToPage.emit(this.currentPage)
+        this.currentPage_  = this.currentPageSelected 
+        this.moveToPage.emit(this.currentPage_)
     }
 
     sortData() {
         console.log(`SortBy: ${this.sortByValue}`)
-        this.sortBy.emit(this.sortByValue)
-        this.currentPage = 1
-        this.moveToPage.emit(this.currentPage)
-    }
-
-    focusPreviousButton() {
-        //    this.previousButton?.nativeElement.focus();
+        this.sortBy.emit(this.sortByValue()!)
+        this.currentPage_ = 1 
+        this.moveToPage.emit(this.currentPage_)
     }
 }
+

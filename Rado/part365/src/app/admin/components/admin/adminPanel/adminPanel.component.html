@@ -1,4 +1,4 @@
-@if (admin) {
+@if (authernticationService.admin) {
     <div class="row justify-content-start align-items-center">
         <div class="col-sm-5 pe-0">
             <app-select [(ngModel)]="approvedStatus" [data]="approvedTypes" valueProperty="id" displayProperty="value"> </app-select>

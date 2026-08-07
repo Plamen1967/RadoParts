@@ -1,16 +1,15 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, input, output } from '@angular/core'
 
 @Component({
     selector: 'app-savebutton',
     templateUrl: './saveButton.component.html',
     styleUrls: ['./saveButton.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [],
 })
 export class SaveButtonComponent {
-    @Input({ required: true }) label = 'Запиши'
-    @Input() changed = true
-    @Output() saveEvent: EventEmitter<void> = new EventEmitter<void>()
+    label = input<string>('Запиши')
+    changed = input<boolean>(true)
+    saveEvent = output<void>()
 
     onSubmit() {
         this.saveEvent.emit()

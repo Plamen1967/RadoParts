@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, inject, input, output, effect, computed } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { Router } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
@@ -23,7 +23,6 @@ import { UserService } from '@services/user.service'
     selector: 'app-userinfo',
     templateUrl: './userInfo.component.html',
     styleUrls: ['./userInfo.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [NgClass, ButtonMenuComponent],
 })
 //#endregion
@@ -33,11 +32,12 @@ export class UserInfoComponent {
     details?: number = undefined
     userTrades?: UserTrades
 
-    @Input() user?: User
-    @Input() selected?: number
-    @Output() deleteUser: EventEmitter<number> = new EventEmitter<number>()
-    @Output() selectUser: EventEmitter<number> = new EventEmitter<number>()
+    user = input<User>()
+    selected = input<number>()
+    deleteUser = output<number>()
+    selectUser = output<number | undefined>()
 
+    user_?: User 
     //#region services
     private userService: UserService
     private router: Router
@@ -62,44 +62,49 @@ export class UserInfoComponent {
         this.confirmationService = inject(ConfirmServiceService)
         this.homeService = inject(HomeService)
         this.loggerService = inject(LoggerService)
+
+        effect(() => {
+            this.user_ = computed(() => this.user())()
+        })
         //#endregion
     }
 
     showDetails() {
-        this.details = !this.details ? this.user?.userId : undefined
-        if (!this.userTrades && this.user) this.adminService.getUserStats(this.user.userId!).subscribe((userStats) => (this.userTrades = userStats))
+        const userId = this.user_?.userId ?? undefined;
+        this.details = !this.details ? userId : undefined
+        if (!this.userTrades && this.user_) this.adminService.getUserStats(userId!).subscribe((userStats) => (this.userTrades = userStats))
 
-        if (this.user?.userId == this.selected) this.selectUser.emit(undefined)
-        else this.selectUser.emit(this.user?.userId)
+        if (userId == this.selected()) this.selectUser.emit(undefined)
+        else this.selectUser.emit(userId!)
     }
     view() {
         const address = `/`
-        this.router.navigate([address], { queryParams: { userId: this.user?.userId, itemType: ItemType.All } })
+        this.router.navigate([address], { queryParams: { userId: this.user_?.userId, itemType: ItemType.All } })
     }
 
     viewPartCars() {
-        this.getResults({ userId: this.user?.userId, itemType: ItemType.CarPart, id: Date.now() })
+        this.getResults({ userId: this.user_?.userId, itemType: ItemType.CarPart, id: Date.now() })
     }
 
     viewPartBuses() {
-        this.getResults({ userId: this.user?.userId, itemType: ItemType.BusPart, bus: 1, id: Date.now() })
+        this.getResults({ userId: this.user_?.userId, itemType: ItemType.BusPart, bus: 1, id: Date.now() })
     }
 
     viewCars() {
-        this.getResults({ userId: this.user?.userId, itemType: ItemType.OnlyCar, id: Date.now() })
+        this.getResults({ userId: this.user_?.userId, itemType: ItemType.OnlyCar, id: Date.now() })
     }
 
     viewBus() {
-        this.getResults({ userId: this.user?.userId, itemType: ItemType.OnlyBus, bus: 1, id: Date.now() })
+        this.getResults({ userId: this.user_?.userId, itemType: ItemType.OnlyBus, bus: 1, id: Date.now() })
     }
     viewTyres() {
-        this.getResults({ userId: this.user?.userId, itemType: ItemType.Tyre, id: Date.now() })
+        this.getResults({ userId: this.user_?.userId, itemType: ItemType.Tyre, id: Date.now() })
     }
     viewRims() {
-        this.getResults({ userId: this.user?.userId, itemType: ItemType.Rim, id: Date.now() })
+        this.getResults({ userId: this.user_?.userId, itemType: ItemType.Rim, id: Date.now() })
     }
     viewRimWithTyres() {
-        this.getResults({ userId: this.user?.userId, itemType: ItemType.RimWithTyre, id: Date.now() })
+        this.getResults({ userId: this.user_?.userId, itemType: ItemType.RimWithTyre, id: Date.now() })
     }
 
     getResults(filter: Filter) {
@@ -126,10 +131,10 @@ export class UserInfoComponent {
             })
     }
     suspendUser(user: User) {
-        this.user = user
+        this.user_ = {...user}
         this.adminService.suspendUser(user.userId!).subscribe({
             next: (res) => {
-                this.user = { ...res }
+                this.user_ = { ...res }
             },
             error: (error) => {
                 this.popService.openWithTimeout(CONSTANT.MESSAGE, `Потребител ${user.userName} - ${user.email} не може да се зампази.`)
@@ -145,7 +150,7 @@ export class UserInfoComponent {
 
         this.adminService.unSuspendUser(user.userId!).subscribe({
             next: (res) => {
-                this.user = { ...res }
+                this.user_ = { ...res }
             },
             error: (error) => {
                 this.popService.openWithTimeout(CONSTANT.MESSAGE, `Потребител ${user.userName} - ${user.email} не може да се пусне.`)

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, input, output } from '@angular/core'
 import { UpdateEnum } from '@model/enum/update.enum'
 import AddCarComponent from '../addCar/addcar.component'
 import { DisplayPartView } from '@model/displayPartView'
@@ -7,17 +7,16 @@ import { DisplayPartView } from '@model/displayPartView'
     selector: 'app-updatecar',
     templateUrl: './updateCar.component.html',
     styleUrls: ['./updateCar.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AddCarComponent],
 })
 export default class UpdateCarComponent {
     mode: UpdateEnum = UpdateEnum.Update
-    @Input() id?: number
-    @Input() displayPartView?: DisplayPartView
-    @Input() carId?: number
-    @Input() query?: number
-    @Output() saved: EventEmitter<number> = new EventEmitter<number>()
-    @Output() noChange: EventEmitter<number> = new EventEmitter<number>()
+    id = input<number>()
+    displayPartView = input<DisplayPartView>()
+    carId = input<number>()
+    query = input<number>()
+    saved = output<number>()
+    noChange = output<number>()
 
     backEvent(event: number) {
         this.noChange.emit(event)

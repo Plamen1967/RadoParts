@@ -1,5 +1,5 @@
 //#region imports
-import { Component, DestroyRef, inject, Input, OnInit, model } from '@angular/core'
+import { Component, DestroyRef, inject, OnInit, model, input, effect } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { SelectComponent } from '../select-controls/select/select.component'
 import { SelectOption } from '@model/selectOption'
@@ -24,11 +24,8 @@ export class YearComponent extends HelperComponent implements FormValueControl<n
     yearFrom = 1970
     yearTo = 2025
     years?: SelectOption[]
-    @Input() set period(value: { yearFrom: number; yearTo: number }) {
-        this.yearFrom = value.yearFrom
-        this.yearTo = value.yearTo
-        this.setYears()
-    }
+    period = input<{ yearFrom: number; yearTo: number }>()
+    
 
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     public errorService: ErrorService = inject(ErrorService)
@@ -37,12 +34,18 @@ export class YearComponent extends HelperComponent implements FormValueControl<n
 
     constructor() {
         super()
+    effect(() => {
+        if (this.period() === undefined) return
+        this.yearFrom = this.period()!.yearFrom
+        this.yearTo = this.period()!.yearTo
+        this.setYears();
+    })
+
+
+
         this.yearForm = this.formBuilder.group({
             year_int: [0],
         })
-    }
-    setDisabledState?(isDisabled: boolean): void {
-        this.isDisabled = isDisabled
     }
 
     setYears() {

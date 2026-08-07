@@ -7,7 +7,7 @@
     </div>
   </div>
   @for (user of users; track user.userId) {
-    <app-userinfo [user]="user" (deleteUser)="deleteUser($event)" [selected]="selected" (selectUser)="selectUser($event)"></app-userinfo>
+    <app-userinfo [user]="user" (deleteUser)="deleteUser($event)" [selected]="selected" (selectUser)="selectUser($event!)"></app-userinfo>
   }
 </div>
 

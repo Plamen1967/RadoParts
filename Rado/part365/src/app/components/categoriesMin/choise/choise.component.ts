@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, effect, input, output } from '@angular/core'
 import { SelectedItemComponent } from '@components/custom-controls/selectedItem/selecteditem.component'
 import { SelectionItem } from '@model/selectionItem'
 
@@ -6,20 +6,19 @@ import { SelectionItem } from '@model/selectionItem'
     selector: 'app-choise',
     templateUrl: './choise.component.html',
     styleUrls: ['./choise.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SelectedItemComponent],
 })
 export class ChoiseComponent {
-    _selectedItems?: SelectionItem[]
-
-    @Input() set selectedItems(value) {
-        this._selectedItems = value
+    selectedItems = input<SelectionItem[]>([])
+    _selectedItems: SelectionItem[] = []
+    constructor() {
+        effect(() => {
+            this._selectedItems = this.selectedItems()
+        })
     }
-    get selectedItems() {
-        return this._selectedItems
-    }
 
-    @Output() deleteSelection: EventEmitter<number> = new EventEmitter<number>()
+
+    deleteSelection = output<number>()
 
     unSelected(id: number) {
         this._selectedItems = this._selectedItems?.filter((item) => item.id !== id)

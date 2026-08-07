@@ -1,24 +1,24 @@
 <form [formGroup]="modelForm">
-    @if (multiselection) {
+    @if (multiselection()) {
         <app-multiselection
             id="modelId"
             label="Модел"
             formControlName="modelsId_int"
             placeHolder="Избери модел"
             [appToolTip]="'Избери модела'"
-            [groupSelection]="groupSelection"
+            [groupSelection]="groupSelection()"
             [data]="models"
-            [showLetter]="showLetter"
-            [multiSelection]="multiselection"
-            [useLetter]="useLetter"
-            [useFilter]="useFilter"
-            [submitted]="submitted"
-            [showCount]="showCount"
-            [required]="IsRequired"
+            [showLetter]="showLetter()"
+            [multiSelection]="multiselection()"
+            [useLetter]="useLetter()"
+            [useFilter]="useFilter()"
+            [submitted]="submitted()"
+            [showCount]="showCount()"
+            [required]="IsRequired()"
             data-cy="modelsId"
             data-bs-toggle="tooltip"
             data-bs-placement="right"
-            (onClose)="focus()">
+            (onCloseEvent)="focus()">
         </app-multiselection>
     } @else {
         <app-customselect
@@ -27,12 +27,12 @@
             [data]="models"
             label="Модел"
             [groupSelection]="false"
-            [required]="IsRequired"
+            [required]="IsRequired()"
             [placeHolder]="'Избери модел'"
             [appToolTip]="'Избери модел'"
-            [useFilter]="useFilter"
-            [submitted]="submitted"
-            [showCount]="showCount"
+            [useFilter]="useFilter()"
+            [submitted]="submitted()"
+            [showCount]="showCount()"
             data-cy="modelsId"
             data-bs-toggle="tooltip"
             data-bs-placement="right">

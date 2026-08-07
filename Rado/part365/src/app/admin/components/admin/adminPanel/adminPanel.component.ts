@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, DestroyRef, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core'
+import { Component, DestroyRef, inject, input, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormsModule } from '@angular/forms'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -13,15 +13,14 @@ import { AuthenticationService } from '@services/authentication/authentication.s
     selector: 'app-adminpanel',
     templateUrl: './adminPanel.component.html',
     styleUrls: ['./adminPanel.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SelectComponent, FormsModule],
 })
 //#endregion
 export class AdminPanelComponent {
     //#region variables and services
-    @Input() itemId?: number
-    @Input() approvedStatus?: number
-    @Output() updated = new EventEmitter<number>()
+    itemId = input<number | undefined>()
+    approvedStatus = input<number | undefined>()
+    updated = output<number>()
     //#region services
     private adminService: AdminService = inject(AdminService)
     private popupService: PopUpService = inject(PopUpService)
@@ -31,15 +30,19 @@ export class AdminPanelComponent {
     //#endregion
 
     updateApprovedStatus() {
+        if (this.itemId == null || this.approvedStatus == null) {
+            return
+        }
+
         this.adminService
-            .updateApprovedStatus(this.itemId!, this.approvedStatus!)
+            .updateApprovedStatus(this.itemId()!, this.approvedStatus()!)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.popupService
                     .openWithTimeout('Съобщение', 'Обявата е успешно актуализирана')
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe(() => {
-                        this.updated.emit(this.approvedStatus)
+                        this.updated.emit(this.approvedStatus()!)
                     })
             })
     }
@@ -49,7 +52,4 @@ export class AdminPanelComponent {
         { value: 1, text: 'Одобренa' },
         { value: 2, text: 'Блокиранa' },
     ]
-    get admin() {
-        return this.authernticationService.admin
-    }
 }

@@ -1,5 +1,5 @@
 //#region Imports
-import { AfterViewInit, Component, DestroyRef, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, input } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
@@ -30,7 +30,6 @@ import { UpdateUserService } from '@app/admin/services/updateuser.service'
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule],
 })
 //#endregion
@@ -59,8 +58,8 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     numberAds?: number
     regions: SelectOption[] = []
 
-    @Input() activationcode!: string
-    @Input() userId!: number
+    activationcode = input<string>()
+    userId = input<number>()
     //#region services
     private formBuilder: FormBuilder = inject(FormBuilder)
     private router: Router = inject(Router)
@@ -101,16 +100,15 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     }
 
     ngAfterViewInit(): void {
-        if (this.activationcode || this.userId) {
+        if (this.activationcode() || this.userId()) {
             this.userService
-                .loadUserByActivationCode(this.activationcode)
+                .loadUserByActivationCode(this.activationcode()!)
                 .pipe(first())
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((user) => {
                     if (!user) this.router.navigate(['/'])
                     else {
                         this.user = user
-                        this.userId = user.userId!
                         this.userForm.patchValue(user)
                         this.dealer = user.dealer
                         if (this.dealer === UserType.Dealer) {
@@ -132,7 +130,6 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((user) => {
                     this.user = user
-                    this.userId = user.userId!
                     this.userForm.patchValue(user)
                     this.dealer = user.dealer
                     if (this.dealer === UserType.Dealer) {
@@ -171,10 +168,10 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
 
     ngOnInit() {
         this.numberAds = this.staticSelectionService.maxNumberParts
-        this.userService
-            .getNewUserId()
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((userId) => (this.userId = userId))
+        // this.userService
+        //     .getNewUserId()
+        //     .pipe(takeUntilDestroyed(this.destroyRef))
+        //     .subscribe((userId) => (this.userId = userId))
     }
 
     get f() {
@@ -210,7 +207,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                         this.authenticationService.currentUserValue.regionId = this.userForm.value.regionId
                     }
                     let message: string
-                    if (this.activationcode) message = 'Моля активирайте акаунта си чрез изпратеният до Вас е-майл!'
+                    if (this.activationcode()) message = 'Моля активирайте акаунта си чрез изпратеният до Вас е-майл!'
                     else message = 'Потребителя е успешно актуализиран'
                     this.popupService
                         .openWithTimeout(this.labels.MESSAGE, message)

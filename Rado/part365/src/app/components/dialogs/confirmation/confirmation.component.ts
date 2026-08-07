@@ -1,5 +1,5 @@
 import { NgStyle } from '@angular/common'
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
 import { MatButton } from '@angular/material/button'
 
@@ -7,7 +7,6 @@ import { MatButton } from '@angular/material/button'
     imports: [NgStyle, MatDialogActions, MatDialogContent, MatButton, MatDialogClose],
     selector: 'app-confirmation',
     templateUrl: './confirmation.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./confirmation.component.css'],
 })
 export class ConfirmationComponent implements OnInit {
