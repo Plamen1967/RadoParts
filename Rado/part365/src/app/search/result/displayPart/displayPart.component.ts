@@ -17,14 +17,13 @@ import { CheckOutService } from '@services/checkOut.service'
 import { AuthenticationService } from '@services/authentication/authentication.service'
 import { LocalStorageService } from '@services/storage/localStorage.service'
 import { HomeService } from '@services/home.service'
-import { StaticSelectionService } from '@services/staticSelection.service'
 import { TyreService } from '@services/tyre/tyre.service'
 import { SearchPartService } from '@services/searchPart.service'
 import { UpdateEnum } from '@model/enum/update.enum'
 import { NgClass, NgStyle } from '@angular/common'
 import { ViberComponent } from '@components/custom-controls/viber/viber.component'
 import { PriceComponent } from '@components/custom-controls/price/price.component'
-import { TyreViewComponent } from '@components/result/displayPart/tyreView/tyreView.component'
+import { TyreViewComponent } from '@app/search/result/displayPart/tyreView/tyreView.component'
 import { ImageComponent } from '@components/custom-controls/image/image.component'
 import { AdminPanelComponent } from '@app/admin/components/admin/adminPanel/adminPanel.component'
 import { WhatsComponent } from '@components/custom-controls/whats/whats.component'
@@ -136,7 +135,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     checkoutUpdated = output()
     dealerClick = output<number>()
     @Input() set part(value: DisplayPartView) {
-        this.item = value
+        this.item = {...value}
         this.approvedStatus = this.item.approved
         this.numberImages = this.item.numberImages
         this.isSaved = this.localStorageService.isSaved(this.item.id!)
@@ -167,7 +166,8 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
 
     get isHeighligthed() {
-        return this.highlighted() === this.part.id
+        const isHighligthed = this.highlighted() == this.part.id
+        return isHighligthed
     }
     private authernticationService: AuthenticationService = inject(AuthenticationService)
     public partService: PartServiceService = inject(PartServiceService)
@@ -178,7 +178,6 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     private homeService: HomeService = inject(HomeService)
     public breakpointObserver: BreakpointObserver = inject(BreakpointObserver)
     private router: Router = inject(Router)
-    private staticService: StaticSelectionService = inject(StaticSelectionService)
     private tyreService: TyreService = inject(TyreService)
     public loadingService: LoadingService = inject(LoadingService)
     public searchPartService: SearchPartService = inject(SearchPartService)

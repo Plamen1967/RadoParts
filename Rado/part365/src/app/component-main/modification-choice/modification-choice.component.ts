@@ -21,19 +21,15 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-export class ModificationChoiceComponent implements FormValueControl<number | undefined> {
+export class ModificationChoiceComponent implements FormValueControl<number | string | undefined> {
     //#region variables and services
-    value = model<number | undefined>(undefined)    
+    value = model<number | string |undefined >(undefined)    
     modifications: OptionItem[] = []
     modificationForm: FormGroup
     models_Id = ''
     modificationsId_int = ''
     isDisabled = false
     originalModification: Modification[] = []
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    protected onTouched?() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    protected onChange?(_: number) {}
     multiselection = input<boolean>(true)
     useFilter = input<boolean>(true)
     all = input<boolean>(false)
@@ -65,7 +61,6 @@ export class ModificationChoiceComponent implements FormValueControl<number | un
         this.modificationForm.controls['modificationsId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
             const modification = this.originalModification.find((modification) => modification.modificationId == f)
             this.modifcationChange.emit(modification!)
-            if (this.onChange) this.onChange(f)
         })
     }
 

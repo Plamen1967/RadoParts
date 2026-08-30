@@ -1,12 +1,13 @@
 <div class="display-container">
-    <div class="row">
-        <app-adminpanel [itemId]="item.id" [approvedStatus]="part.approved" (updated)="updateStatus($event)"></app-adminpanel>
-    </div>
+    @if (admin) {
+        <div class="row">
+            <app-adminpanel [itemId]="item.id" [approvedStatus]="part.approved" (updated)="updateStatus($event)"></app-adminpanel>
+        </div>
+    }
     <div
         class="d-flex text-dark mb-2 rounded container-style"
         data-cy="partRow"
         [ngClass]="{ blocked: approved === 2, approved: approved === 1, notApproved: approved === 0, normal: approved === -1, highlighted: isHeighligthed }">
-        @if (admin) {}
         <div
             class="pe-1"
             (click)="view()"
@@ -16,8 +17,7 @@
             role="none"
             title="Повече детайли за частта"
             style="cursor: pointer">
-            <app-imagecomponent [dispayPartView]="part" [displayMain]="true" (imagesLoaded)="updateImages($event)" [showNumberPhotos]="true" role="none">
-            </app-imagecomponent>
+            <app-imagecomponent [dispayPartView]="part" [displayMain]="true" (imagesLoaded)="updateImages($event)" [showNumberPhotos]="true" role="none"> </app-imagecomponent>
         </div>
         <div class="detailsClass pe-0 flex-column justify-content-between" [ngClass]="{ detailsClass: !this.dealerWebPage, deatailsDealerWebPage: this.dealerWebPage }">
             <div role="none">

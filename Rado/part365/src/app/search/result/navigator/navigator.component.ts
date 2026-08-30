@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { SortType } from '@model/enum/sortType.enum'
 import { RadioButton } from '@model/radioButton'
 import { StaticSelectionService } from '@services/staticSelection.service'
-import { RadioGroupListComponent } from '../../custom-controls/radioGroupList/radiogrouplist.component'
+import { RadioGroupListComponent } from '../../../components/custom-controls/radioGroupList/radiogrouplist.component'
 
 @Component({
     selector: 'app-navigator',

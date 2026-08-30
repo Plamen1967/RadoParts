@@ -208,7 +208,7 @@ export function isPart(itemType: ItemType) {
     return itemType === ItemType.OnlyCar || itemType === ItemType.OnlyBus || itemType === ItemType.BusPart || itemType === ItemType.CarPart
 }
 
-export function goToPosition(id: string | number | undefined): void {
+export function goToPosition(id: string | number | undefined, timeout = 2000): void {
     if (!id) return
     setTimeout(() => {
         const element = window.document.getElementById(`${id}`)
@@ -219,7 +219,7 @@ export function goToPosition(id: string | number | undefined): void {
                 inline: 'nearest',
             })
         }
-    }, 2000)
+    }, timeout)
 
     console.log(`goToPosition ${id}`)
 }

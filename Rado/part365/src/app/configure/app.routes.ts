@@ -4,8 +4,8 @@ import { LoginComponent } from '@app/admin/components/admin/user/login/login.com
 import { AuthGuard } from '@app/guard/authGuard'
 import { HomeComponent } from '@app/search/home/Home.component'
 import { CheckOutComponent } from '@components/custom-controls/check-out/check-out.component'
-import { UserViewPartComponent } from '@components/parts/userViewPart/userViewPart.component'
-import { ResultComponent } from '@components/result/result.component'
+import { UserViewPartComponent } from '@app/search/userView/userViewPart.component'
+import { ResultComponent } from '@app/search/result/result.component'
 
 const runGuardsAndResolvers: RunGuardsAndResolvers = 'paramsOrQueryParamsChange'
 

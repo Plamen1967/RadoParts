@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, computed, DestroyRef, effect, HostListener, inject, input, Input, OnInit, output } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, effect, HostListener, inject, input, Input, OnInit, output } from '@angular/core'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { DataRowComponent } from '@components/custom-controls/dataRow/dataRow.component'
 import { RequestByEmailComponent } from '@components/custom-controls/requestByEmail/requestByEmail.component'
 import { UserCardComponent } from '@components/custom-controls/userCard/userCard.component'
-import { ImageCarouselComponent } from '../../custom-controls/image-carousel/image-carousel.component'
+import { ImageCarouselComponent } from '../../components/custom-controls/image-carousel/image-carousel.component'
 import { FavouriteComponent } from '@components/custom-controls/favourite/favourite.component'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
@@ -44,6 +44,8 @@ import { LoginComponent } from '@app/admin/components/admin/user/login/login.com
 })
 //#endregion
 export class UserViewPartComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region members
+    price?: string
     item?: DisplayPartView
     isSaved = false
     images: ImageData[] = []
@@ -90,16 +92,13 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         },
     ]
 
+    //#endregion
     id = input<number>()
     userId = input<number>()
     query = input<number>()
     checkout = input<boolean>()
 
-    query_? : number
-    id_?: number
-    userId_?: number
     currentViewId = input<number>()
-
     @Input() set next(value: boolean) {
         if (!value) this.nextArrow = true
         else this.nextArrow = undefined
@@ -113,7 +112,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     hideButton = input<boolean>(false)
     partView = input<DisplayPartView>()
     uncheck = output<number>()
-    back = output<number|undefined>()
+    back = output<number | undefined>()
     highLight = output<number>()
     changePrev = output<number>()
     changeNext = output<number>()
@@ -154,21 +153,22 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         if (this.userPage) this.showFavourite = false
         if (this.pathService.userPage) this.canEdit = false
         effect(() => {
-            this.id_ = this.id()
-            if (this.partView()) {
-                this.item = this.partView()
-                this.id_ = this.item!.id!
-                this.isPart = isPart(this.item!.itemType!)
-                this.isTyre = this.item!.itemType === ItemType.Tyre || this.item!.itemType === ItemType.Rim || this.item!.itemType === ItemType.RimWithTyre
-                this.isSaved = this.localStorageService.isSaved(this.id_!)
+            if (this.id() && this.query()) {
+                const manager = this.homeService.getDataManager(this.query()!)
+                this.item = manager?.allParts?.find((part) => part.id == this.id())
+                if (!this.item) {
+                    this.fetchPart()
+                } else this.initPart(this.item)
+            } else {
+                if (this.partView()) {
+                    this.item = this.partView()
+                    this.isPart = isPart(this.item!.itemType!)
+                    this.isTyre = this.item!.itemType === ItemType.Tyre || this.item!.itemType === ItemType.Rim || this.item!.itemType === ItemType.RimWithTyre
+                    this.isSaved = this.localStorageService.isSaved(this.id()!)
+                } else if (this.currentViewId()) {
+                    this.fetchPart()
+                }
             }
-            if (this.currentViewId()) {
-                this.id_ = this.currentViewId()
-                this.fetchPart()
-            }
-
-            this.query_ = computed(() => this.query())()
-            this.userId_ = computed(() => this.userId())()
         })
     }
 
@@ -184,13 +184,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         return this.labels.CURRENCY
     }
     ngOnInit(): void {
-        goTop()
         this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
-            if (params['query']) this.query_ = +params['query']
-            if (params['id']) this.id_ = +params['id']
-            if (params['userId']) this.userId_ = +params['userId']
-            if (params['currentId']) this.id_ = +params['currentId']
-
             if (params['updateId']) {
                 this.updateId = +params['updateId']
             } else {
@@ -208,38 +202,37 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                         this.loggerService.logError(error)
                     },
                 })
-            } else if (this.query) {
+            } else if (this.query()) {
                 this.loading = true
-                const id = this.query
+                const id = this.query()
                 if (!this.dataManager || this.dataManager.noParts()) {
                     this.searchService
-                        .getSearchResult(+id)
+                        .getSearchResult(+id!)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe({
                             next: (result) => {
-                                this.homeService.addDataManager(+this.query!, result)
-                                const dataManager = this.homeService.getDataManager(+id)
+                                this.homeService.addDataManager(+this.query()!, result)
+                                const dataManager = this.homeService.getDataManager(+id!)
                                 if (dataManager) {
                                     dataManager.searchResult = result
-                                    dataManager.currentId = this.id_!
+                                    dataManager.currentId = this.id()!
                                 }
                                 this.init()
                             },
                             error: (error) => {
-                                this.query_ = 0
                                 console.log(error)
                             },
                             complete: () => (this.loading = false),
                         })
                 } else {
                     console.log('Cash')
-                    this.dataManager.currentId = this.id_!
+                    this.dataManager.currentId = this.id()!
                     this.init()
                 }
-            } else if (this.userId_) {
+            } else if (this.userId()) {
                 this.loading = true
-                const id = this.userId_
-                const filter: Filter = { id: 0, userId: this.userId_, searchBy: SearchBy.Filter, bus: -1 }
+                const id = this.userId()
+                const filter: Filter = { id: 0, userId: this.userId(), searchBy: SearchBy.Filter, bus: -1 }
                 if (!this.dataManager || this.dataManager.noParts()) {
                     this.searchService
                         .search(filter)
@@ -247,25 +240,24 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                         .subscribe({
                             next: (result) => {
                                 this.homeService.addDataManager(+this.id!, result)
-                                const dataManager = this.homeService.getDataManager(+id)
+                                const dataManager = this.homeService.getDataManager(+id!)
                                 if (dataManager) {
                                     dataManager.searchResult = result
-                                    dataManager.currentId = this.id_!
+                                    dataManager.currentId = this.id()!
                                 }
                                 this.init()
                             },
                             error: (error) => {
-                                this.query_ = 0
                                 console.log(error)
                             },
                             complete: () => (this.loading = false),
                         })
                 } else {
                     console.log('Cash')
-                    this.dataManager.currentId = this.id_!
+                    this.dataManager.currentId = this.id()!
                     this.init()
                 }
-            } else if (this.id_) {
+            } else if (this.id()) {
                 this.showNavigation = false
                 this.fetchPart()
             } else {
@@ -280,13 +272,13 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     }
 
     private fetchPart() {
-        if (this.id_) {
+        if (this.id()) {
             this.partService
-                .fetchDisplayPartView(this.id_!)
+                .fetchDisplayPartView(this.id()!)
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe({
                     next: (displayView) => {
-                        this.partService.currentPartId = this.id_!
+                        this.partService.currentPartId = this.id()!
                         this.item = displayView
                         this.initPart(this.item)
                     },
@@ -297,86 +289,53 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                 })
         }
     }
-    private breakpointChanged() {
-        if (this.breakpointObserver.isMatched('(min-width: 1200px)')) {
-            this.galleryOptions = [
-                {
-                    width: '360px',
-                    height: '315px',
-                    thumbnailsColumns: 4,
-                },
-            ]
-            console.log('large')
-        } else if (this.breakpointObserver.isMatched('(min-width: 1000px)')) {
-            this.galleryOptions = [
-                {
-                    width: '328px',
-                    height: '286px',
-                    thumbnailsColumns: 4,
-                },
-            ]
-            console.log('medium')
-        } else {
-            this.galleryOptions = [
-                {
-                    width: '282px',
-                    height: '261px',
-                    thumbnailsColumns: 4,
-                },
-            ]
-        }
-    }
 
     init() {
-        this.sent = undefined
-        this.images = []
-        this.item = this.dataManager?.filterData.find((part) => part.id === +this.id) ?? undefined
-        if (!this.item) {
-            this.popupService
-                .openWithTimeout(this.labels.MESSAGE, 'Частта не е намерена')
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe(() => {
-                    this.router.navigate(['/'])
-                })
-            return
-        }
-        let index = this.dataManager?.filterData.findIndex((part) => part.id === +this.id)
-        if (index === -1 || index === undefined) return
-
-        if (this.dataManager?.filterData.length === 1) {
-            this.nextId = -1
-        } else if (index + 1 === this.dataManager?.filterData.length) {
-            this.nextId = --index
-            this.nextPart = this.dataManager?.filterData[this.nextId]
-        } else {
-            this.nextId = ++index
-            this.nextPart = this.dataManager?.filterData[this.nextId]
-        }
-        if (!this.item) {
-            this.partService
-                .fetchDisplayPartView(this.id_!)
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe(
-                    (res) => {
-                        this.initPart(res)
-                    },
-                    (error) => {
-                        console.log(error)
-                    },
-                    () => (this.loading = false)
-                )
-        } else {
-            this.initPart(this.item)
-        }
+        //     this.sent = undefined
+        //     this.images = []
+        //     this.item = this.dataManager?.filterData.find((part) => part.id === +this.id) ?? undefined
+        //     if (!this.item) {
+        //         this.popupService
+        //             .openWithTimeout(this.labels.MESSAGE, 'Частта не е намерена')
+        //             .pipe(takeUntilDestroyed(this.destroyRef))
+        //             .subscribe(() => {
+        //                 this.router.navigate(['/'])
+        //             })
+        //         return
+        //     }
+        //     let index = this.dataManager?.filterData.findIndex((part) => part.id === +this.id)
+        //     if (index === -1 || index === undefined) return
+        //     if (this.dataManager?.filterData.length === 1) {
+        //         this.nextId = -1
+        //     } else if (index + 1 === this.dataManager?.filterData.length) {
+        //         this.nextId = --index
+        //         this.nextPart = this.dataManager?.filterData[this.nextId]
+        //     } else {
+        //         this.nextId = ++index
+        //         this.nextPart = this.dataManager?.filterData[this.nextId]
+        //     }
+        //     if (!this.item) {
+        //         this.partService
+        //             .fetchDisplayPartView(this.id()!)
+        //             .pipe(takeUntilDestroyed(this.destroyRef))
+        //             .subscribe(
+        //                 (res) => {
+        //                     this.initPart(res)
+        //                 },
+        //                 (error) => {
+        //                     console.log(error)
+        //                 },
+        //                 () => (this.loading = false)
+        //             )
+        //     } else {
+        //         this.initPart(this.item)
+        //     }
     }
 
     positionTest(id: number): void {
         document.getElementById(`${id}`)?.scrollIntoView()
     }
 
-    get price() {
-        return this.item?.price?.toString()
-    }
     initPart(part: DisplayPartView) {
         this.item = { ...part }
         this.item.companyName = part.companyName
@@ -388,6 +347,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
 
         this.isPart = isPart(this.item.itemType!)
         this.isTyre = this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre
+        this.price = this.item?.price?.toString()
 
         this.phone1 = this.item.sellerPhone
 
@@ -422,20 +382,20 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     get displayButton() {
         if (this.pathService.userPage) return false
         if (this.hideButton() === true) return false
-        if (this.query() || this.userId() || this.id_) return true
+        if (this.query() || this.userId() || this.id()) return true
         return false
     }
     //#endregion
 
     //#region faviorite
     save() {
-        const id = this.id_
+        const id = this.id()
         this.localStorageService.addSavedItem(id!)
         this.isSaved = this.localStorageService.isSaved(id!)
     }
 
     unsave() {
-        const id = this.id_
+        const id = this.id()
         this.localStorageService.removeSavedItem(id!)
         this.isSaved = this.localStorageService.isSaved(id!)
         this.uncheck.emit(id!)
@@ -456,7 +416,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     //#region move through list
     previousElem() {
         if (this.dataManager) {
-            this.dataManager.currentId = this.id_!
+            this.dataManager.currentId = this.id()!
             const datamanager = this.dataManager
             const part: DisplayPartView | undefined = datamanager?.previous()
             console.log(part)
@@ -467,7 +427,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
 
     nextElem() {
         if (this.dataManager) {
-            this.dataManager.currentId = this.id_!
+            this.dataManager.currentId = this.id()!
             const datamanager = this.dataManager
             const part: DisplayPartView | undefined = datamanager.next()
             console.log(part)
@@ -496,10 +456,6 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     //#region get functions
 
     //#endregion
-    moveToTop() {
-        goTop()
-    }
-
     change() {
         this.updatedItem = this.item
         this.router.navigate(['/viewPart'], {
@@ -672,7 +628,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
             this.dataManager.displayFilter = false
         }
         if (this.query) {
-            this.router.navigate([`/results/`], { queryParams: { query: this.query, id: this.item?.id } })
+            this.router.navigate([`/results/`], { queryParams: { query: this.query(), id: this.item?.id } })
             this.back.emit(this.query()!)
             return
         }

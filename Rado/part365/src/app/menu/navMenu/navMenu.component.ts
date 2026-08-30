@@ -1,6 +1,6 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT } from '@angular/core'
-import { Router, RouterLink, RouterLinkActive } from '@angular/router'
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, OnInit } from '@angular/core'
+import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { globalStaticData } from '@model/staticData'
@@ -55,7 +55,7 @@ import { LoginComponent } from '@app/admin/components/admin/user/login/login.com
     styleUrls: ['navmenu.component.scss'],
 })
 //#endregion
-export class NavMenuComponent extends HelperComponent implements OnDestroy {
+export class NavMenuComponent extends HelperComponent implements OnDestroy, OnInit {
     isExpanded = false
     showMenu = false
     showCategory = true
@@ -68,6 +68,7 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
 
     private readonly _mobileQuery: MediaQueryList
     private readonly _mobileQueryListener: () => void
+    displayBanner = signal(true)
 
     @ViewChild('header', { read: ElementRef }) header?: ElementRef
     @ViewChild('mySidenav', { read: ElementRef }) myElement?: ElementRef
@@ -101,6 +102,14 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
         this.isMobile.set(this._mobileQuery.matches)
         this._mobileQueryListener = () => this.isMobile.set(this._mobileQuery.matches)
         this._mobileQuery.addEventListener('change', this._mobileQueryListener)
+    }
+    ngOnInit() {
+         this.router.events.subscribe((event) => {
+        if (event instanceof NavigationStart) {
+        const value = this.router.url == '/' || this.router.url.startsWith('/?') ? true : false
+        console.log(`This route: ${this.router.url}`)
+        this.displayBanner.set(value)
+       }})
     }
     ngOnDestroy(): void {
         this._mobileQuery.removeEventListener('change', this._mobileQueryListener)
@@ -198,10 +207,6 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy {
         })
     }
 
-    get displayBanner() {
-        const value = this.router.url == '/' || this.router.url.startsWith('/?') ? true : false
-        return value
-    }
     updatePassword() {
         throw 'TODO'
         //    this.modalService.open("passwordDialog");

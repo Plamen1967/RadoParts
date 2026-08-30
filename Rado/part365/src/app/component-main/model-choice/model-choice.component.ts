@@ -19,16 +19,12 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-export class ModelChoiceComponent implements FormValueControl<number | undefined>, OnInit, AfterViewInit {
+export class ModelChoiceComponent implements FormValueControl<number | string |undefined>, OnInit, AfterViewInit {
     //#region variables and services
-    value = model<number | undefined>(undefined)
+    value = model<number | string | undefined>(undefined)
     modelForm: FormGroup
     models: OptionItem[] = []
     isDisabled = false
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    protected onTouched?() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    protected onChange?(_: number) {}
 
     multiselection = input<boolean>(true)
     companyId = input<number>(0)
@@ -60,7 +56,7 @@ export class ModelChoiceComponent implements FormValueControl<number | undefined
     }
     ngAfterViewInit(): void {
         this.modelForm.controls['modelsId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
-            if (this.onChange) this.onChange(f)
+            this.value.set(f)
         })
     }
     ngOnInit(): void {
@@ -68,12 +64,6 @@ export class ModelChoiceComponent implements FormValueControl<number | undefined
     }
     writeValue(value: string): void {
         this.modelForm.patchValue({ modelsId_int: value })
-    }
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
     }
     setDisabledState?(isDisabled: boolean): void {
         this.isDisabled = isDisabled

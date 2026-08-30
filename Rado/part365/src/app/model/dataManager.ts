@@ -91,6 +91,7 @@ export class DataManager {
     }
 
     getPageData() {
+        this.loading = false;
         if (!this.allParts) {
             return
         }
@@ -110,10 +111,12 @@ export class DataManager {
     }
 
     get loading() {
-        return this._loading
+        const _loading = this._loading
+        return _loading
     }
 
     set loading(value) {
+        console.log(`Loading : ${value}`)
         this._loading = value
     }
 
@@ -133,7 +136,7 @@ export class DataManager {
     }
 
     set searchResult(result: SearchResult | undefined) {
-        this._searchResult = result
+        this._searchResult = {...result}
         // TODO
         if (this._searchResult) {
             this.countItems.countCar = this._searchResult?.data?.filter((item) => item.bus == 0 && (item.itemType == ItemType.OnlyCar || item.itemType == ItemType.CarPart)).length

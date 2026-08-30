@@ -5,7 +5,7 @@
             <button matIconButton (click)="toggleSideMenu()"><mat-icon>menu</mat-icon></button>
             <h1 class="example-app-name">Responsive App</h1>
         </mat-toolbar> -->
-        <div class="background-image" [ngClass]="{ show: displayBanner, noShow: !displayBanner }"></div>
+        <div class="background-image" [ngClass]="{ show: displayBanner(), noShow: !displayBanner() }"></div>
         @if (isParts365) {
             <nav class="navbar navbar-expand-sm navbar-dark noPadding showMenuMin me-2">
                 <div class="menuColor header container parent" [ngStyle]="{ 'text-align': 'center', 'justify-content': 'center' }">

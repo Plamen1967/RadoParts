@@ -1,6 +1,6 @@
 //#region import
 
-import { AfterViewInit, ChangeDetectorRef, Component, computed, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, ViewChild } from '@angular/core'
+import { AfterViewInit, ChangeDetectorRef, Component, computed, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, signal, ViewChild } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs'
@@ -55,8 +55,34 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { SearchBarComponent } from '@components/search-bar/search-bar.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { HomeComponent } from '@app/search/home/Home.component'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
 //#region @Component
+interface CarFilter {
+    result: []
+    userId: number
+    bus: number
+    itemType: ItemType
+    approved: number
+    companyId: number
+    modelsId: string
+    modificationsId: string
+    engineType: number
+    engineModel: string
+    gearboxType: number
+    powerBHP: string
+    regionId: number
+    partNumber: string
+    orderBy: number
+    keyword: string
+    hasImages: boolean
+    categoryId: number
+    subCategoryId: number
+    categoriesId: string
+    subCategoriesId: string
+    selectedCategories: []
+}
+
 @Component({
     standalone: true,
     selector: 'app-carfilter',
@@ -80,6 +106,7 @@ import { HomeComponent } from '@app/search/home/Home.component'
         CategoryChoiseComponent,
         SubcategoryChoiseComponent,
         SearchBarComponent,
+        FormField,
     ],
 })
 //#endregion
@@ -100,8 +127,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     extendedSearch_?: boolean = false
     dispayCategory = false
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    initialState?: any
+    initialState? = {}
     sortType = 0
     _dropDown: Dropdown[] = []
     previuosFilter?: FilterCategory
@@ -171,11 +197,12 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     changes = output<object>()
     userId = input<string | undefined>(undefined)
     itemType = input<ItemType | undefined>(undefined)
-    query = input<string | undefined>(undefined)
+    query = input<number | undefined>(undefined)
     bus = input<number | undefined>(undefined)
 
-    bus_ = 0;
-    itemType_? : ItemType;
+    bus_ = 0
+    query_?: number
+    itemType_?: ItemType
     dropDownItems = output<Dropdown[]>()
     @HostListener('window:keydown', ['$event'])
     submitEvent(event: KeyboardEvent) {
@@ -187,6 +214,31 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion
 
     //#region constructor
+    carFilterModel = signal<CarFilter>({
+        bus: 0,
+        userId: 0,
+        result: [],
+        selectedCategories: [],
+        itemType: ItemType.AllCarAndPart,
+        approved: 3,
+        companyId: 0,
+        modelsId: '',
+        modificationsId: '',
+        engineType: 0,
+        engineModel: '',
+        gearboxType: 0,
+        powerBHP: '',
+        regionId: 0,
+        partNumber: '',
+        orderBy: 0,
+        keyword: '',
+        hasImages: false,
+        categoryId: 0,
+        subCategoryId: 0,
+        categoriesId: '',
+        subCategoriesId: '',
+    })
+    carFilterForm = form(this.carFilterModel)
     private formBuilder: FormBuilder = inject(FormBuilder)
     public categoryService: CategoryService = inject(CategoryService)
     public subCategoryService: SubCategoryService = inject(SubCategoryService)
@@ -209,13 +261,20 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     constructor() {
         super()
         effect(() => {
+            this.query_ = computed(() => {
+                console.log(`Query : ${this.query()}`)
+                return this.query()
+            })()
+        })
+
+        effect(() => {
             const filter = this.filter()
             if (filter) {
                 this.updateForm(filter)
             }
 
-            this.bus_ = computed(() => this.bus())() ?? 0;
-            this.itemType_ = computed(() => this.itemType())();
+            this.bus_ = computed(() => this.bus())() ?? 0
+            this.itemType_ = computed(() => this.itemType())()
         })
 
         this.filterForm = this.formBuilder.group({

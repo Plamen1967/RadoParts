@@ -4,7 +4,7 @@ import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, input,
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { goToPosition, sortPartView } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
-import { NavigatorComponent } from '@components/result/navigator/navigator.component'
+import { NavigatorComponent } from '@app/search/result/navigator/navigator.component'
 import { AuthenticatedUser } from '@model/authenticatedUser'
 import { CarView } from '@model/car/carView'
 import { CarItem } from '@model/carItem'

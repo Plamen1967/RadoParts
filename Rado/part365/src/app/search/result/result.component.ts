@@ -1,11 +1,11 @@
 //#region import
-import { AfterViewInit, Component, DestroyRef, Inject, Input, OnDestroy, OnInit, DOCUMENT, inject, input, output, effect, computed } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, Inject, Input, OnDestroy, OnInit, DOCUMENT, inject, input, output, effect, signal } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
-import { NavigatorComponent } from '@components/result/navigator/navigator.component'
+import { NavigatorComponent } from '@app/search/result/navigator/navigator.component'
 import { TopBarComponent } from '@components/custom-controls/topBar/topBar.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
-import { DisplayPartComponent } from '@components/result/displayPart/displayPart.component'
+import { DisplayPartComponent } from '@app/search/result/displayPart/displayPart.component'
 import { ActionType } from '@model/actionType'
 import { DataManager } from '@model/dataManager'
 import { DisplayPartView } from '@model/displayPartView'
@@ -43,19 +43,14 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     @Input() set currentId(value: number) {
         this.highlighted = value
     }
-    sortType = input<SortType>(SortType.YearAsc);
+    sortType = input<SortType>(SortType.YearAsc)
     hasSort = input<boolean>(true)
     showPhones = input<boolean>(true)
     showFavourite = input<boolean>(true)
     showDealer = input<boolean>(true)
     query = input<number | undefined>()
-    userId = input<number | undefined>()    
+    userId = input<number | undefined>()
     page = input<number>(1)
-
-    page_ = 1
-    query_? : number
-    userId_?: number
-    sortType_ :SortType = SortType.YearAsc
 
     @Input() set itemType(value: ItemType) {
         this.type = value
@@ -63,21 +58,6 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
     viewPart = output<number>()
     pageChanged = output<number>()
-
-    type = ItemType.AllCarAndPart
-    allParts: DisplayPartView[] = []
-    parts: DisplayPartView[] = []
-    numberPages?: number
-    pageMessage?: string
-    loading_ = false
-    currentPage?: number
-    scrollToTopFlag = false
-    notPositioned?: boolean
-    dataManager?: DataManager
-    highlighted = 0
-    updateItem?: DisplayPartView
-    updateId?: number
-    filters: { id: number; text: string }[] = []
 
     private homeService: HomeService = inject(HomeService)
     private route: ActivatedRoute = inject(ActivatedRoute)
@@ -92,26 +72,59 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     public dialog: MatDialog = inject(MatDialog)
     @Inject(DOCUMENT) document: Document = inject(DOCUMENT)
     private destroyRef: DestroyRef = inject(DestroyRef)
+    loading = signal(false)
+    type = ItemType.AllCarAndPart
+    allParts: DisplayPartView[] = []
+    parts: DisplayPartView[] = []
+    numberPages = signal(0)
+    pageMessage?: string
+    currentPage?: number
+    scrollToTopFlag = false
+    notPositioned?: boolean
+    dataManager?: DataManager
+    highlighted = 0
+    updateItem?: DisplayPartView
+    updateId?: number
+    filters: { id: number; text: string }[] = []
+    page_ = 1
+    userId_?: number
+    sortType_: SortType = SortType.YearAsc
+
     //#endregion
 
     constructor() {
         super()
-        effect(() =>{
-            this.page_ = computed(() => this.page())()
-            this.query_ = computed(() => this.query())()
-            this.userId_ = computed(() => this.userId())()
-            this.sortType_ = computed(() => this.sortType())()
+
+        effect(() => {
+            console.log(`ResultComponent: query() : ${this.query()}`)
+            this.query()
+            this.page()
+            if (this.query()) {
+                console.log(`Value page: ${this.page()}`)
+                if (this.page()) this.updateManagerFromQuery()
+                else
+                    this.router.navigate(['/results'], {
+                        queryParams: { page: 1 },
+                        queryParamsHandling: 'merge',
+                    })
+            } else if (this.userId()) {
+                this.results()
+            }
+            this.highlighted = this.id() ?? 0;
         })
+
+        // effect(() => {
+        //     this.sortType_ = this.sortType()
+        //     this.updateManagerFromQuery()
+        // })
     }
 
     ngOnInit() {
-        this.showDealer = this.showDealer ?? true
-        this.showPhones = this.showPhones ?? true
-        this.showFavourite = this.showFavourite ?? true
         this.notPositioned = true
-        if (this.userId) this.userService.userPageObj.next(this.userId()!)
+        if (this.userId_) this.userService.userPageObj.next(this.userId_)
         else this.userService.userPageObj.next(0)
         this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params: QueryParam) => {
+            console.log(`Params loaded : ${params}`)
             if (params.id) {
                 this.highlighted = +params.id
             }
@@ -125,8 +138,6 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
             if (params.itemType) this.itemType = +params.itemType
 
-            if (params.page) this.page_ = +params.page
-
             if (params.id || params.currentId) {
                 this.highlighted = this.currentId = params.id ?? params.currentId ?? 0
             } else {
@@ -136,30 +147,19 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
             this.setHighlight(this.highlighted)
 
-            if (this.updateId) {
-                this.searchPartService.getItem(this.updateId).subscribe({
-                    next: (part) => {
-                        this.updateItem = part
-                    },
-                    error: (error) => {
-                        this.loggerService.logError(error)
-                    },
-                })
-            } else if (params.query) {
-                this.query_ = +params.query
-                this.dataManager = this.homeService.getDataManager(+this.query)
-
-                if (params.page) this.page_ = +params.page
-                else if (this.dataManager?.currentPage) this.page_ = this.dataManager.currentPage
-                else this.page_ = 1
-                this.results()
-            } else if (params.userId) {
-                this.userId_ = params.userId
-                this.results()
-            } else {
-                this.loggerService.logError(`Something wrong in result web page ${params}`)
-                this.router.navigate(['/'])
-            }
+            // if (this.updateId) {
+            //     this.searchPartService.getItem(this.updateId).subscribe({
+            //         next: (part) => {
+            //             this.updateItem = part
+            //         },
+            //         error: (error) => {
+            //             this.loggerService.logError(error)
+            //         },
+            //     })
+            // } else {
+            //     this.loggerService.logError(`Something wrong in result web page ${params}`)
+            //     this.router.navigate(['/'])
+            // }
         })
     }
 
@@ -168,7 +168,10 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     ngAfterViewInit() {
-        goTop()
+        if (this.highlighted) {
+            goToPosition(this.highlighted, 0)
+//            this.setHighlight(0)
+        } else goTop()
         return
     }
 
@@ -182,30 +185,31 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     results() {
-        this.loading = true
+        this.loading.set(true)
         this.dataManager = this.homeService.getDataManager(0)
         if (this.userId()) {
             this.loadUserParts()
-        } else if (this.query) {
-            this.dataManager = this.homeService.getDataManager(+this.query)
+        } else if (this.query()) {
+            this.dataManager = this.homeService.getDataManager(+this.query()!)
             if (this.dataManager) {
                 this.setHighlight(this.dataManager.currentId)
                 this.sortType_ = this.dataManager.searchResult?.filter?.orderBy ?? SortType.PriceAsc
-                this.dataManager.currentPage = this.page()
+                this.dataManager.currentPage = +this.page()
                 this.dataManager.dataSubject.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
                     next: (parts) => {
                         this.parts = parts
                         this.setValues()
-                        this.loading = false
                     },
                     error: (error) => {
-                        this.loading = false
                         this.loggerService.logError(error)
                         this.showMessageSessionExpired()
                     },
+                    complete: () => {
+                        this.loading.set(false)
+                    },
                 })
                 this.dataManager.getPageData()
-                if (this.highlighted) goToPosition(this.highlighted)
+                this.setHighlight(this.highlighted)
             } else {
                 this.loadResults()
             }
@@ -221,16 +225,9 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             })
     }
 
-    set loading(value: boolean) {
-        this.loading_ = value
-    }
-    get loading() {
-        return this.loading_
-    }
-
     loadResults() {
         this.searchPartService
-            .getSearchResult(this.query()!)
+            .getSearchResult(+this.query()!)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (result) => {
@@ -239,12 +236,12 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                         return
                     }
 
-                    this.homeService.addDataManager(+this.query!, result)
-                    this.dataManager = this.homeService.getDataManager(+this.query!)
+                    this.homeService.addDataManager(+this.query()!, result)
+                    this.dataManager = this.homeService.getDataManager(+this.query()!)
                     if (this.dataManager) {
                         this.dataManager.searchResult = result
                         this.sortType_ = this.dataManager.searchResult?.filter?.orderBy ?? SortType.PriceAsc
-                        this.dataManager.currentPage = this.page()
+                        this.dataManager.currentPage = +this.page()
                         this.dataManager.dataSubject.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((parts) => {
                             this.parts = parts
                             this.setValues()
@@ -254,11 +251,10 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                     }
                 },
                 error: (error) => {
-                    this.loading = false
                     this.loggerService.logError(error)
                     this.showMessageSessionExpired()
                 },
-                complete: () => (this.loading = false),
+                complete: () => this.loading.set(false),
             })
     }
 
@@ -277,12 +273,11 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                         this.showData()
                     },
                     error: (error) => {
-                        this.loading = false
                         this.loggerService.logError(error)
                         this.loggerService.logError(error)
                     },
                     complete: () => {
-                        this.loading = false
+                        this.loading.set(false)
                     },
                 })
         } else {
@@ -313,16 +308,16 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
         return has
     }
     setValues() {
-        const id = this.query ?? this.userId
+        const id = this.query() ?? this.userId()
         if (!id) return
         const dataManager = this.homeService.getDataManager(+id)
         this.allParts = this.parts
         this.currentId = dataManager?.currentId ?? 0
         this.parts = dataManager?.pageParts ?? []
-        this.numberPages = dataManager?.numberPages
+        this.numberPages.set(dataManager?.numberPages ?? 0)
         this.pageMessage = `${dataManager?.currentPage} от ${dataManager?.numberPages}`
         this.currentPage = dataManager?.currentPage
-        this.loading = false
+        this.loading.set(false)
         goTop()
     }
 
@@ -389,7 +384,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
                 this.dataManager.getPageData()
                 this.parts = this.dataManager.pageParts ?? []
             } else {
-                this.router.navigate(['/results'], { queryParams: { query: `${this.query}`, page: `${event}` } })
+                this.router.navigate(['/results'], { queryParams: { query: `${this.query()}`, page: `${event}` } })
             }
         }
         goTop()
@@ -440,7 +435,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             this.dataManager.currentId = 0
             this.homeService.setDataManager(0, this.dataManager)
         }
-        if (this.query) this.router.navigate([`/`], { queryParams: { query: this.query } })
+        if (this.query) this.router.navigate([`/`], { queryParams: { query: this.query() } })
         else {
             this.router.navigate([`/`])
         }
@@ -508,7 +503,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     viewItem(id: number) {
         if (this.userId()) {
             this.viewPart.emit(id)
-        } else this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query}`, id: `${id}` } })
+        } else this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query()}`, id: `${id}` } })
     }
     //#endregion
 
@@ -517,8 +512,16 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             this.dataManager.setFilterType(event)
             this.dataManager.getPageData()
         }
-        this.numberPages = this.dataManager?.numberPages
+        this.numberPages.set(this.dataManager?.numberPages ?? 0)
         this.moveToPage(1)
+    }
+    updateManagerFromQuery() {
+        this.dataManager = this.homeService.getDataManager(+this.query()!)
+
+        if (this.page()) this.page_ = +this.page()
+        else if (this.dataManager?.currentPage) this.page_ = this.dataManager.currentPage
+        else this.page_ = 1
+        this.results()
     }
 }
 
