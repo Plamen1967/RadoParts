@@ -1,6 +1,6 @@
 //#region import
-import { AfterViewInit, Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, NavigationStart, ParamMap, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -42,7 +42,35 @@ import { DisplayPartView } from '@model/displayPartView'
 import { NgClass } from '@angular/common'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+interface addPartFormInterface {
+            partForCar: string,
+            carId: number,
+            partId: number,
+            companyId: number,
+            modelId: number,
+            modificationId: number,
+            year: number,
+            vin: string,
+            powerkWh: string,
+            powerBHP: string,
+            millage: string,
+            engineType: number,
+            engineModel: string,
+            gearboxType: number,
+            regionId: number,
+            categoryId: number,
+            dealerSubCategoryId: number,
+            description: string,
+            partNumber: string,
+            price: number,
+            leftRightPosition: number,
+            frontBackPosition: number,
+            dealerSubCategoryName: string,
+            mainImageId: number,
+
+}
 //#region component
 @Component({
     selector: 'app-addpart',
@@ -62,6 +90,7 @@ import { ItemType } from '@model/enum/itemType.enum'
         DealersubcategoryChoiceComponent,
         ToolBarComponent,
         NgClass,
+        FormField
     ],
 })
 //#endregion
@@ -75,7 +104,35 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.onSubmit()
     }
     //#region members
-    addPartForm: FormGroup
+    addPartFormModel = signal<addPartFormInterface>({
+            partForCar: '',
+            carId: 0,
+            partId: 0,
+            companyId: 0,
+            modelId: 0,
+            modificationId: 0,
+            year: 2021,
+            vin: '',
+            powerkWh: '',
+            powerBHP: '',
+            millage: '',
+            engineType: 0,
+            engineModel: '',
+            gearboxType: 0,
+            regionId: -1,
+            categoryId: 0,
+            dealerSubCategoryId: 0,
+            description: '',
+            partNumber: '',
+            price: 0, 
+            leftRightPosition: 0,
+            frontBackPosition: 0,
+            dealerSubCategoryName: '',
+            mainImageId: 0,
+
+    })
+    addPartForm = form(this.addPartFormModel)
+    
     cars?: SelectOption[]
     car?: CarView
     filterCar: FilterCar = new FilterCar()

@@ -8,7 +8,7 @@ export class HelperComponent {
     public authenticationService: AuthenticationService
     public formGroup!: FormGroup;
     public queryParams!: QueryParam;
-    inialValue: undefined
+    inialValue: object = {};
 
     constructor() {
         this.authenticationService = inject(AuthenticationService)

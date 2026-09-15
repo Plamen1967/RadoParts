@@ -1,10 +1,18 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, inject, input, OnInit, Renderer2 } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Component, ElementRef, inject, input, OnInit, Renderer2, signal } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
+import { form } from '@angular/forms/signals'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ModalService } from '@services/dialog-api/modal.service'
+//#endregion
+//#region interface
+interface passwordFormInterface {
+    oldPassword: string,
+    password: string,
+    password2: '',
+}
 //#endregion
 //#region component
 @Component({
@@ -15,9 +23,15 @@ import { ModalService } from '@services/dialog-api/modal.service'
 })
 //#endregion
 export default class PasswordComponent extends HelperComponent implements OnInit {
+    passwordFormModel = signal<passwordFormInterface> ({
+    oldPassword: '',
+    password: '',
+    password2: '',
+    })
+
+    passwordForm = form(this.passwordFormModel)
     //#region variables and services
     id = input<string>()
-    passwordForm: FormGroup
     submitted = false
     message = 'Паролата успешно е променена!'
     error = ''
@@ -38,12 +52,6 @@ export default class PasswordComponent extends HelperComponent implements OnInit
 
     constructor() {
         super()
-        const formBuilder = inject(FormBuilder)
-        this.passwordForm = formBuilder.group({
-            oldPassword: [''],
-            password: ['', Validators.required],
-            password2: ['', Validators.required],
-        })
     }
 
     ngOnInit() {
@@ -65,7 +73,7 @@ export default class PasswordComponent extends HelperComponent implements OnInit
         this.type2 = 'password'
         this.showFlag2 = false
 
-        this.passwordForm.patchValue({ oldPassword: '', password: '', password2: '' })
+        this.passwordFormModel.set({ oldPassword: '', password: '', password2: '' })
         this.submitted = false
         this.error = ''
     }
@@ -80,15 +88,15 @@ export default class PasswordComponent extends HelperComponent implements OnInit
 
     onOk() {
         this.submitted = true
-        if (this.passwordForm.invalid) {
+        if (this.passwordForm().invalid()) {
             return
         }
 
-        if (this.passwordForm.controls['password'].value != this.passwordForm.controls['password2'].value) {
+        if (this.passwordFormModel().password != this.passwordFormModel().password2) {
             this.error = this.labels.PASSWОRDNOTSAME
         }
 
-        this.authenticationService.updatePassword(this.passwordForm.controls['oldPassword'].value, this.passwordForm.controls['password'].value).subscribe({
+        this.authenticationService.updatePassword(this.passwordFormModel().oldPassword, this.passwordFormModel().password).subscribe({
             next: () => {
                 return
             },
@@ -110,10 +118,6 @@ export default class PasswordComponent extends HelperComponent implements OnInit
     }
     get password2Random() {
         return 'password2' + Date.now()
-    }
-
-    get f() {
-        return this.passwordForm.controls
     }
 
     show() {

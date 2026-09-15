@@ -1,7 +1,7 @@
 //#region import
 import { AsyncPipe, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, input, effect } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, input, effect, signal } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { goToPosition, sortPartView } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { NavigatorComponent } from '@app/search/result/navigator/navigator.component'
@@ -47,7 +47,23 @@ import { ListTitleComponent } from '@components/custom-controls/listtitle/listti
 import { UserCountService } from '@services/userCount.service'
 import { LoggerService } from '@services/authentication/logger.service'
 import { UserCount } from '@model/userCount'
-
+import { form, FormField } from '@angular/forms/signals'
+//#endregion
+//#region interface
+interface searchFormInterface {
+    bus: string
+    companyId: number
+    modelId: number
+    modificationId: number
+    year: number
+    categoryId: number
+    subCategoryId: number
+    partNumber: string
+    sortOrder: number
+    carId: number
+}
+//#endregion
+//#region component
 @Component({
     selector: 'app-listpart',
     templateUrl: './listpart.component.html',
@@ -70,11 +86,29 @@ import { UserCount } from '@model/userCount'
         SubcategoryChoiseComponent,
         ListTitleComponent,
         AsyncPipe,
+        FormField,
+        FormField,
     ],
 })
 
 //#endregion
+
 export default class ListPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
+    searchFormModel = signal<searchFormInterface>({
+        bus: '',
+        companyId: 0,
+        modelId: 0,
+        modificationId: 0,
+        year: 0,
+        categoryId: 0,
+        subCategoryId: 0,
+        partNumber: '',
+        sortOrder: 0,
+        carId: 0
+    })
+
+    searchForm = form(this.searchFormModel)
+
     submitElement?: ElementRef<HTMLInputElement>
     sortType = 0
     companies: SelectOption[] = []
@@ -91,7 +125,6 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     numberPages?: number
     loading = false
     selectedCompany?: Company
-    searchForm: FormGroup
     yearFrom = this.labels.YEAR_START
     yearTo = 2021
     years?: SelectOption[]
@@ -112,7 +145,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     userId?: number
     addPartFlag = false
     categoriesId!: string
-    id_? : number;
+    id_?: number
     id = input<number | undefined>()
     public todos$?: Observable<CarView[]>
     public todosPart$?: Observable<PartView[]>
@@ -132,7 +165,6 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     public subCategoryService: SubCategoryService = inject(SubCategoryService)
     public searchPartService: SearchPartService = inject(SearchPartService)
     private authernticationService: AuthenticationService = inject(AuthenticationService)
-    private formBuilder: FormBuilder = inject(FormBuilder)
     private partService: PartServiceService = inject(PartServiceService)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     private userService: UserService = inject(UserService)
@@ -144,7 +176,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     private carService: CarService = inject(CarService)
     private userCountService: UserCountService = inject(UserCountService)
     private loggerService: LoggerService = inject(LoggerService)
-    
+
     constructor() {
         super()
         this._autoSearch$ = new Subject<Filter>()
@@ -154,20 +186,9 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this._destroy$ = new Subject<boolean>()
         this.userId = this.authenticationService.user?.userId
         this.userCount$ = this.userCountService.userCount$
-        this.searchForm = this.formBuilder.group({
-            bus: [0],
-            companyId: [0],
-            modelId: [0],
-            modificationId: [0],
-            year: [0],
-            categoryId: [0],
-            subCategoryId: [0],
-            partNumber: [''],
-            sortOrder: [0],
-        })
 
         effect(() => {
-            this.id_ = this.id();
+            this.id_ = this.id()
         })
     }
     ngAfterViewInit(): void {
@@ -198,7 +219,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
             debounceTime(this._debounce),
             distinctUntilChanged(),
             switchMap((filter) => {
-                this.searchForm.patchValue({ carId: 0 })
+                this.searchFormModel.set({ ...this.searchFormModel(), carId: 0 })
                 filter.userId = this.userId
                 return this.carService.fetchCars(filter)
             }),

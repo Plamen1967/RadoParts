@@ -1,6 +1,6 @@
 //#region Imports
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, input } from '@angular/core'
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, input, model } from '@angular/core'
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
 import { UserType } from '@model/enum/userType.enum'
@@ -24,13 +24,32 @@ import { ConfirmServiceService } from '@app/dialog/services/confirmService.servi
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { UpdateUserService } from '@app/admin/services/updateuser.service'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+interface userForm {
+            userName: string,
+            companyName: string,
+            firstName: string,
+            fatherName: string,
+            lastName: string,
+            address: string,
+            city: string,
+            regionId: number,
+            phone: string,
+            phone2: string,
+            viber: string,
+            whats: string,
+            email: string, //, Validators.pattern(this.unamePattern)
+            webPage: string,
+            description: string,
+            imageId: number
+        }
 //#region Component
 @Component({
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
-    imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule],
+    imports: [InputComponent, ReactiveFormsModule, SelectComponent, NgStyle, TextAreaComponent, UploadComponent, PictureComponent, UploadComponent, FormsModule, FormField],
 })
 //#endregion
 export default class UpdateUserComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -39,7 +58,25 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     pwdPattern = ''
     mobnumPattern = '^((\\+91-?)|0)?[0-9]{10}$'
     emailPattern = ''
-    userForm: FormGroup
+    userFormModel = model<userForm>({
+        userName: '',
+        companyName: '',
+        firstName: '',
+        fatherName: '',
+        lastName: '',
+        address: '',
+        city: '',
+        regionId: 0,
+        phone: '',
+        phone2: '',
+        viber: '',
+        whats: '',
+        email: '',
+        webPage: '',
+        description: '',
+        imageId: 0
+    })
+    userForm = form(this.userFormModel)
     loading = false
     submitted = false
     dealer?: UserType = UserType.Dealer
@@ -79,24 +116,24 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     constructor() {
         super()
         this.regions = [...this.staticSelectionService.Region]
-        this.userForm = this.formBuilder.group({
-            userName: ['', [Validators.maxLength(50), Validators.required]],
-            companyName: ['', [Validators.maxLength(50)]],
-            firstName: ['', [Validators.maxLength(50)]],
-            fatherName: ['', [Validators.maxLength(50)]],
-            lastName: ['', [Validators.maxLength(50)]],
-            address: [''],
-            city: ['', [Validators.maxLength(50)]],
-            regionId: [undefined, Validators.min(1)],
-            phone: ['', [Validators.required, Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            phone2: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            viber: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            whats: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            email: ['', [Validators.required]], //, Validators.pattern(this.unamePattern)
-            webPage: [''],
-            description: [''],
-            imageId: [0],
-        })
+        // this.userForm = this.formBuilder.group({
+        //     userName: ['', [Validators.maxLength(50), Validators.required]],
+        //     companyName: ['', [Validators.maxLength(50)]],
+        //     firstName: ['', [Validators.maxLength(50)]],
+        //     fatherName: ['', [Validators.maxLength(50)]],
+        //     lastName: ['', [Validators.maxLength(50)]],
+        //     address: [''],
+        //     city: ['', [Validators.maxLength(50)]],
+        //     regionId: [undefined, Validators.min(1)],
+        //     phone: ['', [Validators.required, Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
+        //     phone2: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
+        //     viber: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
+        //     whats: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
+        //     email: ['', [Validators.required]], //, Validators.pattern(this.unamePattern)
+        //     webPage: [''],
+        //     description: [''],
+        //     imageId: [0],
+        // })
     }
 
     ngAfterViewInit(): void {
@@ -130,7 +167,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((user) => {
                     this.user = user
-                    this.userForm.patchValue(user)
+                    this.userFormModel.set({ ...this.userFormModel(), ...user })
                     this.dealer = user.dealer
                     if (this.dealer === UserType.Dealer) {
                         this.requiredField(true)
@@ -145,7 +182,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                         this.userForm.controls['companyName'].clearValidators()
                         this.userForm.controls['companyName'].updateValueAndValidity()
                     }
-                    this.initialState = this.userForm.value
+                    this.initialState = this.userFormModel()
                 })
         }
 
@@ -156,7 +193,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((image) => {
                     this.businessCardimage = image
-                    if (this.businessCardimage) this.f['imageId'].setValue(this.businessCardimage?.imageId)
+                    if (this.businessCardimage) this.userFormModel.set({ ...this.userFormModel(), imageId: this.businessCardimage?.imageId ?? 0 })
                 })
 
             this.imageService
@@ -174,10 +211,6 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
         //     .subscribe((userId) => (this.userId = userId))
     }
 
-    get f() {
-        return this.userForm.controls
-    }
-
     get isDealer() {
         return this.dealer === UserType.Dealer
     }
@@ -189,22 +222,24 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
         this.submitted = true
         this.alerService.clear()
         this.error = ''
-        if (this.userForm.invalid) {
+        if (this.userForm().valid() === false) {
             this.onRequired()
             return
         }
 
         this.loading = true
-        this.userForm.value['userId'] = this.userId
-        this.userForm.value['imageId'] = this.businessCardimage?.imageId
+        this.userFormModel.set({
+            ...this.userFormModel(),
+            imageId: this.businessCardimage?.imageId ?? this.userFormModel().imageId,
+        }) 
         this.updateUserService
-            .updateUser(this.userForm.value)
+            .updateUser(this.userFormModel())
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
                     if (this.authenticationService.currentUserValue) {
-                        this.authenticationService.currentUserValue.userName = this.userForm.value.userName
-                        this.authenticationService.currentUserValue.regionId = this.userForm.value.regionId
+                        this.authenticationService.currentUserValue.userName = this.userFormModel().userName
+                        this.authenticationService.currentUserValue.regionId = this.userFormModel().regionId
                     }
                     let message: string
                     if (this.activationcode()) message = 'Моля активирайте акаунта си чрез изпратеният до Вас е-майл!'
@@ -286,10 +321,10 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     addBusinessCard(image: ImageData[]) {
         if (image === null) {
             this.businessCardimage = undefined
-            this.f['imageId'].setValue(0)
+            this.userFormModel.set({ ...this.userFormModel(), imageId: 0 })
         } else {
             this.businessCardimage = image[0]
-            this.f['imageId'].setValue(this.businessCardimage?.imageId)
+            this.userFormModel.set({ ...this.userFormModel(), imageId: this.businessCardimage?.imageId ?? 0 })
         }
     }
 

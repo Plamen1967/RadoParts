@@ -1,42 +1,40 @@
-<form [formGroup]="  modificationForm">
-
-@if (multiselection()) {
-  <app-multiselection
-      id="modificationId"
-      label="Модификация"
-      placeHolder="Избери модификация"
-      formControlName="modificationsId_int"
- 
-      [appToolTip]="'Избери модификация'"
-      [groupSelection]="false"
-      [data]="modifications"
-      [showLetter]="false"
-      [multiSelection]="multiselection()"
-      [useLetter]="false"
-      [useFilter]="useFilter()"
-      data-cy="modificationId"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right"
-      [required]="IsRequired()"
-      [submitted]="submitted()"
-      [showCount]="showCount()"
-      (onCloseEvent)="focus()">
-  </app-multiselection>
-} @else {
-  <app-customselect
-      id="modificationId"
-      [data]="modifications"
-      formControlName="modificationsId_int"
-      label="Модификация"
-      [placeHolder]="'Избери модификация'"
-      [appToolTip]="'Избери модификация'"
-      [useFilter]="useFilter()"
-      data-cy="modificationId"
-      [required]="IsRequired()"
-      [submitted]="submitted()"
-      [showCount]="showCount()"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right">
-  </app-customselect>
-}
+<form>
+    @if (multiselection()) {
+        <app-multiselection
+            id="modificationId"
+            label="Модификация"
+            placeHolder="Избери модификация"
+            [formField]="myform.modificationIds"
+            [appToolTip]="'Избери модификация'"
+            [groupSelection]="false"
+            [data]="modifications"
+            [showLetter]="false"
+            [multiSelection]="multiselection()"
+            [useLetter]="false"
+            [useFilter]="useFilter()"
+            data-cy="modificationId"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            [IsRequired]="IsRequired()"
+            [submitted]="submitted()"
+            [showCount]="showCount()"
+            (onCloseEvent)="focus()">
+        </app-multiselection>
+    } @else {
+        <app-customselect
+            id="modificationId"
+            [data]="modifications"
+            [formField]="myform.modificationId"
+            label="Модификация"
+            [placeHolder]="'Избери модификация'"
+            [appToolTip]="'Избери модификация'"
+            [useFilter]="useFilter()"
+            data-cy="modificationId"
+            [IsRequired]="IsRequired()"
+            [submitted]="submitted()"
+            [showCount]="showCount()"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right">
+        </app-customselect>
+    }
 </form>

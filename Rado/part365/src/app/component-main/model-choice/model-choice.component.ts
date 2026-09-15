@@ -1,7 +1,7 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, OnInit, model, input, effect } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, model, input, effect } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -9,22 +9,31 @@ import { ItemType } from '@model/enum/itemType.enum'
 import { OptionItem } from '@model/optionitem'
 import { ModelService } from '@services/company-model-modification/model.service'
 import { ErrorService } from '@services/error.service'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, FormField, form } from '@angular/forms/signals'
 //#endregion
+interface modelChoice {
+    modelId: number
+    modelsId_int: string
+}
+
 //#region component
 @Component({
     selector: 'app-model-choice',
     templateUrl: './model-choice.component.html',
     styleUrls: ['./model-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule, FormField],
 })
 //#endregion
-export class ModelChoiceComponent implements FormValueControl<number | string |undefined>, OnInit, AfterViewInit {
+
+export class ModelChoiceComponent implements FormValueControl<number | string | undefined> {
     //#region variables and services
-    value = model<number | string | undefined>(undefined)
-    modelForm: FormGroup
-    models: OptionItem[] = []
     isDisabled = false
+
+    value = model<number | string | undefined>(undefined)
+    model = model<modelChoice>({ modelId: 0, modelsId_int: '' })
+    form = form(this.model)
+
+    models = model<OptionItem[]>([])
 
     multiselection = input<boolean>(true)
     companyId = input<number>(0)
@@ -47,23 +56,23 @@ export class ModelChoiceComponent implements FormValueControl<number | string |u
     //#region
     //#endregion
     constructor() {
-        this.modelForm = this.formBuilder.group({
-            modelsId_int: [0],
-        })
+
         effect(() => {
-            if (this.companyId()) this.onCompanyChage(this.companyId())
+            if (this.multiselection()) {
+                this.value.set(this.model().modelsId_int)
+            } else {
+                this.value.set(this.model().modelId.toString())
+            }
         })
-    }
-    ngAfterViewInit(): void {
-        this.modelForm.controls['modelsId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
-            this.value.set(f)
+
+        effect(() => {
+            const companyId_ = this.companyId()
+            if (companyId_) {
+                this.onCompanyChage(companyId_)
+            } else {
+                this.models.set([])
+            }
         })
-    }
-    ngOnInit(): void {
-        return
-    }
-    writeValue(value: string): void {
-        this.modelForm.patchValue({ modelsId_int: value })
     }
     setDisabledState?(isDisabled: boolean): void {
         this.isDisabled = isDisabled
@@ -89,7 +98,7 @@ export class ModelChoiceComponent implements FormValueControl<number | string |u
                     .subscribe((res) => {
                         const models = res
                         models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })
-                        this.models = models
+                        this.models.set(models
                             .map((model) => {
                                 return {
                                     id: model.modelId,
@@ -101,11 +110,11 @@ export class ModelChoiceComponent implements FormValueControl<number | string |u
                                     important: false,
                                 }
                             })
-                            .filter((item) => this.filter(item))
+                            .filter((item) => this.filter(item)))
                         this.updateCount()
                     })
             } else {
-                this.models = []
+                this.models.set([])
             }
         } else {
             if (value) {
@@ -115,7 +124,7 @@ export class ModelChoiceComponent implements FormValueControl<number | string |u
                     .subscribe((res) => {
                         const models = res
                         models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })
-                        this.models = models
+                        this.models.set(models
                             .map((model) => {
                                 return {
                                     id: model.modelId,
@@ -127,17 +136,17 @@ export class ModelChoiceComponent implements FormValueControl<number | string |u
                                     important: false,
                                 }
                             })
-                            .filter((item) => this.filter(item))
+                            .filter((item) => this.filter(item)))
                         this.updateCount()
                     })
             } else {
-                this.models = []
+                this.models.set([])
             }
         }
     }
     updateCount() {
-        if (this.itemType() == ItemType.OnlyBus || this.itemType() == ItemType.OnlyCar) this.models.forEach((item) => (item.count = item.countCars))
-        else if (this.itemType() == ItemType.CarPart || this.itemType() == ItemType.BusPart) this.models.forEach((item) => (item.count = item.countParts))
-        else this.models.forEach((item) => (item.count = item.countParts + item.countCars))
+        if (this.itemType() == ItemType.OnlyBus || this.itemType() == ItemType.OnlyCar) this.models().forEach((item) => (item.count = item.countCars))
+        else if (this.itemType() == ItemType.CarPart || this.itemType() == ItemType.BusPart) this.models().forEach((item) => (item.count = item.countParts))
+        else this.models().forEach((item) => (item.count = item.countParts + item.countCars))
     }
 }

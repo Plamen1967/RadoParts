@@ -8,7 +8,7 @@
         </div>
     }
     <div class="title">{{ tyreDescription }}</div>
-    <form [formGroup]="addForm" class="p-2" style="background-color: rgb(11, 245, 233)" autocomplete="off">
+    <form class="p-2" style="background-color: rgb(11, 245, 233)" autocomplete="off">
         <div class="custom-flex">
             <div [ngClass]="{ show: $safeNavigationMigration(params?.ad), noShow: !params?.ad }">
                 <div class="custom-flex">
@@ -22,15 +22,15 @@
             <h5>Гума</h5>
             <div class="row">
                 <div class="col-sm-2 min150px">
-                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" [submitted]="submitted" [required]="true" data-cy="tyreWidth" [data]="tyreWidth" (onCloseEvent)="focus($event)">
+                    <app-select [formField]="addTyreForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" [submitted]="submitted" [IsRequired]="true" data-cy="tyreWidth" [data]="tyreWidth" (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
                 <div class="col-sm-2 min200px">
                     <app-select
-                        formControlName="tyreHeight"
+                        [formField]="addTyreForm.tyreHeight"
                         label="{{ labels.TYRE_HEIGHT }}"
                         [submitted]="submitted"
-                        [required]="true"
+                        [IsRequired]="true"
                         data-cy="tyreHeight"
                         [data]="tyreHeight"
                         (onCloseEvent)="focus($event)">
@@ -38,10 +38,10 @@
                 </div>
                 <div class="col-sm-2 min150px">
                     <app-select
-                        formControlName="tyreRadius"
+                        [formField]="addTyreForm.tyreRadius"
                         label="{{ labels.TYRE_RADIUS }}"
                         [submitted]="submitted"
-                        [required]="true"
+                        [IsRequired]="true"
                         data-cy="tyreRadius"
                         [data]="tyreRadius"
                         (onCloseEvent)="focus($event)">
@@ -49,23 +49,23 @@
                 </div>
                 @if (itemType === 3) {
                     <div class="col-sm-1 min150px">
-                        <app-input formControlName="count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [required]="true"></app-input>
+                        <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [IsRequired]="true"></app-input>
                     </div>
                 }
                 <div class="col-sm-2 min150px">
-                    <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" [submitted]="submitted" data-cy="tyreType" [data]="tyreTypes" (onCloseEvent)="focus($event)" [required]="true">
+                    <app-select [formField]="addTyreForm.tyreType" label="{{ labels.TYRE_TYPE }}" [submitted]="submitted" data-cy="tyreType" [data]="tyreTypes" (onCloseEvent)="focus($event)" [IsRequired]="true">
                     </app-select>
                 </div>
                 <div class="col-sm-3 min200px">
                     <app-select
                         id="tyreCompanyId"
-                        formControlName="tyreCompanyId"
+                        [formField]="addTyreForm.tyreCompanyId"
                         data-cy="tyreCompanyId"
                         label="{{ labels.TYRE_PRODUCER }}"
                         [data]="tyreProducers"
                         [submitted]="submitted"
                         (onCloseEvent)="focus($event)"
-                        [required]="false">
+                        [IsRequired]="false">
                     </app-select>
                 </div>
             </div>
@@ -74,11 +74,11 @@
             <div class="row mb-2">
                 <div class="d-inline-flex align-items-end">
                     <div class="col-sm-1 control min50px max100px me-2">
-                        <app-select id="month" tooltip="'Mесец DOT'" formControlName="monthDOT" data-cy="month" label="DOT" [data]="months" (onCloseEvent)="focus($event)" [submitted]="submitted">
+                        <app-select id="month" tooltip="'Mесец DOT'" [formField]="addTyreForm.monthDOT" data-cy="month" label="DOT" [data]="months" (onCloseEvent)="focus($event)" [submitted]="submitted">
                         </app-select>
                     </div>
                     <div class="col-sm-1 control min50px max100px">
-                        <app-select id="year" formControlName="yearDOT" data-cy="year" [data]="years" (onCloseEvent)="focus($event)" [submitted]="submitted"> </app-select>
+                        <app-select id="year" [formField]="addTyreForm.yearDOT" data-cy="year" [data]="years" (onCloseEvent)="focus($event)" [submitted]="submitted"> </app-select>
                     </div>
                 </div>
             </div>
@@ -87,13 +87,13 @@
             <h5>Джанта</h5>
             <div class="row">
                 <div class="col-sm-4 control max250px">
-                    <app-company-choise id="companyId" [showCount]="false" formControlName="companyId" data-cy="companyId" [all]="true" (onCloseEvent)="focus($event)" [required]="true">
+                    <app-company-choise id="companyId" formControlName="companyId" data-cy="companyId" [config]="{ all: true, bus: 0, userId: userId!, itemType: itemType, showCount: false }" (onCloseEvent)="focus($event)" [required]="true">
                     </app-company-choise>
                 </div>
                 @if (this.companyId) {
                     <div class="col-sm-5 control min300px">
                         <app-model-choice
-                            formControlName="modelId"
+                            [formField]="addTyreForm.modelId"
                             [showCount]="false"
                             [groupSelection]="false"
                             [all]="true"
@@ -108,10 +108,10 @@
                 @if (itemType === 4) {
                     <div class="col-sm-2 min150px">
                         <app-select
-                            formControlName="tyreRadius"
+                            [formField]="addTyreForm.tyreRadius"
                             label="{{ labels.TYRE_RADIUS }}"
                             [submitted]="submitted"
-                            [required]="true"
+                            [IsRequired]="true"
                             data-cy="tyreRadius"
                             [data]="tyreRadius"
                             (onCloseEvent)="focus($event)">
@@ -122,7 +122,7 @@
                     <app-select
                         id="rimMaterial"
                         tooltip="'Материал'"
-                        formControlName="rimMaterial"
+                        [formField]="addTyreForm.rimMaterial"
                         data-cy="rimMaterial"
                         label="Материал"
                         displayProperty="text"
@@ -136,7 +136,7 @@
                     <app-select
                         id="rimOffset"
                         tooltip="''"
-                        formControlName="rimOffset"
+                        [formField]="addTyreForm.rimOffset"
                         data-cy="rimOffset"
                         label="Офсет"
                         displayProperty="text"
@@ -150,12 +150,12 @@
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Брой Болтове'"
-                        formControlName="rimBoltCount"
+                        [formField]="addTyreForm.rimBoltCount"
                         data-cy="rimBoltCount"
                         label="Брой Болтове"
                         [data]="rimBoltCount"
                         (onCloseEvent)="focus($event)"
-                        [required]="true"
+                        [IsRequired]="true"
                         [submitted]="submitted">
                     </app-select>
                 </div>
@@ -163,7 +163,7 @@
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Междуболтово разстояние'"
-                        formControlName="rimBoltDistance"
+                        [formField]="addTyreForm.rimBoltDistance"
                         data-cy="rimBoltDistance"
                         label="Междуболтово разстояние"
                         [data]="rimBoltDistances"
@@ -175,7 +175,7 @@
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Брой Болтове'"
-                        formControlName="rimCenter"
+                        [formField]="addTyreForm.rimCenter"
                         data-cy="rimCenter"
                         label="Център"
                         [data]="rimCenters"
@@ -185,24 +185,24 @@
                 </div>
                 @if (itemType !== 3) {
                     <div class="col-sm-1 min150px">
-                        <app-input formControlName="count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [required]="true"></app-input>
+                        <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [IsRequired]="true"></app-input>
                     </div>
                 }
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-sm-4">
-                <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" data-cy="region" [data]="regions" (onCloseEvent)="focus($event)" [submitted]="submitted">
+                <app-select [formField]="addTyreForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" data-cy="region" [data]="regions" (onCloseEvent)="focus($event)" [submitted]="submitted">
                 </app-select>
             </div>
         </div>
         <div class="row form-floating mb-2">
-            <app-textarea formControlName="description" placeHolder="{{ labels.PART_DETAILS }}" data-cy="description" [submitted]="submitted"> </app-textarea>
+            <app-textarea [formField]="addTyreForm.description" placeHolder="{{ labels.PART_DETAILS }}" data-cy="description" [submitted]="submitted"> </app-textarea>
         </div>
         <div class="row g-3">
             <div class="d-inline">
                 <app-input
-                    formControlName="price"
+                    [formField]="addTyreForm.price"
                     placeHolder="{{ labels.PRICE }}"
                     [IsPrice]="true"
                     [submitted]="submitted"

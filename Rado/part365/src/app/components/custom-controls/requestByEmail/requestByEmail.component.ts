@@ -1,7 +1,7 @@
 //#region Imports
 
-import { Component, DestroyRef, inject, OnInit, input, output } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Component, DestroyRef, inject, OnInit, input, output, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ItemType } from '@model/enum/itemType.enum'
 import { ImageService } from '@services/image.service'
@@ -13,21 +13,42 @@ import { CatchaComponent } from '../catcha/catcha.component'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { Catcha } from '@model/catcha'
-
+import { form, FormField } from '@angular/forms/signals'
+//#endregion
+//#region interface
+interface requestByEmailInterface {
+    name: string
+    email: string
+    request: string
+    sendCopy: boolean
+    catcha: string
+}
+//#endregion
+//#region component
 @Component({
     selector: 'app-requestbyemail',
     templateUrl: './requestByEmail.component.html',
     styleUrls: ['./requestByEmail.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, InputComponent, TextAreaComponent, CatchaComponent],
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, TextAreaComponent, CatchaComponent, FormField],
 })
 //#endregion
 export class RequestByEmailComponent extends HelperComponent implements OnInit {
+    //#region form
+    requestByEmailModel = signal<requestByEmailInterface> ({
+            name: '',
+            email: '',
+            request: '',
+            sendCopy: false,
+            catcha: '',
+    })
+
+    requestByEmail = form(this.requestByEmailModel)
+    //#endregion
     message?: string
     imageData?: Catcha
-    requestByEmail: FormGroup
     submitted!: boolean
 
-    id = input.required<number>();
+    id = input.required<number>()
     itemType = input<ItemType | undefined>()
 
     messageSent = output<boolean>()
@@ -39,13 +60,6 @@ export class RequestByEmailComponent extends HelperComponent implements OnInit {
 
     constructor() {
         super()
-        this.requestByEmail = this.formBuilder.group({
-            name: ['', Validators.required],
-            email: ['', Validators.required],
-            request: ['', Validators.required],
-            sendCopy: [false],
-            catcha: ['', Validators.required],
-        })
     }
 
     ngOnInit() {
@@ -57,15 +71,13 @@ export class RequestByEmailComponent extends HelperComponent implements OnInit {
 
     sendRequest() {
         this.submitted = true
-        if (!this.requestByEmail.valid) return
+        if (!this.requestByEmail().valid()) return
         this.imageService
-            .verifyCatcha({ id: this.imageData?.imageId, catchaText: this.requestByEmail.value.catcha })
+            .verifyCatcha({ id: this.imageData?.imageId, catchaText: this.requestByEmailModel().catcha })
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    const emailMessage = this.requestByEmail.value
-                    emailMessage['id'] = this.id
-                    emailMessage['itemType'] = this.itemType
+                    const emailMessage = { ...this.requestByEmailModel(), ...{id: this.id(), itemType: this.itemType()}}
                     this.messageService
                         .sendEmail(emailMessage)
                         .pipe(takeUntilDestroyed(this.destroyRef))

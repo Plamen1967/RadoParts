@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, effect, EventEmitter, HostListener, inject, input, OnInit, output } from '@angular/core'
+import { AfterViewInit, Component, computed, effect, EventEmitter, HostListener, inject, input, OnInit, output, signal } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
@@ -22,16 +22,27 @@ import { UserHeaderComponent } from '../userHeader/userHeader.component'
 import { SelectOption } from '@model/selectOption'
 import { convertImage, goTop, goToPosition } from '@app/functions/functions'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
+import { form, FormField } from '@angular/forms/signals';
+//#endregion
+//#region 
+interface homeInterface {
+    type: ItemType
+}
 //#endregion
 //#region component
 @Component({
     selector: 'app-userhomepage',
     templateUrl: './userHomePage.component.html',
     styleUrls: ['./userHomePage.component.css'],
-    imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent],
+    imports: [ImageCarouselComponent, ReactiveFormsModule, SelectComponent, UserHeaderComponent, RadioGroupListComponent, FormsModule, UserHeaderComponent, SelectComponent, FormField],
 })
 //#endregion
 export class UserHomePageComponent extends HelperComponent implements OnInit, AfterViewInit {
+    homeModel = signal<homeInterface>({
+        type: ItemType.All
+    })
+
+    homeForm = form(this.homeModel)
     //#region variables and services
     countItems = input<CountItems>()
     _user: UserView | undefined
@@ -92,7 +103,8 @@ export class UserHomePageComponent extends HelperComponent implements OnInit, Af
             if (this.countItems()?.countTyreWithRim) this.radios.push({ label: `Джанта с гума ${this.countItems()?.countTyreWithRim}` })
         }
 
-    })  
+        this.type = computed(() => this.homeModel().type)
+        })
 
         //#region inject services
         this.homeService = inject(HomeService)

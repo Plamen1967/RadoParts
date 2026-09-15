@@ -1,5 +1,3 @@
-<form [formGroup]="yearForm">
-  <div class="max150px">
-    <app-select formControlName="year_int" label="{{ labels.YEAR }}" [data]="years"> </app-select>
-  </div>
-  </form>
+<div class="max150px">
+    <app-select [value]="value()" label="{{ labels.YEAR }}" [data]="years"> </app-select>
+</div>

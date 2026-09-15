@@ -1,7 +1,7 @@
 //#region imports
 import { Component, DestroyRef, inject, model, input, effect, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -11,25 +11,33 @@ import { OptionItem } from '@model/optionitem'
 import { Modification } from '@model/static-data/modification'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { ErrorService } from '@services/error.service'
-import { FormValueControl } from '@angular/forms/signals'
+import { form, FormField, FormValueControl } from '@angular/forms/signals'
 //#endregion
 //#region component
+interface ModificationValue {
+    modificationIds: string
+    modificationId: number
+}
+
 @Component({
     selector: 'app-modification-choice',
     templateUrl: './modification-choice.component.html',
     styleUrls: ['./modification-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule, FormField],
 })
 //#endregion
 export class ModificationChoiceComponent implements FormValueControl<number | string | undefined> {
     //#region variables and services
-    value = model<number | string |undefined >(undefined)    
     modifications: OptionItem[] = []
-    modificationForm: FormGroup
     models_Id = ''
     modificationsId_int = ''
     isDisabled = false
     originalModification: Modification[] = []
+
+    value = model<number | string |undefined >(undefined)    
+    model = model<ModificationValue>({ modificationIds: '', modificationId: 0 })
+    myform = form(this.model)
+    
     multiselection = input<boolean>(true)
     useFilter = input<boolean>(true)
     all = input<boolean>(false)
@@ -51,21 +59,23 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
     //#endregion
 
     constructor() {
-        this.modificationForm = this.formBuilder.group({
-            modificationsId_int: [0],
+        effect(() => {
+            if (this.multiselection()) {
+                this.value.set(this.model().modificationIds)
+            } else {
+                this.value.set(this.model().modificationId.toString())
+            }
         })
 
         effect(() => {
-            if (this.modelsId()) this.modelChange(this.modelsId().toString())
+            if (this.modelsId()) {
+                this.modelChange(this.modelsId().toString())
+            }
         })
-        this.modificationForm.controls['modificationsId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
-            const modification = this.originalModification.find((modification) => modification.modificationId == f)
-            this.modifcationChange.emit(modification!)
-        })
-    }
-
-    writeValue(value: string): void {
-        this.modificationForm.patchValue({ modificationsId_int: value })
+        // this.modificationForm.controls['modificationsId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
+        //     const modification = this.originalModification.find((modification) => modification.modificationId == f)
+        //     this.modifcationChange.emit(modification!)
+        // })
     }
 
     setDisabledState?(isDisabled: boolean): void {

@@ -8,20 +8,20 @@
             }
         }
         <div class="shadow p-2 rounded card card-form-spec mb-2">
-            <form [formGroup]="listForm">
+            <form>
                 <div class="row g-3">
                     <div class="row g-2 mt-2">
                         <div class="col-sm-2">
-                            <app-select formControlName="carId" label="{{ label }}" [data]="carsList" (onCloseEvent)="focus()"> </app-select>
+                            <app-select [formField]="listForm.carId" label="{{ label }}" [data]="carsList" (onCloseEvent)="focus()"> </app-select>
                         </div>
                     </div>
                     <div class="max300px">
-                        <app-company-choise [config]="{ itemType: itemType, userId: userId!, bus: bus() }" [showCount]="true" [all]="true" formControlName="companyId"> </app-company-choise>
+                        <app-company-choise [config]="{ itemType: itemType, userId: userId!, bus: bus(), showCount: true, all: true }" [formField]="listForm.companyId"> </app-company-choise>
                     </div>
                     @if (companyId) {
                         <div class="max300px">
                             <app-model-choice
-                                formControlName="modelId"
+                                [formField]="listForm.modelId"
                                 [itemType]="itemType"
                                 [all]="true"
                                 [userId]="userId!"
@@ -40,7 +40,7 @@
                                     [modelsId]="modelId"
                                     [all]="true"
                                     [multiselection]="false"
-                                    formControlName="modificationId"
+                                    [formField]="listForm.modificationId"
                                     [showCount]="true"
                                     (modifcationChange)="modificatioChanged($event)"
                                     (onCloseEvent)="focus()">
@@ -51,7 +51,7 @@
                     }
 
                     <div class="max150px">
-                        <app-year formControlName="year" [period]="{ yearFrom: yearFrom, yearTo: yearTo }"></app-year>
+                        <app-year [formField]="listForm.year" [period]="{ yearFrom: yearFrom, yearTo: yearTo }"></app-year>
                     </div>
                 </div>
                 <div class="d-flex flex-row mt-2">

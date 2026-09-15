@@ -155,10 +155,32 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         effect(() => {
             if (this.id() && this.query()) {
                 const manager = this.homeService.getDataManager(this.query()!)
-                this.item = manager?.allParts?.find((part) => part.id == this.id())
-                if (!this.item) {
-                    this.fetchPart()
-                } else this.initPart(this.item)
+                if (!manager) {
+                    this.searchService
+                        .getSearchResult(+this.id()!)
+                        .pipe(takeUntilDestroyed(this.destroyRef))
+                        .subscribe({
+                            next: (result) => {
+                                this.homeService.addDataManager(+this.query()!, result)
+                                const dataManager = this.homeService.getDataManager(this.query()!)
+                                if (dataManager) {
+                                    dataManager.searchResult = result
+                                    dataManager.currentId = this.id()!
+                                }
+                                this.item = dataManager?.allParts?.find((part) => part.id == this.id())
+                                this.initPart(this.item!)
+                            },
+                            error: (error) => {
+                                console.log(error)
+                            },
+                            complete: () => (this.loading = false),
+                        })
+                } else {
+                    this.item = manager?.allParts?.find((part) => part.id == this.id())
+                    if (!this.item) {
+                        this.fetchPart()
+                    } else this.initPart(this.item)
+                }
             } else {
                 if (this.partView()) {
                     this.item = this.partView()
@@ -372,7 +394,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         return !this.sent
     }
     get dataManager() {
-        if (this.homeService.getDataManager(+this.query!)) return this.homeService.getDataManager(+this.query!)
+        if (this.homeService.getDataManager(+this.query()!)) return this.homeService.getDataManager(+this.query()!)
         else if (this.homeService.getDataManager(this.userId()!)) return this.homeService.getDataManager(this.userId()!)
 
         return undefined
@@ -442,8 +464,8 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         // }
         const nextId = part.id
 
-        if (this.userId) this.router.navigate([`/dealerwebpage/stock`], { queryParams: { userId: this.userId, currentId: `${nextId}` } })
-        else this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query}`, id: `${nextId}` } })
+        if (this.userId()) this.router.navigate([`/dealerwebpage/stock`], { queryParams: { userId: this.userId(), currentId: `${nextId}` } })
+        else this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query()}`, id: `${nextId}` } })
         // this.router.navigate(["/results"], {queryParams: { query: this.query, currentId: part.id}})
         // this.initPart(part)
         // const address = `/viewPart`

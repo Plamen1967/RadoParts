@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, inject, OnInit } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, signal } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { Observable, Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators'
@@ -43,6 +43,25 @@ import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
 import { ButtonMenuComponent } from '@components/custom-controls/buttonMenu/buttonMenu.component'
 import { MenuOption } from '@model/menuOption'
+import { form, FormField } from '@angular/forms/signals'
+
+interface searchFormInterface {
+    category: ItemType
+    tyreCompanyId: number
+    tyreWidth: number
+    tyreHeight: number
+    tyreRadius: number
+    tyreType: number
+    companyId: number
+    modelId: number
+    rimWidth: number
+    rimMaterial: number
+    rimOffset: number
+    rimBoltCount: number
+    rimBoltDistance: number
+    rimCenter: number
+    regionId: number
+}
 
 @Component({
     selector: 'app-listtyre',
@@ -64,10 +83,28 @@ import { MenuOption } from '@model/menuOption'
         ListTitleComponent,
         RegionComponent,
         ButtonMenuComponent,
+        FormField,
     ],
 })
 export default class ListTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
-    searchForm: FormGroup
+    searchFormModel = signal<searchFormInterface>({
+            category: ItemType.AllTyre,
+            tyreCompanyId: 0,
+            tyreWidth: 0,
+            tyreHeight: 0,
+            tyreRadius: 0,
+            tyreType: 0,
+            companyId: 0,
+            modelId: 0,
+            rimWidth: 0,
+            rimMaterial: 0,
+            rimOffset: 0,
+            rimBoltCount: 0,
+            rimBoltDistance: 0,
+            rimCenter: 0,
+            regionId: 0,
+    })
+    searchForm = form(this.searchFormModel)
     user?: AuthenticatedUser
     loading = false
     categories = [
@@ -157,23 +194,6 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         this.alertService = inject(AlertService)
         this.userCountService = inject(UserCountService)
         this.destroyRef = inject(DestroyRef)
-        this.searchForm = this.formBuilder.group({
-            category: [ItemType.AllTyre],
-            tyreCompanyId: [0],
-            tyreWidth: [0],
-            tyreHeight: [0],
-            tyreRadius: [0],
-            tyreType: [0],
-            companyId: [0],
-            modelId: [0],
-            rimWidth: [0],
-            rimMaterial: [0],
-            rimOffset: [0],
-            rimBoltCount: [0],
-            rimBoltDistance: [0],
-            rimCenter: [0],
-            regionId: [0],
-        })
 
         this.tyreCompanies = [{ value: 0, text: 'Всички' }, ...this.staticSelectionService.TyreProducers]
         this.boltDistances = [{ value: 0, text: 'Всички' }, ...this.staticSelectionService.RimBoltDistance]

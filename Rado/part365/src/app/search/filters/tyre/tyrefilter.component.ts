@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect } from '@angular/core'
+import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect, signal } from '@angular/core'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -32,7 +32,29 @@ import { Dropdown } from '@model/dropDown'
 import { CategorySubcategory } from '@model/category-subcategory/categorySubCategory'
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
 import { HomeComponent } from '@app/search/home/Home.component'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+interface filterFormInterface {
+    itemType: ItemType
+    userId: number
+    approved: number
+    tyreCompanyId: number
+    tyreWidth: number
+    tyreHeight: number
+    tyreRadius: number
+    tyreType: number
+    regionId: number
+    companyId: number
+    modelId: number
+    rimWidth: number
+    rimMaterial: number
+    rimOffset: number
+    rimBoltCount: number
+    rimBoltDistance: number
+    rimCenter: number
+    orderBy: number
+    hasImages: boolean
+}
 //#region component
 @Component({
     selector: 'app-tyrefilter',
@@ -51,11 +73,35 @@ import { HomeComponent } from '@app/search/home/Home.component'
         SearchBarComponent,
         CategoriesComponent,
         ModelChoiceComponent,
+        FormField
     ],
 })
 //#endregion
-
 export class TyreFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
+    filterFormModel = signal<filterFormInterface>({
+            itemType: ItemType.AllTyre,
+            userId: 0,
+            approved: 3,
+            tyreCompanyId: 0,
+            tyreWidth: 0,
+            tyreHeight: 0,
+            tyreRadius: 0,
+            tyreType: 0,
+            regionId: 0,
+            companyId: 0,
+            modelId: 0,
+            rimWidth: 0,
+            rimMaterial: 0,
+            rimOffset: 0,
+            rimBoltCount: 0,
+            rimBoltDistance: 0,
+            rimCenter: 0,
+            orderBy: 0,
+            hasImages: false,
+    })
+
+    filterForm = form(this.filterFormModel)
+    
     //#region variables and services
     categories = [
         { value: 1, text: 'Гуми' },
@@ -141,28 +187,6 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
             if (this.filter()) {
                 this.setFilter(this.filter()!)
             }
-        })
-
-        this.filterForm = this.formBuilder.group({
-            itemType: [ItemType.AllTyre],
-            userId: [0],
-            approved: [3],
-            tyreCompanyId: [0],
-            tyreWidth: [0],
-            tyreHeight: [0],
-            tyreRadius: [0],
-            tyreType: [0],
-            regionId: [0],
-            companyId: [0],
-            modelId: [0],
-            rimWidth: [0],
-            rimMaterial: [0],
-            rimOffset: [0],
-            rimBoltCount: [0],
-            rimBoltDistance: [0],
-            rimCenter: [0],
-            orderBy: [0],
-            hasImages: [false],
         })
 
         this.initialState = this.filterForm.value

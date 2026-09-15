@@ -11,16 +11,16 @@
             <div class="title">Кола на части</div>
         </div>
         <div class="card p-2" style="background-color: khaki">
-            <form [formGroup]="addCarForm" autocomplete="off">
+            <form autocomplete="off">
                 <div class="row g-3">
                     <div class="col-sm-2 min200px">
-                        <app-company-choise testId="companyId" [submitted]="submitted" [IsRequired]="true" [userId]="userId" [bus]="bus()!" [all]="true" formControlName="companyId"> </app-company-choise>
+                        <app-company-choise testId="companyId" [config]="{ submitted: submitted, required: true, userId: userId, bus: bus()!, all: true }" [formField]="addCarForm.companyId"> </app-company-choise>
                     </div>
                     @if (companyId) {
                         <div class="col-sm-2 min300px">
                             <app-model-choice
                                 [IsRequired]="true"
-                                formControlName="modelId"
+                                [formField]="addCarForm.modelId"
                                 [userId]="userId"
                                 [groupSelection]="false"
                                 [all]="true"
@@ -40,55 +40,55 @@
                                     [all]="true"
                                     [multiselection]="false"
                                     [submitted]="submitted"
-                                    formControlName="modificationId"
+                                    [formField]="addCarForm.modificationId"
                                     (modifcationChange)="modificatioChanged($event)"
                                     (onCloseEvent)="focus()">
                                     >
                                 </app-modification-choice>
                             </div>
                             <div class="col-sm-2 min150px">
-                                <app-select formControlName="year" label="{{ labels.YEAR }}" [data]="years" [submitted]="submitted" (onCloseEvent)="focus()"> </app-select>
+                                <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="years" [submitted]="submitted" (onCloseEvent)="focus()"> </app-select>
                             </div>
                         }
                     }
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                        <app-input formControlName="regNumber" label="{{ label }}" placeHolder="{{ label }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
+                        <app-input [formField]="addCarForm.regNumber" label="{{ label }}" placeHolder="{{ label }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-2">
-                        <app-input formControlName="vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" [submitted]="submitted"> </app-input>
+                        <app-input [formField]="addCarForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" [submitted]="submitted"> </app-input>
                     </div>
                     <div class="col-sm-3">
-                        <app-input formControlName="powerBHP" type="number" label="{{ labels.POWERBHP }}" placeHolder="{{ labels.POWERBHP }}" [submitted]="submitted" (change)="powerBHPChanged()">
+                        <app-input [formField]="addCarForm.powerBHP" type="number" label="{{ labels.POWERBHP }}" placeHolder="{{ labels.POWERBHP }}" [submitted]="submitted" (change)="powerBHPChanged()">
                         </app-input>
                     </div>
                     <div class="col-sm-3">
-                        <app-input formControlName="powerkWh" type="number" label="{{ labels.POWERKWH }}" placeHolder="{{ labels.POWERKWH }}" [submitted]="submitted" (change)="powerkWhChanged()">
+                        <app-input [formField]="addCarForm.powerkWh" type="number" label="{{ labels.POWERKWH }}" placeHolder="{{ labels.POWERKWH }}" [submitted]="submitted" (change)="powerkWhChanged()">
                         </app-input>
                     </div>
                     <div class="col-sm-2">
-                        <app-input formControlName="millage" type="number" label="{{ labels.MILLAGE }}" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted"> </app-input>
+                        <app-input [formField]="addCarForm.millage" type="number" label="{{ labels.MILLAGE }}" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted"> </app-input>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                        <app-select formControlName="engineType" label="{{ labels.TYPE_ENGINE }}" [submitted]="submitted" [data]="staticSelectionService.EngineType"> </app-select>
+                        <app-select [formField]="addCarForm.engineType" label="{{ labels.TYPE_ENGINE }}" [submitted]="submitted" [data]="staticSelectionService.EngineType"> </app-select>
                     </div>
                     <div class="col-sm-3">
-                        <app-input formControlName="engineModel" label="{{ labels.CODE_ENGINE }}" placeHolder="{{ labels.CODE_ENGINE }}" [submitted]="submitted"> </app-input>
+                        <app-input [formField]="addCarForm.engineModel" label="{{ labels.CODE_ENGINE }}" placeHolder="{{ labels.CODE_ENGINE }}" [submitted]="submitted"> </app-input>
                     </div>
                     <div class="col-sm-3">
-                        <app-select formControlName="gearboxType" label="{{ labels.TYPE_GEARBOX }}" [submitted]="submitted" [data]="staticSelectionService.GearboxType"> </app-select>
+                        <app-select [formField]="addCarForm.gearboxType" label="{{ labels.TYPE_GEARBOX }}" [submitted]="submitted" [data]="staticSelectionService.GearboxType"> </app-select>
                     </div>
                     <div class="col-sm-3">
-                        <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="staticSelectionService.Region"> </app-select>
+                        <app-select [formField]="addCarForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="staticSelectionService.Region"> </app-select>
                     </div>
                 </div>
                 <div class="row form-floating mt-2">
-                    <app-textarea formControlName="description" label="{{ labels.DESCRIPTION_CAR }}" placeHolder="{{ labels.DESCRIPTION_CAR }}" [submitted]="submitted"> </app-textarea>
+                    <app-textarea [formField]="addCarForm.description" label="{{ labels.DESCRIPTION_CAR }}" placeHolder="{{ labels.DESCRIPTION_CAR }}" [submitted]="submitted"> </app-textarea>
                 </div>
             </form>
         </div>

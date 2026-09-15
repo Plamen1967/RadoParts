@@ -19,9 +19,9 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
 })
 //#endregion
-export class SubcategoryChoiseComponent implements FormValueControl<number | undefined>, OnInit, AfterViewInit {
+export class SubcategoryChoiseComponent implements FormValueControl<string>, OnInit, AfterViewInit {
     //#region variables and services
-    value = model<number | undefined>(undefined)
+    value = model<string>('')
     subCategoryForm: FormGroup
     isDisabled?: boolean
     subCategories: OptionItem[] = []

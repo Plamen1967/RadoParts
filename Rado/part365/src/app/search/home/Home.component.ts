@@ -197,7 +197,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     onSelection(categorySubcategory: CategorySubcategory) {
         if (!categorySubcategory.categoryId && !categorySubcategory.subcategoryId) return
         this.categoryService.displayCategory = false
-        const filter: Filter = Object.assign({}, this.carFilter.filterForm.value)
+        const filter: Filter = Object.assign({ id: 0 }, this.carFilter.carFilterForm().value())
         filter.searchBy = SearchBy.Filter
         filter.extendedSearch = this.extendedSearch_
         filter.selectedCategories = undefined

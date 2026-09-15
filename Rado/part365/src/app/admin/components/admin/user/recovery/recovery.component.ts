@@ -1,11 +1,18 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, inject, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Component, inject, OnInit, signal } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
+import { form } from '@angular/forms/signals'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
-import { ModalService } from '@services/dialog-api/modal.service'
 import { UserService } from '@services/user.service'
+//#endregion
+//#region interface
+interface recoveryFormInterface {
+    password: '',
+    confirmPassword: '',
+    userName: '',
+}
 //#endregion
 //#region component
 @Component({
@@ -16,9 +23,15 @@ import { UserService } from '@services/user.service'
 })
 //#endregion
 export default class RecoveryComponent extends HelperComponent implements OnInit {
+    recoveryFormModel = signal<recoveryFormInterface>({
+        password: '',
+        confirmPassword: '',
+        userName: '',
+    })
+
+    recoveryForm = form(this.recoveryFormModel)
     //#region variables and services
     submitted?: boolean
-    recoveryForm: FormGroup
     error?: string
     id?: string
     account?: string
@@ -31,8 +44,6 @@ export default class RecoveryComponent extends HelperComponent implements OnInit
     type2 = 'password'
     autocomplete = 'nope'
     //#region services
-    private formBuilder: FormBuilder
-    private modalService: ModalService
     private router: Router
     private route: ActivatedRoute
     private userService: UserService
@@ -42,17 +53,10 @@ export default class RecoveryComponent extends HelperComponent implements OnInit
     constructor() {
         super()
         //#region inject services
-        this.formBuilder = inject(FormBuilder)
-        this.modalService = inject(ModalService)
         this.router = inject(Router)
         this.route = inject(ActivatedRoute)
         this.userService = inject(UserService)
         //#endregion
-        this.recoveryForm = this.formBuilder.group({
-            password: ['', Validators.required],
-            confirmPassword: ['', Validators.required],
-            userName: ['', Validators.required],
-        })
     }
 
     ngOnInit() {
@@ -67,11 +71,7 @@ export default class RecoveryComponent extends HelperComponent implements OnInit
             return
         }
 
-        setTimeout(() => this.recoveryForm.patchValue({ xxx: '', xxx2: '' }), 200)
-    }
-
-    get f() {
-        return this.recoveryForm.controls
+        // setTimeout(() => this.recoveryForm.patchValue({ xxx: '', xxx2: '' }), 200)
     }
 
     onSubmit() {
@@ -90,14 +90,14 @@ export default class RecoveryComponent extends HelperComponent implements OnInit
 
     onOk() {
         if (!this.id) {
-            this.userService.recoverUser(this.f['userName'].value).subscribe(() => {
+            this.userService.recoverUser(this.recoveryFormModel().userName).subscribe(() => {
                 this.message = this.labels.RECOVERYUSER
                 setTimeout(() => {
                     this.router.navigate(['/'])
                 }, 4000)
             })
         } else {
-            this.userService.unLockUser(this.f['password'].value, this.id).subscribe(() => {
+            this.userService.unLockUser(this.recoveryFormModel().password, this.id).subscribe(() => {
                 this.message = 'Акаунта е възстановен!'
                 setTimeout(() => {
                     this.router.navigate([`/`])

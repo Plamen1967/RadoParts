@@ -5,14 +5,14 @@
         }
     </div>
     <div class="w-100">
-        <form [formGroup]="filterForm" class="form-background homeForm">
+        <form class="form-background homeForm">
             <div class="row mb-1">
                 @if (admin) {
                     <div class="row">
                         <div class="col-sm-4 control min150px">
                             <app-select
                                 id="user"
-                                formControlName="userId"
+                                [formField]="filterForm.userId"
                                 data-cy="userName"
                                 label="{{ labels.USERNAME }}"
                                 valueProperty="userId"
@@ -24,7 +24,7 @@
                         <div class="col-sm-3 control min150px">
                             <app-select
                                 id="approved"
-                                formControlName="approved"
+                                [formField]="filterForm.approved"
                                 data-cy="approvedType"
                                 label="{{ labels.APPROVEAD }}"
                                 valueProperty="id"
@@ -39,48 +39,48 @@
 
             <div class="row">
                 <div class="mb-1 d-flex justify-content-center">
-                    <app-radiogrouplist [style]="2" [radios]="radioTypes" formControlName="itemType"></app-radiogrouplist>
+                    <app-radiogrouplist [style]="2" [radios]="radioTypes" [formField]="filterForm.itemType"></app-radiogrouplist>
                 </div>
             </div>
 
             <div class="row" [ngClass]="{ show: displayAll, noShow: !displayAll }">
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-3 col-md-3 col-lg-2 min140px">
-                    <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes" (onCloseEvent)="focus()"> </app-select>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 min200px">
-                    <app-customselect formControlName="tyreCompanyId" [useFilter]="true" label="{{ labels.TYRE_PRODUCER }}" data-cy="tyreCompanyId" [data]="tyreProducers" (onCloseEvent)="focus()">
+                    <app-customselect [formField]="filterForm.tyreCompanyId" [useFilter]="true" label="{{ labels.TYRE_PRODUCER }}" data-cy="tyreCompanyId" [data]="tyreProducers" (onCloseEvent)="focus()">
                     </app-customselect>
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayRim, noShow: !displayRim }">
                 <div class="col-sm-3 control min200px">
                     <div class="max300px">
-                        <app-company-choise [itemType]="itemType" [userId]="userId()" [bus]="0" data-cy="companyId" [all]="true" formControlName="companyId"> </app-company-choise>
+                        <app-company-choise data-cy="companyId"  [config]="{all: true, bus: 0, userId: userId(), itemType: itemType}" [formField]="filterForm.companyId"> </app-company-choise>
                     </div>
                 </div>
                 @if (companyId) {
                     <div class="col-sm-3 min300px mb-1">
-                        <app-model-choice formControlName="modelId" [showCount]="false" [groupSelection]="false" [all]="true" [companyId]="companyId!" [groupSelection]="false" [multiselection]="false">
+                        <app-model-choice [formField]="filterForm.modelId" [showCount]="false" [groupSelection]="false" [all]="true" [companyId]="companyId!" [groupSelection]="false" [multiselection]="false">
                         </app-model-choice>
                     </div>
                 }
@@ -88,7 +88,7 @@
                     <app-select
                         id="rimWidth"
                         [appToolTip]="'Широчина'"
-                        formControlName="rimWidth"
+                        [formField]="filterForm.rimWidth"
                         data-cy="rimWidth"
                         label="Широчина"
                         displayProperty="text"
@@ -101,7 +101,7 @@
                     <app-select
                         id="rimMaterial"
                         [appToolTip]="'Материал'"
-                        formControlName="rimMaterial"
+                        [formField]="filterForm.rimMaterial"
                         data-cy="rimMaterial"
                         label="Материал"
                         displayProperty="text"
@@ -114,7 +114,7 @@
                     <app-select
                         id="rimOffset"
                         [appToolTip]="''"
-                        formControlName="rimOffset"
+                        [formField]="filterForm.rimOffset"
                         data-cy="rimOffset"
                         label="Офсет"
                         displayProperty="text"
@@ -126,16 +126,16 @@
             </div>
             <div class="row mt-1">
                 <div class="col-sm-3 max200px">
-                    <app-select formControlName="regionId" data-cy="regionId" label="{{ labels.REGION }}" [data]="regions" (onCloseEvent)="focus()"> </app-select>
+                    <app-select [formField]="filterForm.regionId" data-cy="regionId" label="{{ labels.REGION }}" [data]="regions" (onCloseEvent)="focus()"> </app-select>
                 </div>
             </div>
             <div class="row ms-1 mt-1">
                 <div class="col-sm-3 form-check control checkboxClass">
                     <label class="form-check-label" for="hasImages">{{ labels.WITHIMAGES }}</label>
-                    <input type="checkbox" class="form-check-input" formControlName="hasImages" id="hasImages" data-cy="hasImages" />
+                    <input type="checkbox" class="form-check-input" [formField]="filterForm.hasImages" id="hasImages" data-cy="hasImages" />
                 </div>
             </div>
-            <app-search-bar formControlName="orderBy" (submitEvent)="submit()" (clearEvent)="clearFilter()"></app-search-bar>
+            <app-search-bar [formField]="filterForm.orderBy" (submitEvent)="submit()" (clearEvent)="clearFilter()"></app-search-bar>
         </form>
         <div class="card advert" [hidden]="hideFilter"></div>
         <app-categoriesfooter [categories]="categoriesFooter" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>

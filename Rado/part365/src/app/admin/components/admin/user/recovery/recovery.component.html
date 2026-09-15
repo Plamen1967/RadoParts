@@ -10,23 +10,20 @@
                 </div>
             }
             <div class="card-body" style="background-color: aliceblue">
-                <form [formGroup]="recoveryForm" (ngSubmit)="onSubmit()" autocomplete="none">
+                <form (ngSubmit)="onSubmit()" autocomplete="none">
                     <div [ngStyle]="{ display: id ? 'none' : 'block' }">
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text"><i class="las la-user"></i></span>
                             <input
                                 type="text"
                                 autocomplete="nope"
-                                value=""
-                                formControlName="userName"
+                                [value]="recoveryForm.userName"
                                 class="form-control"
                                 placeholder="{{ labels.USERNAME }}"
-                                [ngClass]="{ 'is-invalid': submitted && f['userName'].errors }" />
-                            @if (submitted && f['userName'].errors) {
+                                [ngClass]="{ 'is-invalid': submitted && recoveryForm.userName().errors()}" />
+                            @if (submitted && recoveryForm.userName().errors()) {
                                 <div class="invalid-feedback">
-                                    @if (f['userName'].errors['required']) {
-                                        <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
-                                    }
+                                    <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                                 </div>
                             }
                         </div>
@@ -35,16 +32,16 @@
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text"><i class="las la-lock"></i></span>
                             <input
-                                formControlName="password"
+                                [value]="recoveryForm.password"
                                 type="{{ type }}"
                                 class="form-control"
                                 placeholder="{{ labels.PASSWORD }}"
                                 autocomplete="{{ autocomplete }}"
-                                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && recoveryForm.password().errors() }" />
                             <span class="input-group-text"><i class="las" [ngClass]="{ 'la-eye': showFlag, 'la-eye-slash': !showFlag }" (click)="show()" role="none"></i></span>
-                            @if (submitted && f['password'].errors) {
+                            @if (submitted && recoveryForm.password().errors()) {
                                 <div class="invalid-feedback">
-                                    @if (f['password'].errors['required']) {
+                                    @if (recoveryForm.password().errors()) {
                                         <div data-cy="passwordRequired">{{ labels.PASSWORDREQUIRED }}</div>
                                     }
                                 </div>
@@ -54,16 +51,16 @@
                         <div class="input-group input-group-sm mb-3">
                             <span class="input-group-text"><i class="las la-lock"></i></span>
                             <input
-                                formControlName="confirmPassword"
+                                [value]="recoveryForm.confirmPassword"
                                 type="{{ type2 }}"
                                 class="form-control"
                                 placeholder="{{ labels.PASSWORD2 }}"
                                 autocomplete="{{ autocomplete }}"
-                                [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" />
+                                [ngClass]="{ 'is-invalid': submitted && recoveryForm.confirmPassword().errors() }" />
                             <span class="input-group-text"><i class="las" [ngClass]="{ 'la-eye': showFlag2, 'la-eye-slash': !showFlag2 }" (click)="show2()" role="none"></i></span>
-                            @if (submitted && f['confirmPassword'].errors) {
+                            @if (submitted && recoveryForm.confirmPassword().errors()) {
                                 <div class="invalid-feedback">
-                                    @if (f['confirmPassword'].errors['required']) {
+                                    @if (recoveryForm.confirmPassword().errors()) {
                                         <div data-cy="passwordRequired2">{{ labels.PASSWORDREQUIRED }}</div>
                                     }
                                 </div>

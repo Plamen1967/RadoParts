@@ -21,8 +21,8 @@
                 </div>
                 <div class="show-list">
                     <div class="d-flex justify-content-center w-100">
-                        <form [formGroup]="typeForm">
-                            <app-select [label]="'Избери категория'" formControlName="type" [data]="selectOption"></app-select>
+                        <form>
+                            <app-select [label]="'Избери категория'" [formField]="homeForm.type" [data]="selectOption"></app-select>
                         </form>
                     </div>
                 </div>

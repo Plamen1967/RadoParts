@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { AsyncPipe } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -37,6 +37,17 @@ import UpdatePartComponent from '@app/data/parts/updatepart/updatepart.component
 import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { form, FormField } from '@angular/forms/signals'
+//#endregion
+//#region interface
+interface listFormInterface {
+    carId: number,
+    companyId: number,
+    modelId: number,
+    modificationId: number,
+    year: number,
+    bus: number
+}
 //#endregion
 //#region component
 @Component({
@@ -59,6 +70,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
         UpdateCarComponent,
         UpdatePartComponent,
         AsyncPipe,
+        FormField
     ],
 })
 
@@ -72,6 +84,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
 //#endregion
 export default class ListCarsComponent extends HelperComponent implements OnInit, AfterViewInit, OnDestroy {
+    listFormModel = signal<listFormInterface>({
+            carId: 0,
+            companyId: 0,
+            modelId: 0,
+            modificationId: 0,
+            year: 0,
+            bus: 0,
+    })
+
+    listForm = form(this.listFormModel)
     //#region members
     submitElement?: ElementRef<HTMLInputElement>
     display = 'none'

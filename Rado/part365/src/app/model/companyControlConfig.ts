@@ -7,5 +7,6 @@ export interface CompanyControlConfig {
     required? : boolean
     userId? : number
     bus? : number
-    itemType?: ItemType
+    itemType?: ItemType,
+    showCount? : boolean
 }

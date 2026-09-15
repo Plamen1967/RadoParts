@@ -15,17 +15,15 @@ import { FormValueControl } from '@angular/forms/signals'
     styleUrls: ['./customSelect.component.css'],
     imports: [NgClass, NgStyle, ButtonGroupComponent, ReactiveFormsModule],
 })
-export class CustomSelectComponent implements FormValueControl<number | undefined> {
-    value = model<number | undefined>(undefined)
+export class CustomSelectComponent implements FormValueControl<number | string> {
+    value = model<number| string>(0)
     selectedValue?: number
     letterItem = undefined
-    _selection?: string
     data_: OptionItem[] = []
     clearBox?: boolean
     loaded = false
-
-    changeOption = output<number>()
-    closeDialog = output<ElementRef>()
+    errorMessage?: string
+    IsInvalid = false
 
     groupSelection = input<boolean>(false)
     data = input<OptionItem[]>([])
@@ -42,52 +40,58 @@ export class CustomSelectComponent implements FormValueControl<number | undefine
     multiSelection = input<boolean>(false)
     placeHolder = input<string | undefined>(undefined)
     showCount = input<boolean>(true)
+    isRequired = input<boolean>(false)
     select = input<number | undefined>(undefined)
-    errorMessage?: string
-    IsInvalid = false
+
+    changeOption = output<number>()
+    closeDialog = output<ElementRef>()
+
     public dialog: MatDialog = inject(MatDialog)
     private alertService: AlertService = inject(AlertService)
     private destroyRef: DestroyRef = inject(DestroyRef)
+    // _selection = computed<string | undefined>(() => {
+    //     console.log(`Value is: ${this.value()}`)
+    //     return 
+    // })
+
+    _selection = '';
 
     constructor() {
         effect(() => {
-            this.writeValue(this.select() ?? 0)
-        })
-
-        effect(() => {
-            this.data_ = [...this.data()]
-
-            if (this.groupDisabled()) {
-                this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)
-            }
-            this._selection = this.data_?.find((item) => item.id === this.value())?.description ?? this.placeHolder()
+            this.data_ = this.data() ?? []
             if (this.data_ && this.data_.length) this.loaded = true
-            if (this.value) {
-                this.writeValue(this.value()!)
+            if (this.value() && this.data() && this.data().length) {
+                this.change(this.value())
+            }
+
+            this._selection = this.data()?.find((item) => item.id === this.value())?.description ?? this.placeHolder() ?? ''
+        })
+    
+        effect(() => {
+            if (this.groupDisabled()) {
+                this.data_ = this.data()?.filter((item) => item['groupModelId'] != item.id)
+            } else {
+                this.data_ = this.data() ?? []
+            }
+
+            if (this.data_ && this.data_.length) this.loaded = true
+            if (this.value() && this.data() && this.data().length) {
+                this.change(this.value()!)
             }
         })
-        this._selection = this.placeHolder()
-    }
-
-    // get errorMessage() {
-    //     return this.errorService.getMessage(this.label, this.control.errors)
-    // }
+   }
 
     //#region ValueAccessor
-    writeValue(value: number): void {
-        this.value.set(value)
-        this.clearBox = value ? true : false
-        this._selection = this.data_?.find((item) => item.id === value)?.description ?? this.placeHolder()
-        this.changeOption.emit(value)
-    }
-
     change(value?: number) {
-        if (!value) value = 0
-        this.value.set(value)
-        if (this.value) this.value.set(+this.value)
-        this.clearBox = value ? true : false
-        this._selection = this.data_?.find((item) => item.id == +value!)?.description ?? this.placeHolder()
-        this.changeOption.emit(value!)
+        if (Array.isArray(value)) {
+            this.value.set(value[0])
+        } else {
+            this.value.set(value)
+        }
+        console.log(`Change Value is: ${this.value()}`)
+        this.clearBox = this.value() ? true : false
+
+        this.changeOption.emit(this.value() ?? 0)
     }
 
     clickSelect() {
@@ -118,13 +122,8 @@ export class CustomSelectComponent implements FormValueControl<number | undefine
     }
 
     clear() {
-        this._selection = this.placeHolder()
-        this.change(undefined)
+        this.change(0)
     }
-    get contolName(): string {
-        return this.contolName ?? this.placeHolder() ?? this.label ?? 'Избери'
-    }
-
     //#endregion
 }
 

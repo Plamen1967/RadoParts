@@ -5,11 +5,11 @@
             <app-clearbutton (clickButton)="clearFilter()"></app-clearbutton>
         </div>
     </div>
-    <form [formGroup]="sortForm">
+    <form>
         <div class="pt-0 min100px flex-end ms-1 pb-3 pt-1">
             <div class="d-inline-flexd-flex-inline bg-error flex-end">
                 <div class="flex-item">
-                    <app-select formControlName="orderBy" data-cy="orderBy" id="sortForm" label="{{ labels.SORTBY }}" [data]="sort"> </app-select>
+                    <app-select [formField]="sortForm.orderBy" data-cy="orderBy" id="sortForm" label="{{ labels.SORTBY }}" [data]="sort"> </app-select>
                 </div>
             </div>
         </div>

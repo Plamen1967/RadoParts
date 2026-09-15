@@ -1,9 +1,9 @@
 //#region import
 
-import { AfterViewInit, ChangeDetectorRef, Component, computed, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, signal, ViewChild } from '@angular/core'
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, ChangeDetectorRef, Component, computed, debounced, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, signal, ViewChild } from '@angular/core'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { debounceTime, distinctUntilChanged, Observable, of, Subject } from 'rxjs'
+import { Observable, of, Subject } from 'rxjs'
 import { MatDialog } from '@angular/material/dialog'
 import { CategoryService } from '@services/category-subcategory/category.service'
 import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
@@ -37,7 +37,6 @@ import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CompanyComponent } from '@components/custom-controls/select-controls/company/company.component'
 import { OptionItem } from '@model/optionitem'
 import { TypeItem } from '@model/enum/typeItem'
-import { SortType } from '@model/enum/sortType.enum'
 import { CategoriesFooterComponent } from '@components/custom-controls/categoriesFooter/categoriesfooter.component'
 import { RadioGroupComponent } from '@components/custom-controls/radioGroup/radiogroup.component'
 import { CategoriesComponent } from '@components/custom-controls/categories/categories.component'
@@ -70,7 +69,7 @@ interface CarFilter {
     engineType: number
     engineModel: string
     gearboxType: number
-    powerBHP: string
+    powerBHP: number
     regionId: number
     partNumber: string
     orderBy: number
@@ -82,7 +81,6 @@ interface CarFilter {
     subCategoriesId: string
     selectedCategories: []
 }
-
 @Component({
     standalone: true,
     selector: 'app-carfilter',
@@ -111,10 +109,35 @@ interface CarFilter {
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region form
+    carFilterModel = signal<CarFilter>({
+        bus: 0,
+        userId: 0,
+        result: [],
+        selectedCategories: [],
+        itemType: ItemType.AllCarAndPart,
+        approved: 3,
+        companyId: 0,
+        modelsId: '',
+        modificationsId: '',
+        engineType: 0,
+        engineModel: '',
+        gearboxType: 0,
+        powerBHP: 0,
+        regionId: 0,
+        partNumber: '',
+        orderBy: 0,
+        keyword: '',
+        hasImages: false,
+        categoryId: 0,
+        subCategoryId: 0,
+        categoriesId: '',
+        subCategoriesId: '',
+    })
+    carFilterForm = form(this.carFilterModel)
+    //#endregion form
     //#region members
     header?: string
-    filterForm: FormGroup
-    startState
     companies?: Company[]
     models?: Model[]
     modifications?: Modification[]
@@ -180,6 +203,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         { label: 'Само части', id: ItemType.BusPart },
     ]
     companyId?: number
+    companyIdSignal = computed(() => this.carFilterModel().companyId)
     modelId?: string
     max = true
 
@@ -198,11 +222,9 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     userId = input<string | undefined>(undefined)
     itemType = input<ItemType | undefined>(undefined)
     query = input<number | undefined>(undefined)
-    bus = input<number | undefined>(undefined)
+    bus = input<number | undefined>(0)
 
-    bus_ = 0
     query_?: number
-    itemType_?: ItemType
     dropDownItems = output<Dropdown[]>()
     @HostListener('window:keydown', ['$event'])
     submitEvent(event: KeyboardEvent) {
@@ -211,34 +233,22 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             this.submit()
         }
     }
+
+    itemType_ = computed(() => {
+         let itemType = this.carFilterForm.itemType().value()
+         const bus = this.carFilterForm.bus().value()
+        if (bus) {
+            if (itemType != ItemType.AllBusAndPart && itemType != ItemType.OnlyBus && itemType != ItemType.BusPart) itemType = ItemType.AllBusAndPart
+        } else {
+            if (itemType != ItemType.AllCarAndPart && itemType != ItemType.OnlyCar && itemType != ItemType.CarPart) itemType = ItemType.AllCarAndPart
+        }   
+
+        this.onItemType(itemType)
+        return itemType
+    })
     //#endregion
 
     //#region constructor
-    carFilterModel = signal<CarFilter>({
-        bus: 0,
-        userId: 0,
-        result: [],
-        selectedCategories: [],
-        itemType: ItemType.AllCarAndPart,
-        approved: 3,
-        companyId: 0,
-        modelsId: '',
-        modificationsId: '',
-        engineType: 0,
-        engineModel: '',
-        gearboxType: 0,
-        powerBHP: '',
-        regionId: 0,
-        partNumber: '',
-        orderBy: 0,
-        keyword: '',
-        hasImages: false,
-        categoryId: 0,
-        subCategoryId: 0,
-        categoriesId: '',
-        subCategoriesId: '',
-    })
-    carFilterForm = form(this.carFilterModel)
     private formBuilder: FormBuilder = inject(FormBuilder)
     public categoryService: CategoryService = inject(CategoryService)
     public subCategoryService: SubCategoryService = inject(SubCategoryService)
@@ -258,8 +268,21 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     public activeRoute: ActivatedRoute = inject(ActivatedRoute)
     public parent: HomeComponent = inject(HomeComponent, { optional: true }) as HomeComponent
 
+    debouncedQuery = debounced(this.carFilterModel, 3000)
     constructor() {
         super()
+
+        effect(() => {
+            this.debouncedQuery.value()
+            this.popupService.openWithTimeout('Съобщение', 'Филтъра Ви връща повече от 100 части. Само първите 100 ще се покажат', 2000).subscribe(() => {
+                //this.router.navigate(['/results'], { queryParams: { query: this.query(), page: 1 } })
+            })
+        })
+
+        effect(() => {
+            this.onItemType(this.carFilterForm.itemType().value())
+        })
+
         effect(() => {
             this.query_ = computed(() => {
                 console.log(`Query : ${this.query()}`)
@@ -268,78 +291,25 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         })
 
         effect(() => {
+            console.log(`CompanyId is: ${this.carFilterModel().companyId}`)
+        })
+        effect(() => {
             const filter = this.filter()
             if (filter) {
                 this.updateForm(filter)
             }
-
-            this.bus_ = computed(() => this.bus())() ?? 0
-            this.itemType_ = computed(() => this.itemType())()
         })
 
-        this.filterForm = this.formBuilder.group({
-            result: [],
-            userId: [0],
-            bus: [0],
-            itemType: [ItemType.AllCarAndPart],
-            approved: [3],
-            companyId: [0],
-            modelsId: [''],
-            modificationsId: [''],
-            engineType: [0],
-            engineModel: [''],
-            gearboxType: [0],
-            powerBHP: [],
-            regionId: [0],
-            partNumber: [''],
-            orderBy: [0],
-            keyword: [''],
-            hasImages: [false],
-            categoriesId: [''],
-            subCategoriesId: [''],
-            selectedCategories: this.formBuilder.array([]),
+        effect(() => {
+            this.categoriesIdChanged(this.carFilterForm.categoriesId().value())
         })
-        this.formGroup = this.filterForm
-        this.startState = this.filterForm.value
     }
+
     //#endregion
-
     //#region On functions
-    subscribeEvents() {
-        this.controls['bus'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => this.onBusChange(f))
-
-        this.controls['itemType'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => this.onItemType(f))
-
-        this.controls['companyId'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => this.onCompanyChange(f))
-
-        this.controls['modelsId'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => this.onModelChange(f))
-
-        this.controls['categoriesId'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => this.categoriesIdChanged(f))
-
-        this.filterForm.valueChanges
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .pipe(distinctUntilChanged(), debounceTime(this._debounceTime))
-            .subscribe((value) => {
-                this.updateCategory()
-                this.changes.emit(value)
-            })
-    }
-
-    onBusChange(f: number): void {
-        this.bus_ = f
-
-        if (this.bus_) {
-            if (this.itemType_ != ItemType.AllBusAndPart && this.itemType_ != ItemType.OnlyBus && this.itemType_ != ItemType.BusPart) this.itemType_ = ItemType.AllBusAndPart
-        } else {
-            if (this.itemType_ != ItemType.AllCarAndPart && this.itemType_ != ItemType.OnlyCar && this.itemType_ != ItemType.CarPart) this.itemType_ = ItemType.AllCarAndPart
-        }
-
-        this.filterForm.patchValue({ companyId: 0, modelsId: '', modificationsId: '', itemType: this.itemType })
-        this.onItemType(this.itemType_)
-    }
-
+    
     getRadios() {
-        if (this.bus_) {
+        if (this.carFilterForm.bus().value()) {
             return this.busRadios
         } else {
             return this.carRadios
@@ -353,9 +323,8 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     onItemType(f?: number): void {
-        this.itemType_ = f
-        if (this.bus_) {
-            if (this.itemType_ == ItemType.BusPart) {
+        if (this.carFilterForm.bus().value()) {
+            if (f == ItemType.BusPart) {
                 this.header = 'Търси част за бус'
                 this.countProperty = 'countParts'
             } else {
@@ -363,7 +332,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
                 this.countProperty = 'countCarBus'
             }
         } else {
-            if (this.itemType_ == ItemType.CarPart) {
+            if (f == ItemType.CarPart) {
                 this.header = 'Търси част за кола'
                 this.countProperty = 'countParts'
             } else {
@@ -372,14 +341,33 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             }
         }
 
-        if (this.itemType_ === ItemType.OnlyCar || this.itemType_ === ItemType.OnlyBus) this.showCategory = false
+        if (f === ItemType.OnlyCar || f === ItemType.OnlyBus) this.showCategory = false
         else this.showCategory = true
         this.parent.setShowCategory(this.showCategory)
     }
 
     ngOnInit() {
-        this.subscribeEvents()
-        this.onItemType(this.itemType_)
+        this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
+            if (params['query']) {
+                this.query = params['query']
+                if (this.query) {
+                    this.searchPartService.getFilter(+this.query).subscribe((filter) => {
+                        this._filter = filter
+                        if (this._filter) {
+                            this.extendedSearch_ = this._filter.extendedSearch
+                        }
+                    })
+                }
+            }
+        })
+
+        if (this._filter) {
+            this.updateForm(this._filter)
+            this.extendedSearch_ = this._filter.extendedSearch
+        } else {
+            // this.filterForm.patchValue({ bus: this.bus, itemType: this.itemType })
+        }
+
         this.engineTypes = this.staticSelectionService.EngineType.map(replaceFirst)
         this.gearBoxTypes = this.staticSelectionService.GearboxType.map(replaceFirst)
         this.categoryService.fetch().subscribe((res) => {
@@ -389,7 +377,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
                 category = Object.assign(category, item)
                 this.categories?.push(category)
                 item['count'] = 0
-                this.categoriesConrol.push(this.createCategory(item.categoryId!))
+                // this.categoriesConrol.push(this.createCategory(item.categoryId!))
             })
 
             this.categoriesSet = this.categories.map((item) => {
@@ -418,48 +406,18 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
                 user.userName = 'Всички'
                 users.unshift({ value: 0, text: 'Всички' })
                 this.users = [...users]
-                this.filterForm.controls['userId'].setValidators([Validators.required])
-                if (this.userId) {
-                    this.filterForm.patchValue({ userId: this.userId })
-                }
             })
         }
     }
 
     ngAfterViewInit(): void {
-        this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
-            if (params['query']) {
-                this.query = params['query']
-                if (this.query) {
-                    this.searchPartService.getFilter(+this.query).subscribe((filter) => {
-                        this._filter = filter
-                        if (this._filter) {
-                            this.filterForm.patchValue(this._filter)
-                            this.extendedSearch_ = this._filter.extendedSearch
-                        }
-                    })
-                }
-            }
-        })
-
-        if (this.userId) this.filterForm.patchValue({ userId: this.userId })
-
-        this.initialState = this.filterForm.value
-
-        if (this._filter) {
-            this.updateForm(this._filter)
-            this.extendedSearch_ = this._filter.extendedSearch
-        } else {
-            this.filterForm.patchValue({ bus: this.bus, itemType: this.itemType })
-        }
-
-        this.changeDetector.detectChanges()
+        goTop()
     }
 
     updateForm(filter: Filter) {
         if (filter.categoryId) filter.categoriesId = filter.categoryId.toString()
         if (filter.subCategoryId) filter.subCategoriesId = filter.subCategoryId.toString()
-        this.filterForm.patchValue(filter)
+        // this.filterForm.patchValue(filter)
     }
     createCategory(categoryId: number): FormGroup {
         return this.formBuilder.group({
@@ -470,7 +428,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion
 
     clear() {
-        this.filterForm.patchValue(this.startState)
         goTop()
     }
 
@@ -505,14 +462,12 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         if (!categoryId && !subCategoryId) return
 
         const filterCategory: Filter = {
-            ...this.filterForm.value,
-            ...{
-                id: 0,
-                searchBy: SearchBy.Filter,
-                extendedSearch: this.extendedSearch_,
-                categoryId: categoryId,
-                subCategoryId: subCategoryId,
-            },
+            ...this.carFilterModel(),
+            id: 0,
+            searchBy: SearchBy.Filter,
+            extendedSearch: this.extendedSearch_,
+            categoryId: categoryId,
+            subCategoryId: subCategoryId,
         }
         this.goToResult(filterCategory)
     }
@@ -532,36 +487,36 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     updateCategory() {
-        const filter: FilterCategory = {
-            companyId: this.filterForm.controls['companyId'].value ?? 0,
-            modelId: 0,
-            modelsId: this.filterForm.controls['modelsId'].value,
-            modificationId: 0,
-            modificationsId: this.filterForm.controls['modificationsId'].value,
-            userId: 0,
-            bus: this.filterForm.controls['bus'].value,
-            hasImages: this.filterForm.controls['hasImages'].value,
-        }
-        if (this.admin) {
-            filter.userId = this.filterForm.controls['userId'].value
-        }
-        if (this.previuosFilter) {
-            if (
-                this.previuosFilter.companyId == filter.companyId &&
-                this.previuosFilter.modelsId === filter.modelsId &&
-                this.previuosFilter.modificationId == filter.modificationId &&
-                this.previuosFilter.modificationsId == filter.modificationsId &&
-                this.previuosFilter.bus == filter.bus &&
-                this.previuosFilter.userId == filter.userId &&
-                this.previuosFilter.hasImages == filter.hasImages
-            )
-                return
-        }
+        // const filter: FilterCategory = {
+        //     companyId: this.filterForm.controls['companyId'].value ?? 0,
+        //     modelId: 0,
+        //     modelsId: this.filterForm.controls['modelsId'].value,
+        //     modificationId: 0,
+        //     modificationsId: this.filterForm.controls['modificationsId'].value,
+        //     userId: 0,
+        //     bus: this.filterForm.controls['bus'].value,
+        //     hasImages: this.filterForm.controls['hasImages'].value,
+        // }
+        // if (this.admin) {
+        //     filter.userId = this.filterForm.controls['userId'].value
+        // }
+        // if (this.previuosFilter) {
+        //     if (
+        //         this.previuosFilter.companyId == filter.companyId &&
+        //         this.previuosFilter.modelsId === filter.modelsId &&
+        //         this.previuosFilter.modificationId == filter.modificationId &&
+        //         this.previuosFilter.modificationsId == filter.modificationsId &&
+        //         this.previuosFilter.bus == filter.bus &&
+        //         this.previuosFilter.userId == filter.userId &&
+        //         this.previuosFilter.hasImages == filter.hasImages
+        //     )
+        //         return
+        // }
 
-        this.previuosFilter = { ...filter }
-        this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
-            this.convertResult(res)
-        })
+        // this.previuosFilter = { ...filter }
+        // this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
+        //     this.convertResult(res)
+        // })
     }
 
     convertResult(res: NumberPartsPerCategory[]) {
@@ -595,7 +550,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#region Search
     submit() {
         const filter: Filter = Object.assign(
-            this.filterForm.value,
+            this.carFilterModel(),
             { searchBy: SearchBy.Filter },
             { adminRun: this.admin ? true : false },
             { extendedSearch: this.extendedSearch_ },
@@ -605,18 +560,18 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     onSearchByNumber() {
-        const value = this.filterForm.controls['partNumber'].value
+        const value = this.carFilterModel().partNumber
         if (!value || !value.length) {
             this.confirmService.OK('Съобщение', 'Моля въведете номера на частта')
             return
         }
 
-        const filter: Filter = Object.assign(this.filterForm.value, { SearchBy: SearchBy.PartNumber }, { extendedSearch_: this.extendedSearch_ })
+        const filter: Filter = Object.assign(this.carFilterModel(), { SearchBy: SearchBy.PartNumber }, { extendedSearch_: this.extendedSearch_ }, {id: 0})
         this.goToResult(filter)
     }
 
     categoryClick(categoryId: number) {
-        const filter: Filter = Object.assign(this.filterForm.value, { selectedCategories: [] }, { extendedSearch: this.extendedSearch_ }, { categoryId: categoryId })
+        const filter: Filter = Object.assign(this.carFilterModel(), { selectedCategories: [] }, { extendedSearch: this.extendedSearch_ }, { categoryId: categoryId }, { id: 0 })
         this.goToResult(filter)
     }
 
@@ -648,17 +603,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
     //#endregion
 
-    sortDataBy(event: SortType) {
-        this.filterForm.patchValue({ orderBy: event })
-    }
-
-    onCompanyChange(companyId: number) {
-        this.companyId = companyId
-    }
-
-    onModelChange(modelId: string) {
-        this.modelId = modelId
-    }
 
     categoriesIdChanged(f: string) {
         this._subCategories = []
@@ -671,7 +615,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             })
         })
 
-        if (!f) this.filterForm.patchValue({ subCategoriesId: '' })
+        // if (!f) this.carFilterForm.patchValue({ subCategoriesId: '' })
     }
 
     selectCompany() {
@@ -693,9 +637,9 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         return this.homeService.getDataManager(0)
     }
 
-    get categoriesConrol(): FormArray {
-        return this.filterForm.get('selectedCategories') as FormArray
-    }
+    // get categoriesConrol(): FormArray {
+    //     return this.carFilterForm.get('selectedCategories') as FormArray
+    // }
 
     get extendedSearch() {
         return this.extendedSearch_
@@ -715,3 +659,18 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#endregion
 }
+
+// private model = signal({ items: [{ sku: '', qty: 1 }] });
+// form = form(this.model, p => {
+//   applyEach(p.items, item => {
+//     required(item.sku);
+//     min(item.qty, 1);
+//   });
+// });
+// addItem() {
+//   this.model.update(m => ({ ...m, items: [...m.items, { sku: '', qty: 1 }] }));
+// }
+// @for (item of form.items().value(); track $index; let i = $index) {
+//   <input [formField]="form.items[i].sku" />
+//   <input type="number" [formField]="form.items[i].qty" />
+// }

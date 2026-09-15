@@ -1,7 +1,7 @@
 //#region import
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, effect, HostListener, inject, input, OnInit, output } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, Component, effect, HostListener, inject, input, OnInit, output, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -36,7 +36,30 @@ import { goTop } from '@app/functions/functions'
 import { LoggerService } from '@services/authentication/logger.service'
 import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+interface AddTyreFormInterface {
+    itemType: number
+    tyreWidth: number
+    tyreHeight: number
+    tyreRadius: number
+    tyreType: number
+    tyreCompanyId: number
+    companyId: number
+    modelId: number
+    rimMaterial: number
+    rimOffset: number
+    rimBoltCount: number
+    rimBoltDistance: number
+    rimCenter: number
+    count: number
+    monthDOT: number
+    yearDOT: number
+    regionId: number
+    description: string
+    price: number
+    mainImageId: number
+}
 
 //#region component
 @Component({
@@ -55,6 +78,7 @@ import { DisplayPartView } from '@model/displayPartView'
         CompanyChoiseComponent,
         ModelChoiceComponent,
         ToolBarComponent,
+        FormField,
     ],
 })
 export default class AddTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -67,7 +91,32 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.onSubmit()
     }
     //#endregion
+    //#region form
+    addTyreFormModel = signal<AddTyreFormInterface>({
+        itemType: 0,
+        tyreWidth: 0,
+        tyreHeight: 0,
+        tyreRadius: 0,
+        tyreType: 0,
+        tyreCompanyId: 0,
+        companyId: 0,
+        modelId: 0,
+        rimMaterial: 0,
+        rimOffset: 0,
+        rimBoltCount: 0,
+        rimBoltDistance: 0,
+        rimCenter: 0,
+        count: 0,
+        monthDOT: 0,
+        yearDOT: 0,
+        regionId: 0,
+        description: '',
+        price: 0,
+        mainImageId: 0,
+    })
 
+    addTyreForm = form(this.addTyreFormModel)
+    //#endregion
     //#region input/output
     mode = input<UpdateEnum>(UpdateEnum.New)
     itemId = input<number | undefined>()
@@ -98,7 +147,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     //#region members
     itemId_?: number
     mode_?: UpdateEnum
-    addForm: FormGroup
     submitted = false
     saving = false
     images: ImageData[] = []
@@ -152,28 +200,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     constructor() {
         super()
-        this.addForm = this.formBuilder.group({
-            itemType: [0, [Validators.required, Validators.min(1)]],
-            tyreWidth: [0, [Validators.required, Validators.min(1)]],
-            tyreHeight: [0, [Validators.required, Validators.min(1)]],
-            tyreRadius: [0, [Validators.required, Validators.min(1)]],
-            tyreType: [0, [Validators.required, Validators.min(1)]],
-            tyreCompanyId: [0],
-            companyId: [0, [Validators.required, Validators.min(1)]],
-            modelId: [0],
-            rimMaterial: [0],
-            rimOffset: [0],
-            rimBoltCount: [0, [Validators.required, Validators.min(1)]],
-            rimBoltDistance: [0],
-            rimCenter: [0],
-            count: [0, [Validators.required, Validators.min(1)]],
-            monthDOT: [undefined],
-            yearDOT: [undefined],
-            regionId: [0],
-            description: [''],
-            price: [0, [Validators.required, Validators.min(1)]],
-            mainImageId: [0],
-        })
         this.tyreWidth = [{ value: 0, text: 'Избери ширина' }, ...this.staticSelectionService.TyreWidth]
         this.tyreHeight = [{ value: 0, text: 'Избери височина' }, ...this.staticSelectionService.TyreHeight]
         this.tyreRadius = [{ value: 0, text: 'Избери радиус' }, ...this.staticSelectionService.TyreRadius]
@@ -187,8 +213,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.rimMaterial = [{ value: 0, text: 'Избери материал' }, ...this.staticSelectionService.RimMaterial]
         this.rimWidth = [{ value: 0, text: 'Избери джанта ширина ' }, ...this.staticSelectionService.RimWidth]
         this.regions = [{ value: 0, text: 'Избери регион' }, ...this.staticSelectionService.Region]
-        this.initValue = this.addForm.value
-        this.formGroup = this.addForm
+        this.initValue = this.addTyreFormModel()
 
         effect(() => {
             if (this.displayPartView()) {
@@ -200,6 +225,21 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
             this.itemId_ = this.itemId()
             this.mode_ = this.mode()
+        })
+
+        effect(() => {
+            this.onItemTypeChange(this.addTyreForm.itemType().value())
+        })
+
+        effect(() => {
+            this.onCompanyChange(this.addTyreForm.companyId().value())
+        })
+
+        effect(() => {
+            this.onItemTypeChange(this.addTyreForm.itemType().value())
+            if (this.itemId_ && this.mode_ === UpdateEnum.Update) {
+                this.loadTyre(this.itemId_!)
+            }
         })
     }
 
@@ -218,23 +258,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         return false
     }
     ngAfterViewInit(): void {
-        if (this.mode_ === UpdateEnum.New) {
-            this.addForm.patchValue({ regionId: this.regionId })
-        }
-
-        if (this.seller)
-            if (this.params?.ad) {
-                this.itemType = ItemType.Tyre
-            }
-        this.addForm.patchValue({ itemType: this.itemType })
-        this.displaySections()
-
-        if (this.mode_ === UpdateEnum.Update || this.mode_ === UpdateEnum.View) {
-            this.loadTyre(this.itemId_!)
-        }
-
-        this.addForm.controls['itemType'].valueChanges.subscribe((f) => this.onItemTypeChange(f))
-        this.addForm.controls['companyId'].valueChanges.subscribe((f) => this.onCompanyChange(f))
         goTop()
     }
 
@@ -254,6 +277,21 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     ngOnInit() {
         this.mode = this.mode ?? UpdateEnum.New
         this.updateFlag = this.mode() != UpdateEnum.View
+        if (this.mode_ === UpdateEnum.New) {
+            this.addTyreFormModel.set({ ...this.addTyreFormModel(), regionId: this.regionId! })
+        }
+
+        if (this.seller)
+            if (this.params?.ad) {
+                this.itemType = ItemType.Tyre
+            }
+
+        this.addTyreFormModel.set({ ...this.addTyreFormModel(), itemType: this.itemType! })
+        this.displaySections()
+
+        if (this.mode_ === UpdateEnum.Update || this.mode_ === UpdateEnum.View) {
+            this.loadTyre(this.itemId_!)
+        }
 
         this.displaySections()
         window.scroll(0, 0)

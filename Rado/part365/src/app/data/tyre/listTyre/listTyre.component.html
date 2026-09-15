@@ -7,10 +7,10 @@
                 <span class="count"></span>
             }
         }
-        <form [formGroup]="searchForm">
+        <form>
             <div class="custom-flex">
                 <div class="ps-0 mt-2" [ngStyle]="{ display: 'flex' }">
-                    <app-radiogrouplist [style]="2" [radios]="radioTypes" formControlName="category"></app-radiogrouplist>
+                    <app-radiogrouplist [style]="2" [radios]="radioTypes" [formField]="searchForm.category"></app-radiogrouplist>
                 </div>
             </div>
             @if (displayTyre) {
@@ -24,7 +24,7 @@
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="top"
                                     title="Изберете марката"
-                                    formControlName="tyreCompanyId"
+                                    [formField]="searchForm.tyreCompanyId"
                                     data-cy="tyreCompanyId"
                                     label="{{ labels.TYRE_PRODUCER }}"
                                     [data]="tyreCompanies">
@@ -32,16 +32,16 @@
                             </div>
                         </div>
                         <div class="col-sm-2 min200px">
-                            <app-select formControlName="tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth"> </app-select>
+                            <app-select [formField]="searchForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth"> </app-select>
                         </div>
                         <div class="col-sm-2 min200px">
-                            <app-select formControlName="tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight"> </app-select>
+                            <app-select [formField]="searchForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight"> </app-select>
                         </div>
                         <div class="col-sm-2 min200px">
-                            <app-select formControlName="tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
+                            <app-select [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
                         </div>
                         <div class="col-sm-2 min200px">
-                            <app-select formControlName="tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes"> </app-select>
+                            <app-select [formField]="searchForm.tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes"> </app-select>
                         </div>
                     </div>
                 </div>
@@ -52,12 +52,12 @@
                     <h5>Джанта</h5>
                     <div class="row">
                         <div class="max250px">
-                            <app-company-choise [itemType]="itemType" [userId]="userId!" [bus]="0" data-cy="companyId" [all]="true" formControlName="companyId"> </app-company-choise>
+                            <app-company-choise [config]="{ all: true, bus: 0, userId: userId!, itemType: itemType }" [formField]="searchForm.companyId"> </app-company-choise>
                         </div>
                         @if (this.companyId) {
                             <div class="col-sm-5 control min300px">
                                 <app-model-choice
-                                    formControlName="modelId"
+                                    [formField]="searchForm.modelId"
                                     [userId]="userId"
                                     [groupSelection]="false"
                                     [all]="true"
@@ -72,7 +72,7 @@
                             <app-select
                                 id="rimWidth"
                                 tooltip="'Широчина'"
-                                formControlName="rimWidth"
+                                [formField]="searchForm.rimWidth"
                                 data-cy="rimWidth"
                                 [type]="1"
                                 label="Широчина"
@@ -85,7 +85,7 @@
                             <app-select
                                 id="rimMaterial"
                                 tooltip="'Материал'"
-                                formControlName="rimMaterial"
+                                [formField]="searchForm.rimMaterial"
                                 data-cy="rimMaterial"
                                 [type]="1"
                                 label="Материал"
@@ -98,7 +98,7 @@
                             <app-select
                                 id="rimOffset"
                                 tooltip="''"
-                                formControlName="rimOffset"
+                                [formField]="searchForm.rimOffset"
                                 data-cy="rimOffset"
                                 [type]="1"
                                 label="Офсет"
@@ -108,14 +108,14 @@
                             </app-select>
                         </div>
                         <div class="col-sm-3 control min200px">
-                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" formControlName="rimBoltCount" data-cy="rimBoltCount" [type]="1" label="Брой Болтове" [data]="rimBoltCount">
+                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="searchForm.rimBoltCount" data-cy="rimBoltCount" [type]="1" label="Брой Болтове" [data]="rimBoltCount">
                             </app-select>
                         </div>
                         <div class="col-sm-3 control min250px">
                             <app-select
                                 id="rimBoltCount"
                                 tooltip="'Междуболтово разстояние'"
-                                formControlName="rimBoltDistance"
+                                [formField]="searchForm.rimBoltDistance"
                                 data-cy="rimBoltDistance"
                                 [type]="1"
                                 label="Междуболтово разстояние"
@@ -123,14 +123,14 @@
                             </app-select>
                         </div>
                         <div class="col-sm-3 control">
-                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" formControlName="rimCenter" data-cy="rimCenter" [type]="1" label="Център" [data]="rimCenters"> </app-select>
+                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="searchForm.rimCenter" data-cy="rimCenter" [type]="1" label="Център" [data]="rimCenters"> </app-select>
                         </div>
                     </div>
                 </div>
             }
             <div class="row">
                 <div class="max250px">
-                    <app-region formControlName="regionId"> </app-region>
+                    <app-region [formField]="searchForm.regionId"> </app-region>
                 </div>
             </div>
         </form>

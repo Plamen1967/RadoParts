@@ -1,6 +1,6 @@
 //#region imports
-import { AfterViewInit, Component, ElementRef, HostListener, inject, OnInit, ChangeDetectionStrategy, input, effect, output, computed } from '@angular/core'
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms'
+import { AfterViewInit, Component, ElementRef, HostListener, inject, OnInit, ChangeDetectionStrategy, input, effect, output, computed, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
@@ -32,7 +32,26 @@ import { ImageData } from '@model/imageData'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
 import { AddCarParam } from './addCarParam'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+interface addCarFormModelInterface {
+    companyId: number
+    modelId: number | string 
+    modificationId: number | string
+    year: number
+    regNumber: string
+    powerkWh: number | string
+    powerBHP: number | string
+    millage: number | string
+    vin: string
+    description: string
+    engineType: number
+    engineModel: string
+    gearboxType: number
+    regionId: number
+    mainImageId: number | string
+}
+
 
 //#region metadata
 @Component({
@@ -40,10 +59,31 @@ import { AddCarParam } from './addCarParam'
     templateUrl: './addcar.component.html',
     styleUrls: ['./addcar.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent],
+    imports: [ImageListComponent, SelectComponent, InputComponent, TextAreaComponent, ReactiveFormsModule, CompanyChoiseComponent, ModelChoiceComponent, ModificationChoiceComponent, ToolBarComponent, FormField],
 })
 //#endregion
 export default class AddCarComponent extends HelperComponent implements OnInit, AfterViewInit {
+    //#region form
+    addCarFormModel = signal<addCarFormModelInterface> ({
+        companyId: 0,
+        modelId: 0,
+        modificationId: 0,
+        year: 2021,
+        regNumber: '',
+        powerkWh: '',
+        powerBHP: '',
+        millage: '',
+        vin: '',
+        description: '',
+        engineType: 0,
+        engineModel: '',
+        gearboxType: 0,
+        regionId: this.regionId ?? 0,
+        mainImageId: '',
+    })
+
+    addCarForm = form(this.addCarFormModel)
+    //#region form
     //#region services
     public carService: CarService = inject(CarService)
     public modificationService: ModificationService = inject(ModificationService)
@@ -59,6 +99,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     private userCountService: UserCountService = inject(UserCountService)
     private toastService: ToastService = inject(ToastService)
     //#endregion
+
     carId_? : number;
     bus_ = 0
     add_ = false
@@ -93,7 +134,23 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     //#region properties
     label!: string
     submitElement?: ElementRef<HTMLInputElement>
-    public addCarForm: FormGroup
+        // this.addCarForm = this.formBuilder.group({
+        //     companyId: [undefined, Validators.required],
+        //     modelId: [undefined, Validators.required],
+        //     modificationId: [undefined, Validators.required],
+        //     year: [2021],
+        //     regNumber: ['', Validators.required],
+        //     powerkWh: [],
+        //     powerBHP: [],
+        //     millage: [],
+        //     vin: ['', [Validators.minLength(17), Validators.maxLength(17)]],
+        //     description: [''],
+        //     engineType: [0],
+        //     engineModel: [''],
+        //     gearboxType: [0],
+        //     regionId: [this.regionId],
+        //     mainImageId: [''],
+        // })
     car?: CarView
     yearFrom = this.labels.YEAR_START
     yearTo: number
@@ -112,12 +169,16 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     images: ImageData[] = []
     UpdateFlag = true
     allowBack = false
-
+    
     //#endregion
 
     constructor() {
         super()
         //#region form initialization
+        effect(() => {
+            this.addCarFormModel().powerkWh = this.addCarForm.powerBHP().value()
+        })
+
 
         effect(() => {
             if (this.displayPartView()) {
@@ -139,51 +200,57 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         })
 
         effect(() => {
-            if (this.bus()) {
-                this.addCarForm.controls['modificationId'].clearValidators()
-                this.addCarForm.controls['modificationId'].updateValueAndValidity()
-            } else {
-                this.addCarForm.controls['modificationId'].setValidators([Validators.required])
-            }
+            // if (this.bus()) {
+            //     this.addCarForm.controls['modificationId'].clearValidators()
+            //     this.addCarForm.controls['modificationId'].updateValueAndValidity()
+            // } else {
+            //     this.addCarForm.controls['modificationId'].setValidators([Validators.required])
+            // }
             this.label = this.bus() ? 'Име на бус' : 'Име на кола'
         })
 
         effect(() => {
             if (this.displayPartView() !== undefined) {
-                this.addCarForm.patchValue(this.displayPartView()!)
-                this.mainImageId = this.displayPartView()?.mainImageId
-                this.images = this.displayPartView()?.images ?? []
+                this.addCarFormModel.set({
+                    companyId: this.displayPartView()!.companyId ?? 0,
+                    modelId: this.displayPartView()!.modelId ?? 0,
+                    year: this.displayPartView()!.year ?? 0,
+                    regNumber: this.displayPartView()!.partNumber ?? '',
+                    powerkWh: '',
+                    powerBHP: this.displayPartView()!.powerBHP ?? 0,
+                    millage: this.displayPartView()!.millage ?? 0,
+                    vin: this.displayPartView()!.vin ?? '',
+                    description: this.displayPartView()!.description ?? '',
+                    engineType: this.displayPartView()!.engineType ?? 0,
+                    engineModel: this.displayPartView()!.engineModel ?? '',
+                    gearboxType: this.displayPartView()!.gearboxType ?? 0,
+                    regionId: this.displayPartView()!.regionId ?? 0,
+                    mainImageId: this.displayPartView()!.mainImageId ?? 0,
+                    modificationId: this.displayPartView()!.modificationId ?? 0,
+                })
+                this.mainImageId = this.displayPartView()!.mainImageId
+                this.images = this.displayPartView()!.images ?? []
             }
         })
 
-        this.addCarForm = this.formBuilder.group({
-            companyId: [undefined, Validators.required],
-            modelId: [undefined, Validators.required],
-            modificationId: [undefined, Validators.required],
-            year: [2021],
-            regNumber: ['', Validators.required],
-            powerkWh: [],
-            powerBHP: [],
-            millage: [],
-            vin: ['', [Validators.minLength(17), Validators.maxLength(17)]],
-            description: [''],
-            engineType: [0],
-            engineModel: [''],
-            gearboxType: [0],
-            regionId: [this.regionId],
-            mainImageId: [''],
+        effect(() => {
+            this.onCompanyChange(this.addCarForm.companyId().value())
         })
+        effect(() => {
+            this.onModelChange(+this.addCarForm.modelId().value())
+        })
+
+        effect(() => {
+            this.clearZeros();
+            this.addCarForm().value()
+        })
+
         //#endregion
 
-        this.formGroup = this.addCarForm
         this.yearTo = this.currentYear
         this.setYears()
-        this.addCarForm.controls['companyId'].valueChanges.subscribe((f) => this.onCompanyChange(f))
-        this.addCarForm.controls['modelId'].valueChanges.subscribe((f) => this.onModelChange(f))
-        this.addCarForm.valueChanges.subscribe(() => {
-            this.clearZeros()
-        })
-        this.formInitialValues = this.addCarForm.value
+
+        this.formInitialValues = this.addCarForm().value()
         this.userId = this.loggedUser?.userId ?? 0
     }
 
@@ -216,17 +283,17 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     onSubmit() {
         this.submitted = true
-        if (!this.addCarForm.valid) {
+        if (!this.addCarForm().valid()) {
             this.toastService.show('Моля попълнете задължителната информация')
             return
         }
 
         if (this.mode() == UpdateEnum.New) {
-            this.carService.checkForUniqueness(this.addCarForm.value.regNumber, this.bus() ?? 0).subscribe({
+            this.carService.checkForUniqueness(this.addCarForm().value().regNumber, this.bus() ?? 0).subscribe({
                 next: (res) => {
                     if (res == false) {
                         const busCar = this.bus() ? 'Бус' : 'Кола'
-                        const message = `${busCar} с това име "${this.addCarForm.value.regNumber}" вече съществува`
+                        const message = `${busCar} с това име "${this.addCarForm().value().regNumber}" вече съществува`
                         this.toastService.show(message)
                     } else {
                         this.addCar()
@@ -259,15 +326,15 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     defaultImageChanged(imageId: number) {
-        this.addCarForm.patchValue({ mainImageId: imageId })
+        this.addCarFormModel.set({ ...this.addCarFormModel(), mainImageId: imageId })
     }
 
     powerkWhChanged() {
-        this.calculateBHP(this.addCarForm.controls['powerkWh'].value)
+        this.calculateBHP(this.addCarFormModel().powerkWh)
     }
 
     powerBHPChanged() {
-        this.calculatekWh(this.addCarForm.controls['powerBHP'].value)
+        this.calculatekWh(this.addCarFormModel().powerBHP)
     }
 
     modificatioChanged(modification: Modification) {
@@ -288,9 +355,9 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         if (this.car.powerkWh === 0) this.car.powerkWh = undefined
         if (this.car.millage === 0) this.car.millage = undefined
 
-        if (this.addCarForm.controls['powerBHP'].value === 0) this.addCarForm.controls['powerBHP'].setValue(undefined)
-        if (this.addCarForm.controls['powerkWh'].value === 0) this.addCarForm.controls['powerkWh'].setValue(undefined)
-        if (this.addCarForm.controls['millage'].value === 0) this.addCarForm.controls['millage'].setValue(undefined)
+        if (this.addCarFormModel().powerBHP === 0) this.addCarFormModel.set({ ...this.addCarFormModel(), powerBHP: 0 })
+        if (this.addCarFormModel().powerkWh === 0) this.addCarFormModel.set({ ...this.addCarFormModel(), powerkWh: 0 })
+        if (this.addCarFormModel().millage === 0) this.addCarFormModel.set({ ...this.addCarFormModel(), millage: 0 })
     }
 
     changeMessage() {
@@ -318,8 +385,8 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
                     this.mode_ = UpdateEnum.Update
 
                     this.clearZeros()
-                    this.addCarForm.patchValue(this.car)
-                    this.inialValue = this.addCarForm.value
+                    this.addCarFormModel.set(this.car as unknown as addCarFormModelInterface)
+                    this.inialValue = this.addCarFormModel()
                 },
                 error: (error) => {
                     this.loggerService.logError(error)
@@ -355,7 +422,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
                 },
             })
 
-            this.inialValue = this.addCarForm.value
+            this.inialValue = this.addCarFormModel()
         }
     }
     get action() {
@@ -365,6 +432,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             return this.labels.SAVE
         }
     }
+
 
     setYears() {
         const result: SelectOption[] = []
@@ -382,16 +450,16 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     calculateBHP(value: number) {
         const newValue = Math.ceil(Number(value) * this.labels.KWH_TO_BHP)
-        if (newValue != this.addCarForm.controls['powerBHP'].value) this.addCarForm.controls['powerBHP'].setValue(newValue)
+        if (newValue != this.addCarFormModel().powerBHP) this.addCarFormModel.set({ ...this.addCarFormModel(), powerBHP: newValue })
     }
 
     calculatekWh(value: number) {
         const newValue = Math.floor(Number(value) / this.labels.KWH_TO_BHP)
-        if (newValue != this.addCarForm.controls['powerkWh'].value) this.addCarForm.controls['powerkWh'].setValue(newValue)
+        if (newValue != this.addCarFormModel().powerkWh) this.addCarFormModel.set({ ...this.addCarFormModel(), powerkWh: newValue })
     }
 
     addCar() {
-        const carUpdated: Car = Object.assign(this.addCarForm.value, { bus: this.bus, carId: this.carId(), userId: this.userId })
+        const carUpdated: Car = Object.assign(this.addCarFormModel(), { bus: this.bus(), carId: this.carId(), userId: this.userId })
         this.saving = true
         this.carService.addUpdateCar(carUpdated, this.mode()).subscribe({
             next: (val) => {

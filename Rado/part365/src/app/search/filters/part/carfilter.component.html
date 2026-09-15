@@ -5,7 +5,7 @@
         }
     </div>
     <div class="w-100">
-        <form [formGroup]="filterForm" class="shadow mb-5 rounded card card-form-spec mb-2 homeForm">
+        <form class="shadow mb-5 rounded card card-form-spec mb-2 homeForm">
             <div class="mb-1 d-flex justify-content-center">
                 <app-radiogroup [radios]="radios" [formField]="carFilterForm.bus" data-cy="bus" (changeRadioGroup)="changeBusCar()"></app-radiogroup>
             </div>
@@ -40,7 +40,8 @@
                             </app-select>
                         </div>
                         <div class="col-sm-3 control">
-                            <app-select id="approved" [formField]="carFilterForm.approved" data-cy="approvedType" label="{{ labels.APPROVEAD }}" [data]="approvedTypes" (onCloseEvent)="focus()"> </app-select>
+                            <app-select id="approved" [formField]="carFilterForm.approved" data-cy="approvedType" label="{{ labels.APPROVEAD }}" [data]="approvedTypes" (onCloseEvent)="focus()">
+                            </app-select>
                         </div>
                     </div>
                 }
@@ -76,16 +77,21 @@
                     <div class="row">
                         <div class="row modell-1000px">
                             <div class="col-sm-3 min200px max300px mb-1">
-                                <app-company-choise data-testid="companyId" [config]="{ bus: bus_, itemType: itemType_ }" [showCount]="true" [all]="true" [formField]="carFilterForm.companyId" data-cy="companyId"> </app-company-choise>
+                                <app-company-choise
+                                    data-testid="companyId"
+                                    [config]="{ bus: carFilterForm.bus().value(), itemType: carFilterForm.itemType().value(), showCount: true, all: true }"
+                                    [formField]="carFilterForm.companyId"
+                                    data-cy="companyId">
+                                </app-company-choise>
                             </div>
-                            @if (companyId) {
+                            @if (carFilterModel().companyId) {
                                 <div class="col-sm-3 min300px mb-1">
                                     <app-model-choice
                                         data-testid="modelId"
                                         [all]="true"
                                         [formField]="carFilterForm.modelsId"
-                                        [itemType]="itemType_!"
-                                        [companyId]="companyId!"
+                                        [itemType]="carFilterForm.itemType().value()"
+                                        [companyId]="carFilterModel().companyId"
                                         [multiselection]="true"
                                         [showCount]="true"
                                         data-cy="modelsId"
@@ -93,13 +99,13 @@
                                     </app-model-choice>
                                 </div>
                             }
-                            @if (!bus && modelId) {
+                            @if (!carFilterForm.bus().value() && carFilterModel().modelsId) {
                                 <div class="col-sm-3 min300px mb-1">
                                     <app-modification-choice
                                         data-testid="modificationId"
                                         [all]="true"
-                                        [itemType]="itemType_!"
-                                        [modelsId]="modelId"
+                                        [itemType]=" carFilterForm.itemType().value()"
+                                        [modelsId]="carFilterModel().modelsId"
                                         [multiselection]="true"
                                         [showCount]="true"
                                         [formField]="carFilterForm.modificationsId"
@@ -134,16 +140,29 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-2 control min200px">
-                                <app-select id="engineType" [formField]="carFilterForm.engineType" data-cy="engineType" label="{{ labels.TYPE_ENGINE }}" [data]="engineTypes" (onCloseEvent)="focus()"> </app-select>
+                                <app-select id="engineType" [formField]="carFilterForm.engineType" data-cy="engineType" label="{{ labels.TYPE_ENGINE }}" [data]="engineTypes" (onCloseEvent)="focus()">
+                                </app-select>
                             </div>
                             <div class="col-sm-3 control">
-                                <app-input [formField]="carFilterForm.engineModel" data-cy="engineModel" label="{{ labels.CODE_ENGINE }}" (onCloseEvent)="focus()" placeHolder="{{ labels.CODE_ENGINE }}"> </app-input>
+                                <app-input
+                                    [formField]="carFilterForm.engineModel"
+                                    data-cy="engineModel"
+                                    label="{{ labels.CODE_ENGINE }}"
+                                    (onCloseEvent)="focus()"
+                                    placeHolder="{{ labels.CODE_ENGINE }}">
+                                </app-input>
                             </div>
                             <div class="col-sm-2 control min150px">
                                 <app-input [formField]="carFilterForm.powerBHP" data-cy="powerBHP" label="{{ labels.POWERBHP }}" (onCloseEvent)="focus()" placeHolder="К.С."> </app-input>
                             </div>
                             <div class="col-sm-4 control">
-                                <app-select id="gearboxType" [formField]="carFilterForm.gearboxType" data-cy="gearboxType" label="{{ labels.TYPE_GEARBOX }}" [data]="gearBoxTypes" (onCloseEvent)="focus()">
+                                <app-select
+                                    id="gearboxType"
+                                    [formField]="carFilterForm.gearboxType"
+                                    data-cy="gearboxType"
+                                    label="{{ labels.TYPE_GEARBOX }}"
+                                    [data]="gearBoxTypes"
+                                    (onCloseEvent)="focus()">
                                 </app-select>
                             </div>
                         </div>
@@ -162,7 +181,7 @@
                     </div>
                 </div>
             </div>
-            <div class="min150px row"> 
+            <div class="min150px row">
                 <app-search-bar [formField]="carFilterForm.orderBy" (submitEvent)="submit()" (clearEvent)="clearFilter()"></app-search-bar>
             </div>
         </form>

@@ -19,10 +19,10 @@
         </div>
     }
 
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-sm-2">
-                <app-input formControlName="userName" label="{{ labels.USERNAME }}" placeHolder="{{ labels.USERNAME }}" [required]="true" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.userName" label="{{ labels.USERNAME }}" placeHolder="{{ labels.USERNAME }}" [IsRequired]="true" [submitted]="submitted"> </app-input>
             </div>
             <div class="col-sm-6 mt-4">
                 @if (isDealer) {
@@ -36,79 +36,79 @@
         <div class="row">
             @if (isDealer) {
                 <div class="col-sm-2">
-                    <app-input formControlName="companyName" label="{{ labels.COMPANYNAME }}" placeHolder="{{ labels.COMPANYNAME }}" [submitted]="submitted" [required]="true"> </app-input>
+                    <app-input [formField]="userForm.companyName" label="{{ labels.COMPANYNAME }}" placeHolder="{{ labels.COMPANYNAME }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
                 </div>
-                @if (submitted && f['companyName'].errors) {
+                @if (submitted && !userForm.companyName().valid()) {
                     <div class="invalid-feedback">
-                        @if (f['companyName'].errors['required']) {
+                        @if (userForm.companyName().getError('required')) {
                             <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                         }
                     </div>
                 }
             } @else {
                 <div class="col-sm-2">
-                    <app-input formControlName="firstName" label="{{ labels.FIRSTNAME }}" placeHolder="{{ labels.FIRSTNAME }}" [submitted]="submitted" [required]="true"> </app-input>
-                    @if (submitted && f['firstName'].errors) {
+                    <app-input [formField]="userForm.firstName" label="{{ labels.FIRSTNAME }}" placeHolder="{{ labels.FIRSTNAME }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
+                    @if (submitted && !userForm.firstName().valid()) {
                         <div class="invalid-feedback">
-                            @if (f['firstName'].errors['required']) {
+                            @if (userForm.firstName().getError('required')) {
                                 <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                             }
                         </div>
                     }
                 </div>
                 <div class="col-sm-2">
-                    <app-input formControlName="lastName" label="{{ labels.LASTNAME }}" placeHolder="{{ labels.LASTNAME }}" [submitted]="submitted"> </app-input>
+                    <app-input [formField]="userForm.lastName" label="{{ labels.LASTNAME }}" placeHolder="{{ labels.LASTNAME }}" [submitted]="submitted"> </app-input>
                 </div>
             }
         </div>
         <div class="row">
             <div class="col-sm-2">
-                <app-select formControlName="regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="regions" [submitted]="submitted" [required]="true"> </app-select>
-                @if (submitted && f['regionId'].errors) {
+                <app-select [formField]="userForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="regions" [submitted]="submitted" [IsRequired]="true"> </app-select>
+                @if (submitted && !userForm.regionId().valid()) {
                     <div class="invalid-feedback">
-                        @if (f['regionId'].errors['min']) {
+                        @if (userForm.regionId().getError('required')) {
                             <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                         }
                     </div>
                 }
             </div>
             <div class="col-sm-3">
-                <app-input formControlName="address" label="{{ labels.ADDRESS }}" placeHolder="{{ labels.ADDRESS }}" [submitted]="submitted"> </app-input>
-                @if (submitted && f['address'].errors) {
+                <app-input [formField]="userForm.address" label="{{ labels.ADDRESS }}" placeHolder="{{ labels.ADDRESS }}" [submitted]="submitted"> </app-input>
+                @if (submitted && !userForm.address().valid()) {
                     <div class="invalid-feedback">
-                        @if (f['address'].errors['required']) {
+                        @if (userForm.address().getError('required')) {
                             <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                         }
                     </div>
                 }
             </div>
             <div class="col-sm-2">
-                <app-input formControlName="city" label="{{ labels.CITY }}" placeHolder="{{ labels.CITY }}" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.city" label="{{ labels.CITY }}" placeHolder="{{ labels.CITY }}" [submitted]="submitted"> </app-input>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-2">
-                <app-input formControlName="phone" label="{{ labels.PHONE }}" [required]="true" placeHolder="{{ labels.PHONE }}" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.phone" label="{{ labels.PHONE }}" [IsRequired]="true" placeHolder="{{ labels.PHONE }}" [submitted]="submitted"> </app-input>
             </div>
             <div class="col-sm-2">
-                <app-input formControlName="phone2" label="{{ labels.PHONE2 }}" placeHolder="{{ labels.PHONE2 }}" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.phone2" label="{{ labels.PHONE2 }}" placeHolder="{{ labels.PHONE2 }}" [submitted]="submitted"> </app-input>
             </div>
             <div class="col-sm-2">
-                <app-input formControlName="viber" label="{{ labels.VIBER }}" placeHolder="{{ labels.VIBER }}" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.viber" label="{{ labels.VIBER }}" placeHolder="{{ labels.VIBER }}" [submitted]="submitted"> </app-input>
             </div>
             <div class="col-sm-2">
-                <app-input formControlName="whats" label="{{ labels.WHATS }}" placeHolder="{{ labels.WHATS }}" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.whats" label="{{ labels.WHATS }}" placeHolder="{{ labels.WHATS }}" [submitted]="submitted"> </app-input>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <app-input formControlName="email" label="{{ labels.EMAIL }}" placeHolder="{{ labels.EMAIL }}" [required]="true" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.email" label="{{ labels.EMAIL }}" placeHolder="{{ labels.EMAIL }}" [IsRequired]="true" [submitted]="submitted"> </app-input>
             </div>
 
             @if (dealer) {
                 <div class="col-sm-3">
                     <app-input
-                        formControlName="webPage"
+                        [formField]="userForm.webPage"
                         label="{{ labels.WEBPAGE }}"
                         placeHolder="{{ labels.WEBPAGE }}"
                         [submitted]="submitted"
@@ -119,11 +119,11 @@
                 </div>
             }
         </div>
-        <app-input formControlName="imageId" [ngStyle]="{ display: 'none' }"> </app-input>
+        <app-input [formField]="userForm.imageId" [ngStyle]="{ display: 'none' }"> </app-input>
 
         @if (isDealer) {
             <div class="row">
-                <app-textarea formControlName="description" placeHolder="{{ labels.DESCRIPTIONCOMPANY }}"></app-textarea>
+                <app-textarea [formField]="userForm.description" placeHolder="{{ labels.DESCRIPTIONCOMPANY }}"></app-textarea>
             </div>
         }
 

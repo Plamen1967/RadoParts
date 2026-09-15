@@ -12,8 +12,8 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [NgStyle, NgClass, FormsModule],
 })
 //#endregion
-export class InputComponent implements FormValueControl<string> {
-    value = model('');
+export class InputComponent implements FormValueControl<string|number> {
+    value = model.required<string | number>();
     label = input<string | undefined>()
 
     placeHolder = input<string | undefined>()

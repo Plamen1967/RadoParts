@@ -1,7 +1,7 @@
 //#region Imports
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Component, effect, inject, model } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -19,13 +19,13 @@ import { SelectOption } from '@model/selectOption'
     imports: [ReactiveFormsModule, InputComponent, NgStyle, SelectComponent, NgClass],
 })
 //#endregion
-export default class SubCategoryComponentAdmin extends HelperComponent implements AfterViewInit {
+export default class SubCategoryComponentAdmin extends HelperComponent{
     //#region variables and services
-    subCategoryForm: FormGroup
     categories: SelectOption[] = []
     subCategories: SelectOption[] = []
-    categoryId?: number
-    subCategoryId?: number
+    categoryId = model<number>(0)
+    subCategoryId = model<number>(0)
+    subCategoryName = model<string>('')
     //#region services
     private formBuilder: FormBuilder = inject(FormBuilder)
     private adminService: AdminService = inject(AdminService)
@@ -34,26 +34,20 @@ export default class SubCategoryComponentAdmin extends HelperComponent implement
     //#endregion
     //#endregion
 
+
     constructor() {
         super()
-
-        this.subCategoryForm = this.formBuilder.group({
-            categoryId: [''],
-            subCategoryId: [''],
-            subCategoryName: ['', Validators.required],
+        effect(() => {
+            this.categoryChanged(this.categoryId())
         })
 
-        this.formGroup = this.subCategoryForm
+        effect(() => {
+            this.subCategoryChanged(this.subCategoryId())
+        })
         this.categoryService.fetch().subscribe((res) => (this.categories = res))
     }
 
-    ngAfterViewInit(): void {
-        this.controls['categoryId'].valueChanges.subscribe((f) => this.categoryChanged(f))
-        this.controls['subCategoryId'].valueChanges.subscribe((f) => this.subCategoryChanged(f))
-    }
-
     categoryChanged(categoryId: number) {
-        this.categoryId = categoryId
         this.subCategoryService.getSubCategoriesByCategoriesId(categoryId.toString()).subscribe((res) => {
             res.unshift({ categoryId: 0, subCategoryId: 0, subCategoryName: this.labels.ADDSUBCATEGORY })
             this.subCategories = res.map((category) => {
@@ -66,28 +60,24 @@ export default class SubCategoryComponentAdmin extends HelperComponent implement
     }
 
     subCategoryChanged(subCategoryId: number) {
-        this.subCategoryId = subCategoryId
-        let subCategoryName = ''
         if (subCategoryId) {
             const subCategory = this.subCategories.find((item) => item.value === subCategoryId)
-            subCategoryName = subCategory?.text ?? ''
+            this.subCategoryName.set(subCategory?.text ?? '')
         }
-
-        this.subCategoryForm.patchValue({ subCategoryName: subCategoryName })
     }
 
     updateSubCategory() {
-        this.adminService.updateSubCategory(this.subCategoryForm.value).subscribe((subcategory) => {
+        this.adminService.updateSubCategory({subCategoryId: this.subCategoryId(), categoryId: this.categoryId(), subCategoryName: this.subCategoryName()}).subscribe((subcategory) => {
             this.updateSubCategories(subcategory)
         })
     }
 
     delete() {
-        this.adminService.deleteSubCategory(this.subCategoryId!).subscribe((res) => {
+        this.adminService.deleteSubCategory(this.subCategoryId()).subscribe((res) => {
             if (res) {
-                const index = this.subCategories.findIndex((item) => item.value === this.subCategoryId)
+                const index = this.subCategories.findIndex((item) => item.value === this.subCategoryId())
                 if (index != -1) this.subCategories.splice(index, 1)
-                this.subCategoryForm.patchValue({ subCategoryName: '' })
+                this.subCategoryName.set('')
             }
         })
     }
@@ -100,7 +90,8 @@ export default class SubCategoryComponentAdmin extends HelperComponent implement
                 value: subcategory.categoryId,
                 text: subcategory.subCategoryName,
             })
-            this.subCategoryForm.patchValue({ subCategoryName: '', subCategoryId: 0 })
+            this.subCategoryName.set('')
+            this.subCategoryId.set(0)
         }
 
         this.subCategories.sort((x, y) => {
@@ -109,7 +100,7 @@ export default class SubCategoryComponentAdmin extends HelperComponent implement
     }
 
     get buttonLabel() {
-        if (this.subCategoryId) return this.labels.UPDATE
+        if (this.subCategoryId()) return this.labels.UPDATE
         else return this.labels.ADD
     }
 
@@ -118,7 +109,7 @@ export default class SubCategoryComponentAdmin extends HelperComponent implement
     }
 
     get updateButton() {
-        if (this.subCategoryId) return false
+        if (this.subCategoryId()) return false
         const subCategoryName = this.controls['subCategoryName'].value
         if (subCategoryName?.length) return false
 

@@ -77,8 +77,8 @@ export class SelectBase {
     }
 
     get selecttion(): number[] {
-        if (this._value) {
-            return this._value?.split(',').map((item) => +item)
+        if (this._value && this._value.length) {
+            return this._value.split(',').map((item) => +item)
         } else return []
     }
 
@@ -92,31 +92,6 @@ export class SelectBase {
         return item.typeItem == TypeItem.ALL ? false : true
     }
 
-    // setData(data_: any[]) {
-    //     this._data = data_
-    //     this._letters = []
-    //     const selectedValues: number[] = this.selecttion;
-
-    //     const index = this._data?.findIndex((item) =>  item.id! in selectedValues? true:false);
-    //     if (index != -1)
-    //         this._selection = this._data[index].description ?? ''
-
-    //     this.updataData()
-    //     this.selectedValues = this.getSelectedValues()
-    // }
-
-    // getSelectedValues(): SelectionItem[] {
-    //     let data = this._data ?? []
-    //     if (this.selections.size === 0) return []
-
-    //     data = data?.filter((item) => this.selections?.has(item.value))
-    //     if (data) {
-    //         let result = data.map((item) => {
-    //             return { id: item.value, text: item.display, count: item.count }
-    //         })
-    //         return result
-    //     }
-    // }
     updateData() {
         if (!this._data) return
         const setId = new Set()
