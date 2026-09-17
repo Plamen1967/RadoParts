@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, signal } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { AfterViewInit, Component, DestroyRef, effect, inject, OnInit, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { Observable, Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -88,21 +88,21 @@ interface searchFormInterface {
 })
 export default class ListTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
     searchFormModel = signal<searchFormInterface>({
-            category: ItemType.AllTyre,
-            tyreCompanyId: 0,
-            tyreWidth: 0,
-            tyreHeight: 0,
-            tyreRadius: 0,
-            tyreType: 0,
-            companyId: 0,
-            modelId: 0,
-            rimWidth: 0,
-            rimMaterial: 0,
-            rimOffset: 0,
-            rimBoltCount: 0,
-            rimBoltDistance: 0,
-            rimCenter: 0,
-            regionId: 0,
+        category: ItemType.AllTyre,
+        tyreCompanyId: 0,
+        tyreWidth: 0,
+        tyreHeight: 0,
+        tyreRadius: 0,
+        tyreType: 0,
+        companyId: 0,
+        modelId: 0,
+        rimWidth: 0,
+        rimMaterial: 0,
+        rimOffset: 0,
+        rimBoltCount: 0,
+        rimBoltDistance: 0,
+        rimCenter: 0,
+        regionId: 0,
     })
     searchForm = form(this.searchFormModel)
     user?: AuthenticatedUser
@@ -214,18 +214,18 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
         this.user = this.authernticationService.currentUserValue
         this.userId = this.user?.userId ?? 0
-    }
-    ngAfterViewInit(): void {
-        this.inialState = this.searchForm.value
 
-        this.searchForm.controls['category'].valueChanges.subscribe((f) => this.categoryChanged(f))
-        this.searchForm.valueChanges.subscribe(() => {
+        effect(() => this.categoryChanged(this.searchForm.category().value()))
+        effect(() => this.categoryChanged(this.searchForm.companyId().value()))
+        effect(() => {
+            this.searchForm().value()
             this.search()
         })
-        this.searchForm.patchValue({ category: this.itemType })
-
+    }
+    ngAfterViewInit(): void {
+        this.inialState = this.searchForm().value()
+        this.searchForm.category().value.set(this.itemType)
         this.search()
-        this.searchForm.controls['companyId'].valueChanges.subscribe((f) => this.onCompanyChange(f))
     }
 
     ngOnInit() {
@@ -243,7 +243,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
             debounceTime(this._debounce),
             distinctUntilChanged(),
             switchMap(() => {
-                const filter: Filter = { ...this.searchForm.value }
+                const filter: Filter = Object.assign({}, this.searchForm().value(), { id: 0 })
                 filter.itemType = this.itemType
                 filter.userId = this.userId
                 this.loading = true
@@ -311,7 +311,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     search() {
-        const filter: FilterRimWithTyre = Object.assign({}, this.searchForm.value)
+        const filter: FilterRimWithTyre = Object.assign({}, this.searchFormModel())
         filter.itemType = this.itemType
         filter.userId = this.user?.userId
         this._autoSearch$.next(filter)
@@ -422,8 +422,8 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     clear() {
-        const value = { ...this.inialState, category: this.searchForm.controls['category'].value }
-        this.searchForm.setValue(value)
+        const newvalue = { ...this.inialState, category: this.searchForm.category().value() }
+        this.searchFormModel.update((value) => ({...value, ...newvalue}))
     }
 
     action($event: number) {

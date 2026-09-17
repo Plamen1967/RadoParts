@@ -1,7 +1,7 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Component, effect, inject, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -13,18 +13,39 @@ import { Modification } from '@model/static-data/modification'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+interface modificationFormInterface {
+            companyId: number,
+            modelId: number,
+            modificationId: number,
+            modificationName: string
+            powerHP: string,
+            yearFrom: number,
+            yearTo: number,
+}
+
 //#region component
 @Component({
     selector: 'app-modification-admin',
     templateUrl: './modification.component.html',
     styleUrls: ['./modification.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
+    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass, FormField],
 })
 //#endregion
-export default class ModificationComponentAdmin extends HelperComponent implements AfterViewInit {
+export default class ModificationComponentAdmin extends HelperComponent {
+    modificationFormModel = signal<modificationFormInterface> ({
+            companyId: 0,
+            modelId: 0,
+            modificationId: 0,
+            modificationName: '',
+            powerHP: '',
+            yearFrom: 0,
+            yearTo: 0,
+    })
+
+    modificationForm = form(this.modificationFormModel)
     //#region variables and services
-    modificationForm: FormGroup
     companies: SelectOption[] = []
     models: SelectOption[] = []
     modifications: SelectOption[] = []
@@ -47,18 +68,6 @@ export default class ModificationComponentAdmin extends HelperComponent implemen
     constructor() {
         super()
 
-        this.modificationForm = this.formBuilder.group({
-            companyId: [''],
-            modelId: [''],
-            modificationId: [''],
-            modificationName: ['', Validators.required],
-            powerHP: [''],
-            yearFrom: [2000],
-            yearTo: [2001],
-        })
-
-        this.formGroup = this.modificationForm
-
         const result: SelectOption[] = []
         for (let i = 1950; i <= 2022; i++) {
             result.push({ value: i, text: i.toString() })
@@ -67,18 +76,23 @@ export default class ModificationComponentAdmin extends HelperComponent implemen
         this.years = result
         result.push({ value: 0, text: '-' })
         this.yearsTo = result
+
+        effect(() => {
+            this.companyIdChanged(this.modificationForm.companyId().value())
+        })
+
+        effect(() => {
+            this.modelIdChanged(this.modificationForm.modelId().value())
+        })
+        effect(() => {
+            this.modificationIdChanged(this.modificationForm.modificationId().value())
+        })
+
     }
 
     get buttonLabel() {
         if (this.modificationId) return this.labels.UPDATE
         else return this.labels.ADDMODIFICATION
-    }
-
-    ngAfterViewInit(): void {
-        this.controls['companyId'].valueChanges.subscribe((companyId) => this.companyIdChanged(companyId))
-        this.controls['modelId'].valueChanges.subscribe((modelId) => this.modelIdChanged(modelId))
-        this.controls['modificationId'].valueChanges.subscribe((modificationId) => this.modificationIdChanged(modificationId))
-        // this.controls.yearFrom.valueChanges.subscribe(yearFrom => this.modificationForm.patchValue({yearTo: yearFrom}))
     }
 
     companyIdChanged(companyId: number) {
@@ -117,23 +131,27 @@ export default class ModificationComponentAdmin extends HelperComponent implemen
 
     modificationIdChanged(modificationId: number) {
         this.modificationId = modificationId
-        let modificationName = ''
         if (modificationId) {
             const modification = this.originalModification.find((item) => item.modificationId === modificationId)
             // this.modificationForm.setValue(modification);
             if (modification) {
-                modificationName = modification.modificationName!
-                if (modification.powerHP == 0) this.modificationForm.patchValue({ modificationName: modificationName, powerHP: '', yearFrom: modification.yearFrom, yearTo: modification.yearTo })
-                else this.modificationForm.patchValue({ modificationName: modificationName, powerHP: modification.powerHP, yearFrom: modification.yearFrom, yearTo: modification.yearTo })
+                if (modification.powerHP == 0) 
+                    this.modificationFormModel.update((value) => ({ ...value, modificationName: modification.modificationName!, powerHP: '', yearFrom: modification.yearFrom ?? 0, yearTo: modification.yearTo ?? 0 }))
+                else 
+                    this.modificationFormModel.update((value) => ({ ...value, modificationName: modification.modificationName!, powerHP:  modification.powerHP?.toString() ?? '', yearFrom: modification.yearFrom?? 0, yearTo: modification.yearTo?? 0 }))
             }
         } else {
-            this.modificationForm.patchValue({ modificationName: '', powerHP: '', yearFrom: 2004, yearTo: 0 })
+            this.modificationFormModel.update((value) => ({ ...value,  modificationName: '', powerHP: '', yearFrom: 2004, yearTo: 0 }))
         }
     }
 
     update() {
-        this.modificationForm.value.powerHP = +this.modificationForm.value.powerHP
-        this.adminService.updateModification(this.modificationForm.value).subscribe((res) => {
+        this.adminService.updateModification({
+            ...this.modificationFormModel(),
+            powerHP: Number(this.modificationFormModel().powerHP) || 0,
+            countParts: 0,
+            countCars: 0
+        }).subscribe((res) => {
             const modification_ = this.modifications
             const modification = modification_.find((item) => item.value === res.modificationId)
             if (modification) {
@@ -145,7 +163,7 @@ export default class ModificationComponentAdmin extends HelperComponent implemen
                     text: res.modificationName,
                     displayText: res.modificationDisplayName,
                 })
-                this.modificationForm.patchValue({ modificationId: res.modificationId })
+                this.modificationFormModel.update((value) => ({...value, modificationId: res.modificationId ?? 0 }))
             }
             modification_.sort((a, b) => (a.text! < b.text! ? -1 : 1))
             this.modifications = modification_
@@ -166,7 +184,7 @@ export default class ModificationComponentAdmin extends HelperComponent implemen
             this.popupService.openWithTimeout(this.labels.MESSAGE, 'модификацията е успешно изтрита.', 2000).subscribe(() => {
                 const index = this.modifications.findIndex((item) => item.value == this.modificationId)
                 if (index != -1) this.models.splice(index, 1)
-                this.modificationForm.patchValue({ modificationName: '', modificationId: 0, powerHP: '', yearFrom: 2004, yearTo: 0 })
+                this.modificationFormModel.update((value) => ({...value,  modificationName: '', modificationId: 0, powerHP: '', yearFrom: 2004, yearTo: 0 }))
             })
         })
     }

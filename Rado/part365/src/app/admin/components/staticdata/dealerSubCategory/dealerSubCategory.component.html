@@ -1,10 +1,10 @@
 <div>
-    <form [formGroup]="dealerSubCategoryForm" [ngStyle]="{ 'background-color': '#f1f9ff' }" class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
+    <form [ngStyle]="{ 'background-color': '#f1f9ff' }" class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
         <div class="col-sm-6">
-            <app-select formControlName="categoryId" data-cy="categoryId" label="{{ labels.CATEGORY }}" displayProperty="categoryName" valueProperty="categoryId" [data]="categories"> </app-select>
+            <app-select [value]="categoryId()" data-cy="categoryId" label="{{ labels.CATEGORY }}" displayProperty="categoryName" valueProperty="categoryId" [data]="categories"> </app-select>
         </div>
         <div class="col-sm-6">
-            <app-select formControlName="subCategoryId" data-cy="subCategoryId" label="{{ labels.SUBCATEGORY }}" displayProperty="subCategoryName" valueProperty="subCategoryId" [data]="subCategories">
+            <app-select [value]="subCategoryId()" data-cy="subCategoryId" label="{{ labels.SUBCATEGORY }}" displayProperty="subCategoryName" valueProperty="subCategoryId" [data]="subCategories">
             </app-select>
         </div>
         <div class="col-sm-6">
@@ -18,7 +18,7 @@
             </app-select>
         </div>
         <div class="col-sm-6">
-            <app-input formControlName="dealerSubCategoryName" placeHolder="{{ labels.DEALERSUBCATEGORY }}" label="{{ labels.DEALERSUBCATEGORY }}"> </app-input>
+            <app-input [value]="dealerSubCategoryName()" placeHolder="{{ labels.DEALERSUBCATEGORY }}" label="{{ labels.DEALERSUBCATEGORY }}"> </app-input>
         </div>
         <div class="row">
             <div class="col-sm-3">

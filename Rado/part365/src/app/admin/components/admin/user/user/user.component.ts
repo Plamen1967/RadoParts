@@ -1,7 +1,7 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, Component, inject, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -14,19 +14,59 @@ import { AlertService } from '@services/alert.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { UserService } from '@services/user.service'
 import { UpdateUserService } from '@app/admin/services/updateuser.service'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+//#region interface 
+interface userFormInterface {
+    users: string,
+    userName: string,
+    companyName: string,
+    firstName: string,
+    fatherName: string,
+    lastName: string,
+    street: string,
+    streetNumber: string,
+    floor: string,
+    appartment: string,
+    city: string,
+    regionId: number,
+    phone: string,
+    phone2: string,
+    email: string,
+    webPage: string, 
+
+}
 //#region component
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrls: ['./user.component.css'],
-    imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent],
+    imports: [InputComponent, ReactiveFormsModule, NgStyle, SelectComponent, FormField],
 })
 //#endregion
 export default class UserComponent extends HelperComponent implements AfterViewInit {
+    userFormModel = signal<userFormInterface>({
+        users: '',
+        userName: '',
+        companyName: '',
+        firstName: '',
+        fatherName: '',
+        lastName: '',
+        street: '',
+        streetNumber: '',
+        floor: '',
+        appartment: '',
+        city: '',
+        regionId: 0,
+        phone: '',
+        phone2: '',
+        email: '',
+        webPage: '',
+    })
+
+    userForm = form(this.userFormModel)
     //#region services and variables
     users?: User[]
-    userForm: FormGroup
     public user?: User
     submitted = false
     regions?: SelectOption[] = []
@@ -48,32 +88,32 @@ export default class UserComponent extends HelperComponent implements AfterViewI
         this.regions = [...this.staticSelectionService.Region]
         this.userService.getAll().subscribe((users) => (this.users = users))
 
-        this.userForm = this.formBuilder.group({
-            users: [''],
-            userName: ['', [Validators.maxLength(50), Validators.required]],
-            companyName: ['', [Validators.maxLength(50)]],
-            firstName: ['', [Validators.maxLength(50)]],
-            fatherName: ['', [Validators.maxLength(50)]],
-            lastName: ['', [Validators.maxLength(50)]],
-            street: ['', Validators.required],
-            streetNumber: [''],
-            floor: ['', Validators.pattern('^[0-9]*$')],
-            appartment: [''],
-            city: ['', [Validators.maxLength(50)]],
-            regionId: ['', [Validators.maxLength(50)]],
-            phone: ['', Validators.required],
-            phone2: [''],
-            email: ['', [Validators.required]],
-            webPage: [''],
-        })
+        // this.userForm = this.formBuilder.group({
+        //     users: [''],
+        //     userName: ['', [Validators.maxLength(50), Validators.required]],
+        //     companyName: ['', [Validators.maxLength(50)]],
+        //     firstName: ['', [Validators.maxLength(50)]],
+        //     fatherName: ['', [Validators.maxLength(50)]],
+        //     lastName: ['', [Validators.maxLength(50)]],
+        //     street: ['', Validators.required],
+        //     streetNumber: [''],
+        //     floor: ['', Validators.pattern('^[0-9]*$')],
+        //     appartment: [''],
+        //     city: ['', [Validators.maxLength(50)]],
+        //     regionId: ['', [Validators.maxLength(50)]],
+        //     phone: ['', Validators.required],
+        //     phone2: [''],
+        //     email: ['', [Validators.required]],
+        //     webPage: [''],
+        // })
 
-        this.formGroup = this.userForm
+        // this.formGroup = this.userForm
     }
 
     ngAfterViewInit(): void {
         this.controls['users'].valueChanges.subscribe((userId) => {
             this.user = this.users?.find((user) => (user.userId = userId))
-            this.userForm.patchValue(this.user!)
+            this.userFormModel.update((value) => ({...value, ...this.user!}))
         })
     }
 
@@ -86,11 +126,11 @@ export default class UserComponent extends HelperComponent implements AfterViewI
 
         this.alerService.clear()
 
-        if (this.userForm.invalid) {
+        if (this.userForm().invalid()) {
             return
         }
 
-        this.updateUserService.updateUser(this.userForm.value).subscribe({
+        this.updateUserService.updateUser(this.userForm().value()).subscribe({
             next: (data) => {
                 this.alerService.success('Registration sucessful', { result: data })
             },

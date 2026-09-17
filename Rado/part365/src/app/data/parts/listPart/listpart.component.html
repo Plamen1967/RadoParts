@@ -13,11 +13,11 @@
                 <div class="mb-3"></div>
                 <div class="d-inline-flex justify-content-between">
                     <div class="d-inline-flex pe-2">
-                        <input id="car" type="radio" class="custom-control-input" [value]="0" data-cy="car" name="bus" [formField]="searchForm.bus" />
+                        <input id="car" type="radio" class="custom-control-input" value="car" data-cy="car" [formField]="searchForm.bus" />
                         <label class="custom-control-label ps-2" for="car">{{ labels.CAR }}</label>
                     </div>
                     <div class="d-inline-flex pe-2">
-                        <input id="бус" type="radio" class="custom-control-input" [value]="1" data-cy="bus" name="bus" [formField]="searchForm.bus" />
+                        <input id="бус" type="radio" class="custom-control-input" value="bus" data-cy="bus" [formField]="searchForm.bus" />
                         <label class="custom-control-label ps-2" for="bus">{{ labels.BUS }}</label>
                     </div>
                 </div>

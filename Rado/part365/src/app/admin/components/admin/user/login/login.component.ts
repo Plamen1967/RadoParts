@@ -1,7 +1,7 @@
 //#region import
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit, Renderer2, DOCUMENT } from '@angular/core'
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, Component, inject, Renderer2, DOCUMENT, signal, effect } from '@angular/core'
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -13,16 +13,38 @@ import { InputPasswordComponent } from '@components/custom-controls/inputPasswor
 import { UserComponent } from '@components/custom-controls/user/user.component'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+//#region interface
+interface loginFormInterface {
+    userName: string
+    email: string
+    phone: string
+    password: string
+    confirmPassword: string
+    dealer: string
+    contract: boolean
+}
 //#region component
 @Component({
-    imports: [UserComponent, FormsModule, ReactiveFormsModule, NgClass, RouterLink, NgStyle, InputPasswordComponent],
+    imports: [UserComponent, FormsModule, ReactiveFormsModule, NgClass, RouterLink, NgStyle, InputPasswordComponent, FormField],
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
 })
 //#endregion
-export class LoginComponent extends HelperComponent implements OnInit, AfterViewInit {
+export class LoginComponent extends HelperComponent implements AfterViewInit {
+    loginFormModel = signal<loginFormInterface>({
+        userName: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+        dealer: '',
+        contract: false,
+    })
+
+    loginForm = form(this.loginFormModel)
     //#region variables and services
     showLoginFlag = false
     showLoginType2 = 'password'
@@ -31,7 +53,6 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
     showFlag2 = false
     type2 = 'password'
     loginFlag = true
-    loginForm: FormGroup
     loading = false
     submitted = false
     returnUrl?: string
@@ -61,18 +82,21 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
 
     constructor() {
         super()
-        this.loginForm = this.formBuilder.group({
-            userName: ['', Validators.required],
-            email: ['', Validators.required],
-            phone: ['', [Validators.required, Validators.pattern(this.phonePattern), Validators.minLength(this.phoneMin), Validators.maxLength(this.phoneMax)]],
-            password: ['', Validators.required],
-            confirmPassword: ['', Validators.required],
-            dealer: [undefined, Validators.required],
-            contract: [false, Validators.requiredTrue],
+        // this.loginForm = this.formBuilder.group({
+        //     userName: ['', Validators.required],
+        //     email: ['', Validators.required],
+        //     phone: ['', [Validators.required, Validators.pattern(this.phonePattern), Validators.minLength(this.phoneMin), Validators.maxLength(this.phoneMax)]],
+        //     password: ['', Validators.required],
+        //     confirmPassword: ['', Validators.required],
+        //     dealer: [undefined, Validators.required],
+        //     contract: [false, Validators.requiredTrue],
+        // })
+
+        // this.formGroup = this.loginForm
+
+        effect(() => {
+            if (this.loginFormModel().userName) this.loginFormModel.update((value) => ({ ...value, password: '', confirmPassword: '' }))
         })
-
-        this.formGroup = this.loginForm
-
         if (this.authenticationService.currentUserValue) {
             this.router.navigate(['/'])
         }
@@ -125,10 +149,6 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
         } else this.dialogRef?.close(false)
     }
 
-    ngOnInit() {
-        this.controls['userName'].valueChanges.subscribe(() => this.loginForm?.patchValue({ password: '', confirmPassword: '' }))
-    }
-
     ngAfterViewInit() {
         if (this.loginFlag) {
             this.login()
@@ -137,7 +157,6 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
         }
 
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/'
-        this.loginForm.controls['userName'].valueChanges.subscribe((text) => console.log(`User: ${text}`))
         setTimeout(() => {
             const elem = this.document.getElementById('user')
             elem?.focus()
@@ -145,7 +164,7 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
     }
 
     onUserNameChange() {
-        this.controls['password'].setValue('')
+        this.loginForm.password().value.set('')
     }
 
     login() {
@@ -166,7 +185,7 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
         this.loginFlag = false
         this.submitted = false
         this.autocomplete = 'off'
-        this.loginForm.reset()
+        this.loginForm().reset()
         this.controls['userName'].clearValidators()
         this.controls['email'].setValidators([Validators.required])
         this.controls['phone'].setValidators([Validators.required, Validators.pattern(this.phonePattern), Validators.minLength(this.phoneMin), Validators.maxLength(this.phoneMax)])
@@ -197,7 +216,7 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
     }
 
     onBlockedUserOk() {
-        this.userService.recoverUser(this.controls['userName'].value).subscribe(() => {
+        this.userService.recoverUser(this.loginFormModel().userName).subscribe(() => {
             this.message = 'Е-майл е изпратен на Вашият акаунт за отблокиране!'
             this.popupService.openWithTimeout(CONSTANT.MESSAGE, this.message)
         })
@@ -223,7 +242,7 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
         this.alertService.clear()
 
         // stop here if form is invalid
-        if (this.loginForm?.invalid) {
+        if (!this.loginForm().valid()) {
             return
         }
 
@@ -261,7 +280,7 @@ export class LoginComponent extends HelperComponent implements OnInit, AfterView
         }
 
         this.error = ''
-        this.userService.registerUser(this.loginForm?.value).subscribe({
+        this.userService.registerUser(this.loginFormModel().value()).subscribe({
             next: (message) => {
                 this.submitted = false
                 this.returnUrl = message.url

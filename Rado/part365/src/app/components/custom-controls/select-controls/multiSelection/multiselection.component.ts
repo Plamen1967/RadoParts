@@ -16,8 +16,8 @@ import { FormValueControl } from '@angular/forms/signals'
     styleUrls: ['./multiselection.component.css'],
     imports: [ButtonGroupComponent, NgClass, NgStyle, ChoiseComponent],
 })
-export class MultiSelectionComponent implements FormValueControl<string>, OnInit {
-    value = model<string>('')
+export class MultiSelectionComponent implements FormValueControl<string | number>, OnInit {
+    value = model<string | number>('')
     @ViewChild('minGroup') minGroup?: ElementRef<HTMLInputElement>
     @ViewChild('normalGroup') normalGroup?: ElementRef<HTMLInputElement>
     filter = ''

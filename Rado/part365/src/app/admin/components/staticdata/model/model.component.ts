@@ -1,7 +1,7 @@
 //#region imports
 import { NgStyle, NgClass } from '@angular/common'
-import { AfterViewInit, Component, inject } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, Component, inject, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -12,18 +12,34 @@ import { ModelService } from '@services/company-model-modification/model.service
 import { SelectOption } from '@model/selectOption'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
+import { form, FormField } from '@angular/forms/signals'
 //#endregion
+//#region interface
+interface modelFormInterface {
+    companyId: number
+    groupModelId: number
+    modelId: number
+    modelName: string
+}
+
 //#region component
 @Component({
     selector: 'app-model-admin',
     templateUrl: './model.component.html',
     styleUrls: ['./model.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass],
+    imports: [ReactiveFormsModule, NgStyle, SelectComponent, InputComponent, NgClass, FormField],
 })
 //#endregion
 export default class ModelComponentAdmin extends HelperComponent implements AfterViewInit {
+    modelFormModel = signal<modelFormInterface>({
+            companyId: 0,
+            groupModelId: 0,
+            modelId: 0,
+            modelName: '',
+    })
+
+    modelForm = form(this.modelFormModel)
     //#region variables and services
-    modelForm: FormGroup
     companies: SelectOption[] = []
     modelsAll: SelectOption[] = []
     models: SelectOption[] = []
@@ -42,14 +58,6 @@ export default class ModelComponentAdmin extends HelperComponent implements Afte
     constructor() {
         super()
 
-        this.modelForm = this.formBuilder.group({
-            companyId: [0],
-            groupModelId: [0],
-            modelId: [0],
-            modelName: ['', Validators.required],
-        })
-
-        this.formGroup = this.modelForm
         this.companyService.fetchCompanies().subscribe((res) => {
             this.companies = res.map((company) => {
                 return {
@@ -104,11 +112,15 @@ export default class ModelComponentAdmin extends HelperComponent implements Afte
             modelName = model?.text ?? ''
         }
 
-        this.modelForm.patchValue({ modelName: modelName })
+        this.modelFormModel.update((value) => ({...value,  modelName: modelName }))
     }
 
     update() {
-        this.adminService.updateModel(this.modelForm.value).subscribe((model) => {
+        this.adminService.updateModel({
+            ...this.modelFormModel(),
+            countParts: 0,
+            countCars: 0
+        }).subscribe((model) => {
             this.updateModels(model)
         })
     }
@@ -124,7 +136,7 @@ export default class ModelComponentAdmin extends HelperComponent implements Afte
                 this.popupService.openWithTimeout(this.labels.MESSAGE, 'Модела е успешно изтрит.', 2000).subscribe(() => {
                     const index = this.models.findIndex((item) => item.value == this.modelId)
                     if (index != -1) this.models.splice(index, 1)
-                    this.modelForm.patchValue({ modelName: '', modelId: 0 })
+                    this.modelFormModel.update((value) => ({ ...value, modelName: '', modelId: 0 }))
                 })
             }
         })
@@ -158,8 +170,8 @@ export default class ModelComponentAdmin extends HelperComponent implements Afte
         else return this.labels.ADDMODEL
     }
     get updateButton() {
-        const modelName = this.controls['modelName'].value
-        const value = this.companyId && this.groupModelId && modelName?.length
+        const modelName = this.modelFormModel().modelName
+        const value = this.modelFormModel().companyId && this.groupModelId && modelName?.length
         return value === undefined
     }
 }

@@ -1,6 +1,6 @@
 //#region imports
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AfterViewInit, Component, inject, OnInit, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -25,22 +25,64 @@ import { QueryParam } from '@model/queryParam'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { globalStaticData } from '@model/staticData'
 import { UpdateUserService } from '@app/admin/services/updateuser.service'
+import { form, FormField } from '@angular/forms/signals'
+//#endregion
+//#region 
+interface userFormInterface {
+            userName: string,
+            companyName: string,
+            firstName: string,
+            fatherName: string,
+            lastName: string,
+            address: string,
+            city: string,
+            regionId: number,
+            phone: string,
+            phone2: string,
+            viber: string,
+            whats: string,
+            email: string,
+            webPage: string,
+            description: string,
+            imageId: number,
+
+}
 //#endregion
 //#region component
 @Component({
     selector: 'app-updateuser',
     templateUrl: './updateUser.component.html',
     styleUrls: ['./updateUser.component.css'],
-    imports: [UploadComponent, PictureComponent, NgStyle, TextAreaComponent, InputComponent, ReactiveFormsModule, SelectComponent],
+    imports: [UploadComponent, PictureComponent, NgStyle, TextAreaComponent, InputComponent, ReactiveFormsModule, SelectComponent, FormField],
 })
 //#endregion
 export class UpdateUserComponent extends HelperComponent implements OnInit, AfterViewInit {
+    userFormModel = signal<userFormInterface>({
+        userName: '',
+        companyName: '',
+        firstName: '',
+        fatherName: '',
+        lastName: '',
+        address: '',
+        city: '',
+        regionId: 0,
+        phone: '',
+        phone2: '', 
+        viber: '',
+        whats: '',
+        email: '',
+        webPage: '',
+        description: '',
+        imageId: 0,
+
+    })
+    userForm = form(this.userFormModel)
+
     //#region services and variables
     unamePattern = '^[a-z0-9_-]{8,15}$'
     pwdPattern = '^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?!.*s).{6,12}$'
     mobnumPattern = '^((\\+91-?)|0)?[0-9]{10}$'
     emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'
-    userForm: FormGroup
     loading = false
     submitted = false
     dealer: UserType = UserType.Dealer
@@ -81,24 +123,6 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
         //#region inject services
         //#endregion
 
-        this.userForm = this.formBuilder.group({
-            userName: ['', [Validators.maxLength(50), Validators.required]],
-            companyName: ['', [Validators.maxLength(50)]],
-            firstName: ['', [Validators.maxLength(50)]],
-            fatherName: ['', [Validators.maxLength(50)]],
-            lastName: ['', [Validators.maxLength(50)]],
-            address: [''],
-            city: ['', [Validators.maxLength(50)]],
-            regionId: [undefined, Validators.min(1)],
-            phone: ['', [Validators.required, Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            phone2: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            viber: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            whats: ['', [Validators.pattern('^[0-9() +-]*$'), Validators.minLength(10), Validators.maxLength(20)]],
-            email: ['', [Validators.required]], //, Validators.pattern(this.unamePattern)
-            webPage: [''],
-            description: [''],
-            imageId: [0],
-        })
         this.regions = [...this.staticSelectionService.Region]
     }
 
@@ -115,7 +139,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                         else {
                             this.user = user
                             this.userId = user.userId
-                            this.userForm.patchValue(user)
+                            this.userFormModel.update((value) => ({...value, ...user}))
                             this.dealer = user.dealer!
                             if (this.dealer === UserType.Dealer) {
                                 this.requiredField(true)
@@ -126,7 +150,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                                 this.userForm.controls['firstName'].setValidators(Validators.required)
                                 this.userForm.controls['firstName'].updateValueAndValidity()
                             }
-                            this.initialState = this.userForm.value
+                            this.initialState = this.userForm().value()
                         }
                     })
             } else {
@@ -137,7 +161,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                         .subscribe((user) => {
                             this.user = user
                             this.userId = user.userId
-                            this.userForm.patchValue(user)
+                            this.userFormModel.update((value) => ({...value, ...user}))
                             this.dealer = user.dealer!
                             if (this.dealer === UserType.Dealer) {
                                 this.requiredField(true)
@@ -152,7 +176,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                                 this.userForm.controls['companyName'].clearValidators()
                                 this.userForm.controls['companyName'].updateValueAndValidity()
                             }
-                            this.initialState = this.userForm.value
+                            this.initialState = this.userForm().value()
                         })
                 }
             }
@@ -163,21 +187,17 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                 .getBusinessCardImage(this.authenticationService.currentUserValue.userId)
                 .pipe(first())
                 .subscribe((image) => {
-                    this.businessCardimage = image
-                    if (this.businessCardimage) this.f['imageId'].setValue(this.businessCardimage?.imageId)
+                    this.businessCardimage = { ...image}
+                    if (this.businessCardimage) this.userForm.imageId().value.set(this.businessCardimage.imageId!)
                 })
 
-            this.imageService.getMinImages(this.authenticationService.currentUserValue.userId).subscribe((images) => (this.images = images))
+            this.imageService.getMinImages(this.authenticationService.currentUserValue.userId).subscribe((images) => (this.images = [...images]))
         }
     }
 
     ngOnInit() {
         this.numberAds = this.staticSelectionService.maxNumberParts
         this.userService.getNewUserId().subscribe((userId) => (this.userId = userId))
-    }
-
-    get f() {
-        return this.userForm.controls
     }
 
     get isDealer() {
@@ -191,19 +211,18 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
         this.submitted = true
         this.alerService.clear()
         this.error = ''
-        if (this.userForm.invalid) {
+        if (this.userForm().valid()) {
             this.onRequired()
             return
         }
 
         this.loading = true
-        this.userForm.value['userId'] = this.userId
-        this.userForm.value['imageId'] = this.businessCardimage?.imageId
-        this.updateUserService.updateUser(this.userForm.value).subscribe({
+        this.userForm.imageId(). value.set(this.businessCardimage?.imageId ?? 0)
+        this.updateUserService.updateUser({...this.userForm().value(), userId: this.userId}).subscribe({
             next: (data) => {
                 if (this.authenticationService.currentUserValue) {
-                    this.authenticationService.currentUserValue.userName = this.userForm.value.userName
-                    this.authenticationService.currentUserValue.regionId = this.userForm.value.regionId
+                    this.authenticationService.currentUserValue.userName = this.userForm.userName().value()
+                    this.authenticationService.currentUserValue.regionId = this.userForm.regionId().value()
                 }
                 this.userService.getUserById(this.userId!).subscribe((user) => {
                     globalStaticData.addUserImage(this.userId!, user.busimessCard!)
@@ -303,10 +322,10 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
     addBusinessCard(image: ImageData[]) {
         if (image === null) {
             this.businessCardimage = undefined
-            this.f['imageId'].setValue(0)
+            this.userForm.imageId().value.set(0)
         } else {
             this.businessCardimage = image[0]
-            this.f['imageId'].setValue(this.businessCardimage?.imageId)
+            this.userForm.imageId().value.set(this.businessCardimage?.imageId ?? 0)
         }
     }
 
@@ -442,7 +461,7 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
 
     //#region Cancel Button
     onCancelChanges() {
-        if (this.initialState != this.userForm.value) {
+        if (this.initialState != this.userForm().value()) {
             this.message = 'Имате промени. Искате ли да ги откажете?'
             this.confirmationService.OKCancel(this.labels.WARNING, this.message).subscribe((result) => {
                 if (result === OKCancelOption.OK) {

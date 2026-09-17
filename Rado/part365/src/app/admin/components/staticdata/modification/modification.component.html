@@ -1,39 +1,39 @@
 <div>
-    <form [formGroup]="modificationForm" [ngStyle]="{'background-color': '#f1f9ff'}"
+    <form  [ngStyle]="{'background-color': '#f1f9ff'}"
         class="shadow p-3 mb-5 rounded card card-form-spec mb-2">
         <div class="col-sm-3">
-            <app-select formControlName="companyId" data-cy="companyId" label="{{labels.COMPANY}}"
+            <app-select [formField]="modificationForm.companyId" data-cy="companyId" label="{{labels.COMPANY}}"
                 displayProperty="companyName" valueProperty="companyId" [data]="companies">
             </app-select>
         </div>
         <div class="col-sm-3">
-            <app-select formControlName="modelId" data-cy="modelId" label="{{labels.MODEL}}" displayProperty="displayModelName"
+            <app-select [formField]="modificationForm.modelId" data-cy="modelId" label="{{labels.MODEL}}" displayProperty="displayModelName"
                 valueProperty="modelId" [data]="models">
             </app-select>
         </div>
         <div class="col-sm-3">
-            <app-select formControlName="modificationId" data-cy="modificationId" label="{{labels.MODIFICATION}}"
+            <app-select [formField]="modificationForm.modificationId" data-cy="modificationId" label="{{labels.MODIFICATION}}"
                 displayProperty="modificationDisplayName" valueProperty="modificationId" [data]="modifications">
             </app-select>
         </div>
         <div class="row">
             <div class="col-sm-3">
-                <app-input formControlName="modificationName" placeHolder="{{labels.MODIFICATION}}"
+                <app-input [formField]="modificationForm.modificationName" placeHolder="{{labels.MODIFICATION}}"
                     label={{labels.MODIFICATION}}>
                 </app-input>
             </div>
 
             <div class="col-sm-1">
-                <app-input formControlName="powerHP" placeHolder="{{labels.POWERBHP}}" label={{labels.POWERBHP}}>
+                <app-input [formField]="modificationForm.powerHP" placeHolder="{{labels.POWERBHP}}" label={{labels.POWERBHP}}>
                 </app-input>
             </div>
             <div class="col-sm-1">
-                <app-select formControlName="yearFrom" label="{{labels.YEAR_FROM}}" [data]="years">
+                <app-select [formField]="modificationForm.yearFrom" label="{{labels.YEAR_FROM}}" [data]="years">
                 </app-select>
 
             </div>
             <div class="col-sm-1">
-                <app-select formControlName="yearTo" label="{{labels.YEAR_TO}}" [data]="yearsTo">
+                <app-select [formField]="modificationForm.yearTo" label="{{labels.YEAR_TO}}" [data]="yearsTo">
                 </app-select>
 
             </div>

@@ -1,6 +1,6 @@
 //#region imports
 import { NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
+import { AfterViewInit, Component, inject, OnInit, signal } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -11,13 +11,14 @@ import { QueryParam } from '@model/queryParam'
 import { AdminService } from '@app/admin/services/admin.service'
 import { CompanyService } from '@services/company-model-modification/company.service'
 import { SelectOption } from '@model/selectOption'
+import { FormField } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
     selector: 'app-company-admin',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent],
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent, FormField],
 })
 //#endregion
 export default class CompanyComponentAdmin extends HelperComponent implements OnInit, AfterViewInit {
@@ -30,6 +31,8 @@ export default class CompanyComponentAdmin extends HelperComponent implements On
     private companyService: CompanyService = inject(CompanyService)
     private adminService: AdminService = inject(AdminService)
     private route: ActivatedRoute = inject(ActivatedRoute)
+    companyId = signal<number>(0)
+    companyName = signal<string>('')
     //#endregion
 
     constructor() {

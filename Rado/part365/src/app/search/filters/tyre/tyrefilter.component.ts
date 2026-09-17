@@ -1,7 +1,7 @@
 //#region imports
 import { NgClass } from '@angular/common'
 import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect, signal } from '@angular/core'
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { isMobile, sortUser } from '@app/functions/functions'
@@ -108,7 +108,6 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         { value: 2, text: 'Джанти' },
         { value: 3, text: 'Джанти с гуми' },
     ]
-    filterForm: FormGroup
     models: SelectOption[] = []
     selectedCategory: ItemType = ItemType.AllTyre
     hideFilter = false
@@ -168,7 +167,6 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         }
     }
     //#region services
-    formBuilder: FormBuilder = inject(FormBuilder)
     private homeService: HomeService = inject(HomeService)
     private userService: UserService = inject(UserService)
     public loadingService: LoadingService = inject(LoadingService)
@@ -189,20 +187,19 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
             }
         })
 
-        this.initialState = this.filterForm.value
-        delete this.initialState.itemType
+        effect(() => this.itemTypeChanged(this.filterFormModel().itemType))
+        effect(() => this.onCompanyChange(this.filterFormModel().companyId))
+
+        this.initialState = this.filterForm().value()
     }
     ngAfterViewInit(): void {
-        this.filterForm.controls['itemType'].valueChanges.subscribe((f) => this.itemTypeChanged(f))
-        this.filterForm.controls['companyId'].valueChanges.subscribe((companyId) => this.onCompanyChange(companyId))
-
         if (this.itemType) {
-            this.filterForm.patchValue({ itemType: ItemType.AllTyre })
+            this.filterFormModel.update((value) => ({ ...value, itemType: ItemType.AllTyre }))
             this.itemTypeChanged(ItemType.AllTyre)
         }
-        if (this.userId) this.filterForm.patchValue({ userId: this.userId })
+        if (this.userId) this.filterFormModel.update((value) => ({...value, ...{ userId: this.userId() ?? 0 }}))
 
-        this.itemTypeChanged(this.filterForm.controls['itemType'].value)
+        this.itemTypeChanged(this.filterFormModel().itemType)
         if (this.home?.filter) {
             this.setFilter(this.home.filter)
         }
@@ -211,7 +208,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
 
     setFilter(filter: Filter) {
         this._filter = filter
-        this.filterForm.patchValue(this._filter)
+        this.filterFormModel.update((value) => ({...value, ...this._filter}))
     }
 
     focus() {
@@ -243,7 +240,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         })
 
         if (!this.query) {
-            this.filterForm.patchValue(this.initialState)
+            this.filterFormModel.update((value) => ({...value, ...this.initialState}))
         }
 
         if (this.admin) {
@@ -256,21 +253,22 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
                 this.users = res.map((user) => {
                     return { value: user.userId, text: user.userName }
                 })
-                this.filterForm.controls['userId'].setValidators([Validators.required])
+
                 if (this.userId) {
-                    this.filterForm.patchValue({ userId: this.userId })
+                    this.filterFormModel.update((value) => ({...value, ...{ userId: this.userId() ?? 0 }}))
                 }
+
             })
         }
     }
 
     clearFilter() {
-        this.filterForm.patchValue(this.initialState)
+        this.filterFormModel.update((value) => ({... value, ...this.initialState}))
     }
 
     //#region Search
     submit() {
-        const filter: Filter = Object.assign({}, this.filterForm.value)
+        const filter: Filter = Object.assign({}, this.filterForm().value(), {id: 0})
         filter.adminRun = false
         if (this.admin) {
             filter.adminRun = true

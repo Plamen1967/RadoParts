@@ -1,7 +1,7 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Component, effect, inject, OnInit, signal } from '@angular/core'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { InputComponent } from '@components/custom-controls/input/input.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -17,11 +17,11 @@ import { CategoryService } from '@services/category-subcategory/category.service
     imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent, NgClass],
 })
 //#endregion
-export default class CategoryComponent extends HelperComponent implements OnInit, AfterViewInit {
+export default class CategoryComponent extends HelperComponent implements OnInit {
     //#region variables and services
-    categoryForm: FormGroup
     categories?: Category[]
-    categoryId?: number
+    categoryId = signal<number>(0)
+    categoryName = signal<string>('')
     formBuilder: FormBuilder = inject(FormBuilder)
     private categoryService: CategoryService = inject(CategoryService)
     private adminService: AdminService = inject(AdminService)
@@ -29,14 +29,7 @@ export default class CategoryComponent extends HelperComponent implements OnInit
 
     constructor() {
         super()
-        this.categoryForm = this.formBuilder.group({
-            categoryId: ['', [Validators.required]],
-            categoryName: ['', [Validators.required]],
-        })
-        this.formGroup = this.categoryForm
-    }
-    ngAfterViewInit(): void {
-        this.categoryForm.controls['categoryId'].valueChanges.subscribe((f) => this.select(f))
+        effect(() => this.select(this.categoryId()))
     }
 
     ngOnInit() {
@@ -48,20 +41,19 @@ export default class CategoryComponent extends HelperComponent implements OnInit
 
     select(categoryId: number) {
         let categoryName = ''
-        this.categoryId = categoryId
 
         if (categoryId !== 0) {
             const category_ = this.categories?.find((elem) => elem.categoryId === categoryId)
             categoryName = category_?.categoryName ?? ''
         } else {
-            this.categoryForm.patchValue({ categoryName: categoryName })
+            this.categoryName.set(categoryName)
         }
     }
 
     update() {
         const category: Category = {
-            categoryId: this.categoryForm.controls['categoryId'].value,
-            categoryName: this.categoryForm.controls['categoryName'].value,
+            categoryId: this.categoryId(),
+            categoryName: this.categoryName(),
             imageName: '',
             count: 0,
         }
@@ -70,11 +62,12 @@ export default class CategoryComponent extends HelperComponent implements OnInit
     }
 
     delete() {
-        this.adminService.deleteCategory(this.categoryId!).subscribe((res) => {
+        this.adminService.deleteCategory(this.categoryId()).subscribe((res) => {
             if (res) {
-                const index = this.categories?.findIndex((item) => item.categoryId === this.categoryId)
+                const index = this.categories?.findIndex((item) => item.categoryId === this.categoryId())
                 if (index != -1) this.categories?.splice(index!, 1)
-                this.categoryForm.patchValue({ categoryName: '', categoryId: 0 })
+                this.categoryName.set('')
+                this.categoryId.set(0)
             }
         })
     }
@@ -84,13 +77,14 @@ export default class CategoryComponent extends HelperComponent implements OnInit
         if (category_) category_.categoryName = category.categoryName
         else {
             this.categories?.push(category)
-            this.categoryForm.patchValue({ categoryName: '', categoryId: 0 })
+            this.categoryName.set('')
+            this.categoryId.set(0)
         }
         this.categories?.sort((x, y) => (x.categoryName < y.categoryName ? -1 : 1))
     }
 
     get buttonLabel() {
-        if (this.categoryId) return this.labels.UPDATE
+        if (this.categoryId()) return this.labels.UPDATE
         else return this.labels.ADD
     }
 
@@ -99,7 +93,7 @@ export default class CategoryComponent extends HelperComponent implements OnInit
     }
 
     get updateButton() {
-        if (this.categoryId) return false
+        if (this.categoryId()) return false
         const categoryName = this.controls['categoryName'].value
         if (categoryName?.length) return false
 

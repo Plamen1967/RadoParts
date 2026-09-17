@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, OnInit, Self, model, input } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, OnInit, Self, model, input } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -19,9 +19,9 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
 })
 //#endregion
-export class SubcategoryChoiseComponent implements FormValueControl<string>, OnInit, AfterViewInit {
+export class SubcategoryChoiseComponent implements FormValueControl<string | number>, OnInit {
     //#region variables and services
-    value = model<string>('')
+    value = model<string | number>('')
     subCategoryForm: FormGroup
     isDisabled?: boolean
     subCategories: OptionItem[] = []
@@ -57,11 +57,6 @@ export class SubcategoryChoiseComponent implements FormValueControl<string>, OnI
         if (this.control) this.control.valueAccessor = this
         this.subCategoryForm = this.formBuilder.group({
             subCategoriesId_int: [''],
-        })
-    }
-    ngAfterViewInit(): void {
-        this.subCategoryForm.controls['subCategoriesId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
-            this.value.set(f)
         })
     }
     ngOnInit(): void {

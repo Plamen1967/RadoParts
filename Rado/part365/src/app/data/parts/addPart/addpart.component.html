@@ -15,7 +15,7 @@
                         <div class="d-inline-flex align-items-center">
                             <div class="mt-2" [ngClass]="{ noDisplay: carId }">
                                 <div class="form-check form-check-inline">
-                                    <input id="PartForCar" type="radio" class="custom-control-input" data-cy="car" [value]="true" name="partForCar" [formField]="addPartForm.partForCar" />
+                                    <input id="PartForCar" type="radio" class="custom-control-input" data-cy="car" value="car" [formField]="addPartForm.partForCar" />
                                     <label class="custom-control-label" for="PartForCar">Част за {{ choice }}</label>
                                 </div>
                                 @if (partForCar) {
@@ -37,7 +37,7 @@
                                     </div>
                                 }
                                 <div class="form-check form-check-inline">
-                                    <input id="NoCar" type="radio" class="custom-control-input" data-cy="part" [value]="false" name="partForCar" [formField]="addPartForm.partForCar" />
+                                    <input id="NoCar" type="radio" class="custom-control-input" data-cy="part" value="part" [formField]="addPartForm.partForCar" />
                                     <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice }}</label>
                                 </div>
                             </div>
@@ -59,23 +59,23 @@
                                     <div class="col-sm-2 min300px">
                                         <app-company-choise [config]="{ bus: bus_, all: true, required: true, submitted: submitted }" [formField]="addPartForm.companyId" data-cy="companyid"> </app-company-choise>
                                     </div>
-                                    @if (companyId) {
+                                    @if (companyId()) {
                                         <div class="col-sm-2 min350px">
                                             <app-model-choice
                                                 [formField]="addPartForm.modelId"
                                                 [all]="true"
                                                 [IsRequired]="true"
-                                                [companyId]="companyId!"
+                                                [companyId]="companyId()"
                                                 [groupSelection]="false"
                                                 [multiselection]="false"
                                                 [submitted]="submitted"
                                                 (onCloseEvent)="focus($event)">
                                             </app-model-choice>
                                         </div>
-                                        @if (!bus && modelId) {
+                                        @if (!bus && modelId()) {
                                             <div class="col-sm-3 min350px">
                                                 <app-modification-choice
-                                                    [modelsId]="modelId"
+                                                    [modelsId]="modelId()"
                                                     [all]="true"
                                                     [IsRequired]="true"
                                                     [multiselection]="false"
@@ -106,8 +106,7 @@
                                     label="{{ labels.POWERBHP }}"
                                     placeHolder="{{ labels.POWERBHP }}"
                                     [submitted]="submitted"
-                                    data-cy="powerBHP"
-                                    (change)="powerBHPChanged()">
+                                    data-cy="powerBHP">
                                 </app-input>
                             </div>
                             <div class="col-sm-2">
@@ -117,8 +116,7 @@
                                     label="{{ labels.POWERKWH }}"
                                     placeHolder="{{ labels.POWERKWH }}"
                                     [submitted]="submitted"
-                                    data-cy="powerkWh"
-                                    (change)="powerkWhChanged()">
+                                    data-cy="powerkWh">
                                 </app-input>
                             </div>
                             <div class="col-sm-2">
@@ -183,20 +181,20 @@
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
                             title="Избери категория"
-                            [required]="true"
+                            [IsRequired]="true"
                             [multiselection]="false"
                             [submitted]="submitted"
                             placeHolder="Избери категория">
                         </app-category-choise>
                     </div>
-                    @if (categoryId) {
+                    @if (categoryId()) {
                         <div class="col-sm-2 min350px">
                             <app-dealersubcategory-choice
-                                [categoryId]="categoryId!"
+                                [categoryId]="categoryId()"
                                 [formField]="addPartForm.dealerSubCategoryId"
                                 data-cy="dealerSubCategoryId"
                                 title="{{ labels.DEALERSUBCATEGORY }}"
-                                [required]="true"
+                                [IsRequired]="true"
                                 [multiselection]="false"
                                 [submitted]="submitted"
                                 (dealerSubCategoryChanged)="dealerSubCategoryIdChanged($event)"
@@ -210,7 +208,7 @@
                                     label="{{ labels.DEALERSUBCATEGORYHELP }}"
                                     data-cy="dealerSubCategoryName"
                                     [submitted]="submitted"
-                                    [required]="true"
+                                    [IsRequired]="true"
                                     placeHolder="{{ labels.DEALERSUBCATEGORYHELP }}">
                                 </app-input>
                             </div>
@@ -261,18 +259,6 @@
                                     [data]="staticSelectionService.FrontBack"
                                     (onCloseEvent)="focus($event)">
                                 </app-select>
-                                <!-- <div class="d-inline-flex pe-2">
-                                    <input id="NoneFB" type="radio" class="custom-control-input" [value]="0" data-cy="positionFBNone" name="frontBackPosition" [formField]="addPartForm.frontBackPosition" />
-                                    <label class="ps-2" for="NoneFB">{{ labels.NO_MATER }}</label>
-                                </div>
-                                <div class="d-inline-flex pe-2">
-                                    <input id="Front" type="radio" class="custom-control-input" [value]="1" data-cy="positionFBFront" name="frontBackPosition" [formField]="addPartForm.frontBackPosition" />
-                                    <label class="ps-2" for="Front">{{ labels.FRONT }}</label>
-                                </div>
-                                <div class="d-inline-flex">
-                                    <input id="Back" type="radio" class="custom-control-input" [value]="2" data-cy="positionFBBack" name="frontBackPosition" [formField]="addPartForm.frontBackPosition" />
-                                    <label class="ps-2" for="Back">{{ labels.BACK }}</label>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -291,10 +277,4 @@
                 <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>
         </div>
-    <!-- <div class="row mt-3" style="position: relative">
-        <app-imagelist [id]="partId" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
-        <div class="d-inline-flex justify-content-end position-buttons w-auto">
-            <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
-        </div>
-    </div> -->
 </div>

@@ -92,7 +92,6 @@ interface searchFormInterface {
 })
 
 //#endregion
-
 export default class ListPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
     searchFormModel = signal<searchFormInterface>({
         bus: '',
@@ -104,7 +103,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         subCategoryId: 0,
         partNumber: '',
         sortOrder: 0,
-        carId: 0
+        carId: 0,
     })
 
     searchForm = form(this.searchFormModel)
@@ -190,6 +189,27 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         effect(() => {
             this.id_ = this.id()
         })
+
+        effect(() => {
+            this.onSubmit(this.searchForm().value())
+        })
+
+        effect(() => {
+            this.onBusChange(this.searchForm.bus().value() == 'bus' ? 0 : 1 )
+        })
+        effect(() => {
+            this.onCompanyChange(this.searchForm.companyId().value())
+        })
+        effect(() => {
+            this.onModelChange(this.searchForm.modelId().value())
+        })
+        effect(() => {
+            this.onCategoryChange(this.searchForm.categoryId().value().toString())
+        })
+        // this.searchForm.controls['sortOrder'].valueChanges.subscribe((value) => {
+        //     console.log(value)
+        // })
+
     }
     ngAfterViewInit(): void {
         this.onSubmit()
@@ -256,14 +276,6 @@ export default class ListPartComponent extends HelperComponent implements OnInit
             this.loading = false
         })
 
-        this.searchForm.controls['bus'].valueChanges.subscribe((f) => this.onBusChange(f))
-        this.searchForm.controls['companyId'].valueChanges.subscribe((f) => this.onCompanyChange(f))
-        this.searchForm.controls['modelId'].valueChanges.subscribe((f) => this.onModelChange(f))
-        this.searchForm.controls['categoryId'].valueChanges.subscribe((f) => this.onCategoryChange(f))
-        this.searchForm.controls['sortOrder'].valueChanges.subscribe((value) => {
-            console.log(value)
-        })
-        this.searchForm.valueChanges.subscribe((value) => this.onSubmit(value))
 
         this.updateNumberParts()
         this.route.queryParamMap.subscribe((params: ParamMap) => {
@@ -288,7 +300,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSubmit(value?: any) {
-        const filter: Filter = value ?? Object.assign({}, this.searchForm.value)
+        const filter: Filter = value ?? Object.assign({}, this.searchFormModel())
         filter.partOnly = true
         this._autoPartSearch$.next(filter)
     }
@@ -307,14 +319,14 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.yearFrom = modification?.yearFrom ?? this.labels.YEAR_START
         this.yearTo = modification?.yearTo ?? 2025
         this.setYears()
-        this.searchForm.patchValue({ year: 0 })
+        this.searchForm.year().value.set(0)
     }
 
     compareCar(car: CarView) {
-        if (car.companyId != this.searchForm.value.companyId) return false
-        if (car.modelId != this.searchForm.value.modelId) return false
-        if (car.modificationId != this.searchForm.value.modificationId) return false
-        if (car.year != this.searchForm.value.year) return false
+        if (car.companyId != this.searchForm.companyId().value()) return false
+        if (car.modelId != this.searchForm.modelId().value()) return false
+        if (car.modificationId != this.searchForm.modificationId().value()) return false
+        if (car.year != this.searchForm.year().value()) return false
 
         return true
     }
@@ -326,7 +338,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     }
 
     clear() {
-        this.searchForm.patchValue({
+        this.searchForm().value.set({
             companyId: 0,
             modelId: 0,
             modificationId: 0,
@@ -335,6 +347,8 @@ export default class ListPartComponent extends HelperComponent implements OnInit
             subCategoryId: 0,
             partNumber: '',
             sortOrder: 0,
+            bus: '',
+            carId: 0
         })
     }
     //#endregion

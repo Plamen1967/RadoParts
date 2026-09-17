@@ -22,10 +22,10 @@
                     >
                 </li>
             </ul>
-            <form [formGroup]="loginForm" autocomplete="{{ autocomplete }}">
+            <form autocomplete="{{ autocomplete }}">
                 @if (loginFlag) {
-                    <app-user formControlName="userName" prefix=" person " controlName="username" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.LOGINNAME }}"> </app-user>
-                    <app-inputpassword formControlName="password" placeHolder="Въведи парола"></app-inputpassword>
+                    <app-user [formField]="loginForm.userName" prefix=" person " controlName="username" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.LOGINNAME }}"> </app-user>
+                    <app-inputpassword [formField]="loginForm.password" placeHolder="Въведи парола"></app-inputpassword>
                     @if (submitted && controls['password'].errors) {
                         <div class="invalid-feedback">
                             @if (controls['password'].errors['required']) {
@@ -54,27 +54,23 @@
                 } @else {
                     <div class="container">
                         <div class="input-group input-group-sm mb-3">
-                            <app-user formControlName="userName" prefix=" person " controlName="userName" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.REGNAME }}">
+                            <app-user [formField]="loginForm.userName" prefix=" person " controlName="userName" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.REGNAME }}">
                             </app-user>
-                            <app-user formControlName="email" prefix=" mail " controlName="email" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.EMAIL }}"> </app-user>
-                            <app-user formControlName="phone" prefix=" call " controlName="phone" data-cy="phone" [submitted]="submitted" placeHolder="{{ labels.PHONE }}"> </app-user>
-                            <app-inputpassword formControlName="password" [submitted]="submitted" placeHolder="Въведи парола"></app-inputpassword>
-                            <app-inputpassword formControlName="confirmPassword" [submitted]="submitted" placeHolder="Потвърди паролата"></app-inputpassword>
+                            <app-user [formField]="loginForm.email" prefix=" mail " controlName="email" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.EMAIL }}"> </app-user>
+                            <app-user [formField]="loginForm.phone" prefix=" call " controlName="phone" data-cy="phone" [submitted]="submitted" placeHolder="{{ labels.PHONE }}"> </app-user>
+                            <app-inputpassword [formField]="loginForm.password" [submitted]="submitted" placeHolder="Въведи парола"></app-inputpassword>
+                            <app-inputpassword [formField]="loginForm.confirmPassword" [submitted]="submitted" placeHolder="Потвърди паролата"></app-inputpassword>
                         </div>
                     </div>
 
                     <div class="d-flex mb-2">
                         <div class="form-check form-check-inline">
-                            <input id="private" type="radio" class="custom-control-input form-check-input" data-cy="private" [value]="0" name="dealer" formControlName="dealer" />
+                            <input id="private" type="radio" class="custom-control-input form-check-input" data-cy="private" value="0" [formField]="loginForm.dealer" />
                             <label class="custom-control-label" for="private">Частно лице</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input id="dealer" type="radio" class="custom-control-input form-check-input" data-cy="dealer" [value]="1" name="dealer" formControlName="dealer" />
+                            <input id="dealer" type="radio" class="custom-control-input form-check-input" data-cy="dealer" value="1" [formField]="loginForm.dealer" />
                             <label class="custom-control-label" for="dealer">Дилър</label>
-                        </div>
-                        <div class="form-check form-check-inline" hidden>
-                            <input id="noChoise" type="radio" class="custom-control-input form-check-input" data-cy="dealer" [value]="2" name="dealer" formControlName="dealer" checked />
-                            <label class="custom-control-label" for="dealer">Няма избран</label>
                         </div>
                     </div>
                     @if (submitted && controls['dealer'].errors) {
@@ -83,7 +79,7 @@
                         </div>
                     }
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" formControlName="contract" data-cy="contract" />
+                        <input class="form-check-input" type="checkbox" id="flexCheckChecked" [formField]="loginForm.contract" data-cy="contract" />
                         <label class="form-check-label" for="flexCheckChecked">
                             <a [routerLink]="['/terms']" target="_blank">Съгласен с условията и политиката за защита на личните данни.</a>
                         </label>
