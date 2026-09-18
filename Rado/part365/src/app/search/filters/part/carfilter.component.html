@@ -1,7 +1,7 @@
 <div class="layout">
     <div class="categoryMax">
         @if (showCategory) {
-            <app-categories id="categoriesElem" #categoriesElem [dropDowns]="dropDown" (selection)="onSelection($event)" data-cy="categories" class="categories"></app-categories>
+            <app-categories id="categoriesElem" #categoriesElem [dropDowns]="dropDown()" (selection)="onSelection($event)" data-cy="categories" class="categories"></app-categories>
         }
     </div>
     <div class="w-100">
@@ -186,7 +186,7 @@
             </div>
         </form>
         @if (showCategory) {
-            <app-categoriesfooter [categories]="_dropDown" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>
+            <app-categoriesfooter [categories]="_dropDown()" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>
         }
     </div>
 </div>

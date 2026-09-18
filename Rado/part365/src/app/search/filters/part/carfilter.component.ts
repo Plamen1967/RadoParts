@@ -1,9 +1,9 @@
 //#region import
 
-import { AfterViewInit, ChangeDetectorRef, Component, computed, debounced, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, signal, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, computed, debounced, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, signal, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Observable, of, Subject } from 'rxjs'
+import { Observable, Subject } from 'rxjs'
 import { MatDialog } from '@angular/material/dialog'
 import { CategoryService } from '@services/category-subcategory/category.service'
 import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
@@ -55,6 +55,8 @@ import { SearchBarComponent } from '@components/search-bar/search-bar.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { HomeComponent } from '@app/search/home/Home.component'
 import { form, FormField } from '@angular/forms/signals'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
 //#endregion
 //#region @Component
 interface CarFilter {
@@ -150,9 +152,9 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     extendedSearch_?: boolean = false
     dispayCategory = false
 
+    categoryFilte = signal<FilterCategory | undefined>(undefined)
     initialState? = {}
     sortType = 0
-    _dropDown: Dropdown[] = []
     previuosFilter?: FilterCategory
     _filter?: Filter
     selectedCategoryId?: number
@@ -234,14 +236,79 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         }
     }
 
+    category = httpResource<NumberPartsPerCategory[]>(() => ({
+        url: `${environment.restAPI}/category/PartsPerCategory`,
+        params: {
+            companyId: this.carFilterModel().companyId ?? 0,
+            modelId: 0,
+            modelsId: this.carFilterModel().modelsId,
+            modificationId: 0,
+            modificationsId: this.carFilterModel().modificationsId,
+            userId: 0,
+            bus: this.carFilterModel().bus,
+            hasImages: this.carFilterModel().hasImages ? 1 : 0,
+        },
+    }))
+
+    _dropDown = computed(() => {
+        console.log(this.category.value())
+        return this.convertResult(this.category.value() ?? [])
+    })
+
+    // updateCategory() {
+    //     const filter: FilterCategory = {
+    //         companyId: this.carFilterModel().companyId ?? 0,
+    //         modelId: 0,
+    //         modelsId: this.carFilterModel().modelsId,
+    //         modificationId: 0,
+    //         modificationsId: this.carFilterModel().modificationsId,
+    //         userId: 0,
+    //         bus: this.carFilterModel().bus,
+    //         hasImages: this.carFilterModel().hasImages ? 1 : 0,
+    //     }
+    //     if (this.admin) {
+    //         filter.userId = this.carFilterModel().userId
+    //     }
+
+    //     this.previuosFilter = { ...filter }
+    //     this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
+    //         this.convertResult(res)
+    //     })
+    // }
+
+    convertResult(res: NumberPartsPerCategory[]) {
+        const tempDropDown: Dropdown[] = []
+        const count: NumberPartsPerCategory[] = [...res]
+        this.categories?.forEach((x) => {
+            const index = res.findIndex((category) => category.categoryId === x.categoryId)
+            if (index !== -1) {
+                x.count = res[index].numberParts
+                const dropDown: Dropdown = new Dropdown()
+                dropDown.name = x.categoryName.charAt(0).toLocaleUpperCase() + x.categoryName?.toLocaleLowerCase().slice(1)
+                dropDown.imageName = x.imageName
+                dropDown.id = x.categoryId
+                const category = count.find((category) => category.categoryId === x.categoryId)
+                dropDown.count = category?.numberParts
+                category?.subCategories.forEach((subCategory) => {
+                    dropDown.children.push({ text: subCategory.subCategoryName, value: subCategory.subCategoryId, count: subCategory.count })
+                })
+                tempDropDown.push(dropDown)
+            } else {
+                x['count'] = 0
+            }
+        })
+
+        return tempDropDown
+    }
+
     itemType_ = computed(() => {
-         let itemType = this.carFilterForm.itemType().value()
-         const bus = this.carFilterForm.bus().value()
+        let itemType = this.carFilterForm.itemType().value()
+        const bus = this.carFilterForm.bus().value()
         if (bus) {
             if (itemType != ItemType.AllBusAndPart && itemType != ItemType.OnlyBus && itemType != ItemType.BusPart) itemType = ItemType.AllBusAndPart
         } else {
             if (itemType != ItemType.AllCarAndPart && itemType != ItemType.OnlyCar && itemType != ItemType.CarPart) itemType = ItemType.AllCarAndPart
-        }   
+        }
 
         this.onItemType(itemType)
         return itemType
@@ -261,7 +328,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     private router: Router = inject(Router)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private topService: TopService = inject(TopService)
-    private changeDetector: ChangeDetectorRef = inject(ChangeDetectorRef)
     private searchPartService: SearchPartService = inject(SearchPartService)
     public dialog: MatDialog = inject(MatDialog)
     private destroyRef: DestroyRef = inject(DestroyRef)
@@ -273,9 +339,12 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         super()
 
         effect(() => {
+            this.dropDownItems.emit(this._dropDown())
+        })
+        effect(() => {
             this.debouncedQuery.value()
             this.popupService.openWithTimeout('Съобщение', 'Филтъра Ви връща повече от 100 части. Само първите 100 ще се покажат', 2000).subscribe(() => {
-                //this.router.navigate(['/results'], { queryParams: { query: this.query(), page: 1 } })
+                console.log(this.debouncedQuery.value())
             })
         })
 
@@ -307,7 +376,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#endregion
     //#region On functions
-    
+
     getRadios() {
         if (this.carFilterForm.bus().value()) {
             return this.busRadios
@@ -392,7 +461,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
                 }
                 return cat
             })
-            this.updateCategory()
         })
 
         if (this.admin) {
@@ -486,65 +554,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         //        }
     }
 
-    updateCategory() {
-        // const filter: FilterCategory = {
-        //     companyId: this.filterForm.controls['companyId'].value ?? 0,
-        //     modelId: 0,
-        //     modelsId: this.filterForm.controls['modelsId'].value,
-        //     modificationId: 0,
-        //     modificationsId: this.filterForm.controls['modificationsId'].value,
-        //     userId: 0,
-        //     bus: this.filterForm.controls['bus'].value,
-        //     hasImages: this.filterForm.controls['hasImages'].value,
-        // }
-        // if (this.admin) {
-        //     filter.userId = this.filterForm.controls['userId'].value
-        // }
-        // if (this.previuosFilter) {
-        //     if (
-        //         this.previuosFilter.companyId == filter.companyId &&
-        //         this.previuosFilter.modelsId === filter.modelsId &&
-        //         this.previuosFilter.modificationId == filter.modificationId &&
-        //         this.previuosFilter.modificationsId == filter.modificationsId &&
-        //         this.previuosFilter.bus == filter.bus &&
-        //         this.previuosFilter.userId == filter.userId &&
-        //         this.previuosFilter.hasImages == filter.hasImages
-        //     )
-        //         return
-        // }
-
-        // this.previuosFilter = { ...filter }
-        // this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
-        //     this.convertResult(res)
-        // })
-    }
-
-    convertResult(res: NumberPartsPerCategory[]) {
-        const tempDropDown: Dropdown[] = []
-        const count: NumberPartsPerCategory[] = res
-        this.categories?.forEach((x) => {
-            const index = res.findIndex((category) => category.categoryId === x.categoryId)
-            if (index !== -1) {
-                x.count = res[index].numberParts
-                const dropDown: Dropdown = new Dropdown()
-                dropDown.name = x.categoryName.charAt(0).toLocaleUpperCase() + x.categoryName?.toLocaleLowerCase().slice(1)
-                dropDown.imageName = x.imageName
-                dropDown.id = x.categoryId
-                const category = count.find((category) => category.categoryId === x.categoryId)
-                dropDown.count = category?.numberParts
-                category?.subCategories.forEach((subCategory) => {
-                    dropDown.children.push({ text: subCategory.subCategoryName, value: subCategory.subCategoryId, count: subCategory.count })
-                })
-                tempDropDown.push(dropDown)
-            } else {
-                x['count'] = 0
-            }
-        })
-        this._dropDown = tempDropDown
-
-        this.categoryService._filtercategories = of(this._dropDown)
-        this.dropDownItems.emit(this._dropDown)
-    }
     //#endregion
 
     //#region Search
@@ -566,7 +575,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             return
         }
 
-        const filter: Filter = Object.assign(this.carFilterModel(), { SearchBy: SearchBy.PartNumber }, { extendedSearch_: this.extendedSearch_ }, {id: 0})
+        const filter: Filter = Object.assign(this.carFilterModel(), { SearchBy: SearchBy.PartNumber }, { extendedSearch_: this.extendedSearch_ }, { id: 0 })
         this.goToResult(filter)
     }
 
@@ -602,7 +611,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         })
     }
     //#endregion
-
 
     categoriesIdChanged(f: string) {
         this._subCategories = []
