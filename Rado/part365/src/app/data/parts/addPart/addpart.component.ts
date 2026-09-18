@@ -1,6 +1,6 @@
 //#region import
 import { AfterViewInit, Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, NavigationStart, ParamMap, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -42,7 +42,7 @@ import { DisplayPartView } from '@model/displayPartView'
 import { NgClass } from '@angular/common'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
-import { form, FormField } from '@angular/forms/signals'
+import { form, FormField, required } from '@angular/forms/signals'
 import { Part } from '@model/part/part'
 //#endregion
 interface addPartFormInterface {
@@ -130,7 +130,25 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         dealerSubCategoryName: '',
         mainImageId: 0,
     })
-    addPartForm = form(this.addPartFormModel)
+    addPartForm = form(this.addPartFormModel, (path) => {
+        required(path.carId, {
+            message: 'Required',
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'car',
+        })
+        required(path.companyId, {
+            message: 'Required',
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'part',
+        })
+        required(path.modelId, {
+            message: 'Required',
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'part',
+        })
+        required(path.modificationId, {
+            message: 'Required',
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'part' && this.bus() == 1,
+        })
+        required(path.price)
+    })
 
     cars?: SelectOption[]
     car?: CarView
@@ -354,7 +372,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     resetScreen() {
-        this.addPartFormModel.update((value) => ({...value, ...this.initialState,  regionId: this.regionId!}))
+        this.addPartFormModel.update((value) => ({ ...value, ...this.initialState, regionId: this.regionId! }))
     }
 
     get newPart(): boolean {
@@ -404,30 +422,8 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
     //#region events
     onPartForCar(f: 'car' | 'part') {
-        if (f == 'car') {
-            this.addPartForm.controls['carId'].setValidators([Validators.required])
-            this.addPartForm.controls['companyId'].clearValidators()
-            this.addPartForm.controls['modelId'].clearValidators()
-            this.addPartForm.controls['modificationId'].clearValidators()
-        } else {
-            this.addPartForm.controls['carId'].setValue(undefined)
-            this.addPartForm.controls['carId'].clearValidators()
-            this.addPartForm.controls['companyId'].setValue(undefined)
-            this.addPartForm.controls['modelId'].setValue(undefined)
-            this.addPartForm.controls['modificationId'].setValue(undefined)
-            this.addPartForm.controls['companyId'].setValidators([Validators.required])
-            this.addPartForm.controls['modelId'].setValidators([Validators.required])
-            this.addPartForm.controls['modificationId'].setValidators([Validators.required])
-            this.car = undefined
-            this.carId_ = undefined
-        }
-
-        this.addPartForm.controls['carId'].updateValueAndValidity()
-        this.addPartForm.controls['companyId'].updateValueAndValidity()
-        this.addPartForm.controls['modelId'].updateValueAndValidity()
-        this.addPartForm.controls['modificationId'].updateValueAndValidity()
-        this.setBus(this.bus_)
-        this.addPartForm.carId().value.set(this.carId()!)
+        if (f == 'car') this.addPartForm.carId().value.set(this.carId()!)
+        else this.addPartForm.carId().value.set(0)
     }
 
     get action() {
@@ -485,11 +481,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.bus_ = bus
         this.choice = this.bus_ ? 'бус' : 'кола'
         if (this.bus_) {
-            this.addPartForm.controls['modificationId'].clearValidators()
             this.addPartForm.modificationId().value.set(0)
-        } else {
-            this.addPartForm.controls['modificationId'].setValidators([Validators.required])
-            this.addPartForm.controls['modificationId'].updateValueAndValidity()
         }
     }
 
@@ -533,7 +525,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.partService.fetch(this.partId_!).subscribe({
             next: (res) => {
                 this.carId_ = this.carService.currentCarId = res.carId
-                this.addPartFormModel.update((value) => ({...value,  carId: this.carId() ?? 0 }))
+                this.addPartFormModel.update((value) => ({ ...value, carId: this.carId() ?? 0 }))
                 this.partView = { ...res }
                 this.dealerSubCategoryName = this.partView.dealerSubCategoryName
                 this.images = []
@@ -586,7 +578,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             this.showError()
             return
         }
-        const part : Part =  {...this.addPartForm().value(), powerkWh : +this.addPartFormModel().powerkWh, powerBHP : +this.addPartFormModel().powerBHP, millage:  +this.addPartFormModel().millage}
+        const part: Part = { ...this.addPartForm().value(), powerkWh: +this.addPartFormModel().powerkWh, powerBHP: +this.addPartFormModel().powerBHP, millage: +this.addPartFormModel().millage }
         part.partId = this.partId() ?? 0
         part.bus = this.bus()
         this.saving = true
@@ -616,7 +608,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                         this.initialState.carId = part.carId!
                         this.initialState.regionId = this.regionId!
                         if (partForCar === 'car') this.addPartForm.partForCar().value.set('car')
-                            else this.addPartForm.partForCar().value.set('part')
+                        else this.addPartForm.partForCar().value.set('part')
                         this.numberOfPartsPerUser++
                         this.saved.emit(part.id!)
                         this.goBack()

@@ -330,11 +330,11 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     powerkWhChanged() {
-        this.calculateBHP(this.addCarFormModel().powerkWh)
+        this.calculateBHP(+this.addCarFormModel().powerkWh)
     }
 
     powerBHPChanged() {
-        this.calculatekWh(this.addCarFormModel().powerBHP)
+        this.calculatekWh(+this.addCarFormModel().powerBHP)
     }
 
     modificatioChanged(modification: Modification) {
@@ -459,7 +459,18 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     addCar() {
-        const carUpdated: Car = Object.assign(this.addCarFormModel(), { bus: this.bus(), carId: this.carId(), userId: this.userId })
+        const formModel = this.addCarFormModel()
+        const carUpdated: Car = Object.assign({}, formModel, {
+            modelId: Number(formModel.modelId),
+            modificationId: Number(formModel.modificationId),
+            powerkWh: Number(formModel.powerkWh),
+            powerBHP: Number(formModel.powerBHP),
+            millage: Number(formModel.millage),
+            mainImageId: Number(formModel.mainImageId),
+            bus: this.bus(),
+            carId: this.carId(),
+            userId: this.userId,
+        })
         this.saving = true
         this.carService.addUpdateCar(carUpdated, this.mode()).subscribe({
             next: (val) => {
@@ -487,9 +498,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         this.userCountService.refresh()
         const snackBarRef = this.toastService.showToast(content, 2)
         snackBarRef.afterDismissed().subscribe(() => {
-            Object.keys(this.addCarForm.controls).forEach((key) => {
-                this.addCarForm.controls[key].setErrors(null)
-            })
             this.homeService.updateDisplayPartView(val)
             this.submitted = false
             this.saved.emit(val.id!)

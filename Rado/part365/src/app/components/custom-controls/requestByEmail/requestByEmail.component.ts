@@ -77,9 +77,15 @@ export class RequestByEmailComponent extends HelperComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    const emailMessage = { ...this.requestByEmailModel(), ...{id: this.id(), itemType: this.itemType()}}
+                    const emailMessage = {
+                        ...this.requestByEmailModel(),
+                        id: this.id(),
+                        itemType: this.itemType(),
+                        msgDate: Date.now(),
+                        message: this.requestByEmailModel().request,
+                    }
                     this.messageService
-                        .sendEmail(emailMessage)
+                        .addMessage(emailMessage)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe(() => {
                             this.popupService

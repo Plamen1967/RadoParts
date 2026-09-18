@@ -11,14 +11,13 @@ import { QueryParam } from '@model/queryParam'
 import { AdminService } from '@app/admin/services/admin.service'
 import { CompanyService } from '@services/company-model-modification/company.service'
 import { SelectOption } from '@model/selectOption'
-import { FormField } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
     selector: 'app-company-admin',
     templateUrl: './company.component.html',
     styleUrls: ['./company.component.css'],
-    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent, FormField],
+    imports: [ReactiveFormsModule, NgStyle, InputComponent, SelectComponent],
 })
 //#endregion
 export default class CompanyComponentAdmin extends HelperComponent implements OnInit, AfterViewInit {

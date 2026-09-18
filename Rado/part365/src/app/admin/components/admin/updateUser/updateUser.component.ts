@@ -1,6 +1,6 @@
 //#region Imports
 import { AfterViewInit, Component, DestroyRef, inject, OnInit, input, model } from '@angular/core'
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
 import { UserType } from '@model/enum/userType.enum'
@@ -24,7 +24,7 @@ import { ConfirmServiceService } from '@app/dialog/services/confirmService.servi
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { UpdateUserService } from '@app/admin/services/updateuser.service'
-import { form, FormField } from '@angular/forms/signals'
+import { form, FormField, required } from '@angular/forms/signals'
 //#endregion
 interface userForm {
             userName: string,
@@ -76,7 +76,16 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
         description: '',
         imageId: 0
     })
-    userForm = form(this.userFormModel)
+    userForm = form(this.userFormModel, (path) => {
+        required(path.companyName, {
+            message: 'required',
+            when: () => this.dealer === UserType.Dealer
+        })
+        required(path.firstName, {
+            message: 'required',
+            when: () => this.dealer === UserType.User
+        })
+    })
     loading = false
     submitted = false
     dealer?: UserType = UserType.Dealer
@@ -146,18 +155,14 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                     if (!user) this.router.navigate(['/'])
                     else {
                         this.user = user
-                        this.userForm.patchValue(user)
+                        this.userFormModel.update((value) => ({...value, user}))
                         this.dealer = user.dealer
                         if (this.dealer === UserType.Dealer) {
                             this.requiredField(true)
-                            this.userForm.controls['companyName'].setValidators(Validators.required)
-                            this.userForm.controls['companyName'].updateValueAndValidity()
                         } else {
                             this.requiredField(false)
-                            this.userForm.controls['firstName'].setValidators(Validators.required)
-                            this.userForm.controls['firstName'].updateValueAndValidity()
                         }
-                        this.initialState = this.userForm.value
+                        this.initialState = {...this.userForm().value()}
                     }
                 })
         } else if (this.authenticationService.currentUserValue?.userId) {
@@ -171,16 +176,8 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                     this.dealer = user.dealer
                     if (this.dealer === UserType.Dealer) {
                         this.requiredField(true)
-                        this.userForm.controls['companyName'].setValidators(Validators.required)
-                        this.userForm.controls['companyName'].updateValueAndValidity()
-                        this.userForm.controls['firstName'].clearValidators()
-                        this.userForm.controls['firstName'].updateValueAndValidity()
                     } else {
                         this.requiredField(false)
-                        this.userForm.controls['firstName'].setValidators(Validators.required)
-                        this.userForm.controls['firstName'].updateValueAndValidity()
-                        this.userForm.controls['companyName'].clearValidators()
-                        this.userForm.controls['companyName'].updateValueAndValidity()
                     }
                     this.initialState = this.userFormModel()
                 })
@@ -428,10 +425,6 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                 next: (message) => {
                     this.message = message
                     if (this.authenticationService.currentUserValue) this.authenticationService.currentUserValue.dealer = UserType.User
-                    this.userForm.controls['companyName'].clearValidators()
-                    this.userForm.controls['companyName'].updateValueAndValidity()
-                    this.userForm.controls['firstName'].setValidators(Validators.required)
-                    this.userForm.controls['firstName'].updateValueAndValidity()
                     this.dealer = UserType.User
                     this.requiredField(false)
                     this.popupService
@@ -469,10 +462,6 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                     this.message = message
                     if (this.authenticationService.currentUserValue) this.authenticationService.currentUserValue.dealer = UserType.Dealer
                     this.dealer = UserType.Dealer
-                    this.userForm.controls['companyName'].setValidators([Validators.required, Validators.maxLength(50)])
-                    this.userForm.controls['companyName'].updateValueAndValidity()
-                    this.userForm.controls['firstName'].clearValidators()
-                    this.userForm.controls['firstName'].updateValueAndValidity()
                     this.requiredField(true)
                     this.popupService.openWithTimeout(this.labels.MESSAGE, this.message, 2000).subscribe(() => {
                         this.dealer = this.authenticationService.currentUserValue?.dealer
@@ -488,7 +477,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
 
     //#region Cancel Button
     onCancelChanges() {
-        if (this.initialState != this.userForm.value) {
+        if (this.initialState != this.userForm().value()) {
             this.confirmationService
                 .OKCancel(this.labels.WARNING, 'Имате промени. Искате ли да ги откажете?', 'Потвърди', 'Откаже')
                 .pipe(takeUntilDestroyed(this.destroyRef))

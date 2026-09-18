@@ -1,7 +1,7 @@
 //#region import
 import { NgClass, NgStyle } from '@angular/common'
 import { AfterViewInit, Component, effect, HostListener, inject, input, OnInit, output, signal } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -36,7 +36,7 @@ import { goTop } from '@app/functions/functions'
 import { LoggerService } from '@services/authentication/logger.service'
 import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
-import { form, FormField } from '@angular/forms/signals'
+import { form, FormField, min } from '@angular/forms/signals'
 //#endregion
 interface AddTyreFormInterface {
     itemType: number
@@ -115,7 +115,88 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         mainImageId: 0,
     })
 
-    addTyreForm = form(this.addTyreFormModel)
+    addTyreForm = form(this.addTyreFormModel, (path) => {
+        min(path.tyreWidth, 1, {
+            message: 'Required',
+            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre,
+        });
+        min(path.tyreHeight, 1, {
+            message: 'Required',
+            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreHeight) == 0,
+        });
+        min(path.tyreRadius, 1, {
+            message: 'Required',
+            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreRadius) == 0,
+        });
+        min(path.tyreRadius, 1, {
+            message: 'tyreType',
+            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreRadius) == 0,
+        });
+        min(path.companyId, 1, {
+            message: 'companyId',
+            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.companyId) == 0,
+        });
+        min(path.rimBoltCount, 1, {
+            message: 'rimBoltCount',
+            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.rimBoltCount) == 0,
+        });
+    })
+
+    // controlRimWithTyre() {
+    //     // this.addForm.controls['tyreWidth'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['tyreHeight'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['tyreRadius'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['tyreType'].setValidators([Validators.required, Validators.min(1)])
+
+    //     // this.addForm.controls['tyreWidth'].updateValueAndValidity()
+    //     // this.addForm.controls['tyreHeight'].updateValueAndValidity()
+    //     // this.addForm.controls['tyreRadius'].updateValueAndValidity()
+    //     // this.addForm.controls['tyreType'].updateValueAndValidity()
+
+    //     // this.addForm.controls['companyId'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['rimBoltCount'].setValidators([Validators.required, Validators.min(1)])
+
+    //     this.addForm.controls['companyId'].updateValueAndValidity()
+    //     this.addForm.controls['rimBoltCount'].updateValueAndValidity()
+    // }
+    // controlTyre() {
+    //     // this.addForm.controls['tyreWidth'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['tyreHeight'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['tyreRadius'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['tyreType'].setValidators([Validators.required, Validators.min(1)])
+
+    //     this.addForm.controls['tyreWidth'].updateValueAndValidity()
+    //     this.addForm.controls['tyreHeight'].updateValueAndValidity()
+    //     this.addForm.controls['tyreRadius'].updateValueAndValidity()
+    //     this.addForm.controls['tyreType'].updateValueAndValidity()
+
+    //     this.addForm.controls['companyId'].clearValidators()
+    //     this.addForm.controls['rimBoltCount'].clearValidators()
+
+    //     this.addForm.controls['companyId'].updateValueAndValidity()
+    //     this.addForm.controls['rimBoltCount'].updateValueAndValidity()
+    // }
+
+    //     controlRim() {
+    //     // this.addForm.controls['companyId'].setValidators([Validators.required, Validators.min(1)])
+    //     // this.addForm.controls['rimBoltCount'].setValidators([Validators.required, Validators.min(1)])
+
+    //     this.addForm.controls['companyId'].updateValueAndValidity()
+    //     this.addForm.controls['rimBoltCount'].updateValueAndValidity()
+
+    //     this.addForm.controls['tyreWidth'].clearValidators()
+    //     this.addForm.controls['tyreHeight'].clearValidators()
+    //     this.addForm.controls['tyreRadius'].clearValidators()
+    //     this.addForm.controls['tyreType'].clearValidators()
+
+    //     this.addForm.controls['tyreWidth'].updateValueAndValidity()
+    //     this.addForm.controls['tyreHeight'].updateValueAndValidity()
+    //     this.addForm.controls['tyreRadius'].updateValueAndValidity()
+    //     this.addForm.controls['tyreType'].updateValueAndValidity()
+    // }
+
+
+
     //#endregion
     //#region input/output
     mode = input<UpdateEnum>(UpdateEnum.New)
@@ -265,15 +346,8 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.tyreDescription = this.itemType === ItemType.Tyre ? 'Гума' : this.itemType === ItemType.Rim ? 'Джанта' : 'Гума с Джанта'
         this.displayTyre = this.itemType === ItemType.Tyre || this.itemType === ItemType.RimWithTyre
         this.displayRim = this.itemType === ItemType.Rim || this.itemType === ItemType.RimWithTyre
-
-        if (this.itemType === ItemType.Tyre) {
-            this.controlTyre()
-        } else if (this.itemType === ItemType.Rim) {
-            this.controlRim()
-        } else if (this.itemType === ItemType.RimWithTyre) {
-            this.controlRimWithTyre()
-        }
     }
+
     ngOnInit() {
         this.mode = this.mode ?? UpdateEnum.New
         this.updateFlag = this.mode() != UpdateEnum.View
@@ -352,26 +426,27 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         if (this.itemType !== event) {
             this.itemType = event
             this.displaySections()
-            this.addForm.patchValue({
-                tyreWidth: undefined,
-                tyreHeight: undefined,
-                tyreRadius: undefined,
-                tyreType: undefined,
+            this.addTyreFormModel.update((value) => ({
+                ...value,
+                tyreWidth: 0,
+                tyreHeight: 0,
+                tyreRadius: 0,
+                tyreType: 0,
                 tyreCompanyId: 0,
-                companyId: undefined,
-                modelId: undefined,
-                rimMaterial: undefined,
-                rimOffset: undefined,
-                rimBoltCount: undefined,
-                rimBoltDistance: undefined,
-                rimCenter: undefined,
-                count: undefined,
-                monthDOT: undefined,
-                yearDOT: undefined,
+                companyId: 0,
+                modelId: 0,
+                rimMaterial: 0,
+                rimOffset: 0,
+                rimBoltCount: 0,
+                rimBoltDistance: 0,
+                rimCenter: 0,
+                count: 0,
+                monthDOT: 0,
+                yearDOT: 0,
                 description: '',
-                price: undefined,
+                price: 0,
                 mainImageId: 0,
-            })
+            }))
         }
     }
 
@@ -380,7 +455,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
 
     defaultImageChanged(imageId: number) {
-        this.addForm.patchValue({ mainImageId: imageId })
+        this.addTyreForm.mainImageId().value.set(imageId)
     }
 
     loadTyre(id: number) {
@@ -389,14 +464,12 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
                 this.currentItem = tyre
                 this.itemType = tyre.itemType
                 this.displaySections()
-                this.addForm.patchValue(this.currentItem)
+                this.addTyreFormModel.update((value) => ({ ...value, ...this.currentItem }))
                 this.mainImageId = this.currentItem.mainImageId
                 this.displayTyre = this.itemType === ItemType.Tyre || this.itemType === ItemType.RimWithTyre
                 this.displayRim = this.itemType === ItemType.Rim || this.itemType === ItemType.RimWithTyre
-                if (this.itemType === ItemType.Tyre) this.controlTyre()
-                else if (this.itemType === ItemType.Rim) this.controlRim()
 
-                this.initValue = this.addForm.value
+                this.initValue = this.addTyreForm().value()
                 this.imageService.getMinImages(tyre.rimWithTyreId!).subscribe((res) => {
                     this.images = res
                 })
@@ -412,12 +485,12 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     onSubmit() {
         this.submitted = true
-        if (!this.addForm.valid) {
+        if (this.addTyreForm().invalid()) {
             this.showError('Моля попълнете задължителните полета!')
             return
         }
 
-        const item: RimWithTyre = Object.assign({}, this.addForm.value)
+        const item: RimWithTyre = Object.assign({}, this.addTyreForm().value())
         item.rimWithTyreId = this.itemId()
         item.itemType = this.itemType!
         this.tyreService.addUpdateItem(item, this.mode()).subscribe(() => {
@@ -446,60 +519,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
 
     //#region  Control enable/disable
-
-    controlTyre() {
-        this.addForm.controls['tyreWidth'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['tyreHeight'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['tyreRadius'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['tyreType'].setValidators([Validators.required, Validators.min(1)])
-
-        this.addForm.controls['tyreWidth'].updateValueAndValidity()
-        this.addForm.controls['tyreHeight'].updateValueAndValidity()
-        this.addForm.controls['tyreRadius'].updateValueAndValidity()
-        this.addForm.controls['tyreType'].updateValueAndValidity()
-
-        this.addForm.controls['companyId'].clearValidators()
-        this.addForm.controls['rimBoltCount'].clearValidators()
-
-        this.addForm.controls['companyId'].updateValueAndValidity()
-        this.addForm.controls['rimBoltCount'].updateValueAndValidity()
-    }
-
-    controlRim() {
-        this.addForm.controls['companyId'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['rimBoltCount'].setValidators([Validators.required, Validators.min(1)])
-
-        this.addForm.controls['companyId'].updateValueAndValidity()
-        this.addForm.controls['rimBoltCount'].updateValueAndValidity()
-
-        this.addForm.controls['tyreWidth'].clearValidators()
-        this.addForm.controls['tyreHeight'].clearValidators()
-        this.addForm.controls['tyreRadius'].clearValidators()
-        this.addForm.controls['tyreType'].clearValidators()
-
-        this.addForm.controls['tyreWidth'].updateValueAndValidity()
-        this.addForm.controls['tyreHeight'].updateValueAndValidity()
-        this.addForm.controls['tyreRadius'].updateValueAndValidity()
-        this.addForm.controls['tyreType'].updateValueAndValidity()
-    }
-
-    controlRimWithTyre() {
-        this.addForm.controls['tyreWidth'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['tyreHeight'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['tyreRadius'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['tyreType'].setValidators([Validators.required, Validators.min(1)])
-
-        this.addForm.controls['tyreWidth'].updateValueAndValidity()
-        this.addForm.controls['tyreHeight'].updateValueAndValidity()
-        this.addForm.controls['tyreRadius'].updateValueAndValidity()
-        this.addForm.controls['tyreType'].updateValueAndValidity()
-
-        this.addForm.controls['companyId'].setValidators([Validators.required, Validators.min(1)])
-        this.addForm.controls['rimBoltCount'].setValidators([Validators.required, Validators.min(1)])
-
-        this.addForm.controls['companyId'].updateValueAndValidity()
-        this.addForm.controls['rimBoltCount'].updateValueAndValidity()
-    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
     focus(event: any) {

@@ -1,7 +1,7 @@
 //#region import
 import { NgClass, NgStyle } from '@angular/common'
 import { AfterViewInit, Component, inject, Renderer2, DOCUMENT, signal, effect } from '@angular/core'
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -13,7 +13,8 @@ import { InputPasswordComponent } from '@components/custom-controls/inputPasswor
 import { UserComponent } from '@components/custom-controls/user/user.component'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { form, FormField } from '@angular/forms/signals'
+import { email, form, FormField, required } from '@angular/forms/signals'
+import { User } from '@model/user'
 //#endregion
 //#region interface
 interface loginFormInterface {
@@ -44,7 +45,26 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         contract: false,
     })
 
-    loginForm = form(this.loginFormModel)
+    loginForm = form(this.loginFormModel, (path) => {
+        // required(path.dealer, {
+        //     message: 'Required',
+        //     when: ({ valueOf }) => valueOf(path.partForCar) == 'car',
+        // })
+
+        email(path.email)
+        required(path.email)
+        required(path.password)
+        required(path.confirmPassword)
+        required(path.dealer)
+        required(path.contract)
+    })
+// phone(path.contract),
+//                 this.controls['email'].setValidators([Validators.required])
+//         this.controls['phone'].setValidators([Validators.required, Validators.pattern(this.phonePattern), Validators.minLength(this.phoneMin), Validators.maxLength(this.phoneMax)])
+//         this.controls['password'].setValidators([Validators.required])
+//         this.controls['confirmPassword'].setValidators([Validators.required])
+//         this.controls['dealer'].setValidators([Validators.required])
+//         this.controls['contract'].setValidators([Validators.requiredTrue])
     //#region variables and services
     showLoginFlag = false
     showLoginType2 = 'password'
@@ -171,14 +191,6 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         this.loginFlag = true
         this.submitted = false
         this.autocomplete = 'on'
-        this.controls['email'].clearValidators()
-        this.controls['phone'].clearValidators()
-        this.controls['confirmPassword'].clearValidators()
-        this.controls['dealer'].clearValidators()
-        this.controls['contract'].clearValidators()
-        for (const key in this.controls) {
-            this.loginForm?.controls[key].updateValueAndValidity()
-        }
     }
 
     register() {
@@ -186,16 +198,6 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         this.submitted = false
         this.autocomplete = 'off'
         this.loginForm().reset()
-        this.controls['userName'].clearValidators()
-        this.controls['email'].setValidators([Validators.required])
-        this.controls['phone'].setValidators([Validators.required, Validators.pattern(this.phonePattern), Validators.minLength(this.phoneMin), Validators.maxLength(this.phoneMax)])
-        this.controls['password'].setValidators([Validators.required])
-        this.controls['confirmPassword'].setValidators([Validators.required])
-        this.controls['dealer'].setValidators([Validators.required])
-        this.controls['contract'].setValidators([Validators.requiredTrue])
-        for (const key in this.controls) {
-            this.loginForm?.controls[key].updateValueAndValidity()
-        }
     }
 
     forgottenPassword() {
@@ -280,7 +282,12 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         }
 
         this.error = ''
-        this.userService.registerUser(this.loginFormModel().value()).subscribe({
+        const formValue = this.loginFormModel()
+        const user: User = {
+            ...formValue,
+            dealer: formValue.dealer == 'private' ? 0: 1,
+        }
+        this.userService.registerUser(user).subscribe({
             next: (message) => {
                 this.submitted = false
                 this.returnUrl = message.url

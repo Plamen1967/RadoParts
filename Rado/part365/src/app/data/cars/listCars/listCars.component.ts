@@ -1,6 +1,6 @@
 //#region import
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { AsyncPipe } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { SelectOption } from '@model/selectOption'
@@ -110,7 +110,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     allCars: CarView[] = []
     carsList: SelectOption[] = []
     addPartCarId?: number
-    listForm: FormGroup
     currentPartId?: number
     updateCars?: boolean = true
     numberPages = 0
@@ -165,14 +164,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this._debounce = 1500
         this._destroy$ = new Subject<boolean>()
         this.userId = this.authenticationService.user?.userId
-        this.listForm = this.formBuilder.group({
-            carId: [0],
-            companyId: [0],
-            modelId: [0],
-            modificationId: [0],
-            year: [0],
-            bus: [0],
-        })
         effect(() => {
             if (this.bus()) this.itemType = ItemType.OnlyBus
             else this.itemType = ItemType.OnlyCar
@@ -180,25 +171,25 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             this.title = this.bus() ? 'Бусове' : 'Коли'
             this.label = this.bus() ? 'Избери бус' : 'Избери кола'
         })
+        effect(() => this.onCompanyChange(this.listForm.companyId().value()))
+        effect(() => this.onModelChange(this.listForm.modelId().value()))
+        effect(() => this.search(this.listForm().value()))
     }
+
     //#endregion
     ngOnDestroy(): void {
         this._destroy$.next(true)
     }
 
     ngAfterViewInit(): void {
-        this.search(this.listForm.value)
+        this.search(this.listForm())
     }
 
     ngOnInit() {
-        this.bus = this.bus ?? 0
         this.loading = true
         this.setAutoSearch()
         this.yearTo = new Date().getUTCFullYear()
-        this.listForm.controls['companyId'].valueChanges.subscribe((f) => this.onCompanyChange(f))
-        this.listForm.controls['modelId'].valueChanges.subscribe((f) => this.onModelChange(f))
-        this.listForm.patchValue({ bus: this.bus ?? 0 })
-        this.listForm.valueChanges.subscribe((f) => this.search(f))
+        this.listForm.bus().value.set(this.bus() ?? 0)
 
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             goTop()
@@ -258,7 +249,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     submit(event: KeyboardEvent) {
         if (event.keyCode === 13) {
             event.preventDefault()
-            this.search(this.listForm.value)
+            this.search(this.listForm().value())
         }
     }
 
@@ -273,22 +264,22 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     //#region events
     onCompanyChange(companyId: number) {
         this.companyId = companyId
-        this.listForm.patchValue({ carid: 0 })
+        this.listForm.carId().value.set(0)
     }
 
     onModelChange(modelId: number) {
         this.modelId = modelId
-        this.listForm.patchValue({ carid: 0 })
+        this.listForm.carId().value.set(0)
     }
 
     modificatioChanged(modification: Modification) {
         this.yearFrom = modification?.yearFrom ?? this.labels.YEAR_START
         this.yearTo = modification?.yearTo ?? 2025
-        this.listForm.patchValue({ year: 0 })
+        this.listForm.year().value.set(0)
     }
 
     clearForm() {
-        this.listForm.patchValue({ carId: 0, companyId: 0, modelId: 0, modificationId: 0, year: 0 })
+        this.listFormModel.update((value) => ({ ...value, carId: 0, companyId: 0, modelId: 0, modificationId: 0, year: 0, bus: 0 }))
     }
 
     //#endregion

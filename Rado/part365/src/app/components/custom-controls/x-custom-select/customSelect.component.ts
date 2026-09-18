@@ -60,9 +60,9 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
         effect(() => {
             this.data_ = this.data() ?? []
             if (this.data_ && this.data_.length) this.loaded = true
-            if (this.value() && this.data() && this.data().length) {
-                this.change(this.value())
-            }
+            // if (this.value() && this.data() && this.data().length) {
+            //     this.change(this.value())
+            // }
 
             this._selection = this.data()?.find((item) => item.id === this.value())?.description ?? this.placeHolder() ?? ''
         })
@@ -75,9 +75,9 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             }
 
             if (this.data_ && this.data_.length) this.loaded = true
-            if (this.value() && this.data() && this.data().length) {
-                this.change(this.value()!)
-            }
+            // // if (this.value() && this.data() && this.data().length) {
+            // //     this.change(this.value()!)
+            // }
         })
    }
 
@@ -86,12 +86,10 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
         if (Array.isArray(value)) {
             this.value.set(value[0])
         } else {
-            this.value.set(value)
+            this.value.set(value?.toString() ?? '')
         }
         console.log(`Change Value is: ${this.value()}`)
         this.clearBox = this.value() ? true : false
-
-        this.changeOption.emit(this.value() ?? 0)
     }
 
     clickSelect() {
