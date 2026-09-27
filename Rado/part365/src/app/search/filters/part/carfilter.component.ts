@@ -1,5 +1,4 @@
 //#region import
-
 import { AfterViewInit, Component, computed, debounced, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, signal, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -50,20 +49,20 @@ import { ModificationChoiceComponent } from '@app/component-main/modification-ch
 import { RegionComponent } from '@components/custom-controls/region/region.component'
 import { CategoryChoiseComponent } from '@app/category-main/category-choise/category-choise.component'
 import { SubcategoryChoiseComponent } from '@app/category-main/subcategory-choise/subcategory-choise.component'
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { SearchBarComponent } from '@components/search-bar/search-bar.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { HomeComponent } from '@app/search/home/Home.component'
-import { form, FormField } from '@angular/forms/signals'
+import { form, FormField, FormRoot } from '@angular/forms/signals'
 import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
+import { CompanyControlConfig } from '@model/companyControlConfig'
 //#endregion
 //#region @Component
 interface CarFilter {
     result: []
     userId: number
     bus: number
-    itemType: ItemType
+    itemType: number
     approved: number
     companyId: number
     modelsId: string
@@ -92,7 +91,6 @@ interface CarFilter {
         CategoriesComponent,
         RadioGroupComponent,
         SelectComponent,
-        RadioGroupListComponent,
         InputComponent,
         TooltipDirective,
         NgStyle,
@@ -107,10 +105,16 @@ interface CarFilter {
         SubcategoryChoiseComponent,
         SearchBarComponent,
         FormField,
+        FormRoot,
+        RadioGroupListComponent
     ],
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
+onSubmit() {
+    this.submit()
+    console.log(`Submitted`)
+}
     //#region form
     carFilterModel = signal<CarFilter>({
         bus: 0,
@@ -136,7 +140,15 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         categoriesId: '',
         subCategoriesId: '',
     })
-    carFilterForm = form(this.carFilterModel)
+    carFilterForm = form(this.carFilterModel,
+    //      {
+    //   submission: {
+    //     action: async (field) => {
+    //       return {kind: 'serverError', message: 'Failed to submit form'};
+    //     },
+    //   },
+    // },
+    )
     //#endregion form
     //#region members
     header?: string
@@ -156,7 +168,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     initialState? = {}
     sortType = 0
     previuosFilter?: FilterCategory
-    _filter?: Filter
     selectedCategoryId?: number
     selectedSubCategoryId?: number
     itemTypes: SelectOption[] = [
@@ -214,16 +225,17 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#region Output/Input
 
-    filter = input<Filter>()
+    config = signal<CompanyControlConfig>({ bus: this.carFilterModel().bus, itemType: this.carFilterModel().itemType, showCount: true, all: true })
+
     @ViewChild('categoriesElem') set categoriesRef(elRef: ElementRef<HTMLInputElement>) {
         if (elRef) {
             this.categoriesElement = elRef
         }
     }
     changes = output<object>()
-    userId = input<string | undefined>(undefined)
+    userId = input<number | undefined>(undefined)
     itemType = input<ItemType | undefined>(undefined)
-    query = input<number | undefined>(undefined)
+    query = input<number | undefined>(0)
     bus = input<number | undefined>(0)
 
     query_?: number
@@ -232,7 +244,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     submitEvent(event: KeyboardEvent) {
         if (event.key === 'Enter') {
             event.preventDefault()
-            this.submit()
+           // this.submit()
         }
     }
 
@@ -255,50 +267,25 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         return this.convertResult(this.category.value() ?? [])
     })
 
-    // updateCategory() {
-    //     const filter: FilterCategory = {
-    //         companyId: this.carFilterModel().companyId ?? 0,
-    //         modelId: 0,
-    //         modelsId: this.carFilterModel().modelsId,
-    //         modificationId: 0,
-    //         modificationsId: this.carFilterModel().modificationsId,
-    //         userId: 0,
-    //         bus: this.carFilterModel().bus,
-    //         hasImages: this.carFilterModel().hasImages ? 1 : 0,
-    //     }
-    //     if (this.admin) {
-    //         filter.userId = this.carFilterModel().userId
-    //     }
+    updateCategory() {
+        const filter: FilterCategory = {
+            companyId: this.carFilterModel().companyId ?? 0,
+            modelId: 0,
+            modelsId: this.carFilterModel().modelsId,
+            modificationId: 0,
+            modificationsId: this.carFilterModel().modificationsId,
+            userId: 0,
+            bus: this.carFilterModel().bus,
+            hasImages: this.carFilterModel().hasImages ? 1 : 0,
+        }
+        if (this.admin) {
+            filter.userId = this.carFilterModel().userId
+        }
 
-    //     this.previuosFilter = { ...filter }
-    //     this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
-    //         this.convertResult(res)
-    //     })
-    // }
-
-    convertResult(res: NumberPartsPerCategory[]) {
-        const tempDropDown: Dropdown[] = []
-        const count: NumberPartsPerCategory[] = [...res]
-        this.categories?.forEach((x) => {
-            const index = res.findIndex((category) => category.categoryId === x.categoryId)
-            if (index !== -1) {
-                x.count = res[index].numberParts
-                const dropDown: Dropdown = new Dropdown()
-                dropDown.name = x.categoryName.charAt(0).toLocaleUpperCase() + x.categoryName?.toLocaleLowerCase().slice(1)
-                dropDown.imageName = x.imageName
-                dropDown.id = x.categoryId
-                const category = count.find((category) => category.categoryId === x.categoryId)
-                dropDown.count = category?.numberParts
-                category?.subCategories.forEach((subCategory) => {
-                    dropDown.children.push({ text: subCategory.subCategoryName, value: subCategory.subCategoryId, count: subCategory.count })
-                })
-                tempDropDown.push(dropDown)
-            } else {
-                x['count'] = 0
-            }
+        this.previuosFilter = { ...filter }
+        this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
+            this.convertResult(res)
         })
-
-        return tempDropDown
     }
 
     itemType_ = computed(() => {
@@ -334,23 +321,48 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     public activeRoute: ActivatedRoute = inject(ActivatedRoute)
     public parent: HomeComponent = inject(HomeComponent, { optional: true }) as HomeComponent
 
+    filter = computed(() => {
+        console.log(`Query Value:`, this.query())
+        if (this.query()) {
+            this.searchPartService.getFilter(+this.query()!).subscribe((filter) => {
+                this.extendedSearch_ = filter.extendedSearch
+                return {...filter}
+            })
+            return new Filter()
+        } else {
+            return new Filter()
+        }
+    })
     debouncedQuery = debounced(this.carFilterModel, 3000)
     constructor() {
         super()
+
+        effect(() => {
+            console.log("Company changed", this.carFilterForm.companyId())
+        })
+        effect(() => {
+                console.log(`Filter: `, this.filter())
+                this.updateForm(this.filter()!)
+                this.extendedSearch_ = this.filter()!.extendedSearch ?? false
+        })
 
         effect(() => {
             this.dropDownItems.emit(this._dropDown())
         })
         effect(() => {
             this.debouncedQuery.value()
-            this.popupService.openWithTimeout('Съобщение', 'Филтъра Ви връща повече от 100 части. Само първите 100 ще се покажат', 2000).subscribe(() => {
-                console.log(this.debouncedQuery.value())
-            })
+            if (this.config().itemType != this.debouncedQuery.value().itemType && this.config().bus != this.debouncedQuery.value().itemType) {
+                this.config.update((value) => ({
+                    ...value,
+                    bus: this.debouncedQuery.value().bus,
+                    itemType: this.debouncedQuery.value().itemType,
+                }))
+            }
         })
 
-        effect(() => {
-            this.onItemType(this.carFilterForm.itemType().value())
-        })
+        // effect(() => {
+        //     this.onItemType(this.carFilterForm.itemType().value())
+        // })
 
         effect(() => {
             this.query_ = computed(() => {
@@ -416,27 +428,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     ngOnInit() {
-        this.activeRoute.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
-            if (params['query']) {
-                this.query = params['query']
-                if (this.query) {
-                    this.searchPartService.getFilter(+this.query).subscribe((filter) => {
-                        this._filter = filter
-                        if (this._filter) {
-                            this.extendedSearch_ = this._filter.extendedSearch
-                        }
-                    })
-                }
-            }
-        })
-
-        if (this._filter) {
-            this.updateForm(this._filter)
-            this.extendedSearch_ = this._filter.extendedSearch
-        } else {
-            // this.filterForm.patchValue({ bus: this.bus, itemType: this.itemType })
-        }
-
         this.engineTypes = this.staticSelectionService.EngineType.map(replaceFirst)
         this.gearBoxTypes = this.staticSelectionService.GearboxType.map(replaceFirst)
         this.categoryService.fetch().subscribe((res) => {
@@ -559,7 +550,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#region Search
     submit() {
         const filter: Filter = Object.assign(
-            this.carFilterModel(),
+            {...this.carFilterModel()},
             { searchBy: SearchBy.Filter },
             { adminRun: this.admin ? true : false },
             { extendedSearch: this.extendedSearch_ },
@@ -585,30 +576,30 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     goToResult(filter: Filter) {
-        goTop()
-        this.loadingService.open('Зареждане на резултатите')
-        this.searchPartService.search(filter).subscribe({
-            next: (res) => {
-                const dataManager = this.homeService.updateData(filter.id, filter)
-                dataManager.updateData(res)
-                if (dataManager.noParts()) {
-                    this.loadingService.close()
-                    this.popupService.openWithTimeout('Съобщение', 'Няма намерени обяви!', 5000)
-                } else if (dataManager.filterData.length === 100) {
-                    this.popupService.openWithTimeout('Съобщение', 'Филтъра Ви връща повече от 100 части. Само първите 100 ще се покажат', 2000).subscribe(() => {
-                        this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
-                    })
-                } else {
-                    this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
-                }
-            },
-            error: (error) => {
-                console.log(error)
-            },
-            complete: () => {
-                this.loadingService.close()
-            },
-        })
+        this.parent.goToResult(filter);
+        // this.loadingService.open('Зареждане на резултатите')
+        // this.searchPartService.search(filter).subscribe({
+        //     next: (res) => {
+        //         const dataManager = this.homeService.updateData(filter.id, filter)
+        //         dataManager.updateData(res)
+        //         if (dataManager.noParts()) {
+        //             this.loadingService.close()
+        //             this.popupService.openWithTimeout('Съобщение', 'Няма намерени обяви!', 5000)
+        //         } else if (dataManager.filterData.length === 100) {
+        //             this.popupService.openWithTimeout('Съобщение', 'Филтъра Ви връща повече от 100 части. Само първите 100 ще се покажат', 2000).subscribe(() => {
+        //                 this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
+        //             })
+        //         } else {
+        //             this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
+        //         }
+        //     },
+        //     error: (error) => {
+        //         console.log(error)
+        //     },
+        //     complete: () => {
+        //         this.loadingService.close()
+        //     },
+        // })
     }
     //#endregion
 
@@ -666,6 +657,30 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     //#endregion
+    convertResult(res: NumberPartsPerCategory[]) {
+        const tempDropDown: Dropdown[] = []
+        const count: NumberPartsPerCategory[] = [...res]
+        this.categories?.forEach((x) => {
+            const index = res.findIndex((category) => category.categoryId === x.categoryId)
+            if (index !== -1) {
+                x.count = res[index].numberParts
+                const dropDown: Dropdown = new Dropdown()
+                dropDown.name = x.categoryName.charAt(0).toLocaleUpperCase() + x.categoryName?.toLocaleLowerCase().slice(1)
+                dropDown.imageName = x.imageName
+                dropDown.id = x.categoryId
+                const category = count.find((category) => category.categoryId === x.categoryId)
+                dropDown.count = category?.numberParts
+                category?.subCategories.forEach((subCategory) => {
+                    dropDown.children.push({ text: subCategory.subCategoryName, value: subCategory.subCategoryId, count: subCategory.count })
+                })
+                tempDropDown.push(dropDown)
+            } else {
+                x['count'] = 0
+            }
+        })
+
+        return tempDropDown
+    }
 }
 
 // private model = signal({ items: [{ sku: '', qty: 1 }] });

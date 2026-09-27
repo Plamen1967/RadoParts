@@ -1,66 +1,67 @@
-<div class="layout">
-    <div class="categoryMax">
-        @if (showCategory) {
-            <app-categories id="categoriesElem" #categoriesElem [dropDowns]="dropDown()" (selection)="onSelection($event)" data-cy="categories" class="categories"></app-categories>
-        }
-    </div>
-    <div class="w-100">
-        <form class="shadow mb-5 rounded card card-form-spec mb-2 homeForm">
-            <div class="mb-1 d-flex justify-content-center">
-                <app-radiogroup [radios]="radios" [formField]="carFilterForm.bus" data-cy="bus" (changeRadioGroup)="changeBusCar()"></app-radiogroup>
-            </div>
-            <div class="mb-1">
-                <app-radiogrouplist [radios]="getRadios()" [all]="true" [style]="2" [formField]="carFilterForm.itemType" data-cy="itemType"></app-radiogrouplist>
-            </div>
-            <div class="row mb-1">
-                @if (admin) {
+<form (submit)="onSubmit()" [formRoot]="carFilterForm">
+    <div class="layout">
+        <div class="categoryMax">
+            @if (showCategory) {
+                <app-categories id="categoriesElem" #categoriesElem [dropDowns]="dropDown()" (selection)="onSelection($event)" data-cy="categories" class="categories"></app-categories>
+            }
+        </div>
+        <div class="w-100">
+            <div class="shadow mb-5 rounded card card-form-spec mb-2 homeForm">
+                <div class="mb-1 d-flex justify-content-center">
+                    <app-radiogroup [radios]="radios" [formField]="carFilterForm.bus" data-cy="bus" (changeRadioGroup)="changeBusCar()"></app-radiogroup>
+                </div>
+                <div class="mb-1">
+                    <app-radiogrouplist [formField]="carFilterForm.itemType" [controlName]="'itemTypeName'"  [radios]="getRadios()" [all]="true" [style]="2" data-cy="itemType"></app-radiogrouplist>
+                </div>
+                <div class="row mb-1">
+                    @if (admin) {
+                        <div class="row">
+                            <div class="col-sm-4 control">
+                                <app-select
+                                    id="user"
+                                    [formField]="carFilterForm.userId"
+                                    data-cy="userName"
+                                    label="{{ labels.USERNAME }}"
+                                    valueProperty="value"
+                                    [data]="users"
+                                    (onCloseEvent)="focus()"
+                                    displayProperty="text">
+                                </app-select>
+                            </div>
+                            <div class="col-sm-3 control">
+                                <app-select
+                                    id="user"
+                                    [formField]="carFilterForm.itemType"
+                                    data-cy="itemType"
+                                    label="{{ labels.SELECTTYPEAD }}"
+                                    valueProperty="id"
+                                    [data]="itemTypes"
+                                    (onCloseEvent)="focus()"
+                                    displayProperty="value">
+                                </app-select>
+                            </div>
+                            <div class="col-sm-3 control">
+                                <app-select id="approved" [formField]="carFilterForm.approved" data-cy="approvedType" label="{{ labels.APPROVEAD }}" [data]="approvedTypes" (onCloseEvent)="focus()">
+                                </app-select>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div>
                     <div class="row">
-                        <div class="col-sm-4 control">
-                            <app-select
-                                id="user"
-                                [formField]="carFilterForm.userId"
-                                data-cy="userName"
-                                label="{{ labels.USERNAME }}"
-                                valueProperty="value"
-                                [data]="users"
-                                (onCloseEvent)="focus()"
-                                displayProperty="text">
-                            </app-select>
-                        </div>
-                        <div class="col-sm-3 control">
-                            <app-select
-                                id="user"
-                                [formField]="carFilterForm.itemType"
-                                data-cy="itemType"
-                                label="{{ labels.SELECTTYPEAD }}"
-                                valueProperty="id"
-                                [data]="itemTypes"
-                                (onCloseEvent)="focus()"
-                                displayProperty="value">
-                            </app-select>
-                        </div>
-                        <div class="col-sm-3 control">
-                            <app-select id="approved" [formField]="carFilterForm.approved" data-cy="approvedType" label="{{ labels.APPROVEAD }}" [data]="approvedTypes" (onCloseEvent)="focus()">
-                            </app-select>
-                        </div>
-                    </div>
-                }
-            </div>
-            <div>
-                <div class="row">
-                    <div class="row">
-                        <div class="max450px">
-                            <app-searchinput
-                                [appToolTip]="'Търсене по номер на частта'"
-                                label="Търсене по номер на частта"
-                                [formField]="carFilterForm.partNumber"
-                                placeHolder="{{ labels.PART_NUMBER }}"
-                                [border]="true"
-                                data-cy="partNumber"
-                                (Search)="onSearchByNumber()">
-                            </app-searchinput>
-                        </div>
-                        <!-- <div class="border border-light min200px">
+                        <div class="row">
+                            <div class="max450px">
+                                <app-searchinput
+                                    [appToolTip]="'Търсене по номер на частта'"
+                                    label="Търсене по номер на частта"
+                                    [formField]="carFilterForm.partNumber"
+                                    placeHolder="{{ labels.PART_NUMBER }}"
+                                    [border]="true"
+                                    data-cy="partNumber"
+                                    (Search)="onSearchByNumber()">
+                                </app-searchinput>
+                            </div>
+                            <!-- <div class="border border-light min200px">
                             <div class="select__margin padding-none">
                                 <div class="select__container margin-none">
                                     <div class="select__field outline-none">
@@ -73,120 +74,127 @@
                                 </div>
                             </div>
                         </div> -->
-                    </div>
-                    <div class="row">
-                        <div class="row modell-1000px">
-                            <div class="col-sm-3 min200px max300px mb-1">
-                                <app-company-choise
-                                    data-testid="companyId"
-                                    [config]="{ bus: carFilterForm.bus().value(), itemType: carFilterForm.itemType().value(), showCount: true, all: true }"
-                                    [formField]="carFilterForm.companyId"
-                                    data-cy="companyId">
-                                </app-company-choise>
-                            </div>
-                            @if (carFilterModel().companyId) {
-                                <div class="col-sm-3 min300px mb-1">
-                                    <app-model-choice
-                                        data-testid="modelId"
-                                        [all]="true"
-                                        [formField]="carFilterForm.modelsId"
-                                        [itemType]="carFilterForm.itemType().value()"
-                                        [companyId]="carFilterModel().companyId"
-                                        [multiselection]="true"
-                                        [showCount]="true"
-                                        data-cy="modelsId"
-                                        (onCloseEvent)="focus()">
-                                    </app-model-choice>
-                                </div>
-                            }
-                            @if (!carFilterForm.bus().value() && carFilterModel().modelsId) {
-                                <div class="col-sm-3 min300px mb-1">
-                                    <app-modification-choice
-                                        data-testid="modificationId"
-                                        [all]="true"
-                                        [itemType]=" carFilterForm.itemType().value()"
-                                        [modelsId]="carFilterModel().modelsId"
-                                        [multiselection]="true"
-                                        [showCount]="true"
-                                        [formField]="carFilterForm.modificationsId"
-                                        data-cy="modificationsId"
-                                        (onCloseEvent)="focus()">
-                                        >
-                                    </app-modification-choice>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div [hidden]="extendedSearch" class="row mt-2">
-                    <div class="col-sm-8" (click)="extendedSearch_ = !extendedSearch_" aria-hidden="true">
-                        <span class="btn btn-sm extended ps-2 pe-5" data-cy="extendSearch"><i class="las la-angle-down me-2"></i>{{ labels.EXTENDED_SERARCH }}</span>
-                    </div>
-                </div>
-                @if (extendedSearch_) {
-                    <div>
-                        <div class="d-flex-column col-sm-7 me-2">
-                            <app-category-choise [formField]="carFilterForm.categoryId"> </app-category-choise>
-                            @if (categoriesId.length) {
-                                <div class="col-sm-10 mt-1 control">
-                                    <app-subcategory-choise [formField]="carFilterForm.subCategoryId" [categoriesId]="categoriesId"></app-subcategory-choise>
-                                </div>
-                            }
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 control" [ngStyle]="{ 'margin-top': '30px' }">
-                                <app-input [formField]="carFilterForm.keyword" data-cy="keyword" placeHolder="{{ labels.KEYWORD }}" [keyword]="true"> </app-input>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-2 control min200px">
-                                <app-select id="engineType" [formField]="carFilterForm.engineType" data-cy="engineType" label="{{ labels.TYPE_ENGINE }}" [data]="engineTypes" (onCloseEvent)="focus()">
-                                </app-select>
-                            </div>
-                            <div class="col-sm-3 control">
-                                <app-input
-                                    [formField]="carFilterForm.engineModel"
-                                    data-cy="engineModel"
-                                    label="{{ labels.CODE_ENGINE }}"
-                                    (onCloseEvent)="focus()"
-                                    placeHolder="{{ labels.CODE_ENGINE }}">
-                                </app-input>
-                            </div>
-                            <div class="col-sm-2 control min150px">
-                                <app-input [formField]="carFilterForm.powerBHP" data-cy="powerBHP" label="{{ labels.POWERBHP }}" (onCloseEvent)="focus()" placeHolder="К.С."> </app-input>
-                            </div>
-                            <div class="col-sm-4 control">
-                                <app-select
-                                    id="gearboxType"
-                                    [formField]="carFilterForm.gearboxType"
-                                    data-cy="gearboxType"
-                                    label="{{ labels.TYPE_GEARBOX }}"
-                                    [data]="gearBoxTypes"
-                                    (onCloseEvent)="focus()">
-                                </app-select>
+                            <div class="row modell-1000px">
+                                <div class="col-sm-3 min200px max300px mb-1">
+                                    <app-company-choise
+                                        data-testid="companyId"
+                                        [config]="this.config()"
+                                        [formField]="carFilterForm.companyId"
+                                        data-cy="companyId">
+                                    </app-company-choise>
+                                </div>
+                                @if (carFilterModel().companyId) {
+                                    <div class="col-sm-3 min300px mb-1">
+                                        <app-model-choice
+                                            data-testid="modelId"
+                                            [all]="true"
+                                            [formField]="carFilterForm.modelsId"
+                                            [itemType]="carFilterForm.itemType().value()"
+                                            [companyId]="carFilterModel().companyId"
+                                            [multiselection]="true"
+                                            [showCount]="true"
+                                            data-cy="modelsId"
+                                            (onCloseEvent)="focus()">
+                                        </app-model-choice>
+                                    </div>
+                                }
+                                @if (!carFilterForm.bus().value() && carFilterModel().modelsId) {
+                                    <div class="col-sm-3 min300px mb-1">
+                                        <app-modification-choice
+                                            data-testid="modificationId"
+                                            [all]="true"
+                                            [itemType]="carFilterForm.itemType().value()"
+                                            [modelsId]="carFilterModel().modelsId"
+                                            [multiselection]="true"
+                                            [showCount]="true"
+                                            [formField]="carFilterForm.modificationsId"
+                                            data-cy="modificationsId"
+                                            (onCloseEvent)="focus()">
+                                            >
+                                        </app-modification-choice>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
-                }
+                    <div [hidden]="extendedSearch" class="row mt-2">
+                        <div class="col-sm-8" (click)="extendedSearch_ = !extendedSearch_" aria-hidden="true">
+                            <span class="btn btn-sm extended ps-2 pe-5" data-cy="extendSearch"><i class="las la-angle-down me-2"></i>{{ labels.EXTENDED_SERARCH }}</span>
+                        </div>
+                    </div>
+                    @if (extendedSearch_) {
+                        <div>
+                            <div class="d-flex-column col-sm-7 me-2">
+                                <app-category-choise [formField]="carFilterForm.categoryId"> </app-category-choise>
+                                @if (categoriesId.length) {
+                                    <div class="col-sm-10 mt-1 control">
+                                        <app-subcategory-choise [formField]="carFilterForm.subCategoryId" [categoriesId]="categoriesId"></app-subcategory-choise>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 control" [ngStyle]="{ 'margin-top': '30px' }">
+                                    <app-input [formField]="carFilterForm.keyword" data-cy="keyword" placeHolder="{{ labels.KEYWORD }}" [keyword]="true"> </app-input>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2 control min200px">
+                                    <app-select
+                                        id="engineType"
+                                        [formField]="carFilterForm.engineType"
+                                        data-cy="engineType"
+                                        label="{{ labels.TYPE_ENGINE }}"
+                                        [data]="engineTypes"
+                                        (onCloseEvent)="focus()">
+                                    </app-select>
+                                </div>
+                                <div class="col-sm-3 control">
+                                    <app-input
+                                        [formField]="carFilterForm.engineModel"
+                                        data-cy="engineModel"
+                                        label="{{ labels.CODE_ENGINE }}"
+                                        (onCloseEvent)="focus()"
+                                        placeHolder="{{ labels.CODE_ENGINE }}">
+                                    </app-input>
+                                </div>
+                                <div class="col-sm-2 control min150px">
+                                    <app-input [formField]="carFilterForm.powerBHP" data-cy="powerBHP" label="{{ labels.POWERBHP }}" (onCloseEvent)="focus()" placeHolder="К.С."> </app-input>
+                                </div>
+                                <div class="col-sm-4 control">
+                                    <app-select
+                                        id="gearboxType"
+                                        [formField]="carFilterForm.gearboxType"
+                                        data-cy="gearboxType"
+                                        label="{{ labels.TYPE_GEARBOX }}"
+                                        [data]="gearBoxTypes"
+                                        (onCloseEvent)="focus()">
+                                    </app-select>
+                                </div>
+                            </div>
+                        </div>
+                    }
 
-                <div class="row mt-1">
-                    <div class="col-sm-3 max250px control">
-                        <app-region [formField]="carFilterForm.regionId"></app-region>
+                    <div class="row mt-1">
+                        <div class="col-sm-3 max250px control">
+                            <app-region [formField]="carFilterForm.regionId"></app-region>
+                        </div>
+                    </div>
+                    <div class="row ms-1 mt-1">
+                        <div class="col-sm-3 form-check control checkboxClass">
+                            <label class="form-check-label" for="hasImages">{{ labels.WITHIMAGES }}</label>
+                            <input type="checkbox" class="form-check-input" [formField]="carFilterForm.hasImages" id="hasImages" data-cy="hasImages" />
+                        </div>
                     </div>
                 </div>
-                <div class="row ms-1 mt-1">
-                    <div class="col-sm-3 form-check control checkboxClass">
-                        <label class="form-check-label" for="hasImages">{{ labels.WITHIMAGES }}</label>
-                        <input type="checkbox" class="form-check-input" [formField]="carFilterForm.hasImages" id="hasImages" data-cy="hasImages" />
-                    </div>
+                <div class="min150px row">
+                    <app-search-bar [formField]="carFilterForm.orderBy" (clearEvent)="clearFilter()"></app-search-bar>
                 </div>
             </div>
-            <div class="min150px row">
-                <app-search-bar [formField]="carFilterForm.orderBy" (submitEvent)="submit()" (clearEvent)="clearFilter()"></app-search-bar>
-            </div>
-        </form>
-        @if (showCategory) {
-            <app-categoriesfooter [categories]="_dropDown()" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>
-        }
+            @if (showCategory) {
+                <app-categoriesfooter [categories]="_dropDown()" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>
+            }
+        </div>
     </div>
-</div>
+</form>

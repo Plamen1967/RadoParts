@@ -10,7 +10,7 @@
         <form>
             <div class="custom-flex">
                 <div class="ps-0 mt-2" [ngStyle]="{ display: 'flex' }">
-                    <app-radiogrouplist [style]="2" [radios]="radioTypes" [formField]="searchForm.category"></app-radiogrouplist>
+                    <app-radiogrouplist [style]="2" [radios]="radioTypes" controlName="category" [formField]="searchForm.category"></app-radiogrouplist>
                 </div>
             </div>
             @if (displayTyre) {

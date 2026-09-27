@@ -443,11 +443,11 @@ namespace Rado.Datasets
                         long modelIdValue = Int64.Parse(modelId);
                         if (modelIdValue > 10000)
                         {
-                            sqlCommand.Parameters.Add($"@groupModel{m++}nextId", System.Data.SqlDbType.BigInt).Value = modelIdValue;
+                            sqlCommand.Parameters.Add($"@groupModel{m++}Id", System.Data.SqlDbType.BigInt).Value = modelIdValue;
                         }
                         else
                         {
-                            sqlCommand.Parameters.Add($"@model{g++}nextId", System.Data.SqlDbType.BigInt).Value = modelIdValue;
+                            sqlCommand.Parameters.Add($"@model{g++}Id", System.Data.SqlDbType.BigInt).Value = modelIdValue;
                         }
                         if (m > 5) break;
                         if (g > 5) break;
@@ -460,7 +460,7 @@ namespace Rado.Datasets
                     foreach (string modificationId in modificationsId)
                     {
                         long modificationIdValue = Int64.Parse(modificationId);
-                        sqlCommand.Parameters.Add($"@modification{i++}nextId", System.Data.SqlDbType.BigInt).Value = modificationIdValue;
+                        sqlCommand.Parameters.Add($"@modification{i++}Id", System.Data.SqlDbType.BigInt).Value = modificationIdValue;
                         if (i > 5) break;
                     }
 

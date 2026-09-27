@@ -49,7 +49,7 @@
                 <div>
                     <div class="row">
                         <div class="mb-1 d-flex justify-content-center">
-                            <app-radiogrouplist [label]="'Сортирай'" [(ngModel)]="sortByValue" [radios]="radios" (change)="sortData()"></app-radiogrouplist>
+                            <app-radiogrouplist [label]="'Сортирай'" [(ngModel)]="sortByValue" controlName="sort" [radios]="radios" (change)="sortData()"></app-radiogrouplist>
                         </div>
                     </div>
                 </div>

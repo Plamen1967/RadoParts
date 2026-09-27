@@ -19,17 +19,17 @@ interface searchInteface {
     selector: 'app-search-bar',
     templateUrl: './search-bar.component.html',
     styleUrls: ['./search-bar.component.css'],
-    imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule, FormField],
+    imports: [ClearbuttonComponent, SearchbuttonComponent, SelectComponent, ReactiveFormsModule],
 })
 //#endregion
-export class SearchBarComponent extends HelperComponent implements FormValueControl<number|undefined> {
+export class SearchBarComponent extends HelperComponent implements FormValueControl<number> {
     searchModel = signal<searchInteface>({
         orderBy: 0
     })
 
     sortForm = form(this.searchModel)
     //#region variables and services
-    value = model<number | undefined>(undefined)
+    value = model<number>(0)
     sort?: SelectOption[]
     isDisabled?: boolean
     submitEvent = output<void>()
@@ -51,7 +51,7 @@ export class SearchBarComponent extends HelperComponent implements FormValueCont
     }
 
     submit() {
-        this.submitEvent.emit()
+        this.clearEvent.emit()
     }
 
     clearFilter() {

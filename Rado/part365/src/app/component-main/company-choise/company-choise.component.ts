@@ -1,7 +1,7 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, effect, inject, input, model, output, signal } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, effect, inject, input, model } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { form, FormField, FormValueControl } from '@angular/forms/signals'
+import { FormValueControl } from '@angular/forms/signals'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { companyToOptionItem } from '@app/functions/function-chain'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
@@ -17,14 +17,12 @@ import { switchMap } from 'rxjs'
     selector: 'app-company-choise',
     templateUrl: './company-choise.component.html',
     styleUrls: ['./company-choise.component.css'],
-    imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule, FormField],
+    imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-export class CompanyChoiseComponent implements FormValueControl<number | undefined>, AfterViewInit{
+export class CompanyChoiseComponent implements FormValueControl<number>, AfterViewInit{
     //#region variables and services
-    value = model<number | undefined>(undefined)
-    model = signal({value: 0})
-    form = form(this.model)
+    value = model<number>(0)
 
     companies = model<OptionItem[]>([])
     companyId = 0
@@ -39,27 +37,26 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
     destroyRef: DestroyRef = inject(DestroyRef)
 
     config = input.required<CompanyControlConfig>()
-
+    oldConfig?: CompanyControlConfig
     itemType_ = ItemType.All
     all_ = false
 
-    countPerUser = output<number>()
     //#region services
     //#endregion
     //#endregion
     constructor() {
-        //#region inject services
-        //#endregion
         effect(() => {
-            this.value.set(this.model().value)
+            console.log("Select Company Value", this.value() )
         })
 
         effect(() => {
-            const cfg = this.config();
-
-            this.itemType_ = cfg?.itemType ?? ItemType.All
-            this.all_ = cfg?.all ?? false
-            this.initCompanies()
+            if (!this.oldConfig || this.oldConfig.itemType != this.config().itemType || this.oldConfig.bus != this.config().bus) {
+                console.log(`Configure`)
+                this.itemType_ = this.oldConfig?.itemType ?? ItemType.All
+                this.all_ =  this.oldConfig?.all ?? false
+                this.initCompanies()
+                this.oldConfig = {...this.config()};
+            }
         })
     }
     ngAfterViewInit(): void {
@@ -121,7 +118,6 @@ export class CompanyChoiseComponent implements FormValueControl<number | undefin
 
         let count = 0
         this.companies().forEach((item) => (count += item.count))
-        this.countPerUser.emit(count)
         this.loaded = true
     }
 }

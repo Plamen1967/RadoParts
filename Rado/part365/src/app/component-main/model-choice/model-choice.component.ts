@@ -66,6 +66,9 @@ export class ModelChoiceComponent implements FormValueControl<number | string | 
         })
 
         effect(() => {
+            console.log('Value:', this.value())
+        })
+        effect(() => {
             const companyId_ = this.companyId()
             if (companyId_) {
                 this.onCompanyChage(companyId_)

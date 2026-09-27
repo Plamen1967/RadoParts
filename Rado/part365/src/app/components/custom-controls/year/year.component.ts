@@ -16,8 +16,8 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [ReactiveFormsModule, SelectComponent],
 })
 //#endregion
-export class YearComponent extends HelperComponent implements FormValueControl<number | undefined>, OnInit {
-    value = model<number | undefined>(undefined)
+export class YearComponent extends HelperComponent implements FormValueControl<number>, OnInit {
+    value = model<number>(0)
     isDisabled = false
     yearFrom = 1970
     yearTo = 2025

@@ -19,7 +19,7 @@
 
         <div style="max-width: 100%">
             @if (showParts) {
-                <app-carfilter (dropDownItems)="changeDropdown($event)"></app-carfilter>
+                <app-carfilter [query]="query()" [itemType]="itemType()" [userId]="userId()" (dropDownItems)="changeDropdown($event)"></app-carfilter>
             } @else if (showTyres) {
                 <app-tyrefilter></app-tyrefilter>
             }

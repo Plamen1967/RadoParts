@@ -10,8 +10,8 @@ import { FormValueControl } from '@angular/forms/signals'
     styleUrls: ['./select.component.css'],
     imports: [FormsModule, ReactiveFormsModule, SelectBaseComponent],
 })
-export class SelectComponent implements FormValueControl<number | undefined> {
-    value = model<number | undefined>(undefined);
+export class SelectComponent implements FormValueControl<number> {
+    value = model<number>(0);
     type = input<number>(0);
     label = input<string | undefined>();
     hint = input<string | undefined>();
@@ -29,7 +29,7 @@ export class SelectComponent implements FormValueControl<number | undefined> {
         return this.hasError() ? { required: true } : null
     }
     
-    @Input() set initialValue(value: number | undefined) {
+    @Input() set initialValue(value: number ) {
         this.value.set(value)
         this.selectedValue = value
     }
@@ -65,7 +65,7 @@ export class SelectComponent implements FormValueControl<number | undefined> {
     //     this.changeSelectOption(obj)
     // }
 
-    changeSelectOption(obj: number | undefined) {
+    changeSelectOption(obj: number) {
         this.selectedValue = obj
         this.value.set(obj)
     }

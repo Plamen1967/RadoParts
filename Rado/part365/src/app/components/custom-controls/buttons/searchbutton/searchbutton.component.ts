@@ -8,8 +8,7 @@ import { HelperComponent } from '@components/helper.old/helper.component'
     imports: [],
 })
 export class SearchbuttonComponent extends HelperComponent {
-    // eslint-disable-next-line @angular-eslint/no-output-native
-    click = output<void>()
+    clickButton = output<void>()
 
     constructor() {
         super()
@@ -17,6 +16,6 @@ export class SearchbuttonComponent extends HelperComponent {
 
     generateEvent(event: Event) {
         event.stopPropagation()
-        this.click.emit()
+        this.clickButton.emit()
     }
 }

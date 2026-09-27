@@ -1,11 +1,10 @@
-<form>
     <app-customselect
         data-testid="customer-selectid"
         id="companyId"
         label="Марка"
         [appToolTip]="'Избери марката'"
         [placeHolder]="'Избери марка'"
-        [formField]="form.value"
+        value="value()"
         [select]="companyId"
         data-cy="companyId"
         [useFilter]="true"
@@ -14,4 +13,3 @@
         [data]="companies()"
         [showCount]="config().showCount ?? false"
     />
-</form>

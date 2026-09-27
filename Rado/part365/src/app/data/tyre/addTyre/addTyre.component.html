@@ -13,7 +13,7 @@
             <div [ngClass]="{ show: $safeNavigationMigration(params?.ad), noShow: !params?.ad }">
                 <div class="custom-flex">
                     <div class="ps-0" [ngStyle]="{ display: 'flex' }">
-                        <app-radiogrouplist [style]="2" [radios]="radioTypes" formControlName="itemType"></app-radiogrouplist>
+                        <app-radiogrouplist [style]="2" [radios]="radioTypes" controlName="itemTypeName" formControlName="itemType"></app-radiogrouplist>
                     </div>
                 </div>
             </div>

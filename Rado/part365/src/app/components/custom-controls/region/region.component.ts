@@ -14,16 +14,12 @@ import { FormValueControl } from '@angular/forms/signals'
     styleUrls: ['./region.component.css'],
     imports: [SelectComponent, TooltipDirective, ReactiveFormsModule],
 })
-export class RegionComponent extends HelperComponent implements FormValueControl<number|undefined>, OnInit {
+export class RegionComponent extends HelperComponent implements FormValueControl<number>, OnInit {
     isDisabled = false
     regionForm: FormGroup
     regions?: SelectOption[]
-    value = model<number|undefined>(undefined)
+    value = model<number>(0)
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    protected onTouched?() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    protected onChange?(_: number) {}
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     public errorService: ErrorService = inject(ErrorService)
     formBuilder: FormBuilder = inject(FormBuilder)

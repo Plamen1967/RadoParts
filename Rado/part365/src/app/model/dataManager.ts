@@ -124,7 +124,7 @@ export class DataManager {
         if (result) {
             this.searched = true
             this.searchResult = result
-            this.allParts = result?.data
+            this.allParts = [...result?.data ?? []]
             this.filterData.sort((a, b) => sortPart(this.sortType, a, b))
             this.currentPage = 1
             this.getPageData()

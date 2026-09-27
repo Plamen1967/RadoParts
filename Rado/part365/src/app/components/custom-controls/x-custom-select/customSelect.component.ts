@@ -64,7 +64,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             //     this.change(this.value())
             // }
 
-            this._selection = this.data()?.find((item) => item.id === this.value())?.description ?? this.placeHolder() ?? ''
+            this._selection = this.data()?.find((item) => item.id == this.value())?.description ?? this.placeHolder() ?? ''
         })
     
         effect(() => {
@@ -78,6 +78,10 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             // // if (this.value() && this.data() && this.data().length) {
             // //     this.change(this.value()!)
             // }
+        })
+
+        effect(() => {
+            console.log(`Custome Select Value Changed`, this.value())
         })
    }
 
@@ -99,13 +103,13 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             panelClass: 'custom-container',
             data: {
                 data: this.data_,
-                userFilter: this.useFilter ?? false,
-                groupSelection: this.groupSelection ?? true,
-                value: this.value,
-                multiSelection: this.multiSelection,
-                groupDisabled: this.groupDisabled,
-                placeHolder: this.placeHolder,
-                showCount: this.showCount,
+                userFilter: this.useFilter() ?? false,
+                groupSelection: this.groupSelection() ?? true,
+                value: this.value(),
+                multiSelection: this.multiSelection(),
+                groupDisabled: this.groupDisabled(),
+                placeHolder: this.placeHolder(),
+                showCount: this.showCount(),
                 useFilter: true,
                 label: '',
             },
@@ -114,7 +118,11 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             .afterClosed()
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((result) => {
-                if (result) this.change(result)
+                if (result) 
+                    if (this.multiSelection())
+                    this.value.set(result)
+                        else
+                    this.value.set(+result)
                 this.alertService.info(`Dialog result: ${result}`)
             })
     }

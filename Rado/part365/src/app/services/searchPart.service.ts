@@ -47,10 +47,7 @@ export class SearchPartService {
     }
 
     search(filter: Filter): Observable<SearchResult> {
-        filter.id = Date.now()
-        filter.clientId = this.authenticationService.clientId
-        filter.loadMainPicture = true
-        filter.clientId = this.authenticationService.clientId
+        filter = {...filter, id: Date.now(), loadMainPicture : true, clientId : this.authenticationService.clientId}
         const params = convertToParam(filter)
 
         return this.http.get<SearchResult>(`${environment.restAPI}/Search/Search`, { params }).pipe(
@@ -91,8 +88,8 @@ export class SearchPartService {
                     Enrich(part, this.staticSelectionService)
                 return part
             }),
-            tap(() => this.loggerService.log('getSearchResult')),
-            catchError(this.handleError<DisplayPartView>('fetch getSearchResult', {}))
+            tap(() => this.loggerService.log('getItem')),
+            catchError(this.handleError<DisplayPartView>('fetch getItem', {}))
         )
     }
 
@@ -100,8 +97,8 @@ export class SearchPartService {
         let params = new HttpParams()
         params = params.set('query', `${query}`)
         return this.http.get<Filter>(`${environment.restAPI}/Search/GetFilter`, { params }).pipe(
-            tap(() => this.loggerService.log('getSearchResult')),
-            catchError(this.handleError<Filter>('fetch getSearchResult', undefined))
+            tap(() => this.loggerService.log('getFilter')),
+            catchError(this.handleError<Filter>('fetch getFilter', undefined))
         )
     }
 

@@ -58,7 +58,7 @@ export class CustomSelectComponent implements OnInit, AfterViewInit, FormValueCo
             this.changeOption.emit(this.value())
             if (this.data()) 
             {
-                this.data_ = [...this.data()]
+                this.data_ = [...this.data() ?? []]
 
             if (this.groupDisabled()) {
                 this.data_ = this.data_?.filter((item) => item['groupModelId'] != item.id)

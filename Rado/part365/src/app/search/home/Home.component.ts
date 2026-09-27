@@ -64,11 +64,11 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     //#endregion
 
     //#region input/output/view
-    @ViewChild('submit') set buttonElRef(elRef: ElementRef<HTMLInputElement>) {
-        if (elRef) {
-            this.submitElement = elRef
-        }
-    }
+    // @ViewChild('submit') set buttonElRef(elRef: ElementRef<HTMLInputElement>) {
+    //     if (elRef) {
+    //         this.submitElement = elRef
+    //     }
+    // }
 
     @ViewChild('categoryButton', { static: false }) categoryButton?: ElementRef
     @ViewChild(CarFilterComponent) carFilter!: CarFilterComponent
@@ -210,15 +210,16 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     //#endregion
     goToResult(filter: Filter) {
         this.loadingService.open('Зареждане на резултатите')
+        console.log("filter", filter)
         this.searchService.search(filter).subscribe({
             next: (res) => {
-                const dataManager = this.homeService.updateData(filter.id, filter)
+                const dataManager = this.homeService.updateData(res.filter?.id ?? 0, filter)
 
                 dataManager.updateData(res)
                 if (dataManager.noParts()) {
                     this.confirmationService.OK('Съобщение', this.labels.NORESULTS)
                 } else {
-                    this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
+                    this.router.navigate(['/results'], { queryParams: { query: res.filter!.id, page: 1 } })
                 }
             },
             error: (err) => {

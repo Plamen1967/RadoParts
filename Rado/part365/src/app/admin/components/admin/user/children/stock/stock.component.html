@@ -1,7 +1,7 @@
 <div class="data-container">
     @if (!currentId) {
         <div [ngStyle]="{ display: currentId ? 'none' : 'block' }" class="container">
-            <app-radiogrouplist [groupListDisplay]="'none'" [(ngModel)]="defaultType" [radios]="displayRatio" (changeRadioGroup)="filterChange($event)"></app-radiogrouplist>
+            <app-radiogrouplist [groupListDisplay]="'none'" controlName="displayRatio" [(ngModel)]="defaultType" [radios]="displayRatio" (changeRadioGroup)="filterChange($event)"></app-radiogrouplist>
             @if (loaded) {
                 <app-result
                     [userId]="userId"

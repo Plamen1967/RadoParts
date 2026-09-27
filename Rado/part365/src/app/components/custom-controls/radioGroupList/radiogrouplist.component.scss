@@ -1,6 +1,6 @@
-input {
-    display: none;
-}
+// input {
+//     display: none;
+// }
 label {
     white-space: nowrap;
     font-size: 1rem;
@@ -92,9 +92,11 @@ input:checked + label {
     color: lightcyan;
     border: 0px;
 
-    border-bottom: 5px solid var(--active-borderbottom);
+    background-color: #00ced1;
+    border-bottom: 2px solid red;
     border-radius: 5px;
-    background-color: var(--active-bgcolor);
+    // border-bottom: 5px solid var(--active-borderbottom);
+    // background-color: var(--active-bgcolor);
     /* #FF69B4; #AA96DA #FFFFD2*/
     transition: border-bottom 0.5s;
     font-weight: 500;
