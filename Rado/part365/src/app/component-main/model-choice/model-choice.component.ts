@@ -1,7 +1,6 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, inject, model, input, effect } from '@angular/core'
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
+import { Component, inject, model, input, effect } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -9,29 +8,22 @@ import { ItemType } from '@model/enum/itemType.enum'
 import { OptionItem } from '@model/optionitem'
 import { ModelService } from '@services/company-model-modification/model.service'
 import { ErrorService } from '@services/error.service'
-import { FormValueControl, FormField, form } from '@angular/forms/signals'
+import { FormValueControl } from '@angular/forms/signals'
 //#endregion
-interface modelChoice {
-    modelId: number
-    modelsId_int: string
-}
-
 //#region component
 @Component({
     selector: 'app-model-choice',
     templateUrl: './model-choice.component.html',
     styleUrls: ['./model-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule, FormField],
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
 
-export class ModelChoiceComponent implements FormValueControl<number | string | undefined> {
+export class ModelChoiceComponent implements FormValueControl<number | string> {
     //#region variables and services
     isDisabled = false
 
-    value = model<number | string | undefined>(undefined)
-    model = model<modelChoice>({ modelId: 0, modelsId_int: '' })
-    form = form(this.model)
+    value = model<number | string>(0)
 
     models = model<OptionItem[]>([])
 
@@ -49,24 +41,22 @@ export class ModelChoiceComponent implements FormValueControl<number | string | 
     itemType = input<ItemType>(ItemType.All)
     //#region services
     public modelService: ModelService = inject(ModelService)
-    private formBuilder: FormBuilder = inject(FormBuilder)
     public errorService: ErrorService = inject(ErrorService)
-    private element: ElementRef = inject(ElementRef)
-    private destroyRef: DestroyRef = inject(DestroyRef)
     //#region
     //#endregion
     constructor() {
 
         effect(() => {
+            console.log(`Model Choise ${this.value()}`)
             if (this.multiselection()) {
-                this.value.set(this.model().modelsId_int)
+                this.value.set(this.value().toString())
             } else {
-                this.value.set(this.model().modelId.toString())
+                this.value.set(Number(this.value()))
             }
         })
 
         effect(() => {
-            console.log('Value:', this.value())
+            console.log('Model Value:', this.value())
         })
         effect(() => {
             const companyId_ = this.companyId()
@@ -97,7 +87,6 @@ export class ModelChoiceComponent implements FormValueControl<number | string | 
             if (value) {
                 this.modelService
                     .fetchByCompanyIdByUserId(value)
-                    .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe((res) => {
                         const models = res
                         models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })
@@ -123,7 +112,6 @@ export class ModelChoiceComponent implements FormValueControl<number | string | 
             if (value) {
                 this.modelService
                     .fetchByCompanyId(value)
-                    .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe((res) => {
                         const models = res
                         models.unshift({ modelId: 0, companyId: 0, groupModelId: 0, modelName: ' Избери модел', displayModelName: ' Избери модел', countCars: 0, countParts: 0 })

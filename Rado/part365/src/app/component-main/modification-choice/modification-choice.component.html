@@ -1,13 +1,12 @@
-<form>
     @if (multiselection()) {
         <app-multiselection
             id="modificationId"
             label="Модификация"
             placeHolder="Избери модификация"
-            [formField]="myform.modificationIds"
+            [value]="value()"
             [appToolTip]="'Избери модификация'"
             [groupSelection]="false"
-            [data]="modifications"
+            [data]="modifications()"
             [showLetter]="false"
             [multiSelection]="multiselection()"
             [useLetter]="false"
@@ -19,12 +18,13 @@
             [submitted]="submitted()"
             [showCount]="showCount()"
             (onCloseEvent)="focus()">
+            (changeOption)="value.set($event)"
         </app-multiselection>
     } @else {
         <app-customselect
             id="modificationId"
-            [data]="modifications"
-            [formField]="myform.modificationId"
+            [data]="modifications()"
+            [value]="value()"
             label="Модификация"
             [placeHolder]="'Избери модификация'"
             [appToolTip]="'Избери модификация'"
@@ -33,8 +33,8 @@
             [IsRequired]="IsRequired()"
             [submitted]="submitted()"
             [showCount]="showCount()"
+            (changeOption)="value.set($event)"
             data-bs-toggle="tooltip"
             data-bs-placement="right">
         </app-customselect>
     }
-</form>

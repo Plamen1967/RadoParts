@@ -8,10 +8,10 @@
         <div class="w-100">
             <div class="shadow mb-5 rounded card card-form-spec mb-2 homeForm">
                 <div class="mb-1 d-flex justify-content-center">
-                    <app-radiogroup [radios]="radios" [formField]="carFilterForm.bus" data-cy="bus" (changeRadioGroup)="changeBusCar()"></app-radiogroup>
+                    <app-radiogroup [radios]="radioBus" [formField]="carFilterForm.bus" data-cy="bus"></app-radiogroup>
                 </div>
                 <div class="mb-1">
-                    <app-radiogrouplist [formField]="carFilterForm.itemType" [controlName]="'itemTypeName'"  [radios]="getRadios()" [all]="true" [style]="2" data-cy="itemType"></app-radiogrouplist>
+                    <app-radiogrouplist [formField]="carFilterForm.itemType" [controlName]="'itemTypeName'"  [radios]="radioTypes()" [all]="true" [style]="2" data-cy="itemType"></app-radiogrouplist>
                 </div>
                 <div class="row mb-1">
                     @if (admin) {
@@ -77,7 +77,7 @@
                         </div>
                         <div class="row">
                             <div class="row modell-1000px">
-                                <div class="col-sm-3 min200px max300px mb-1">
+                                <div class="col-sm-3 min200px max300px mb-1 p-0">
                                     <app-company-choise
                                         data-testid="companyId"
                                         [config]="this.config()"
@@ -85,8 +85,8 @@
                                         data-cy="companyId">
                                     </app-company-choise>
                                 </div>
-                                @if (carFilterModel().companyId) {
-                                    <div class="col-sm-3 min300px mb-1">
+                                @if (carFilterForm.companyId().value()) {
+                                    <div class="col-sm-3 min300px mb-1 p-0">
                                         <app-model-choice
                                             data-testid="modelId"
                                             [all]="true"
@@ -193,7 +193,7 @@
                 </div>
             </div>
             @if (showCategory) {
-                <app-categoriesfooter [categories]="_dropDown()" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>
+                <app-categoriesfooter [categories]="dropDown()" [hidden]="hideFilter" (categoryClick)="categoryClick($event)"></app-categoriesfooter>
             }
         </div>
     </div>

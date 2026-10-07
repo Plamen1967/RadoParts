@@ -11,33 +11,26 @@ import { OptionItem } from '@model/optionitem'
 import { Modification } from '@model/static-data/modification'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { ErrorService } from '@services/error.service'
-import { form, FormField, FormValueControl } from '@angular/forms/signals'
+import { FormValueControl } from '@angular/forms/signals'
 //#endregion
 //#region component
-interface ModificationValue {
-    modificationIds: string
-    modificationId: number
-}
-
 @Component({
     selector: 'app-modification-choice',
     templateUrl: './modification-choice.component.html',
     styleUrls: ['./modification-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule, FormField],
+    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
 })
 //#endregion
-export class ModificationChoiceComponent implements FormValueControl<number | string | undefined> {
+export class ModificationChoiceComponent implements FormValueControl<number | string > {
     //#region variables and services
-    modifications: OptionItem[] = []
+    modifications = model<OptionItem[]>([])
     models_Id = ''
     modificationsId_int = ''
     isDisabled = false
     originalModification: Modification[] = []
 
-    value = model<number | string |undefined >(undefined)    
-    model = model<ModificationValue>({ modificationIds: '', modificationId: 0 })
-    myform = form(this.model)
-    
+    value = model<number | string>(0)
+
     multiselection = input<boolean>(true)
     useFilter = input<boolean>(true)
     all = input<boolean>(false)
@@ -45,9 +38,8 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
     IsRequired = input<boolean>(false)
     submitted = input<boolean>(false)
     showCount = input<boolean>(false)
-    itemType = input<ItemType>(ItemType.All) 
+    itemType = input<ItemType>(ItemType.All)
     modelsId = input<string | number>('')
-
 
     modifcationChange = output<Modification>()
     //#region services
@@ -60,11 +52,11 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
 
     constructor() {
         effect(() => {
-            if (this.multiselection()) {
-                this.value.set(this.model().modificationIds)
-            } else {
-                this.value.set(this.model().modificationId.toString())
-            }
+            // if (this.multiselection()) {
+            //     this.value.set(this.model().modificationIds)
+            // } else {
+            //     this.value.set(this.model().modificationId.toString())
+            // }
         })
 
         effect(() => {
@@ -101,34 +93,38 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
                             countParts: 0,
                             countCars: 0,
                         })
-                        this.modifications = res
-                            .map((modification) => {
-                                return {
-                                    id: modification.modificationId,
-                                    description: modification.modificationDisplayName,
-                                    count: modification.countParts + modification.countCars,
-                                    countParts: modification.countParts,
-                                    countCars: modification.countCars,
-                                    groupModelId: 0,
-                                    typeItem: TypeItem.ALL,
-                                }
-                            })
-                            .filter((item) => this.all || item.count != 0 || item.id == 0)
+                        this.modifications.set(
+                            res
+                                .map((modification) => {
+                                    return {
+                                        id: modification.modificationId,
+                                        description: modification.modificationDisplayName,
+                                        count: modification.countParts + modification.countCars,
+                                        countParts: modification.countParts,
+                                        countCars: modification.countCars,
+                                        groupModelId: 0,
+                                        typeItem: TypeItem.ALL,
+                                    }
+                                })
+                                .filter((item) => this.all || item.count != 0 || item.id == 0)
+                        )
                         this.updateCount()
                     })
             } else {
                 const modifications = [Modification.getAll()]
-                this.modifications = modifications.map((modification) => {
-                    return {
-                        id: modification.modificationId,
-                        description: modification.modificationDisplayName,
-                        count: modification.countParts + modification.countCars,
-                        countParts: modification.countParts,
-                        countCars: modification.countCars,
-                        groupModelId: 0,
-                        typeItem: TypeItem.ALL,
-                    }
-                })
+                this.modifications.set(
+                    modifications.map((modification) => {
+                        return {
+                            id: modification.modificationId,
+                            description: modification.modificationDisplayName,
+                            count: modification.countParts + modification.countCars,
+                            countParts: modification.countParts,
+                            countCars: modification.countCars,
+                            groupModelId: 0,
+                            typeItem: TypeItem.ALL,
+                        }
+                    })
+                )
             }
         } else {
             if (value) {
@@ -148,34 +144,38 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
                             countParts: 0,
                             countCars: 0,
                         })
-                        this.modifications = res
-                            .map((modification) => {
-                                return {
-                                    id: modification.modificationId,
-                                    description: modification.modificationDisplayName,
-                                    count: modification.countParts + modification.countCars,
-                                    countParts: modification.countParts,
-                                    countCars: modification.countCars,
-                                    groupModelId: 0,
-                                    typeItem: TypeItem.ALL,
-                                }
-                            })
-                            .filter((item) => this.all || item.count != 0 || item.id == 0)
+                        this.modifications.set(
+                            res
+                                .map((modification) => {
+                                    return {
+                                        id: modification.modificationId,
+                                        description: modification.modificationDisplayName,
+                                        count: modification.countParts + modification.countCars,
+                                        countParts: modification.countParts,
+                                        countCars: modification.countCars,
+                                        groupModelId: 0,
+                                        typeItem: TypeItem.ALL,
+                                    }
+                                })
+                                .filter((item) => this.all || item.count != 0 || item.id == 0)
+                        )
                         this.updateCount()
                     })
             } else {
                 const modifications = [Modification.getAll()]
-                this.modifications = modifications.map((modification) => {
-                    return {
-                        id: modification.modificationId,
-                        description: modification.modificationDisplayName,
-                        count: modification.countParts + modification.countCars,
-                        countParts: modification.countParts,
-                        countCars: modification.countCars,
-                        groupModelId: 0,
-                        typeItem: TypeItem.ALL,
-                    }
-                })
+                this.modifications.set(
+                    modifications.map((modification) => {
+                        return {
+                            id: modification.modificationId,
+                            description: modification.modificationDisplayName,
+                            count: modification.countParts + modification.countCars,
+                            countParts: modification.countParts,
+                            countCars: modification.countCars,
+                            groupModelId: 0,
+                            typeItem: TypeItem.ALL,
+                        }
+                    })
+                )
             }
         }
     }
@@ -183,8 +183,9 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
         return
     }
     updateCount() {
-        if (this.itemType() == ItemType.OnlyBus || this.itemType() == ItemType.OnlyCar) this.modifications.forEach((item) => (item.count = item.countCars))
-        else if (this.itemType() == ItemType.CarPart || this.itemType() == ItemType.BusPart) this.modifications.forEach((item) => (item.count = item.countParts))
-        else this.modifications.forEach((item) => (item.count = item.countParts + item.countCars))
+        const modifications = this.modifications()
+        if (this.itemType() == ItemType.OnlyBus || this.itemType() == ItemType.OnlyCar) modifications.forEach((item) => (item.count = item.countCars))
+        else if (this.itemType() == ItemType.CarPart || this.itemType() == ItemType.BusPart) modifications.forEach((item) => (item.count = item.countParts))
+        else modifications.forEach((item) => (item.count = item.countParts + item.countCars))
     }
 }

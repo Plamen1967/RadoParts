@@ -8,7 +8,7 @@
         </div>
         @if (loaded) {
             <div class="select__field">
-                <app-buttongroup [placeholder]="placeHolder()" [clearBox]="clearBox" [selection]="_selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()"> </app-buttongroup>
+                <app-buttongroup [placeholder]="placeHolder()" [clearBox]="clearBox()" [selection]="_selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()"> </app-buttongroup>
             </div>
         }
         @if (submitted() && IsInvalid) {

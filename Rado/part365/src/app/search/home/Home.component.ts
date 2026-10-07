@@ -1,5 +1,5 @@
 //#region import
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, input } from '@angular/core'
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, input, signal } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -31,7 +31,6 @@ import { MatDialog } from '@angular/material/dialog'
 import { CategoriesMinComponent } from '@components/categoriesMin/categoriesMin.component'
 import { FilterComponent } from '@components/custom-controls/filter/filter.component'
 import { SaveSearchService } from '@services/saveSearch.service'
-import { QueryParam } from '@model/queryParam'
 //#endregion
 //#region component declaration
 @Component({
@@ -55,7 +54,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     extendedSearch_?: boolean
     subscriptions: Subscription[] = []
     currentCategory = undefined
-    showCategory = true
+    showCategory = signal<boolean>(true)
     filters: { id: number; text: string }[] = []
     filter: Filter = {
         id: 0,
@@ -98,7 +97,6 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
 
     //#region constructor
     constructor() {
-        console.log('Home component created')
         super()
         this.subscriptions.push(
             this.checkOutService.checkout.subscribe((x) => {
@@ -117,22 +115,11 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     }
 
     setShowCategory(showCategory: boolean) {
-        this.showCategory = showCategory
+        this.showCategory.set(showCategory)
     }
     ngOnInit() {
         goTop()
         if (this.itemType()) this.setSelection(this.itemType())
-        this.route.queryParams.subscribe((params: QueryParam) => {
-            if (params.query) {
-                if (this.query()) {
-                    const filterSubscription = this.searchService.getFilter(this.query()!).subscribe((filter) => {
-                        this.filter = filter
-                        this.setSelection(this.filter?.itemType)
-                    })
-                    this.subscriptions.push(filterSubscription)
-                }
-            }
-        })
     }
     //#endregion
 
@@ -210,6 +197,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     //#endregion
     goToResult(filter: Filter) {
         this.loadingService.open('Зареждане на резултатите')
+        filter.loaded = 0
         console.log("filter", filter)
         this.searchService.search(filter).subscribe({
             next: (res) => {

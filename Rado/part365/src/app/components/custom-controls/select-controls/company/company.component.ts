@@ -1,5 +1,5 @@
 //#region @Component
-import { Component, ElementRef, HostListener, inject, Inject, OnInit } from '@angular/core'
+import { Component, HostListener, inject, Inject, OnInit } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
 import { SelectBase } from '@components/custom-controls/selectBase'
 import { NgClass } from '@angular/common'
@@ -26,7 +26,6 @@ export class CompanyComponent extends SelectBase implements OnInit {
         return true
     }
     //#region members
-    value?: string
     _index = 0
     showAll = true
     placeHolder?: string
@@ -37,8 +36,8 @@ export class CompanyComponent extends SelectBase implements OnInit {
     ]
     @Inject(MAT_DIALOG_DATA) public data: DialogData = inject(MAT_DIALOG_DATA)
     public dialogRef: MatDialogRef<CompanyComponent> = inject(MatDialogRef<CompanyComponent>)
-    private elem: ElementRef = inject(ElementRef)
-    //#endregion
+
+    //#endregioninput
     constructor() {
         super()
     }
@@ -51,7 +50,7 @@ export class CompanyComponent extends SelectBase implements OnInit {
         this.showCount = this.data.showCount
         this.useLetter = this.data.useLetter
         this.groupSelection = this.data.groupSelection
-        this._value = this.data.value
+        this.value.set(this.data.value)
         this.multiSelection = this.data.multiSelection
         this.groupDisabled = this.data.groupDisabled
         this.placeHolder = this.data.placeHolder ?? 'Избери'
@@ -71,7 +70,7 @@ export class CompanyComponent extends SelectBase implements OnInit {
     }
 
     clearSelection() {
-        this.selections = []
+        this.selections.set([])
         this.letterSelected = undefined
         this.clear()
         this._data.forEach((item) => (item.isSelected = false))
@@ -84,7 +83,7 @@ export class CompanyComponent extends SelectBase implements OnInit {
     }
 
     close() {
-        this.dialogRef.close(this.selections)
+        this.dialogRef.close(this.selections())
         return
     }
 
@@ -92,29 +91,24 @@ export class CompanyComponent extends SelectBase implements OnInit {
         if (!item.isSelectable) return
 
         if (item.isSelected) {
-            const index = this.selections.findIndex((elem) => elem == item.id!)
+            const index = this.selections().findIndex((elem) => elem == item.id!)
             item.isSelected = !item.isSelected
-            this.selections.splice(index, 1)
-            this.value = ''
+            this.selections.update((current) => current.filter((_, i) => i !== index))
         } else {
-            this.value = item.id!.toString()
-            this.selections.push(item.id!)
+            this.selections.update((current) => [...current, item.id!])
             item.isSelected = !item.isSelected
             if (!this.multiSelection) {
-                this.dialogRef.close(this.value)
+                this.dialogRef.close(this.selections())
             }
         }
-
-        this.updateSelection()
     }
 
     deleteSelection($event: number) {
         const index = this._data.findIndex((item) => item.id == $event)
         this._data[index].isSelected = false
-        const index2 = this.selections.findIndex((item) => item == $event)
-        this.selections.splice(index2, 1)
-
-        this.updateSelection()
+        const index2 = this.selections().findIndex((item) => item == $event)
+        this.selections.update((current) => current.filter((_, i) => i !== index2))
+        console.log(`Delete Selection: ${$event} Selections: ${this.selections()}`)
     }
 
     changed(event: number) {

@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, DestroyRef, Inject, Input, OnDestroy, OnInit, DOCUMENT, inject, input, output, effect, signal } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, Inject, Input, OnDestroy, OnInit, DOCUMENT, inject, input, output, effect, signal, viewChild, computed } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
 import { NavigatorComponent } from '@app/search/result/navigator/navigator.component'
@@ -46,8 +46,8 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     sortType = input<SortType>(SortType.YearAsc)
     hasSort = input<boolean>(true)
     showPhones = input<boolean>(true)
-    showFavourite = input<boolean>(true)
-    showDealer = input<boolean>(true)
+    showFavourite = input(true)
+    showDealer = input(true)
     query = input<number | undefined>()
     userId = input<number | undefined>()
     page = input<number>(1)
@@ -59,6 +59,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     viewPart = output<number>()
     pageChanged = output<number>()
 
+    topbarRef = viewChild<HTMLElement>('topbar');
     private homeService: HomeService = inject(HomeService)
     private route: ActivatedRoute = inject(ActivatedRoute)
     private userService: UserService = inject(UserService)
@@ -82,7 +83,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     scrollToTopFlag = false
     notPositioned?: boolean
     dataManager?: DataManager
-    highlighted = 0
+    highlighted = undefined as number | undefined
     updateItem?: DisplayPartView
     updateId?: number
     filters: { id: number; text: string }[] = []
@@ -92,9 +93,32 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
     //#endregion
 
+    label = computed(() => { 
+        return `Show Dealer: ${this.showDealer()} Show Fav: ${this.showFavourite()}`
+    })      
+    
     constructor() {
         super()
 
+        goTop()
+        effect(() => { 
+            console.log(`ResultComponent: label() : ${this.label()}`)
+        })
+        effect(() => {
+            console.log(`ResultComponent: highlighted() : ${this.highlighted}`)
+            console.log(`ResultComponent: showDealer : ${this.showDealer()}`)
+        })  
+        effect(() => {
+            if (this.topbarRef()) {
+                if (this.highlighted) {
+                    goToPosition(this.highlighted, 0)
+                }
+                else {
+                    goTop()
+                }
+                console.log(`ResultComponent: topbarRef() : ${this.topbarRef()}`)
+            }
+        })
         effect(() => {
             console.log(`ResultComponent: query() : ${this.query()}`)
             this.query()
@@ -113,6 +137,9 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             this.highlighted = this.id() ?? 0;
         })
 
+        effect(() => {
+            console.log(`ResultComponent: numberPages() : ${this.numberPages()}`)
+        })
         // effect(() => {
         //     this.sortType_ = this.sortType()
         //     this.updateManagerFromQuery()
@@ -120,6 +147,8 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     ngOnInit() {
+        console.log(`ResultComponent: ngOnInit() : query() : ${this.query()} userId() : ${this.userId()} id() : ${this.id()} currentId() : ${this.showDealer()}`)
+        setTimeout(() => window.scrollTo({  top: 0, behavior: 'smooth' }), 0);
         this.notPositioned = true
         if (this.userId_) this.userService.userPageObj.next(this.userId_)
         else this.userService.userPageObj.next(0)

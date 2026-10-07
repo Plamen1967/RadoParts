@@ -1,5 +1,5 @@
 //#region imports
-import { inject, Injectable } from '@angular/core'
+import { inject, Injectable, signal } from '@angular/core'
 import { DataManager } from '@model/dataManager'
 import { SearchResult } from '@model/searchResult'
 import { DisplayPartView, Enrich } from '@model/displayPartView'
@@ -14,6 +14,8 @@ import { StaticSelectionService } from './staticSelection.service'
 })
 //#endregion
 export class HomeService {
+
+    public showBackgroundImage = signal<boolean>(true)
     //#region variables and services
     dataManagers: Map<number, DataManager> = new Map<number, DataManager>()
 

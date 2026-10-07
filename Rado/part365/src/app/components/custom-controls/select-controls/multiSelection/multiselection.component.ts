@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, DestroyRef, inject, model, input, effect, output } from '@angular/core'
+import { Component, ElementRef, ViewChild, OnInit, DestroyRef, inject, model, input, effect, output, computed } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { SelectionItem } from '@model/selectionItem'
 import { ErrorService } from '@services/error.service'
@@ -28,19 +28,14 @@ export class MultiSelectionComponent implements FormValueControl<string | number
     _letters: string[] = []
     _selection = ' '
     initialValue = ''
-    initialIDs?: number[]
-    width = '100px'
     letterItem = undefined
     active = false
     selections: Set<number> = new Set<number>()
-    selectedValues?: SelectionItem[]
     selection?: string
 
-    clearBox?: boolean
     errorMessage?: string
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    changeOption = output<any>()
+    changeOption = output<string>()
     changeOptions = output<Set<number>>()
     closeDialog = output<ElementRef>()
     groupSelection = input<boolean>(false)
@@ -64,11 +59,47 @@ export class MultiSelectionComponent implements FormValueControl<string | number
     public errorService: ErrorService = inject(ErrorService)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
+    initialIDs = computed(() => {
+        if (this.multiSelection()) {
+            const models = this.value()
+            console.log(`models`, models)
+            if (this.value() && this.value() != '') {
+                const ids = this.value().toString().split(',')
+                const arr = ids.map((id) => +id)
+                return arr
+            } else {
+                return []
+            }
+        } else {
+            return []
+        }
+    })
+
+    clearBox = computed<boolean>(() => {
+
+        if (this.value() && this.value() != 0) {
+            this.selection = this.placeHolder()?.replace('Избери', 'Добави')
+            return true
+        } else {
+            this.selection = this.placeHolder()
+            return false
+        }
+    })
+
+    selectedValues = computed(() => {
+        this.initialIDs()
+        this.data()
+        return this.getSelectedValues()
+    })
+
     constructor() {
+        effect(() => console.log(`Multi Selection Value constructor`, this.value()))
         effect(() => {
             const data_ = this.data()
             this.setData(data_)
         })
+
+        effect(() => console.log(`initial IDS`, this.initialIDs()))
     }
 
     setDisabledState?(isDisabled: boolean): void {
@@ -79,17 +110,8 @@ export class MultiSelectionComponent implements FormValueControl<string | number
         if (data_) {
             this._data = [...data_]
         }
-
-        this.selectedValues = this.getSelectedValues()
-        this.setClearBox(!!this.selectedValues?.length)
-        this.value.set(this.initialValue)
     }
 
-    setClearBox(clearBox: boolean) {
-        this.clearBox = clearBox
-        if (this.clearBox) this.selection = this.placeHolder()?.replace('Избери', 'Добави')
-        else this.selection = this.placeHolder()
-    }
 
     ngOnInit() {
         this._selection = this.placeHolder()?.replace('Избери', 'Добави') ?? ''
@@ -98,6 +120,8 @@ export class MultiSelectionComponent implements FormValueControl<string | number
 
     clickSelect() {
         if (!this._data) return
+
+        //const selection = this.initialIDs?.().map((element: number) => element.toString) ?? []
         const dialogRef = this.dialog.open(CompanyComponent, {
             height: '100%',
             width: '100%',
@@ -111,7 +135,7 @@ export class MultiSelectionComponent implements FormValueControl<string | number
                 useFilter: this.useFilter ?? false,
                 showCount: this.showCount,
                 groupSelection: this.groupSelection ?? true,
-                value: this.initialIDs ? this.initialIDs.join(',') : '',
+                value: this.initialIDs?.().join(',') ?? '',
                 multiSelection: true,
                 groupDisabled: this.groupDisabled,
                 placeHolder: this.placeHolder,
@@ -127,34 +151,30 @@ export class MultiSelectionComponent implements FormValueControl<string | number
 
     clear() {
         this.initialValue = ''
-        this.change([])
-    }
-
-    writeValue(value: string): void {
-        this.initialValue = value
-        if (value?.length > 0) {
-            const arr: string[] = this.initialValue?.split(',') ?? []
-            this.initialIDs = arr.map((id) => +id)
-        } else this.initialIDs = []
-        this.selectedValues = this.getSelectedValues()
-        this.setClearBox(!!this.selectedValues?.length)
+        if (this.multiSelection()) 
+        {
+            this.value.set('')
+            this.changeOption.emit(this.value().toString())
+        } else {
+            this.value.set(0)
+            this.changeOption.emit(this.value().toString())
+        }
     }
 
     change(value: number[]) {
-        value = value.map((item) => +item)
-        this.initialValue = [...value].join(',')
-        this.initialIDs = [...value]
-        this.selectedValues = this.getSelectedValues()
-        this.setClearBox(!!this.selectedValues?.length)
-        this.value.set(this.initialValue)
+        const values = value.map((item) => item.toString())
+        this.value.set(values.join(','))
         this.changeOptions.emit(new Set([...value]))
+        this.changeOption.emit(this.value().toString())
     }
+
+
 
     getSelectedValues(): SelectionItem[] {
         let data = this._data ?? []
-        if (!this.initialIDs) return []
-        if (this.initialIDs?.length === 0) return []
-        const selections = new Set([...this.initialIDs])
+        const initialIDs = this.initialIDs()
+        if (initialIDs.length === 0) return []
+        const selections = new Set(initialIDs)
         let result = []
         data = data?.filter((item) => selections?.has(item.id!))
         if (data) {
@@ -168,9 +188,10 @@ export class MultiSelectionComponent implements FormValueControl<string | number
     }
 
     deleteSelection(id: number) {
-        let arr = (this.initialValue?.split(',') ?? []).map((id) => +id)
-        arr = arr.filter((item) => +item != id)
-        this.initialValue = arr.join(',')
-        this.change(arr)
+        const initialIDs = this.initialIDs()
+        const index = initialIDs.findIndex((item) => item == id)
+        initialIDs.splice(index, 1)
+        this.initialValue = initialIDs.join(',')
+        this.change(initialIDs)
     }
 }

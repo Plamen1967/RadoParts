@@ -1,41 +1,41 @@
-<form>
-    @if (multiselection()) {
-        <app-multiselection
-            id="modelId"
-            label="Модел"
-            [formField]="form.modelsId_int"
-            placeHolder="Избери модел"
-            [appToolTip]="'Избери модела'"
-            [groupSelection]="groupSelection()"
-            [data]="models()"
-            [showLetter]="showLetter()"
-            [multiSelection]="multiselection()"
-            [useLetter]="useLetter()"
-            [useFilter]="useFilter()"
-            [submitted]="submitted()"
-            [showCount]="showCount()"
-            [IsRequired]="IsRequired()"
-            data-cy="modelsId"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            (onCloseEvent)="focus()">
-        </app-multiselection>
-    } @else {
-        <app-customselect
-            id="modelId"
-            [formField]="form.modelId"
-            [data]="models()"
-            label="Модел"
-            [groupSelection]="false"
-            [IsRequired]="IsRequired()"
-            [placeHolder]="'Избери модел'"
-            [appToolTip]="'Избери модел'"
-            [useFilter]="useFilter()"
-            [submitted]="submitted()"
-            [showCount]="showCount()"
-            data-cy="modelsId"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right">
-        </app-customselect>
-    }
-</form>
+@if (multiselection()) {
+    <app-multiselection
+        id="modelId"
+        label="Модел"
+        [value]=value()
+        placeHolder="Избери модел"
+        [appToolTip]="'Избери модела'"
+        [groupSelection]="groupSelection()"
+        [data]="models()"
+        [showLetter]="showLetter()"
+        [multiSelection]="multiselection()"
+        [useLetter]="useLetter()"
+        [useFilter]="useFilter()"
+        [submitted]="submitted()"
+        [showCount]="showCount()"
+        [IsRequired]="IsRequired()"
+        data-cy="modelsId"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        (changeOption)="value.set($event)"
+        (onCloseEvent)="focus()">
+    </app-multiselection>
+} @else {
+    <app-customselect
+        id="modelId"
+        [value]=value()
+        [data]="models()"
+        label="Модел"
+        [groupSelection]="false"
+        [IsRequired]="IsRequired()"
+        [placeHolder]="'Избери модел'"
+        [appToolTip]="'Избери модел'"
+        [useFilter]="useFilter()"
+        [submitted]="submitted()"
+        [showCount]="showCount()"
+        (changeOption)="value.set($event)"
+        data-cy="modelsId"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right">
+    </app-customselect>
+}

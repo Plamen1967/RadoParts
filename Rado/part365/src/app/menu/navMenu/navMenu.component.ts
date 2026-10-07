@@ -1,5 +1,5 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, OnInit } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, OnInit, effect } from '@angular/core'
 import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -31,6 +31,7 @@ import { inject, signal } from '@angular/core'
 import { MatIconModule } from '@angular/material/icon'
 import { MenuService } from '@services/Menu.service'
 import { LoginComponent } from '@app/admin/components/admin/user/login/login.component'
+import { HomeService } from '@services/home.service'
 //#endregion
 
 //#region component
@@ -86,9 +87,15 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
     confirmService = inject(ConfirmServiceService)
     staticSelectionService = inject(StaticSelectionService)
     document = inject(DOCUMENT)
+    homeService = inject(HomeService)
     menuService = inject(MenuService)
 
     constructor() {
+
+        effect(() => {
+            console.log('showBackgroundImage', this.homeService.showBackgroundImage())
+        })
+        
         super()
         this.checkOutService.checkout.subscribe(() => this.checkoutUpdate())
         this.userService.userPage.subscribe((userId) => {
@@ -106,9 +113,9 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
     ngOnInit() {
          this.router.events.subscribe((event) => {
         if (event instanceof NavigationStart) {
-        const value = this.router.url == '/' || this.router.url.startsWith('/?') ? true : false
-        console.log(`This route: ${this.router.url}`)
-        this.displayBanner.set(value)
+        const value = event.url == '/' || event.url.startsWith('/?') ? true : false
+        console.log('navMenu', event.url, value)
+        this.homeService.showBackgroundImage.set(value)
        }})
     }
     ngOnDestroy(): void {
@@ -247,6 +254,8 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
 
     get isHome() {
         const isHome = this.router.url === '/' || this.router.url.length === 0
+        this.homeService.showBackgroundImage.set(isHome)
+        console.log('isHome', isHome, this.router.url)
         return isHome
     }
 

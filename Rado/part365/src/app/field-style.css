@@ -1,6 +1,8 @@
 .select__margin {
     padding-top: 0.45rem;
     padding-bottom: 0.45rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
 }
 .select__container
 {

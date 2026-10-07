@@ -190,6 +190,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     //#region ctor
     constructor() {
         effect(() => {
+            console.log(`Show Dealer: ${this.showDealer()} Show Fav: ${this.showFavourite()} Allow Update: ${this.allowUpdate()} Allow Buy: ${this.allowBuy()} Allow View: ${this.allowView()}`)
             if (!this.next()) this.nextArrow = true
             else this.nextArrow = undefined
 

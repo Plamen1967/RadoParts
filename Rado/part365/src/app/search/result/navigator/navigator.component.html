@@ -32,12 +32,12 @@
                         @for (item of arrayPages; track item) {
                             <button
                                 class="ms-1 me-1 pe-1 ps-1 btn-sm btn btnSize"
-                                [ngClass]="{ 'btn-primary': currentPage_ !== item, 'border-primary': currentPage_ === item, 'btn-light': currentPage_ === item }"
+                                [ngClass]="{ 'btn-primary': currentPage() !== item, 'border-primary': currentPage() === item, 'btn-light': currentPage() === item }"
                                 (click)="click(item)">
                                 {{ item }}
                             </button>
                         }
-                        <button type="button" tooltip="'Следваща страница'" class="btn btn-primary" [hidden]="currentPage === numberPages" (click)="nextPage()">
+                        <button type="button" tooltip="'Следваща страница'" class="btn btn-primary" [hidden]="currentPage() === numberPages()" (click)="nextPage()">
                             <span class="material-symbols-outlined arrow-font"> arrow_forward </span>
                         </button>
                     </div>

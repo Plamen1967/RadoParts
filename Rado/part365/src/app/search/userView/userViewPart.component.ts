@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, DestroyRef, effect, HostListener, inject, input, Input, OnInit, output } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, effect, HostListener, inject, input, Input, OnInit, output, signal } from '@angular/core'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -46,7 +46,7 @@ import { LoginComponent } from '@app/admin/components/admin/user/login/login.com
 export class UserViewPartComponent extends HelperComponent implements OnInit, AfterViewInit {
     //#region members
     price?: string
-    item?: DisplayPartView
+    item = signal<DisplayPartView>(new DisplayPartView())
     isSaved = false
     images: ImageData[] = []
     isCar = false
@@ -153,22 +153,27 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         if (this.userPage) this.showFavourite = false
         if (this.pathService.userPage) this.canEdit = false
         effect(() => {
-            if (this.id() && this.query()) {
-                const manager = this.homeService.getDataManager(this.query()!)
+            console.log(`User View Part Component ${this.query()} ${this.userId()} ${this.id()} ${this.currentViewId()}`)
+        })
+
+        effect(() => {
+            if ((this.userId() || this.query()) && this.id()) {
+                const id = this.userId() ?? this.query()
+                const manager = this.homeService.getDataManager(id!)
                 if (!manager) {
                     this.searchService
-                        .getSearchResult(+this.id()!)
+                        .getSearchResult(+id!)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe({
                             next: (result) => {
-                                this.homeService.addDataManager(+this.query()!, result)
-                                const dataManager = this.homeService.getDataManager(this.query()!)
+                                this.homeService.addDataManager(+id!, result)
+                                const dataManager = this.homeService.getDataManager(id!)
                                 if (dataManager) {
                                     dataManager.searchResult = result
                                     dataManager.currentId = this.id()!
                                 }
-                                this.item = dataManager?.allParts?.find((part) => part.id == this.id())
-                                this.initPart(this.item!)
+                                this.item.set(dataManager?.allParts?.find((part) => part.id == this.id()) ?? {} as DisplayPartView)
+                                this.initPart(this.item())
                             },
                             error: (error) => {
                                 console.log(error)
@@ -176,16 +181,16 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                             complete: () => (this.loading = false),
                         })
                 } else {
-                    this.item = manager?.allParts?.find((part) => part.id == this.id())
-                    if (!this.item) {
+                    this.item.set(manager?.allParts?.find((part) => part.id == this.id()) ?? {} as DisplayPartView)
+                    if (!this.item()) {
                         this.fetchPart()
-                    } else this.initPart(this.item)
+                    } else this.initPart(this.item())
                 }
             } else {
                 if (this.partView()) {
-                    this.item = this.partView()
-                    this.isPart = isPart(this.item!.itemType!)
-                    this.isTyre = this.item!.itemType === ItemType.Tyre || this.item!.itemType === ItemType.Rim || this.item!.itemType === ItemType.RimWithTyre
+                    this.item.set(this.partView()!)
+                    this.isPart = isPart(this.item().itemType!)
+                    this.isTyre = this.item().itemType === ItemType.Tyre || this.item().itemType === ItemType.Rim || this.item().itemType === ItemType.RimWithTyre
                     this.isSaved = this.localStorageService.isSaved(this.id()!)
                 } else if (this.currentViewId()) {
                     this.fetchPart()
@@ -301,8 +306,8 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                 .subscribe({
                     next: (displayView) => {
                         this.partService.currentPartId = this.id()!
-                        this.item = displayView
-                        this.initPart(this.item)
+                        this.item.set(displayView as DisplayPartView)
+                        this.initPart(this.item())
                     },
                     error: (error) => {
                         console.log(error)
@@ -359,29 +364,25 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     }
 
     initPart(part: DisplayPartView) {
-        this.item = { ...part }
-        this.item.companyName = part.companyName
-        this.item.modelName = part.modelName
-        this.item.modificationName = part.modificationName
-        this.isSaved = this.item ? this.localStorageService.isSaved(this.item.id!) : false
+        this.isSaved = this.item() ? this.localStorageService.isSaved(this.item().id!) : false
         this.isMobile = isMobile()
-        if (this.logged && this.authenticationService.currentUserValue?.userId === this.item?.userId) this.canEdit = true
+        if (this.logged && this.authenticationService.currentUserValue?.userId === this.item()?.userId) this.canEdit = true
 
-        this.isPart = isPart(this.item.itemType!)
-        this.isTyre = this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre
-        this.price = this.item?.price?.toString()
+        this.isPart = isPart(this.item().itemType!)
+        this.isTyre = this.item().itemType === ItemType.Tyre || this.item().itemType === ItemType.Rim || this.item().itemType === ItemType.RimWithTyre
+        this.price = this.item()?.price?.toString()
 
-        this.phone1 = this.item.sellerPhone
+        this.phone1 = this.item().sellerPhone
 
-        this.phone2 = this.item.sellerPhone2
-        this.viber = this.item.sellerViber
-        this.whats = this.item.sellerWhats
+        this.phone2 = this.item().sellerPhone2
+        this.viber = this.item().sellerViber
+        this.whats = this.item().sellerWhats
         this.loading = false
 
-        this.showRequest = this.logged && this.logged.userId != this.item.userId
+        this.showRequest = this.logged && this.logged.userId != this.item()?.userId
         if (part.ngImages) this.images2 = [...part.ngImages]
         if (this.dataManager) {
-            this.dataManager._currentId = this.item.id
+            this.dataManager._currentId = this.item()?.id
             console.log(`Current id ${this.dataManager?._currentId}`)
         }
 
@@ -479,7 +480,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
 
     //#endregion
     change() {
-        this.updatedItem = this.item
+        this.updatedItem = this.item()
         this.router.navigate(['/viewPart'], {
             queryParams: { updateId: this.updatedItem?.id },
             queryParamsHandling: 'merge',
@@ -509,13 +510,13 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     onDelete() {
         if (!this.item) return
 
-        if (this.item.itemType === ItemType.OnlyCar) this.message = `Искате ли да изтриете колата?`
-        else if (this.item.itemType === ItemType.CarPart) this.message = `Искате ли да изтриете частта за колата?`
-        else if (this.item.itemType === ItemType.OnlyBus) this.message = `Искате ли да изтриете буса?`
-        else if (this.item.itemType === ItemType.BusPart) this.message = `Искате ли да изтриете частта за буса?`
-        else if (this.item.itemType === ItemType.Tyre) this.message = `Искате ли да изтриете Гумата?`
-        else if (this.item.itemType === ItemType.Rim) this.message = `Искате ли да изтриете Джантата?`
-        else if (this.item.itemType === ItemType.RimWithTyre) this.message = `Искате ли да изтриете Джантата с гума?`
+        if (this.item().itemType === ItemType.OnlyCar) this.message = `Искате ли да изтриете колата?`
+        else if (this.item().itemType === ItemType.CarPart) this.message = `Искате ли да изтриете частта за колата?`
+        else if (this.item().itemType === ItemType.OnlyBus) this.message = `Искате ли да изтриете буса?`
+        else if (this.item().itemType === ItemType.BusPart) this.message = `Искате ли да изтриете частта за буса?`
+        else if (this.item().itemType === ItemType.Tyre) this.message = `Искате ли да изтриете Гумата?`
+        else if (this.item().itemType === ItemType.Rim) this.message = `Искате ли да изтриете Джантата?`
+        else if (this.item().itemType === ItemType.RimWithTyre) this.message = `Искате ли да изтриете Джантата с гума?`
 
         this.contirmationService
             .OKCancel(this.labels.MESSAGE, this.message!)
@@ -530,20 +531,20 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     ok() {
         if (!this.item) return
 
-        if (this.item.itemType === ItemType.OnlyCar) this.deleteCar()
-        else if (this.item.itemType === ItemType.OnlyBus) this.deleteCar()
-        else if (this.item.itemType === ItemType.CarPart || this.item.itemType === ItemType.BusPart) this.deletePart()
-        else if (this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre) this.deleteTyre()
+        if (this.item().itemType === ItemType.OnlyCar) this.deleteCar()
+        else if (this.item().itemType === ItemType.OnlyBus) this.deleteCar()
+        else if (this.item().itemType === ItemType.CarPart || this.item().itemType === ItemType.BusPart) this.deletePart()
+        else if (this.item().itemType === ItemType.Tyre || this.item().itemType === ItemType.Rim || this.item().itemType === ItemType.RimWithTyre) this.deleteTyre()
     }
 
     deleteCar() {
-        if (!this.item) return
+        if (!this.item()) return
         this.carService
-            .deleteCar(this.item.id!)
+            .deleteCar(this.item().id!)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    if (this.item) this.homeService.deleteCar(this.item.id!)
+                    if (this.item()) this.homeService.deleteCar(this.item().id!)
                     this.popupService
                         .openWithTimeout(this.labels.MESSAGE, 'Колата е успешно изтрита')
                         .pipe(takeUntilDestroyed(this.destroyRef))
@@ -565,11 +566,11 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     deletePart() {
         if (!this.item) return
         this.partService
-            .deletePart(this.item.id!)
+            .deletePart(this.item().id!)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    if (this.item) this.homeService.deletePart(this.item.id!)
+                    if (this.item()) this.homeService.deletePart(this.item().id!)
                     this.popupService
                         .openWithTimeout(this.labels.MESSAGE, 'Частта е успешно изтрита')
                         .pipe(takeUntilDestroyed(this.destroyRef))
@@ -588,14 +589,14 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     }
 
     deleteTyre() {
-        if (!this.item) return
+        if (!this.item()) return
         this.tyreService
-            .deleteItem(this.item.id!)
+            .deleteItem(this.item().id!)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    if (!this.item) return
-                    this.homeService.deleteCar(this.item.id!)
+                    if (!this.item()) return
+                    this.homeService.deleteCar(this.item().id!)
                     this.popupService
                         .openWithTimeout(this.labels.MESSAGE, 'Гумата е успешно изтрита')
                         .pipe(takeUntilDestroyed(this.destroyRef))
@@ -615,9 +616,9 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
     goTo() {
         if (this.nextPart) {
             if (this.nextPart.isCar) {
-                this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query}`, id: `${this.nextPart.id}` } })
+                this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query()}`, id: `${this.nextPart.id}` } })
             } else {
-                this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query}`, id: `${this.nextPart.id}` } })
+                this.router.navigate([`/viewPart`], { queryParams: { query: `${this.query()}`, id: `${this.nextPart.id}` } })
             }
         } else {
             this.router.navigate([`/`])
@@ -630,7 +631,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
             this.dataManager.currentId = 0
             this.homeService.setDataManager(0, this.dataManager)
         }
-        if (this.query) this.router.navigate([`/`], { queryParams: { query: this.query } })
+        if (this.query()) this.router.navigate([`/`], { queryParams: { query: this.query() } })
         else {
             this.router.navigate([`/`])
         }
@@ -638,7 +639,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
 
     goResult() {
         if (this.dataManager) {
-            this.dataManager.currentId = this.item?.id ?? 0
+            this.dataManager.currentId = this.item()?.id ?? 0
             this.dataManager.displayFilter = false
         }
         this.router.navigate([`/`])
@@ -646,11 +647,12 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
 
     goBack() {
         if (this.dataManager) {
-            this.dataManager.currentId = this.item?.id ?? 0
+            this.dataManager.currentId = this.item()?.id ?? 0
             this.dataManager.displayFilter = false
         }
-        if (this.query) {
-            this.router.navigate([`/results/`], { queryParams: { query: this.query(), id: this.item?.id } })
+        if (this.query()) {
+            const page = this.dataManager?.currentPage ?? 1
+            this.router.navigate([`/results/`], { queryParams: { query: this.query(), id: this.item()?.id, page } })
             this.back.emit(this.query()!)
             return
         }
@@ -666,7 +668,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         this.searchPartService.getItem(event).subscribe({
             next: (part) => {
                 this.dataManager?.updateItem(part)
-                this.item = { ...part }
+                this.item.update((value) => { return {...value, ...part } })
             },
             error: (error) => {
                 this.loggerService.logError(error)

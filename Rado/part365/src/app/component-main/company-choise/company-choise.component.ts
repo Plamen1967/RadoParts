@@ -46,7 +46,7 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     //#endregion
     constructor() {
         effect(() => {
-            console.log("Select Company Value", this.value() )
+            console.log( "Company Choice Value", this.value() )
         })
 
         effect(() => {

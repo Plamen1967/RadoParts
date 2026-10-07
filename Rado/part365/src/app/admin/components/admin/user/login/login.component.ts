@@ -115,7 +115,7 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         // this.formGroup = this.loginForm
 
         effect(() => {
-            if (this.loginFormModel().userName) this.loginFormModel.update((value) => ({ ...value, password: '', confirmPassword: '' }))
+            //if (this.loginFormModel().userName) this.loginFormModel.update((value) => ({ ...value, password: '', confirmPassword: '' }))
         })
         if (this.authenticationService.currentUserValue) {
             this.router.navigate(['/'])

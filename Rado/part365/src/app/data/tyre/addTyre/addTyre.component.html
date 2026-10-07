@@ -10,7 +10,7 @@
     <div class="title">{{ tyreDescription }}</div>
     <form class="p-2" style="background-color: rgb(11, 245, 233)" autocomplete="off">
         <div class="custom-flex">
-            <div [ngClass]="{ show: $safeNavigationMigration(params?.ad), noShow: !params?.ad }">
+            <div [ngClass]="homeService.showBackgroundImage() ? 'show' : 'noShow'">
                 <div class="custom-flex">
                     <div class="ps-0" [ngStyle]="{ display: 'flex' }">
                         <app-radiogrouplist [style]="2" [radios]="radioTypes" controlName="itemTypeName" formControlName="itemType"></app-radiogrouplist>

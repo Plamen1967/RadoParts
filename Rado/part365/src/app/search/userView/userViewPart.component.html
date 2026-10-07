@@ -2,158 +2,152 @@
     <div class="data-container">
         <div class="leftPanel"></div>
         <div class="mt-2">
-            <ng-container>
-                <div id="top">
-                    <div class="text-dark mb-3 viewContainer p-0" [ngStyle]="{ display: displayValue }">
-                        <!--  -->
-                        @if (showNavigation && this.dataManager) {
-                            <div class="button-top">
-                                <div class="row">
-                                    <div class="my-3 transparant">
-                                        <div class="text-center">
-                                            <button
-                                                mat-raised-button
-                                                matTooltip="Предишен"
-                                                matTooltipPosition="above"
-                                                type="button"
-                                                [ngStyle]="{ opacity: first ? '0' : '100' }"
-                                                class="btn btn-primary buttonSize me-2"
-                                                (click)="previousElem()">
-                                                <span class="material-icons"> west </span>
+            <div id="top">
+                <div class="text-dark mb-3 viewContainer p-0" [ngStyle]="{ display: displayValue }">
+                    <!--  -->
+                    @if (showNavigation && this.dataManager) {
+                        <div class="button-top">
+                            <div class="row">
+                                <div class="my-3 transparant">
+                                    <div class="text-center">
+                                        <button
+                                            mat-raised-button
+                                            matTooltip="Предишен"
+                                            matTooltipPosition="above"
+                                            type="button"
+                                            [ngStyle]="{ opacity: first ? '0' : '100' }"
+                                            class="btn btn-primary buttonSize me-2"
+                                            (click)="previousElem()">
+                                            <span class="material-icons"> west </span>
+                                        </button>
+                                        @if (!last) {
+                                            <button type="button" class="btn btn-primary buttonSize ms-2" mat-raised-button matTooltip="Следващ" matTooltipPosition="above" (click)="nextElem()">
+                                                <span class="material-icons"> east </span>
                                             </button>
-                                            @if (!last) {
-                                                <button type="button" class="btn btn-primary buttonSize ms-2" mat-raised-button matTooltip="Следващ" matTooltipPosition="above" (click)="nextElem()">
-                                                    <span class="material-icons"> east </span>
-                                                </button>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                                <div lass="mt-2 mt-5 me-2">
-                                    <div class="d-grid gap-2 d-md-block text-center">
-                                        <button type="button" class="btn btn-primary active me-2" (click)="goBack()"><i class="las la-reply"></i> Назад</button>
-                                        @if (displayButton) {
-                                            <button type="button" class="btn btn-primary active me-2" (click)="goSearch()"><i class="las la-filter me-1"></i>{{ labels.TOSEARCH }}</button>
                                         }
                                     </div>
                                 </div>
                             </div>
-                        }
-                        @if (item) {
-                            <div class="itemContainer">
-                                <div class="description col-sm-6 border-container">
-                                    <div class="position-relative">
-                                        @if (showFavourite) {
-                                            <app-favourite [id]="item.id"></app-favourite>
+                            <div lass="mt-2 mt-5 me-2">
+                                <div class="d-grid gap-2 d-md-block text-center">
+                                    <button type="button" class="btn btn-primary active me-2" (click)="goBack()"><i class="las la-reply"></i> Назад</button>
+                                    @if (displayButton) {
+                                        <button type="button" class="btn btn-primary active me-2" (click)="goSearch()"><i class="las la-filter me-1"></i>{{ labels.TOSEARCH }}</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (item().id) {
+                        <div class="itemContainer">
+                            <div class="description col-sm-6 border-container">
+                                <div class="position-relative">
+                                    @if (showFavourite) {
+                                        <app-favourite [id]="item().id"></app-favourite>
+                                    }
+                                </div>
+                                <div class="d-flex m-2" style="width: 100%; height: 260px; justify-content: center">
+                                    @if (images2 && images2.length) {
+                                        <app-image-carousel [images]="images2" style="width: 100%; height: inherit"> </app-image-carousel>
+                                    } @else {
+                                        @if (!this.loadingPictures) {
+                                            <div style="width: '260px'; height: '260px'">
+                                                <img loading="lazy" src="assets/NoImage.jpg" [ngStyle]="{ 'object-fit': 'contain', 'max-width': '100%', height: '100%', overflow: 'hidden' }" alt="" />
+                                            </div>
                                         }
-                                    </div>
-                                    <div class="d-flex m-2" style="width: 100%; height: 260px; justify-content: center">
-                                        @if (images2 && images2.length) {
-                                            <app-image-carousel [images]="images2" style="width: 100%; height: inherit"> </app-image-carousel>
-                                        } @else {
-                                            @if (!this.loadingPictures) {
-                                                <div style="width: '260px'; height: '260px'">
-                                                    <img
-                                                        loading="lazy"
-                                                        src="assets/NoImage.jpg"
-                                                        [ngStyle]="{ 'object-fit': 'contain', 'max-width': '100%', height: '100%', overflow: 'hidden' }"
-                                                        alt="" />
-                                                </div>
-                                            }
-                                        }
-                                    </div>
-                                    <div class="description ps-2 me-2">
-                                        <app-datarow class="item" label="{{ labels.DETAILS }}" value="{{ item.descriptionModel }}"> </app-datarow>
+                                    }
+                                </div>
+                                <div class="description ps-2 me-2">
+                                    <app-datarow class="item" label="{{ labels.DETAILS }}" value="{{ item().descriptionModel }}"> </app-datarow>
 
-                                        @for (tag of item.partTagsMap; track tag[1]) {
+                                    @for (tag of item().partTagsMap; track tag[1]) {
+                                        @if (tag[1]) {
+                                            <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
+                                        }
+                                    }
+                                    @if (item().isRim && item().isTyre) {
+                                        <h5>Джанта с гума</h5>
+                                    }
+
+                                    @if (item().isRim) {
+                                        <div class="label">Дjанта - {{ item().companyName }}</div>
+
+                                        @for (tag of item().rimTagsMap; track tag[1]) {
                                             @if (tag[1]) {
                                                 <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
                                             }
                                         }
-                                        @if (item.isRim && item.isTyre) {
-                                            <h5>Джанта с гума</h5>
-                                        }
+                                    }
+                                    @if (item().isTyre) {
+                                        <div class="mt-1 label">Гума</div>
 
-                                        @if (item.isRim) {
-                                            <div class="label">Джанта - {{ item.companyName }}</div>
-
-                                            @for (tag of item.rimTagsMap; track tag[1]) {
-                                                @if (tag[1]) {
-                                                    <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
-                                                }
+                                        @for (tag of item().tyreTagsMap; track tag[1]) {
+                                            @if (tag[1]) {
+                                                <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
                                             }
                                         }
-                                        @if (item.isTyre) {
-                                            <div class="mt-1 label">Гума</div>
-
-                                            @for (tag of item.tyreTagsMap; track tag[1]) {
-                                                @if (tag[1]) {
-                                                    <app-datarow class="item" label="{{ tag[0] }}" value="{{ tag[1] }}"></app-datarow>
-                                                }
-                                            }
-                                        }
-                                        <!-- @if (isPart) {
+                                    }
+                                    <!-- @if (isPart) {
                       <app-partdetailview [part]="item"></app-partdetailview>
                     }
                     @if (isTyre) {
                       <app-tyredetailview [tyre]="item"></app-tyredetailview>
                       } -->
-                                        @if (item.year) {
-                                            <app-datarow class="item" label="{{ labels.YEAR }}" value="{{ item.year }}"></app-datarow>
-                                        }
-                                        <app-datarow class="item" label="{{ labels.MODIFIEDTIME }}" value="{{ item.modifiedTimeDesc }}"></app-datarow>
-                                        @if (item.price) {
-                                            <app-datarow class="item" label="{{ labels.PRICE }}" data-cy="price" [price]="true" value="{{ price }}"> </app-datarow>
-                                        }
-                                        @if (phones && !isMobile) {
-                                            <app-datarow label="{{ labels.PHONE }}">
-                                                <div class="param col-sm-7">
-                                                    @if (phone1) {
-                                                        <div>
-                                                            <small data-cy="sellerName" class="me-2"><i class="las la-phone-volume"></i> {{ phone1 }} </small>
-                                                        </div>
-                                                    }
-                                                    @if (phone2) {
-                                                        <div>
-                                                            <small data-cy="sellerName"
-                                                                ><i class="las la-phone-volume"></i>
-                                                                {{ phone2 }}
-                                                            </small>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            </app-datarow>
-                                        }
-                                    </div>
-                                    @if (canEdit) {
-                                        <div class="d-flex justify-content-end mb-2 mt-2">
-                                            <button type="button" class="me-2 btn btn-info" (click)="change()">Промени</button>
-                                            <button type="button" class="btn btn-danger" id="part.id" (click)="onDelete()">Изтрий</button>
-                                        </div>
+                                    @if (item().year) {
+                                        <app-datarow class="item" label="{{ labels.YEAR }}" value="{{ item().year }}"></app-datarow>
                                     }
-
-                                    <div lass="mt-2 mt-5 me-2">
-                                        <div class="d-grid gap-2 d-md-block text-center">
-                                            <button type="button" class="btn btn-primary active me-2" (click)="goBack()"><i class="las la-reply"></i> Назад</button>
-                                            @if (displayButton && !checkout) {
-                                                <button type="button" class="btn btn-primary active me-2" (click)="goSearch()"><i class="las la-filter me-1"></i>{{ labels.TOSEARCH }}</button>
-                                            }
-                                        </div>
-                                    </div>
+                                    <app-datarow class="item" label="{{ labels.MODIFIEDTIME }}" value="{{ item().modifiedTimeDesc }}"></app-datarow>
+                                    @if (item().price) {
+                                        <app-datarow class="item" label="{{ labels.PRICE }}" data-cy="price" [price]="true" value="{{ price }}"> </app-datarow>
+                                    }
+                                    @if (phones && !isMobile) {
+                                        <app-datarow label="{{ labels.PHONE }}">
+                                            <div class="param col-sm-7">
+                                                @if (phone1) {
+                                                    <div>
+                                                        <small data-cy="sellerName" class="me-2"><i class="las la-phone-volume"></i> {{ phone1 }} </small>
+                                                    </div>
+                                                }
+                                                @if (phone2) {
+                                                    <div>
+                                                        <small data-cy="sellerName"
+                                                            ><i class="las la-phone-volume"></i>
+                                                            {{ phone2 }}
+                                                        </small>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </app-datarow>
+                                    }
                                 </div>
-                                <div class="dealer col-sm-3">
-                                    <div class="mt-2">
-                                        <app-usercard [viewItem]="item"></app-usercard>
+                                @if (canEdit) {
+                                    <div class="d-flex justify-content-end mb-2 mt-2">
+                                        <button type="button" class="me-2 btn btn-info" (click)="change()">Промени</button>
+                                        <button type="button" class="btn btn-danger" id="part.id" (click)="onDelete()">Изтрий</button>
                                     </div>
-                                    @if (showRequestEmail && !sent) {
-                                        <app-requestbyemail [id]="item.id!" [itemType]="item.itemType" (messageSent)="sent = true"> </app-requestbyemail>
-                                    }
+                                }
+
+                                <div lass="mt-2 mt-5 me-2">
+                                    <div class="d-grid gap-2 d-md-block text-center">
+                                        <button type="button" class="btn btn-primary active me-2" (click)="goBack()"><i class="las la-reply"></i> Назад</button>
+                                        @if (displayButton && !checkout) {
+                                            <button type="button" class="btn btn-primary active me-2" (click)="goSearch()"><i class="las la-filter me-1"></i>{{ labels.TOSEARCH }}</button>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        }
-                    </div>
+                            <div class="dealer col-sm-3">
+                                <div class="mt-2">
+                                    <app-usercard [viewItem]="item()"></app-usercard>
+                                </div>
+                                @if (showRequestEmail && !sent) {
+                                    <app-requestbyemail [id]="item().id!" [itemType]="item().itemType" (messageSent)="sent = true"> </app-requestbyemail>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
-            </ng-container>
+            </div>
         </div>
         <div class="rightPanel"></div>
     </div>

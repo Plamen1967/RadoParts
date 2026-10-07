@@ -17,9 +17,9 @@
                 <button mat-button mat-dialog-close class="button-cancel button-style">Откажи</button>
             </div>
             @if(found?.length) {
-            @if (selections.length && multiSelection) {
+            @if (selections().length && multiSelection) {
                 <div class="multiselection">
-                    <app-choise [selectedItems]="selectedValues" (deleteSelection)="deleteSelection($event)"></app-choise>
+                    <app-choise [selectedItems]="selectedItems()" (deleteSelection)="deleteSelection($event)"></app-choise>
                 </div>
             }
             <div class="select-box" #selectBox>

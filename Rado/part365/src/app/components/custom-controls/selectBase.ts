@@ -1,3 +1,4 @@
+import { computed, effect, signal } from '@angular/core'
 import { TypeItem } from '@model/enum/typeItem'
 import { InternalValue } from '@model/internalValue'
 import { OptionItem } from '@model/optionitem'
@@ -5,7 +6,7 @@ import { SelectionItem } from '@model/selectionItem'
 
 export class SelectBase {
     _data: InternalValue[] = []
-    _value = ''
+    value = signal<string>('')
     _letters: string[] = []
     _selection = ' '
     groupSelection = false
@@ -17,18 +18,36 @@ export class SelectBase {
     _filter?: string
     _active = false
     multiSelection = false
-    selectedValues: SelectionItem[] = []
     notLetterItems?: InternalValue[]
     letterItems?: InternalValue[]
     letterPerRow = 16
     label?: string
-    selections: number[] = []
+    selections = signal<number[]>([])
     firstLetters: string[] = []
     letterSelected?: string
-    showCountOnly = 0;
-    found?: InternalValue[];
+    showCountOnly = 0
+    found?: InternalValue[]
     //#region get/set invernal values
-    setData(optionItems: OptionItem[]|SelectionItem[]) {
+
+    selectedItems = computed(() => {
+        return this._data
+            .filter((item) => this.selections().includes(item.id!))
+            .map((item) => {
+                return { id: item.id, text: item.description, count: item.count }
+            })
+    })
+
+    constructor() {
+        effect(() => {
+            this.selections.set(
+                this.value()
+                    ?.split(',')
+                    .map((item) => +item) ?? []
+            )
+        })
+    }
+
+    setData(optionItems: OptionItem[] | SelectionItem[]) {
         this._data = optionItems.map((item) => {
             const obj = Object.assign(new InternalValue(), item)
             obj.typeItem = obj.id == -1 ? TypeItem.ALL : TypeItem.NORMAL
@@ -37,25 +56,6 @@ export class SelectBase {
         if (this.useLetter) {
             this.generateLetters()
         }
-    }
-
-    _setValue(value: string): void {
-        this._value = value
-        this.selections = this._value?.split(',').map((item) => +item)
-        this.selectItems()
-    }
-
-    selectItems(): void {
-        this.selections?.forEach((id) => {
-            const index = this._data.findIndex((item) => item.id == id)
-            this._data[index].isSelected = true
-        })
-    }
-
-    get selectedItems() {
-        const result = this._data.filter((item) => item.isSelected)
-
-        return result
     }
 
     getValue(): string {
@@ -76,12 +76,6 @@ export class SelectBase {
         this.letterSelected = data.letterItem
     }
 
-    get selecttion(): number[] {
-        if (this._value && this._value.length) {
-            return this._value.split(',').map((item) => +item)
-        } else return []
-    }
-
     generateLetters() {
         const letters = this._data.map((item) => (this.isSelectable(item) ? item.description![0] : '')).filter((item) => item != ' ')
         letters.sort()
@@ -95,7 +89,6 @@ export class SelectBase {
     updateData() {
         if (!this._data) return
         const setId = new Set()
-        this.selectedValues = []
         this._data.forEach((item) => {
             const id = item.id
             let showItem = this.showItem(item)
@@ -110,11 +103,15 @@ export class SelectBase {
             setId.add(item.id)
         })
 
-        this.found = this._data.filter(item => item.showItem);
+        this.found = this._data.filter((item) => item.showItem)
 
-        if (this._value && this._value.length) this.selections = this._value?.split(',').map((item) => +item)
-        else this.selections = []
-        this.updateSelection();
+        if (this.value() && this.value().length)
+            this.selections.set(
+                this.value()
+                    ?.split(',')
+                    .map((item) => +item)
+            )
+        else this.selections.set([])
     }
 
     isGroup(item: InternalValue): boolean {
@@ -129,17 +126,17 @@ export class SelectBase {
     }
 
     isSelected(item: InternalValue): boolean {
-        if (!this._value) return false
+        if (!this.value()) return false
 
         if (!this.multiSelection) {
-            if (item.id == +this._value) {
+            if (this.selections().includes(item.id!)) {
                 return true
             } else {
                 return false
             }
         }
 
-        if (this.selecttion.find((elem) => elem == item.id)) return true
+        if (this.selections().find((elem) => elem == item.id)) return true
 
         return false
     }
@@ -179,13 +176,7 @@ export class SelectBase {
     }
 
     //#region selection
-    get selection() {
-        return this._selection
-    }
 
-    set selection(value) {
-        this._selection = value
-    }
     //#endregion
 
     //#region filter
@@ -205,16 +196,8 @@ export class SelectBase {
     }
 
     clear(value?: string) {
-        this._value = value ?? ''
-    }
-
-    updateSelection() {
-        this.selectedValues.length = 0
-        this._data.forEach((item) => {
-            if (item.isSelected) {
-                this.selectedValues.push({ id: item.id!, text: item.description!, count: item.count })
-            }
-        })
+        this.value.set(value ?? '')
+        this.selections.set([])
     }
 
     unSelected(id: number) {
@@ -223,11 +206,10 @@ export class SelectBase {
             this._data[index].isSelected = false
         }
 
-        if (this.selectedItems.length === 0) this.clear(undefined)
+        if (this.selectedItems().length === 0) this.clear(undefined)
         else {
-            const selection = this.selectedItems.map((item) => item.id)
-            this.selection = [...selection].join(',')
-            this._value = this.selection
+            const selection = this.selectedItems().map((item) => item.id!) ?? []
+            this.selections.set([...selection])
         }
     }
 }

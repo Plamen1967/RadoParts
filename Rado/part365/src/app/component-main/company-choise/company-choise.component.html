@@ -4,7 +4,7 @@
         label="Марка"
         [appToolTip]="'Избери марката'"
         [placeHolder]="'Избери марка'"
-        value="value()"
+        [value]="value()"
         [select]="companyId"
         data-cy="companyId"
         [useFilter]="true"
@@ -12,4 +12,6 @@
         [submitted]="config().submitted ?? false"
         [data]="companies()"
         [showCount]="config().showCount ?? false"
+        (changeOption)="value.set(+$event)"
     />
+    

@@ -1,6 +1,6 @@
 //#region import
-import { AfterViewInit, Component, computed, debounced, DestroyRef, effect, ElementRef, HostListener, inject, input, OnInit, output, signal, ViewChild } from '@angular/core'
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { AfterViewInit, Component, computed, debounced, DestroyRef, effect, HostListener, inject, input, OnInit, output, signal } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable, Subject } from 'rxjs'
 import { MatDialog } from '@angular/material/dialog'
@@ -57,7 +57,8 @@ import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
 import { CompanyControlConfig } from '@model/companyControlConfig'
 //#endregion
-//#region @Component
+
+//#region interface
 interface CarFilter {
     result: []
     userId: number
@@ -80,8 +81,11 @@ interface CarFilter {
     subCategoryId: number
     categoriesId: string
     subCategoriesId: string
-    selectedCategories: []
+    selectedCategories: { selected: number; categoryId: number }[]
 }
+//#endregion
+
+//#region @Component
 @Component({
     standalone: true,
     selector: 'app-carfilter',
@@ -106,15 +110,15 @@ interface CarFilter {
         SearchBarComponent,
         FormField,
         FormRoot,
-        RadioGroupListComponent
+        RadioGroupListComponent,
     ],
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
-onSubmit() {
-    this.submit()
-    console.log(`Submitted`)
-}
+    onSubmit() {
+        this.submit()
+        console.log(`Submitted`)
+    }
     //#region form
     carFilterModel = signal<CarFilter>({
         bus: 0,
@@ -140,16 +144,18 @@ onSubmit() {
         categoriesId: '',
         subCategoriesId: '',
     })
-    carFilterForm = form(this.carFilterModel,
-    //      {
-    //   submission: {
-    //     action: async (field) => {
-    //       return {kind: 'serverError', message: 'Failed to submit form'};
-    //     },
-    //   },
-    // },
+    carFilterForm = form(
+        this.carFilterModel
+        //      {
+        //   submission: {
+        //     action: async (field) => {
+        //       return {kind: 'serverError', message: 'Failed to submit form'};
+        //     },
+        //   },
+        // },
     )
     //#endregion form
+
     //#region members
     header?: string
     companies?: Company[]
@@ -188,7 +194,6 @@ onSubmit() {
     categoriesId = ''
     _subCategories?: SubCategory[]
     subCategoriesSet: OptionItem[] = []
-    categoriesElement?: ElementRef<HTMLInputElement>
     params?: object
     _itemType: ItemType = ItemType.All
     stage = 1
@@ -200,7 +205,7 @@ onSubmit() {
     companiesSelect: OptionItem[] = []
     modelsSelect: OptionItem[] = []
     modificationsSelect: OptionItem[] = []
-    radios: RadioButton[] = [
+    radioBus: RadioButton[] = [
         { label: 'Кола', id: 0 },
         { label: 'Бус', id: 1 },
     ]
@@ -220,90 +225,28 @@ onSubmit() {
     modelId?: string
     max = true
 
-    categoriesSet: OptionItem[] = []
+    debouncedQuery = debounced(this.carFilterModel, 3000)
+
+    radioTypes = computed(() => {
+        if (this.carFilterForm.bus().value()) {
+            return this.busRadios
+        } else {
+            return this.carRadios
+        }
+    })
+
     //#endregion
 
     //#region Output/Input
-
-    config = signal<CompanyControlConfig>({ bus: this.carFilterModel().bus, itemType: this.carFilterModel().itemType, showCount: true, all: true })
-
-    @ViewChild('categoriesElem') set categoriesRef(elRef: ElementRef<HTMLInputElement>) {
-        if (elRef) {
-            this.categoriesElement = elRef
-        }
-    }
-    changes = output<object>()
     userId = input<number | undefined>(undefined)
     itemType = input<ItemType | undefined>(undefined)
     query = input<number | undefined>(0)
     bus = input<number | undefined>(0)
-
-    query_?: number
     dropDownItems = output<Dropdown[]>()
-    @HostListener('window:keydown', ['$event'])
-    submitEvent(event: KeyboardEvent) {
-        if (event.key === 'Enter') {
-            event.preventDefault()
-           // this.submit()
-        }
-    }
-
-    category = httpResource<NumberPartsPerCategory[]>(() => ({
-        url: `${environment.restAPI}/category/PartsPerCategory`,
-        params: {
-            companyId: this.carFilterModel().companyId ?? 0,
-            modelId: 0,
-            modelsId: this.carFilterModel().modelsId,
-            modificationId: 0,
-            modificationsId: this.carFilterModel().modificationsId,
-            userId: 0,
-            bus: this.carFilterModel().bus,
-            hasImages: this.carFilterModel().hasImages ? 1 : 0,
-        },
-    }))
-
-    _dropDown = computed(() => {
-        console.log(this.category.value())
-        return this.convertResult(this.category.value() ?? [])
-    })
-
-    updateCategory() {
-        const filter: FilterCategory = {
-            companyId: this.carFilterModel().companyId ?? 0,
-            modelId: 0,
-            modelsId: this.carFilterModel().modelsId,
-            modificationId: 0,
-            modificationsId: this.carFilterModel().modificationsId,
-            userId: 0,
-            bus: this.carFilterModel().bus,
-            hasImages: this.carFilterModel().hasImages ? 1 : 0,
-        }
-        if (this.admin) {
-            filter.userId = this.carFilterModel().userId
-        }
-
-        this.previuosFilter = { ...filter }
-        this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
-            this.convertResult(res)
-        })
-    }
-
-    itemType_ = computed(() => {
-        let itemType = this.carFilterForm.itemType().value()
-        const bus = this.carFilterForm.bus().value()
-        if (bus) {
-            if (itemType != ItemType.AllBusAndPart && itemType != ItemType.OnlyBus && itemType != ItemType.BusPart) itemType = ItemType.AllBusAndPart
-        } else {
-            if (itemType != ItemType.AllCarAndPart && itemType != ItemType.OnlyCar && itemType != ItemType.CarPart) itemType = ItemType.AllCarAndPart
-        }
-
-        this.onItemType(itemType)
-        return itemType
-    })
+    changes = output<object>()
     //#endregion
 
-    //#region constructor
-    private formBuilder: FormBuilder = inject(FormBuilder)
+    //#region services
     public categoryService: CategoryService = inject(CategoryService)
     public subCategoryService: SubCategoryService = inject(SubCategoryService)
     private userService: UserService = inject(UserService)
@@ -320,35 +263,132 @@ onSubmit() {
     private destroyRef: DestroyRef = inject(DestroyRef)
     public activeRoute: ActivatedRoute = inject(ActivatedRoute)
     public parent: HomeComponent = inject(HomeComponent, { optional: true }) as HomeComponent
+    //#endregion services
+
+    @HostListener('window:keydown', ['$event'])
+    submitEvent(event: KeyboardEvent) {
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            // this.submit()
+        }
+    }
+
+    currentQuery = signal<number>(0)
+    //#region computed
+    filterModel = httpResource<Filter>(() => {
+        if (this.currentQuery()) return `${environment.restAPI}/search/GetFilter?query=${this.currentQuery()}`
+        else return undefined
+    })
+
+    category = httpResource<NumberPartsPerCategory[]>(() => ({
+        url: `${environment.restAPI}/category/PartsPerCategory`,
+        params: {
+            companyId: this.carFilterModel().companyId ?? 0,
+            modelId: 0,
+            modelsId: this.carFilterModel().modelsId,
+            modificationId: 0,
+            modificationsId: this.carFilterModel().modificationsId,
+            userId: 0,
+            bus: this.carFilterModel().bus,
+            hasImages: this.carFilterModel().hasImages ? 1 : 0,
+        },
+    }))
+
+    config = signal<CompanyControlConfig>({ bus: this.carFilterModel().bus, itemType: this.carFilterModel().itemType, showCount: true, all: true })
+
+    dropDown = computed(() => {
+        return this.convertResult(this.category.value() ?? [])
+    })
+
+    itemType_ = computed(() => {
+        let itemType = this.carFilterForm.itemType().value()
+        const bus = this.carFilterForm.bus().value()
+
+        if (bus) {
+            if (itemType != ItemType.AllBusAndPart && itemType != ItemType.OnlyBus && itemType != ItemType.BusPart) itemType = ItemType.AllBusAndPart
+
+            if (itemType == ItemType.BusPart) {
+                this.header = 'Търси част за бус'
+                this.countProperty = 'countParts'
+            } else {
+                this.header = 'Търси бус на части'
+                this.countProperty = 'countCarBus'
+            }
+        } else {
+            if (itemType != ItemType.AllCarAndPart && itemType != ItemType.OnlyCar && itemType != ItemType.CarPart) itemType = ItemType.AllCarAndPart
+
+            if (itemType == ItemType.CarPart) {
+                this.header = 'Търси част за кола'
+                this.countProperty = 'countParts'
+            } else {
+                this.header = 'Търси кола на части'
+                this.countProperty = 'countCarBus'
+            }
+        }
+
+        if (itemType === ItemType.OnlyCar || itemType === ItemType.OnlyBus) this.showCategory = false
+        else this.showCategory = true
+        this.parent.setShowCategory(this.showCategory)
+
+        return itemType
+    })
 
     filter = computed(() => {
         console.log(`Query Value:`, this.query())
         if (this.query()) {
             this.searchPartService.getFilter(+this.query()!).subscribe((filter) => {
                 this.extendedSearch_ = filter.extendedSearch
-                return {...filter}
+                return { ...filter }
             })
             return new Filter()
         } else {
             return new Filter()
         }
     })
-    debouncedQuery = debounced(this.carFilterModel, 3000)
+
+    //#endregion
+
     constructor() {
         super()
 
         effect(() => {
-            console.log("Company changed", this.carFilterForm.companyId())
-        })
-        effect(() => {
-                console.log(`Filter: `, this.filter())
-                this.updateForm(this.filter()!)
-                this.extendedSearch_ = this.filter()!.extendedSearch ?? false
+            console.log(`Categories`, this.category.value())
         })
 
         effect(() => {
-            this.dropDownItems.emit(this._dropDown())
+            console.log(`Current query: ${this.currentQuery()}`)
         })
+
+        effect(() => {
+            if (this.query()) this.currentQuery.set(this.query()!)
+        })
+
+        effect(() => {
+            console.log(`Filter Model : ${this.filterModel.value()}`)
+            this.carFilterModel.update((value) => ({
+                ...value,
+                ...this.filterModel.value(),
+            }))
+        })
+
+        effect(() => {
+            console.log(`Drop down`, this.dropDown())
+        })
+
+        effect(() => {
+            console.log(`Filter: `, this.filter())
+            this.updateForm(this.filter()!)
+            this.extendedSearch_ = this.filter()!.extendedSearch ?? false
+        })
+
+        effect(() => {
+            console.log(`filter model ${this.query()}`, this.filterModel.value())
+        })
+
+        effect(() => {
+            this.dropDownItems.emit(this.dropDown())
+        })
+
         effect(() => {
             this.debouncedQuery.value()
             if (this.config().itemType != this.debouncedQuery.value().itemType && this.config().bus != this.debouncedQuery.value().itemType) {
@@ -360,20 +400,6 @@ onSubmit() {
             }
         })
 
-        // effect(() => {
-        //     this.onItemType(this.carFilterForm.itemType().value())
-        // })
-
-        effect(() => {
-            this.query_ = computed(() => {
-                console.log(`Query : ${this.query()}`)
-                return this.query()
-            })()
-        })
-
-        effect(() => {
-            console.log(`CompanyId is: ${this.carFilterModel().companyId}`)
-        })
         effect(() => {
             const filter = this.filter()
             if (filter) {
@@ -382,54 +408,17 @@ onSubmit() {
         })
 
         effect(() => {
+            console.log(`Form`, this.carFilterForm().value())
+        })
+
+        effect(() => {
             this.categoriesIdChanged(this.carFilterForm.categoriesId().value())
         })
     }
-
     //#endregion
     //#region On functions
 
-    getRadios() {
-        if (this.carFilterForm.bus().value()) {
-            return this.busRadios
-        } else {
-            return this.carRadios
-        }
-    }
-    changeBusCar() {
-        return
-    }
-    orderBy(f: number) {
-        console.log(f)
-    }
-
-    onItemType(f?: number): void {
-        if (this.carFilterForm.bus().value()) {
-            if (f == ItemType.BusPart) {
-                this.header = 'Търси част за бус'
-                this.countProperty = 'countParts'
-            } else {
-                this.header = 'Търси бус на части'
-                this.countProperty = 'countCarBus'
-            }
-        } else {
-            if (f == ItemType.CarPart) {
-                this.header = 'Търси част за кола'
-                this.countProperty = 'countParts'
-            } else {
-                this.header = 'Търси кола на части'
-                this.countProperty = 'countCarBus'
-            }
-        }
-
-        if (f === ItemType.OnlyCar || f === ItemType.OnlyBus) this.showCategory = false
-        else this.showCategory = true
-        this.parent.setShowCategory(this.showCategory)
-    }
-
     ngOnInit() {
-        this.engineTypes = this.staticSelectionService.EngineType.map(replaceFirst)
-        this.gearBoxTypes = this.staticSelectionService.GearboxType.map(replaceFirst)
         this.categoryService.fetch().subscribe((res) => {
             this.categories = []
             res.forEach((item) => {
@@ -437,22 +426,11 @@ onSubmit() {
                 category = Object.assign(category, item)
                 this.categories?.push(category)
                 item['count'] = 0
-                // this.categoriesConrol.push(this.createCategory(item.categoryId!))
-            })
-
-            this.categoriesSet = this.categories.map((item) => {
-                const cat = {
-                    description: item.categoryName,
-                    id: item.categoryId,
-                    count: item.count,
-                    countCars: 0,
-                    countParts: 0,
-                    imageName: item.imageName,
-                    groupModelId: 0,
-                }
-                return cat
             })
         })
+
+        this.engineTypes = this.staticSelectionService.EngineType.map(replaceFirst)
+        this.gearBoxTypes = this.staticSelectionService.GearboxType.map(replaceFirst)
 
         if (this.admin) {
             this.userService.getAll().subscribe((res) => {
@@ -476,17 +454,12 @@ onSubmit() {
     updateForm(filter: Filter) {
         if (filter.categoryId) filter.categoriesId = filter.categoryId.toString()
         if (filter.subCategoryId) filter.subCategoriesId = filter.subCategoryId.toString()
-        // this.filterForm.patchValue(filter)
     }
-    createCategory(categoryId: number): FormGroup {
-        return this.formBuilder.group({
-            selected: [false],
-            categoryId: [categoryId],
-        })
-    }
+
     //#endregion
 
     clear() {
+        this.carFilterForm().reset();
         goTop()
     }
 
@@ -550,7 +523,7 @@ onSubmit() {
     //#region Search
     submit() {
         const filter: Filter = Object.assign(
-            {...this.carFilterModel()},
+            { ...this.carFilterModel() },
             { searchBy: SearchBy.Filter },
             { adminRun: this.admin ? true : false },
             { extendedSearch: this.extendedSearch_ },
@@ -576,7 +549,7 @@ onSubmit() {
     }
 
     goToResult(filter: Filter) {
-        this.parent.goToResult(filter);
+        this.parent.goToResult(filter)
         // this.loadingService.open('Зареждане на резултатите')
         // this.searchPartService.search(filter).subscribe({
         //     next: (res) => {
@@ -652,10 +625,6 @@ onSubmit() {
 
     readonly displayFilter = true
 
-    get dropDown() {
-        return this._dropDown
-    }
-
     //#endregion
     convertResult(res: NumberPartsPerCategory[]) {
         const tempDropDown: Dropdown[] = []
@@ -696,4 +665,52 @@ onSubmit() {
 // @for (item of form.items().value(); track $index; let i = $index) {
 //   <input [formField]="form.items[i].sku" />
 //   <input type="number" [formField]="form.items[i].qty" />
+// }
+
+// if (!this.query()) return
+
+// const manager = this.homeService.getDataManager(this.query() ?? 0)
+// const filter: Filter | undefined = manager?.displayFilter as Filter | undefined
+
+// if (!filter) {
+//     const data = {} as Partial<CarFilter>
+//     this.carFilterModel.update((value) => ({ ...value, ...data }))
+// }
+
+// console.log(`Filter: ${filter}`)
+// this.carFilterModel.update((value) => ({ ...value, ...(filter ?? {}) }))
+
+//     this.categoriesSet = this.categories.map((item) => {
+//         const cat = {
+//             description: item.categoryName,
+//             id: item.categoryId,
+//             count: item.count,
+//             countCars: 0,
+//             countParts: 0,
+//             imageName: item.imageName,
+//             groupModelId: 0,
+//         }
+//         return cat
+//     })
+// })
+
+//         updateCategory() {
+//     const filter: FilterCategory = {
+//         companyId: this.carFilterModel().companyId ?? 0,
+//         modelId: 0,
+//         modelsId: this.carFilterModel().modelsId,
+//         modificationId: 0,
+//         modificationsId: this.carFilterModel().modificationsId,
+//         userId: 0,
+//         bus: this.carFilterModel().bus,
+//         hasImages: this.carFilterModel().hasImages ? 1 : 0,
+//     }
+//     if (this.admin) {
+//         filter.userId = this.carFilterModel().userId
+//     }
+
+//     this.previuosFilter = { ...filter }
+//     this.categoryService.fetchPartsPerCategory(this.previuosFilter).subscribe((res) => {
+//         this.convertResult(res)
+//     })
 // }

@@ -6,11 +6,11 @@
                 <app-input [border]="false" [formField]="requestByEmail.name" autocomplete="name" type="text" placeHolder="{{ labels.NAME }}" [submitted]="submitted!"> </app-input>
             </div>
             <div class="mb-1">
-                <app-textarea [border]="false" formControlName="request" [rows]="5" placeHolder="{{ labels.REQUEST }}" [submitted]="submitted"> </app-textarea>
+                <app-textarea [border]="false" [formField]="requestByEmail.request" [rows]="5" placeHolder="{{ labels.REQUEST }}" [submitted]="submitted"> </app-textarea>
             </div>
             <app-input [border]="false" [formField]="requestByEmail.email" autocomplete="email" type="email" placeHolder="{{ labels.EMAIL }}" [submitted]="submitted!"> </app-input>
             <div class="form-check">
-                <input formControlName="sendCopy" class="form-check-input me-2" type="checkbox" value="" id="form4Example4" checked />
+                <input [formField]="requestByEmail.sendCopy" class="form-check-input me-2" type="checkbox" id="form4Example4"/>
                 <label class="form-check-label" for="form4Example4">Изпрати копие </label>
             </div>
         </div>

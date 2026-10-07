@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component, effect, input, model, output } from '@angular/core'
+import { Component, input, model, output } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
@@ -13,6 +13,7 @@ import { FormValueControl } from '@angular/forms/signals'
 })
 export class RadioGroupListComponent implements FormValueControl<number> {
 updateSelectValue(event: Event, id: number|undefined) {
+    event.preventDefault()
     this.value.update(() => {
         const selectItem = this.radios().find((item) => item.id === id)
         console.log(selectItem)
@@ -44,10 +45,6 @@ updateSelectValue(event: Event, id: number|undefined) {
     selection: SelectOption[] = []
 
     constructor() {
-        effect(() => {
-            console.log(`Selected Value: ${this.selectedValue()}`)
-            console.log(`Value: ${this.value()}`)
-        })
         // effect(() => {
         //     this.selectedValue.update(() => {
         //         const id = this.radios().find(

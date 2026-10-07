@@ -104,7 +104,6 @@ export class AppComponent implements OnDestroy {
         }
 
         effect(() => {
-            console.log('toggle test')
             if (this.menuService.showMenu()) {
                 this.snav?.toggle(this.menuService.showMenu())
             } else {
@@ -112,7 +111,6 @@ export class AppComponent implements OnDestroy {
             }
 
             this.showMenu = this.menuService.showMenu()
-            console.log(this.showMenu)
         })
 
         this.userCount$ = this.userCountService.userCount$

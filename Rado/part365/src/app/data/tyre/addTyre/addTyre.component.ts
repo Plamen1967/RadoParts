@@ -214,7 +214,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     private tyreService: TyreService = inject(TyreService)
     private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     private router: Router = inject(Router)
-    private homeService: HomeService = inject(HomeService)
+    public homeService: HomeService = inject(HomeService)
     private pathService: PathService = inject(PathService)
     private nextIdService: NextIdService = inject(NextIdService)
     private imageService: ImageService = inject(ImageService)

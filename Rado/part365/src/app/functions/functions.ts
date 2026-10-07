@@ -241,6 +241,4 @@ export function goTop(): void {
             block: 'start',
             inline: 'nearest',
         })
-
-    console.log(`goToTop`)
 }

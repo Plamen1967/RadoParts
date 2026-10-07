@@ -10,7 +10,7 @@
                 <button class="btn btn-primary carClass tabClass" [ngClass]="{ active: showParts }" (click)="typeClick(1)"><img class="tabSvg" src="images/svg/part.svg" alt="" />Части</button>
                 <button class="btn btn-primary tyreClass tabClass" [ngClass]="{ active: !showParts }" (click)="typeClick(2)"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Гуми</button>
             </div>
-            <div class="d-flex justify-content-end" [appToolTip]="'Последни търсения'">
+            <div class="d-flex justify-content-end me-2" [appToolTip]="'Последни търсения'">
                 <button class="btn btn-primary button-style w-auto d-flex justify-content-center align-items-center" (click)="showFilter()" role="none">
                     <span class="me-2 material-symbols-outlined" style="justify-items: center"> filter_list </span>Последни
                 </button>
@@ -21,14 +21,14 @@
             @if (showParts) {
                 <app-carfilter [query]="query()" [itemType]="itemType()" [userId]="userId()" (dropDownItems)="changeDropdown($event)"></app-carfilter>
             } @else if (showTyres) {
-                <app-tyrefilter></app-tyrefilter>
+                <app-tyrefilter [query]="query()" [userId]="userId()"  ></app-tyrefilter>
             }
         </div>
     </div>
 
     <div class="footer space-evenly test">
         @if (!admin) {
-            @if (showCategory) {
+            @if (showCategory()) {
                 <div [appToolTip]="'Категории'" class="linkClass categoryElement ps-2 pe-2">
                     <div name="categories" #categoryButton (click)="clickCategory($event)" role="presentation">
                         <div class="element conversation align-items-center">

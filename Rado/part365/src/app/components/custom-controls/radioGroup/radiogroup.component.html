@@ -2,7 +2,7 @@
     @for (radio of radios(); track radio.id) {
         <div>
             <div class="radio-button">
-                <input type="radio" [value]="radio.id" name="{{ controlName() }}" [value]="value()" id="{{ controlName() }}{{ radio.id }}" (change)="click($event, radio.id!)" />
+                <input type="radio" [value]="radio.id" name="{{ controlName() }}" [value]="value()" id="{{ controlName() }}{{ radio.id }}"  [checked]="radio.id === value()" (change)="click($event, radio.id!)" />
                 <label class="radio-label" for="{{ controlName() }}{{ radio.id }}">{{ radio.label }}</label>
             </div>
         </div>

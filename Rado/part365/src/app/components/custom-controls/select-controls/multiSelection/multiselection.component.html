@@ -8,7 +8,7 @@
                         <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
                     }
                 </div>
-                <app-buttongroup data-testid="button-group" [active]="active" [placeholder]="placeHolder()" [clearBox]="clearBox" [selection]="selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()">
+                <app-buttongroup data-testid="button-group" [active]="active" [placeholder]="placeHolder()" [clearBox]="clearBox()" [selection]="selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()">
                 </app-buttongroup>
                 @if (submitted() && IsInvalid()) {
                     <div class="invalid-feedback d-block">
@@ -19,8 +19,8 @@
         </div>
     </div>
 }
-@if (selectedValues?.length) {
+@if (selectedValues().length) {
     <div class="multiselection">
-        <app-choise [selectedItems]="selectedValues" (deleteSelection)="deleteSelection($event)"></app-choise>
+        <app-choise [selectedItems]="selectedValues()" (deleteSelection)="deleteSelection($event)"></app-choise>
     </div>
 }

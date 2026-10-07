@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, inject, model, input, effect, output } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, model, input, effect, output, computed } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { CompanyComponent } from '../select-controls/company/company.component'
@@ -20,7 +20,6 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
     selectedValue?: number
     letterItem = undefined
     data_: OptionItem[] = []
-    clearBox?: boolean
     loaded = false
     errorMessage?: string
     IsInvalid = false
@@ -43,7 +42,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
     isRequired = input<boolean>(false)
     select = input<number | undefined>(undefined)
 
-    changeOption = output<number>()
+    changeOption = output<number|string>()
     closeDialog = output<ElementRef>()
 
     public dialog: MatDialog = inject(MatDialog)
@@ -56,6 +55,14 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
 
     _selection = '';
 
+    clearBox = computed<boolean>(() => {
+        if (this.value() && this.value() != 0) {
+            return true
+        } else {
+            return false
+        }
+    })
+    
     constructor() {
         effect(() => {
             this.data_ = this.data() ?? []
@@ -79,10 +86,6 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             // //     this.change(this.value()!)
             // }
         })
-
-        effect(() => {
-            console.log(`Custome Select Value Changed`, this.value())
-        })
    }
 
     //#region ValueAccessor
@@ -93,7 +96,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             this.value.set(value?.toString() ?? '')
         }
         console.log(`Change Value is: ${this.value()}`)
-        this.clearBox = this.value() ? true : false
+        this.changeOption.emit(this.value())
     }
 
     clickSelect() {
@@ -102,7 +105,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             width: '100%',
             panelClass: 'custom-container',
             data: {
-                data: this.data_,
+                data: this.data_.filter((item) => item.id != 0),
                 userFilter: this.useFilter() ?? false,
                 groupSelection: this.groupSelection() ?? true,
                 value: this.value(),
@@ -124,6 +127,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
                         else
                     this.value.set(+result)
                 this.alertService.info(`Dialog result: ${result}`)
+                this.changeOption.emit(this.value())
             })
     }
 

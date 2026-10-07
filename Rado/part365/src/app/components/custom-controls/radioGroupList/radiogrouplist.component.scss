@@ -1,6 +1,6 @@
-// input {
-//     display: none;
-// }
+input {
+    display: none;
+}
 label {
     white-space: nowrap;
     font-size: 1rem;
@@ -24,7 +24,7 @@ input:checked + label,
 input + label {
     transition: background-color 1s;
     margin-bottom: 5px;
-    height: 30px;
+    height: 40px;
 }
 .radio-group,
 input + label {
