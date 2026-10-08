@@ -38,7 +38,7 @@ export class MultiSelectionComponent implements FormValueControl<string | number
     changeOption = output<string>()
     changeOptions = output<Set<number>>()
     closeDialog = output<ElementRef>()
-    groupSelection = input<boolean>(false)
+    showGroup = input<boolean>(false)
     data = model<OptionItem[]>([])
     label = input<string | undefined>(undefined)
     title = input<string | undefined>(undefined)
@@ -131,13 +131,13 @@ export class MultiSelectionComponent implements FormValueControl<string | number
             data: {
                 showAll: true,
                 data: this._data,
-                useLetter: this.useLetter ?? false,
-                useFilter: this.useFilter ?? false,
-                showCount: this.showCount,
-                groupSelection: this.groupSelection ?? true,
+                useLetter: this.useLetter() ?? false,
+                useFilter: this.useFilter() ?? false,
+                showCount: this.showCount() ?? false,
+                groupSelection: this.showGroup() ?? true,
                 value: this.initialIDs?.().join(',') ?? '',
                 multiSelection: true,
-                groupDisabled: this.groupDisabled,
+                groupDisabled: this.groupDisabled() ?? false,
                 placeHolder: this.placeHolder,
             },
         })

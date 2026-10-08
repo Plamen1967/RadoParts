@@ -15,7 +15,7 @@
                     max="20"
                     step="1"
                     class="form-control shadow active"
-                    [ngClass]="{ keywordClass: keyword() === true, 'is-invalid': submitted() && IsInvalid, currency: IsPrice, 'form-control': true,  active: true }"
+                    [ngClass]="{ keywordClass: keyword() === true, 'is-invalid': submitted() && IsInvalid(), currency: IsPrice(), 'form-control': true,  active: true }"
                     (input)="inputFunc()"
                     id="{{ contolName }}"
                     aria-describedby="id"

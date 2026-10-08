@@ -9,7 +9,7 @@ export class SelectBase {
     value = signal<string>('')
     _letters: string[] = []
     _selection = ' '
-    groupSelection = false
+    showGroup = false
     _useFilter = false
     _showAll = true
     _notSelected?: boolean
@@ -39,6 +39,8 @@ export class SelectBase {
 
     constructor() {
         effect(() => {
+            console.log(`Select Base Value is: ${this.value()}`)
+            if (this.value() && this.value().length)
             this.selections.set(
                 this.value()
                     ?.split(',')
@@ -66,8 +68,8 @@ export class SelectBase {
         return value
     }
 
-    setBase(data: { groupSelection: boolean; useFilter: boolean; showAll: boolean; notSelected: boolean; letter: boolean; groupDisabled: boolean; letterItem: string }) {
-        this.groupSelection = data.groupSelection ?? false
+    setBase(data: { showGroup: boolean; useFilter: boolean; showAll: boolean; notSelected: boolean; letter: boolean; groupDisabled: boolean; letterItem: string }) {
+        this.showGroup = data.showGroup ?? false
         this._useFilter = data.useFilter
         this._showAll = data.showAll
         this._notSelected = data.notSelected
@@ -83,6 +85,7 @@ export class SelectBase {
     }
 
     isSelectable(item: InternalValue) {
+        if (this.groupDisabled && this.isGroup(item)) return false
         return item.typeItem == TypeItem.ALL ? false : true
     }
 
@@ -103,7 +106,16 @@ export class SelectBase {
             setId.add(item.id)
         })
 
-        this.found = this._data.filter((item) => item.showItem)
+        // this._data = this._data.filter((item) => {
+        //     if (this.groupDisabled) {
+        //         if (this.isGroup(item)) return false
+        //     }
+        //     return true
+        // })
+
+        this.found = this._data.filter((item) => {
+            return item.showItem
+        })
 
         if (this.value() && this.value().length)
             this.selections.set(
@@ -115,7 +127,7 @@ export class SelectBase {
     }
 
     isGroup(item: InternalValue): boolean {
-        if (!this.groupSelection) return false
+        if (!this.showGroup) return false
 
         const groupModelId = item.groupModelId
         const id = item.id

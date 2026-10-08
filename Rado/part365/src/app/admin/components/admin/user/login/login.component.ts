@@ -13,7 +13,7 @@ import { InputPasswordComponent } from '@components/custom-controls/inputPasswor
 import { UserComponent } from '@components/custom-controls/user/user.component'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
-import { email, form, FormField, required } from '@angular/forms/signals'
+import { form, FormField, required } from '@angular/forms/signals'
 import { User } from '@model/user'
 //#endregion
 //#region interface
@@ -50,13 +50,19 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         //     message: 'Required',
         //     when: ({ valueOf }) => valueOf(path.partForCar) == 'car',
         // })
-
-        email(path.email)
-        required(path.email)
-        required(path.password)
-        required(path.confirmPassword)
-        required(path.dealer)
-        required(path.contract)
+        required(path.userName)
+        //required(path.email)
+        // email(path.email, { 
+        //     message: 'Invalid email format',
+        // })
+        required(path.password, {
+            message: 'Required',
+            when: () => this.loginFlag === true,
+        })
+        required(path.confirmPassword, {
+            message: 'Required',
+            when: () => this.loginFlag === false,
+        })
     })
 // phone(path.contract),
 //                 this.controls['email'].setValidators([Validators.required])
@@ -244,13 +250,20 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         this.alertService.clear()
 
         // stop here if form is invalid
-        if (!this.loginForm().valid()) {
+        if (this.loginForm().invalid()) {
+            console.log('E-mail is valid', this.loginForm.email().valid())
+            console.log('Username is valid', this.loginForm.userName().valid())
+            console.log('Password is valid', this.loginForm.password().valid())
+            console.log('Password2 is valid', this.loginForm.confirmPassword().valid())
+            console.log('Phone is valid', this.loginForm.phone().valid())
+            console.log('Dealer is valid', this.loginForm.dealer().valid())
+            console.log('Form is invalid', this.loginForm().errors().length)
             return
         }
 
         this.loading = true
         if (this.loginFlag) {
-            this.authenticationService.login(this.controls['userName'].value, this.controls['password'].value).subscribe({
+            this.authenticationService.login(this.loginFormModel().userName, this.loginFormModel().password).subscribe({
                 next: () => {
                     this.checkoutService.getItems()
                     this.loading = false
@@ -277,7 +290,7 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
     }
 
     registerUser() {
-        if (this.controls['contract'].errors) {
+        if (this.loginFormModel().contract == false) {
             this.error = 'Моля съгласете се с условията!'
         }
 
@@ -292,12 +305,13 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
                 this.submitted = false
                 this.returnUrl = message.url
                 let popumessage = `Регистрацията Ви е успешна! \r\nМоля проверете е-майла си за да активирате акауnта си!`
-                if (this.controls['dealer'].value) {
+                if (this.loginFormModel().dealer == 'dealer') {
                     popumessage = 'Вие ще бъдете пренасочени да попълните Вашите фирмени детайли!'
                 }
                 this.popupService.openWithTimeout(CONSTANT.MESSAGE, popumessage).subscribe(() => {
-                    if (this.controls['dealer'].value) this.router.navigateByUrl(this.returnUrl!)
-                    else {
+                    if (this.loginFormModel().dealer == 'dealer') {
+                        this.router.navigateByUrl(this.returnUrl!)
+                    } else {
                         if (this.webLogin) {
                             this.router.navigate(['/'])
                         } else this.matDialog.closeAll()
@@ -323,21 +337,5 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
         if (this.loginFlag == true) return 'Login'
 
         return 'Register'
-    }
-
-    get passwordRandom() {
-        return 'password' + Date.now()
-    }
-    get password2Random() {
-        return 'password2' + Date.now()
-    }
-    get userNameRandom() {
-        return 'userName' + Date.now()
-    }
-    get emailRandom() {
-        return 'email' + Date.now()
-    }
-    get phoneRandom() {
-        return 'phone' + Date.now()
     }
 }

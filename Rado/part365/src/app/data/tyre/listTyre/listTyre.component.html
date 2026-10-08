@@ -59,10 +59,11 @@
                                 <app-model-choice
                                     [formField]="searchForm.modelId"
                                     [userId]="userId"
-                                    [groupSelection]="false"
+                                    [showGroup]="false"
                                     [all]="true"
                                     [companyId]="companyId!"
-                                    [groupSelection]="false"
+                                    [groupDisabled]="false"
+                                    [useFilter]="true"
                                     [multiselection]="false"
                                     (onCloseEvent)="focus()">
                                 </app-model-choice>

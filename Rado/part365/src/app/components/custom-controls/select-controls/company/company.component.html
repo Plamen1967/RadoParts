@@ -47,10 +47,10 @@
                                 role="none"
                                 id="Item{{ item.description }}"
                                 class="option form-select-sm"
-                                [ngClass]="{ group: item.group, disable: !item.isSelectable, letter: false, 'selected-option': item.isSelected }"
+                                [ngClass]="{ group: item.group, disable: !item.isSelectable && !item.group, letter: false, 'selected-option': item.isSelected }"
                                 (click)="clickItem($event, item)">
                                 <div class="display-style">
-                                    <label class="label" [ngClass]="{ disable: !item.isSelectable }" for="{{ item.id }}">{{ item.description }}</label>
+                                    <label class="label" [ngClass]="{ disable: !item.isSelectable && !item.group }" for="{{ item.id }}">{{ item.description }}</label>
                                     @if (item.count && !item.group && showCount) {
                                         <div class="label">{{ item.count }}</div>
                                     }

@@ -5,7 +5,7 @@ export interface DialogData {
     showAll: boolean;
     data: OptionItem[]|SelectionItem[];
     useLetter: boolean;
-    groupSelection: boolean;
+    showGroup: boolean;
     value: string;
     multiSelection: boolean;
     groupDisabled: boolean;

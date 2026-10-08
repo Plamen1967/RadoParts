@@ -35,7 +35,7 @@ export class InputPasswordComponent implements FormValueControl<string> {
         this.type = this.showFlag ? 'text' : 'password'
     }
 
-    change() {
-        this.value.set(this.value())
+    change(event: Event) {
+        this.value.set((event.target as HTMLInputElement).value)
     }
 }

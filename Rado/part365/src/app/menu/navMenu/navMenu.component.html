@@ -65,24 +65,44 @@
                     </ul>
                     <ul class="navbar-nav ms-auto ">
                         @if (!admin) {
-                            <li>
+                            <li class="nav-item dropdown">
                                 <a
                                     data-cy="addAdvert"
                                     class="nav-link addObjava cursorPointer"
                                     href="#"
+                                    id="addAdvert"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
-                                    routerLink="/data/addNew"
                                     routerLinkActive="active-link" style="height: 42px;">
                                     Добави обява
 
                                 </a>
+                                <ul class="dropdown-menu" aria-labelledby="addAdvert">
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави кола</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new',  bus: '1' }">Добави бус</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }">Добави част</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new',  bus: '1' }">Добави част за бус</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new'}">Добави гума/джанта</a>
+                                </ul>
                             </li>
                             <li>
                                 <a class="nav-link buttonGap checkout" routerLink="/checkout" routerLinkActive="active-link" data-toggle="tooltip" data-placement="top" title="Запази обяви">
                                     {{ checkout }}
                                 </a>
                             </li>
+                            <!-- <li class="nav-item dropdown">
+                                <div data-bs-toggle="dropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center">
+                                    <span class="material-symbols-outlined"> person </span>
+
+                                    <a id="admin" data-cy="loggedUser" [ngStyle]="{ color: 'white' }" href="#" role="button" aria-expanded="false"> <i class="las la-user"></i>{{ exitName }} </a>
+                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="admin">
+                                    <a class="dropdown-item nav-link navbar-dark menu-color" [routerLink]="['/user/messages']">{{ labels.MESSAGES }}</a>
+                                    <a class="dropdown-item nav-link navbar-dark menu-color" [routerLink]="['/user/userdetails']">{{ labels.DETAILS }}</a>
+                                    <a class="dropdown-item nav-link navbar-dark menu-color" (click)="updatePassword()" role="none">{{ labels.UPDATEPASSWORD }}</a>
+                                    <a class="dropdown-item nav-link navbar-dark menu-color" (click)="logout()" role="none">Изход</a>
+                                </ul>
+                            </li> -->
                             @if (logged) {
                                 @if (seller) {
                                     <li>
@@ -115,8 +135,7 @@
                                                 <span class="count">{{ userCount.partCarCount + userCount.partBusCount }}</span>
                                             }
                                         }
-                                    </a>
-                                </li>
+                                    </a>                                </li>
                                 <li>
                                     <a class="nav-item nav-link menuButton2" data-cy="tyres" routerLink="/data/tyres" (click)="tyres()" routerLinkActive="active-link" role="presentation"
                                         >Гуми/Джанти

@@ -561,7 +561,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     cancel() {
-        if (this.changed) {
+        if (this.addPartForm().touched()) {
             this.changeMessage()
         } else {
             this.noChange.emit(this.partId_!)

@@ -95,10 +95,10 @@
                         <app-model-choice
                             [formField]="addTyreForm.modelId"
                             [showCount]="false"
-                            [groupSelection]="false"
+                            [showGroup]="false"
                             [all]="true"
                             [companyId]="companyId!"
-                            [groupSelection]="false"
+                            [groupDisabled]="false"
                             [multiselection]="false">
                         </app-model-choice>
                     </div>
@@ -219,7 +219,7 @@
         <div class="row mt-3" style="position: relative">
             <app-imagelist [id]="itemId_!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
-                <app-toolbar [canCancel]="true" [isChanged]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
+                <app-toolbar [canCancel]="true" [isChanged]="addTyreForm().touched()" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>
         </div>
     </form>

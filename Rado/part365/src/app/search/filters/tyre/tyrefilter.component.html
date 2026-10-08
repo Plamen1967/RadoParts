@@ -80,7 +80,8 @@
                 </div>
                 @if (companyId) {
                     <div class="col-sm-3 min300px mb-1">
-                        <app-model-choice [formField]="filterForm.modelId" [showCount]="false" [groupSelection]="false" [all]="true" [companyId]="companyId!" [groupSelection]="false" [multiselection]="false">
+                        <app-model-choice [formField]="filterForm.modelId" [showCount]="false" [showGroup]="false" [all]="true"
+                         [companyId]="companyId!" [groupDisabled]="false" [multiselection]="false">
                         </app-model-choice>
                     </div>
                 }

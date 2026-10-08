@@ -24,9 +24,29 @@
             </ul>
             <form autocomplete="{{ autocomplete }}">
                 @if (loginFlag) {
-                    <app-user [formField]="loginForm.userName" prefix=" person " controlName="username" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.LOGINNAME }}"> </app-user>
+                    <app-user [formField]="loginForm.userName" prefix=" person " controlName="username" data-cy="loginUserName" [submitted]="submitted" placeHolder="{{ labels.LOGINNAME }}">
+                    </app-user>
                     <app-inputpassword [formField]="loginForm.password" placeHolder="Въведи парола"></app-inputpassword>
-                    @if (submitted && controls['password'].errors) {
+                    @if (loginForm.userName().invalid()) {
+                        <div class="error">
+                            @for (error of loginForm.userName().errors(); track error.kind) {
+                                <span>{{ error.message }}</span>
+                            }
+                        </div>
+                    }
+                    @if (loginForm.email().invalid()) {
+                        <div class="error">
+                            @for (error of loginForm.email().errors(); track error.kind) {
+                                <span>{{ error.message }}</span>
+                            }
+                        </div>
+                    }
+                    @if (loginForm().errors().length > 0) {
+                        <div class="text-danger me-2">
+                            <div [ngStyle]="{ color: 'red', 'margin-bottom': '2px' }" data-cy="errorMessage">{{ loginForm().errors()[0].message }}</div>
+                        </div>
+                    }
+                    <!-- @if (submitted && controls['password'].errors) {
                         <div class="invalid-feedback">
                             @if (controls['password'].errors['required']) {
                                 <div data-cy="passwordRequiredError">{{ labels.PASSWORDREQUIRED }}</div>
@@ -38,7 +58,7 @@
                         <div class="text-danger">
                             <div data-cy="errorMessage">{{ error }}</div>
                         </div>
-                    }
+                    } -->
 
                     <a [routerLink]="['/user/recovery']" class="mt-4 mb-4 link-primary" (click)="forgottenPassword()">Забравена парола / Отблокиране</a>
 
@@ -51,6 +71,7 @@
                             Login
                         </button>
                     </div>
+                    <div></div>
                 } @else {
                     <div class="container">
                         <div class="input-group input-group-sm mb-3">

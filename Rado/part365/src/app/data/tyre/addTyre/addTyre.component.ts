@@ -527,7 +527,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
 
     cancel() {
-        if (this.changed) {
+        if (this.addTyreForm().touched()) {
             this.changeMessage()
         } else this.goBack()
     }

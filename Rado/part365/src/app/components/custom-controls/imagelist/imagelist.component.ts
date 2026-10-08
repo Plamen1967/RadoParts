@@ -46,7 +46,7 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        if (this.id && this.images()) {
+        if (this.id() && this.images()) {
             this.imageService.getImages(this.id()!).subscribe((res) => {
                 this.images_ = [...res]
                 this.setDefaultImageById(this.mainImage())

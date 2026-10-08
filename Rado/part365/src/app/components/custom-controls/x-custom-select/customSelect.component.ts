@@ -24,7 +24,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
     errorMessage?: string
     IsInvalid = false
 
-    groupSelection = input<boolean>(false)
+    showGroup = input<boolean>(false)
     data = input<OptionItem[]>([])
     tooltip = input<string | undefined>(undefined)
     label = input<string | undefined>(undefined)
@@ -75,7 +75,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
         })
     
         effect(() => {
-            if (this.groupDisabled()) {
+            if (this.showGroup() === false) {
                 this.data_ = this.data()?.filter((item) => item['groupModelId'] != item.id)
             } else {
                 this.data_ = this.data() ?? []
@@ -100,6 +100,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
     }
 
     clickSelect() {
+        console.log(`Click Select Value groupDisabled is: ${this.groupDisabled()} ${this.showGroup()}`)
         const dialogRef = this.dialog.open(CompanyComponent, {
             height: '100%',
             width: '100%',
@@ -107,7 +108,7 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
             data: {
                 data: this.data_.filter((item) => item.id != 0),
                 userFilter: this.useFilter() ?? false,
-                groupSelection: this.groupSelection() ?? true,
+                showGroup: this.showGroup() ?? true,
                 value: this.value(),
                 multiSelection: this.multiSelection(),
                 groupDisabled: this.groupDisabled(),

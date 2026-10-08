@@ -49,7 +49,7 @@ export class CompanyComponent extends SelectBase implements OnInit {
         this.showAll = this.data.showAll
         this.showCount = this.data.showCount
         this.useLetter = this.data.useLetter
-        this.groupSelection = this.data.groupSelection
+        this.showGroup = this.data.showGroup
         this.value.set(this.data.value)
         this.multiSelection = this.data.multiSelection
         this.groupDisabled = this.data.groupDisabled

@@ -112,6 +112,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     add = input<boolean>(false)
     update = input<boolean>(false)
     mode = input<UpdateEnum>(UpdateEnum.New)
+    ad = input<string>('')
     displayPartView = input<DisplayPartView | undefined>(undefined)
 
     addCarParam = input.required<AddCarParam>()
@@ -165,7 +166,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     companyId = 0
     userId = 0
     query = 0
-    ad = false
     images: ImageData[] = []
     UpdateFlag = true
     allowBack = false
@@ -259,7 +259,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.parseQueryParams(param)
             this.carId_ = this.queryParams.carId ? this.queryParams.carId : undefined
             if (this.queryParams.query) this.query = +this.queryParams.query
-            this.ad = this.queryParams.ad ? this.queryParams.ad : false
             this.loadCar()
         })
     }
@@ -270,7 +269,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
     //#endregion actions
     cancel() {
-        if (this.changed) {
+        if (this.addCarForm().touched()) {
             this.changeMessage()
         } else {
             this.noChange.emit(this.carId())
@@ -501,7 +500,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.homeService.updateDisplayPartView(val)
             this.submitted = false
             this.saved.emit(val.id!)
-            if (this.ad) {
+            if (this.ad() === 'new') {
                 this.carService.currentCarId = val.id
                 if (this.bus() === 1) {
                     this.router.navigate(['/data/bus'])

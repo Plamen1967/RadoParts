@@ -30,10 +30,6 @@ export class HelperComponent {
     get regionId() {
         return this.loggedUser?.regionId;
     }
-    get changed() {
-        return JSON.stringify(this.inialValue) !== JSON.stringify(this.formGroup.value)
-    }
-
     // setNewId() {
     //     this.nextIdService.getNextId().then((nextId) => (this.partId = nextId))
     // }

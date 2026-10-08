@@ -28,11 +28,12 @@ export class ModelChoiceComponent implements FormValueControl<number | string> {
     models = model<OptionItem[]>([])
 
     multiselection = input<boolean>(true)
+    groupDisabled = input<boolean>(false)
+    showGroup = input<boolean>(true)
     companyId = input<number>(0)
     useFilter = input<boolean>(true)
     useLetter = input<boolean>(true)
     showLetter = input<boolean>(true)
-    groupSelection = input<boolean>(true)
     all = input<boolean>(false)
     submitted = input<boolean>(false)
     IsRequired = input<boolean>(false)
@@ -46,6 +47,9 @@ export class ModelChoiceComponent implements FormValueControl<number | string> {
     //#endregion
     constructor() {
 
+        effect(() => {
+            console.log(`Model Choice groupDisabled Value is: ${this.groupDisabled()}`)
+        })
         effect(() => {
             console.log(`Model Choise ${this.value()}`)
             if (this.multiselection()) {
@@ -76,7 +80,7 @@ export class ModelChoiceComponent implements FormValueControl<number | string> {
     }
 
     filter(item: OptionItem) {
-        if (!this.groupSelection && item.id == item.groupModelId) return false
+        if (!this.showGroup && item.id == item.groupModelId) return false
         if (this.all()) return true
 
         return item.count != 0 || item.id == 0
