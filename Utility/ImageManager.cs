@@ -1,4 +1,3 @@
-using Libwebp.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Primitives;
@@ -123,20 +122,20 @@ namespace Utility
 
         public static async Task StoreWebPImage(long itemId, long originalImageId)
         {
-            string imageSrc = GenerateImageSrc(itemId, originalImageId);
-            string WebpFilePath = GenerateWebPImageSrc(itemId, originalImageId);
-            await using var file = new FileStream(imageSrc, FileMode.Open);
-            using var ms = new MemoryStream();
-            await file.CopyToAsync(ms);
-            //setup configuration for the encoder
-            var config = new WebpConfigurationBuilder().Output("output.webp").Build();
-            // create an encoder and pass in the configuration
-            var encoder = new WebpEncoder(config);
-            // start encoding by passing your memorystream and filename
-            var output = await encoder.EncodeAsync(ms, Path.GetFileName(file.Name));
+            //string imageSrc = GenerateImageSrc(itemId, originalImageId);
+            //string WebpFilePath = GenerateWebPImageSrc(itemId, originalImageId);
+            //await using var file = new FileStream(imageSrc, FileMode.Open);
+            //using var ms = new MemoryStream();
+            //await file.CopyToAsync(ms);
+            ////setup configuration for the encoder
+            ////var config = new WebpConfigurationBuilder().Output("output.webp").Build();
+            ////// create an encoder and pass in the configuration
+            ////var encoder = new WebpEncoder(config);
+            //// start encoding by passing your memorystream and filename
+            //var output = await encoder.EncodeAsync(ms, Path.GetFileName(file.Name));
 
-            await using var outFile = new FileStream(WebpFilePath, FileMode.Create);
-            await output.CopyToAsync(outFile);
+            //await using var outFile = new FileStream(WebpFilePath, FileMode.Create);
+            //await output.CopyToAsync(outFile);
 
             #region Image Encoder
             /* your converted file is returned as FileStream, do what you want download,
