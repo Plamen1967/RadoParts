@@ -144,6 +144,6 @@
         }
     </div>
 } @else {
-    <app-addpart [partId]="id_" [bus]="bus" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+    <app-addpart [updatePartId]="id_" [bus]="bus" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
 }
 <app-gotop></app-gotop>

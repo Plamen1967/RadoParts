@@ -69,7 +69,7 @@ export default class UserComponent extends HelperComponent implements AfterViewI
     users?: User[]
     public user?: User
     submitted = false
-    regions?: SelectOption[] = []
+    regions: SelectOption[] = []
     //#region services
     userService = inject(UserService)
     updateUserService = inject(UpdateUserService)

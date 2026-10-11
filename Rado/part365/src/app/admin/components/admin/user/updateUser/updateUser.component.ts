@@ -1,6 +1,6 @@
 //#region imports
 import { AfterViewInit, Component, inject, OnInit, signal } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -143,12 +143,12 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                             this.dealer = user.dealer!
                             if (this.dealer === UserType.Dealer) {
                                 this.requiredField(true)
-                                this.userForm.controls['companyName'].setValidators(Validators.required)
-                                this.userForm.controls['companyName'].updateValueAndValidity()
+                                // this.userForm.controls['companyName'].setValidators(Validators.required)
+                                // this.userForm.controls['companyName'].updateValueAndValidity()
                             } else {
                                 this.requiredField(false)
-                                this.userForm.controls['firstName'].setValidators(Validators.required)
-                                this.userForm.controls['firstName'].updateValueAndValidity()
+                                // this.userForm.controls['firstName'].setValidators(Validators.required)
+                                // this.userForm.controls['firstName'].updateValueAndValidity()
                             }
                             this.initialState = this.userForm().value()
                         }
@@ -165,16 +165,16 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                             this.dealer = user.dealer!
                             if (this.dealer === UserType.Dealer) {
                                 this.requiredField(true)
-                                this.userForm.controls['companyName'].setValidators(Validators.required)
-                                this.userForm.controls['companyName'].updateValueAndValidity()
-                                this.userForm.controls['firstName'].clearValidators()
-                                this.userForm.controls['firstName'].updateValueAndValidity()
+                                // this.userForm.controls['companyName'].setValidators(Validators.required)
+                                // this.userForm.controls['companyName'].updateValueAndValidity()
+                                // this.userForm.controls['firstName'].clearValidators()
+                                // this.userForm.controls['firstName'].updateValueAndValidity()
                             } else {
                                 this.requiredField(false)
-                                this.userForm.controls['firstName'].setValidators(Validators.required)
-                                this.userForm.controls['firstName'].updateValueAndValidity()
-                                this.userForm.controls['companyName'].clearValidators()
-                                this.userForm.controls['companyName'].updateValueAndValidity()
+                                // this.userForm.controls['firstName'].setValidators(Validators.required)
+                                // this.userForm.controls['firstName'].updateValueAndValidity()
+                                // this.userForm.controls['companyName'].clearValidators()
+                                // this.userForm.controls['companyName'].updateValueAndValidity()
                             }
                             this.initialState = this.userForm().value()
                         })
@@ -191,7 +191,8 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                     if (this.businessCardimage) this.userForm.imageId().value.set(this.businessCardimage.imageId!)
                 })
 
-            this.imageService.getMinImages(this.authenticationService.currentUserValue.userId).subscribe((images) => (this.images = [...images]))
+            if (this.authenticationService.currentUserValue.userId)                
+                this.imageService.getMinImages(this.authenticationService.currentUserValue.userId).subscribe((images) => (this.images = [...images]))
         }
     }
 
@@ -406,10 +407,10 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
             next: (message) => {
                 this.message = message
                 if (this.authenticationService.currentUserValue) this.authenticationService.currentUserValue.dealer = UserType.User
-                this.userForm.controls['companyName'].clearValidators()
-                this.userForm.controls['companyName'].updateValueAndValidity()
-                this.userForm.controls['firstName'].setValidators(Validators.required)
-                this.userForm.controls['firstName'].updateValueAndValidity()
+                // this.userForm.controls['companyName'].clearValidators() // TODO
+                // this.userForm.controls['companyName'].updateValueAndValidity()
+                // this.userForm.controls['firstName'].setValidators(Validators.required)
+                // this.userForm.controls['firstName'].updateValueAndValidity()
                 this.dealer = UserType.User
                 this.requiredField(false)
                 this.popupService.openWithTimeout(this.labels.MESSAGE, message, 2000)
@@ -440,10 +441,10 @@ export class UpdateUserComponent extends HelperComponent implements OnInit, Afte
                 this.message = message
                 if (this.authenticationService.currentUserValue) this.authenticationService.currentUserValue.dealer = UserType.Dealer
                 this.dealer = UserType.Dealer
-                this.userForm.controls['companyName'].setValidators([Validators.required, Validators.maxLength(50)])
-                this.userForm.controls['companyName'].updateValueAndValidity()
-                this.userForm.controls['firstName'].clearValidators()
-                this.userForm.controls['firstName'].updateValueAndValidity()
+                // this.userForm.controls['companyName'].setValidators([Validators.required, Validators.maxLength(50)])
+                // this.userForm.controls['companyName'].updateValueAndValidity()
+                // this.userForm.controls['firstName'].clearValidators()
+                // this.userForm.controls['firstName'].updateValueAndValidity()
                 this.requiredField(true)
                 this.popupService.openWithTimeout(this.labels.MESSAGE, this.message, 2000)
                 if (this.authenticationService.currentUserValue) this.dealer = this.authenticationService.currentUserValue.dealer!

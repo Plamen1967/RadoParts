@@ -47,7 +47,7 @@ export class SearchPartService {
     }
 
     search(filter: Filter): Observable<SearchResult> {
-        filter = {...filter, id: Date.now(), loadMainPicture : true, clientId : this.authenticationService.clientId}
+        filter = {...filter, id: Date.now(), loadMainPicture : true, clientId : this.authenticationService.clientId,}
         const params = convertToParam(filter)
 
         return this.http.get<SearchResult>(`${environment.restAPI}/Search/Search`, { params }).pipe(

@@ -159,12 +159,12 @@ namespace Rado.Datasets
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                        command.Parameters.Add("@rimWithTyreId", System.Data.SqlDbType.BigInt).Value = rimWithTyre.RimBoltCount;
+                        command.Parameters.Add("@rimWithTyreId", System.Data.SqlDbType.BigInt).Value = rimWithTyre.RimWithTyreId;
                         command.Parameters.Add("@tyreCompanyId", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
-                        command.Parameters.Add("@tyreWidth", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
-                        command.Parameters.Add("@tyreHeight", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
-                        command.Parameters.Add("@tyreRadius", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreHeight;
-                        command.Parameters.Add("@tyreType", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreCompanyId;
+                        command.Parameters.Add("@tyreWidth", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreWidth;
+                        command.Parameters.Add("@tyreHeight", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreHeight;
+                        command.Parameters.Add("@tyreRadius", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreRadius;
+                        command.Parameters.Add("@tyreType", System.Data.SqlDbType.Int).Value = rimWithTyre.TyreType;
                         command.Parameters.Add("@companyId", System.Data.SqlDbType.Int).Value = rimWithTyre.CompanyId;
                         command.Parameters.Add("@modelId", System.Data.SqlDbType.Int).Value = rimWithTyre.ModelId;
                         command.Parameters.Add("@rimWidth", System.Data.SqlDbType.Int).Value = rimWithTyre.RimWidth;

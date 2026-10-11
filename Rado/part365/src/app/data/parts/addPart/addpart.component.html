@@ -11,24 +11,23 @@
         <form autocomplete="off">
             @if (seller) {
                 <div class="shadow rounded card card-form-spec">
-                    @if (newPart) {
+                    @if (newPart()) {
                         <div class="d-inline-flex align-items-center">
-                            <div class="mt-2" [ngClass]="{ noDisplay: carId }">
+                            <!-- <div class="mt-2" [ngClass]="{ noDisplay: partCarId() }"> -->
                                 <div class="form-check form-check-inline">
                                     <input id="PartForCar" type="radio" class="custom-control-input" data-cy="car" value="car" [formField]="addPartForm.partForCar" />
                                     <label class="custom-control-label" for="PartForCar">Част за {{ choice }}</label>
                                 </div>
-                                @if (partForCar) {
+                                @if (addPartForm.partForCar().value() === 'car') {
                                     <div class="ms-2 d-inline-flex align-items-center min250px">
                                         <div class="min250px">
                                             <app-select
                                                 id="car"
                                                 label="Избери {{ choice }}"
                                                 [formField]="addPartForm.carId"
-                                                hint="Избери {{ choice }}"
                                                 data-cy="carReference"
-                                                [data]="cars"
-                                                [IsRequired]="true"
+                                                [data]="cars ?? []"
+                                                [isRequired]="true"
                                                 (changeOption)="onCarChange($event)"
                                                 [submitted]="submitted"
                                                 (onCloseEvent)="focus($event)">
@@ -41,9 +40,9 @@
                                     <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice }}</label>
                                 </div>
                             </div>
-                        </div>
+                        <!-- </div> -->
                     }
-                    @if (partForCar && car && carId_) {
+                    @if (addPartForm.partForCar().value() === 'car' && car && carId_) {
                         <div class="mt-2 p-2 d-inline-flex fs-5 text justify-content-center" style="background-color: aqua; width: 100%">
                             <div class="d-flex justify-content-center" style="text-align: center">{{ description }}</div>
                         </div>
@@ -51,7 +50,7 @@
                 </div>
             }
             <div class="card p-2 mt-2" style="background-color: honeydew">
-                @if (!partForCar) {
+                @if (!partForCar()) {
                     <div>
                         <div class="row g-3">
                             <div class="row mb-1">
@@ -64,7 +63,7 @@
                                             <app-model-choice
                                                 [formField]="addPartForm.modelId"
                                                 [all]="true"
-                                                [IsRequired]="true"
+                                                [isRequired]="true"
                                                 [companyId]="companyId()"
                                                 [showGroup]="true"
                                                 [groupDisabled]="true"
@@ -78,7 +77,7 @@
                                                 <app-modification-choice
                                                     [modelsId]="modelId()"
                                                     [all]="true"
-                                                    [IsRequired]="true"
+                                                    [isRequired]="true"
                                                     [multiselection]="false"
                                                     [formField]="addPartForm.modificationId"
                                                     (modifcationChange)="modificatioChanged($event)"
@@ -91,7 +90,7 @@
                                         }
                                     }
                                     <div class="col-sm-2 min200px">
-                                        <app-select [formField]="addPartForm.year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" [submitted]="submitted" (onCloseEvent)="focus($event)"> </app-select>
+                                        <app-select [formField]="addPartForm.year" label="{{ labels.YEAR }}" [data]="years ?? []" data-cy="year" [submitted]="submitted" (onCloseEvent)="focus($event)"> </app-select>
                                     </div>
                                 </div>
                             </div>
@@ -182,34 +181,34 @@
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
                             title="Избери категория"
-                            [IsRequired]="true"
+                            [isRequired]="true"
                             [multiselection]="false"
                             [submitted]="submitted"
                             placeHolder="Избери категория">
                         </app-category-choise>
                     </div>
-                    @if (categoryId()) {
+                    @if (this.addPartForm.categoryId().value() !== 0) {
                         <div class="col-sm-2 min350px">
                             <app-dealersubcategory-choice
-                                [categoryId]="categoryId()"
+                                [categoryId]="this.addPartForm.categoryId().value()"
                                 [formField]="addPartForm.dealerSubCategoryId"
                                 data-cy="dealerSubCategoryId"
                                 title="{{ labels.DEALERSUBCATEGORY }}"
-                                [IsRequired]="true"
+                                [isRequired]="true"
                                 [multiselection]="false"
                                 [submitted]="submitted"
                                 (dealerSubCategoryChanged)="dealerSubCategoryIdChanged($event)"
                                 (onCloseEvent)="focus($event)">
                             </app-dealersubcategory-choice>
                         </div>
-                        @if (dealerSubCategoryId) {
+                        @if (this.addPartForm.dealerSubCategoryId().value() !== 0) {
                             <div class="col-sm-2 min350px">
                                 <app-input
                                     [formField]="addPartForm.dealerSubCategoryName"
                                     label="{{ labels.DEALERSUBCATEGORYHELP }}"
                                     data-cy="dealerSubCategoryName"
                                     [submitted]="submitted"
-                                    [IsRequired]="true"
+                                    [isRequired]="true"
                                     placeHolder="{{ labels.DEALERSUBCATEGORYHELP }}">
                                 </app-input>
                             </div>
@@ -267,7 +266,7 @@
             </div>
             <div class="row g-3">
                 <div class="d-inline ms-2">
-                    <app-input [formField]="addPartForm.price" placeHolder="{{ labels.PRICE }}" [IsPrice]="true" [submitted]="submitted" data-cy="price" [inline]="false" [IsRequired]="true"></app-input>
+                    <app-input [formField]="addPartForm.price" placeHolder="{{ labels.PRICE }}" [IsPrice]="true" [submitted]="submitted" data-cy="price" [inline]="false" [isRequired]="true"></app-input>
                 </div>
             </div>
         </form>

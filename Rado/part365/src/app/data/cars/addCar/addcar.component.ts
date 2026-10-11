@@ -1,6 +1,6 @@
 //#region imports
 import { AfterViewInit, Component, ElementRef, HostListener, inject, OnInit, ChangeDetectionStrategy, input, effect, output, computed, signal } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
@@ -32,12 +32,12 @@ import { ImageData } from '@model/imageData'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
 import { AddCarParam } from './addCarParam'
-import { form, FormField } from '@angular/forms/signals'
+import { form, FormField, min, minLength } from '@angular/forms/signals'
 //#endregion
 interface addCarFormModelInterface {
     companyId: number
-    modelId: number | string 
-    modificationId: number | string
+    modelId: number 
+    modificationId: number
     year: number
     regNumber: string
     powerkWh: number | string
@@ -82,7 +82,21 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         mainImageId: '',
     })
 
-    addCarForm = form(this.addCarFormModel)
+    addCarForm = form(this.addCarFormModel, (schema) => {
+        min(schema.companyId, 1, {
+            error: { kind: 'not-selected', message: 'Моля изберете фирма' }
+        });
+        min(schema.modelId, 1, {
+            error: { kind: 'not-selected', message: 'Моля изберете модел' }
+        });
+        min(schema.modificationId, 1, {
+            when: () => !this.bus(),
+            error: { kind: 'not-selected', message: 'Моля изберете модификация' }
+        });
+        minLength(schema.regNumber, 1, {
+            error: { kind: 'required', message: 'Моля въведете регистрационен номер' }
+        });
+    })
     //#region form
     //#region services
     public carService: CarService = inject(CarService)
@@ -90,7 +104,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     private nextIdService: NextIdService = inject(NextIdService)
-    private formBuilder: FormBuilder = inject(FormBuilder)
     private router: Router = inject(Router)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private homeService: HomeService = inject(HomeService)
@@ -159,7 +172,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     saving = false
     closeResult = ''
     formInitialValues: object
-    submitted = false
+    submitted = signal<boolean>(false)
     firstUpdate = true
     mainImageId?: number = 0
     modelId = 0
@@ -179,7 +192,9 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.addCarFormModel().powerkWh = this.addCarForm.powerBHP().value()
         })
 
-
+        effect(() => {
+            console.log('Add Car Form:', this.addCarForm().errors()[0])
+        })
         effect(() => {
             if (this.displayPartView()) {
                 this.displayPartView_ = this.displayPartView()
@@ -281,26 +296,27 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     onSubmit() {
-        this.submitted = true
+        this.submitted.set(true)
         if (!this.addCarForm().valid()) {
+            console.log('Form is company:', this.addCarForm.companyId().errors())
             this.toastService.show('Моля попълнете задължителната информация')
             return
         }
 
-        if (this.mode() == UpdateEnum.New) {
-            this.carService.checkForUniqueness(this.addCarForm().value().regNumber, this.bus() ?? 0).subscribe({
+        if (this.ad()) {
+            this.carService.checkForUniqueness(this.addCarFormModel().regNumber, this.bus() ?? 0).subscribe({
                 next: (res) => {
                     if (res == false) {
                         const busCar = this.bus() ? 'Бус' : 'Кола'
-                        const message = `${busCar} с това име "${this.addCarForm().value().regNumber}" вече съществува`
+                        const message = `${busCar} с това име "${this.addCarFormModel().regNumber}" вече съществува`
                         this.toastService.show(message)
                     } else {
-                        this.addCar()
+                        this.addCar(UpdateEnum.New)
                     }
                 },
             })
         } else {
-            this.addCar()
+            this.addCar(UpdateEnum.Update)
         }
     }
     //#endregion
@@ -438,10 +454,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         for (let i = this.yearFrom; i <= this.yearTo; i++) {
             result.push({
                 value: i,
-                text: i.toString(),
-                isDisabled: function (): boolean {
-                    throw new Error('Function not implemented.')
-                },
+                text: i.toString()
             })
         }
         this.years = result
@@ -457,7 +470,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         if (newValue != this.addCarFormModel().powerkWh) this.addCarFormModel.set({ ...this.addCarFormModel(), powerkWh: newValue })
     }
 
-    addCar() {
+    addCar(update: UpdateEnum = UpdateEnum.New) {
         const formModel = this.addCarFormModel()
         const carUpdated: Car = Object.assign({}, formModel, {
             modelId: Number(formModel.modelId),
@@ -467,11 +480,11 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             millage: Number(formModel.millage),
             mainImageId: Number(formModel.mainImageId),
             bus: this.bus(),
-            carId: this.carId(),
+            carId: this.carId() ?? this.carId_,
             userId: this.userId,
         })
         this.saving = true
-        this.carService.addUpdateCar(carUpdated, this.mode()).subscribe({
+        this.carService.addUpdateCar(carUpdated, update).subscribe({
             next: (val) => {
                 this.carSaved(val)
             },
@@ -498,7 +511,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         const snackBarRef = this.toastService.showToast(content, 2)
         snackBarRef.afterDismissed().subscribe(() => {
             this.homeService.updateDisplayPartView(val)
-            this.submitted = false
+            this.submitted.set(false)
             this.saved.emit(val.id!)
             if (this.ad() === 'new') {
                 this.carService.currentCarId = val.id

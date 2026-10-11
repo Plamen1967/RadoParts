@@ -20,7 +20,7 @@ import { ErrorService } from '@services/error.service'
 
 export class CustomSelectComponent implements OnInit, AfterViewInit, FormValueControl<number | undefined> {
     value = model<number | undefined>(undefined);
-    selectedValue?: number
+    selectedValue2?: number
     letterItem = undefined
     _selection?: string
     data_: OptionItem[] = []
@@ -53,7 +53,7 @@ export class CustomSelectComponent implements OnInit, AfterViewInit, FormValueCo
     constructor() {
         effect(() => {
             this.clearBox = this.value() ? true : false
-            this.selectedValue = this.value()
+            this.selectedValue2 = this.value()
             this._selection = this.data_?.find((item) => item.id === this.value())?.description ?? this.placeHolder()
             this.changeOption.emit(this.value())
             if (this.data()) 

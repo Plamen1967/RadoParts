@@ -7,7 +7,7 @@ import { ButtonGroupComponent } from '../buttonGroup/buttongroup.component'
 import { OptionItem } from '@model/optionitem'
 import { AlertService } from '@services/alert.service'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-customselect',
@@ -17,7 +17,6 @@ import { FormValueControl } from '@angular/forms/signals'
 })
 export class CustomSelectComponent implements FormValueControl<number | string> {
     value = model<number| string>(0)
-    selectedValue?: number
     letterItem = undefined
     data_: OptionItem[] = []
     loaded = false
@@ -31,17 +30,16 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
     hint = input<string | undefined>(undefined)
     showLetter = input<boolean | undefined>(undefined)
     letter = input<boolean | undefined>(undefined)
-    IsRequired = input<boolean | undefined>(undefined)
-    submitted = input<boolean | undefined>(undefined)
+    isRequired = input<boolean>(false)
+    submitted = input<boolean>(false)
     showAll = input<boolean>(true)
     groupDisabled = input<boolean>(false)
     useFilter = input<boolean>(false)
     multiSelection = input<boolean>(false)
     placeHolder = input<string | undefined>(undefined)
     showCount = input<boolean>(true)
-    isRequired = input<boolean>(false)
     select = input<number | undefined>(undefined)
-
+    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     changeOption = output<number|string>()
     closeDialog = output<ElementRef>()
 
@@ -73,7 +71,14 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
 
             this._selection = this.data()?.find((item) => item.id == this.value())?.description ?? this.placeHolder() ?? ''
         })
+
+        effect(() => {
+            console.log(`Custom Select Errors is: ${this.errors()}`)
+        })
     
+        effect(() => {
+            console.log(`Custom Select Submitted is: ${this.submitted()}`)
+        })
         effect(() => {
             if (this.showGroup() === false) {
                 this.data_ = this.data()?.filter((item) => item['groupModelId'] != item.id)

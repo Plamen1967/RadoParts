@@ -11,7 +11,7 @@ import { OptionItem } from '@model/optionitem'
 import { Modification } from '@model/static-data/modification'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { ErrorService } from '@services/error.service'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
@@ -35,11 +35,12 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
     useFilter = input<boolean>(true)
     all = input<boolean>(false)
     userId = input<number>(0)
-    IsRequired = input<boolean>(false)
+    isRequired = input<boolean>(false)
     submitted = input<boolean>(false)
     showCount = input<boolean>(false)
     itemType = input<ItemType>(ItemType.All)
     modelsId = input<string | number>('')
+    errors = input<readonly ValidationError.WithOptionalFieldTree[]>([])
 
     modifcationChange = output<Modification>()
     //#region services

@@ -1,7 +1,7 @@
 //#region imports
 import { AfterViewInit, Component, DestroyRef, effect, inject, input, model } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { companyToOptionItem } from '@app/functions/function-chain'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
@@ -37,10 +37,11 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     destroyRef: DestroyRef = inject(DestroyRef)
 
     config = input.required<CompanyControlConfig>()
+    errors = input<readonly ValidationError.WithOptionalFieldTree[]>([])
+    submitted = input<boolean>(false)
     oldConfig?: CompanyControlConfig
     itemType_ = ItemType.All
     all_ = false
-
     //#region services
     //#endregion
     //#endregion
@@ -49,6 +50,9 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
             console.log( "Company Choice Value", this.value() )
         })
 
+        effect(() => {
+            console.log(`Company Choice Errors: ${JSON.stringify(this.errors()[0])}`)
+        })
         effect(() => {
             if (!this.oldConfig || this.oldConfig.itemType != this.config().itemType || this.oldConfig.bus != this.config().bus) {
                 console.log(`Configure`)

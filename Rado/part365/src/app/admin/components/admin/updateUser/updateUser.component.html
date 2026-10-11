@@ -19,10 +19,10 @@
         </div>
     }
 
-    <form (ngSubmit)="onSubmit()">
+    <form>
         <div class="row">
             <div class="col-sm-2">
-                <app-input [formField]="userForm.userName" label="{{ labels.USERNAME }}" placeHolder="{{ labels.USERNAME }}" [IsRequired]="true" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.userName" label="{{ labels.USERNAME }}" placeHolder="{{ labels.USERNAME }}" [isRequired]="true" [submitted]="submitted"> </app-input>
             </div>
             <div class="col-sm-6 mt-4">
                 @if (isDealer) {
@@ -36,7 +36,7 @@
         <div class="row">
             @if (isDealer) {
                 <div class="col-sm-2">
-                    <app-input [formField]="userForm.companyName" label="{{ labels.COMPANYNAME }}" placeHolder="{{ labels.COMPANYNAME }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
+                    <app-input [formField]="userForm.companyName" label="{{ labels.COMPANYNAME }}" placeHolder="{{ labels.COMPANYNAME }}" [submitted]="submitted" [isRequired]="true"> </app-input>
                 </div>
                 @if (submitted && !userForm.companyName().valid()) {
                     <div class="invalid-feedback">
@@ -47,7 +47,7 @@
                 }
             } @else {
                 <div class="col-sm-2">
-                    <app-input [formField]="userForm.firstName" label="{{ labels.FIRSTNAME }}" placeHolder="{{ labels.FIRSTNAME }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
+                    <app-input [formField]="userForm.firstName" label="{{ labels.FIRSTNAME }}" placeHolder="{{ labels.FIRSTNAME }}" [submitted]="submitted" [isRequired]="true"> </app-input>
                     @if (submitted && !userForm.firstName().valid()) {
                         <div class="invalid-feedback">
                             @if (userForm.firstName().getError('required')) {
@@ -63,7 +63,7 @@
         </div>
         <div class="row">
             <div class="col-sm-2">
-                <app-select [formField]="userForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="regions" [submitted]="submitted" [IsRequired]="true"> </app-select>
+                <app-select [formField]="userForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="regions" [submitted]="submitted" [isRequired]="true"> </app-select>
                 @if (submitted && !userForm.regionId().valid()) {
                     <div class="invalid-feedback">
                         @if (userForm.regionId().getError('required')) {
@@ -88,7 +88,7 @@
         </div>
         <div class="row">
             <div class="col-sm-2">
-                <app-input [formField]="userForm.phone" label="{{ labels.PHONE }}" [IsRequired]="true" placeHolder="{{ labels.PHONE }}" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.phone" label="{{ labels.PHONE }}" [isRequired]="true" placeHolder="{{ labels.PHONE }}" [submitted]="submitted"> </app-input>
             </div>
             <div class="col-sm-2">
                 <app-input [formField]="userForm.phone2" label="{{ labels.PHONE2 }}" placeHolder="{{ labels.PHONE2 }}" [submitted]="submitted"> </app-input>
@@ -102,7 +102,7 @@
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <app-input [formField]="userForm.email" label="{{ labels.EMAIL }}" placeHolder="{{ labels.EMAIL }}" [IsRequired]="true" [submitted]="submitted"> </app-input>
+                <app-input [formField]="userForm.email" label="{{ labels.EMAIL }}" placeHolder="{{ labels.EMAIL }}" [isRequired]="true" [submitted]="submitted"> </app-input>
             </div>
 
             @if (dealer) {
@@ -137,7 +137,7 @@
             <div class="row">
                 @if (!businessCardimage) {
                     <div class="row">
-                        <app-upload [id]="userId()!" [multiple]="false" [businessCard]="true" (uploadFinished)="addBusinessCard($event)" [addPicture]="'Качете бизнес карта'"> </app-upload>
+                        <app-upload [id]="this.updatedUserId()" [multiple]="false" [businessCard]="true" (uploadFinished)="addBusinessCard($event)" [addPicture]="'Качете бизнес карта'"> </app-upload>
                     </div>
                 }
                 @if (businessCardimage) {
@@ -148,10 +148,10 @@
                     <h5>Качете Вашите фирмени снимки</h5>
                 </div>
                 <div class="row">
-                    <app-upload [id]="userId()!" [multiple]="true" [businessCard]="false" (uploadFinished)="imagesAdded($event)" [camera]="true" [addPicture]="'Качете снимка'"> </app-upload>
+                    <app-upload [id]="this.updatedUserId()" [multiple]="true" [businessCard]="false" (uploadFinished)="imagesAdded($event)" [camera]="true" [addPicture]="'Качете снимка'"> </app-upload>
                 </div>
                 <div class="row mt-2">
-                    <app-picture [id]="userId()" [images]="images" [updateFlag]="true" [mainImageFlag]="false"></app-picture>
+                    <app-picture [id]="this.updatedUserId()" [images]="images" [updateFlag]="true" [mainImageFlag]="false"></app-picture>
                 </div>
         </div>
         }

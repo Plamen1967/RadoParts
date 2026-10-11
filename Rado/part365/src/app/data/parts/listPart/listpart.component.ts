@@ -126,7 +126,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     selectedCompany?: Company
     yearFrom = this.labels.YEAR_START
     yearTo = 2021
-    years?: SelectOption[]
+    years: SelectOption[] = []
     mode: UpdateEnum = UpdateEnum.View
     currentPartId?: number
     ngbModuleRef?: object

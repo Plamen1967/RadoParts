@@ -1,37 +1,36 @@
-<form>
-    @if (multiselection()) {
-        <app-multiselection
-            [IsRequired]="IsRequired()"
-            id="categoriesId_int"
-            label="Избери категория"
-            [value]="value()"
-            placeHolder="Избери категория"
-            [submitted]="submitted()"
-            [appToolTip]="'Избери категория'"
-            [data]="categories"
-            [multiSelection]="multiselection()"
-            data-cy="categoriesId"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title="Избери категория">
-        </app-multiselection>
-    } @else {
-        <app-customselect
-            [IsRequired]="IsRequired()"
-            [submitted]="submitted()"
-            id="categoriesId_int"
-            title="Избери категория"
-            placeHolder="Избери категория"
-            label="Избери категория"
-            [value]="value()"
-            [data]="categories"
-            [showGroup]="false"
-            [groupDisabled]="false"
-            [appToolTip]="'Избери категория'"
-            data-cy="categoriesId"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right">
-        </app-customselect>
-    }
-    <form></form>
-</form>
+@if (multiselection()) {
+    <app-multiselection
+        [isRequired]="isRequired()"
+        id="categoriesId_int"
+        label="Избери категория"
+        [value]="value()"
+        placeHolder="Избери категория"
+        [submitted]="submitted()"
+        [appToolTip]="'Избери категория'"
+        [data]="categories"
+        [multiSelection]="multiselection()"
+        (changeOption)="value.set($event)"
+        data-cy="categoriesId"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        title="Избери категория">
+    </app-multiselection>
+} @else {
+    <app-customselect
+        [isRequired]="isRequired()"
+        [submitted]="submitted()"
+        id="categoriesId_int"
+        title="Избери категория"
+        placeHolder="Избери категория"
+        label="Избери категория"
+        [value]="value()"
+        [data]="categories"
+        [showGroup]="false"
+        [groupDisabled]="false"
+        [appToolTip]="'Избери категория'"
+        (changeOption)="value.set(+$event)"
+        data-cy="categoriesId"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right">
+    </app-customselect>
+}

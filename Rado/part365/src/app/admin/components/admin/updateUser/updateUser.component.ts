@@ -1,5 +1,5 @@
 //#region Imports
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, input, model } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, input, effect, signal, computed } from '@angular/core'
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
@@ -26,7 +26,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { UpdateUserService } from '@app/admin/services/updateuser.service'
 import { form, FormField, required } from '@angular/forms/signals'
 //#endregion
-interface userForm {
+interface userFormInterface {
             userName: string,
             companyName: string,
             firstName: string,
@@ -58,7 +58,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     pwdPattern = ''
     mobnumPattern = '^((\\+91-?)|0)?[0-9]{10}$'
     emailPattern = ''
-    userFormModel = model<userForm>({
+    userFormModel = signal<userFormInterface>({
         userName: '',
         companyName: '',
         firstName: '',
@@ -122,8 +122,15 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     //#endregion
     //#endregion
 
+    updatedUserId = computed(() => {
+        return this.userId() ?? this.authenticationService.currentUserValue?.userId ?? 0
+    })
     constructor() {
         super()
+
+        effect(() => {
+            console.log(`This form value: ${JSON.stringify(this.userForm().value())}`)
+        })
         this.regions = [...this.staticSelectionService.Region]
         // this.userForm = this.formBuilder.group({
         //     userName: ['', [Validators.maxLength(50), Validators.required]],
@@ -146,7 +153,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     }
 
     ngAfterViewInit(): void {
-        if (this.activationcode() || this.userId()) {
+        if (this.activationcode()) {
             this.userService
                 .loadUserByActivationCode(this.activationcode()!)
                 .pipe(first())
@@ -165,14 +172,16 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                         this.initialState = {...this.userForm().value()}
                     }
                 })
-        } else if (this.authenticationService.currentUserValue?.userId) {
+        } else if (this.updatedUserId()) {
             this.userService
-                .loadCurretUser(this.authenticationService.currentUserValue?.userId)
+                .loadCurretUser(this.updatedUserId())
                 .pipe(first())
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((user) => {
                     this.user = user
-                    this.userFormModel.set({ ...this.userFormModel(), ...user })
+                    this.user.webPage = this.user.webPage?.replace('.radoparts.com', '')
+                    this.user.webPage = this.user.webPage?.replace('http://', '')
+                    this.userFormModel.set({ ...this.userFormModel(), ...this.user })
                     this.dealer = user.dealer
                     if (this.dealer === UserType.Dealer) {
                         this.requiredField(true)
@@ -183,9 +192,9 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                 })
         }
 
-        if (this.authenticationService.currentUserValue?.userId) {
+        if (this.updatedUserId()) {
             this.imageService
-                .getBusinessCardImage(this.authenticationService.currentUserValue.userId)
+                .getBusinessCardImage(this.updatedUserId())
                 .pipe(first())
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((image) => {
@@ -193,8 +202,9 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
                     if (this.businessCardimage) this.userFormModel.set({ ...this.userFormModel(), imageId: this.businessCardimage?.imageId ?? 0 })
                 })
 
+            if (this.updatedUserId())    
             this.imageService
-                .getMinImages(this.authenticationService.currentUserValue.userId)
+                .getMinImages(this.updatedUserId())
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((images) => (this.images = images))
         }
@@ -225,10 +235,11 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
         }
 
         this.loading = true
-        this.userFormModel.set({
-            ...this.userFormModel(),
+        this.userFormModel.update((value) => ({
+            ...value,
             imageId: this.businessCardimage?.imageId ?? this.userFormModel().imageId,
-        }) 
+        })) 
+
         this.updateUserService
             .updateUser(this.userFormModel())
             .pipe(takeUntilDestroyed(this.destroyRef))
@@ -272,7 +283,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     //#region View ads
     view() {
         const address = `/user/user`
-        this.router.navigate([address], { queryParams: { userId: this.authenticationService.currentUserValue?.userId } })
+        this.router.navigate([address], { queryParams: { userId: this.updatedUserId() } })
     }
     //#endregion
 
@@ -318,10 +329,10 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     addBusinessCard(image: ImageData[]) {
         if (image === null) {
             this.businessCardimage = undefined
-            this.userFormModel.set({ ...this.userFormModel(), imageId: 0 })
+            this.userFormModel.update((value) => ({ ...value, imageId: 0 }))
         } else {
             this.businessCardimage = image[0]
-            this.userFormModel.set({ ...this.userFormModel(), imageId: this.businessCardimage?.imageId ?? 0 })
+            this.userFormModel.update((value) => ({ ...value, imageId: this.businessCardimage?.imageId ?? 0 }))
         }
     }
 
@@ -342,6 +353,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.businessCardimage = undefined
+                this.userFormModel.update((value) => ({ ...value, imageId: 0 }))
                 this.popupService.openWithTimeout(this.labels.MESSAGE, 'Бизнес картата успещно е изтрита', 2000)
             })
     }
@@ -364,7 +376,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     onDeleteOk() {
         if (!this.user) return
         this.updateUserService
-            .deleteUser(this.user.userId!)
+            .deleteUser(this.updatedUserId())
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (message) => {

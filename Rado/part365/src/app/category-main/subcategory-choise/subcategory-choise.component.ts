@@ -33,7 +33,7 @@ export class SubcategoryChoiseComponent implements FormValueControl<string | num
     multiselection = input<boolean>(true)
     categoriesId = input.required<string>()
     submitted = input<boolean>(false)
-    IsRequired = input<boolean>(false)
+    isRequired = input<boolean>(false)
     //#region services
     public subCategoryService: SubCategoryService
     private formBuilder: FormBuilder

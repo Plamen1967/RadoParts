@@ -21,7 +21,7 @@ export class YearComponent extends HelperComponent implements FormValueControl<n
     isDisabled = false
     yearFrom = 1970
     yearTo = 2025
-    years?: SelectOption[]
+    years: SelectOption[] = []
     period = input<{ yearFrom: number; yearTo: number }>()
 
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)

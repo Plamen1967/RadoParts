@@ -1,7 +1,6 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, inject, OnInit, Self, model, input } from '@angular/core'
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormBuilder, FormGroup, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { Component, inject, OnInit, model, input, effect } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
@@ -22,55 +21,28 @@ import { FormValueControl } from '@angular/forms/signals'
 export class CategoryChoiseComponent implements FormValueControl<string | number>, OnInit {
     //#region variables and services
     value = model<string | number>('')
-    categoryForm: FormGroup
     isDisabled?: boolean
     categories: OptionItem[] = []
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    protected onTouched?() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    protected onChange?(_: number) {}
     all = input<boolean>(false)
     multiselection = input<boolean>(true)
     submitted = input<boolean>(false)
-    IsRequired = input<boolean>(false)
+    isRequired = input<boolean>(false)
     //#region services
     public categoryService: CategoryService
-    private formBuilder: FormBuilder
-    @Self() public control: NgControl
     public errorService: ErrorService
-    private element: ElementRef
-    private destroyRef: DestroyRef
     //#endregion
     //#endregion
 
     constructor() {
         this.categoryService = inject(CategoryService)
-        this.formBuilder = inject(FormBuilder)
-        this.control = inject(NgControl)
         this.errorService = inject(ErrorService)
-        this.element = inject(ElementRef)
-        this.destroyRef = inject(DestroyRef)
 
-        if (this.control) this.control.valueAccessor = this
-        this.categoryForm = this.formBuilder.group({
-            categoriesId_int: [''],
+        effect(() => {
+            console.log(`Category Value: ${this.value()}`)
         })
     }
     ngOnInit(): void {
-        this.categoryForm.controls['categoriesId_int'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((f) => {
-            if (this.onChange) this.onChange(f)
-        })
         this.initCategories()
-    }
-
-    writeValue(id: number): void {
-        this.categoryForm.patchValue({ categoriesId_int: id })
-    }
-    registerOnChange(fn: (_: unknown) => unknown): void {
-        this.onChange = fn
-    }
-    registerOnTouched(fn: () => unknown): void {
-        this.onTouched = fn
     }
 
     setDisabledState?(isDisabled: boolean): void {
@@ -80,7 +52,6 @@ export class CategoryChoiseComponent implements FormValueControl<string | number
     initCategories() {
         this.categoryService
             .fetch()
-            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
                 const categories: Category[] = []
                 res.forEach((item) => {

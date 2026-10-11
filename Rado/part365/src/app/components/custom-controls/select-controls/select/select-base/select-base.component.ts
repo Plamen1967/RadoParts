@@ -1,9 +1,8 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, inject, Input, model, input, output } from '@angular/core'
+import { Component, inject, Input, model, input, output, computed, effect } from '@angular/core'
 import { FormsModule, ValidationErrors } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
-import {FormValueControl} from '@angular/forms/signals';
 
 @Component({
     selector: 'app-select-base',
@@ -11,7 +10,7 @@ import {FormValueControl} from '@angular/forms/signals';
     styleUrls: ['./select-base.component.css'],
     imports: [FormsModule, NgClass, NgStyle],
 })
-export class SelectBaseComponent implements FormValueControl<number> {
+export class SelectBaseComponent{
     value = model(0);
     value_as_string?: string;
     readonly disabled = input(false);    
@@ -20,17 +19,11 @@ export class SelectBaseComponent implements FormValueControl<number> {
     hint = input<string | undefined>();
     error = input<ValidationErrors | null>(null);
     control = input<string | undefined>();
-    @Input() set data(data_: SelectOption[] | undefined) {
-        this._data = data_
-        this.selectedValue = this.value();
-        this._data?.forEach((element) => {
-            element.color = element.value === -1 ? 'lightgray' : element.color
-        })
-    }
+    data = input<SelectOption[] | undefined>();
 
     @Input() set initialValue(value: number) {
         this.value.set(value);
-        this.selectedValue = value
+        this.selectedValue4 = value
     }
     isRequired = input<boolean | undefined>();
     isInvalid = input<boolean | undefined>();
@@ -40,13 +33,24 @@ export class SelectBaseComponent implements FormValueControl<number> {
     id = input('selectId');
 
     changeOption = output<number>()
-    _data?: SelectOption[] = []
     first = true
-    selectedValue?: number
+    selectedValue4?: number
     public errorService: ErrorService = inject(ErrorService)
 
+    _data = computed(() => {
+        return this.data()?.map((item) => {
+            item.color = item.value === -1 ? 'lightgray' : item.color
+            return item
+        })
+    })
+
+    constructor() {
+        effect(() => {
+            console.log(`Select Base Value: ${this.data()}`)
+        })
+    }
     onChangeSelect() {
-        this.value.set(this.selectedValue ?? 0)
+        this.value.set(this.selectedValue4 ?? 0)
         this.changeOption.emit(this.value())
     }
 

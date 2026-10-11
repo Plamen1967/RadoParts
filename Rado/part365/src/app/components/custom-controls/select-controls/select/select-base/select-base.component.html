@@ -2,12 +2,12 @@
     <div class="select__container">
         <div class="select__field">
             <select
-                name="selectedValue"
+                name="selectedValue4"
                 class="form-select form-select-sm shadow"
-                [(ngModel)]="selectedValue"
+                [(ngModel)]="selectedValue4"
                 [ngClass]="{ 'is-invalid': submitted() && isInvalid }"
                 (change)="onChangeSelect()">
-                @for (element of _data; track element.value) {
+                @for (element of _data(); track element.value) {
                     <option [ngStyle]="{ 'background-color': element.color }" [attr.disabled]="element.isDisabled" [ngValue]="element.value">{{ element.text }} {{ element.count }}</option>
                 }
             </select>

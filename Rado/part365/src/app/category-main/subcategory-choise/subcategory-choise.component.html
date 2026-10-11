@@ -1,37 +1,36 @@
-<form>
-    @if (multiselection()) {
-        <app-multiselection
-            [IsRequired]="IsRequired()"
-            id="subCategoriesId_int"
-            label="Избери подкатегория"
-            [value]="value()"
-            placeHolder="Избери подкатегория"
-            [appToolTip]="'Избери подкатегория'"
-            [data]="subCategories"
-            [multiSelection]="multiselection()"
-            data-cy="subCategoriesId_int"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            [submitted]="submitted()"
-            title="Избери подкатегория">
-        </app-multiselection>
-    } @else {
-        <app-customselect
-            [IsRequired]="IsRequired()"
-            id="subCategoriesId"
-            title="Избери подкатегория"
-            placeHolder="Избери подкатегория"
-            label="Избери подкатегория"
-            [value]="value()"
-            [data]="subCategories"
-            [showGroup]="false"
-            [groupDisabled]="false"
-            [appToolTip]="'Избери подкатегория'"
-            [submitted]="submitted()"
-            data-cy="subCategoriesId"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right">
-        </app-customselect>
-    }
-    <form></form>
-</form>
+@if (multiselection()) {
+    <app-multiselection
+        [isRequired]="isRequired()"
+        id="subCategoriesId_int"
+        label="Избери подкатегория"
+        [value]="value()"
+        placeHolder="Избери подкатегория"
+        [appToolTip]="'Избери подкатегория'"
+        [data]="subCategories"
+        [multiSelection]="multiselection()"
+        data-cy="subCategoriesId_int"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        (changeOption)="value.set($event)"
+        [submitted]="submitted()"
+        title="Избери подкатегория">
+    </app-multiselection>
+} @else {
+    <app-customselect
+        [isRequired]="isRequired()"
+        id="subCategoriesId"
+        title="Избери подкатегория"
+        placeHolder="Избери подкатегория"
+        label="Избери подкатегория"
+        [value]="value()"
+        [data]="subCategories"
+        [showGroup]="false"
+        [groupDisabled]="false"
+        [appToolTip]="'Избери подкатегория'"
+        [submitted]="submitted()"
+        (changeOption)="value.set(+$event)"
+        data-cy="subCategoriesId"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right">
+    </app-customselect>
+}

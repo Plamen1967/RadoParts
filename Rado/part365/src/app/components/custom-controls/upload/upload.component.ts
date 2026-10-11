@@ -29,7 +29,7 @@ export class UploadComponent extends HelperComponent implements OnInit {
     imageCount?: number
 
     id = input.required<number>()
-    businessCard = input.required<boolean | undefined>()
+    businessCard = input.required<boolean>()
     addPicture = input<string | undefined>('Добави снимка')
     multiple = input<boolean | undefined>()
     camera = input<boolean | undefined>(true)
@@ -105,7 +105,7 @@ export class UploadComponent extends HelperComponent implements OnInit {
         else {
             try {
                 this.imageService
-                    .uploadImages(event.target.files, this.id()!, this.businessCard()!)
+                    .uploadImages(event.target.files,  this.id()!, this.businessCard()!)
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe({
                         next: (event) => {

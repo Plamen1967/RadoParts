@@ -106,7 +106,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     currentCarId?: number = undefined
     mode: UpdateEnum = UpdateEnum.View
     addPartId?: number
-    cars: CarView[] = []
+    cars = signal<CarView[]>([])
     allCars: CarView[] = []
     carsList: SelectOption[] = []
     addPartCarId?: number
@@ -114,7 +114,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     updateCars?: boolean = true
     numberPages = 0
     currentPage = 0
-    loading?: boolean
     searched = true
     title = ''
     companyId = 0
@@ -133,6 +132,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     updatePartFlag = false
     updateBusFlag = false
     showParts = false
+    loading = signal<boolean>(false)
     public todos$?: Observable<CarView[]>
     private readonly _autoSearch$: Subject<Filter>
     private readonly _debounce: number
@@ -171,6 +171,9 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             this.title = this.bus() ? 'Бусове' : 'Коли'
             this.label = this.bus() ? 'Избери бус' : 'Избери кола'
         })
+        effect(() => {
+            console.log(`Bus is: ${this.cars()}`)
+        })
         effect(() => this.onCompanyChange(this.listForm.companyId().value()))
         effect(() => this.onModelChange(this.listForm.modelId().value()))
         effect(() => this.search(this.listForm().value()))
@@ -182,11 +185,11 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     }
 
     ngAfterViewInit(): void {
-        this.search(this.listForm())
+        this.search(this.listForm().value())
     }
 
     ngOnInit() {
-        this.loading = true
+        this.loading.set(true)
         this.setAutoSearch()
         this.yearTo = new Date().getUTCFullYear()
         this.listForm.bus().value.set(this.bus() ?? 0)
@@ -353,10 +356,10 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                 if (res) {
                     this.popupService.openWithTimeout('Съобщение', 'Колата е успешно изтрита!')
                     this.userCountService.refresh()
-                    const find = this.cars.findIndex((x) => x.carId === carId)
+                    const find = this.cars().findIndex((x) => x.carId === carId)
                     if (find !== -1) {
                         this.allCars.splice(find, 1)
-                        this.cars = this.getPageData()
+                        this.cars.set(this.getPageData())
                     }
                 }
             },
@@ -373,7 +376,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     //#region page management
     moveToPage(page: number) {
         this.currentPage = page
-        this.cars = [...this.getPageData()]
+        this.cars.set([...this.getPageData()])
 
         goToPosition('top')
     }
@@ -382,14 +385,14 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         if (this.currentPage + 1 > this.numberPages) return
 
         this.currentPage++
-        this.cars = [...this.getPageData()]
+        this.cars.set([...this.getPageData()])
         goToPosition('top')
     }
     previousPage() {
         if (this.currentPage - 1 === 0) return
 
         this.currentPage--
-        this.cars = [...this.getPageData()]
+        this.cars.set([...this.getPageData()])
         goToPosition('top')
     }
 
@@ -432,10 +435,10 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                 debounceTime(this._debounce),
                 distinctUntilChanged(),
                 switchMap((Filter) => {
-                    this.loading = true
-                    this.cars = []
+                    this.loading.set(true)
+                    this.cars.set([])
                     Filter.userId = this.userId
-                    return this.carService.fetchCars(Filter).pipe(tap(() => (this.loading = true)))
+                    return this.carService.fetchCars(Filter).pipe(tap(() => (this.loading.set(false))))
                 }),
                 takeUntil(this._destroy$)
             )
@@ -445,17 +448,17 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
                     if (this.currentCarId) goToPosition(this.currentCarId)
                     this.updateCars = true
-                    this.loading = false
+                    this.loading.set(false)
                 },
                 error: (error) => {
                     this.loggerService.logError(error)
                     this.popupService.openWithTimeout('Съобщение', 'Данните не могат да бъдат заредени').subscribe(() => {
-                        this.loading = false
+                        this.loading.set(false)
                         this.router.navigate(['/'])
                     })
                 },
                 complete: () => {
-                    this.loading = false
+                    this.loading.set(false)
                 },
             })
     }
@@ -488,7 +491,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.currentCarId = car.carId
         const updatedCar = { ...car }
         if (car) {
-            const index = this.cars.findIndex((x) => x.carId === updatedCar.carId)
+            const index = this.cars().findIndex((x) => x.carId === updatedCar.carId)
             if (index != -1) this.allCars[index] = Object.assign({}, updatedCar)
             else {
                 this.allCars.unshift(updatedCar)
@@ -518,7 +521,8 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                 this.currentPage = 1
             }
         }
-        this.cars = [...this.getPageData()]
+        this.cars.set([...this.getPageData()])
+        this.loading.set(false)
         if (this.currentCarId) goToPosition(this.currentCarId!.toString())
     }
 

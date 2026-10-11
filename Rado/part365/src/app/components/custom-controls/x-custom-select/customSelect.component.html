@@ -1,20 +1,23 @@
-<div class="select__margin" role="none">
+<div class="select__margin w-100" role="none">
     <div class="select__container">
-        <div class="select__label" [ngClass]="{ required: IsRequired() }">
+        <div class="select__label" [ngClass]="{ required: isRequired() }">
             {{ label() }}
-            @if (label() && IsRequired()) {
+            @if (label() && isRequired()) {
                 <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
             }
         </div>
-        @if (loaded) {
-            <div class="select__field">
-                <app-buttongroup [placeholder]="placeHolder()" [clearBox]="clearBox()" [selection]="_selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()"> </app-buttongroup>
+        <div class="select__field">
+            <app-buttongroup [placeholder]="placeHolder()" [clearBox]="clearBox()" [selection]="_selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()"> </app-buttongroup>
+        </div>
+        @if (submitted() && errors() && errors().length > 0) {
+            <div class="invalid-feedback d-block">
+                <small>{{ errors()[0].message }}</small>
             </div>
         }
-        @if (submitted() && IsInvalid) {
+        <!-- @if (submitted() && invalid()) {
             <div class="invalid-feedback d-block">
                 <small>{{ errorMessage }}</small>
             </div>
-        }
+        } -->
     </div>
 </div>

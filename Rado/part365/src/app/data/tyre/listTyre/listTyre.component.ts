@@ -106,7 +106,8 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     })
     searchForm = form(this.searchFormModel)
     user?: AuthenticatedUser
-    loading = false
+    loading = signal<boolean>(false)
+
     categories = [
         { value: ItemType.Tyre, text: 'Гуми' },
         { value: ItemType.Rim, text: 'Джанти' },
@@ -126,17 +127,17 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     userId = 0
     companyId?: number
     tyreCompanies: SelectOption[] = []
-    boltDistances?: SelectOption[]
-    rimCenters?: SelectOption[]
-    rimBoltCount?: SelectOption[]
-    rimOffset?: SelectOption[]
-    rimMaterial?: SelectOption[]
-    rimWidth?: SelectOption[]
-    tyreWidth?: SelectOption[]
-    tyreHeight?: SelectOption[]
-    tyreRadius?: SelectOption[]
-    regions?: SelectOption[]
-    tyreTypes?: SelectOption[]
+    boltDistances: SelectOption[] = []
+    rimCenters: SelectOption[] = []
+    rimBoltCount: SelectOption[] = []
+    rimOffset: SelectOption[] = []
+    rimMaterial: SelectOption[] = []
+    rimWidth: SelectOption[] = []
+    tyreWidth: SelectOption[] = []
+    tyreHeight: SelectOption[] = []
+    tyreRadius: SelectOption[] = []
+    regions: SelectOption[] = []
+    tyreTypes: SelectOption[] = []
     inialState?: object
     itemType: ItemType = ItemType.AllTyre
     params?: QueryParam
@@ -224,7 +225,6 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
     ngAfterViewInit(): void {
         this.inialState = this.searchForm().value()
-        this.searchForm.category().value.set(this.itemType)
         this.search()
     }
 
@@ -244,9 +244,9 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
             distinctUntilChanged(),
             switchMap(() => {
                 const filter: Filter = Object.assign({}, this.searchForm().value(), { id: 0 })
-                filter.itemType = this.itemType
+                filter.itemType = this.searchFormModel().category
                 filter.userId = this.userId
-                this.loading = true
+                this.loading.set(true)
                 this.resultMessage = ''
                 return this.searchPartService.search(filter)
             }),
@@ -255,7 +255,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
         this.todos$.subscribe((res) => {
             this.updateData(res.data!)
-            this.loading = false
+            this.loading.set(false)
             if (res.data?.length == 0) {
                 this.resultMessage = 'Няма намерени обяви'
             }
@@ -345,6 +345,8 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         this.numberPages = Math.ceil(this.allItems.length / 10)
         if (this.currentId) {
             goToPosition(this.currentId!)
+        } else {
+            this.goTop()
         }
     }
 
@@ -365,7 +367,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     updateTyre(tyreId: number) {
-        this.router.navigate(['data/updateTyre'], { queryParams: { id: tyreId } })
+        this.router.navigate(['data/updateTyre'], { queryParams: { id: tyreId, update: true } })
         this.currentTyreId = tyreId
     }
 
@@ -404,7 +406,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     get searching() {
-        return !this.loading && this.allItems && this.allItems.length === 0
+        return !this.loading() && this.allItems && this.allItems.length === 0
     }
 
     get noPartsMessage() {

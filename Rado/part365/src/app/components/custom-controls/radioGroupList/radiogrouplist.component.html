@@ -7,7 +7,7 @@
                 @for (radio of radios(); track radio.id) {
                     @if (radios().length || all()) {
                         <div class="radio-button" [ngClass]="{ style1: style() === 1, style2: style() === 2 }" (click)="updateSelectValue($event, radio.id)" role="none" >
-                            <input type="radio" name="{{controlName()}}" id="{{controlName()}}" [checked]="radio.id === value()">
+                            <input type="radio" name="{{controlName()}}" id="{{controlName()}}" [checked]="radio.id === value()" [value]="value()">
                             <label class="radio-label" for={{controlName()}} role="none" 
                                 >{{ radio.label }}
                                 @if (radio.count) {

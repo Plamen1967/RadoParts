@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, model } from '@angular/core'
+import { Component, inject, OnInit, model } from '@angular/core'
 import { SelectComponent } from '../select-controls/select/select.component'
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { ErrorService } from '@services/error.service'
@@ -17,13 +17,12 @@ import { FormValueControl } from '@angular/forms/signals'
 export class RegionComponent extends HelperComponent implements FormValueControl<number>, OnInit {
     isDisabled = false
     regionForm: FormGroup
-    regions?: SelectOption[]
+    regions: SelectOption[] = []
     value = model<number>(0)
 
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     public errorService: ErrorService = inject(ErrorService)
     formBuilder: FormBuilder = inject(FormBuilder)
-    private destroyRef: DestroyRef = inject(DestroyRef)
 
     constructor() {
         super()

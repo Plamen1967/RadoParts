@@ -201,8 +201,10 @@ namespace Utility
         }
         public static void CreateImage(string fileName, byte[] imageBytes, bool minimized)
         {
-            if (File.Exists(fileName)) 
-                return;
+            if (File.Exists(fileName))
+            {
+                LoggerUtil.LogFunctionInfo($"File already exists: {fileName}");
+            }
 
             string directoryName = System.IO.Path.GetDirectoryName(fileName);
 
@@ -575,6 +577,9 @@ namespace Utility
             var fullPath = GenerateImageSrc(userId, userId);
             var stream = new FileStream(fullPath, FileMode.Create);
             file.CopyTo(stream);
+            stream.Flush();
+            stream.Close();
+
 
             byte[] imageArray = await File.ReadAllBytesAsync(fullPath);
             string imageSrc = GenerateImageSrc(userId, userId);
@@ -612,6 +617,33 @@ namespace Utility
         {
             ImageDataClass imageDataClassItem = new ImageDataClass();
             string storeProcedureName = "BusinessCardDel";
+            var fullPath = GenerateImageSrc(userId, userId);
+            string imageSrc = GenerateImageSrc(userId, userId);
+            string imageMinSrc = GenerateMinImageSrc(userId, userId);
+            try
+            {
+                File.Delete(fullPath);
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogException(exception.Message);
+            }
+            try
+            {
+                File.Delete(imageSrc);
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogException(exception.Message);
+            }
+            try
+            {
+                File.Delete(imageMinSrc);
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogException(exception.Message);
+            }
 
             try
             {

@@ -23,7 +23,7 @@ import { SelectOption } from '@model/selectOption'
 export default class CompanyComponentAdmin extends HelperComponent implements OnInit, AfterViewInit {
     //#region variables and services
     companyForm: FormGroup
-    companies?: SelectOption[] = []
+    companies: SelectOption[] = []
     originalCompanies: Company[] = []
     params?: QueryParam
     formBuilder: FormBuilder = inject(FormBuilder)

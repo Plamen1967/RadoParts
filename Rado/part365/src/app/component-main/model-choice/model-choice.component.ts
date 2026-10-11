@@ -8,7 +8,7 @@ import { ItemType } from '@model/enum/itemType.enum'
 import { OptionItem } from '@model/optionitem'
 import { ModelService } from '@services/company-model-modification/model.service'
 import { ErrorService } from '@services/error.service'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
@@ -36,10 +36,11 @@ export class ModelChoiceComponent implements FormValueControl<number | string> {
     showLetter = input<boolean>(true)
     all = input<boolean>(false)
     submitted = input<boolean>(false)
-    IsRequired = input<boolean>(false)
+    isRequired = input<boolean>(false)
     userId = input<number | undefined>(undefined)
     showCount = input<boolean>(false)
     itemType = input<ItemType>(ItemType.All)
+    errors = input<readonly ValidationError.WithOptionalFieldTree[]>([])
     //#region services
     public modelService: ModelService = inject(ModelService)
     public errorService: ErrorService = inject(ErrorService)

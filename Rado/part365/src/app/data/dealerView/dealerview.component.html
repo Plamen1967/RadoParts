@@ -1,13 +1,13 @@
 @if (carView() || partView() || rimWithTyreView()) {
-    <div [ngClass]="{ card: true, highlighted: isHighlighted, showPart: showParts === true }" style="background-color: inherit; border: inherit; border-radius: 8px">
+    <div [ngClass]="{ card: true, highlighted: isHighlighted(), showPart: showParts === true }" style="background-color: inherit; border: inherit; border-radius: 8px">
         <div class="d-flex flex-row part-row">
             <div class="data w-100">
                 <div class="image-order image-style" style="position: relative;">
                     <app-imagecomponent [showImage]="mainPicture()!" [displayMain]="true" class="image-component"></app-imagecomponent>
-                    @if(getOnlyNumbers) {
+                    @if(getOnlyNumbers()) {
                         <div class="image-number-absolute">
                             <span class="material-symbols-outlined image-icon"> photo_camera </span>
-                            <div class="image-text-absolute">{{ getOnlyNumbers }}</div>
+                            <div class="image-text-absolute">{{ getOnlyNumbers() }}</div>
                         </div>
                     }
                 </div>
@@ -25,13 +25,13 @@
         <div class="ms-3 mt-2 d-flex align-items-end mb-2 flex-wrap" style="margin-top: auto">
             <div class="d-flex justify-content-start gap-2 align-items-end me-2">
                 @if (allowUpdate()) {
-                    <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="deleteCar" (click)="updateItem(id)">{{ labels.UPDATE }}</button>
-                    <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="updateCar" (click)="deleteItem(id)">{{ labels.DELETE }}</button>
+                    <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="deleteCar" (click)="updateItem(id())">{{ labels.UPDATE }}</button>
+                    <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="updateCar" (click)="deleteItem(id())">{{ labels.DELETE }}</button>
                 }
             </div>
             <div class="d-flex justify-content-start gap-2 align-items-end">
                 @if (allowUpdate() && seller && carView()) {
-                    <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="addPart" (click)="addPart(id)">{{ labels.ADD }} {{ labels.PART }}</button>
+                    <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="addPart" (click)="addPart(id())">{{ labels.ADD }} {{ labels.PART }}</button>
                 }
                 @if (carView() && carView()!.countParts) {
                     <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="showParts" (click)="displayParts(carView()!.carId!)">{{ label() }}</button>

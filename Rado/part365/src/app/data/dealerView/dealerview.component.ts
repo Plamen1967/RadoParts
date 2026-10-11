@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, inject, OnInit, input, output, effect } from '@angular/core'
+import { AfterViewInit, Component, inject, input, output, effect, computed, signal } from '@angular/core'
 import { Router } from '@angular/router'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
@@ -32,17 +32,15 @@ import { goToPosition } from '@app/functions/functions'
     imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent],
 })
 //#endregion
-export class DealerViewComponent extends HelperComponent implements OnInit, AfterViewInit {
+export class DealerViewComponent extends HelperComponent implements AfterViewInit {
     //#region variables and services
     parts: PartView[] = []
     showParts = false
-    highlighted_?: number
     mode: UpdateEnum = UpdateEnum.View
     currentPartId?: number
     _carView?: CarView
-    id!: number
-    getOnlyNumbers = 0
-    isHighlighted = false
+    id = signal<number>(0)
+    getOnlyNumbers = signal<number>(0)
     carView = input<CarView>()
     partView = input<PartView | undefined>()
     allowUpdate = input<boolean>(false)
@@ -62,30 +60,32 @@ export class DealerViewComponent extends HelperComponent implements OnInit, Afte
     private popupService: PopUpService = inject(PopUpService)
     //#endregion
 
+    isHighlighted = computed(() => {
+        console.log(`Is Highlighted ${(this.highlighted() ?? 0) === this.id()} ${this.id()} ${this.highlighted()}`)
+        return (this.highlighted()) == this.id()
+    })
+
+
+
     constructor() {
         super()
         effect(() => {
-        if (this.carView()) {
-            this.id = this.carView()!.carId!
-            this.getOnlyNumbers = this.carView()?.numberImages || 0
-        } else if (this.partView()) {
-            this.id = this.partView()!.partId!
-            this.getOnlyNumbers = this.partView()!.numberImages || 0
-        } else if (this.rimWithTyreView()) {
-            this.id = this.rimWithTyreView()!.id!
-            this.getOnlyNumbers = this.rimWithTyreView()!.numberImages || 0
-        }
+            if (this.carView()) {
+                this.id.set(this.carView()!.carId!)
+                this.getOnlyNumbers.set(this.carView()?.numberImages || 0)
+            } else if (this.partView()) {
+                this.id.set(this.partView()!.partId!)
+                this.getOnlyNumbers.set(this.partView()!.numberImages || 0)
+            } else if (this.rimWithTyreView()) {
+                this.id.set(this.rimWithTyreView()!.id!)
+                this.getOnlyNumbers.set(this.rimWithTyreView()!.numberImages || 0)
+            }
         })
     }
 
     ngAfterViewInit(): void {
-        if (this.isHighlighted) goToPosition(this.id)
+        if (this.isHighlighted()) goToPosition(this.id())
     }
-    ngOnInit(): void {
-        this.isHighlighted = this.highlighted_ == this.id
-        // console.log('Dealer view init', this.isHighlighted, this.id, this.highlighted_)
-    }
-    //#endregion
 
     updateItem(event: number) {
         if (this.carView()) this.action.emit({ action: UpdateEnum.Update, id: event, car: true })

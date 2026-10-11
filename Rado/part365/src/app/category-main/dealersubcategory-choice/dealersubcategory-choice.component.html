@@ -1,21 +1,19 @@
-<form>
-    @if (dealerSubCategories && dealerSubCategories.length > 1) {
-        <app-customselect
-            id="dealerSubCategoriesId_int"
-            title="Избери Подкатегория Дилър"
-            placeHolder="Избери Подкатегория Дилър"
-            label="Избери Подкатегория Дилър"
-            [value]="value()"
-            [data]="dealerSubCategories"
-            [showGroup]="false"
-            [groupDisabled]="false"
-            [IsRequired]="IsRequired()"
-            [submitted]="submitted()"
-            [appToolTip]="'Избери Подкатегория Дилър'"
-            data-cy="dealerSubCategoriesId"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right">
-        </app-customselect>
-    }
-    <form></form>
-</form>
+@if (dealerSubCategories && dealerSubCategories.length > 1) {
+    <app-customselect
+        id="dealerSubCategoriesId_int"
+        title="Избери Подкатегория Дилър"
+        placeHolder="Избери Подкатегория Дилър"
+        label="Избери Подкатегория Дилър"
+        [value]="value()"
+        [data]="dealerSubCategories"
+        [showGroup]="false"
+        [groupDisabled]="false"
+        [isRequired]="isRequired()"
+        [submitted]="submitted()"
+        [appToolTip]="'Избери Подкатегория Дилър'"
+        data-cy="dealerSubCategoriesId"
+        data-bs-toggle="tooltip"
+        (changeOption)="value.set(+$event)"
+        data-bs-placement="right">
+    </app-customselect>
+}

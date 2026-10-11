@@ -122,22 +122,22 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         { value: 1, text: 'Одобрени' },
         { value: 2, text: 'Блокирани' },
     ]
-    users?: SelectOption[]
+    users: SelectOption[] = []
     _filter?: Filter
     itemType: ItemType = ItemType.AllTyre
-    tyreWidth?: SelectOption[]
-    tyreHeight?: SelectOption[]
-    tyreRadius?: SelectOption[]
-    tyreTypes?: SelectOption[]
+    tyreWidth: SelectOption[] = []
+    tyreHeight: SelectOption[] = []
+    tyreRadius: SelectOption[] = []
+    tyreTypes: SelectOption[] = []
     tyreProducers: OptionItem[] = []
 
-    rimBoltDistances?: SelectOption[]
-    rimCenters?: SelectOption[]
-    rimBoltCount?: SelectOption[]
-    rimOffset?: SelectOption[]
-    rimMaterial?: SelectOption[]
-    rimWidth?: SelectOption[]
-    regions?: SelectOption[]
+    rimBoltDistances: SelectOption[] = []
+    rimCenters: SelectOption[] = []
+    rimBoltCount: SelectOption[] = []
+    rimOffset: SelectOption[] = []
+    rimMaterial: SelectOption[] = []
+    rimWidth: SelectOption[] = []
+    regions: SelectOption[] = []
     companyId?: number
 
     countTyres?: CountTyres

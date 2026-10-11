@@ -32,8 +32,8 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
     all = input<boolean>(false)
     multiselection = input<boolean>(true)
     submitted = input<boolean>(false)
-    IsRequired = input<boolean>(false)
-    categoryId = input<number>() 
+    isRequired = input<boolean>(false)
+    categoryId = input<number>(0) 
     
     dealerSubCategoryChanged = output<DealerSubCategory>()
     //#region services

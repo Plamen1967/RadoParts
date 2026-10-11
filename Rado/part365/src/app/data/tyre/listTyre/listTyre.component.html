@@ -156,7 +156,7 @@
                 </div>
             </div>
         </div>
-        @if (loading) {
+        @if (loading()) {
             <button class="btn btn-primary" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Зареждане...
@@ -166,15 +166,11 @@
                 <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
             </div>
             <div id="data-container">
-                @if (searching) {
-                    <h3>{{ noPartsMessage }}</h3>
-                } @else {
-                    @for (item of pageItems; track item.id) {
-                        <div id="{{ item.id }}" class="mb-2">
-                            <app-dealerview [allowUpdate]="true" [rimWithTyreView]="item" [mainPicture]="item.mainPicture" [allowUpdate]="true" (action)="actionItem($event)" [highlighted]="currentId">
-                            </app-dealerview>
-                        </div>
-                    }
+                @for (item of pageItems; track item.id) {
+                    <div id="{{ item.id }}" class="mb-2">
+                        <app-dealerview [allowUpdate]="true" [rimWithTyreView]="item" [mainPicture]="item.mainPicture" [allowUpdate]="true" (action)="actionItem($event)" [highlighted]="currentId">
+                        </app-dealerview>
+                    </div>
                 }
             </div>
             <div class="mt-2">

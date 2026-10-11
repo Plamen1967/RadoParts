@@ -8,7 +8,7 @@ import { ChoiseComponent } from '@components/categoriesMin/choise/choise.compone
 import { ButtonGroupComponent } from '@components/custom-controls/buttonGroup/buttongroup.component'
 import { CompanyComponent } from '../company/company.component'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-multiselection',
@@ -21,7 +21,7 @@ export class MultiSelectionComponent implements FormValueControl<string | number
     @ViewChild('minGroup') minGroup?: ElementRef<HTMLInputElement>
     @ViewChild('normalGroup') normalGroup?: ElementRef<HTMLInputElement>
     filter = ''
-    selectedValue?: number
+    selectedValue14?: number
     _data?: OptionItem[]
     IsTouched = false
     isDisabled = false
@@ -45,7 +45,7 @@ export class MultiSelectionComponent implements FormValueControl<string | number
     hint = input<string | undefined>(undefined)
     showLetter = input<boolean | undefined>(undefined)
     useLetter = input<boolean | undefined>(undefined)
-    IsRequired = input<boolean | undefined>(undefined)
+    isRequired = input<boolean | undefined>(undefined)
     submitted = input<boolean | undefined>(undefined)
     showAll = input<boolean>(true)
     groupDisabled = input<boolean>(false)
@@ -55,6 +55,7 @@ export class MultiSelectionComponent implements FormValueControl<string | number
     showCount = input<boolean>(true)
     showImage = input<boolean>(true)
     IsInvalid = input<boolean>(false)
+    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     public dialog: MatDialog = inject(MatDialog)
     public errorService: ErrorService = inject(ErrorService)
     private destroyRef: DestroyRef = inject(DestroyRef)

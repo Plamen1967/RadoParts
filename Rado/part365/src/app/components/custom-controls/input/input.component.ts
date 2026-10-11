@@ -2,7 +2,7 @@
 import { Component, input, model } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { NgClass, NgStyle } from '@angular/common'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 //#endregion
 //#region component
 @Component({
@@ -12,8 +12,8 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [NgStyle, NgClass, FormsModule],
 })
 //#endregion
-export class InputComponent implements FormValueControl<string|number> {
-    value = model.required<string | number>();
+export class InputComponent implements FormValueControl<string | number> {
+    value = model.required<string | number>()
     label = input<string | undefined>()
 
     placeHolder = input<string | undefined>()
@@ -21,8 +21,8 @@ export class InputComponent implements FormValueControl<string|number> {
     border = input<boolean>(true)
     IsPrice = input<boolean | undefined>()
     inline = input<boolean>(true)
-    Pattern = input<string | undefined>();
-    IsRequired = input<boolean | undefined>()
+    Pattern = input<string | undefined>()
+    isRequired = input<boolean | undefined>()
     IsInvalid = input<boolean | undefined>()
     submitted = input<boolean>(false)
     floating = input<boolean | undefined>()
@@ -33,15 +33,23 @@ export class InputComponent implements FormValueControl<string|number> {
     prefix = input<string | undefined>()
     number = input<boolean | undefined>()
     text = input<string>('text')
-    autocomplete = input<string | undefined>();
-    errorMessage =  input<string | undefined>();
+    autocomplete = input<string | undefined>()
+    errorMessage = input<string | undefined>()
+    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([])
 
     get contolName(): string {
         return this.label() || this.placeHolder() || ''
     }
 
-    inputFunc() {
-        return
+    inputFunc(event: Event) {
+        const inputElement = event.target as HTMLInputElement
+        let inputValue: string | number = inputElement.value
+        if (this.number()) {
+            inputValue = Number(inputValue)
+        } else {
+            inputValue = inputValue.toString()
+        }
+        this.value.set(inputValue)
     }
 
     onFocus() {

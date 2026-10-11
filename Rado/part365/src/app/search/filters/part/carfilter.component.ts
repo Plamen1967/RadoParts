@@ -163,10 +163,10 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     modifications?: Modification[]
     categories?: Category[]
     subCategories?: SubCategory[]
-    engineTypes?: SelectOption[]
-    gearBoxTypes?: SelectOption[]
+    engineTypes: SelectOption[] = []
+    gearBoxTypes: SelectOption[] = []
     selectedModels?: string
-    users?: SelectOption[]
+    users: SelectOption[] = []
     extendedSearch_?: boolean = false
     dispayCategory = false
 
@@ -234,6 +234,8 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             return this.carRadios
         }
     })
+
+    readonly submitted = signal(false)
 
     //#endregion
 
@@ -459,7 +461,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion
 
     clear() {
-        this.carFilterForm().reset();
         goTop()
     }
 
@@ -522,6 +523,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#region Search
     submit() {
+        this.submitted.set(true)
         const filter: Filter = Object.assign(
             { ...this.carFilterModel() },
             { searchBy: SearchBy.Filter },
@@ -539,6 +541,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             return
         }
 
+        this.submitted.set(true)
         const filter: Filter = Object.assign(this.carFilterModel(), { SearchBy: SearchBy.PartNumber }, { extendedSearch_: this.extendedSearch_ }, { id: 0 })
         this.goToResult(filter)
     }

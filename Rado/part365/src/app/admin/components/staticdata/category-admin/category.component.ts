@@ -19,7 +19,7 @@ import { CategoryService } from '@services/category-subcategory/category.service
 //#endregion
 export default class CategoryComponent extends HelperComponent implements OnInit {
     //#region variables and services
-    categories?: Category[]
+    categories: Category[] = []
     categoryId = signal<number>(0)
     categoryName = signal<string>('')
     formBuilder: FormBuilder = inject(FormBuilder)

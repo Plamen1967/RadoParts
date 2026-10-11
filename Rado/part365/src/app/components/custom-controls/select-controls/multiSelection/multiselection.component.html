@@ -2,9 +2,9 @@
     <div class="select__margin">
         <div class="select__container">
             <div class="select__field">
-                <div class="select__label" [ngClass]="{ required: IsRequired }">
+                <div class="select__label" [ngClass]="{ required: isRequired() }">
                     {{ label() }}
-                    @if (label() && IsRequired()) {
+                    @if (label() && isRequired()) {
                         <span class="fw-bold" [ngStyle]="{ color: 'red', 'font-size': '1em', 'padding-left': '2px' }">*</span>
                     }
                 </div>

@@ -14,16 +14,16 @@
             <form autocomplete="off">
                 <div class="row g-3">
                     <div class="col-sm-2 min200px">
-                        <app-company-choise testId="companyId" [config]="{ submitted: submitted, required: true, userId: userId, bus: bus()!, all: true }" [formField]="addCarForm.companyId"> </app-company-choise>
+                        <app-company-choise testId="companyId" [config]="{ required: true, submitted: submitted(), userId: userId, bus: bus()!, all: true }" [formField]="addCarForm.companyId"> </app-company-choise>
                     </div>
                     @if (addCarForm.companyId().value()) {
-                        <div class="col-sm-2 min300px">
+                        <div class="col-sm-2 min300px" style="min-width: 300px">
                             <app-model-choice
-                                [IsRequired]=true
+                                [isRequired]=true
                                 [formField]="addCarForm.modelId"
                                 [userId]="userId"
                                 [all]="true"
-                                [submitted]="submitted"
+                                [submitted]="submitted()"
                                 [companyId]="addCarForm.companyId().value()!"
                                 [showGroup]="true"
                                 [groupDisabled]="true"
@@ -35,12 +35,12 @@
                         @if (!bus() && addCarForm.modelId().value()) {
                             <div class="col-sm-3 min300px">
                                 <app-modification-choice
-                                    [IsRequired]="true"
+                                    [isRequired]="true"
                                     [modelsId]="addCarForm.modelId().value()!"
                                     [userId]="userId"
                                     [all]="true"
                                     [multiselection]="false"
-                                    [submitted]="submitted"   
+                                    [submitted]="submitted()"   
                                     [formField]="addCarForm.modificationId"
                                     (modifcationChange)="modificatioChanged($event)"
                                     (onCloseEvent)="focus()">
@@ -48,48 +48,48 @@
                                 </app-modification-choice>
                             </div>
                             <div class="col-sm-2 min150px">
-                                <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="years" [submitted]="submitted" (onCloseEvent)="focus()"> </app-select>
+                                <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="years ?? []" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-select>
                             </div>
                         }
                     }
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                        <app-input [formField]="addCarForm.regNumber" label="{{ label }}" placeHolder="{{ label }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
+                        <app-input [formField]="addCarForm.regNumber" label="{{ label }}" placeHolder="{{ label }}" [submitted]="submitted()" [isRequired]="true"> </app-input>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-2">
-                        <app-input [formField]="addCarForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" [submitted]="submitted"> </app-input>
+                        <app-input [formField]="addCarForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-input>
                     </div>
                     <div class="col-sm-3">
-                        <app-input [formField]="addCarForm.powerBHP" type="number" label="{{ labels.POWERBHP }}" placeHolder="{{ labels.POWERBHP }}" [submitted]="submitted" (change)="powerBHPChanged()">
+                        <app-input [formField]="addCarForm.powerBHP" type="number" label="{{ labels.POWERBHP }}" placeHolder="{{ labels.POWERBHP }}" [submitted]="submitted()" (change)="powerBHPChanged()">
                         </app-input>
                     </div>
                     <div class="col-sm-3">
-                        <app-input [formField]="addCarForm.powerkWh" type="number" label="{{ labels.POWERKWH }}" placeHolder="{{ labels.POWERKWH }}" [submitted]="submitted" (change)="powerkWhChanged()">
+                        <app-input [formField]="addCarForm.powerkWh" type="number" label="{{ labels.POWERKWH }}" placeHolder="{{ labels.POWERKWH }}" [submitted]="submitted()" (change)="powerkWhChanged()">
                         </app-input>
                     </div>
                     <div class="col-sm-2">
-                        <app-input [formField]="addCarForm.millage" type="number" label="{{ labels.MILLAGE }}" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted"> </app-input>
+                        <app-input [formField]="addCarForm.millage" type="number" label="{{ labels.MILLAGE }}" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted()"> </app-input>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                        <app-select [formField]="addCarForm.engineType" label="{{ labels.TYPE_ENGINE }}" [submitted]="submitted" [data]="staticSelectionService.EngineType"> </app-select>
+                        <app-select [formField]="addCarForm.engineType" label="{{ labels.TYPE_ENGINE }}" [submitted]="submitted()" [data]="staticSelectionService.EngineType"> </app-select>
                     </div>
                     <div class="col-sm-3">
-                        <app-input [formField]="addCarForm.engineModel" label="{{ labels.CODE_ENGINE }}" placeHolder="{{ labels.CODE_ENGINE }}" [submitted]="submitted"> </app-input>
+                        <app-input [formField]="addCarForm.engineModel" label="{{ labels.CODE_ENGINE }}" placeHolder="{{ labels.CODE_ENGINE }}" [submitted]="submitted()"> </app-input>
                     </div>
                     <div class="col-sm-3">
-                        <app-select [formField]="addCarForm.gearboxType" label="{{ labels.TYPE_GEARBOX }}" [submitted]="submitted" [data]="staticSelectionService.GearboxType"> </app-select>
+                        <app-select [formField]="addCarForm.gearboxType" label="{{ labels.TYPE_GEARBOX }}" [submitted]="submitted()" [data]="staticSelectionService.GearboxType"> </app-select>
                     </div>
                     <div class="col-sm-3">
-                        <app-select [formField]="addCarForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="staticSelectionService.Region"> </app-select>
+                        <app-select [formField]="addCarForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted()" [data]="staticSelectionService.Region"> </app-select>
                     </div>
                 </div>
                 <div class="row form-floating mt-2">
-                    <app-textarea [formField]="addCarForm.description" label="{{ labels.DESCRIPTION_CAR }}" placeHolder="{{ labels.DESCRIPTION_CAR }}" [submitted]="submitted"> </app-textarea>
+                    <app-textarea [formField]="addCarForm.description" label="{{ labels.DESCRIPTION_CAR }}" placeHolder="{{ labels.DESCRIPTION_CAR }}" [submitted]="submitted()"> </app-textarea>
                 </div>
             </form>
         </div>
@@ -97,7 +97,7 @@
     <div class="row mt-3" style="position: relative">
         <app-imagelist [id]="carId() ?? carId_!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
         <div class="d-inline-flex justify-content-end position-buttons w-100">
-            <app-toolbar [canCancel]="true" [isChanged]="addCarForm().touched()" [canSave]="UpdateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
+            <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="UpdateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div>
     </div>
 </div>

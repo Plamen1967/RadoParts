@@ -1,7 +1,7 @@
 //#region Imports
 import { Component, DestroyRef, inject, Self, model, output, signal, effect } from '@angular/core'
 import { FormBuilder, NgControl, ReactiveFormsModule } from '@angular/forms'
-import { form, FormField, FormValueControl } from '@angular/forms/signals'
+import { form, FormValueControl } from '@angular/forms/signals'
 import { ClearbuttonComponent } from '@components/custom-controls/buttons/clearbutton/clearbutton.component'
 import { SearchbuttonComponent } from '@components/custom-controls/buttons/searchbutton/searchbutton.component'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
@@ -30,7 +30,7 @@ export class SearchBarComponent extends HelperComponent implements FormValueCont
     sortForm = form(this.searchModel)
     //#region variables and services
     value = model<number>(0)
-    sort?: SelectOption[]
+    sort: SelectOption[] = []
     isDisabled?: boolean
     submitEvent = output<void>()
     clearEvent = output<void>()
