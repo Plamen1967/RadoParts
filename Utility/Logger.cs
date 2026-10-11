@@ -131,7 +131,7 @@ namespace Utility
         public static void LogException(Exception exception)
         {
             LogToFile(exception.Message + exception.StackTrace);
-            MailManager.SendEmail("plamen1967@gmail.com", "Exception", exception.Message + exception.StackTrace);
+            //MailManager.SendEmail("plamen1967@gmail.com", "Exception", exception.Message + exception.StackTrace);
             //Logger.get().logging(message, Logger.get().exceptionLogFileName);
         }
 
