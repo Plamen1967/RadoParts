@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Enums;
 using Models.Models;
 using Rado.Enrich;
@@ -25,8 +26,10 @@ namespace Rado.Datasets
             Filter filterPart = new Filter();
             try
             {
+                string storedProcedure = "GetFilterById";
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
-                SqlCommand sqlCommand = new SqlCommand("GetFilterById", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.Add("@filterId", SqlDbType.BigInt).Value = filterId;
                 sqlConnection.Open();
@@ -39,6 +42,7 @@ namespace Rado.Datasets
                         return null;
                 }
                 sqlConnection.Close();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -66,8 +70,10 @@ namespace Rado.Datasets
 
             try
             {
+                string storedProcedure = "FilterPartIns";
                 SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
-                SqlCommand sqlCommand = new SqlCommand("FilterPartIns", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 await sqlConnection.OpenAsync();
 
                 sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -124,6 +130,7 @@ namespace Rado.Datasets
 
                 await sqlCommand.ExecuteNonQueryAsync();
                 await sqlConnection.CloseAsync();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -158,8 +165,9 @@ namespace Rado.Datasets
 
         private static async Task<SearchResult> SearchForParts(Filter filterPart)
         {
+            LoggerUtil.LogToFile($"start storedProcedure: SearchForParts {DateTime.Now.ToLongTimeString()}");
             if (filterPart.SearchBy == SearchBy.PartNumber ||
-               (filterPart.CategoriesId?.Length > 0 || filterPart.SubCategoriesId?.Length > 0 || filterPart.CategoryId != 0 || filterPart.SubCategoryId != 0))
+                (filterPart.CategoriesId?.Length > 0 || filterPart.SubCategoriesId?.Length > 0 || filterPart.CategoryId != 0 || filterPart.SubCategoryId != 0))
             {
                 filterPart.ItemType = filterPart.Bus == 1 ? ItemType.BusPart : ItemType.CarPart;
             }
@@ -183,6 +191,7 @@ namespace Rado.Datasets
             foreach (DisplayPartView item in searchResult.data) item.Normalize();
             searchResult.size = partView.Length;
             searchResult.filter = filterPart;
+            LoggerUtil.LogToFile($"end storedProcedure: SearchForParts {DateTime.Now.ToLongTimeString()}");
             return await Task.FromResult<SearchResult>(searchResult); ;
         }
 
@@ -190,6 +199,7 @@ namespace Rado.Datasets
    
         private static async Task<PartView[]> GetCarAndPartsAsync(Filter filterPart)
         {
+            LoggerUtil.LogToFile($"start storedProcedure: GetCarAndPartsAsync {DateTime.Now.ToLongTimeString()}");
             var startTime = Environment.TickCount;
             Task<List<PartView>> parts = null;
             Task<List<PartView>> cars = null;
@@ -289,6 +299,7 @@ namespace Rado.Datasets
                       await LoggerUtil.Log(String.Format("PartDbSet::Load Images Read {0} ms", Environment.TickCount - startTime));
                       LoggerUtil.LogInfo(String.Format("PartDbSet::Load Images Read {0} ms", Environment.TickCount - startTime));
                   });
+                LoggerUtil.LogToFile($"end storedProcedure: GetCarAndPartsAsync {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception) 
             {
@@ -321,8 +332,11 @@ namespace Rado.Datasets
         public static async Task<DisplayPartView> GetItemAsync(long id)
         {
             int itemType = 0;
+            string storedProcedure = "GetItemType";
+            LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+
             SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
-            SqlCommand sqlCommand = new SqlCommand("GetItemType", sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
             await sqlConnection.OpenAsync();
 
             sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -335,6 +349,7 @@ namespace Rado.Datasets
             }
             await sqlConnection.CloseAsync();
 
+            LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             PartView partView;
             switch (itemType)
             {

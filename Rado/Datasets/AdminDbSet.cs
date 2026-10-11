@@ -1,4 +1,6 @@
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Rado.Enums;
 using Rado.Exceptions;
 using Rado.Models;
@@ -20,9 +22,11 @@ namespace Rado.Datasets
 
             try
             {
+                string storedProcedure = "RecoverPassword";
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand("RecoverPassword", sqlConnection))
+                    using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
                         sqlConnection.Open();
 
@@ -33,8 +37,9 @@ namespace Rado.Datasets
                         int result = sqlCommand.ExecuteNonQuery();
                     }
                 }
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new AppException(exception.Message);
             }
@@ -49,7 +54,9 @@ namespace Rado.Datasets
             {
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand("ApproveAd", sqlConnection))
+                    string storedProcedure = "ApproveAd";
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                    using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
                         sqlConnection.Open();
 
@@ -61,6 +68,7 @@ namespace Rado.Datasets
                         if (result == 1)
                             return true;
                     }
+                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception exception)
@@ -76,7 +84,9 @@ namespace Rado.Datasets
             {
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand("UpdatePasssword", sqlConnection))
+                    string storedProcedure = "UpdatePassword";
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                    using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
                         string password = BCryptNet.HashPassword(newPassword.newPassword); ;
                         sqlConnection.Open();
@@ -92,6 +102,7 @@ namespace Rado.Datasets
                             throw new AppException("The password could not be updated");
                         }
                     }
+                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception exception)
@@ -119,6 +130,7 @@ namespace Rado.Datasets
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
                     sqlConnection.Open();
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
@@ -152,7 +164,7 @@ namespace Rado.Datasets
 
                         return category;
                     }
-
+                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch(Exception e)
@@ -180,6 +192,7 @@ namespace Rado.Datasets
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
                     sqlConnection.Open();
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
@@ -218,7 +231,7 @@ namespace Rado.Datasets
 
                         return subCategory;
                     }
-
+                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception e)
@@ -246,6 +259,7 @@ namespace Rado.Datasets
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
                     sqlConnection.Open();
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
@@ -281,6 +295,7 @@ namespace Rado.Datasets
 
 
                         dealerSubCategory = DealerSubCategoryDbSet.GetDealerSubCategoryById(dealerSubCategoryId);
+                        LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                         return dealerSubCategory;
                     }
@@ -319,6 +334,8 @@ namespace Rado.Datasets
 
                         using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                         {
+                            LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+
                             //SqlParameter returnCompanyIdParam = null;
 
                             sqlCommand.Parameters.Add("@companyName", SqlDbType.VarChar).Value = company.CompanyName;
@@ -347,6 +364,7 @@ namespace Rado.Datasets
                             int companyId = company.CompanyId;
                             company = CompaniesDbSet.GetCompanyById(companyId);
                         }
+                        LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                     }
                 }
@@ -386,6 +404,7 @@ namespace Rado.Datasets
 
                         using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                         {
+                            LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                             SqlParameter modelNameParam = sqlCommand.Parameters.Add("@modificationName", SqlDbType.VarChar);
                             modelNameParam.Value = updatedModification.ModificationName;
                             SqlParameter returnModificationIdParam = null;
@@ -424,6 +443,7 @@ namespace Rado.Datasets
                             modification = ModificationsDbSet.GetModificationById(modificationId);
 
                         }
+                        LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                     }
                 }
@@ -506,6 +526,7 @@ namespace Rado.Datasets
             {
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                     sqlConnection.Open();
 
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
@@ -520,6 +541,7 @@ namespace Rado.Datasets
 
                         return rows != 0;
                     }
+                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                 }
             }

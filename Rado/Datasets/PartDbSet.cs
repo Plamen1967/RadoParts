@@ -1,4 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Enums;
 using Models.Models;
 using Rado.Abuse;
@@ -295,6 +297,7 @@ namespace Rado.Datasets
                         await LoggerUtil.Log(String.Format("PartDbSet::GetParts SQL {0}", Program.ConnectionString));
                     });
 
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                     using (SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection))
                     {
                         sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -313,6 +316,7 @@ namespace Rado.Datasets
                         }
                         await sqlConnection.CloseAsync();
                     }
+                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception e)
@@ -341,14 +345,15 @@ namespace Rado.Datasets
 
         public static PartView GetPart(long partId)
         {
-            string statement = "PartsById";
+            string storedProcedure = "PartsById";
             PartView partView = new PartView();
             try
             {
                 using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
-                using SqlCommand sqlCommand = new SqlCommand(statement, sqlConnection);
+                using SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.Add("partId", SqlDbType.BigInt).Value = partId;
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                 sqlConnection.Open();
                 using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
@@ -359,6 +364,7 @@ namespace Rado.Datasets
                     }
                 }
                 sqlConnection.Close();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception e)
             {
@@ -378,9 +384,10 @@ namespace Rado.Datasets
 
             try
             {
-                string statement = "CategoryView";
+                string storedProcedure = "CategoryView";
                 await using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
-                await using SqlCommand sqlCommand = new SqlCommand(statement, sqlConnection);
+                await using SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                        
                 if (filterNumberPartsPerCategory.companyId != 0)
@@ -520,6 +527,7 @@ namespace Rado.Datasets
                     }
                 }
                 await sqlConnection.CloseAsync();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception e)
             {
@@ -598,7 +606,7 @@ namespace Rado.Datasets
 
             await ValidatePartAsync(part);
 
-            var storeProcedureName = update ? "PartsUpd" : "PartsIns";
+            var storedProcedure = update ? "PartsUpd" : "PartsIns";
 
             try
             {
@@ -617,10 +625,11 @@ namespace Rado.Datasets
 
                 part = Validation.RemoveInvalidWord(part);
 
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 await using SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 await connection.OpenAsync();
 
-                await using SqlCommand command = new SqlCommand(storeProcedureName, connection);
+                await using SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@partId"        , SqlDbType.BigInt).Value = part.PartId;
@@ -657,6 +666,7 @@ namespace Rado.Datasets
                     command.Parameters.Add("@bus", SqlDbType.Int).Value = part.Bus;
 
                 await command.ExecuteNonQueryAsync();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -670,17 +680,18 @@ namespace Rado.Datasets
 
         public static async Task<bool> DeletePartAsync(long partId, int userId)
         {
-            string storeProcedureName = "PartsDel";
+            string storedProcedure = "PartsDel";
             if (userId == 0)
             {
                 throw new AppException("User id is not provided");
             }
             try
             {
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 await using SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 await connection.OpenAsync();
 
-                await using SqlCommand command = new SqlCommand(storeProcedureName, connection);
+                await using SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@partId", SqlDbType.BigInt).Value = partId;
@@ -691,6 +702,7 @@ namespace Rado.Datasets
                 {
                     throw new AppException($"Частта не може да бъде изтрита");
                 }
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -716,6 +728,7 @@ namespace Rado.Datasets
             try
             {
                 await using SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString);
+                LoggerUtil.LogToFile($"start storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 if (filterPart.CarId != 0)
                     where.Add($"(carId = {filterPart.CarId})");
 
@@ -842,9 +855,11 @@ namespace Rado.Datasets
                 {
                     selectCommand += " WHERE " + String.Join(" AND ", where.ToArray());
                 }
+                LoggerUtil.LogToFile($"end storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
 
                 test = test + selectCommand;
                 LoggerUtil.LogFunctionInfo($"Select command: {selectCommand}");
+                LoggerUtil.LogToFile($"start storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 await sqlConnection.OpenAsync();
 
                 using (SqlCommand sqlCommand = new SqlCommand(selectCommand, sqlConnection))
@@ -876,6 +891,7 @@ namespace Rado.Datasets
                     });
                 }
                 await sqlConnection.CloseAsync();
+                LoggerUtil.LogToFile($"end storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -891,7 +907,7 @@ namespace Rado.Datasets
         }
         public static async Task<bool> MainPictureAsync(long partId, string mainPicture, int userId)
         {
-            string storeProcedureName = "UpdateMainPicturePart";
+            string storedProcedure = "UpdateMainPicturePart";
 
             if (userId == 0)
                 throw new AppException("User id is not provided");
@@ -900,9 +916,10 @@ namespace Rado.Datasets
 
             try
             {
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 await using SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 await connection.OpenAsync();
-                await using SqlCommand command = new SqlCommand(storeProcedureName, connection);
+                await using SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 command.Parameters.Add("@partId", SqlDbType.BigInt).Value = partId;
@@ -910,6 +927,8 @@ namespace Rado.Datasets
                 command.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
 
                 await command.ExecuteNonQueryAsync();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+
             }
             catch (Exception exception)
             {
@@ -1005,6 +1024,8 @@ namespace Rado.Datasets
 
                     test = test + selectCommand;
                     await using SqlCommand sqlCommand = new SqlCommand(selectCommand, sqlConnection);
+                    LoggerUtil.LogToFile($"start storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
+
                     sqlCommand.CommandType = CommandType.Text;
 
                     await using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
@@ -1020,6 +1041,7 @@ namespace Rado.Datasets
                     sqlConnection.Close();
 
                     await LoggerUtil.Log($"PartDbSet::GetParts Read all parts is {Environment.TickCount - startTime} ms");
+                    LoggerUtil.LogToFile($"end storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 }
 
                 if (filterPart.HasImages)

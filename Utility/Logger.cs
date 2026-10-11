@@ -102,7 +102,7 @@ namespace Utility
             }
         }
 
-        private static void LogToFile(string? message)
+        public static void LogToFile(string? message)
         {
             if (message == null)
                 return;
@@ -125,10 +125,12 @@ namespace Utility
         }
         public static void LogException(string message)
         {
+            LogToFile(message);
             //Logger.get().logging(message, Logger.get().exceptionLogFileName);
         }
         public static void LogException(Exception exception)
         {
+            LogToFile(exception.Message + exception.StackTrace);
             MailManager.SendEmail("plamen1967@gmail.com", "Exception", exception.Message + exception.StackTrace);
             //Logger.get().logging(message, Logger.get().exceptionLogFileName);
         }

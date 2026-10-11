@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.CodeAnalysis.Elfie.Model.Tree;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Enums;
 using Models.Models;
@@ -25,14 +26,14 @@ namespace Rado.Datasets
     {
         static public async Task<DisplayPartView> AddUpdateCar(Car car, bool update)
         {
-            string storeProcedureName;
+            string storeProcedure;
             if (update)
             {
-                storeProcedureName = "CarsUpd";
+                storeProcedure = "CarsUpd";
             }
             else
             {
-                storeProcedureName = "CarsIns";
+                storeProcedure = "CarsIns";
             }
 
             if (car.Vin == null) car.Vin = "";
@@ -63,10 +64,11 @@ namespace Rado.Datasets
             {
                 using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
                 {
+                    LoggerUtil.LogToFile($"start storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
                     await connection.OpenAsync();
 
                     DateTime dateTime = DateTime.Now;
-                    using (SqlCommand command = new SqlCommand(storeProcedureName, connection))
+                    using (SqlCommand command = new SqlCommand(storeProcedure, connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -124,6 +126,7 @@ namespace Rado.Datasets
                         mainPictureParam.Value = car.MainPicture;
 
                         await command.ExecuteNonQueryAsync();
+                        LoggerUtil.LogToFile($"end storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
                     }
                 }
             }
@@ -148,7 +151,7 @@ namespace Rado.Datasets
         static public async Task<bool> DeleteCarAsync(long carId, int userId)
         {
             // TODO - SQL must delete not flag us deleted
-            string storeProcedureName = "CarsDel";
+            string storeProcedure = "CarsDel";
 
             if (userId == 0)
             {
@@ -156,11 +159,12 @@ namespace Rado.Datasets
             }
             try
             {
+                LoggerUtil.LogToFile($"start storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
                 using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
                 {
                     await connection.OpenAsync();
 
-                    using (SqlCommand command = new SqlCommand(storeProcedureName, connection))
+                    using (SqlCommand command = new SqlCommand(storeProcedure, connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -170,6 +174,7 @@ namespace Rado.Datasets
                         await command.ExecuteNonQueryAsync();
                     }
                 }
+                LoggerUtil.LogToFile($"end storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -208,6 +213,7 @@ namespace Rado.Datasets
 
                 command.Parameters.Add("@result", SqlDbType.Int);
                 command.Parameters["@result"].Direction = ParameterDirection.Output;
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                 connection.Open();
                 int i = command.ExecuteNonQuery();
@@ -219,6 +225,7 @@ namespace Rado.Datasets
                     if (value > 0)
                         return false;
                 }
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception e)
             {
@@ -234,6 +241,7 @@ namespace Rado.Datasets
             CarView carView = new CarView();
             try
             {
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 await connection.OpenAsync();
                 {
@@ -262,6 +270,7 @@ namespace Rado.Datasets
                     await sqlDataReader.CloseAsync();
                 }
                 await connection.CloseAsync();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception e)
             {
@@ -272,13 +281,14 @@ namespace Rado.Datasets
 
         public static bool MainPicture(long partId, string mainPicture, int userId)
         {
-            string storeProcedureName = "UpdateMainPictureCar";
+            string storedProcedure = "UpdateMainPictureCar";
             try
             {
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 connection.Open();
 
-                SqlCommand command = new SqlCommand(storeProcedureName, connection);
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter carIdParam = command.Parameters.Add("@carId", SqlDbType.BigInt);
@@ -290,6 +300,7 @@ namespace Rado.Datasets
                 userIdParam.Value = userId;
 
                 command.ExecuteNonQuery();
+                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -310,15 +321,16 @@ namespace Rado.Datasets
 
         private static async Task<bool> validateNameAsync(int userId, long carId, string name)
         {
-            string storeProcedureName = "ValidateCarName";
+            string storedProcedure = "ValidateCarName";
             try
             {
                 using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
                 {
+                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                     await connection.OpenAsync();
 
                     DateTime dateTime = DateTime.Now;
-                    using (SqlCommand command = new SqlCommand(storeProcedureName, connection))
+                    using (SqlCommand command = new SqlCommand(storedProcedure, connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -340,6 +352,7 @@ namespace Rado.Datasets
                         }
 
                     }
+                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception exception)
@@ -514,6 +527,7 @@ namespace Rado.Datasets
                 where.Add($"deleted = 0");
 
                 string selectCommand = "SELECT * FROM CarView WITH(NOLOCK)";
+                LoggerUtil.LogToFile($"start storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 if (where.Count > 0)
                 {
                     selectCommand += " WHERE " + string.Join(" AND ", where.ToArray());
@@ -595,6 +609,7 @@ namespace Rado.Datasets
                     }
 
                     await sqlConnection.CloseAsync();
+                    LoggerUtil.LogToFile($"end storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception exception)
@@ -655,13 +670,15 @@ namespace Rado.Datasets
                     }
                 }
 
+                string storedProcedure2 = "SearchCarViewAll";
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure2} {DateTime.Now.ToLongTimeString()}");
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
                     sqlConnection.Open();
                     Stopwatch carsAllwatch = new Stopwatch();
                     carsAllwatch.Start();
 
-                    using (SqlCommand sqlCommand = new SqlCommand("SearchCarViewAll", sqlConnection))
+                    using (SqlCommand sqlCommand = new SqlCommand(storedProcedure2, sqlConnection))
                     {
                         sqlCommand.CommandType = CommandType.StoredProcedure;
 
@@ -799,6 +816,7 @@ namespace Rado.Datasets
 
                     await sqlConnection.CloseAsync();
                 }
+                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure2} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
