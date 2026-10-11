@@ -15,6 +15,10 @@ export class WhatsComponent {
     get whatsRef() {
         return `whatsapp://send?phone=${this.number()}&text=hello`
     }
+
+    prevent(event: Event) {
+        event.preventDefault()
+    }
     sanitize(url: string) {
         return this.sanitizer.bypassSecurityTrustUrl(url)
     }
