@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect, signal } from '@angular/core'
+import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect, signal, computed } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -73,35 +73,35 @@ interface filterFormInterface {
         SearchBarComponent,
         CategoriesComponent,
         ModelChoiceComponent,
-        FormField
+        FormField,
     ],
 })
 //#endregion
 export class TyreFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
     filterFormModel = signal<filterFormInterface>({
-            itemType: ItemType.AllTyre,
-            userId: 0,
-            approved: 3,
-            tyreCompanyId: 0,
-            tyreWidth: 0,
-            tyreHeight: 0,
-            tyreRadius: 0,
-            tyreType: 0,
-            regionId: 0,
-            companyId: 0,
-            modelId: 0,
-            rimWidth: 0,
-            rimMaterial: 0,
-            rimOffset: 0,
-            rimBoltCount: 0,
-            rimBoltDistance: 0,
-            rimCenter: 0,
-            orderBy: 0,
-            hasImages: false,
+        itemType: ItemType.AllTyre,
+        userId: 0,
+        approved: 3,
+        tyreCompanyId: 0,
+        tyreWidth: 0,
+        tyreHeight: 0,
+        tyreRadius: 0,
+        tyreType: 0,
+        regionId: 0,
+        companyId: 0,
+        modelId: 0,
+        rimWidth: 0,
+        rimMaterial: 0,
+        rimOffset: 0,
+        rimBoltCount: 0,
+        rimBoltDistance: 0,
+        rimCenter: 0,
+        orderBy: 0,
+        hasImages: false,
     })
 
     filterForm = form(this.filterFormModel)
-    
+
     //#region variables and services
     categories = [
         { value: 1, text: 'Гуми' },
@@ -140,12 +140,15 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     regions: SelectOption[] = []
     companyId?: number
 
-    countTyres?: CountTyres
-    categoriesFooter: Dropdown[] = [
-        { id: 3, name: 'Гуми', imageName: '../../../images/png/tyre.png', count: 0, children: [] },
-        { id: 4, name: 'Джанти', imageName: '../../../images/png/rim.png', count: 0, children: [] },
-        { id: 5, name: 'Джанти с гуми', imageName: '../../../images/png/rimwithtyre.png', count: 0, children: [] },
-    ]
+    categoriesFooter = computed(() => {
+        const categoriesFooterTest: Dropdown[] = [
+            { id: 3, name: 'Гуми', imageName: '../../../images/png/tyre.png', count: this.countTyres().countTyres, children: [] },
+            { id: 4, name: 'Джанти', imageName: '../../../images/png/rim.png', count: this.countTyres().countRims, children: [] },
+            { id: 5, name: 'Джанти с гуми', imageName: '../../../images/png/rimwithtyre.png', count: this.countTyres().countTyreWithRims, children: [] },
+        ]
+        return categoriesFooterTest
+    })
+    countTyres = signal<CountTyres>(new CountTyres())
 
     radioTypes: RadioButton[] = [
         { label: 'Всички', id: 7 },
@@ -175,6 +178,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     private tyreService: TyreService = inject(TyreService)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
+    public parent: HomeComponent = inject(HomeComponent, { optional: true }) as HomeComponent
     @Optional() public home?: HomeComponent
     //#endregion
     //#endregion
@@ -197,7 +201,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
             this.filterFormModel.update((value) => ({ ...value, itemType: ItemType.AllTyre }))
             this.itemTypeChanged(ItemType.AllTyre)
         }
-        if (this.userId) this.filterFormModel.update((value) => ({...value, ...{ userId: this.userId() ?? 0 }}))
+        if (this.userId) this.filterFormModel.update((value) => ({ ...value, ...{ userId: this.userId() ?? 0 } }))
 
         this.itemTypeChanged(this.filterFormModel().itemType)
         if (this.home?.filter) {
@@ -208,7 +212,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
 
     setFilter(filter: Filter) {
         this._filter = filter
-        this.filterFormModel.update((value) => ({...value, ...this._filter}))
+        this.filterFormModel.update((value) => ({ ...value, ...this._filter }))
     }
 
     focus() {
@@ -233,14 +237,12 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         this.regions = [{ value: 0, text: ' Всички' }, ...this.staticSelectionService.Region]
 
         this.tyreService.getCount().subscribe((item) => {
-            this.countTyres = item
-            this.categoriesFooter[0].count = this.countTyres.countTyres ?? 0
-            this.categoriesFooter[1].count = this.countTyres.countRims ?? 0
-            this.categoriesFooter[2].count = this.countTyres.countTyreWithRims ?? 0
+            this.countTyres.set(item)
+            return
         })
 
         if (!this.query) {
-            this.filterFormModel.update((value) => ({...value, ...this.initialState}))
+            this.filterFormModel.update((value) => ({ ...value, ...this.initialState }))
         }
 
         if (this.admin) {
@@ -255,20 +257,19 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
                 })
 
                 if (this.userId) {
-                    this.filterFormModel.update((value) => ({...value, ...{ userId: this.userId() ?? 0 }}))
+                    this.filterFormModel.update((value) => ({ ...value, ...{ userId: this.userId() ?? 0 } }))
                 }
-
             })
         }
     }
 
     clearFilter() {
-        this.filterFormModel.update((value) => ({... value, ...this.initialState}))
+        this.filterFormModel.update((value) => ({ ...value, ...this.initialState }))
     }
 
     //#region Search
     submit() {
-        const filter: Filter = Object.assign({}, this.filterForm().value(), {id: 0})
+        const filter: Filter = Object.assign({}, this.filterForm().value(), { id: 0 })
         filter.adminRun = false
         if (this.admin) {
             filter.adminRun = true
@@ -277,25 +278,26 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     }
 
     goToResult(filter: Filter) {
-        const dataManager = this.homeService.updateData(filter.id, filter)
-        this.loadingService.open('Зареждане на резултатите')
-        this.searchPartService.search(filter).subscribe({
-            next: (res) => {
-                this.loadingService.close()
-                dataManager.updateData(res)
-                if (dataManager.noParts()) {
-                    this.confirmService.OK('Съобщение', this.labels.NORESULTS)
-                } else {
-                    this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
-                }
-            },
-            error: (error) => {
-                console.log(error)
-            },
-            complete: () => {
-                this.loadingService.close()
-            },
-        })
+        this.parent.goToResult(filter)
+        // const dataManager = this.homeService.updateData(filter.id, filter)
+        // this.loadingService.open('Зареждане на резултатите')
+        // this.searchPartService.search(filter).subscribe({
+        //     next: (res) => {
+        //         this.loadingService.close()
+        //         dataManager.updateData(res)
+        //         if (dataManager.noParts()) {
+        //             this.confirmService.OK('Съобщение', this.labels.NORESULTS)
+        //         } else {
+        //             this.router.navigate(['/results'], { queryParams: { query: filter.id, page: 1 } })
+        //         }
+        //     },
+        //     error: (error) => {
+        //         console.log(error)
+        //     },
+        //     complete: () => {
+        //         this.loadingService.close()
+        //     },
+        // })
     }
     //#endregion
 

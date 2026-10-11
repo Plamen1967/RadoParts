@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, HostListener, inject, input, Input, OnDestroy, OnInit, output } from '@angular/core'
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -63,7 +63,7 @@ import { PathService } from '@services/path.service'
 //#endregion
 export class DisplayPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
     //#region members
-    item!: DisplayPartView
+    item = signal<DisplayPartView>(new DisplayPartView())
     images: NgxGalleryImage[] = []
     isSaved = false
     phone2?: string
@@ -129,44 +129,15 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         // console.log(`Party is visible ${this.part.companyName} ${this.part.modelName} ${this.part.modificationName} ${this.part.price}`)
     }
 
+    part = input<DisplayPartView>()
     showDealer = input.required<boolean>()
     filterByDealer = output<number>()
     action = output<ActionType>()
     checkoutUpdated = output()
     dealerClick = output<number>()
-    @Input() set part(value: DisplayPartView) {
-        this.item = {...value}
-        this.approvedStatus = this.item.approved
-        this.numberImages = this.item.numberImages
-        this.isSaved = this.localStorageService.isSaved(this.item.id!)
-
-        this.description = this.item.description
-        this.user = this.authernticationService.currentUserValue
-        this.currency = this.labels.CURRENCY
-        this.dealer = this.item.dealer === 1 // TODO this.item.dealer === 1
-        if (this.item.itemType) this.isPart = isPart(this.item.itemType)
-        this.isTyre = this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre
-        this.isMobile = isMobile()
-        this.region = this.getRegion()
-        this.phone1 = this.item.sellerPhone
-        this.phone2 = this.item.sellerPhone2
-        this.viber = this.item.sellerViber
-        this.whats = this.item.sellerWhats
-        this.refPhone1 = `tel:${this.phone1}`
-        this.refPhone2 = `tel:${this.phone2}`
-        this.refViberCall = viberCallRef(this.viber ?? '')
-        this.refViberChat = viberChatRef(this.viber ?? '')
-        this.sellerName = this.item.sellerName
-        this.region = this.getRegion()
-        this.isMobile = isMobile()
-        this.sellerNamePhones = `${this.sellerName} ${this.phones}`
-    }
-    get part() {
-        return this.item
-    }
 
     get isHeighligthed() {
-        const isHighligthed = this.highlighted() == this.part.id
+        const isHighligthed = this.highlighted() == this.item().id! 
         return isHighligthed
     }
     private authernticationService: AuthenticationService = inject(AuthenticationService)
@@ -189,6 +160,34 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     //#endregion
     //#region ctor
     constructor() {
+        effect(() => {
+            this.item.set({ ...this.part() })
+            this.approvedStatus = this.item().approved
+            this.numberImages = this.item().numberImages
+            this.isSaved = this.localStorageService.isSaved(this.item().id!)
+
+            this.description = this.item().description
+            this.user = this.authernticationService.currentUserValue
+            this.currency = this.labels.CURRENCY
+            this.dealer = this.item().dealer === 1 // TODO this.item().dealer === 1
+            const itemType = this.item().itemType
+            if (itemType) this.isPart = isPart(itemType)
+            this.isTyre = itemType === ItemType.Tyre || itemType === ItemType.Rim || itemType === ItemType.RimWithTyre
+            this.isMobile = isMobile()
+            this.region = this.getRegion()
+            this.phone1 = this.item().sellerPhone
+            this.phone2 = this.item().sellerPhone2
+            this.viber = this.item().sellerViber
+            this.whats = this.item().sellerWhats
+            this.refPhone1 = `tel:${this.phone1}`
+            this.refPhone2 = `tel:${this.phone2}`
+            this.refViberCall = viberCallRef(this.viber ?? '')
+            this.refViberChat = viberChatRef(this.viber ?? '')
+            this.sellerName = this.item().sellerName
+            this.region = this.getRegion()
+            this.isMobile = isMobile()
+            this.sellerNamePhones = `${this.sellerName} ${this.phones}`
+        })
         effect(() => {
             console.log(`Show Dealer: ${this.showDealer()} Show Fav: ${this.showFavourite()} Allow Update: ${this.allowUpdate()} Allow Buy: ${this.allowBuy()} Allow View: ${this.allowView()}`)
             if (!this.next()) this.nextArrow = true
@@ -225,14 +224,14 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     //#endregion
     //#region Actions
     mainImage($event: NgxGalleryImage) {
-        if (this.item) this.item.mainImage = $event
+        if (this.item) this.item().mainImage = $event
     }
 
     updateImages($event: NgxGalleryImage[]) {
         this.notLoaded = false
         if (this.item) {
-            this.item.ngImages = $event
-            this.numberImages = this.item.numberImages
+            this.item().ngImages = $event
+            this.numberImages = this.item().numberImages
         }
     }
 
@@ -247,7 +246,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
     view() {
         const manager = this.homeService.getDataManager(this.query()!)
-        if (manager) manager.currentId = this.part.id!
+        if (manager) manager.currentId = this.item().id!
         this.viewItem()
     }
 
@@ -259,7 +258,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
 
     clickedFavourite(event: boolean) {
-        const id = this.part.id
+        const id = this.item().id
         if (event) this.localStorageService.addSavedItem(id!)
         else this.localStorageService.removeSavedItem(id!)
         this.isSaved = this.localStorageService.isSaved(id!)
@@ -271,20 +270,20 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     //#region get function
 
     get approved() {
-        if (this.authernticationService.admin) return this.part.approved
+        if (this.authernticationService.admin) return this.item().approved
         if (this.highlighted()) return undefined
         return -1
     }
 
     get sellerWebPage() {
-        if (this.item.dealer) {
-            const sellerWebPage = this.part.sellerWebPage ? `${this.part.sellerWebPage}` : `/dealerwebpage?userId=${this.item?.userId}`
+        if (this.item().dealer) {
+            const sellerWebPage = this.item().sellerWebPage ? `${this.item().sellerWebPage}` : `/dealerwebpage?userId=${this.item().userId}`
             return sellerWebPage
         }
         return ''
     }
     dealerClicked() {
-        const filter: Filter = Object.assign({}, { id: 0, userId: this.item?.userId })
+        const filter: Filter = Object.assign({}, { id: 0, userId: this.item().userId })
         this.loadingService.open('Зареждане на резултатите')
         this.searchPartService.search(filter).subscribe({
             next: (res) => {
@@ -294,8 +293,8 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
                 if (dataManager.noParts()) {
                     this.confirmationService.OKCancel('Съобщение', this.labels.NORESULTS)
                 } else {
-                    if (res.filter?.id) this.router.navigate(['/dealerwebpage'], { queryParams: { query: res.filter.id, userId: this.item?.userId } })
-                    else this.router.navigate(['/dealerwebpage'], { queryParams: { userId: this.item?.userId } })
+                    if (res.filter?.id) this.router.navigate(['/dealerwebpage'], { queryParams: { query: res.filter.id, userId: this.item().userId } })
+                    else this.router.navigate(['/dealerwebpage'], { queryParams: { userId: this.item().userId } })
                 }
             },
             error: (error) => {
@@ -319,7 +318,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     // }
 
     getRegion() {
-        const region = this.part.partTagsMap?.get('Регион')
+        const region = this.item().partTagsMap?.get('Регион')
 
         if (region) return region
         return ''
@@ -336,16 +335,16 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     get canEdit() {
         if (this.allowUpdate() == false) return false
         if (this.pathService.userPage) return false
-        return this.logged && this.authernticationService.currentUserValue?.userId === this.part.userId && !this.userId
+        return this.logged && this.authernticationService.currentUserValue?.userId === this.item().userId && !this.userId
     }
 
     viewItem() {
         goTop()
-        this.action.emit({ action: UpdateEnum.View, dispayPartView: this.item })
+        this.action.emit({ action: UpdateEnum.View, dispayPartView: this.item() })
     }
 
     updateItem() {
-        this.action.emit({ action: UpdateEnum.Update, dispayPartView: this.item })
+        this.action.emit({ action: UpdateEnum.Update, dispayPartView: this.item() })
     }
 
     change() {
@@ -377,18 +376,18 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     ok() {
         if (!this.item) return
 
-        if (this.item.itemType === ItemType.OnlyCar) this.deleteCar()
-        else if (this.item.itemType === ItemType.OnlyBus) this.deleteCar()
-        else if (this.item.itemType === ItemType.CarPart || this.item.itemType === ItemType.BusPart) this.deletePart()
-        else if (this.item.itemType === ItemType.Tyre || this.item.itemType === ItemType.Rim || this.item.itemType === ItemType.RimWithTyre) this.deleteTyre()
+        if (this.item().itemType === ItemType.OnlyCar) this.deleteCar()
+        else if (this.item().itemType === ItemType.OnlyBus) this.deleteCar()
+        else if (this.item().itemType === ItemType.CarPart || this.item().itemType === ItemType.BusPart) this.deletePart()
+        else if (this.item().itemType === ItemType.Tyre || this.item().itemType === ItemType.Rim || this.item().itemType === ItemType.RimWithTyre) this.deleteTyre()
     }
 
     deleteCar() {
-        this.carService.deleteCar(this.part.id!).subscribe({
+        this.carService.deleteCar(this.item().id!).subscribe({
             next: () => {
-                this.homeService.deleteCar(this.part.id!)
+                this.homeService.deleteCar(this.item().id!)
                 this.popupService.openWithTimeout(this.labels.MESSAGE, 'Колата е успешно изтрита', 4000)
-                this.action.emit({ action: UpdateEnum.Delete, dispayPartView: this.item })
+                this.action.emit({ action: UpdateEnum.Delete, dispayPartView: this.item() })
             },
             error: (error) => {
                 this.popupService.openWithTimeout(error, this.labels.ERROR)
@@ -401,9 +400,9 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
 
     deletePart() {
-        this.partService.deletePart(this.part.id!).subscribe({
+        this.partService.deletePart(this.item().id!).subscribe({
             next: () => {
-                this.homeService.deletePart(this.part.id!)
+                this.homeService.deletePart(this.item().id!)
                 this.popupService.openWithTimeout(this.labels.MESSAGE, 'Частта е успешно изтрита', 4000)
             },
             error: (error) => {
@@ -417,8 +416,8 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
 
     deleteTyre() {
-        if (this.item?.id === undefined) return
-        const id = this.item?.id
+        if (this.item().id === undefined) return
+        const id = this.item().id!
 
         this.tyreService.deleteItem(id).subscribe({
             next: () => {
@@ -436,7 +435,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     }
 
     updateStatus(event: number) {
-        this.part.approved = event
+        this.item().approved = event
     }
 
     get admin() {

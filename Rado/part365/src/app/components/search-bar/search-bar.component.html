@@ -1,7 +1,7 @@
 <div class="button-footer mb-1">
     <div class="d-inline-flex justify-content-between mt-1 mb-1 pt-3 pb-3">
         <div class="d-inline-flex">
-            <app-searchbutton class="me-1"></app-searchbutton>
+            <app-searchbutton class="me-1" (clickButton)="submit()"></app-searchbutton>
             <app-clearbutton (clickButton)="clearFilter()"></app-clearbutton>
         </div>
     </div>

@@ -51,7 +51,7 @@ export class SearchBarComponent extends HelperComponent implements FormValueCont
     }
 
     submit() {
-        this.clearEvent.emit()
+        this.submitEvent.emit()
     }
 
     clearFilter() {
