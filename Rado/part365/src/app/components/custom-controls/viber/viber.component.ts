@@ -7,7 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser'
     styleUrls: ['./viber.component.css'],
     imports: [],
 })
-export class ViberComponent{
+export class ViberComponent {
     private sanitizer: DomSanitizer = inject(DomSanitizer)
     number = input<string | undefined>()
     @HostListener('click', ['$event'])
@@ -16,16 +16,20 @@ export class ViberComponent{
         event.stopPropagation()
     }
 
+    prevent(event: Event) {
+        event.preventDefault()
+    }
+
     // ngOnInit() {
     //     // if (this.number())
     //     // {
     //     //     const num = this.number()!;
     //     //     if (num.length == 10 && num[0] == '0') this.number()!.set(num.replace('0', '359'))
     //     // }
-            
+
     // }
     get viberNumber() {
-        return this.number()    
+        return this.number()
     }
 
     get viberRef() {

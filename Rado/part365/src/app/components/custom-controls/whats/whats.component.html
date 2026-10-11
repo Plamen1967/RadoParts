@@ -1,9 +1,12 @@
 @if(number()) {
-  <div class="size d-flow" tooltip="'Chat с WhatsApp'">
-    <a [href]="sanitize(whatsRef)" class="d-flex btn btn-sm me-1 whats-color d-flex justify-content-start">
-      <i class="lab iconSize la-whatsapp pe-1"></i>
-      WhatsApp</a>
-  </div>
+  <a
+    [href]="sanitize(whatsRef)"
+    class="size d-flow d-flex btn btn-sm me-1 whats-color justify-content-start"
+    tooltip="'Chat с WhatsApp'"
+  >
+    <i class="lab iconSize la-whatsapp pe-1"></i>
+    WhatsApp
+  </a>
 }
 
 <!-- <a href="https://api.whatsapp.com/send?phone=31630805650" target="_blank" rel="noopener">WhatsApp (text messages only)</a> -->
