@@ -91,8 +91,8 @@ namespace Utility
         {
             string path = GetPhotosPath(objectId);
             string webpPath = path + "webp";
-            if (!Directory.Exists(webpPath))
-                Directory.CreateDirectory(webpPath);
+            //if (!Directory.Exists(webpPath))
+            //    Directory.CreateDirectory(webpPath);
 
             return webpPath + "/" + imageId + ".webp";
         }
@@ -553,7 +553,8 @@ namespace Utility
             }
         }
         public static void CheckImageExists(long objectId, long imageId)
-        {
+        {   // CHECK
+            return;
             string imageSrc = GenerateImageSrc(objectId, imageId);
             string imageMinSrc = GenerateMinImageSrc(objectId, imageId);
             bool imageSrcExist = File.Exists(imageSrc);
