@@ -64,7 +64,7 @@ namespace Rado.Datasets
             {
                 using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
                 {
-                    LoggerUtil.LogToFile($"start storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
+                    LoggerUtil.LogToSqlFile($"start storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
                     await connection.OpenAsync();
 
                     DateTime dateTime = DateTime.Now;
@@ -126,7 +126,7 @@ namespace Rado.Datasets
                         mainPictureParam.Value = car.MainPicture;
 
                         await command.ExecuteNonQueryAsync();
-                        LoggerUtil.LogToFile($"end storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
+                        LoggerUtil.LogToSqlFile($"end storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
                     }
                 }
             }
@@ -159,7 +159,7 @@ namespace Rado.Datasets
             }
             try
             {
-                LoggerUtil.LogToFile($"start storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"start storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
                 using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
                 {
                     await connection.OpenAsync();
@@ -174,7 +174,7 @@ namespace Rado.Datasets
                         await command.ExecuteNonQueryAsync();
                     }
                 }
-                LoggerUtil.LogToFile($"end storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"end storedProcedure: {storeProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -213,7 +213,7 @@ namespace Rado.Datasets
 
                 command.Parameters.Add("@result", SqlDbType.Int);
                 command.Parameters["@result"].Direction = ParameterDirection.Output;
-                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                 connection.Open();
                 int i = command.ExecuteNonQuery();
@@ -225,7 +225,7 @@ namespace Rado.Datasets
                     if (value > 0)
                         return false;
                 }
-                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception e)
             {
@@ -241,7 +241,7 @@ namespace Rado.Datasets
             CarView carView = new CarView();
             try
             {
-                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 await connection.OpenAsync();
                 {
@@ -270,7 +270,7 @@ namespace Rado.Datasets
                     await sqlDataReader.CloseAsync();
                 }
                 await connection.CloseAsync();
-                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception e)
             {
@@ -284,7 +284,7 @@ namespace Rado.Datasets
             string storedProcedure = "UpdateMainPictureCar";
             try
             {
-                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 connection.Open();
 
@@ -300,7 +300,7 @@ namespace Rado.Datasets
                 userIdParam.Value = userId;
 
                 command.ExecuteNonQuery();
-                LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {
@@ -326,7 +326,7 @@ namespace Rado.Datasets
             {
                 using (SqlConnection connection = new SqlConnection(Program.ConnectionString))
                 {
-                    LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                    LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                     await connection.OpenAsync();
 
                     DateTime dateTime = DateTime.Now;
@@ -352,7 +352,7 @@ namespace Rado.Datasets
                         }
 
                     }
-                    LoggerUtil.LogToFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
+                    LoggerUtil.LogToSqlFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception exception)
@@ -527,13 +527,13 @@ namespace Rado.Datasets
                 where.Add($"deleted = 0");
 
                 string selectCommand = "SELECT * FROM CarView WITH(NOLOCK)";
-                LoggerUtil.LogToFile($"start storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 if (where.Count > 0)
                 {
                     selectCommand += " WHERE " + string.Join(" AND ", where.ToArray());
                 }
                 Console.WriteLine($"Command : {selectCommand}");
 
+                LoggerUtil.LogToSqlFile($"start storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
                     await sqlConnection.OpenAsync();
@@ -561,7 +561,7 @@ namespace Rado.Datasets
                         }
                     }
                     carsAllwatch.Stop();
-                    Console.WriteLine("Elapsed Time CarsAll Details is {0} ms", carsAllwatch.ElapsedMilliseconds);
+                    LoggerUtil.LogToFile($"Elapsed Time CarsAll Details is {carsAllwatch.ElapsedMilliseconds} ms");
 
 
                     if (filter.UserId != 0)
@@ -591,7 +591,7 @@ namespace Rado.Datasets
                         }
 
                         stopwatch.Stop();
-                        Console.WriteLine($"Elapsed Time PartPerCar is {stopwatch.ElapsedMilliseconds} ms");
+                        LoggerUtil.LogToFile($"Elapsed Time PartPerCar is {stopwatch.ElapsedMilliseconds} ms");
 
                         Stopwatch countwatch = new Stopwatch();
                         countwatch.Start();
@@ -605,11 +605,11 @@ namespace Rado.Datasets
                             }
                         }
                         countwatch.Stop();
-                        Console.WriteLine("Elapsed Time Count Parts is {0} ms", countwatch.ElapsedMilliseconds);
+                        LoggerUtil.LogToFile($"Elapsed Time Count Parts is {countwatch.ElapsedMilliseconds} ms");
                     }
 
                     await sqlConnection.CloseAsync();
-                    LoggerUtil.LogToFile($"end storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
+                    LoggerUtil.LogToSqlFile($"end storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 }
             }
             catch (Exception exception)
@@ -671,7 +671,7 @@ namespace Rado.Datasets
                 }
 
                 string storedProcedure2 = "SearchCarViewAll";
-                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure2} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure2} {DateTime.Now.ToLongTimeString()}");
                 using (SqlConnection sqlConnection = new SqlConnection(Program.ConnectionString))
                 {
                     sqlConnection.Open();
@@ -816,7 +816,7 @@ namespace Rado.Datasets
 
                     await sqlConnection.CloseAsync();
                 }
-                LoggerUtil.LogToFile($"start storedProcedure: {storedProcedure2} {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure2} {DateTime.Now.ToLongTimeString()}");
             }
             catch (Exception exception)
             {

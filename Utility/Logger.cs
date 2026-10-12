@@ -173,6 +173,27 @@ namespace Utility
             //}
 
         }
+
+        public static void LogToSqlFile(string message)
+        {
+            if (message == null)
+                return;
+
+            lock (userLock)
+            {
+                string logFileName = string.Format("Sql_{0}_{1}_{2}.log", DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);
+                if (!Directory.Exists(ProgramSettings.LogFolder))
+                    Directory.CreateDirectory(ProgramSettings.LogFolder);
+
+                using (StreamWriter writer = new StreamWriter(logFileName, append: true))
+                {
+                    writer.WriteLine(message);
+                    writer.Close();
+
+                }
+            }
+
+        }
     }
 
 }

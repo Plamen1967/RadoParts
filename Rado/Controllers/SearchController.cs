@@ -7,6 +7,7 @@ using Rado.Enums;
 using Rado.Models;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Utility;
 using Controller = Rado.Controllers.Admin.Controller;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,7 +23,14 @@ namespace Rado.Controllers
         [Route("Search")]
         public async Task<SearchResult> Search([FromQuery] Filter filterPart)
         {
-            return await SearchDbSet.Search(filterPart);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var result = await SearchDbSet.Search(filterPart);
+
+            stopwatch.Stop();
+            LoggerUtil.LogToFile($"Search time : {stopwatch.ElapsedMilliseconds} ms");
+            return result;
         }
 
         [HttpGet]
