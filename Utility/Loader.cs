@@ -55,6 +55,11 @@ namespace Utility
             car.GearboxType = Int32("gearboxType", sqlDataReader);
             car.Bus = Int32("bus", sqlDataReader);
             car.CreatedTime = Int64("createdTime", sqlDataReader);
+            if (car.MainImageId != 0)
+            {
+                ImageManager.CheckImageExists(car.CarId, car.MainImageId);
+                car.MainPicture = ImageManager.GenerateImageHRef(car.CarId, car.MainImageId, true);
+            }
         }
         public static void LoadCarView(CarView car, SqlDataReader sqlDataReader)
         {
