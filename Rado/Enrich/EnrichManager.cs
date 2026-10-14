@@ -21,7 +21,7 @@ namespace Rado.Enrich
         public static CarView LoadCarView(SqlDataReader sqlDataReader)
         {
             CarView carView = new();
-            Loader.LoadCar(carView, sqlDataReader);
+            Loader.LoadCarView(carView, sqlDataReader);
 
             return carView;
         }
@@ -30,58 +30,7 @@ namespace Rado.Enrich
         {
             CarView carView = new();
             Loader.LoadCar(carView, sqlDataReader);
-
-            if (carView.Bus == 1)
-            {
-                var result = ModelsDbSet.GetModelByIdAsync(carView.ModelId ?? 0);
-                result.Wait();
-                var model = result.Result;
-                carView.ModelId = model.ModelId;
-                carView.ModelName = model.ModelName;
-                carView.CompanyId = model.CompanyId;
-            }
-            else
-            {
-                var modification = ModificationsDbSet.GetModificationById(carView.ModificationId ?? 0);
-                carView.ModificationName = ModificationsDbSet.GetModificationNameById(carView.ModificationId ?? 0);
-
-                if (modification != null)
-                {
-                    var result = ModelsDbSet.GetModelByIdAsync(modification.ModelId).Result;
-                    var model = result;
-                    carView.ModelId = model.ModelId;
-                    carView.ModelName = model.ModelName;
-                    carView.CompanyId = model.CompanyId;
-                }
-            }
-
-            if (carView.CompanyId != 0)
-            {
-                carView.CompanyName = CompaniesDbSet.GetCompanyById(carView.CompanyId)?.CompanyName;
-            }
-
-            //User user = UserDbSet.GetUserById(carView.userId);
-            //if (user != null)
-            //{
-            //    carView.sellerName = user.companyName;
-            //    carView.sellerPhone = user.phone;
-            //    carView.sellerPhone2 = user.phone2;
-            //    carView.sellerViber = user.viber;
-            //    carView.sellerWhats = user.whats;
-            //    carView.sellerWebPage = user.webPage;
-            //}
-
-            var imageResult = ImageManager.GetImageCount(carView.CarId);
-            imageResult.Wait();
-
-            carView.NumberImages = imageResult.Result;
-
-            if (carView.MainImageId != 0)
-            {
-                ImageManager.CheckImageExists(carView.CarId, carView.MainImageId);
-                carView.MainPicture = ImageManager.GenerateImageHRef(carView.CarId, carView.MainImageId, true);
-            }
-
+            
             return carView;
         }
         #endregion

@@ -56,6 +56,41 @@ namespace Utility
             car.Bus = Int32("bus", sqlDataReader);
             car.CreatedTime = Int64("createdTime", sqlDataReader);
         }
+        public static void LoadCarView(CarView car, SqlDataReader sqlDataReader)
+        {
+            InitDataCol(car, sqlDataReader);
+
+            car.CarId = Int64("carId", sqlDataReader);
+            car.ModelId = Int32("modelId", sqlDataReader);
+            car.ModificationId = Int32("modificationId", sqlDataReader);
+            car.Year = Int32("year", sqlDataReader);
+            car.Vin = ToString("VIN", sqlDataReader);
+            car.RegNumber = ToString("regNumber", sqlDataReader);
+            car.PowerkWh = Int32("powerkWh", sqlDataReader);
+            car.PowerBHP = Int32("powerBHP", sqlDataReader);
+            car.EngineType = Int32("engineType", sqlDataReader);
+            car.EngineModel = ToString("engineModel", sqlDataReader);
+            car.Millage = Int32("millage", sqlDataReader);
+            car.GearboxType = Int32("gearboxType", sqlDataReader);
+            car.Bus = Int32("bus", sqlDataReader);
+            car.CreatedTime = Int64("createdTime", sqlDataReader);
+
+            car.CompanyId = Int32("companyId", sqlDataReader);
+
+            car.CompanyName = ToString("companyName", sqlDataReader);
+            car.ModificationName = ToString("modificationName", sqlDataReader);
+            car.ModelName = ToString("modelName", sqlDataReader);
+
+            car.UserCompanyName = ToString("userCompany", sqlDataReader); ;
+            car.UserId = Int32("userId", sqlDataReader); ;
+            car.FirstName = ToString("firstName", sqlDataReader);
+            car.LastName = ToString("lastName", sqlDataReader);
+            car.Viber = ToString("viber", sqlDataReader);
+            car.Whats = ToString("whats", sqlDataReader);
+            car.Dealer = Int32("dealer", sqlDataReader); ;
+            car.City = ToString("city", sqlDataReader); ;
+            car.WebPage = ToString("webPage", sqlDataReader); ;
+        }
 
         public static Message LoadMessage(SqlDataReader sqlDataReader)
         {
