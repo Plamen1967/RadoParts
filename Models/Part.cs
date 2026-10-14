@@ -17,6 +17,8 @@ namespace Rado
         public int DealerSubCategoryId { get; set; }
         [Required]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string SubCategoryName { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string DealerSubCategoryName { get; set; }
         public int? LeftRightPosition { get; set; }
         public int? FrontBackPosition { get; set; }

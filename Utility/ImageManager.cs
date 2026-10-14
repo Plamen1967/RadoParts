@@ -7,6 +7,7 @@ using Rado.Exceptions;
 using Rado.Models;
 using Settings;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -511,10 +512,13 @@ namespace Utility
 
         public static async Task<int> GetImageCount(long objectId)
         {
+            return 0;
             string storeProcedureName = "ImageDataCount";
 
             try
             {
+                Stopwatch watch = new();
+                watch.Start();
                 SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
                 SqlCommand sqlCommand = new SqlCommand(storeProcedureName, sqlConnection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -532,6 +536,8 @@ namespace Utility
                 }
 
                 await sqlConnection.CloseAsync();
+                watch.Stop();
+                LoggerUtil.LogToSqlFile($"ImageDataCount {objectId} {watch.ElapsedMilliseconds}");
 
                 return imageCount;
             }

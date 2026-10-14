@@ -9,6 +9,7 @@ using Rado.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Utility;
@@ -200,6 +201,8 @@ namespace Rado.Datasets
         private static async Task<PartView[]> GetCarAndPartsAsync(Filter filterPart)
         {
             LoggerUtil.LogToSqlFile($"start storedProcedure: GetCarAndPartsAsync {DateTime.Now.ToLongTimeString()}");
+            Stopwatch watch = new();
+            watch.Start();  
             var startTime = Environment.TickCount;
             Task<List<PartView>> parts = null;
             Task<List<PartView>> cars = null;
@@ -271,12 +274,6 @@ namespace Rado.Datasets
                     }
                 }
 
-                _ = Task.Run(async () =>
-                  {
-                      await LoggerUtil.Log(String.Format("PartDbSet::GetCars Read all cars is {0} ms", Environment.TickCount - startTime));
-                      LoggerUtil.LogInfo(String.Format("PartDbSet::GetCarts Read all cars is {0} ms", Environment.TickCount - startTime));
-                  });
-
                 IEnumerable<PartView> sortPart = new List<PartView>();
 
                 if (filterPart.OrderBy == 0)
@@ -294,12 +291,7 @@ namespace Rado.Datasets
                 partsAll.Clear();
                 partsAll = list;
 
-                _ = Task.Run(async () =>
-                  {
-                      await LoggerUtil.Log(String.Format("PartDbSet::Load Images Read {0} ms", Environment.TickCount - startTime));
-                      LoggerUtil.LogInfo(String.Format("PartDbSet::Load Images Read {0} ms", Environment.TickCount - startTime));
-                  });
-                LoggerUtil.LogToSqlFile($"end storedProcedure: GetCarAndPartsAsync {DateTime.Now.ToLongTimeString()}");
+                LoggerUtil.LogToSqlFile($"end storedProcedure: GetCarAndPartsAsync {DateTime.Now.ToLongTimeString()} {watch.ElapsedMilliseconds}");
             }
             catch (Exception exception) 
             {

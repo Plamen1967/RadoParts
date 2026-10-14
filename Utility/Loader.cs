@@ -113,6 +113,7 @@ namespace Utility
 
             return part;
         }
+
         public static void LoadPart(Part part, SqlDataReader sqlDataReader)
         {
             InitDataCol(part, sqlDataReader);
@@ -120,9 +121,6 @@ namespace Utility
             part.Price = Decimal("price", sqlDataReader);
             part.PartId = Int64("partId", sqlDataReader);
             part.CarId = Int64("carId", sqlDataReader);
-            part.ModelId = Int32("modelId", sqlDataReader);
-            part.ModificationId = Int32("modificationId", sqlDataReader);
-            part.Year = Int32("year", sqlDataReader);
             part.Description = ToString("description", sqlDataReader);
             part.Price = Decimal("price", sqlDataReader);
             part.LeftRightPosition = Int32("leftRightPosition", sqlDataReader);
@@ -134,10 +132,41 @@ namespace Utility
             part.PowerBHP = Int32("powerBHP", sqlDataReader);
             part.Millage = Int32("millage", sqlDataReader);
             part.GearboxType = Int32("gearboxType", sqlDataReader);
+            part.Bus = Int32("bus", sqlDataReader);
+            
+            part.ModelId = Int32("modelId", sqlDataReader);
+            part.ModificationId = Int32("modificationId", sqlDataReader);
+            part.Year = Int32("year", sqlDataReader);
+
+            part.CategoryId = Int32("categoryId", sqlDataReader);
             part.DealerSubCategoryId = Int32("dealerSubCategoryId", sqlDataReader);
             part.DealerSubCategoryName = ToString("dealerSubCategoryName", sqlDataReader);
-            part.Bus = Int32("bus", sqlDataReader);
+
             part.CreatedTime = Int64("createdTime", sqlDataReader);
+        }
+        public static void LoadPartView(PartView part, SqlDataReader sqlDataReader)
+        {
+            LoadPart(part, sqlDataReader);
+
+            part.CategoryName = ToString("categoryName", sqlDataReader); ;
+            part.SubCategoryId = Int32("subCategoryId", sqlDataReader); ;
+            part.SubCategoryName = ToString("subCategoryName", sqlDataReader);
+            part.CompanyId = Int32("companyId", sqlDataReader);
+
+            part.CompanyName = ToString("companyName", sqlDataReader);
+            part.ModificationName = ToString("modificationName", sqlDataReader);
+            part.ModelName = ToString("modelName", sqlDataReader);
+
+            part.UserCompanyName = ToString("userCompany", sqlDataReader); ;
+            part.UserId = Int32("userId", sqlDataReader); ;
+            part.FirstName = ToString("firstName", sqlDataReader);
+            part.LastName = ToString("lastName", sqlDataReader);
+            part.Viber = ToString("viber", sqlDataReader);
+            part.Whats = ToString("whats", sqlDataReader);
+            part.Dealer = Int32("dealer", sqlDataReader); ;
+            part.City = ToString("city", sqlDataReader); ;
+            part.WebPage = ToString("webPage", sqlDataReader); ;
+
         }
 
         public static Tyre LoadTyre(SqlDataReader sqlDataReader)

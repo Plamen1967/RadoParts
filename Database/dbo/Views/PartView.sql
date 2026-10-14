@@ -16,7 +16,15 @@ SELECT dbo.Parts.partId, dbo.Parts.carId,
         dbo.SubcategoryView.subCategoryId as subCategoryId,
         dbo.ModificationView.companyId, dbo.ModificationView.companyName,
         dbo.ModificationView.modelId, dbo.ModificationView.modelName,
-        dbo.ModificationView.groupModelId,dbo.ModificationView.groupModelName
+        dbo.ModificationView.groupModelId,dbo.ModificationView.groupModelName,
+		dbo.[User].companyName AS userCompany, 
+		dbo.[User].firstName, 
+		dbo.[User].lastName, 
+		dbo.[User].viber, 
+		dbo.[User].whats, 
+		dbo.[User].city, 
+		dbo.[User].dealer, 
+		dbo.[User].webPage
 FROM  dbo.Parts INNER JOIN
          dbo.[User] ON dbo.Parts.userId = dbo.[User].userId INNER JOIN
          dbo.ModificationView ON dbo.Parts.modificationId = dbo.ModificationView.modificationId INNER JOIN
@@ -42,7 +50,15 @@ SELECT dbo.Parts.partId, dbo.Parts.carId,
         dbo.Models.modelId, 
         dbo.Models.modelName,
         0 as groupModelId,
-        '' as groupModelName
+        '' as groupModelName,
+		dbo.[User].companyName AS userCompany,
+		dbo.[User].firstName,
+		dbo.[User].lastName,
+		dbo.[User].viber,
+		dbo.[User].whats,
+		dbo.[User].city,
+		dbo.[User].dealer,
+		dbo.[User].webPage
 FROM  dbo.Parts INNER JOIN
          dbo.[User] ON dbo.Parts.userId = dbo.[User].userId INNER JOIN
          dbo.Models ON dbo.Parts.modelId = dbo.Models.modelId INNER JOIN

@@ -204,111 +204,113 @@ namespace Rado.Enrich
         public static PartView EnrichPartView(SqlDataReader sqlDataReader)
         {
             var partView = new PartView();
-            Loader.LoadPart(partView, sqlDataReader);
-
-            LoggerUtil.LogFunctionInfo("Start InitFromRow: 1");
-            partView.IsCar = false;
-            try
-            {
-                var dealerSubCategory = DealerSubCategoryDbSet.GetDealerSubCategoryById(partView.DealerSubCategoryId);
-                partView.SubCategoryId = dealerSubCategory.SubCategoryId;
-                if (partView.SubCategoryId != 0)
-                {
-                    var subCategory = SubCategoriesDbSet.GetSubCategoryById(partView.SubCategoryId.Value);
-                    partView.CategoryId = subCategory.CategoryId;
-                    partView.CategoryName = $"{CategoriesDbSet.GetCategoryById(partView.CategoryId.Value)?.CategoryName} / {subCategory?.SubCategoryName}";
-                }
-
-            }
-            catch (Exception e)
-            {
-                LoggerUtil.LogException(e);
-                throw new Exception("Dealer Subcategory");
-            }
-            try
-            {
-                if (partView.Bus == 0)
-                {
-                    Modification modification = ModificationsDbSet.GetModificationById(partView.ModificationId);
-                    partView.ModelId = modification.ModelId;
-                    if (partView.ModelId != null)
-                        partView.ModelName = ModelsDbSet.GetModelNameById(partView.ModelId.Value);
-                    if (modification != null) partView.ModificationName = modification?.ModificationName;
-                    if (partView.Year == 0 && modification != null)
-                    {
-                        if (modification.YearFrom != 0 && modification.YearTo != 0)
-                            partView.YearName = $"{modification.YearFrom} - {modification.YearTo}";
-                        else if (modification.YearFrom == 0)
-                            partView.YearName = $" - {modification.YearTo}";
-                        else
-                            partView.YearName = $"{modification.YearFrom} - ";
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                LoggerUtil.LogFunctionInfo("InitFromRow 3");
-                LoggerUtil.LogException(e.Message);
-            }
-
-            Model model;
-            try
-            {
-                LoggerUtil.LogFunctionInfo("Load Image Part");
-                var result = ModelsDbSet.GetModelByIdAsync(partView.ModelId.Value);
-                model = result.Result;
-                if (model != null)
-                {
-                    partView.CompanyId = model.CompanyId;
-                    partView.CompanyName = CompaniesDbSet.GetCompanyById(model.CompanyId)?.CompanyName;
-                }
-                else
-                {
-                    LoggerUtil.Warning($"Part Id {partView.PartId} has no model");
-                }
-                LoggerUtil.LogFunctionInfo("End Image Part");
-            }
-            catch (Exception e)
-            {
-                LoggerUtil.LogFunctionInfo("InitFromRow");
-                LoggerUtil.LogException($"Model ${e.Message} PartId: {partView.PartId}");
-            }
-                
-            User user;
-            partView.YearName = partView.Year.ToString();
-
-            try
-            {
-                user = UserDbSet.GetUserById(partView.UserId);
-            }
-            catch (Exception e)
-            {
-                LoggerUtil.LogFunctionInfo("InitFromRow 5");
-                LoggerUtil.LogException($"Category ${e.Message} PartId: {partView.PartId}");
-            }
-
+            Stopwatch waStopwatch = new();
+            waStopwatch.Start();
+            LoggerUtil.LogFunctionInfo("Start InitFromRow");
+            Loader.LoadPartView(partView, sqlDataReader);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            LoggerUtil.LogFunctionInfo("CheckImageExists 1");
+
+            partView.IsCar = false;
+            //try
+            //{
+            //    var dealerSubCategory = DealerSubCategoryDbSet.GetDealerSubCategoryById(partView.DealerSubCategoryId);
+            //    partView.SubCategoryId = dealerSubCategory.SubCategoryId;
+            //    if (partView.SubCategoryId != 0)
+            //    {
+            //        var subCategory = SubCategoriesDbSet.GetSubCategoryById(partView.SubCategoryId.Value);
+            //        partView.CategoryId = subCategory.CategoryId;
+            //        partView.CategoryName = $"{CategoriesDbSet.GetCategoryById(partView.CategoryId.Value)?.CategoryName} / {subCategory?.SubCategoryName}";
+            //    }
+
+            //}
+            //catch (Exception e)
+            //{
+            //    LoggerUtil.LogException(e);
+            //    throw new Exception("Dealer Subcategory");
+            //}
+            //try
+            //{
+            //    if (partView.Bus == 0)
+            //    {
+            //        Modification modification = ModificationsDbSet.GetModificationById(partView.ModificationId);
+            //        partView.ModelId = modification.ModelId;
+            //        if (partView.ModelId != null)
+            //            partView.ModelName = ModelsDbSet.GetModelNameById(partView.ModelId.Value);
+            //        if (modification != null) partView.ModificationName = modification?.ModificationName;
+            //        if (partView.Year == 0 && modification != null)
+            //        {
+            //            if (modification.YearFrom != 0 && modification.YearTo != 0)
+            //                partView.YearName = $"{modification.YearFrom} - {modification.YearTo}";
+            //            else if (modification.YearFrom == 0)
+            //                partView.YearName = $" - {modification.YearTo}";
+            //            else
+            //                partView.YearName = $"{modification.YearFrom} - ";
+            //        }
+            //    }
+
+            //}
+            //catch (Exception e)
+            //{
+            //    LoggerUtil.LogFunctionInfo("InitFromRow 3");
+            //    LoggerUtil.LogException(e.Message);
+            //}
+
+            //Model model;
+            //try
+            //{
+            //    var result = ModelsDbSet.GetModelByIdAsync(partView.ModelId.Value);
+            //    model = result.Result;
+            //    if (model != null)
+            //    {
+            //        partView.CompanyId = model.CompanyId;
+            //        partView.CompanyName = CompaniesDbSet.GetCompanyById(model.CompanyId)?.CompanyName;
+            //    }
+            //    else
+            //    {
+            //        LoggerUtil.Warning($"Part Id {partView.PartId} has no model");
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    LoggerUtil.LogFunctionInfo("InitFromRow");
+            //    LoggerUtil.LogException($"Model ${e.Message} PartId: {partView.PartId}");
+            //}
+                
+            //User user;
+            //partView.YearName = partView.Year.ToString();
+            //stopwatch.Stop();
+            //LoggerUtil.LogFunctionInfo($"*** Category {stopwatch.ElapsedMilliseconds}");
+            //stopwatch.Start();
+
+            //try
+            //{
+            //    user = UserDbSet.GetUserById(partView.UserId);
+            //}
+            //catch (Exception e)
+            //{
+            //    LoggerUtil.LogFunctionInfo("InitFromRow 5");
+            //    LoggerUtil.LogException($"Category ${e.Message} PartId: {partView.PartId}");
+            //}
+
+            stopwatch.Start();
+            LoggerUtil.LogFunctionInfo("*** CheckImageExists 1");
             if (partView.MainImageId != 0)
             {
-                LoggerUtil.LogFunctionInfo("CheckImageExists 2");
                 ImageManager.CheckImageExists(partView.PartId, partView.MainImageId);
-                LoggerUtil.LogFunctionInfo("GenerateImageHRef 1");
                 partView.MainPicture = ImageManager.GenerateImageHRef(partView.PartId, partView.MainImageId, true);
-                LoggerUtil.LogFunctionInfo("GenerateImageHRef 2");
             }
-            LoggerUtil.LogFunctionInfo("GetImageCount 1");
             var imageResult = ImageManager.GetImageCount(partView.PartId);
             imageResult.Wait();
 
+            stopwatch.Stop();
+            LoggerUtil.LogFunctionInfo($"*** CheckImageExists 1 {stopwatch.ElapsedMilliseconds}");
+            stopwatch.Start();
+
 
             partView.NumberImages = imageResult.Result;
-            LoggerUtil.LogFunctionInfo("GetNumberImages 2");
             stopwatch.Stop();
 
-            Console.WriteLine("Elapsed Time is {0} ms", stopwatch.ElapsedMilliseconds);
             LoggerUtil.Log($"Part:InitFromRow Elapsed Time is {stopwatch.ElapsedMilliseconds} ms").Wait();
 
             return partView;

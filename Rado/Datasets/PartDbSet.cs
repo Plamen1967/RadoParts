@@ -11,6 +11,7 @@ using Rado.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -862,6 +863,8 @@ namespace Rado.Datasets
 
                 test = test + selectCommand;
                 LoggerUtil.LogFunctionInfo($"Select command: {selectCommand}");
+                Stopwatch sqlCommandWatch = new Stopwatch();
+                sqlCommandWatch.Start(); 
                 LoggerUtil.LogToSqlFile($"start storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
                 await sqlConnection.OpenAsync();
 
@@ -869,32 +872,26 @@ namespace Rado.Datasets
                 {
                     sqlCommand.CommandType = CommandType.Text;
 
-                    _ = Task.Run(async() =>
-                    {
-                        await LoggerUtil.Log($"PartDbSet::GetParts SQL {Program.ConnectionString}");
-                    });
                     LoggerUtil.LogFunctionInfo($"Execute command: {selectCommand}");
 
                     using (SqlDataReader sqlDataReader = await sqlCommand.ExecuteReaderAsync())
                     {
+                        sqlCommandWatch.Stop();
+                        LoggerUtil.LogToSqlFile($"*** read data getPartsAsync: {selectCommand}  {sqlCommandWatch.ElapsedMilliseconds}");
+                        sqlCommandWatch.Start();
                         while (await sqlDataReader.ReadAsync())
                         {
-                            LoggerUtil.LogFunctionInfo($"ReadAsync: {selectCommand}");
                             PartView partView = EnrichManager.EnrichPartView(sqlDataReader);
 
                             parts.Add(partView);
                         }
+                        LoggerUtil.LogToSqlFile($"*** end read data getPartsAsync: {selectCommand} {DateTime.Now.ToLongTimeString()}");
 
                     }
-
-                    _ = Task.Run(async () =>
-                    {
-                        await LoggerUtil.Log($"PartDbSet::GetParts SQL {test} runs for {Environment.TickCount - startTime} ms");
-                        LoggerUtil.LogInfo($"PartDbSet::GetParts Read all parts is {Environment.TickCount - startTime} ms");
-                    });
                 }
                 await sqlConnection.CloseAsync();
-                LoggerUtil.LogToSqlFile($"end storedProcedure: {selectCommand} {DateTime.Now.ToLongTimeString()}");
+                sqlCommandWatch.Stop();
+                LoggerUtil.LogToSqlFile($"end storedProcedure: {selectCommand} {sqlCommandWatch.ElapsedMilliseconds}");
             }
             catch (Exception exception)
             {
