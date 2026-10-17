@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, ElementRef, inject, OnInit, ViewChild, input, output } from '@angular/core'
+import { Component, ElementRef, inject, OnInit, ViewChild, input, output, computed } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { SortType } from '@model/enum/sortType.enum'
 import { RadioButton } from '@model/radioButton'
@@ -20,6 +20,9 @@ export class NavigatorComponent implements OnInit {
     sortBy = output<number>()
     moveToPage = output<number>()
 
+    pages = computed(() => {
+        return [...Array(this.numberPages()).keys()];
+    })
 
     @ViewChild('previousButton') set inputElRef(elRef: ElementRef<HTMLInputElement>) {
         if (elRef) {
@@ -29,7 +32,6 @@ export class NavigatorComponent implements OnInit {
 
     ngOnInit() {
         this.calcOffset()
-        this.pages = [...Array(this.numberPages).keys()]
     }
 
     radios: RadioButton[] = [
@@ -45,7 +47,6 @@ export class NavigatorComponent implements OnInit {
     startPage?: number = 1
     endPage?: number = 1
     arrayPages_: number[] = []
-    pages: number[] = []
     previousButton?: ElementRef<HTMLInputElement>
     taticSelectionService: StaticSelectionService = inject(StaticSelectionService)
 
@@ -70,15 +71,6 @@ export class NavigatorComponent implements OnInit {
         return this.arrayPages_
     }
 
-    get currentPageSelected() {
-        return this.currentPage()
-    }
-
-    set currentPageSelected(value: number) {
-        this.calcOffset()
-        this.moveToPage.emit(this.currentPage())
-    }
-
     nextPage() {
         this.calcOffset()
         this.moveToPage.emit(this.currentPage()+1)
@@ -92,8 +84,10 @@ export class NavigatorComponent implements OnInit {
     click(event: number) {
         this.moveToPage.emit(event)
     }
-    pageChange() {
-        this.moveToPage.emit(this.currentPageSelected)
+    pageChange(event: Event) {
+        const element = event.target as HTMLSelectElement;
+        const value = +element.value;
+        this.moveToPage.emit(value)
     }
 
     sortData() {
