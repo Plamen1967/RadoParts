@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core'
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { NgxGalleryOptions } from '@app/ngx-gallery/models/ngx-gallery-options.model'
@@ -45,19 +45,19 @@ import { PathService } from '@services/path.service'
     styleUrls: ['./displayPart.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        PhoneComponent,
-        DealerComponent,
-        FavouriteComponent,
-        WhatsComponent,
-        NgClass,
-        AdminPanelComponent,
-        ImageComponent,
-        ViberComponent,
-        PriceComponent,
-        PartViewComponent,
-        TyreViewComponent,
-        NgStyle,
-    ],
+    PhoneComponent,
+    DealerComponent,
+    FavouriteComponent,
+    WhatsComponent,
+    NgClass,
+    AdminPanelComponent,
+    ImageComponent,
+    ViberComponent,
+    PriceComponent,
+    PartViewComponent,
+    TyreViewComponent,
+    NgStyle
+],
 })
 
 //#endregion
@@ -245,6 +245,9 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         this.viewItem()
     }
 
+    clickPhone(event:Event) {
+        event.stopPropagation()
+    }
     removeFromCheckOut(event: number) {
         this.checkoutService.updateItems(event)
         // this.checkoutService.removeFromCheckout(this.checkoutId!).subscribe((x) => {

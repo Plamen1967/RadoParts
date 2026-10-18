@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, output } from '@angular/core'
+import { Component, DestroyRef, effect, inject, OnInit, output, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -24,13 +24,13 @@ import { noop } from 'rxjs'
     imports: [DisplayPartComponent, UserViewPartComponent],
 })
 export class CheckOutComponent extends HelperComponent implements OnInit {
-    parts?: DisplayPartView[]
+    parts = signal<DisplayPartView[]>([])
     checkoutItems?: number[]
     checkoutForm: FormGroup
     currentId?: number
     selectedPart?: number
     selectedCar?: number
-    loading = false
+    loading = signal<boolean>(false)
     id?: string | number
     mode: UpdateEnum = UpdateEnum.View
     heigligthed?: number | string
@@ -52,6 +52,9 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
         this.activeRoute.queryParams.subscribe((d) => {
             this.id = +d['id']
         })
+        effect(() => {
+            console.log(this.parts())
+        })
     }
 
     ngOnInit() {
@@ -63,14 +66,14 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     }
 
     update() {
-        this.loading = true
+        this.loading.set(true)
         this.checkoutService
             .getCheckoutItems()
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
-                    this.parts = res
-                    this.loading = false
+                    this.parts.set(res)
+                    this.loading.set(false)
 
                     const existing = res.map((part) => part.id)
                     const notExisting = this.checkoutItems?.filter((checkoutItemId) => existing.findIndex((id) => id === checkoutItemId) === -1)
@@ -87,8 +90,8 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     }
 
     unchecked(id: number) {
-        const index = this.parts?.findIndex((part) => part.id === id)
-        if (index && index != -1) this.parts?.splice(index, 1)
+        const index = this.parts().findIndex((part) => part.id === id)
+        if (index && index != -1) this.parts.set(this.parts().splice(index, 1))
     }
 
     back() {

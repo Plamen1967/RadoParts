@@ -13,6 +13,7 @@ export class WhatsComponent {
     number = input<string|undefined>(undefined)
 
     get whatsRef() {
+        // <a href="https://wa.me/15551234567?text=Hello%20there!" target="_blank">Chat on WhatsApp</a>
         return `whatsapp://send?phone=${this.number()}&text=hello`
     }
 

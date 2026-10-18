@@ -1,4 +1,4 @@
-<div class="display-container">
+<div class="display-container" (click)="view()" role="none">
     @if (admin) {
         <div class="row">
             <app-adminpanel [itemId]="item().id" [approvedStatus]="item().approved" (updated)="updateStatus($event)"></app-adminpanel>
@@ -20,7 +20,7 @@
             <app-imagecomponent [dispayPartView]="item()" [displayMain]="true" (imagesLoaded)="updateImages($event)" [showNumberPhotos]="true" role="none"> </app-imagecomponent>
         </div>
         <div class="detailsClass pe-0 flex-column justify-content-between" [ngClass]="{ detailsClass: !this.dealerWebPage, deatailsDealerWebPage: this.dealerWebPage }">
-            <div role="none">
+            <div role="none" (click)="view()">
                 @if (isPart) {
                     <app-partview [part]="item()" (click)="view()" [ngStyle]="{ cursor: 'pointer' }" (view)="view()"></app-partview>
                 }
@@ -53,7 +53,7 @@
                 </div>
             </div>
             @if (showPhones() !== false) {
-                <div class="d-flex mb-1">
+                <div class="d-flex mb-1" (click)="clickPhone($event)" role="none">
                     <div class="row1 phone-distance">
                         @if (phone1) {
                             <div class="mb-1">
@@ -83,7 +83,7 @@
         </div>
 
         @if (showFavourite() !== false) {
-            <div class="favouriteClass pe-1">
+            <div class="favouriteClass pe-1" (click)="$event.stopPropagation()" role="none">
                 <app-favourite (unchecked)="removeFromCheckOut(item().id!)" [id]="item().id"></app-favourite>
             </div>
         }

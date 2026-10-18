@@ -2,17 +2,17 @@
     @if (currentId) {
         <app-userviewpart (back)="back()" (changeNext)="(false)" (changePrev)="(false)" [checkout]="true"></app-userviewpart>
     } @else {
-        @if (loading) {
+        @if (loading()) {
         } @else {
-            @if (parts && parts.length) {
+            @if (parts() && parts().length) {
                 <div class="rowCar">
-                    @if (!loading) {
+                    @if (!loading()) {
                         <div class="container mt-3">
                             <div class="mt-2 mb-2 text-center">
                                 <button class="btn btn-success" (click)="clear()">Изчисти запазени</button>
                             </div>
                             <div class="row">
-                                @for (part of parts; track part.id; let i = $index) {
+                                @for (part of parts(); track part.id; let i = $index) {
                                     <div id="{{ part.id }}">
                                         <app-displaypart (checkoutUpdated)="update()" [allowUpdate]="false" [part]="part" (action)="action($event)" [highlighted]="+heigligthed!" [allowUpdate]="false" [showDealer]="true">
                                         </app-displaypart>
