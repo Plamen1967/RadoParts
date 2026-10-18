@@ -512,7 +512,6 @@ namespace Utility
 
         public static async Task<int> GetImageCount(long objectId)
         {
-            return 0;
             string storeProcedureName = "ImageDataCount";
 
             try
