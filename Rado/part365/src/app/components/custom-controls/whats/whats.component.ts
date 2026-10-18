@@ -18,7 +18,8 @@ export class WhatsComponent {
 
     prevent(event: Event) {
         event.preventDefault()
-    }
+       window.open(this.whatsRef, '_blank');
+   }
     sanitize(url: string) {
         return this.sanitizer.bypassSecurityTrustUrl(url)
     }

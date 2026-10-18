@@ -98,12 +98,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
     updateId?: number
     highlighted_?: number
 
-    @HostListener('click')
-    onclick() {
-        this.view()
-    }
-
-    galleryOptions: NgxGalleryOptions[] = [
+        galleryOptions: NgxGalleryOptions[] = [
         {
             width: '300px',
             height: '300px',
