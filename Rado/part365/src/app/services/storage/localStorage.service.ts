@@ -41,6 +41,7 @@ export class LocalStorageService {
     clear() {
         localStorage.removeItem('items')
         this.ids = []
+        this.checkOutService.checkout.set(this.ids.length)
     }
 
         getCheckoutItems() {

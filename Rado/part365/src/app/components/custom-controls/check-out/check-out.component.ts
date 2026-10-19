@@ -57,7 +57,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
         })
 
         effect(() => {
-            goToPosition(this.currentId());
+            goToPosition(this.currentId())
         })
     }
 
@@ -119,6 +119,10 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
         // }
     }
 
+    goback() {
+        history.back()
+    }
+
     clear() {
         this.confirmService
             .OKCancel('Съобщение', 'Моля потвърдете изчистването на запазените')
@@ -131,7 +135,8 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     onclearOk() {
         this.localStorageService.clear()
         this.checkoutItems = this.localStorageService.checkOutItems
+
         this.update()
-        this.router.navigate(['/'])
+        history.back()
     }
 }

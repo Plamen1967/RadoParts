@@ -90,7 +90,7 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
         }
     }
     populateCompaniesByUserId() {
-        let bus = this.config()?.bus ?? '0';
+        const bus = this.config()?.bus ?? '0';
         if ( +bus == 1) {
             this.companyService
                 .fetchBusCompaniesByUserId()

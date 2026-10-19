@@ -26,8 +26,9 @@
                     }
                 </div>
             } @else {
-                <div class="d-flex justify-content-center">
-                    <h6>Няма запазени обяви</h6>
+                <div class="d-flex justify-content-center" style="flex-direction: column;">
+                    <h6 class="me-2 d-flex justify-content-center">Няма запазени обяви</h6>
+                    <button class="btn btn-primary" style="width: auto; margin: auto;" (click)="goback()">Назaд</button>
                 </div>
             }
         }

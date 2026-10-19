@@ -240,6 +240,7 @@ input[type='checkbox'] {
     margin: 2px 2px;
     width: 100px;
     padding: 1px 2px;
+    height: 45px;
 }
 
 .button-style {
