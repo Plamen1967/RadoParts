@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common'
-import { Component, inject, Input, model, input, output, computed, effect } from '@angular/core'
+import { Component, inject, Input, model, input, output, computed } from '@angular/core'
 import { FormsModule, ValidationErrors } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
@@ -45,9 +45,9 @@ export class SelectBaseComponent{
     })
 
     constructor() {
-        effect(() => {
-            console.log(`Select Base Value: ${this.data()}`)
-        })
+        // effect(() => {
+        //     console.log(`Select Base Value: ${this.data()}`)
+        // })
     }
     onChangeSelect() {
         this.value.set(this.selectedValue4 ?? 0)

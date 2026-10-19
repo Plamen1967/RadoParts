@@ -1,5 +1,5 @@
 //#region imports
-import { Component, DestroyRef, ElementRef, inject, model, input, output, effect } from '@angular/core'
+import { Component, DestroyRef, ElementRef, inject, model, input, output, effect, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { FormValueControl } from '@angular/forms/signals'
@@ -22,8 +22,8 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
     //#region variables and services
     value = model<number | string>(0)
     isDisabled?: boolean
-    dealerSubCategories: OptionItem[] = []
-    dealercategories: DealerSubCategory[] = []
+    dealerSubCategories = signal<OptionItem[]>([])
+    dealercategories = signal<DealerSubCategory[]>([])
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     protected onTouched?() {}
@@ -53,11 +53,11 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
         this.destroyRef = inject(DestroyRef)
         //#endregion
         effect(() => {
-            this.initCategories(this.categoryId()!)
+            this.initCategories(this.categoryId())
         })
 
         effect(() => {
-            const dealerSubCategory = this.dealercategories.find((item) => item.dealerSubCategoryId === this.value())
+            const dealerSubCategory = this.dealercategories().find((item) => item.dealerSubCategoryId === this.value())
             this.dealerSubCategoryChanged.emit(dealerSubCategory!)
         })
     }
@@ -68,9 +68,9 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
                 .fetchByCategory(categoryId)
                 .pipe(takeUntilDestroyed(this.destroyRef))
                 .subscribe((res) => {
-                    this.dealercategories = [...res]
+                    this.dealercategories.set([...res])
 
-                    this.dealerSubCategories = this.dealercategories.map((item) => {
+                    this.dealerSubCategories.set([{ id: 0, description: 'Избери Подкатегория Дилър', count: 0, countCars: 0, countParts: 0, groupModelId: 0 }, ...this.dealercategories().map((item) => {
                         const cat = {
                             description: item.dealerSubCategoryName,
                             id: item.dealerSubCategoryId,
@@ -81,11 +81,12 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
                             groupModelId: 0,
                         }
                         return cat
-                    })
+                    })])
                 })
         } else {
-            this.dealerSubCategories = []
+            this.dealerSubCategories.set([
+                { id: 0, description: 'Избери Подкатегория Дилър', count: 0, countCars: 0, countParts: 0, groupModelId: 0 },
+            ])
         }
-        this.dealerSubCategories?.unshift({ id: 0, description: 'Избери Подкатегория Дилър', count: 0, countCars: 0, countParts: 0, groupModelId: 0 })
     }
 }

@@ -8,7 +8,11 @@
         </div>
     } @else {
         <div>
-            <div class="title">Кола на части</div>
+            @if(bus()) {
+                <div class="title">Кола на части</div>
+            }@else {
+                <div class="title">Бус на части</div>
+            }
         </div>
         <div class="card p-2" style="background-color: khaki">
             <form autocomplete="off">

@@ -149,7 +149,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         required(path.price)
     })
 
-    cars?: SelectOption[]
+    cars =  signal<SelectOption[]>([])
     car?: CarView
     filterCar: FilterCar = new FilterCar()
     partView?: PartView
@@ -189,11 +189,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     carIdSdiabled = false
     mainImageId?: number = 0
     updateFlag = false
-    choice  = ''
     _displayPartView?: DisplayPartView
     carId_?: number
     partId_?: number
-    bus_ = 0
     mode_: UpdateEnum = UpdateEnum.New
     add_ = false
     //#endregion
@@ -228,9 +226,28 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     private userCountService: UserCountService = inject(UserCountService)
     private toastService: ToastService = inject(ToastService)
 
+    choice = computed(() => {
+        return this.bus() ? 'бус' : 'кола'
+    })
+
     constructor() {
         //#endregion
         super()
+
+        effect(() => {
+            console.log(`Category Selected ${this.addPartForm.categoryId().value()}`)
+        })
+        effect(() => {
+            this.carService.fetchCarNameId(this.bus()).subscribe(
+                (res) =>
+                    (this.cars.set( res.map((car) => {
+                        return {
+                            value: car.carId,
+                            text: car.regNumber,
+                        }
+                    })))
+            )
+        })
 
         effect(() => console.log(`Category Value add part ${this.addPartForm.categoryId().value()}`))
         effect(() => {
@@ -260,7 +277,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             }
 
             this.carId_ = computed(() => this.partCarId())()
-            this.bus_ = computed(() => this.bus())()
             this.add_ = computed(() => this.add())()
         })
 
@@ -285,12 +301,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             console.log(`Before change ${this.addPartFormModel()}`)
             // this.addPartFormModel.update((value) => ({ ...value, carId: this.partCarId() ?? 0 }))
             console.log(`After change ${this.addPartFormModel()}`)
-            this.bus_ = +(params.get('bus') ?? 0)
             this.populateData()
             this.addPartForm.newpartId().value.set(this.updatePartId()!)
 
-            this.bus = this.bus ?? 0
-            this.setBus(this.bus_)
             const id = this.activatedRoute.snapshot.queryParamMap.get('id')
             const partid = this.activatedRoute.snapshot.queryParamMap.get('partId')
             if (id) {
@@ -313,7 +326,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId ?? 0 }))
                 if (!this.partId_) {
                     this.nextIdService
-                        .getNextId(this.bus_ ? ItemType.BusPart : ItemType.CarPart)
+                        .getNextId(this.bus() ? ItemType.BusPart : ItemType.CarPart)
                         .pipe()
                         .subscribe({
                             next: (nextId) => {
@@ -442,13 +455,12 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         if (this.car?.engineType) this.engineTypeName = this.staticSelectionService.EngineType.find((x) => x.value === this.car?.engineType)?.text
         else this.engineTypeName = ''
         this.description = `${this.car.companyName} ${this.car.modelName} `
-        this.bus_ = car.bus!
-        if (!this.bus) this.description = `${this.description} ${this.car.modificationName}`
+        if (!this.bus()) this.description = `${this.description} ${this.car.modificationName}`
         this.description = `${this.description} ${this.engineTypeName} ${this.car.engineModel} ${this.car.year}`
     }
 
     dealerSubCategoryIdChanged(dealerSubCategory: DealerSubCategory) {
-        if (!dealerSubCategory) return;
+        if (!dealerSubCategory) return
         this.dealerSubCategoryId = dealerSubCategory.dealerSubCategoryId
         const dealerSubCategoryName = dealerSubCategory?.dealerSubCategoryName
 
@@ -461,19 +473,10 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         // if (nextControl) nextControl.focus()
     }
 
-    setBus(bus: number) {
-        this.bus_ = bus
-        this.choice = this.bus_ ? 'бус' : 'кола'
-        if (this.bus_) {
-            this.addPartForm.modificationId().value.set(0)
-        }
-    }
-
     //#endregion
     //#region populate dialog
     populateData() {
         this.setYears()
-        this.populateCars()
     }
 
     setYears() {
@@ -484,17 +487,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.years = result
     }
 
-    populateCars() {
-        this.carService.fetchCarNameId(this.bus_).subscribe(
-            (res) =>
-                (this.cars = res.map((car) => {
-                    return {
-                        value: car.carId,
-                        text: car.regNumber,
-                    }
-                }))
-        )
-    }
 
     modificatioChanged(modification: Modification) {
         this.yearFrom = modification.yearFrom ?? this.labels.YEAR_START
@@ -509,7 +501,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         this.partService.fetch(this.partId_!).subscribe({
             next: (res) => {
                 this.carId_ = this.carService.currentCarId = res.carId
-//                this.addPartFormModel.update((value) => ({ ...value, carId: this.partCarId() ?? 0 }))
+                //                this.addPartFormModel.update((value) => ({ ...value, carId: this.partCarId() ?? 0 }))
                 this.partView = { ...res }
                 this.dealerSubCategoryName = this.partView.dealerSubCategoryName
                 this.images = []

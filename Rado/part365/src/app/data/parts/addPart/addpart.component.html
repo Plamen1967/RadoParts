@@ -7,7 +7,7 @@
             </button>
         </div>
     } @else {
-        <div class="title">Част</div>
+        <div class="title">Част за {{ choice() }}</div>
         <form autocomplete="off">
             @if (seller) {
                 <div class="shadow rounded card card-form-spec">
@@ -16,17 +16,17 @@
                             <!-- <div class="mt-2" [ngClass]="{ noDisplay: partCarId() }"> -->
                                 <div class="form-check form-check-inline">
                                     <input id="PartForCar" type="radio" class="custom-control-input" data-cy="car" value="car" [formField]="addPartForm.partForCar" />
-                                    <label class="custom-control-label" for="PartForCar">Част за {{ choice }}</label>
+                                    <label class="custom-control-label" for="PartForCar">Част за {{ choice() }}</label>
                                 </div>
                                 @if (addPartForm.partForCar().value() === 'car') {
                                     <div class="ms-2 d-inline-flex align-items-center min250px">
                                         <div class="min250px">
                                             <app-select
                                                 id="car"
-                                                label="Избери {{ choice }}"
+                                                label="Избери {{ choice() }}"
                                                 [formField]="addPartForm.carId"
                                                 data-cy="carReference"
-                                                [data]="cars ?? []"
+                                                [data]="cars()"
                                                 [isRequired]="true"
                                                 (changeOption)="onCarChange($event)"
                                                 [submitted]="submitted"
@@ -37,7 +37,7 @@
                                 }
                                 <div class="form-check form-check-inline">
                                     <input id="NoCar" type="radio" class="custom-control-input" data-cy="part" value="part" [formField]="addPartForm.partForCar" />
-                                    <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice }}</label>
+                                    <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice() }}</label>
                                 </div>
                             </div>
                         <!-- </div> -->
@@ -56,7 +56,7 @@
                             <div class="row mb-1">
                                 <div class="row modell-1000px">
                                     <div class="col-sm-2 min300px">
-                                        <app-company-choise [config]="{ bus: bus_, all: true, required: true, submitted: submitted }" [formField]="addPartForm.companyId" data-cy="companyid"> </app-company-choise>
+                                        <app-company-choise [config]="{ bus: bus(), all: true, required: true, submitted: submitted }" [formField]="addPartForm.companyId" data-cy="companyid"> </app-company-choise>
                                     </div>
                                     @if (companyId()) {
                                         <div class="col-sm-2 min350px">
@@ -187,10 +187,11 @@
                             placeHolder="Избери категория">
                         </app-category-choise>
                     </div>
-                    @if (this.addPartForm.categoryId().value() !== 0) {
+                    {{addPartForm.categoryId().value()}}
+                    @if (addPartForm.categoryId().value()) {
                         <div class="col-sm-2 min350px">
                             <app-dealersubcategory-choice
-                                [categoryId]="this.addPartForm.categoryId().value()"
+                                [categoryId]="addPartForm.categoryId().value()"
                                 [formField]="addPartForm.dealerSubCategoryId"
                                 data-cy="dealerSubCategoryId"
                                 title="{{ labels.DEALERSUBCATEGORY }}"
@@ -201,7 +202,7 @@
                                 (onCloseEvent)="focus($event)">
                             </app-dealersubcategory-choice>
                         </div>
-                        @if (this.addPartForm.dealerSubCategoryId().value() !== 0) {
+                        @if (addPartForm.dealerSubCategoryId().value() !== 0) {
                             <div class="col-sm-2 min350px">
                                 <app-input
                                     [formField]="addPartForm.dealerSubCategoryName"
