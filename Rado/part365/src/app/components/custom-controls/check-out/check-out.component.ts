@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, OnInit, output, signal } from '@angular/core'
+import { Component, DestroyRef, effect, inject, input, OnInit, output, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -27,11 +27,10 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     parts = signal<DisplayPartView[]>([])
     checkoutItems?: number[]
     checkoutForm: FormGroup
-    currentId?: number
+    currentId = input<number>()
     selectedPart?: number
     selectedCar?: number
     loading = signal<boolean>(false)
-    id?: string | number
     mode: UpdateEnum = UpdateEnum.View
     heigligthed?: number | string
     checkoutService: CheckOutService = inject(CheckOutService)
@@ -43,31 +42,32 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     localStorageService: LocalStorageService = inject(LocalStorageService)
     loggerService: LoggerService = inject(LoggerService)
     destroyRef: DestroyRef = inject(DestroyRef)
-
+    id = input<number>()
+    viewId = input<number>()
     backEvent = output<void>()
     constructor() {
         super()
-
         this.checkoutForm = this.formBulder.group({})
-        this.activeRoute.queryParams.subscribe((d) => {
-            this.id = +d['id']
-        })
         effect(() => {
             console.log(this.parts())
+        })
+
+        effect(() => {
+            console.log(`View Id: ${this.viewId()}`)
+        })
+
+        effect(() => {
+            goToPosition(this.currentId());
         })
     }
 
     ngOnInit() {
         this.update()
-        this.activeRoute.queryParams.subscribe((params) => {
-            this.heigligthed = params['currentId']
-            if (this.heigligthed) goToPosition(this.heigligthed)
-        })
     }
 
     update() {
         this.loading.set(true)
-        this.checkoutService
+        this.localStorageService
             .getCheckoutItems()
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
@@ -78,7 +78,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
                     const existing = res.map((part) => part.id)
                     const notExisting = this.checkoutItems?.filter((checkoutItemId) => existing.findIndex((id) => id === checkoutItemId) === -1)
                     if (notExisting && notExisting.length) notExisting.forEach((id) => this.localStorageService.removeSavedItem(id))
-                    goToPosition(this.id!)
+                    goToPosition(this.id())
                 },
                 error: (err) => {
                     this.loggerService.logError(err)
@@ -94,12 +94,10 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
         if (index && index != -1) this.parts.set(this.parts().splice(index, 1))
     }
 
-    back() {
+    back(id: number) {
         this.backEvent.emit()
-        this.router.navigate([`/checkout`], { queryParams: { currentId: `${this.currentId}` } })
-        goToPosition(this.currentId!)
-
-        this.currentId = 0
+        this.router.navigate([`/checkout`], { queryParams: { currentId: `${id}` } })
+        goToPosition(this.currentId())
     }
 
     viewCar(id: number) {
@@ -111,8 +109,7 @@ export class CheckOutComponent extends HelperComponent implements OnInit {
     }
 
     action(actionType: ActionType) {
-        this.currentId = actionType.dispayPartView?.id
-        this.router.navigate([`/checkout`], { queryParams: { id: `${this.currentId}` } })
+        this.router.navigate([`/checkout`], { queryParams: { viewId: `${actionType.dispayPartView?.id}` } })
 
         // this.checkoutService.currentId = this.currentId
         // if (actionType.dispayPartView?.isCar) {

@@ -1,6 +1,6 @@
 //#region import
 import { AsyncPipe, NgStyle } from '@angular/common'
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, input, effect, signal } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, input, effect, signal, computed } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { goToPosition, sortPartView } from '@app/functions/functions'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -94,7 +94,7 @@ interface searchFormInterface {
 //#endregion
 export default class ListPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
     searchFormModel = signal<searchFormInterface>({
-        bus: '',
+        bus: 'car',
         companyId: 0,
         modelId: 0,
         modificationId: 0,
@@ -117,12 +117,12 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     subCategories: OptionItem[] = []
     currentId?: number = undefined
     allParts?: PartView[]
-    parts?: PartView[]
+    parts = signal<PartView[]>([])
     currentPage = 0
     searched = false
     deletedPartId?: number
     numberPages?: number
-    loading = false
+    loading = signal<boolean>(false)
     selectedCompany?: Company
     yearFrom = this.labels.YEAR_START
     yearTo = 2021
@@ -138,9 +138,8 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     companyId = 0
     modelId = 0
     modificationId = 0
-    bus = 0
+    bus = input<number>(0)
     numberOfParts?: Numberparts
-    itemType = ItemType.CarPart
     userId?: number
     addPartFlag = false
     categoriesId!: string
@@ -175,7 +174,11 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     private carService: CarService = inject(CarService)
     private userCountService: UserCountService = inject(UserCountService)
     private loggerService: LoggerService = inject(LoggerService)
+ itemType = computed(() => {
+        if (this.bus()) return ItemType.BusPart
+        return ItemType.CarPart
 
+ })
     constructor() {
         super()
         this._autoSearch$ = new Subject<Filter>()
@@ -187,16 +190,20 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.userCount$ = this.userCountService.userCount$
 
         effect(() => {
-            this.id_ = this.id()
+            console.log(`Bus: ${this.bus()}`)
+            if (this.bus() == 1)
+                this.searchFormModel.update((value) => ({...value, bus: 'bus'}))
+            else 
+                this.searchFormModel.update((value) => ({...value, bus: 'car'}))
         })
 
         effect(() => {
             this.onSubmit(this.searchForm().value())
         })
 
-        effect(() => {
-            this.onBusChange(this.searchForm.bus().value() == 'bus' ? 0 : 1 )
-        })
+        // effect(() => {
+        //     this.onBusChange(this.searchForm.bus().value() == 'bus' ? 1 : 0 )
+        // })
         effect(() => {
             this.onCompanyChange(this.searchForm.companyId().value())
         })
@@ -206,6 +213,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         effect(() => {
             this.onCategoryChange(this.searchForm.categoryId().value().toString())
         })
+
         // this.searchForm.controls['sortOrder'].valueChanges.subscribe((value) => {
         //     console.log(value)
         // })
@@ -228,12 +236,6 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.maxNumberParts = this.staticSelectionService.maxNumberParts
         this.user = this.authernticationService.currentUserValue
         this.setYears()
-        this.route.queryParamMap.subscribe((params: ParamMap) => {
-            const bus = params.get('bus') ?? undefined
-            if (bus) {
-                this.bus = +bus
-            }
-        })
 
         this.todos$ = this._autoSearch$.pipe(
             debounceTime(this._debounce),
@@ -262,7 +264,8 @@ export default class ListPartComponent extends HelperComponent implements OnInit
             debounceTime(this._debounceParts),
             distinctUntilChanged(),
             switchMap((Filter) => {
-                this.loading = true
+                this.loading.set(true)
+                Filter.bus = this.searchFormModel().bus === 'car' ? 0 : 1;
                 return this.partService.getPartViews(Filter)
             }),
             takeUntil(this._destroy$)
@@ -273,7 +276,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
             this.partService.currentId.subscribe((value) => (this.currentId = value))
             if (this.currentId) goToPosition(this.currentId)
 
-            this.loading = false
+            this.loading.set(false)
         })
 
 
@@ -388,7 +391,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     }
 
     newPart() {
-        this.nextIdService.getNextId(this.bus ? ItemType.BusPart : ItemType.CarPart).subscribe({
+        this.nextIdService.getNextId(this.bus() ? ItemType.BusPart : ItemType.CarPart).subscribe({
             next: (nextId) => {
                 if (nextId.error) {
                     this.popupMessage.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
@@ -410,15 +413,17 @@ export default class ListPartComponent extends HelperComponent implements OnInit
 
     refreshPart(part: PartView) {
         if (part) {
-            const index = this.parts?.findIndex((elem) => elem.partId === part.partId)
+            const parts = [...this.parts()];
+            const index = parts.findIndex((elem) => elem.partId === part.partId)
             if (!this.parts) return
 
             if (index != -1) {
-                this.parts[index!] = Object.assign({}, part)
+                parts[index!] = Object.assign({}, part)
             } else {
                 this.numberOfPartsPerUser++
-                this.parts.unshift(part)
+                parts.unshift(part)
             }
+            this.parts.set([...parts])
             goToPosition(part.partId!.toString())
         } else {
             this.updateNumberParts()
@@ -451,11 +456,11 @@ export default class ListPartComponent extends HelperComponent implements OnInit
 
     updateData(res: PartView[]) {
         this.searched = true
-        this.loading = false
+        this.loading.set(false)
         this.allParts = res
         this.allParts.sort((a, b) => sortPartView(this.sortType, a, b))
         this.currentPage = 1
-        this.parts = this.getPageData()
+        this.parts.set([...this.getPageData()]);
         this.numberPages = Math.ceil(res.length / 10)
     }
 
@@ -465,10 +470,12 @@ export default class ListPartComponent extends HelperComponent implements OnInit
             next: (res) => {
                 this.userCountService.refresh()
                 this.popupMessage.openWithTimeout('Съобщение', 'Честта е успешно изтрита')
-                const index = this.parts?.findIndex((elem) => elem.partId === partId)
+                const index = this.parts()?.findIndex((elem) => elem.partId === partId)
                 if (index != -1) {
                     this.numberOfPartsPerUser--
-                    this.parts?.splice(index!, 1)
+                    const parts = this.parts()
+                    parts.splice(index!, 1)
+                    this.parts.set(parts);
                 }
                 this.currentPartId = undefined
                 // TODO
@@ -486,13 +493,13 @@ export default class ListPartComponent extends HelperComponent implements OnInit
 
     click(event: number) {
         this.currentPage = event + 1
-        this.parts = this.getPageData()
+        this.parts.set(this.getPageData())
         goToPosition('top')
     }
 
     moveToPage(event: number) {
         this.currentPage = +event
-        this.parts = this.getPageData()
+        this.parts.set(this.getPageData())
         goToPosition('top')
     }
 
@@ -505,11 +512,8 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     }
 
     onBusChange(f: number) {
-        this.bus = f
-        this.router.navigate(['/data/parts'], { queryParams: { bus: this.bus } })
+        this.router.navigate(['/data/parts'], { queryParams: { bus: f } })
 
-        if (this.bus) this.itemType = ItemType.BusPart
-        else this.itemType = ItemType.CarPart
     }
     //#endregion
 

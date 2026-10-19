@@ -87,7 +87,7 @@
                             </li>
                             <li>
                                 <a class="nav-link buttonGap checkout" routerLink="/checkout" routerLinkActive="active-link" data-toggle="tooltip" data-placement="top" title="Запази обяви">
-                                    {{ checkout }}
+                                    {{ checkout() }}
                                 </a>
                             </li>
                             <!-- <li class="nav-item dropdown">
@@ -290,7 +290,7 @@
                 <div [routerLink]="['/checkout']" class="linkClass color2" style="background-color: var(--favoutite) !important" (click)="removeMenu('0')" role="presentation">
                     <div class="element">
                         <span class="text text-body-small-pale"
-                            >{{ checkout }}
+                            >{{ checkout() }}
                             @if (count) {
                                 <i class="ms-1 la-star las saved sizeSaved"></i>
                             } @else {

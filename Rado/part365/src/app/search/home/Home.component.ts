@@ -1,5 +1,5 @@
 //#region import
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, input, signal } from '@angular/core'
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, input, signal, computed } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -44,7 +44,6 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     //#region members
     submitElement?: ElementRef<HTMLInputElement>
     displayUser = undefined
-    checoutItems?: number = 0
     regions?: SelectOption[]
     bodyText = 'test'
     users?: User[]
@@ -95,15 +94,10 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     @Inject(DOCUMENT) private document: Document = inject(DOCUMENT)
     //#endregion
 
+    checoutItems = computed(() => this.checkOutService.checkout());
     //#region constructor
     constructor() {
         super()
-        this.subscriptions.push(
-            this.checkOutService.checkout.subscribe((x) => {
-                this.checoutItems = x
-            })
-        )
-
         this.selection = 1
     }
 

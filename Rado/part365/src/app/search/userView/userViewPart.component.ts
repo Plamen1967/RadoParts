@@ -172,7 +172,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                                     dataManager.searchResult = result
                                     dataManager.currentId = this.id()!
                                 }
-                                this.item.set(dataManager?.allParts?.find((part) => part.id == this.id()) ?? {} as DisplayPartView)
+                                this.item.set(dataManager?.allParts?.find((part) => part.id == this.id()) ?? ({} as DisplayPartView))
                                 this.initPart(this.item())
                             },
                             error: (error) => {
@@ -181,9 +181,9 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                             complete: () => (this.loading = false),
                         })
                 } else {
-                    this.item.set(manager?.allParts?.find((part) => part.id == this.id()) ?? {} as DisplayPartView)
+                    this.item.set(manager?.allParts?.find((part) => part.id == this.id()) ?? ({} as DisplayPartView))
                     if (!this.item()) {
-                        this.fetchPart()
+                        this.fetchPart(this.item().id!)
                     } else this.initPart(this.item())
                 }
             } else {
@@ -193,7 +193,7 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                     this.isTyre = this.item().itemType === ItemType.Tyre || this.item().itemType === ItemType.Rim || this.item().itemType === ItemType.RimWithTyre
                     this.isSaved = this.localStorageService.isSaved(this.id()!)
                 } else if (this.currentViewId()) {
-                    this.fetchPart()
+                    this.fetchPart(this.currentViewId()!)
                 }
             }
         })
@@ -286,7 +286,9 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
                 }
             } else if (this.id()) {
                 this.showNavigation = false
-                this.fetchPart()
+                this.fetchPart(this.id()!)
+            } else if (this.currentViewId()) {
+                this.showNavigation = false
             } else {
                 this.popupService
                     .openWithTimeout('Съобщение', 'Нещо грешно')
@@ -298,23 +300,18 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         })
     }
 
-    private fetchPart() {
-        if (this.id()) {
-            this.partService
-                .fetchDisplayPartView(this.id()!)
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe({
-                    next: (displayView) => {
-                        this.partService.currentPartId = this.id()!
-                        this.item.set(displayView as DisplayPartView)
-                        this.initPart(this.item())
-                    },
-                    error: (error) => {
-                        console.log(error)
-                    },
-                    complete: () => (this.loading = false),
-                })
-        }
+    private fetchPart(id: number) {
+        this.partService.fetchDisplayPartView(id).subscribe({
+            next: (displayView) => {
+                this.partService.currentPartId = id
+                this.item.set(displayView as DisplayPartView)
+                this.initPart(this.item())
+            },
+            error: (error) => {
+                console.log(error)
+            },
+            complete: () => (this.loading = false),
+        })
     }
 
     init() {
@@ -380,7 +377,8 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         this.loading = false
 
         this.showRequest = this.logged && this.logged.userId != this.item()?.userId
-        if (part.ngImages) this.images2 = [...part.ngImages]
+        if (part.ngImages) 
+            this.images2 = [...part.ngImages]
         if (this.dataManager) {
             this.dataManager._currentId = this.item()?.id
             console.log(`Current id ${this.dataManager?._currentId}`)
@@ -668,7 +666,9 @@ export class UserViewPartComponent extends HelperComponent implements OnInit, Af
         this.searchPartService.getItem(event).subscribe({
             next: (part) => {
                 this.dataManager?.updateItem(part)
-                this.item.update((value) => { return {...value, ...part } })
+                this.item.update((value) => {
+                    return { ...value, ...part }
+                })
             },
             error: (error) => {
                 this.loggerService.logError(error)

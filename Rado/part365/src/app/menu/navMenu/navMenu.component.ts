@@ -1,5 +1,5 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, OnInit, effect } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, OnInit, effect, computed } from '@angular/core'
 import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -90,6 +90,10 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
     homeService = inject(HomeService)
     menuService = inject(MenuService)
 
+    checkout = computed(() => {
+        return `${CONSTANT.SAVED} ${this.checkOutService.checkout()}`
+    })
+
     constructor() {
 
         effect(() => {
@@ -97,7 +101,6 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
         })
         
         super()
-        this.checkOutService.checkout.subscribe(() => this.checkoutUpdate())
         this.userService.userPage.subscribe((userId) => {
             this.userId = userId
         })
@@ -184,9 +187,6 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
         this.router.navigate(['/user/userdetails'])
     }
 
-    get checkout() {
-        return `${CONSTANT.SAVED} ${this.localStorage.items}`
-    }
 
     checkoutUpdate() {
         this.checoutItems = this.localStorage.items

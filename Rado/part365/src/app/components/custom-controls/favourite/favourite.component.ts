@@ -11,13 +11,13 @@ import { LocalStorageService } from '@services/storage/localStorage.service'
 })
 export class FavouriteComponent implements OnInit {
     @HostListener('click', ['$event'])
-    private localStorageService: LocalStorageService = inject(LocalStorageService)
-    private toastService: ToastService = inject(ToastService)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     click(event: any) {
         event.stopPropagation()
     }
 
+    private localStorageService: LocalStorageService = inject(LocalStorageService)
+    private toastService: ToastService = inject(ToastService)
     positionEnd = input<number>(1)
     id = input<number | undefined>() 
 

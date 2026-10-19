@@ -24,7 +24,7 @@
                 <div class="row g-3">
                     <div class="max300px">
                         <app-company-choise
-                            [config]="{ itemType: itemType, userId: userId!, bus: bus, showCount: true, all: true }"
+                            [config]="{ itemType: itemType(), userId: userId!, bus: bus(), showCount: true, all: true }"
                             data-cy="companyId"
                             [formField]="searchForm.companyId"
                             (numbers)="(numberOfParts)">
@@ -34,7 +34,7 @@
                         <div class="max300px">
                             <app-model-choice
                                 [formField]="searchForm.modelId"
-                                [itemType]="itemType"
+                                [itemType]="itemType()"
                                 [userId]="userId!"
                                 [all]="true"
                                 [showCount]="true"
@@ -51,7 +51,7 @@
                     @if (!bus && modelId) {
                         <div class="max350px">
                             <app-modification-choice
-                                [itemType]="itemType"
+                                [itemType]="itemType()"
                                 [userId]="userId!"
                                 [all]="true"
                                 [modelsId]="modelId"
@@ -114,7 +114,7 @@
                 </div>
             </form>
         </div>
-        @if (loading) {
+        @if (loading()) {
             <div>
                 <button class="btn btn-primary" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" data-cy="spinner" role="status" aria-hidden="true"></span>
@@ -122,10 +122,10 @@
                 </button>
             </div>
         } @else {
-            @if (parts) {
+            @if (parts()) {
                 <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
-                @if (parts!.length) {
-                    @for (part of parts; track part.partId) {
+                @if (parts().length) {
+                    @for (part of parts(); track part.partId) {
                         <div id="{{ part.partId }}" class="part-style">
                             <app-dealerview
                                 [mainPicture]="part.mainPicture"
@@ -144,6 +144,6 @@
         }
     </div>
 } @else {
-    <app-addpart [updatePartId]="id_" [bus]="bus" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+    <app-addpart [updatePartId]="id_" [bus]="bus()" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
 }
 <app-gotop></app-gotop>

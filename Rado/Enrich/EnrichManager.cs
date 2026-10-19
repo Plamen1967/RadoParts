@@ -29,7 +29,7 @@ namespace Rado.Enrich
         public static CarView EnrichCarView(SqlDataReader sqlDataReader)
         {
             CarView carView = new();
-            Loader.LoadCar(carView, sqlDataReader);
+            Loader.LoadCarView(carView, sqlDataReader);
             
             return carView;
         }
@@ -710,6 +710,17 @@ namespace Rado.Enrich
 
             displayPartView.NumberImages = images.Result.Length;
             displayPartView.Images = images.Result;
+            List<ImageDataClass> sortimages = new();
+            foreach (var image in displayPartView.Images)
+            {
+                if (image.ImageMinSrc == displayPartView.MainPicture)
+                {
+                    sortimages.Insert(0, image);
+                }
+                else sortimages.Add(image);
+            }
+
+            displayPartView.Images = sortimages.ToArray();
             displayPartView.RegionStr = ConverterToString.RegionString(displayPartView.RegionId);
             SellerImage(displayPartView);
         }

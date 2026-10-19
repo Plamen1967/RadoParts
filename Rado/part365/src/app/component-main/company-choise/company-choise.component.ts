@@ -47,7 +47,7 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     //#endregion
     constructor() {
         effect(() => {
-            console.log( "Company Choice Value", this.value() )
+            console.log( "Company Choice Value", this.value(), this.config().bus )
         })
 
         effect(() => {
@@ -90,7 +90,8 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
         }
     }
     populateCompaniesByUserId() {
-        if (this.config()?.bus) {
+        let bus = this.config()?.bus ?? '0';
+        if ( +bus == 1) {
             this.companyService
                 .fetchBusCompaniesByUserId()
                 .pipe(switchMap((res) => companyToOptionItem(res)))

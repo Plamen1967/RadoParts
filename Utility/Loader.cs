@@ -86,15 +86,20 @@ namespace Utility
             car.ModificationName = ToString("modificationName", sqlDataReader);
             car.ModelName = ToString("modelName", sqlDataReader);
 
-            car.UserCompanyName = ToString("userCompany", sqlDataReader); ;
-            car.UserId = Int32("userId", sqlDataReader); ;
+            car.UserCompanyName = ToString("userCompany", sqlDataReader);
+            car.UserId = Int32("userId", sqlDataReader);
             car.FirstName = ToString("firstName", sqlDataReader);
             car.LastName = ToString("lastName", sqlDataReader);
             car.Viber = ToString("viber", sqlDataReader);
             car.Whats = ToString("whats", sqlDataReader);
-            car.Dealer = Int32("dealer", sqlDataReader); ;
-            car.City = ToString("city", sqlDataReader); ;
-            car.WebPage = ToString("webPage", sqlDataReader); ;
+            car.Dealer = Int32("dealer", sqlDataReader);
+            car.City = ToString("city", sqlDataReader);
+            car.WebPage = ToString("webPage", sqlDataReader);
+            if (car.MainImageId != 0)
+            {
+                ImageManager.CheckImageExists(car.CarId, car.MainImageId);
+                car.MainPicture = ImageManager.GenerateImageHRef(car.CarId, car.MainImageId, true);
+            }
         }
 
         public static Message LoadMessage(SqlDataReader sqlDataReader)
