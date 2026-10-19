@@ -1,5 +1,5 @@
 <div class="container">
-    @if (saving) {
+    @if (saving()) {
         <div>
             <button class="btn btn-primary" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" data-cy="spiiner" role="status" aria-hidden="true"></span>
@@ -10,16 +10,17 @@
         <div class="title">Част за {{ choice() }}</div>
         <form autocomplete="off">
             @if (seller) {
-                <div class="shadow rounded card card-form-spec">
+                <div class="shadow rounded card card-form-spec w-100">
                     @if (newPart()) {
-                        <div class="d-inline-flex align-items-center">
+                        <div class="align-items-center">
                             <!-- <div class="mt-2" [ngClass]="{ noDisplay: partCarId() }"> -->
+                            <div style="display: inline-flex; flex-flow: row; justify-content: center; align-items: center">
                                 <div class="form-check form-check-inline">
                                     <input id="PartForCar" type="radio" class="custom-control-input" data-cy="car" value="car" [formField]="addPartForm.partForCar" />
                                     <label class="custom-control-label" for="PartForCar">Част за {{ choice() }}</label>
                                 </div>
                                 @if (addPartForm.partForCar().value() === 'car') {
-                                    <div class="ms-2 d-inline-flex align-items-center min250px">
+                                    <div class="ms-2align-items-center min250px" style="max-width: 400px">
                                         <div class="min250px">
                                             <app-select
                                                 id="car"
@@ -35,11 +36,12 @@
                                         </div>
                                     </div>
                                 }
-                                <div class="form-check form-check-inline">
-                                    <input id="NoCar" type="radio" class="custom-control-input" data-cy="part" value="part" [formField]="addPartForm.partForCar" />
-                                    <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice() }}</label>
-                                </div>
                             </div>
+                            <div class="form-check form-check-inline">
+                                <input id="NoCar" type="radio" class="custom-control-input" data-cy="part" value="part" [formField]="addPartForm.partForCar" />
+                                <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice() }}</label>
+                            </div>
+                        </div>
                         <!-- </div> -->
                     }
                     @if (addPartForm.partForCar().value() === 'car' && car && carId_) {
@@ -56,7 +58,8 @@
                             <div class="row mb-1">
                                 <div class="row modell-1000px">
                                     <div class="col-sm-2 min300px">
-                                        <app-company-choise [config]="{ bus: bus(), all: true, required: true, submitted: submitted }" [formField]="addPartForm.companyId" data-cy="companyid"> </app-company-choise>
+                                        <app-company-choise [config]="{ bus: bus(), all: true, required: true, submitted: submitted }" [formField]="addPartForm.companyId" data-cy="companyid">
+                                        </app-company-choise>
                                     </div>
                                     @if (companyId()) {
                                         <div class="col-sm-2 min350px">
@@ -90,7 +93,8 @@
                                         }
                                     }
                                     <div class="col-sm-2 min200px">
-                                        <app-select [formField]="addPartForm.year" label="{{ labels.YEAR }}" [data]="years ?? []" data-cy="year" [submitted]="submitted" (onCloseEvent)="focus($event)"> </app-select>
+                                        <app-select [formField]="addPartForm.year" label="{{ labels.YEAR }}" [data]="years ?? []" data-cy="year" [submitted]="submitted" (onCloseEvent)="focus($event)">
+                                        </app-select>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +191,6 @@
                             placeHolder="Избери категория">
                         </app-category-choise>
                     </div>
-                    {{addPartForm.categoryId().value()}}
                     @if (addPartForm.categoryId().value()) {
                         <div class="col-sm-2 min350px">
                             <app-dealersubcategory-choice
@@ -218,14 +221,15 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-2 min350px">
-                        <app-input [formField]="addPartForm.partNumber" label="{{ labels.PART_NUMBER }}" [submitted]="submitted" data-cy="partNumber" placeHolder="{{ labels.PART_NUMBER }}"> </app-input>
+                        <app-input [formField]="addPartForm.partNumber" label="{{ labels.PART_NUMBER }}" [submitted]="submitted" data-cy="partNumber" placeHolder="{{ labels.PART_NUMBER }}">
+                        </app-input>
                     </div>
                 </div>
                 <div class="row form-floating">
                     <app-textarea [formField]="addPartForm.description" data-cy="description" placeHolder="{{ labels.PART_DETAILS }}" [submitted]="submitted"></app-textarea>
                 </div>
                 <div class="card mt-1">
-                    <div class="card-header" style="background-color: honeydew; font-size: 1.2em; border: 1px solid purple;">
+                    <div class="card-header" style="background-color: honeydew; font-size: 1.2em; border: 1px solid purple">
                         Позиция
                         <div class="d-flex flex-wrap g-2" style="font-size: 1em">
                             <div class="d-inline-flex justify-content-between me-2">
@@ -267,15 +271,29 @@
             </div>
             <div class="row g-3">
                 <div class="d-inline ms-2">
-                    <app-input [formField]="addPartForm.price" placeHolder="{{ labels.PRICE }}" [IsPrice]="true" [submitted]="submitted" data-cy="price" [inline]="false" [isRequired]="true"></app-input>
+                    <app-input
+                        [formField]="addPartForm.price"
+                        placeHolder="{{ labels.PRICE }}"
+                        [IsPrice]="true"
+                        [submitted]="submitted"
+                        data-cy="price"
+                        [inline]="false"
+                        [isRequired]="true"></app-input>
                 </div>
             </div>
         </form>
-    }
         <div class="row mt-3" style="position: relative">
             <app-imagelist [id]="partId_!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
-                <app-toolbar [canCancel]="true" [isChanged]="addPartForm().touched()" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
+                <app-toolbar
+                    [canCancel]="true"
+                    [isChanged]="true"
+                    [canSave]="addPartForm().valid()"
+                    [saveName]="action"
+                    [cancelName]="labels.GOBACK"
+                    (Save)="onSubmit()"
+                    (Cancel)="cancel()"></app-toolbar>
             </div>
         </div>
+    }
 </div>

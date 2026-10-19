@@ -4,7 +4,7 @@
             <app-upload [id]="id()" [businessCard]="false" [addPicture]="" (uploadFinished)="addImage($event)" [multiple]="true"></app-upload>
         </div>
     }
-    @for (image of images_; track image.imageId; let i = $index) {
+    @for (image of images_(); track image.imageId; let i = $index) {
         <div class="col-sm-3 p-1" style="position: relative">
             <img class="p-1 image" loading="lazy" src="{{ image.imageSrc }}" alt="" />
             @if (UpdateFlag()) {

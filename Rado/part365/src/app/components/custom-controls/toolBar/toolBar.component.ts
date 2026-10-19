@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core'
+import { Component, effect, input, output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { SaveButtonComponent } from '../buttons/saveButton/saveButton.component'
 import { CancelButtonComponent } from '../buttons/cancelButton/cancelButton.component'
@@ -12,6 +12,9 @@ import { CancelButtonComponent } from '../buttons/cancelButton/cancelButton.comp
 export class ToolBarComponent extends HelperComponent {
     constructor() {
         super()
+        effect(() => {
+            console.log(`Can save: ${this.canSave()}`)
+        })
     }
 
     canSave = input.required<boolean>()

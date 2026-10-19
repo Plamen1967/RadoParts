@@ -562,7 +562,7 @@ namespace Rado.Datasets
 
         private static async Task ValidatePartAsync(Part part)
         {
-            if (part.Bus == 0 && part.ModificationId == 0)
+            if (part.Bus == 0 && part.ModificationId == 0 && part.CarId == 0)
             {
                 var message = $"ModificationId is not provided if the part is not for a car {part.CarId}";
                 await LoggerUtil.Log(message);

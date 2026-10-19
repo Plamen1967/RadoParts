@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output } from '@angular/core'
+import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core'
 import { HelperComponent } from '../helper/helper.component'
 import { ImageData } from '@model/imageData'
 import { FormsModule } from '@angular/forms'
@@ -20,7 +20,7 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     id = input.required<number>()
     mainImage = input.required<number>()
     mainImageId?: number
-    images_ : ImageData[] = []
+    images_ = signal<ImageData[]>([])
     images = input<ImageData[]>([])
 
     UpdateFlag = input<boolean>(false)
@@ -34,33 +34,41 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     constructor() {
         super()
         effect(() => {
-            if (this.mainImage()) {
-                this.mainImageId = this.mainImage()
-                this.setDefaultImageById(this.mainImage())
-            }
-
             if (this.images()) {
-                this.images_ = [...this.images()]
+                this.images_.set([...this.images()])
             }
         })
+        // effect(() => {
+        //     if (this.mainImage()) {
+        //         this.mainImageId = this.mainImage()
+        //         this.setDefaultImageById(this.mainImage())
+        //     }
+
+        // })
     }
 
     ngOnInit(): void {
         if (this.id() && this.images()) {
             this.imageService.getImages(this.id()!).subscribe((res) => {
-                this.images_ = [...res]
+                this.images_.set([...res])
                 this.setDefaultImageById(this.mainImage())
             })
         }
     }
 
     setDefaultImageById(imageId: number) {
-        const index = this.images_.findIndex((item) => item.imageId == imageId)
-        if (index != -1 && this.images_) {
-            const imageMain = this.images_.splice(index, 1)
-            this.images_.unshift(imageMain[0])
-        } else if (this.images_?.length) {
-            this.mainImageId = this.images_[0].imageId
+        const currentImages = [...this.images_()]
+        const index = currentImages.findIndex((item) => item.imageId == imageId)
+
+        if (index !== -1) {
+            const [imageMain] = currentImages.splice(index, 1)
+            currentImages.unshift(imageMain)
+            this.images_.set(currentImages)
+            return
+        }
+
+        if (currentImages.length) {
+            this.mainImageId = currentImages[0].imageId
         }
     }
 
@@ -68,18 +76,19 @@ export class ImageListComponent extends HelperComponent implements OnInit {
         this.mainImageId = imageId
         this.defaultImageEvent.emit(this.mainImageId)
     }
+
     setDefaultImage(image: ImageData) {
-        if (!this.images_) return
+        if (!this.images_()) return
         this.setDefaultImageById(image.imageId!)
         this.defaultImageChanged(image.imageId!)
     }
 
     addImage(image: ImageData[]) {
-        image.forEach((x) => {
-            this.images_?.push(x)
-        })
+        const currentImages = [...this.images_()]
+        image.forEach((x) => currentImages.push(x))
+        this.images_.set(currentImages)
 
-        if (this.images_.length == 1 || !this.mainImageId) this.defaultImageChanged(this.images_[0].imageId!)
+        if (currentImages.length == 1 || !this.mainImageId) this.defaultImageChanged(currentImages[0].imageId!)
     }
 
     deleteImage(image: ImageData) {
@@ -89,12 +98,16 @@ export class ImageListComponent extends HelperComponent implements OnInit {
                     this.imageService.deleteImage(image.imageId!).subscribe({
                         next: () => {
                             this.toastService.show('Снимката е успешно изтрита', 2)
-                            const index = this.images_.findIndex((item) => item.imageId === +image.imageId!)
-                            if (index || index === 0) {
-                                this.images_.splice(index, 1)
+                            const currentImages = [...this.images_()]
+                            const index = currentImages.findIndex((item) => item.imageId === +image.imageId!)
+
+                            if (index !== -1) {
+                                currentImages.splice(index, 1)
+                                this.images_.set(currentImages)
                             }
+
                             if (this.mainImageId == image.imageId!)
-                                if (this.images_.length > 0) this.defaultImageChanged(this.images_[0].imageId!)
+                                if (this.images_().length > 0) this.defaultImageChanged(this.images_()[0].imageId!)
                                 else this.defaultImageChanged(0)
                         },
                         error: () => {

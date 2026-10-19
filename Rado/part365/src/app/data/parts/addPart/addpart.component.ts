@@ -41,7 +41,7 @@ import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
-import { form, FormField, required } from '@angular/forms/signals'
+import { form, FormField, min, required } from '@angular/forms/signals'
 import { Part } from '@model/part/part'
 //#endregion
 interface addPartFormInterface {
@@ -130,19 +130,19 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         mainImageId: 0,
     })
     addPartForm = form(this.addPartFormModel, (path) => {
-        required(path.carId, {
+        min(path.carId, 1, {
             message: 'Required',
             when: ({ valueOf }) => valueOf(path.partForCar) == 'car',
         })
-        required(path.companyId, {
+        min(path.companyId, 1, {
             message: 'Required',
             when: ({ valueOf }) => valueOf(path.partForCar) == 'part',
         })
-        required(path.modelId, {
+        min(path.modelId, 1, {
             message: 'Required',
             when: ({ valueOf }) => valueOf(path.partForCar) == 'part',
         })
-        required(path.modificationId, {
+        min(path.modificationId, 1, {
             message: 'Required',
             when: ({ valueOf }) => valueOf(path.partForCar) == 'part' && this.bus() == 1,
         })
@@ -166,7 +166,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     formInitialValues?: any
     ngbModuleRef?: object
     closeResult?: string
-    saving = false
+    saving = signal<boolean>(false)
     submitted = false
     numberOfPartsPerUser = 0
     imgURL?: string
@@ -233,7 +233,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     constructor() {
         //#endregion
         super()
-
+        effect(() => {
+            console.log(`Form Value: ${this.addPartForm().valid()}`)
+        })
         effect(() => {
             console.log(`Category Selected ${this.addPartForm.categoryId().value()}`)
         })
@@ -555,16 +557,16 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             return
         }
         const part: Part = { ...this.addPartForm().value(), powerkWh: +this.addPartFormModel().powerkWh, powerBHP: +this.addPartFormModel().powerBHP, millage: +this.addPartFormModel().millage }
-        part.partId = this.updatePartId() ?? 0
+        part.partId = this.updatePartId() ?? this.partId_ ?? 0
         part.bus = this.bus()
-        this.saving = true
+        this.saving.set(true)
 
         this.partService.addUpdatePart(part, this.mode() === UpdateEnum.Update).subscribe({
             next: (part) => {
                 if (part.carId) this.carService.currentCarId = part.carId
                 this.partService.currentId.next(part.id!)
                 this.carService.currentCarId = part.carId
-                this.saving = false
+                this.saving.set(false)
                 if (this.mode() === UpdateEnum.Update) {
                     this.message = 'Частта е записана'
                     this.homeService.updateItem(part.id!, part)
@@ -594,15 +596,15 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 })
             },
             error: (error) => {
-                this.saving = false
+                this.saving.set(false)
                 this.popupService.openWithTimeout(CONSTANT.MESSAGE, 'Частта не може да бъде записана!', 2000).subscribe(() => {
                     this.loggerService.logError(error)
                 })
 
-                this.saving = false
+                this.saving.set(false)
             },
             complete: () => {
-                this.saving = false
+                this.saving.set(false)
             },
         })
     }
