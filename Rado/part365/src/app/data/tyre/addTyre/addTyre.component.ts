@@ -344,7 +344,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         }
     }
     get allowanceNotReached(): boolean {
-        if (this.seller) return true
+        if (this.$seller()) return true
 
         if (this.numberOfPartsPerUser! < this.staticSelectionService.maxNumberParts) return true
 
@@ -368,7 +368,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         }
 
 
-        if (this.seller)
+        if (this.$seller())
             if (this.params?.ad) {
                 this.currentitemType = ItemType.Tyre
             }

@@ -87,29 +87,45 @@ namespace Rado.Datasets
                 await using SqlCommand sqlCommand = new SqlCommand(storedProcedure, sqlConnection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                SqlParameter partCarCountParam = new SqlParameter("@partCarCount", SqlDbType.Int);
-                partCarCountParam.Direction = ParameterDirection.Output;
+                SqlParameter partCarCountParam = new SqlParameter("@partCarCount", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
 
-                SqlParameter partBusCountParam = new SqlParameter("@partBusCount", SqlDbType.Int);
-                partBusCountParam.Direction = ParameterDirection.Output;
+                SqlParameter partBusCountParam = new SqlParameter("@partBusCount", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
 
-                SqlParameter carCountParam = new SqlParameter("@carCount", SqlDbType.Int);
-                carCountParam.Direction = ParameterDirection.Output;
+                SqlParameter carCountParam = new SqlParameter("@carCount", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
 
-                SqlParameter busCountParam = new SqlParameter("@busCount", SqlDbType.Int);
-                busCountParam.Direction = ParameterDirection.Output;
+                SqlParameter busCountParam = new SqlParameter("@busCount", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
 
-                SqlParameter tyreCountParam = new SqlParameter("@tyreCount", SqlDbType.Int);
-                tyreCountParam.Direction = ParameterDirection.Output;
+                SqlParameter tyreCountParam = new SqlParameter("@tyreCount", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
 
-                SqlParameter rimCountParam = new SqlParameter("@rimCount", SqlDbType.Int);
-                rimCountParam.Direction = ParameterDirection.Output;
+                SqlParameter rimCountParam = new SqlParameter("@rimCount", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
 
-                SqlParameter rimWithTyreCountParam = new SqlParameter("@rimWithTyreCount", SqlDbType.Int);
-                rimWithTyreCountParam.Direction = ParameterDirection.Output;
+                SqlParameter rimWithTyreCountParam = new SqlParameter("@rimWithTyreCount", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
 
-                SqlParameter userIdParam = new SqlParameter("@userId", SqlDbType.Int);
-                userIdParam.Value = userId;
+                SqlParameter userIdParam = new SqlParameter("@userId", SqlDbType.Int)
+                {
+                    Value = userId
+                };
 
                 sqlCommand.Parameters.Add(userIdParam);
                 sqlCommand.Parameters.Add(partCarCountParam);

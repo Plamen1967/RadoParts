@@ -2,7 +2,7 @@
 import { AfterViewInit, Component, computed, debounced, DestroyRef, effect, HostListener, inject, input, OnInit, output, signal } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Observable, Subject } from 'rxjs'
+import { distinctUntilChanged, Observable, Subject } from 'rxjs'
 import { MatDialog } from '@angular/material/dialog'
 import { CategoryService } from '@services/category-subcategory/category.service'
 import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
@@ -56,6 +56,7 @@ import { form, FormField, FormRoot } from '@angular/forms/signals'
 import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
 import { CompanyControlConfig } from '@model/companyControlConfig'
+import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 //#endregion
 
 //#region interface
@@ -282,24 +283,24 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         else return undefined
     })
 
-    category = httpResource<NumberPartsPerCategory[]>(() => ({
+    $category = httpResource<NumberPartsPerCategory[]>(() => ({
         url: `${environment.restAPI}/category/PartsPerCategory`,
         params: {
-            companyId: this.carFilterModel().companyId ?? 0,
+            companyId: this.$query()!.companyId ?? 0,
             modelId: 0,
-            modelsId: this.carFilterModel().modelsId,
+            modelsId: this.$query()!.modelsId,
             modificationId: 0,
-            modificationsId: this.carFilterModel().modificationsId,
+            modificationsId: this.$query()!.modificationsId,
             userId: 0,
-            bus: this.carFilterModel().bus,
-            hasImages: this.carFilterModel().hasImages ? 1 : 0,
+            bus: this.$query()!.bus,
+            hasImages: this.$query()!.hasImages ? 1 : 0,
         },
     }))
 
     config = signal<CompanyControlConfig>({ bus: this.carFilterModel().bus, itemType: this.carFilterModel().itemType, showCount: true, all: true })
 
     dropDown = computed(() => {
-        return this.convertResult(this.category.value() ?? [])
+        return this.convertResult(this.$category.value() ?? [])
     })
 
     itemType_ = computed(() => {
@@ -350,11 +351,16 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#endregion
 
+    query$ = toObservable(this.carFilterModel).pipe((distinctUntilChanged()))
+    $query = toSignal(this.query$);
+
     constructor() {
         super()
-
         effect(() => {
-            console.log(`Categories`, this.category.value())
+            console.log(`Query: `, this.$query())
+        })
+        effect(() => {
+            console.log(`Filter Changed`, this.carFilterModel())
         })
 
         effect(() => {

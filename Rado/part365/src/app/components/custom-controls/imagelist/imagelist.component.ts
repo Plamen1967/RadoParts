@@ -9,6 +9,8 @@ import { CONSTANT } from '@app/constant/globalLabels'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
 
 @Component({
     selector: 'app-imagelist',
@@ -17,7 +19,7 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
     imports: [FormsModule, UploadComponent],
 })
 export class ImageListComponent extends HelperComponent implements OnInit {
-    id = input.required<number>()
+    itemId = input<number>()
     mainImage = input.required<number>()
     mainImageId?: number
     images_ = signal<ImageData[]>([])
@@ -31,8 +33,30 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private toastService: ToastService = inject(ToastService)
 
+    imageResource = httpResource<ImageData[]>(() => ({
+            url: `${environment.restAPI}/image/GetImages?id=${this.itemId()}`,
+            defaultValue: [],
+            parse: (res: ImageData[]) => {
+                    this.images_.set([...res])
+                    this.setDefaultImageById(this.mainImage())
+                    return res
+            },
+    }))
+
+
+// }
+
+// resource = httpResource<UserList>(() => ({
+//     url: "api/schools/collection/filter",
+//     method: "POST",
+//     body: {pageSize: this.pageSize(), page: this.page()}
+//   }));
+
     constructor() {
         super()
+        effect(() => {
+            console.log(`Item Id: ${this.itemId()} ${this.mainImage()}`)
+        })
         effect(() => {
             if (this.images()) {
                 this.images_.set([...this.images()])
@@ -48,8 +72,8 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        if (this.id() && this.images()) {
-            this.imageService.getImages(this.id()!).subscribe((res) => {
+        if (this.itemId()) {
+            this.imageService.getImages(this.itemId()!).subscribe((res) => {
                 this.images_.set([...res])
                 this.setDefaultImageById(this.mainImage())
             })

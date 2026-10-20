@@ -142,7 +142,7 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
     }
 
     addPart(event: number) {
-        if (this.seller) {
+        if (this.$seller()) {
             this.nextIdService.getNextId(this._carView?.bus ? ItemType.BusPart : ItemType.CarPart).subscribe({
                 next: (id) => {
                     if (id.error) {

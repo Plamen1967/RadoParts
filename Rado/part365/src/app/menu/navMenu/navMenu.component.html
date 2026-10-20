@@ -104,7 +104,7 @@
                                 </ul>
                             </li> -->
                             @if (logged) {
-                                @if (seller) {
+                                @if ($seller()) {
                                     <li>
                                         
                                         <a class="nav-link menuButton2 d-inline-flex" (click)="cars()" routerLink="/data/cars" routerLinkActive="active-link" data-cy="carsUrl" role="presentation">
@@ -226,10 +226,10 @@
                         </div>
                         <li class="dropdown-content" id="advert" (click)="removeMenu('advert')" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass" [ngStyle]="{ 'z-index': '2' }">
-                                @if (logged && seller && !admin) {
+                                @if (logged && $seller() && !admin) {
                                     <a [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави Кола</a>
                                 }
-                                @if (logged && seller && !admin) {
+                                @if (logged && $seller() && !admin) {
                                     <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new' }"><img class="tabSvg" src="images/svg/van.svg" alt="" />Добави Бус</a>
                                 }
                                 <a (click)="addPart()" role="presentation">Добави част за кола</a>
@@ -248,7 +248,7 @@
                         </div>
                         <li class="dropdown-content" [ngStyle]="{ 'min-width': '180px' }" id="changeAdvert" (click)="removeMenu('changeAdvert')" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass">
-                                @if (seller) {
+                                @if ($seller()) {
                                     <a (click)="cars()" role="presentation" class="menu d-inline-flex"><div><img class="tabSvg" src="images/svg/car.svg" alt="" />Коли</div>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount?.carCount) {
@@ -273,7 +273,7 @@
                                         }
                                     }
                                 </a>
-                                @if (seller) {
+                                @if ($seller()) {
                                     <a (click)="tyres()" role="presentation" class="menu"
                                         >Гуми/Джанти
                                         @if (userCount$ | async; as userCount) {

@@ -1,4 +1,4 @@
-import { inject } from '@angular/core'
+import { computed, inject } from '@angular/core'
 import { FormGroup } from '@angular/forms';
 import { CONSTANT } from '@app/constant/globalLabels'
 import { QueryParam } from '@model/queryParam';
@@ -10,6 +10,9 @@ export class HelperComponent {
     public queryParams!: QueryParam;
     inialValue: object = {};
 
+    $seller = computed(() => {
+        return this.authenticationService.seller;
+    })
     constructor() {
         this.authenticationService = inject(AuthenticationService)
     }
@@ -17,9 +20,6 @@ export class HelperComponent {
         return CONSTANT
     }
 
-    get seller() {
-        return this.authenticationService.seller
-    }
     get logged() {
         return this.authenticationService.currentUserValue
     }

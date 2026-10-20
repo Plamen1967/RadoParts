@@ -30,7 +30,7 @@
                 }
             </div>
             <div class="d-flex justify-content-start gap-2 align-items-end">
-                @if (allowUpdate() && seller && carView()) {
+                @if (allowUpdate() && $seller() && carView()) {
                     <button class="btn btn-primary mr-1 mt-1 btn-sm" data-cy="addPart" (click)="addPart(id())">{{ labels.ADD }} {{ labels.PART }}</button>
                 }
                 @if (carView() && carView()!.countParts) {

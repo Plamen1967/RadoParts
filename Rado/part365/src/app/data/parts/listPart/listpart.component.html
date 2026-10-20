@@ -108,7 +108,7 @@
                             <div>
                                 <button class="btn btn-success btn-sm" data-cy="addPart" (click)="addPart()" #submit>{{ labels.ADD }} {{ labels.PART }}</button>
                             </div>
-                            @if (!seller) {}
+                            @if (!$seller()) {}
                         </div>
                     </div>
                 </div>
@@ -144,6 +144,6 @@
         }
     </div>
 } @else {
-    <app-addpart [updatePartId]="id_" [bus]="bus()" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+    <app-addpart [partIdNew]="id()!" [bus]="bus()" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
 }
 <app-gotop></app-gotop>

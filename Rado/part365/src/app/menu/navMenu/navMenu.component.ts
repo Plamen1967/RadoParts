@@ -260,7 +260,7 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
     }
 
     addPart(bus = 0) {
-        if (this.seller) {
+        if (this.$seller()) {
             this.router.navigate(['/data/addPart'], { queryParams: { ad: 'new', bus: bus } })
             this.partService.resetCurrentId()
         } else {

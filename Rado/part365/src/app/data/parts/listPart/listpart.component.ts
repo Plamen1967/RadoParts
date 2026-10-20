@@ -380,7 +380,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.router.navigate(['/data/parts'], { queryParams: { update: true, id: id } })
     }
     addPart() {
-        if (!this.seller) {
+        if (!this.$seller()) {
             this.userService.numberOfPartsPerUser().subscribe((numberOfParts) => {
                 this.numberOfParts = numberOfParts
 
