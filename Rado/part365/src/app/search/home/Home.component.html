@@ -16,11 +16,11 @@
                 </button>
             </div>
         </div>
-
+        {{showParts()}}
         <div style="max-width: 100%">
-            @if (showParts) {
+            @if (showParts() == 1) {
                 <app-carfilter [query]="query()" [itemType]="itemType()" [userId]="userId()" (dropDownItems)="changeDropdown($event)"></app-carfilter>
-            } @else if (showTyres) {
+            } @else if (showParts() == 2) {
                 <app-tyrefilter [query]="query()" [userId]="userId()"  ></app-tyrefilter>
             }
         </div>

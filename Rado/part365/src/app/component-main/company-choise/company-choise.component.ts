@@ -39,6 +39,7 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     config = input.required<CompanyControlConfig>()
     errors = input<readonly ValidationError.WithOptionalFieldTree[]>([])
     submitted = input<boolean>(false)
+    label = input<string>()
     oldConfig?: CompanyControlConfig
     itemType_ = ItemType.All
     all_ = false

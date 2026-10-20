@@ -44,30 +44,30 @@
             </div>
 
             <div class="row" [ngClass]="{ show: displayAll, noShow: !displayAll }">
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select [formField]="filterForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select [formField]="filterForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select [formField]="filterForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select [formField]="filterForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select [formField]="filterForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select [formField]="filterForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select [formField]="filterForm.tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-6 col-md-4 col-lg-3 min200px">
+                <div class="col-4 col-md-4 col-lg-4 min200px">
                     <app-customselect
                         [formField]="filterForm.tyreCompanyId"
                         [useFilter]="true"
@@ -79,13 +79,14 @@
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayRim, noShow: !displayRim }">
-                <div class="col-sm-3 control min200px">
-                    <div class="max300px">
-                        <app-company-choise data-cy="companyId" [config]="{ all: true, bus: 0, userId: userId(), itemType: itemType }" [formField]="filterForm.companyId"> </app-company-choise>
+                <div class="col-5 col-md-5 col-lg-5 control min250px">
+                    <div class="w-100">
+                        <app-company-choise label="Марка на джанта" data-cy="companyId" [config]="{ all: true, bus: 0, userId: userId(), itemType: itemType }" [formField]="filterForm.companyId">
+                        </app-company-choise>
                     </div>
                 </div>
-                @if (companyId) {
-                    <div class="col-sm-3 min300px mb-1">
+                <div class="col-4 col-md-4 col-lg-4 min250px mb-1">
+                    @if (companyId) {
                         <app-model-choice
                             [formField]="filterForm.modelId"
                             [showCount]="false"
@@ -95,9 +96,9 @@
                             [groupDisabled]="false"
                             [multiselection]="false">
                         </app-model-choice>
-                    </div>
-                }
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                    }
+                </div>
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select
                         id="rimWidth"
                         [appToolTip]="'Широчина'"
@@ -110,7 +111,7 @@
                         (onCloseEvent)="focus()">
                     </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select
                         id="rimMaterial"
                         [appToolTip]="'Материал'"
@@ -123,7 +124,7 @@
                         (onCloseEvent)="focus()">
                     </app-select>
                 </div>
-                <div class="col-sm-3 control min150px">
+                <div class="col-4 col-md-4 col-lg-4 control min150px">
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Брой Болтове'"
@@ -131,11 +132,10 @@
                         data-cy="rimBoltCount"
                         label="Брой Болтове"
                         [data]="rimBoltCount"
-                        (onCloseEvent)="focus()"
-                        [isRequired]="true">
+                        (onCloseEvent)="focus()">
                     </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-2 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select
                         id="rimOffset"
                         [appToolTip]="''"
@@ -148,7 +148,7 @@
                         (onCloseEvent)="focus()">
                     </app-select>
                 </div>
-                <div class="col-sm-3 control min250px">
+                <div class="col-4 col-md-4 col-lg-4 control min250px">
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Междуболтово разстояние'"
@@ -159,10 +159,13 @@
                         (onCloseEvent)="focus()">
                     </app-select>
                 </div>
-                <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="filterForm.rimCenter" data-cy="rimCenter" label="Център" [data]="rimCenters" (onCloseEvent)="focus()"> </app-select>
+                <div class="col-4 col-md-4 col-lg-4 control min250px">
+                    <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="filterForm.rimCenter" data-cy="rimCenter" label="Център" [data]="rimCenters" (onCloseEvent)="focus()">
+                    </app-select>
+                </div>
             </div>
             <div class="row mt-1">
-                <div class="col-sm-3 max200px">
+                <div class="col-4 col-md-4 col-lg-4 max200px">
                     <app-select [formField]="filterForm.regionId" data-cy="regionId" label="{{ labels.REGION }}" [data]="regions" (onCloseEvent)="focus()"> </app-select>
                 </div>
             </div>

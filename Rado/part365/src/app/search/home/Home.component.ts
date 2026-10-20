@@ -1,5 +1,5 @@
 //#region import
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, input, signal, computed } from '@angular/core'
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, DOCUMENT, inject, input, signal, computed, effect } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -49,7 +49,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     users?: User[]
     showFaviourite = undefined
     dropDown?: Dropdown[]
-    selection = 1
+    selection = input<number>(1)
     extendedSearch_?: boolean
     subscriptions: Subscription[] = []
     currentCategory = undefined
@@ -95,10 +95,19 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     //#endregion
 
     checoutItems = computed(() => this.checkOutService.checkout());
+    showParts = computed(() => {
+        if (this.selection())
+            return this.selection()
+        else 
+            return 1;
+    })
     //#region constructor
     constructor() {
         super()
-        this.selection = 1
+
+        effect(() => {
+            console.log(`Selection ShowParts ${this.showParts()}`)
+        })
     }
 
     ngOnDestroy(): void {
@@ -159,19 +168,20 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
         this.dropDown = event
     }
 
-    typeClick(selection: number) {
-        if (this.selection === selection) return
-        if (this.query()) {
-            this.router.navigate(['/'])
-        }
-        this.selection = selection
+    typeClick(select: number) {
+        this.router.navigate([`/`], { queryParams: { selection: select}});
+        // if (this.selection === selection) return
+        // if (this.query()) {
+        //     this.router.navigate(['/'])
+        // }
+        // this.selection = selection
     }
 
     setSelection(itemType?: ItemType) {
         if (itemType === ItemType.OnlyCar || itemType === ItemType.CarPart || itemType === ItemType.OnlyBus || itemType === ItemType.BusPart || itemType === ItemType.AllCarAndPart) {
-            this.selection = 1
+        this.router.navigate([`/`]);
         } else if (itemType === ItemType.Rim || itemType === ItemType.Tyre || itemType === ItemType.RimWithTyre || itemType === ItemType.AllTyre) {
-            this.selection = 2
+        this.router.navigate([`/?selection=2`]);
         }
     }
 
@@ -253,13 +263,6 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
         return this.homeService.getDataManager(0)
     }
 
-    get showParts() {
-        return this.selection == 1
-    }
-
-    get showTyres() {
-        return this.selection == 2
-    }
     get mobile() {
         return isMobile()
     }

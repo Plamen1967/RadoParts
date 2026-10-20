@@ -1,7 +1,7 @@
     <app-customselect
         data-testid="customer-selectid"
         id="companyId"
-        label="Марка"
+        [label]="label() ?? 'Марка'"
         [appToolTip]="'Избери марката'"
         [placeHolder]="'Избери марка'"
         [value]="value()"

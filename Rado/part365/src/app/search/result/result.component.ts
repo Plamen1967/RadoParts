@@ -59,7 +59,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     viewPart = output<number>()
     pageChanged = output<number>()
 
-    topbarRef = viewChild<HTMLElement>('topbar');
+    topbarRef = viewChild<HTMLElement>('topbar')
     private homeService: HomeService = inject(HomeService)
     private route: ActivatedRoute = inject(ActivatedRoute)
     private userService: UserService = inject(UserService)
@@ -93,27 +93,26 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
     //#endregion
 
-    label = computed(() => { 
+    label = computed(() => {
         return `Show Dealer: ${this.showDealer()} Show Fav: ${this.showFavourite()}`
-    })      
-    
+    })
+
     constructor() {
         super()
 
         goTop()
-        effect(() => { 
+        effect(() => {
             console.log(`ResultComponent: label() : ${this.label()}`)
         })
         effect(() => {
             console.log(`ResultComponent: highlighted() : ${this.highlighted}`)
             console.log(`ResultComponent: showDealer : ${this.showDealer()}`)
-        })  
+        })
         effect(() => {
             if (this.topbarRef()) {
                 if (this.highlighted) {
                     goToPosition(this.highlighted, 0)
-                }
-                else {
+                } else {
                     goTop()
                 }
                 console.log(`ResultComponent: topbarRef() : ${this.topbarRef()}`)
@@ -134,7 +133,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             } else if (this.userId()) {
                 this.results()
             }
-            this.highlighted = this.id() ?? 0;
+            this.highlighted = this.id() ?? 0
         })
 
         effect(() => {
@@ -148,7 +147,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
 
     ngOnInit() {
         console.log(`ResultComponent: ngOnInit() : query() : ${this.query()} userId() : ${this.userId()} id() : ${this.id()} currentId() : ${this.showDealer()}`)
-        setTimeout(() => window.scrollTo({  top: 0, behavior: 'smooth' }), 0);
+        setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0)
         this.notPositioned = true
         if (this.userId_) this.userService.userPageObj.next(this.userId_)
         else this.userService.userPageObj.next(0)
@@ -199,7 +198,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     ngAfterViewInit() {
         if (this.highlighted) {
             goToPosition(this.highlighted, 0)
-//            this.setHighlight(0)
+            //            this.setHighlight(0)
         } else goTop()
         return
     }
@@ -459,13 +458,18 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     goSearch() {
+        let position = 0
         if (this.dataManager) {
             this.dataManager.submitted = false
             this.dataManager.currentId = 0
             this.homeService.setDataManager(0, this.dataManager)
+            let itemType = this.dataManager._searchResult?.filter?.itemType
+            if (itemType == ItemType.AllTyre || itemType == ItemType.Rim || itemType == ItemType.RimWithTyre || itemType == ItemType.Tyre) position = 2
         }
-        if (this.query) this.router.navigate([`/`], { queryParams: { query: this.query() } })
-        else {
+        if (this.query) {
+            if (position == 2) this.router.navigate([`/`], { queryParams: { query: this.query(), position: 2 } })
+            else this.router.navigate([`/`], { queryParams: { query: this.query(), position: 2 } })
+        } else {
             this.router.navigate([`/`])
         }
     }
