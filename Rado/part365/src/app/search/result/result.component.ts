@@ -467,8 +467,8 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             if (itemType == ItemType.AllTyre || itemType == ItemType.Rim || itemType == ItemType.RimWithTyre || itemType == ItemType.Tyre) position = 2
         }
         if (this.query) {
-            if (position == 2) this.router.navigate([`/`], { queryParams: { query: this.query(), position: 2 } })
-            else this.router.navigate([`/`], { queryParams: { query: this.query(), position: 2 } })
+            if (position == 2) this.router.navigate([`/`], { queryParams: { query: this.query(), selection: 2 } })
+            else this.router.navigate([`/`], { queryParams: { query: this.query(), selection: 2 } })
         } else {
             this.router.navigate([`/`])
         }
