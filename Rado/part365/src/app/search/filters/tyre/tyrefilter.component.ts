@@ -1,6 +1,6 @@
 //#region imports
 import { NgClass } from '@angular/common'
-import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect, signal, computed } from '@angular/core'
+import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect, signal, computed, untracked } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -33,6 +33,8 @@ import { CategorySubcategory } from '@model/category-subcategory/categorySubCate
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
 import { HomeComponent } from '@app/search/home/Home.component'
 import { form, FormField } from '@angular/forms/signals'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
 //#endregion
 interface filterFormInterface {
     itemType: ItemType
@@ -157,7 +159,6 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         { label: 'Джанти с гуми', id: 5 },
     ]
 
-    filter = input<Filter | undefined>(undefined)
     userId = input<number | undefined>(undefined)
     query = input<number | undefined>(undefined)
     searchType = input<SearchBy>(SearchBy.Filter)
@@ -182,14 +183,44 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     @Optional() public home?: HomeComponent
     //#endregion
     //#endregion
+    filterresource = httpResource<Filter>(() => ({
+    url: `${environment.restAPI}/Search/GetFilter?query=${this.query()}`
+    })
+    );
+    filter = computed(() => {
+        return this.filterresource.value() ?? new Filter()
+    })
+        // let params = new HttpParams()
+        // params = params.set('query', `${query}`)
+        // return this.http.get<Filter>(`${environment.restAPI}/Search/GetFilter`, { params }).pipe(
+        //     tap(() => this.loggerService.log('getFilter')),
+        //     catchError(this.handleError<Filter>('fetch getFilter', undefined))
+        // )
+
+
+    // filter = computed(() => {
+    //     console.log(`Query Value:`, this.query())
+    //     if (this.query()) {
+    //         this.searchPartService.getFilter(+this.query()!).subscribe((filter) => {
+    //             return { ...filter }
+    //         })
+    //         return new Filter()
+    //     } else {
+    //         return new Filter()
+    //     }
+    // })
 
     constructor() {
         super()
         effect(() => {
+            console.log(`Filter Tyre: `, this.filter())
             if (this.filter()) {
                 this.setFilter(this.filter()!)
             }
         })
+        // effect(() => {
+        //     this.filterFormModel.update((value) => ({...value, ...this.filter()}) );
+        // })
 
         effect(() => this.itemTypeChanged(this.filterFormModel().itemType))
         effect(() => this.onCompanyChange(this.filterFormModel().companyId))
@@ -197,10 +228,6 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         this.initialState = this.filterForm().value()
     }
     ngAfterViewInit(): void {
-        if (this.itemType) {
-            this.filterFormModel.update((value) => ({ ...value, itemType: ItemType.AllTyre }))
-            this.itemTypeChanged(ItemType.AllTyre)
-        }
         if (this.userId) this.filterFormModel.update((value) => ({ ...value, ...{ userId: this.userId() ?? 0 } }))
 
         this.itemTypeChanged(this.filterFormModel().itemType)
@@ -241,7 +268,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
             return
         })
 
-        if (!this.query) {
+        if (!this.query()) {
             this.filterFormModel.update((value) => ({ ...value, ...this.initialState }))
         }
 

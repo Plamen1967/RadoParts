@@ -463,7 +463,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             this.dataManager.submitted = false
             this.dataManager.currentId = 0
             this.homeService.setDataManager(0, this.dataManager)
-            let itemType = this.dataManager._searchResult?.filter?.itemType
+            const itemType = this.dataManager._searchResult?.filter?.itemType
             if (itemType == ItemType.AllTyre || itemType == ItemType.Rim || itemType == ItemType.RimWithTyre || itemType == ItemType.Tyre) position = 2
         }
         if (this.query) {

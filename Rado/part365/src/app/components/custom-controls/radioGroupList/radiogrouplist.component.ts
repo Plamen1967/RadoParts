@@ -12,6 +12,9 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [NgClass, FormsModule],
 })
 export class RadioGroupListComponent implements FormValueControl<number> {
+isChecked(arg0: number|undefined) {
+    console.log(`Radio Id: ${arg0} ${this.value()} ${arg0 === this.value()}`)
+}
 updateSelectValue(event: Event, id: number|undefined) {
     event.preventDefault()
     this.value.update(() => {
