@@ -183,12 +183,18 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     @Optional() public home?: HomeComponent
     //#endregion
     //#endregion
-    filterresource = httpResource<Filter>(() => ({
-    url: `${environment.restAPI}/Search/GetFilter?query=${this.query()}`
+    // filterresource = httpResource<Filter>(() => ({
+    // url: 
+    // })
+    // );
+
+       filterresource = httpResource<Filter>(() => {
+        if (this.query()) return `${environment.restAPI}/Search/GetFilter?query=${this.query()}`
+        else return undefined
     })
-    );
+ 
     filter = computed(() => {
-        return this.filterresource.value() ?? new Filter()
+        return this.filterresource.value() ?? undefined
     })
         // let params = new HttpParams()
         // params = params.set('query', `${query}`)
