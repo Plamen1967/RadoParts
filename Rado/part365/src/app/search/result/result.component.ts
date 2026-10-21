@@ -109,6 +109,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             console.log(`ResultComponent: showDealer : ${this.showDealer()}`)
         })
         effect(() => {
+            goTop()
             if (this.topbarRef()) {
                 if (this.highlighted) {
                     goToPosition(this.highlighted, 0)
