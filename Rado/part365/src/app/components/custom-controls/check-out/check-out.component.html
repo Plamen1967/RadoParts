@@ -10,6 +10,7 @@
                         <div class="container mt-3">
                             <div class="mt-2 mb-2 text-center">
                                 <button class="btn btn-success" (click)="clear()">Изчисти запазени</button>
+                                <button class="btn btn-primary ms-5" style="width: auto; margin: auto;" (click)="goback()">Назaд</button>
                             </div>
                             <div class="row">
                                 @for (part of parts(); track part.id; let i = $index) {
@@ -21,6 +22,7 @@
                             </div>
                             <div class="mt-2 mb-2 text-center">
                                 <button class="btn btn-success" (click)="clear()">Изчисти запазени</button>
+                                <button class="btn btn-primary ms-5" style="width: auto; margin: auto;" (click)="goback()">Назaд</button>
                             </div>
                         </div>
                     }

@@ -1,8 +1,7 @@
-@if (!id()) {
+@if ($update() == false) {
     <div class="container">
         @if (userCount$ | async; as userCount) {
             @if (userCount && userCount.partCarCount + userCount.partBusCount) {
-               
                 <app-listtitle [title]="'Части'" [number]="getValue(userCount)"></app-listtitle>
 
                 <span class="count"></span>
@@ -84,7 +83,12 @@
                     </div>
                     @if (categoriesId && categoriesId.length) {
                         <div class="col-sm-2 min350px">
-                            <app-subcategory-choise [formField]="searchForm.subCategoryId" [categoriesId]="categoriesId!" [multiselection]="false" data-cy="subCategoryId" title="{{ labels.SUBCATEGORY }}">
+                            <app-subcategory-choise
+                                [formField]="searchForm.subCategoryId"
+                                [categoriesId]="categoriesId!"
+                                [multiselection]="false"
+                                data-cy="subCategoryId"
+                                title="{{ labels.SUBCATEGORY }}">
                             </app-subcategory-choise>
                         </div>
                     }
@@ -94,25 +98,25 @@
                         <app-input [formField]="searchForm.partNumber" placeHolder="{{ labels.PART_NUMBER }}" data-cy="partNumber"> </app-input>
                     </div>
                 </div>
-                <div class="row mt-1">
-                    <div class="d-flex">
-                        <div class="d-flex me-2">
-                            <div>
-                                <button type="submit" class="btn btn-primary btn-sm me-2" data-cy="search" (click)="onSubmit()" #submit>{{ labels.SEARCH }}</button>
-                            </div>
-                            <div>
-                                <button type="submit" class="btn btn-primary btn-sm" data-cy="clear" (click)="clear()" #submit>Изчисти филтъра</button>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div>
-                                <button class="btn btn-success btn-sm" data-cy="addPart" (click)="addPart()" #submit>{{ labels.ADD }} {{ labels.PART }}</button>
-                            </div>
-                            @if (!$seller()) {}
-                        </div>
+                <div class="d-flex me-2">
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-sm me-2" data-cy="search" (click)="onSubmit()" #submit>{{ labels.SEARCH }}</button>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-sm" data-cy="clear" (click)="clear()" #submit>Изчисти филтъра</button>
                     </div>
                 </div>
             </form>
+            <div class="row mt-1">
+                <div class="d-flex">
+                    <div class="d-flex">
+                        <div>
+                            <button class="btn btn-success btn-sm" data-cy="addPart" (click)="addPart()" #submit>{{ labels.ADD }} {{ labels.PART }}</button>
+                        </div>
+                        @if (!$seller()) {}
+                    </div>
+                </div>
+            </div>
         </div>
         @if (loading()) {
             <div>
@@ -144,6 +148,6 @@
         }
     </div>
 } @else {
-    <app-addpart [partIdNew]="id()!" [bus]="bus()" [add]="addPartFlag" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+    <app-addpart [partIdNew]="getId()" [bus]="bus()" [add]="addPartFlag" [ad]="'new'" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
 }
 <app-gotop></app-gotop>

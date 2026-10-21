@@ -274,6 +274,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             }
         })
 
+        effect(() => {
+            console.log(`Is new : ${this.newPart()}`)
+        })
         this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId! }))
         //#region effect
         effect(() => {

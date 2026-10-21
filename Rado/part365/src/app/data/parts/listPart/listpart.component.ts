@@ -48,6 +48,9 @@ import { UserCountService } from '@services/userCount.service'
 import { LoggerService } from '@services/authentication/logger.service'
 import { UserCount } from '@model/userCount'
 import { form, FormField } from '@angular/forms/signals'
+import { environment } from '@env/environment'
+import { httpResource } from '@angular/common/http'
+import { NextId } from '@model/nextId'
 //#endregion
 //#region interface
 interface searchFormInterface {
@@ -93,6 +96,10 @@ interface searchFormInterface {
 
 //#endregion
 export default class ListPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
+getId(): number|undefined {
+        const id = this.nextId() ?? this.id()
+       return  id;
+}
     searchFormModel = signal<searchFormInterface>({
         bus: 'car',
         companyId: 0,
@@ -178,12 +185,34 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         return ItemType.CarPart
     })
 
+
+    update = input<number|string>()
+    ad = input<number|string>()
+    $update = computed(() => {
+        if (this.ad() || this.update())
+            return true
+
+        return false;
+    });
+
+    time = signal(0)
+    nextResource = httpResource<NextId>(() => ({
+    url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.CarPart}&time=${this.time()}`
+    })
+    );
+
+    nextId = signal<number>(0)
+
     bus = computed(() => {
         if (this.searchFormModel().bus == 'car') return 0
         return 1
     })
     constructor() {
         super()
+
+        effect(() => {
+            console.log(`Update : `, this.$update())
+        })
         this._autoSearch$ = new Subject<Filter>()
         this._autoPartSearch$ = new Subject<Filter>()
         this._debounce = 0
@@ -290,6 +319,8 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.addPartFlag = params.get('add') ? true : false
             if (this.addPartFlag) this.newPart()
+            if (!this.update() && !this.ad() )                
+                this.time.set(Date.now())
         })
         // this.route.params.subscribe((params) => {
         //     if (params['add'] ) {
@@ -379,23 +410,6 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     viewPart(id: number) {
         this.router.navigate(['/data/parts'], { queryParams: { update: true, id: id } })
     }
-    addPart() {
-        if (!this.$seller()) {
-            this.userService.numberOfPartsPerUser().subscribe((numberOfParts) => {
-                this.numberOfParts = numberOfParts
-
-                this.numberOfPartsPerUser = numberOfParts.bus + numberOfParts.car
-                if (this.numberOfPartsPerUser < this.maxNumberParts!) {
-                    this.router.navigate(['/data/parts'], { queryParams: { add: true } })
-                } else {
-                    this.confirmService.OK('Съобщение', this.allowanceMessage)
-                }
-            })
-        } else {
-            this.router.navigate(['/data/parts'], { queryParams: { add: true } })
-        }
-    }
-
     newPart() {
         this.nextIdService.getNextId(this.bus() ? ItemType.BusPart : ItemType.CarPart).subscribe({
             next: (nextId) => {
@@ -526,7 +540,6 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.id_ = undefined
         this.loadPart(event)
         this.currentId = event
-
         goToPosition(event)
     }
 
@@ -541,4 +554,23 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     isHighLigted(id: number) {
         return this.currentId === id
     }
+    addPart() {
+        if (!this.$seller()) {
+            this.userService.numberOfPartsPerUser().subscribe((numberOfParts) => {
+                this.numberOfParts = numberOfParts
+
+                this.numberOfPartsPerUser = numberOfParts.bus + numberOfParts.car
+                if (this.numberOfPartsPerUser < this.maxNumberParts!) {
+                    this.nextId.set(this.nextResource.value()?.nextId ?? 0)
+                    this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', id: this.nextId() } })
+                } else {
+                    this.confirmService.OK('Съобщение', this.allowanceMessage)
+                }
+            })
+        } else {
+            this.nextId.set(this.nextResource.value()?.nextId ?? 0)
+            this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', id: this.nextId() } })
+        }
+    }
+
 }
