@@ -1,6 +1,7 @@
 import { NgClass, NgStyle } from '@angular/common'
 import { Component, inject, Input, model, input, output, computed } from '@angular/core'
-import { FormsModule, ValidationErrors } from '@angular/forms'
+import { FormsModule } from '@angular/forms'
+import { ValidationError } from '@angular/forms/signals'
 import { SelectOption } from '@model/selectOption'
 import { ErrorService } from '@services/error.service'
 
@@ -17,7 +18,7 @@ export class SelectBaseComponent{
     type = input<number | undefined>();
     label = input<string | undefined>();
     hint = input<string | undefined>();
-    error = input<ValidationErrors | null>(null);
+    errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     control = input<string | undefined>();
     data = input<SelectOption[] | undefined>();
 
@@ -55,7 +56,7 @@ export class SelectBaseComponent{
     }
 
     get errorMessage() {
-        return this.errorService.getMessage(this.label()!, this.error!)
+        return this.errorService.getMessage(this.label()!, this.errors())
     }
 }
 

@@ -15,6 +15,7 @@ import { FormValueControl, ValidationError } from '@angular/forms/signals'
 export class InputComponent implements FormValueControl<string | number> {
     value = model.required<string | number>()
     label = input<string | undefined>()
+    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
     placeHolder = input<string | undefined>()
     hint = input<string | undefined>()
@@ -35,12 +36,14 @@ export class InputComponent implements FormValueControl<string | number> {
     text = input<string>('text')
     autocomplete = input<string | undefined>()
     errorMessage = input<string | undefined>()
-    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([])
-
+    
     get contolName(): string {
         return this.label() || this.placeHolder() || ''
     }
 
+    constructor() {
+        console.log(`Input Error : ${this.errors()}`)
+    }
     inputFunc(event: Event) {
         const inputElement = event.target as HTMLInputElement
         let inputValue: string | number = inputElement.value

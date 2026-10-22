@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core'
+import { Component, computed, effect, inject, input, OnInit, output, signal } from '@angular/core'
 import { HelperComponent } from '../helper/helper.component'
 import { ImageData } from '@model/imageData'
 import { FormsModule } from '@angular/forms'
@@ -21,7 +21,7 @@ import { environment } from '@env/environment'
 export class ImageListComponent extends HelperComponent implements OnInit {
     itemId = input<number>()
     mainImage = input.required<number>()
-    mainImageId?: number
+    mainImageId = signal(0)
     images_ = signal<ImageData[]>([])
     images = input<ImageData[]>([])
 
@@ -33,6 +33,11 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private toastService: ToastService = inject(ToastService)
 
+    $mainImage = computed(() => {
+        if (this.mainImageId() != 0)
+            return this.mainImageId()
+        return this.mainImage()
+    })
     imageResource = httpResource<ImageData[]>(() => ({
             url: `${environment.restAPI}/image/GetImages?id=${this.itemId()}`,
             defaultValue: [],
@@ -54,6 +59,9 @@ export class ImageListComponent extends HelperComponent implements OnInit {
 
     constructor() {
         super()
+        effect(() => {
+            console.log(`Main image: ${this.$mainImage()} ${this.mainImageId()}`)
+        })
         effect(() => {
             console.log(`Item Id: ${this.itemId()} ${this.mainImage()}`)
         })
@@ -92,13 +100,13 @@ export class ImageListComponent extends HelperComponent implements OnInit {
         }
 
         if (currentImages.length) {
-            this.mainImageId = currentImages[0].imageId
+            this.mainImageId.set(currentImages[0].imageId!)
         }
     }
 
     defaultImageChanged(imageId: number) {
-        this.mainImageId = imageId
-        this.defaultImageEvent.emit(this.mainImageId)
+        this.mainImageId.set(imageId)
+        this.defaultImageEvent.emit(this.mainImageId())
     }
 
     setDefaultImage(image: ImageData) {
@@ -112,7 +120,7 @@ export class ImageListComponent extends HelperComponent implements OnInit {
         image.forEach((x) => currentImages.push(x))
         this.images_.set(currentImages)
 
-        if (currentImages.length == 1 || !this.mainImageId) this.defaultImageChanged(currentImages[0].imageId!)
+        if (currentImages.length == 1 || !this.mainImageId()) this.defaultImageChanged(currentImages[0].imageId!)
     }
 
     deleteImage(image: ImageData) {
@@ -130,7 +138,7 @@ export class ImageListComponent extends HelperComponent implements OnInit {
                                 this.images_.set(currentImages)
                             }
 
-                            if (this.mainImageId == image.imageId!)
+                            if (this.mainImageId() == image.imageId!)
                                 if (this.images_().length > 0) this.defaultImageChanged(this.images_()[0].imageId!)
                                 else this.defaultImageChanged(0)
                         },

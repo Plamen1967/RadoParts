@@ -5,6 +5,7 @@
         label="Избери подкатегория"
         [value]="value()"
         placeHolder="Избери подкатегория"
+        [errors]="errors()"
         [appToolTip]="'Избери подкатегория'"
         [data]="subCategories"
         [multiSelection]="multiselection()"
@@ -18,6 +19,7 @@
 } @else {
     <app-customselect
         [isRequired]="isRequired()"
+        [errors]="errors()"
         id="subCategoriesId"
         title="Избери подкатегория"
         placeHolder="Избери подкатегория"

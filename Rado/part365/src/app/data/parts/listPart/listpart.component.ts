@@ -51,6 +51,7 @@ import { form, FormField } from '@angular/forms/signals'
 import { environment } from '@env/environment'
 import { httpResource } from '@angular/common/http'
 import { NextId } from '@model/nextId'
+import UpdatePartComponent from '../updatepart/updatepart.component';
 //#endregion
 //#region interface
 interface searchFormInterface {
@@ -72,34 +73,31 @@ interface searchFormInterface {
     templateUrl: './listpart.component.html',
     styleUrls: ['./listpart.component.scss'],
     imports: [
-        NavigatorComponent,
-        DealerViewComponent,
-        DealerViewComponent,
-        SelectComponent,
-        InputComponent,
-        NgStyle,
-        ReactiveFormsModule,
-        CompanyChoiseComponent,
-        ModelChoiceComponent,
-        ModificationChoiceComponent,
-        AddPartComponent,
-        GoTopComponent,
-        CategoryChoiseComponent,
-        TooltipDirective,
-        SubcategoryChoiseComponent,
-        ListTitleComponent,
-        AsyncPipe,
-        FormField,
-        FormField,
-    ],
+    NavigatorComponent,
+    DealerViewComponent,
+    DealerViewComponent,
+    SelectComponent,
+    InputComponent,
+    NgStyle,
+    ReactiveFormsModule,
+    CompanyChoiseComponent,
+    ModelChoiceComponent,
+    ModificationChoiceComponent,
+    AddPartComponent,
+    GoTopComponent,
+    CategoryChoiseComponent,
+    TooltipDirective,
+    SubcategoryChoiseComponent,
+    ListTitleComponent,
+    AsyncPipe,
+    FormField,
+    FormField,
+    UpdatePartComponent
+],
 })
 
 //#endregion
 export default class ListPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
-getId(): number|undefined {
-        const id = this.nextId() ?? this.id()
-       return  id;
-}
     searchFormModel = signal<searchFormInterface>({
         bus: 'car',
         companyId: 0,
@@ -185,21 +183,24 @@ getId(): number|undefined {
         return ItemType.CarPart
     })
 
+    $getId = computed(() => {
+        const id = this.id() ?? this.nextId()
+        console.log(`$getId`, this.id(), this.nextId())
+        return id
+    })
 
-    update = input<number|string>()
-    ad = input<number|string>()
+    update = input<number | string>()
+    ad = input<number | string>()
     $update = computed(() => {
-        if (this.ad() || this.update())
-            return true
+        if (this.ad() || this.update()) return true
 
-        return false;
-    });
+        return false
+    })
 
     time = signal(0)
     nextResource = httpResource<NextId>(() => ({
-    url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.CarPart}&time=${this.time()}`
-    })
-    );
+        url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.CarPart}&time=${this.time()}`,
+    }))
 
     nextId = signal<number>(0)
 
@@ -228,6 +229,10 @@ getId(): number|undefined {
             console.log(`Bus: ${this.bus()}`)
             if (this.bus() == 1) this.searchFormModel.update((value) => ({ ...value, bus: 'bus' }))
             else this.searchFormModel.update((value) => ({ ...value, bus: 'car' }))
+        })
+
+        effect(() => {
+            console.log(`This id: ${this.id()} ${this.$getId()} ${this.update()}`)
         })
 
         effect(() => {
@@ -300,7 +305,7 @@ getId(): number|undefined {
             distinctUntilChanged(),
             switchMap((Filter) => {
                 this.loading.set(true)
-                const criteria = {...Filter}
+                const criteria = { ...Filter }
                 criteria.bus = this.searchFormModel().bus === 'car' ? 0 : 1
                 return this.partService.getPartViews(criteria)
             }),
@@ -319,8 +324,7 @@ getId(): number|undefined {
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.addPartFlag = params.get('add') ? true : false
             if (this.addPartFlag) this.newPart()
-            if (!this.update() && !this.ad() )                
-                this.time.set(Date.now())
+            if (!this.update() && !this.ad()) this.time.set(Date.now())
         })
         // this.route.params.subscribe((params) => {
         //     if (params['add'] ) {
@@ -572,5 +576,4 @@ getId(): number|undefined {
             this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', id: this.nextId() } })
         }
     }
-
 }

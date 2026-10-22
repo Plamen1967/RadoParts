@@ -1,7 +1,7 @@
 <div class="row align-items-start ms-1 me-1">
     @if (UpdateFlag()) {
         <div class="col-sm-10 mt-1">
-            <app-upload [id]="itemId()!" [businessCard]="false" [addPicture]="" (uploadFinished)="addImage($event)" [multiple]="true"></app-upload>
+        <app-upload [id]="itemId()!" [businessCard]="false" [addPicture]="" (uploadFinished)="addImage($event)" [multiple]="true"></app-upload>
         </div>
     }
     @for (image of images_(); track image.imageId; let i = $index) {
@@ -15,7 +15,7 @@
                             type="radio"
                             class="ms-2 custom-control-input"
                             [value]="image.imageId"
-                            [checked]="image.imageId === mainImage()"
+                            [checked]="image.imageId === $mainImage()"
                             (change)="setDefaultImage(image)"
                             name="mainImageId"
                             id="{{ image.imageId }}" />

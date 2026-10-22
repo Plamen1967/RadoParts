@@ -8,8 +8,8 @@
     [isRequired]="isRequired()"
     [groupSelection]="groupSelection()"
     [submitted]="submitted()"
-    [isInvalid]="IsInvalid()"
+    [isInvalid]="errors().length > 0"
     [id]="id()"
-    [error]="error()"
+    [errors]="errors()"
     (changeOption)="changeSelectOption($event)">
 </app-select-base>

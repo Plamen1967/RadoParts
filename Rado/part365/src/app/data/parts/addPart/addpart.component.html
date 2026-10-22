@@ -7,7 +7,7 @@
             </button>
         </div>
     } @else {
-        <div class="title">Част за {{ choice() }}</div>
+        <div class="title">Част за {{ $choice() }}</div>
         <form autocomplete="off">
             @if ($seller()) {
                 <div class="shadow rounded card card-form-spec w-100">
@@ -17,20 +17,20 @@
                             <div style="display: inline-flex; flex-flow: row; justify-content: center; align-items: center">
                                 <div class="form-check form-check-inline">
                                     <input id="PartForCar" type="radio" class="custom-control-input" data-cy="car" value="car" [formField]="addPartForm.partForCar" />
-                                    <label class="custom-control-label" for="PartForCar">Част за {{ choice() }}</label>
+                                    <label class="custom-control-label" for="PartForCar">Част за {{ $choice() }}</label>
                                 </div>
                                 @if (addPartForm.partForCar().value() === 'car') {
                                     <div class="ms-2align-items-center min250px" style="max-width: 400px">
                                         <div class="min250px">
                                             <app-select
                                                 id="car"
-                                                label="Избери {{ choice() }}"
+                                                label="Избери {{ $choice() }}"
                                                 [formField]="addPartForm.carId"
                                                 data-cy="carReference"
-                                                [data]="cars()"
+                                                [data]="$cars()"
                                                 [isRequired]="true"
                                                 (changeOption)="onCarChange($event)"
-                                                [submitted]="submitted"
+                                                [submitted]="$submitted()"
                                                 (onCloseEvent)="focus($event)">
                                             </app-select>
                                         </div>
@@ -39,14 +39,14 @@
                             </div>
                             <div class="form-check form-check-inline">
                                 <input id="NoCar" type="radio" class="custom-control-input" data-cy="part" value="part" [formField]="addPartForm.partForCar" />
-                                <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ choice() }}</label>
+                                <label class="custom-control-label" for="NoCar">{{ labels.PART_ONLY }} за {{ $choice() }}</label>
                             </div>
                         </div>
                         <!-- </div> -->
                     }
-                    @if (addPartForm.partForCar().value() === 'car' && car && $carId()) {
+                    @if (addPartForm.carId().value()) {
                         <div class="mt-2 p-2 d-inline-flex fs-5 text justify-content-center" style="background-color: aqua; width: 100%">
-                            <div class="d-flex justify-content-center" style="text-align: center">{{ description }}</div>
+                            <div class="d-flex justify-content-center" style="text-align: center">{{ $description() }}</div>
                         </div>
                     }
                 </div>
@@ -58,7 +58,7 @@
                             <div class="row mb-1">
                                 <div class="row modell-1000px">
                                     <div class="col-sm-2 min300px">
-                                        <app-company-choise [config]="{ bus: bus(), all: true, required: true, submitted: submitted }" [formField]="addPartForm.companyId" data-cy="companyid">
+                                        <app-company-choise [config]="{ bus: bus(), all: true, required: true, submitted: $submitted() }" [formField]="addPartForm.companyId" data-cy="companyid">
                                         </app-company-choise>
                                     </div>
                                     @if (companyId()) {
@@ -71,7 +71,7 @@
                                                 [showGroup]="true"
                                                 [groupDisabled]="true"
                                                 [multiselection]="false"
-                                                [submitted]="submitted"
+                                                [submitted]="$submitted()"
                                                 (onCloseEvent)="focus($event)">
                                             </app-model-choice>
                                         </div>
@@ -85,7 +85,7 @@
                                                     [formField]="addPartForm.modificationId"
                                                     (modifcationChange)="modificatioChanged($event)"
                                                     data-cy="modificationId"
-                                                    [submitted]="submitted"
+                                                    [submitted]="$submitted()"
                                                     (onCloseEvent)="focus($event)">
                                                     >
                                                 </app-modification-choice>
@@ -93,7 +93,7 @@
                                         }
                                     }
                                     <div class="col-sm-2 min200px">
-                                        <app-select [formField]="addPartForm.year" label="{{ labels.YEAR }}" [data]="years ?? []" data-cy="year" [submitted]="submitted" (onCloseEvent)="focus($event)">
+                                        <app-select [formField]="addPartForm.year" label="{{ labels.YEAR }}" [data]="years ?? []" data-cy="year" [submitted]="$submitted()" (onCloseEvent)="focus($event)">
                                         </app-select>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="row g-3 mb-1">
                             <div class="col-sm-2">
-                                <app-input [formField]="addPartForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" data-cy="vin" [submitted]="submitted"> </app-input>
+                                <app-input [formField]="addPartForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" data-cy="vin" [submitted]="$submitted()"> </app-input>
                             </div>
                             <div class="col-sm-2">
                                 <app-input
@@ -109,7 +109,7 @@
                                     type="number"
                                     label="{{ labels.POWERBHP }}"
                                     placeHolder="{{ labels.POWERBHP }}"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     data-cy="powerBHP">
                                 </app-input>
                             </div>
@@ -119,12 +119,12 @@
                                     type="number"
                                     label="{{ labels.POWERKWH }}"
                                     placeHolder="{{ labels.POWERKWH }}"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     data-cy="powerkWh">
                                 </app-input>
                             </div>
                             <div class="col-sm-2">
-                                <app-input [formField]="addPartForm.millage" type="number" label="{{ labels.MILLAGE }}" data-cy="millage" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted">
+                                <app-input [formField]="addPartForm.millage" type="number" label="{{ labels.MILLAGE }}" data-cy="millage" placeHolder="{{ labels.MILLAGE }}" [submitted]="$submitted()">
                                 </app-input>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                                 <app-select
                                     [formField]="addPartForm.engineType"
                                     label="{{ labels.TYPE_ENGINE }}"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     data-cy="engineType"
                                     [data]="staticSelectionService.EngineType"
                                     (onCloseEvent)="focus($event)">
@@ -145,7 +145,7 @@
                                     label="{{ labels.CODE_ENGINE }}"
                                     data-cy="engineModel"
                                     placeHolder="{{ labels.CODE_ENGINE }}"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     (onCloseEvent)="focus($event)">
                                 </app-input>
                             </div>
@@ -154,7 +154,7 @@
                                     [formField]="addPartForm.gearboxType"
                                     label="{{ labels.TYPE_GEARBOX }}"
                                     data-cy="gearboxType"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     [data]="staticSelectionService.GearboxType"
                                     (onCloseEvent)="focus($event)">
                                 </app-select>
@@ -165,7 +165,7 @@
                                 <app-select
                                     [formField]="addPartForm.regionId"
                                     label="{{ labels.REGION }}"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     data-cy="region"
                                     [data]="staticSelectionService.Region"
                                     (onCloseEvent)="focus($event)">
@@ -187,7 +187,7 @@
                             title="Избери категория"
                             [isRequired]="true"
                             [multiselection]="false"
-                            [submitted]="submitted"
+                            [submitted]="$submitted()"
                             placeHolder="Избери категория">
                         </app-category-choise>
                     </div>
@@ -200,7 +200,7 @@
                                 title="{{ labels.DEALERSUBCATEGORY }}"
                                 [isRequired]="true"
                                 [multiselection]="false"
-                                [submitted]="submitted"
+                                [submitted]="$submitted()"
                                 (dealerSubCategoryChanged)="dealerSubCategoryIdChanged($event)"
                                 (onCloseEvent)="focus($event)">
                             </app-dealersubcategory-choice>
@@ -211,7 +211,7 @@
                                     [formField]="addPartForm.dealerSubCategoryName"
                                     label="{{ labels.DEALERSUBCATEGORYHELP }}"
                                     data-cy="dealerSubCategoryName"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     [isRequired]="true"
                                     placeHolder="{{ labels.DEALERSUBCATEGORYHELP }}">
                                 </app-input>
@@ -221,12 +221,12 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-2 min350px">
-                        <app-input [formField]="addPartForm.partNumber" label="{{ labels.PART_NUMBER }}" [submitted]="submitted" data-cy="partNumber" placeHolder="{{ labels.PART_NUMBER }}">
+                        <app-input [formField]="addPartForm.partNumber" label="{{ labels.PART_NUMBER }}" [submitted]="$submitted()" data-cy="partNumber" placeHolder="{{ labels.PART_NUMBER }}">
                         </app-input>
                     </div>
                 </div>
                 <div class="row form-floating">
-                    <app-textarea [formField]="addPartForm.description" data-cy="description" placeHolder="{{ labels.PART_DETAILS }}" [submitted]="submitted"></app-textarea>
+                    <app-textarea [formField]="addPartForm.description" data-cy="description" placeHolder="{{ labels.PART_DETAILS }}" [submitted]="$submitted()"></app-textarea>
                 </div>
                 <div class="card mt-1">
                     <div class="card-header" style="background-color: honeydew; font-size: 1.2em; border: 1px solid purple">
@@ -236,7 +236,7 @@
                                 <app-select
                                     [formField]="addPartForm.leftRightPosition"
                                     label="{{ labels.LEFT_RIGHT }}"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     data-cy="region"
                                     [data]="staticSelectionService.LeftRight"
                                     (onCloseEvent)="focus($event)">
@@ -259,7 +259,7 @@
                                 <app-select
                                     [formField]="addPartForm.frontBackPosition"
                                     label="{{ labels.FRONT_BACK }}"
-                                    [submitted]="submitted"
+                                    [submitted]="$submitted()"
                                     data-cy="region"
                                     [data]="staticSelectionService.FrontBack"
                                     (onCloseEvent)="focus($event)">
@@ -275,7 +275,7 @@
                         [formField]="addPartForm.price"
                         placeHolder="{{ labels.PRICE }}"
                         [IsPrice]="true"
-                        [submitted]="submitted"
+                        [submitted]="$submitted()"
                         data-cy="price"
                         [inline]="false"
                         [isRequired]="true"></app-input>

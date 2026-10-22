@@ -1,5 +1,5 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal, computed } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { AsyncPipe } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -38,6 +38,7 @@ import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { form, FormField } from '@angular/forms/signals'
+import AddBusComponent from '../../bus/addBus/addBus.component';
 //#endregion
 //#region interface
 interface listFormInterface {
@@ -55,23 +56,24 @@ interface listFormInterface {
     templateUrl: './listcars.component.html',
     styleUrls: ['./listCars.component.css'],
     imports: [
-        SelectComponent,
-        DealerViewComponent,
-        ReactiveFormsModule,
-        NavigatorComponent,
-        CompanyChoiseComponent,
-        ModelChoiceComponent,
-        ModificationChoiceComponent,
-        AddCarComponent,
-        GoTopComponent,
-        AddPartComponent,
-        YearComponent,
-        ListTitleComponent,
-        UpdateCarComponent,
-        UpdatePartComponent,
-        AsyncPipe,
-        FormField
-    ],
+    SelectComponent,
+    DealerViewComponent,
+    ReactiveFormsModule,
+    NavigatorComponent,
+    CompanyChoiseComponent,
+    ModelChoiceComponent,
+    ModificationChoiceComponent,
+    AddCarComponent,
+    GoTopComponent,
+    AddPartComponent,
+    YearComponent,
+    ListTitleComponent,
+    UpdateCarComponent,
+    UpdatePartComponent,
+    AsyncPipe,
+    FormField,
+    AddBusComponent
+],
 })
 
 // interface ListCarParam {
@@ -115,22 +117,18 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     numberPages = 0
     currentPage = 0
     searched = true
-    title = ''
     companyId = 0
     modelId = 0
     modificationId = 0
-    itemType = ItemType.OnlyCar
     userId?: number
     id?: number
     label = 'Избери кола'
-    addCarFlag = false
-    addPartFlag = false
-    addBusFlag = false
-    carId?: number
-    partId?: number
-    updateCarFlag = false
-    updatePartFlag = false
-    updateBusFlag = false
+    $addCarFlag = signal(false)
+    $addPartFlag = signal(false)
+    $addBusFlag = signal(false)
+    $updateCarFlag = signal(false)
+    $updatePartFlag = signal(false)
+    $updateBusFlag = signal(false)
     showParts = false
     loading = signal<boolean>(false)
     public todos$?: Observable<CarView[]>
@@ -138,8 +136,32 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     private readonly _debounce: number
     private readonly _destroy$: Subject<boolean>
     userCount$: Observable<UserCount | undefined>
-
+    carId = input<number>()
+    partId = input<number>()
+    updateCar = input(0)
+    updateBus = input(0)
+    updatePart = input(0)
+    addCar = input(0)
+    addBus = input(0)
+    addPart = input(0)
+    update = input<number | string>()
+    ad = input<number | string>()
     bus = input<number>(0)
+    $update = computed(() => {
+        if (this.ad() || this.update()) return true
+        if (this.updateBus() || this.updateCar() || this.updatePart())
+            return true
+        if (this.addBus() || this.addCar() || this.addPart())
+            return true
+        return false
+    })
+
+    $itemType = computed<ItemType>(() =>
+        this.$addCarFlag() ? ItemType.OnlyCar : this.$addBusFlag() ? ItemType.OnlyBus : this.bus() ? ItemType.BusPart : ItemType.CarPart
+    )
+    $title = computed(() =>  this.bus() ? 'Бусове' : 'Коли')
+    $label = computed(() => this.bus() ? 'Избери бус' : 'Избери кола')
+
     //#endregion
 
     //#region c'tor
@@ -164,12 +186,9 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this._debounce = 1500
         this._destroy$ = new Subject<boolean>()
         this.userId = this.authenticationService.user?.userId
-        effect(() => {
-            if (this.bus()) this.itemType = ItemType.OnlyBus
-            else this.itemType = ItemType.OnlyCar
 
-            this.title = this.bus() ? 'Бусове' : 'Коли'
-            this.label = this.bus() ? 'Избери бус' : 'Избери кола'
+        effect(() => {
+            console.log(`Update Bus is: ${this.$update()} ${this.addCar()} ${this.addBus()} ${this.ad()}`)
         })
         effect(() => {
             console.log(`Bus is: ${this.cars()}`)
@@ -177,6 +196,10 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         effect(() => this.onCompanyChange(this.listForm.companyId().value()))
         effect(() => this.onModelChange(this.listForm.modelId().value()))
         effect(() => this.search(this.listForm().value()))
+
+        effect(() => {
+            console.log(`Bus: ${this.$update()} ${this.addBus()} ${this.ad()}`)
+        })
     }
 
     //#endregion
@@ -197,10 +220,9 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             goTop()
             this.updateParamsFromQuery(params)
-            const itemType: ItemType = this.addCarFlag ? ItemType.OnlyCar : this.addBusFlag ? ItemType.OnlyBus : this.bus() ? ItemType.BusPart : ItemType.CarPart
-            if (this.addCarFlag || this.addPartFlag || this.addBusFlag) {
+            if (this.$addCarFlag() || this.$addPartFlag() || this.$addBusFlag()) {
                 this.nextIdService
-                    .getNextId(itemType)
+                    .getNextId(this.$itemType())
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe({
                         next: (nextId) => {
@@ -220,17 +242,17 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                             return
                         },
                     })
-            } else if (this.updateCarFlag || this.updateBusFlag || this.updatePartFlag) {
+            } else if (this.updateCar() || this.updateBus() || this.updatePart()) {
                 this.mode = UpdateEnum.Update
 
-                if (params.get('carId') !== null) {
-                    const id = params.get('carId')
-                    if (id) this.id = this.carId = +id
-                }
-                if (params.get('partId') !== null) {
-                    const id = params.get('partId')
-                    if (id) this.id = this.partId = +id
-                }
+                // if (params.get('carId') !== null) {
+                //     const id = params.get('carId')
+                //     if (id) this.id = this.carId = +id
+                // }
+                // if (params.get('partId') !== null) {
+                //     const id = params.get('partId')
+                //     if (id) this.id = this.partId = +id
+                // }
             } else {
                 this.id = undefined
             }
@@ -289,16 +311,16 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     actionCar(action: DealerActionType) {
         this.mode = action.action!
-
+        this.currentPartId = action.id
         if (this.mode === UpdateEnum.New) {
-            if (action.car) this.addCar()
+            if (action.car) this.addCarFunc()
             else {
                 this.currentPartId = action.id
                 this.newPart(action.id!)
             }
         } else if (this.mode === UpdateEnum.Update) {
-            if (action.car) this.updateCar(action.id!)
-            else if (!action.car) this.updatePart(0, action.id!)
+            if (action.car) this.updateCarFunc(action.id!)
+            else if (!action.car) this.updatePartFunc(0, action.id!)
             else this.currentPartId = action.id
         } else if (action.car && this.mode === UpdateEnum.Delete) {
             this.deleteCar(action.id!)
@@ -308,13 +330,13 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     backUpdatePart() {
         this.currentPartId = undefined
     }
-    updateCar(carId: number) {
+    updateCarFunc(carId: number) {
         this.currentCarId = carId
         if (this.bus()) this.router.navigate(['/data/bus'], { queryParams: { updateBus: true, carId: carId } })
         else this.router.navigate(['/data/cars'], { queryParams: { updateCar: true, carId: carId } })
     }
 
-    updatePart(carId: number, partId: number) {
+    updatePartFunc(carId: number, partId: number) {
         if (this.bus()) this.router.navigate(['/data/bus'], { queryParams: { updatePart: true, partId: partId } })
         else this.router.navigate(['/data/cars'], { queryParams: { updatePart: true, partId: partId } })
     }
@@ -322,7 +344,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         return this.mode
     }
 
-    addPart(event: number) {
+    addPartFunc(event: number) {
         this.nextIdService.getNextId(this.bus() ? ItemType.BusPart : ItemType.CarPart).subscribe({
             next: (nextId) => {
                 if (nextId.error) {
@@ -407,12 +429,14 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     // #endregion
     //#region actions
-    addBus() {
-        this.router.navigate(['/data/bus'], { queryParams: { addBus: true } })
+    addBusFunc() {
+        this.$addBusFlag.set(true);
+        this.router.navigate(['/data/bus'], { queryParams: {  ad: 'new', addBus: true } })
     }
 
-    addCar() {
-        this.router.navigate(['/data/cars'], { queryParams: { addCar: true } })
+    addCarFunc() {
+        this.$addCarFlag.set(true);
+        this.router.navigate(['/data/cars'], { queryParams: { ad: 'new', addCar: true } })
     }
 
     newPart(carId: number) {
@@ -484,6 +508,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((car) => {
                 this.refreshCar(car)
+                goToPosition(this.currentCarId)
             })
     }
 
@@ -533,17 +558,19 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     }
 
     back(event: number) {
-        if (this.addCarFlag || this.addBusFlag || this.updateCarFlag || this.updateBusFlag) this.id = undefined
+        if (this.$addCarFlag() || this.$addBusFlag() || this.$updateCarFlag() || this.$updateBusFlag()) this.id = undefined
+        this.router.navigate(['/data/bus']);
         this.currentCarId = event
+        goToPosition(event)
     }
     //#endregion
     updateParamsFromQuery(params: ParamMap) {
-        this.addCarFlag = params.get('addCar') ? true : false
-        this.addBusFlag = params.get('addBus') ? true : false
-        this.addPartFlag = params.get('addPart') ? true : false
-        this.updateCarFlag = params.get('updateCar') ? true : false
-        this.updateBusFlag = params.get('updateBus') ? true : false
-        this.updatePartFlag = params.get('updatePart') ? true : false
+        this.$addCarFlag.set(params.get('addCar') ? true : false)
+        this.$addBusFlag.set(params.get('addBus') ? true : false)
+        this.$addPartFlag.set(params.get('addPart') ? true : false)
+        this.$updateCarFlag.set(params.get('updateCar') ? true : false)
+        this.$updateBusFlag.set(params.get('updateBus') ? true : false)
+        this.$updatePartFlag.set(params.get('updatePart') ? true : false)
         this.currentPartId = params.get('currentPartId') ? +params.get('currentPartId')! : undefined
     }
 }

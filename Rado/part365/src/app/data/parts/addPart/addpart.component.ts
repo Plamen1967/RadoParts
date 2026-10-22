@@ -1,7 +1,7 @@
 //#region import
 import { AfterViewInit, Component, computed, effect, HostListener, inject, input, OnDestroy, OnInit, output, signal, untracked } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router'
+import { ReactiveFormsModule } from '@angular/forms'
+import { NavigationStart, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { CarView } from '@model/car/carView'
@@ -10,7 +10,6 @@ import { FilterCar } from '@model/filters/filterCar'
 import { PartView } from '@model/part/partView'
 import { SelectOption } from '@model/selectOption'
 import { CarService } from '@services/car.service'
-import { ImageService } from '@services/image.service'
 import { NextIdService } from '@services/nextId.service'
 import { PartServiceService } from '@services/part/partService.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
@@ -41,10 +40,14 @@ import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
-import { form, FormField, min, required } from '@angular/forms/signals'
+import { form, FormField, min, minLength } from '@angular/forms/signals'
 import { Part } from '@model/part/part'
 import { toSignal } from '@angular/core/rxjs-interop'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
+import { CarNameId } from '@model/carNameId'
 //#endregion
+//#region interface
 interface addPartFormInterface {
     partForCar: 'car' | 'part'
     carId: number
@@ -71,6 +74,7 @@ interface addPartFormInterface {
     dealerSubCategoryName: string
     mainImageId: number
 }
+//#endregion
 //#region component
 @Component({
     selector: 'app-addpart',
@@ -132,24 +136,40 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     })
     addPartForm = form(this.addPartFormModel, (path) => {
         min(path.carId, 1, {
-            message: 'Required',
-            when: ({ valueOf }) => valueOf(path.partForCar) == 'car',
+            message: 'Моля изберете бус',
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'car' && this.bus() == 1,
+        })
+        min(path.carId, 1, {
+            message: 'Моля изберете кола',
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'car' && this.bus() == 0,
         })
         min(path.companyId, 1, {
-            message: 'Required',
+            message: 'Моля изберете компания',
             when: ({ valueOf }) => valueOf(path.partForCar) == 'part',
         })
         min(path.modelId, 1, {
-            message: 'Required',
+            message: 'Моля изебрете модел',
             when: ({ valueOf }) => valueOf(path.partForCar) == 'part',
         })
         min(path.modificationId, 1, {
-            message: 'Required',
+            message: 'Моля изебрете модификация',
             when: ({ valueOf }) => valueOf(path.partForCar) == 'part' && this.bus() == 1,
         })
-        required(path.price)
+        min(path.categoryId, 1, {
+            message: 'Моля въведете категория',
+        })
+        min(path.dealerSubCategoryId, 1, {
+            message: 'Моля въведете дилърска категория',
+        })
+        minLength(path.dealerSubCategoryName, 1, {
+            message: 'Моля въведете име дилърска категория',
+        })
+        min(path.price, 0.01, {
+            message: 'Моля въведете цена.',
+        })
     })
 
+    $submitted = signal(false)
     cars = signal<SelectOption[]>([])
     car?: CarView
     filterCar: FilterCar = new FilterCar()
@@ -168,7 +188,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     ngbModuleRef?: object
     closeResult?: string
     saving = signal<boolean>(false)
-    submitted = false
     numberOfPartsPerUser = 0
     imgURL?: string
     message?: string
@@ -210,25 +229,45 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     description = ''
     //#endregion
     //#region
-    private formBuilder: FormBuilder = inject(FormBuilder)
     private carService: CarService = inject(CarService)
     private partService: PartServiceService = inject(PartServiceService)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
-    private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
     private router: Router = inject(Router)
     private homeService: HomeService = inject(HomeService)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private userService: UserService = inject(UserService)
     private nextIdService: NextIdService = inject(NextIdService)
-    private imageService: ImageService = inject(ImageService)
-    private route: ActivatedRoute = inject(ActivatedRoute)
     private loggerService: LoggerService = inject(LoggerService)
     public popupService: PopUpService = inject(PopUpService)
     private userCountService: UserCountService = inject(UserCountService)
     private toastService: ToastService = inject(ToastService)
 
-    choice = computed(() => {
+    $carsResource = httpResource<CarNameId[]>(() => `${environment.restAPI}/car/GetCarNameId?bus=${this.bus()}`)
+
+    $selectedCarResource = httpResource<CarView>(() => `${environment.restAPI}/car/${this.addPartForm.carId().value()}`)
+
+    $choice = computed(() => {
         return this.bus() ? 'бус' : 'кола'
+    })
+
+    $description = computed(() => {
+        if (!this.$selectedCarResource.hasValue()) return ''
+        if (!this.addPartForm.carId().value()) return ''
+
+        const car = this.$selectedCarResource.value()
+        return `${car.regNumber} - ${car.companyName} ${car.modelName} ${car.modificationId ? car.modificationName : ''}`
+    })
+
+    $cars = computed(() => {
+        const cars = this.$carsResource.value()?.map((car) => {
+            return {
+                value: car.carId,
+                text: car.regNumber,
+            }
+        })
+        cars?.unshift({ value: 0, text: `Избери ${this.$choice()}` })
+        console.log(`Cars: ${cars}`)
+        return cars ?? []
     })
 
     $mode = computed(() => {
@@ -253,13 +292,10 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     $partId = computed(() => {
         console.log(this.partyId(), this.id(), this.partIdNew())
         if (this.partyId()) return this.partyId()
-        else if (this.partIdNew()) return +this.partIdNew()!          
+        else if (this.partIdNew()) return +this.partIdNew()!
         else if (this.id()) return this.id()
         else if (this.displayPartView() && this.displayPartView()?.id) return this.displayPartView()?.id
-        else return 0;
-        // else {
-        //     return $nextId().nextId
-        // }
+        else return 0
     })
 
     constructor() {
@@ -274,11 +310,19 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             }
         })
 
-        effect(() => {
-            console.log(`Is new : ${this.newPart()}`)
-        })
         this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId! }))
         //#region effect
+        effect(() => {
+            const isCar = this.addPartForm.partForCar().value() === 'car'
+            if (!isCar) this.addPartFormModel.update((value) => ({ ...value, carId: 0 }))
+        })
+
+        effect(() => {
+            console.log(`Part Id: ${this.$partId()} ${this.addPartForm.categoryId().value()}}`)
+        })
+        effect(() => {
+            console.log(`Car Id change: ${this.addPartForm.carId().value()}`)
+        })
         effect(() => {
             if (this.$mode() != UpdateEnum.New && this.$partId()) {
                 untracked(() => {
@@ -287,19 +331,13 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             }
         })
 
-        effect(() => {
-            console.log(`Party Id Add Part: ${this.id()} ${this.partId()}`)
-        })
         const $nextId = toSignal(this.nextIdService.getNextId(this.bus() ? ItemType.BusPart : ItemType.CarPart), { initialValue: { nextId: 0, error: '' } })
         if ($nextId().error?.length) {
-        untracked(() => {
-            this.$error.set($nextId().error!)
-        })
-    }
+            untracked(() => {
+                this.$error.set($nextId().error!)
+            })
+        }
 
-        effect(() => {
-            console.log(`Party Id: ${this.$partId()}`)
-        })
         effect(() => {
             const mode = this.$mode()
             if (mode == UpdateEnum.New) {
@@ -316,24 +354,18 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 })
             }
         })
-        effect(() => {
-            console.log(`Form Value: ${this.addPartForm().valid()}`)
-        })
-        effect(() => {
-            console.log(`Category Selected ${this.addPartForm.categoryId().value()}`)
-        })
-        effect(() => {
-            this.carService.fetchCarNameId(this.bus()).subscribe((res) =>
-                this.cars.set(
-                    res.map((car) => {
-                        return {
-                            value: car.carId,
-                            text: car.regNumber,
-                        }
-                    })
-                )
-            )
-        })
+        // effect(() => {
+        //     this.carService.fetchCarNameId(this.bus()).subscribe((res) =>
+        //         this.cars.set(
+        //             res.map((car) => {
+        //                 return {
+        //                     value: car.carId,
+        //                     text: car.regNumber,
+        //                 }
+        //             })
+        //         )
+        //     )
+        // })
 
         effect(() => {
             const seller = this.$seller()
@@ -348,16 +380,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 }
             })
         })
-        effect(() => console.log(`Category Value add part ${this.addPartForm.categoryId().value()}`))
-        effect(() => {
-            console.log(`Add Part Form Value is: ${JSON.stringify(this.addPartForm().value())}`)
-            console.log(`Add Part Model Value is: ${JSON.stringify(this.addPartFormModel())}`)
-        })
-
-        effect(() => {
-            console.log(`newpart = ${this.newPart()}`)
-        })
-
         effect(() => {
             if (this.displayPartView()) {
                 this.images = this.displayPartView()!.images ?? []
@@ -367,6 +389,10 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
         effect(() => {
             this.calculateBHP(this.addPartFormModel().powerkWh)
+        })
+
+        effect(() => {
+            console.log(`Errors : ${this.addPartForm().errors()}`)
         })
         effect(() => {
             this.calculatekWh(this.addPartFormModel().powerBHP)
@@ -456,7 +482,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
     updateCar(car: CarView) {
         this.car = car
-        this.addPartFormModel.update(value => ({...value, carId: this.car?.carId ?? 0}))
+        this.addPartFormModel.update((value) => ({ ...value, carId: this.car?.carId ?? 0 }))
         if (this.car?.engineType) this.engineTypeName = this.staticSelectionService.EngineType.find((x) => x.value === this.car?.engineType)?.text
         else this.engineTypeName = ''
         this.description = `${this.car.companyName} ${this.car.modelName} `
@@ -551,8 +577,10 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     onSubmit() {
-        this.submitted = true
+        this.$submitted.set(true)
         if (this.addPartForm().invalid()) {
+            console.log(this.addPartForm().errors())
+            console.log(this.addPartForm().errorSummary())
             this.showError()
             return
         }
@@ -577,7 +605,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 snackBarRef.afterDismissed().subscribe(() => {
                     if (this.$mode() === UpdateEnum.New) {
                         this.images = []
-                        this.submitted = false
+                        this.$submitted.set(false)
                         const partForCar = this.addPartForm.partForCar().value()
                         this.images = []
                         this.addPartForm().reset()

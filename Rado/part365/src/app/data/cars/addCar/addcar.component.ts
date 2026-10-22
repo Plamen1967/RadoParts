@@ -33,6 +33,9 @@ import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
 import { AddCarParam } from './addCarParam'
 import { form, FormField, min, minLength } from '@angular/forms/signals'
+import { NextId } from '@model/nextId'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
 //#endregion
 interface addCarFormModelInterface {
     companyId: number
@@ -93,9 +96,8 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             when: () => !this.bus(),
             error: { kind: 'not-selected', message: 'Моля изберете модификация' }
         });
-        minLength(schema.regNumber, 1, {
-            error: { kind: 'required', message: 'Моля въведете регистрационен номер' }
-        });
+        minLength(schema.regNumber, 1, {message: 'Моля въведете регистрационен номер' });
+        minLength(schema.regNumber, 3, {message: 'Password must be at least 8 characters'});        
     })
     //#region form
     //#region services
@@ -169,7 +171,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     yearFrom = this.labels.YEAR_START
     yearTo: number
     years?: SelectOption[]
-    saving = false
+    saving = signal(false)
     closeResult = ''
     formInitialValues: object
     submitted = signal<boolean>(false)
@@ -177,16 +179,28 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     mainImageId?: number = 0
     modelId = 0
     companyId = 0
-    userId = 0
+    userId = signal(0)
     query = 0
     images: ImageData[] = []
     UpdateFlag = true
     allowBack = false
-    
+    newCarId = signal(0)    
     //#endregion
+    $carId = computed(() => this.addCarParam().carId ?? this.carId())
+    $mode = computed(() => this.addCarParam().mode ?? this.mode())
 
+    time = signal(0)
+    nextResource = httpResource<NextId>(() => ({
+        url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}&time=${this.time()}`,
+    }))
     constructor() {
         super()
+        effect(() => {
+            console.log(`Add Car Errors: ${this.addCarForm().errors()}`)
+        })
+        effect(() => {
+            console.log(`Add Car Bus: ${this.bus()}`)
+        })
         //#region form initialization
         effect(() => {
             this.addCarFormModel().powerkWh = this.addCarForm.powerBHP().value()
@@ -222,7 +236,9 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             //     this.addCarForm.controls['modificationId'].setValidators([Validators.required])
             // }
             this.label = this.bus() ? 'Име на бус' : 'Име на кола'
+            this.time.set(Date.now())
         })
+
 
         effect(() => {
             if (this.displayPartView() !== undefined) {
@@ -266,7 +282,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         this.setYears()
 
         this.formInitialValues = this.addCarForm().value()
-        this.userId = this.loggedUser?.userId ?? 0
+        this.userId.set(this.loggedUser?.userId ?? 0)
     }
 
     ngOnInit() {
@@ -291,47 +307,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.goBack()
         }
     }
-    goBack() {
-        history.back()
-    }
-
-    onSubmit() {
-        this.submitted.set(true)
-        if (!this.addCarForm().valid()) {
-            console.log('Form is company:', this.addCarForm.companyId().errors())
-            this.toastService.show('Моля попълнете задължителната информация')
-            return
-        }
-
-        if (this.ad()) {
-            this.carService.checkForUniqueness(this.addCarFormModel().regNumber, this.bus() ?? 0).subscribe({
-                next: (res) => {
-                    if (res == false) {
-                        const busCar = this.bus() ? 'Бус' : 'Кола'
-                        const message = `${busCar} с това име "${this.addCarFormModel().regNumber}" вече съществува`
-                        this.toastService.show(message)
-                    } else {
-                        this.addCar(UpdateEnum.New)
-                    }
-                },
-            })
-        } else {
-            this.addCar(UpdateEnum.Update)
-        }
-    }
-    //#endregion
-
-    //#endregion events
-    // onBusChange(f: number) {
-    //     if (f) {
-    //         this.addCarForm.controls['modificationId'].clearValidators()
-    //         this.addCarForm.controls['modificationId'].updateValueAndValidity()
-    //     } else {
-    //         this.addCarForm.controls['modificationId'].setValidators([Validators.required])
-    //     }
-    //     this.label = this.bus() ? 'Име на бус' : 'Име на кола'
-    // }
-
     onCompanyChange(companyId: number) {
         this.companyId = companyId
     }
@@ -383,63 +358,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         })
     }
 
-    loadCar() {
-        if (!this.carId()) {
-            this.mode_ = UpdateEnum.New
-        }
-        if (this.update()) {
-            this.mode_ = UpdateEnum.Update
-        }
-        if (this.carId() && this.mode() == UpdateEnum.Update) {
-            this.carService.fetchCar(this.carId()!).subscribe({
-                next: (res) => {
-                    this.car = { ...res }
-                    this.carId_ = this.car.carId
-                    this.mainImageId = this.car.mainImageId
-                    this.bus_ = this.car.bus!
-                    this.mode_ = UpdateEnum.Update
-
-                    this.clearZeros()
-                    this.addCarFormModel.set(this.car as unknown as addCarFormModelInterface)
-                    this.inialValue = this.addCarFormModel()
-                },
-                error: (error) => {
-                    this.loggerService.logError(error)
-                    this.showMessageNotFound()
-                },
-                complete: () => {
-                    return
-                },
-            })
-        } else {
-            this.nextIdService.getNextId(this.bus() ? ItemType.OnlyBus : ItemType.OnlyCar).subscribe({
-                next: (id) => {
-                    if (id.nextId) {
-                        this.carId_ = id.nextId
-                    } else if (id.error) {
-                        this.popupService.openWithTimeout('Съобщение', id.error, 2000).subscribe(() => {
-                            this.goBack()
-                        })
-                    } else {
-                        this.popupService.openWithTimeout('Съобщение', 'Грешка при генериране на Id за новата кола!', 2000).subscribe(() => {
-                            this.goBack()
-                        })
-                    }
-                },
-                error: (error) => {
-                    this.loggerService.logError(error)
-                    this.popupService.openWithTimeout('Съобщение', 'Нова кола не може да бъде добавена!', 2000).subscribe(() => {
-                        this.goBack()
-                    })
-                },
-                complete: () => {
-                    return
-                },
-            })
-
-            this.inialValue = this.addCarFormModel()
-        }
-    }
     get action() {
         if (this.mode() == UpdateEnum.Update) {
             return this.labels.UPDATE
@@ -480,21 +398,23 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             millage: Number(formModel.millage),
             mainImageId: Number(formModel.mainImageId),
             bus: this.bus(),
-            carId: this.carId() ?? this.carId_,
-            userId: this.userId,
+            carId: this.carId() ?? this.$carId() ?? this.newCarId(),
+            userId: this.userId(),
         })
-        this.saving = true
+        this.saving.set(true)
+
         this.carService.addUpdateCar(carUpdated, update).subscribe({
             next: (val) => {
                 this.carSaved(val)
             },
             error: (error) => {
                 this.popupService.openWithTimeout('Съобщение', error.error.message, 2000)
-                this.saving = false
+                this.saving.set(false)
                 this.loggerService.logError(error)
                 console.log(error)
             },
             complete: () => {
+                this.saving.set(false)
                 return
             },
         })
@@ -502,7 +422,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     carSaved(val: DisplayPartView) {
         this.carService.currentCarId = val.id
-        this.saving = false
+        this.saving.set(false)
         const type = this.bus() ? 'Буса' : 'Колата'
         const mode = this.mode() === UpdateEnum.Update ? 'записана' : 'добавена'
         const content = `${type} е успешно ${mode}`
@@ -513,8 +433,8 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             this.homeService.updateDisplayPartView(val)
             this.submitted.set(false)
             this.saved.emit(val.id!)
-            if (this.ad() === 'new') {
-                this.carService.currentCarId = val.id
+            this.carService.currentCarId = val.id
+            if (this.ad() != 'new') {
                 if (this.bus() === 1) {
                     this.router.navigate(['/data/bus'])
                 } else {
@@ -526,5 +446,85 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     showMessageNotFound() {
         this.popupService.openWithTimeout('Съобщение', 'Частта вече не е налична!').subscribe(() => this.goBack())
+    }
+
+    goBack() {
+        this.noChange.emit(this.$carId())
+    }
+
+    onSubmit() {
+        this.submitted.set(true)
+        if (!this.addCarForm().valid()) {
+            console.log('Form is company:', this.addCarForm.companyId().errors(), this.addCarForm().value())
+            this.toastService.show('Моля попълнете задължителната информация')
+            return
+        }
+
+        if (this.$mode() === UpdateEnum.New) {
+            this.carService.checkForUniqueness(this.addCarFormModel().regNumber, this.bus() ?? 0).subscribe({
+                next: (res) => {
+                    if (res == false) {
+                        const busCar = this.bus() ? 'Бус' : 'Кола'
+                        const message = `${busCar} с това име "${this.addCarFormModel().regNumber}" вече съществува`
+                        this.toastService.show(message)
+                    } else {
+                        this.addCar(UpdateEnum.New)
+                    }
+                },
+            })
+        } else {
+            this.addCar(UpdateEnum.Update)
+        }
+    }
+    loadCar() {
+        if (this.$carId() && this.$mode() == UpdateEnum.Update) {
+            this.carService.fetchCar(this.$carId()!).subscribe({
+                next: (res) => {
+                    this.car = { ...res }
+                    this.carId_ = this.car.carId
+                    this.mainImageId = this.car.mainImageId
+                    this.bus_ = this.car.bus!
+                    this.mode_ = UpdateEnum.Update
+
+                    this.clearZeros()
+                    this.addCarFormModel.update((value) => ({...value, ...this.car}))
+                    this.inialValue = this.addCarFormModel()
+                },
+                error: (error) => {
+                    this.loggerService.logError(error)
+                    this.showMessageNotFound()
+                },
+                complete: () => {
+                    return
+                },
+            })
+        } else {
+            this.nextIdService.getNextId(this.bus() ? ItemType.OnlyBus : ItemType.OnlyCar).subscribe({
+                next: (id) => {
+                    if (id.nextId) {
+                        this.newCarId.set(id.nextId)
+                    } else if (id.error) {
+                        this.popupService.openWithTimeout('Съобщение', id.error, 2000).subscribe(() => {
+                            this.goBack()
+                        })
+                    } else {
+                        this.popupService.openWithTimeout('Съобщение', 'Грешка при генериране на Id за новата кола!', 2000).subscribe(() => {
+                            this.goBack()
+                        })
+                    }
+                },
+                error: (error) => {
+                    this.loggerService.logError(error)
+                    this.popupService.openWithTimeout('Съобщение', 'Нова кола не може да бъде добавена!', 2000).subscribe(() => {
+                        this.goBack()
+                    })
+                },
+                complete: () => {
+                    return
+                },
+            })
+
+            this.inialValue = this.addCarFormModel()
+        }
     }
 }

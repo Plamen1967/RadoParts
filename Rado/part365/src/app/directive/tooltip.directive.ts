@@ -31,7 +31,7 @@ export class TooltipDirective implements OnDestroy {
     @HostListener('mouseleave') onMouseLeave() {
         const elem = document.getElementById(this.id)
         if (elem) {
-            this.el.nativeElement?.removeChild(elem)
+            document.removeChild(elem)
         }
         if (this.timer) clearTimeout(this.timer)
     }

@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, DestroyRef, effect, inject, input, model } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, effect, inject, input, model, signal } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { FormValueControl, ValidationError } from '@angular/forms/signals'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
@@ -30,7 +30,7 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     _bus = 0
     _itemType = ItemType.All
     loaded = false
-
+    $companies = signal<OptionItem[]>([])
     companyService: CompanyService = inject(CompanyService)
     formBuilder: FormBuilder = inject(FormBuilder)
     errorService: ErrorService = inject(ErrorService)
@@ -49,6 +49,10 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     constructor() {
         effect(() => {
             console.log( "Company Choice Value", this.value(), this.config().bus )
+        })
+
+        effect(() => {
+            console.log(`Companies: ${this.$companies()}`)
         })
 
         effect(() => {
@@ -124,6 +128,7 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
 
         let count = 0
         this.companies().forEach((item) => (count += item.count))
+        this.$companies.set(this.companies());
         this.loaded = true
     }
 }

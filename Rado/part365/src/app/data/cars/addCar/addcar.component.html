@@ -1,5 +1,5 @@
 <div class="container">
-    @if (saving) {
+    @if (saving()) {
         <div>
             <button class="btn btn-primary" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -9,23 +9,23 @@
     } @else {
         <div>
             @if(bus()) {
-                <div class="title">Кола на части</div>
-            }@else {
                 <div class="title">Бус на части</div>
+            }@else {
+                <div class="title">Кола на части</div>
             }
         </div>
         <div class="card p-2" style="background-color: khaki">
             <form autocomplete="off">
                 <div class="row g-3">
                     <div class="col-sm-2 min200px">
-                        <app-company-choise testId="companyId" [config]="{ required: true, submitted: submitted(), userId: userId, bus: bus()!, all: true }" [formField]="addCarForm.companyId"> </app-company-choise>
+                        <app-company-choise testId="companyId" [config]="{ required: true, submitted: submitted(), userId: userId(), bus: bus(), all: true }" [formField]="addCarForm.companyId"> </app-company-choise>
                     </div>
                     @if (addCarForm.companyId().value()) {
                         <div class="col-sm-2 min300px" style="min-width: 300px">
                             <app-model-choice
                                 [isRequired]=true
                                 [formField]="addCarForm.modelId"
-                                [userId]="userId"
+                                [userId]="userId()"
                                 [all]="true"
                                 [submitted]="submitted()"
                                 [companyId]="addCarForm.companyId().value()!"
@@ -41,7 +41,7 @@
                                 <app-modification-choice
                                     [isRequired]="true"
                                     [modelsId]="addCarForm.modelId().value()!"
-                                    [userId]="userId"
+                                    [userId]="userId()"
                                     [all]="true"
                                     [multiselection]="false"
                                     [submitted]="submitted()"   
@@ -99,7 +99,7 @@
         </div>
     }
     <div class="row mt-3" style="position: relative">
-        <app-imagelist [id]="carId() ?? carId_!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+        <app-imagelist [itemId]="$carId() ?? newCarId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
         <div class="d-inline-flex justify-content-end position-buttons w-100">
             <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="UpdateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div>

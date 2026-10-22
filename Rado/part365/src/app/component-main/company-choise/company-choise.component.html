@@ -11,7 +11,7 @@
         [errors]="errors()"
         [isRequired]="config().required ?? false"
         [submitted]="config().submitted ?? false"
-        [data]="companies()"
+        [data]="$companies()"
         [showCount]="config().showCount ?? false"
         (changeOption)="value.set(+$event)"
     />

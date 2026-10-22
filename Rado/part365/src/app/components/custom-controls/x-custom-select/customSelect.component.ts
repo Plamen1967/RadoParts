@@ -39,10 +39,9 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
     placeHolder = input<string | undefined>(undefined)
     showCount = input<boolean>(true)
     select = input<number | undefined>(undefined)
-    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     changeOption = output<number|string>()
     closeDialog = output<ElementRef>()
-
+    errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     public dialog: MatDialog = inject(MatDialog)
     private alertService: AlertService = inject(AlertService)
     private destroyRef: DestroyRef = inject(DestroyRef)

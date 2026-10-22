@@ -2,7 +2,7 @@ import { Component, computed, effect, input, Input, model, output } from '@angul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SelectOption } from '@model/selectOption'
 import { SelectBaseComponent } from './select-base/select-base.component'
-import { FormValueControl } from '@angular/forms/signals'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 
 @Component({
     selector: 'app-select',
@@ -17,19 +17,16 @@ export class SelectComponent implements FormValueControl<number> {
     hint = input<string | undefined>();
     hasError = input(false);
     isDisabled = input(false);
-    IsInvalid = input(false);
     isRequired = input(false);
     group = input<boolean | undefined>()
     groupSelection = input(false)
+    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     submitted = input(false)
     id = input('selectId')
     data = input.required<SelectOption[]>();
     // readonly error = input(ValidationErrors | null);
 
-    error() {
-        return this.hasError() ? { required: true } : null
-    }
-    
+   
     @Input() set initialValue(value: number ) {
         this.value.set(value)
         this.selectedValue24 = value

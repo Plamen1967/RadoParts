@@ -1,8 +1,8 @@
 //#region imports
 import { Component, DestroyRef, ElementRef, inject, model, input, output, effect, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { FormValueControl } from '@angular/forms/signals'
+import { ReactiveFormsModule } from '@angular/forms'
+import { FormValueControl, ValidationError } from '@angular/forms/signals'
 import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { DealerSubCategory } from '@model/category-subcategory/dealerSubCategory'
@@ -29,6 +29,7 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
     protected onTouched?() {}
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     protected onChange?(_: number) {}
+    readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     all = input<boolean>(false)
     multiselection = input<boolean>(true)
     submitted = input<boolean>(false)
@@ -38,7 +39,6 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
     dealerSubCategoryChanged = output<DealerSubCategory>()
     //#region services
     public dealerSubCategoryService: DealerSubCategoryService
-    private formBuilder: FormBuilder
     public errorService: ErrorService
     private element: ElementRef
     private destroyRef: DestroyRef
@@ -47,7 +47,6 @@ export class DealersubcategoryChoiceComponent implements FormValueControl<number
     constructor() {
         //#region inject services
         this.dealerSubCategoryService = inject(DealerSubCategoryService)
-        this.formBuilder = inject(FormBuilder)
         this.errorService = inject(ErrorService)
         this.element = inject(ElementRef)
         this.destroyRef = inject(DestroyRef)

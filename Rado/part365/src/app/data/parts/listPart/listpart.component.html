@@ -147,7 +147,12 @@
             }
         }
     </div>
-} @else {
-    <app-addpart [partIdNew]="getId()" [bus]="bus()" [add]="addPartFlag" [ad]="'new'" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+} @else if (this.update())
+{
+    <app-updatepart [id]="$getId()" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-updatepart>
+}
+@else
+{
+    <app-addpart [partIdNew]="$getId()" [bus]="bus()" [add]="addPartFlag" [ad]="'new'" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
 }
 <app-gotop></app-gotop>

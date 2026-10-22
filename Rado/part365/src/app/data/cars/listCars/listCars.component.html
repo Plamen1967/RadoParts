@@ -1,13 +1,13 @@
-@if (!id) {
+@if ($update() === false) {
     <div class="container">
         @if (userCount$ | async; as userCount) {
             @if (userCount && userCount.partCarCount + userCount.partBusCount) {
-                <app-listtitle [title]="title" [number]="getValue(userCount)"></app-listtitle>
+                <app-listtitle [title]="$title()" [number]="getValue(userCount)"></app-listtitle>
 
                 <span class="count"></span>
             }
         }
-        <div class="shadow p-2 rounded card card-form-spec mb-2">
+        <div class="shadow p-2 rounded card card-form-spec mt-4">
             <form>
                 <div class="row g-3">
                     <div class="row g-2 mt-2">
@@ -16,13 +16,13 @@
                         </div>
                     </div>
                     <div class="max300px">
-                        <app-company-choise [config]="{ itemType: itemType, userId: userId!, bus: bus(), showCount: true, all: true }" [formField]="listForm.companyId"> </app-company-choise>
+                        <app-company-choise [config]="{ itemType: $itemType(), userId: userId!, bus: bus(), showCount: true, all: true }" [formField]="listForm.companyId"> </app-company-choise>
                     </div>
                     @if (companyId) {
                         <div class="max300px">
                             <app-model-choice
                                 [formField]="listForm.modelId"
-                                [itemType]="itemType"
+                                [itemType]="$itemType()"
                                 [all]="true"
                                 [userId]="userId!"
                                 [companyId]="companyId!"
@@ -36,7 +36,7 @@
                         @if (!bus && modelId) {
                             <div class="max350px">
                                 <app-modification-choice
-                                    [itemType]="itemType"
+                                    [itemType]="$itemType()"
                                     [userId]="userId!"
                                     [modelsId]="modelId"
                                     [all]="true"
@@ -64,18 +64,17 @@
                             <button type="button" #submit class="btn btn-primary mb-2 btn-sm" data-cy="clear" (click)="clearForm()">Изчисти филтъра</button>
                         </div>
                     </div>
-
-                    @if (bus()) {
-                        <div>
-                            <button type="button" class="btn btn-success btn-sm" data-cy="addCar" (click)="addBus()">{{ labels.ADD }} {{ labels.BUS }}</button>
-                        </div>
-                    } @else {
-                        <div>
-                            <button type="button" class="btn btn-success btn-sm" data-cy="addCar" (click)="addCar()">{{ labels.ADD }} {{ labels.CAR }}</button>
-                        </div>
-                    }
                 </div>
             </form>
+            @if (bus()) {
+                <div>
+                    <button type="button" class="btn btn-success btn-sm" data-cy="addCar" (click)="addBusFunc()">{{ labels.ADD }} {{ labels.BUS }}</button>
+                </div>
+            } @else {
+                <div>
+                    <button type="button" class="btn btn-success btn-sm" data-cy="addCar" (click)="addCarFunc()">{{ labels.ADD }} {{ labels.CAR }}</button>
+                </div>
+            }
             @if (cars().length) {
                 @if (searched && numberPages > 1) {
                     <app-navigator class="me-1" [numberPages]="numberPages!" [currentPage]="currentPage!" [hasSort]="false" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
@@ -90,7 +89,7 @@
                             [allowUpdate]="true"
                             [showPart]="showParts"
                             (action)="actionCar($event)"
-                            (addPartCarId)="addPart($event)">
+                            (addPartCarId)="addPartFunc($event)">
                         </app-dealerview>
                     </div>
                 }
@@ -115,17 +114,17 @@
             }
         </div>
     </div>
-} @else if (addCarFlag) {
-    <app-addcar [addCarParam]="{ carId: id, bus:0, add: addCarFlag} "  (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
-} @else if (addBusFlag) {
-    <app-addcar [addCarParam]="{ carId: id, bus:1, add: addBusFlag} " (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
-} @else if (addPartFlag) {
-    <app-addpart [id]="id" [bus]="bus()" [add]="addPartFlag" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
-} @else if (updateCarFlag) {
-    <app-updatecar [id]="id" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
-} @else if (updateBusFlag) {
-    <app-updatecar [id]="id" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
-} @else if (updatePartFlag) {
+} @else if ($addCarFlag()) {
+    <app-addcar [addCarParam]="{ carId: id, bus: 0, add: $addCarFlag() }" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
+} @else if ($addBusFlag()) {
+    <app-addcar [addCarParam]="{ carId: id, bus: 1, add: $addCarFlag()}" [bus]=1 (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
+} @else if ($addPartFlag()) {
+    <app-addpart [partIdNew]="id" [bus]="bus()" [add]="$addPartFlag()" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
+} @else if ($updateCarFlag()) {
+    <app-updatecar [id]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
+} @else if ($updateBusFlag()) {
+    <app-updatecar [id]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
+} @else if ($updatePartFlag()) {
     <app-updatepart [id]="id" (saved)="savedPart($event)" (noChange)="back($event)"></app-updatepart>
 }
 <app-gotop></app-gotop>
