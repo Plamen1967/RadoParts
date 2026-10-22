@@ -6,7 +6,7 @@
                 class="form-select form-select-sm shadow"
                 [(ngModel)]="selectedValue4"
                 [ngClass]="{ 'is-invalid': submitted() && isInvalid() }"
-                (change)="onChangeSelect()">
+                (change)="onChangeSelect($event)">
                 @for (element of _data(); track element.value) {
                     <option [ngStyle]="{ 'background-color': element.color }" [attr.disabled]="element.isDisabled" [ngValue]="element.value">{{ element.text }} {{ element.count }}</option>
                 }

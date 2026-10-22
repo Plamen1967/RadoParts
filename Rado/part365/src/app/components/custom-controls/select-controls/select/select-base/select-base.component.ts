@@ -50,7 +50,9 @@ export class SelectBaseComponent{
         //     console.log(`Select Base Value: ${this.data()}`)
         // })
     }
-    onChangeSelect() {
+    onChangeSelect(event: Event) {
+        event.preventDefault()
+        event.stopPropagation()
         this.value.set(this.selectedValue4 ?? 0)
         this.changeOption.emit(this.value())
     }
