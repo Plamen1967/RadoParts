@@ -153,7 +153,7 @@ namespace Rado.Datasets
                     await connection.OpenAsync();
 
                     if (rimWithTyre.MainPicture == null) rimWithTyre.MainPicture = "";
-
+                    if (rimWithTyre.Description == null) rimWithTyre.Description = "";
                     DateTime dateTime = DateTime.Now;
                     using (SqlCommand command = new SqlCommand(storeProcedureName, connection))
                     {
@@ -329,10 +329,7 @@ namespace Rado.Datasets
         {
             RimWithTyreView rimWithTyre = null;
 
-            await Task.Run(() =>
-            {
-                rimWithTyre = GetRimWithTyreById(rimId);
-            });
+            rimWithTyre = GetRimWithTyreById(rimId);
 
             return rimWithTyre;
         }

@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, DestroyRef, effect, inject, OnInit, signal } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
+import { AfterViewInit, Component, computed, effect, inject, input, OnInit, signal, untracked } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { Observable, Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -7,7 +7,7 @@ import { AuthenticatedUser } from '@model/authenticatedUser'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ItemType } from '@model/enum/itemType.enum'
 import { UpdateEnum } from '@model/enum/update.enum'
-import { DisplayPartView } from '@model/displayPartView'
+import { DisplayPartView, Enrich } from '@model/displayPartView'
 import { QueryParam } from '@model/queryParam'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
@@ -16,9 +16,7 @@ import { FilterRimWithTyre } from '@model/FilterRimWithTyre'
 import { SearchPartService } from '@services/searchPart.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { AuthenticationService } from '@services/authentication/authentication.service'
-import { ModelService } from '@services/company-model-modification/model.service'
 import { HomeService } from '@services/home.service'
-import { LoadingService } from '@services/loading.service'
 import { StateService } from '@services/storage/state.service'
 import { TyreService } from '@services/tyre/tyre.service'
 import { RadioGroupListComponent } from '@components/custom-controls/radioGroupList/radiogrouplist.component'
@@ -44,6 +42,10 @@ import { UserCount } from '@model/userCount'
 import { ButtonMenuComponent } from '@components/custom-controls/buttonMenu/buttonMenu.component'
 import { MenuOption } from '@model/menuOption'
 import { form, FormField } from '@angular/forms/signals'
+import AddTyreComponent from '../addTyre/addTyre.component'
+import UpdateTyreComponent from '../updateTyre/updateTyre.component'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
 
 interface searchFormInterface {
     category: ItemType
@@ -84,6 +86,8 @@ interface searchFormInterface {
         RegionComponent,
         ButtonMenuComponent,
         FormField,
+        AddTyreComponent,
+        UpdateTyreComponent,
     ],
 })
 export default class ListTyreComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -108,6 +112,18 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     user?: AuthenticatedUser
     loading = signal<boolean>(false)
 
+    $tyreResource = httpResource<DisplayPartView>(() => {
+        if (this.currentId()) 
+            return `${environment.restAPI}/rimWithTyre/GetDisplayTyreView/?rimWithTyreId=${this.currentId()}`
+        else return undefined
+    })
+
+    $displayPartView = computed(() => {
+        this.currentId()
+        this.refreshTyre(this.$tyreResource.value()!)
+        return this.$tyreResource.value()
+    })
+
     categories = [
         { value: ItemType.Tyre, text: 'Гуми' },
         { value: ItemType.Rim, text: 'Джанти' },
@@ -116,9 +132,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     models: SelectOption[] = [{ value: 0, text: CONSTANT.ALL }]
     selectedCategory = ItemType.Tyre
     mode: UpdateEnum = UpdateEnum.View
-    allItems: DisplayPartView[] = []
-    pageItems: DisplayPartView[] = []
-    currentId?: number
+    allItems = signal<DisplayPartView[]>([])
     currentTyreId?: number
     deleteTyreId?: number
     currentPage = 0
@@ -160,41 +174,81 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     private readonly _autoSearch$: Subject<FilterRimWithTyre>
     private readonly _debounce: number
     private readonly _destroy$: Subject<boolean>
-    private formBuilder: FormBuilder
     private searchPartService: SearchPartService
     public staticSelectionService: StaticSelectionService
     private authernticationService: AuthenticationService
     private tyreService: TyreService
     private homeService: HomeService
     private popupService: PopUpService
-    private loadingService: LoadingService
-    private modelService: ModelService
     private stateService: StateService
     private router: Router
     private activatedRoute: ActivatedRoute
     private confirmService: ConfirmServiceService
     private alertService: AlertService
     private userCountService: UserCountService
-    private destroyRef: DestroyRef
+    $addTyreFlag = signal(false)
+    $addRimFlag = signal(false)
+    $addRimWithTyreFlag = signal(false)
+    $updateTyreFlag = signal(false)
+    $updateRimFlag = signal(false)
+    $updateRimWithTyreFlag = signal(false)
+    type = signal<ItemType>(ItemType.Tyre)
+    addTyre = input(0)
+    addRim = input(0)
+    addRimWithTyre = input(0)
+    updateTyre = input(0)
+    updateRim = input(0)
+    updateRimWithTyre = input(0)
+    addCar = input(0)
+    addBus = input(0)
+    addPart = input(0)
+
+    id = signal(0)
+    currentId = signal(0)
+
+    $update = computed(() => {
+        if (this.$addTyreFlag() || this.$updateRimFlag()) return true
+        if (this.updateTyre() || this.updateRim() || this.updateRimWithTyre() || this.addTyre() || this.addRim() || this.addRimWithTyre()) return true
+        return false
+    })
+
+    $pageItems = computed(() => {
+        return this.$getPageData()
+    })
+
+    $getPageData = computed(() => {
+        return this.allItems().slice((this.currentPage - 1) * 10, this.currentPage * 10)
+    })
+
 
     constructor() {
         super()
-        this.formBuilder = inject(FormBuilder)
+
+        effect(() => {
+            console.log(`Tyre Resource: ${JSON.stringify(this.$tyreResource.value())}`)
+            untracked(() => {
+                this.refreshTyre(this.$tyreResource.value()!);
+            })
+        })
+        effect(() => {
+            console.log(`Set current: ${this.currentId()}`)
+        })
+
+        effect(() => {
+            console.log(`Tyres: ${this.$getPageData()}`)
+        })
         this.searchPartService = inject(SearchPartService)
         this.staticSelectionService = inject(StaticSelectionService)
         this.authernticationService = inject(AuthenticationService)
         this.tyreService = inject(TyreService)
         this.homeService = inject(HomeService)
         this.popupService = inject(PopUpService)
-        this.loadingService = inject(LoadingService)
-        this.modelService = inject(ModelService)
         this.stateService = inject(StateService)
         this.router = inject(Router)
         this.activatedRoute = inject(ActivatedRoute)
         this.confirmService = inject(ConfirmServiceService)
         this.alertService = inject(AlertService)
         this.userCountService = inject(UserCountService)
-        this.destroyRef = inject(DestroyRef)
 
         this.tyreCompanies = [{ value: 0, text: 'Всички' }, ...this.staticSelectionService.TyreProducers]
         this.boltDistances = [{ value: 0, text: 'Всички' }, ...this.staticSelectionService.RimBoltDistance]
@@ -216,8 +270,8 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         this.user = this.authernticationService.currentUserValue
         this.userId = this.user?.userId ?? 0
 
-        effect(() => this.categoryChanged(this.searchForm.category().value()))
-        effect(() => this.categoryChanged(this.searchForm.companyId().value()))
+        // effect(() => this.categoryChanged(this.searchForm.category().value()))
+        // effect(() => this.categoryChanged(this.searchForm.companyId().value()))
         effect(() => {
             this.searchForm().value()
             this.search()
@@ -229,16 +283,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     ngOnInit() {
-        this.currentId = this.stateService.currentId
-        this.activatedRoute.queryParams.subscribe((params) => {
-            this.params = params
-            if (this.params.currentId!) {
-                this.currentId = +this.params.currentId
-            }
-            if (this.params.itemType) {
-                this.itemType = this.params.itemType
-            }
-        })
+        this.currentId.set(this.stateService.currentId ?? 0)
         this.todos$ = this._autoSearch$.pipe(
             debounceTime(this._debounce),
             distinctUntilChanged(),
@@ -318,33 +363,29 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     newTyre(itemType: ItemType) {
-        const queryParams = { itemType: itemType, view: 'list' }
-        this.router.navigate(['/data/addTyre'], { queryParams: queryParams })
-    }
-
-    getPageData(): DisplayPartView[] {
-        return this.allItems.slice((this.currentPage - 1) * 10, this.currentPage * 10)
+        this.type.set(itemType)
+        this.$addTyreFlag.set(true)
+        // const queryParams = { itemType: itemType, view: 'list' }
+        // this.router.navigate(['/data/addTyre'], { queryParams: queryParams })
     }
 
     moveToPage(event: number) {
         this.currentPage = +event
-        this.pageItems = this.getPageData()
         goToPosition('top')
     }
 
     updateData(res: DisplayPartView[]) {
         this.searched = true
-        this.allItems = res
+        this.allItems.set(res)
         this.currentPage = 1
         if (this.currentId && this.allItems) {
-            const index = this.allItems.findIndex((item) => item.id === this.currentId)
+            const index = this.allItems().findIndex((item) => item.id === this.currentId())
             if (index != -1) this.currentPage = Math.floor(index / 10) + 1
         }
 
-        this.pageItems = this.getPageData()
         this.numberPages = Math.ceil(this.allItems.length / 10)
         if (this.currentId) {
-            goToPosition(this.currentId!)
+            goToPosition(this.currentId())
         } else {
             this.goTop()
         }
@@ -362,11 +403,11 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         if (event.action === UpdateEnum.Delete) {
             this.deleteTyre(event.id!)
         } else if (event.action === UpdateEnum.Update) {
-            this.updateTyre(event.id!)
+            this.updateTyreFunc(event.id!)
         }
     }
 
-    updateTyre(tyreId: number) {
+    updateTyreFunc(tyreId: number) {
         this.router.navigate(['data/updateTyre'], { queryParams: { id: tyreId, update: true } })
         this.currentTyreId = tyreId
     }
@@ -384,16 +425,16 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
     ok() {
         this.currentTyreId = undefined
+        const allitems =  [...this.allItems()]
         this.tyreService.deleteItem(this.deleteTyreId!).subscribe({
             next: (res) => {
                 if (res) {
                     this.userCountService.refresh()
                     this.popupService.openWithTimeout('Съобщение', 'Обявата е успешно изтрита', 2000).subscribe(() => {
                         this.homeService.deleteItem(this.deleteTyreId!)
-                        const find = this.allItems.findIndex((x) => x.id === this.deleteTyreId)
+                        const find = allitems.findIndex((x) => x.id === this.deleteTyreId)
                         if (find !== -1) {
-                            this.allItems.splice(find, 1)
-                            this.pageItems = this.getPageData()
+                            this.allItems.set([...allitems.splice(find, 1)])
                         }
                     })
                 }
@@ -425,7 +466,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
     clear() {
         const newvalue = { ...this.inialState, category: this.searchForm.category().value() }
-        this.searchFormModel.update((value) => ({...value, ...newvalue}))
+        this.searchFormModel.update((value) => ({ ...value, ...newvalue }))
     }
 
     action($event: number) {
@@ -444,4 +485,39 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         }
     }
     //#endregion
+    saved(event: number) {
+        this.$addTyreFlag.set(false)
+        this.$updateTyreFlag.set(false)
+        this.loadTyre(event!)
+    }
+
+    back(event: number) {
+        if (this.$addTyreFlag() || this.$updateTyreFlag()) {
+            this.$addTyreFlag.set(false)
+            this.$updateTyreFlag.set(false)
+        }
+        this.router.navigate(['/data/tyres'])
+        this.currentId.set(event)
+        goToPosition(event)
+    }
+
+    loadTyre(id: number) {
+        this.currentId.set(id)
+    }
+
+    refreshTyre(item: DisplayPartView) {
+        if (!item.id) return;
+        item = {...Enrich(item, this.staticSelectionService)}
+        const items = [...this.allItems()]
+        const index = items.findIndex((x) => x.id === item.id)
+        if (index != -1) items[index] = Object.assign({}, item)
+        else {
+            items.unshift(item)
+        }
+
+        this.updateData(items)
+        if (item.id) {
+            goToPosition(item.id!.toString())
+        }
+    }
 }

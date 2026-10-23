@@ -56,14 +56,12 @@ export class CarService {
         params = params.set('bus', `${bus ?? 0}`)
         return this.http.get<CarNameId[]>(`${environment.restAPI}/car/GetCarNameId`, { params }).pipe(
             first(),
-            tap(() => this.loggerService.log('fetch cars GetCarNameId')),
             catchError(this.handleError('fetch cars GetCarNameId', []))
         )
     }
     fetchBusNameId(): Observable<CarNameId[]> {
         return this.http.get<CarNameId[]>(`${environment.restAPI}/car/GetCarNameId`).pipe(
             first(),
-            tap(() => this.loggerService.log('fetch cars GetCarNameId')),
             catchError(this.handleError('fetch cars GetCarNameId', []))
         )
     }

@@ -61,7 +61,7 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
     //#endregion
 
     isHighlighted = computed(() => {
-        console.log(`Is Highlighted ${(this.highlighted() ?? 0) === this.id()} ${this.id()} ${this.highlighted()}`)
+        // console.log(`Is Highlighted ${(this.highlighted() ?? 0) === this.id()} ${this.id()} ${this.highlighted()}`)
         return (this.highlighted()) == this.id()
     })
 

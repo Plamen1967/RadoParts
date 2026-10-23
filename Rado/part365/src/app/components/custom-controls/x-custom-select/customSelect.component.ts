@@ -45,12 +45,9 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
     public dialog: MatDialog = inject(MatDialog)
     private alertService: AlertService = inject(AlertService)
     private destroyRef: DestroyRef = inject(DestroyRef)
-    // _selection = computed<string | undefined>(() => {
-    //     console.log(`Value is: ${this.value()}`)
-    //     return 
-    // })
-
-    _selection = '';
+    $selection = computed(() => {
+            return this.data()?.find((item) => item.id == this.value())?.description ?? this.placeHolder() ?? ''
+    });
 
     clearBox = computed<boolean>(() => {
         if (this.value() && this.value() != 0) {
@@ -64,20 +61,23 @@ export class CustomSelectComponent implements FormValueControl<number | string> 
         effect(() => {
             this.data_ = this.data() ?? []
             if (this.data_ && this.data_.length) this.loaded = true
-            // if (this.value() && this.data() && this.data().length) {
-            //     this.change(this.value())
-            // }
-
-            this._selection = this.data()?.find((item) => item.id == this.value())?.description ?? this.placeHolder() ?? ''
         })
 
-        effect(() => {
-            console.log(`Custom Select Errors is: ${this.errors()}`)
-        })
+        // effect(() => {
+        //     console.log(`Comppany Data : ${JSON.stringify(this.data())}`)
+        //     console.log(`Selection: ${this.$selection()} ${this.value()}`)
+        // })
+        // effect(() => {
+        //     console.log(`Custom Select Errors is: ${this.errors()}`)
+        // })
     
-        effect(() => {
-            console.log(`Custom Select Submitted is: ${this.submitted()}`)
-        })
+        // effect(() => {
+        //     console.log(`Custom Select Value is: ${this.value()}`)
+        // })
+        
+        // effect(() => {
+        //     console.log(`Custom Select Submitted is: ${this.submitted()}`)
+        // })
         effect(() => {
             if (this.showGroup() === false) {
                 this.data_ = this.data()?.filter((item) => item['groupModelId'] != item.id)

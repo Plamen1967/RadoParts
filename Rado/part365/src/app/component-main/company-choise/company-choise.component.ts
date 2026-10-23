@@ -47,17 +47,17 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     //#endregion
     //#endregion
     constructor() {
-        effect(() => {
-            console.log( "Company Choice Value", this.value(), this.config().bus )
-        })
+        // effect(() => {
+        //     console.log( "Company Choice Value", this.value(), this.config().bus )
+        // })
 
-        effect(() => {
-            console.log(`Companies: ${this.$companies()}`)
-        })
+        // effect(() => {
+        //     console.log(`Companies: ${this.$companies()}`)
+        // })
 
-        effect(() => {
-            console.log(`Company Choice Errors: ${JSON.stringify(this.errors()[0])}`)
-        })
+        // effect(() => {
+        //     console.log(`Company Choice Errors: ${JSON.stringify(this.errors()[0])}`)
+        // })
         effect(() => {
             if (!this.oldConfig || this.oldConfig.itemType != this.config().itemType || this.oldConfig.bus != this.config().bus) {
                 console.log(`Configure`)
@@ -117,7 +117,6 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
         this.companies.set([...res])
         this.companies.update(() => this.companies().filter((item: OptionItem) => this.config()?.all || item.countCars != 0 || item.countParts != 0 || item.id == 0 || item.id === -1))
         this.companies.update(() => this.companies().map((item: OptionItem) => ({ ...item, count: item.countParts + item.countCars })))
-        console.log('this.companies', this.companies())
         this.updateCount()
     }
 

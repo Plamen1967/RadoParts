@@ -12,7 +12,7 @@ import { DisplayPartView } from '@model/displayPartView'
 export default class UpdateTyreComponent {
     mode: UpdateEnum = UpdateEnum.Update
     id = input<number | undefined>()
-    displayPartView = input.required<DisplayPartView>()
+    displayPartView = input<DisplayPartView>()
 
     saved = output<number>()
     noChange = output<number>()

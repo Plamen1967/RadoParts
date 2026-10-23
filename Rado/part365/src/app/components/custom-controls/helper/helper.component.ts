@@ -9,6 +9,9 @@ export class HelperComponent {
     public formGroup!: FormGroup;
     public queryParams!: QueryParam;
     inialValue: object = {};
+    regionId = computed(() => {
+        return this.loggedUser?.regionId ?? 0;
+    })
 
     $seller = computed(() => {
         return this.authenticationService.seller;
@@ -26,9 +29,6 @@ export class HelperComponent {
 
     get loggedUser() {
         return this.authenticationService.user
-    }
-    get regionId() {
-        return this.loggedUser?.regionId;
     }
     // setNewId() {
     //     this.nextIdService.getNextId().then((nextId) => (this.partId = nextId))

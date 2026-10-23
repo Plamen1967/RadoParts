@@ -12,7 +12,7 @@ import { UpdateEnum } from '@model/enum/update.enum'
 export default class UpdateBusComponent {
     bus = 1
     mode = UpdateEnum.Update
-    id = input<number | undefined>()
+    carId = input<number | undefined>()
     displayPartView = input<DisplayPartView | undefined>()
     saved = output<number>()
     noChange = output<number>()

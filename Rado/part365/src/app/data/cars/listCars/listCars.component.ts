@@ -38,7 +38,7 @@ import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { form, FormField } from '@angular/forms/signals'
-import AddBusComponent from '../../bus/addBus/addBus.component';
+import UpdateBusComponent from '@app/data/bus/updateBus/updatebus.component'
 //#endregion
 //#region interface
 interface listFormInterface {
@@ -72,7 +72,7 @@ interface listFormInterface {
     UpdatePartComponent,
     AsyncPipe,
     FormField,
-    AddBusComponent
+    UpdateBusComponent
 ],
 })
 
@@ -187,19 +187,22 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this._destroy$ = new Subject<boolean>()
         this.userId = this.authenticationService.user?.userId
 
+        // effect(() => {
+        //     console.log(`Update Bus is: ${this.$update()} ${this.addCar()} ${this.addBus()} ${this.ad()}`)
+        // })
+        // effect(() => {
+        //     console.log(`Bus is: ${this.cars()}`)
+        // })
         effect(() => {
-            console.log(`Update Bus is: ${this.$update()} ${this.addCar()} ${this.addBus()} ${this.ad()}`)
-        })
-        effect(() => {
-            console.log(`Bus is: ${this.cars()}`)
+            console.log(`List Car Car Id: ${this.carId()}`)
         })
         effect(() => this.onCompanyChange(this.listForm.companyId().value()))
         effect(() => this.onModelChange(this.listForm.modelId().value()))
         effect(() => this.search(this.listForm().value()))
 
-        effect(() => {
-            console.log(`Bus: ${this.$update()} ${this.addBus()} ${this.ad()}`)
-        })
+        // effect(() => {
+        //     console.log(`Bus: ${this.$update()} ${this.addBus()} ${this.ad()}`)
+        // })
     }
 
     //#endregion
@@ -559,9 +562,13 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     back(event: number) {
         if (this.$addCarFlag() || this.$addBusFlag() || this.$updateCarFlag() || this.$updateBusFlag()) this.id = undefined
-        this.router.navigate(['/data/bus']);
+        if (this.bus())
+            this.router.navigate(['/data/bus']);
+        else 
+            this.router.navigate(['/data/cars']);
         this.currentCarId = event
         goToPosition(event)
+        this.currentCarId = event
     }
     //#endregion
     updateParamsFromQuery(params: ParamMap) {

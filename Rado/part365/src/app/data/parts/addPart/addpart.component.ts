@@ -310,7 +310,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             }
         })
 
-        this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId! }))
+        this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId() }))
         //#region effect
         effect(() => {
             const isCar = this.addPartForm.partForCar().value() === 'car'
@@ -342,7 +342,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             const mode = this.$mode()
             if (mode == UpdateEnum.New) {
                 untracked(() => {
-                    this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId ?? 0 }))
+                    this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId() }))
                 })
             }
         })
@@ -409,7 +409,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     resetScreen() {
-        this.addPartFormModel.update((value) => ({ ...value, ...this.initialState, regionId: this.regionId! }))
+        this.addPartFormModel.update((value) => ({ ...value, ...this.initialState, regionId: this.regionId() }))
     }
 
     //#endregion

@@ -121,9 +121,9 @@
 } @else if ($addPartFlag()) {
     <app-addpart [partIdNew]="id" [bus]="bus()" [add]="$addPartFlag()" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
 } @else if ($updateCarFlag()) {
-    <app-updatecar [id]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
+    <app-updatecar [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
 } @else if ($updateBusFlag()) {
-    <app-updatecar [id]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
+    <app-updatebus [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatebus>
 } @else if ($updatePartFlag()) {
     <app-updatepart [id]="id" (saved)="savedPart($event)" (noChange)="back($event)"></app-updatepart>
 }

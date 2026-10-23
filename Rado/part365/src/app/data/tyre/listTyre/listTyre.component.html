@@ -1,4 +1,4 @@
-<ng-container>
+@if ($update() === false) {
     <div class="container">
         @if (userCount$ | async; as userCount) {
             @if (userCount && userCount.partCarCount + userCount.partBusCount) {
@@ -144,13 +144,13 @@
             <app-buttonmenu appOutside [menuOptions]="menuOptions" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu>
 
                 <div class="d-flex justify-content-start ms-2" class="option-menu">
-                    @if (selectedCategory === 3 || selectedCategory === 7) {
+                    @if (searchForm.category().value() === 3 || searchForm.category().value() === 7) {
                         <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(3)">Добави Гума</button>
                     }
-                    @if (selectedCategory === 4 || selectedCategory === 7) {
+                    @if (searchForm.category().value() === 4 || searchForm.category().value() === 7) {
                         <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(4)">Добави Джанта</button>
                     }
-                    @if (selectedCategory === 5 || selectedCategory === 7) {
+                    @if (searchForm.category().value() === 5 || searchForm.category().value() === 7) {
                         <button type="button" class="btn btnAdd" data-cy="addtyre" (click)="newTyre(5)">Добави Джанта с гума</button>
                     }
                 </div>
@@ -166,9 +166,9 @@
                 <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
             </div>
             <div id="data-container">
-                @for (item of pageItems; track item.id) {
+                @for (item of $pageItems(); track item.id) {
                     <div id="{{ item.id }}" class="mb-2">
-                        <app-dealerview [allowUpdate]="true" [rimWithTyreView]="item" [mainPicture]="item.mainPicture" [allowUpdate]="true" (action)="actionItem($event)" [highlighted]="currentId">
+                        <app-dealerview [allowUpdate]="true" [rimWithTyreView]="item" [mainPicture]="item.mainPicture" [allowUpdate]="true" (action)="actionItem($event)" [highlighted]="currentId()">
                         </app-dealerview>
                     </div>
                 }
@@ -178,5 +178,9 @@
             </div>
         }
     </div>
-</ng-container>
+} @else if ($addTyreFlag()) {
+    <app-addtyre [itemType]= "type()" (saved)="saved($event)" (noChange)="back($event!)"></app-addtyre>
+} @else if ($updateTyreFlag()) {
+    <app-updatetyre [id]= "id()" (saved)="saved($event)" (noChange)="back($event)"></app-updatetyre>
+}
 <app-gotop></app-gotop>

@@ -37,6 +37,9 @@ import { LoggerService } from '@services/authentication/logger.service'
 import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { form, FormField, min } from '@angular/forms/signals'
+import { httpResource } from '@angular/common/http'
+import { NextId } from '@model/nextId'
+import { environment } from '@env/environment'
 //#endregion
 interface AddTyreFormInterface {
     itemType: number
@@ -109,7 +112,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         count: 0,
         monthDOT: 0,
         yearDOT: 0,
-        regionId: 0,
+        regionId: this.regionId() ?? 0,
         description: '',
         price: 0,
         mainImageId: 0,
@@ -117,31 +120,33 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     addTyreForm = form(this.addTyreFormModel, (path) => {
         min(path.tyreWidth, 1, {
-            message: 'Required',
+            message: 'Моля изберете широчината на гумата',
             when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre,
         });
         min(path.tyreHeight, 1, {
-            message: 'Required',
+            message: 'Моля изберете височината на гумата',
             when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreHeight) == 0,
         });
         min(path.tyreRadius, 1, {
-            message: 'Required',
+            message: 'Моля изберете радиуса на гумата',
             when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreRadius) == 0,
         });
-        min(path.tyreRadius, 1, {
-            message: 'tyreType',
+        min(path.tyreType, 1, {
+            message: 'Моля изберете сезонността',
             when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreRadius) == 0,
         });
         min(path.companyId, 1, {
-            message: 'companyId',
+            message: 'Моля изберете марката на джантата',
             when: ({valueOf}) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.companyId) == 0,
         });
         min(path.rimBoltCount, 1, {
             message: 'rimBoltCount',
             when: ({valueOf}) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.rimBoltCount) == 0,
         });
+        min(path.price, 0.01, {
+            message: 'Моля въведете цена.',
+        })
     })
-
     // controlRimWithTyre() {
     //     // this.addForm.controls['tyreWidth'].setValidators([Validators.required, Validators.min(1)])
     //     // this.addForm.controls['tyreHeight'].setValidators([Validators.required, Validators.min(1)])
@@ -203,22 +208,47 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     displayPartView = input<DisplayPartView>()
     ad = input<string>()
     update = input<boolean>()
+    view = input<boolean>()
+    itemType = input<number>()
     query = input<number>()
     userId = input<number>()
 
+    time = signal(0)
     mode = computed(() => {
         if (this.update() === true)
             return UpdateEnum.Update
+        if (this.view() === true)
+            return UpdateEnum.View
         else if (this.ad() === 'ad')
             return UpdateEnum.New
-        return UpdateEnum.View
+        return UpdateEnum.New
+    })
+    
+    nextResource = httpResource<NextId>(() => ({
+        url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}&time=${this.time()}`,
+    }))
+    $newCarId = computed(() => {
+        return this.nextResource.value()?.nextId;
     })
 
 
 
-    back = output<number>()
+
     saved = output<number>()
+    noChange = output<number>()
     //#endregion
+    $canUpdate = computed(() => {
+        return this.$mode() === UpdateEnum.Update || this.$mode() === UpdateEnum.New
+    })
+    $mode = computed(() => this.mode())
+    $actionMessage = computed(() => {
+        if (this.mode() == UpdateEnum.Update) {
+            return this.labels.UPDATE
+        } else {
+            return this.labels.SAVE
+        }
+    })
+
 
     //#region services
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
@@ -307,6 +337,16 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.initValue = this.addTyreFormModel()
 
         effect(() => {
+            this.time.set(Date.now())
+        })
+
+        effect(() => {
+            console.log(`Tyre Component Form ${JSON.stringify(this.addTyreForm().value())}`)
+        })
+        effect(() => {
+            console.log(`Tyre Component ${this.regionId()}`)
+        })
+        effect(() => {
             if (this.id())
                 this.itemId.set(this.id()!)
         })
@@ -362,11 +402,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     ngOnInit() {
         this.mode = this.mode ?? UpdateEnum.New
-        this.updateFlag = this.mode() != UpdateEnum.View
-        if (this.ad() === 'new' || this.mode() === UpdateEnum.New) {
-            this.addTyreFormModel.set({ ...this.addTyreFormModel(), regionId: this.authenticationService.user?.regionId ?? 0 })
-        }
-
 
         if (this.$seller())
             if (this.params?.ad) {
@@ -457,6 +492,10 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     defaultImageChanged(imageId: number) {
         this.addTyreForm.mainImageId().value.set(imageId)
     }
+    $tyreResource = httpResource<RimWithTyre>(() => {
+            if (this.id()) return `${environment.restAPI}/rimWithTyre/${this.id()}`
+            else return undefined
+    })
 
     loadTyre(id: number) {
         this.tyreService.getItem(id).subscribe({
@@ -532,20 +571,13 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         } else this.goBack()
     }
     goBack() {
-        this.back.emit(this.id()!)
+        this.saved.emit(this.id()!)
         this.stateServce.currentId = this.id()
         if (this.mode() == UpdateEnum.New) {
             if (this.params?.ad) {
                 this.router.navigate(['/data/tyres'])
                 return
             }
-            if (this.navigationService.back()) return
-            if (!this.params?.id && !this.params?.viewId) {
-                return
-            }
-
-            const value = { id: this.params.id, viewPartId: this.params.viewId, query: this.params.query, userId: this.params.userId, page: 1 }
-            this.pathService.navigate(value)
         } else {
             history.back()
         }
