@@ -51,7 +51,7 @@ input + label {
     /* border: 1px solid black; */
 }
 input:checked + label {
-    border: 2px solid #00ced1;
+    border: 2px solid, var(--radiogrouplist-bg-color);
     padding: 5px;
 }
 
@@ -61,8 +61,8 @@ input:checked + label {
 }
 .style1 > input:checked + label {
     color: white;
-    border: 2px solid #00ced1;
-    background-color: #00ced1;
+    border: 2px solid var(--radiogrouplist-bg-color);
+    background-color: var(--radiogrouplist-bg-color);
     border-bottom: 2px solid red;
     padding: 5px;
 }
@@ -92,7 +92,7 @@ input:checked + label {
     color: lightcyan;
     border: 0px;
 
-    background-color: #00ced1;
+    background-color: var(--radiogrouplist-bg-color);
     border-bottom: 2px solid red;
     border-radius: 5px;
     // border-bottom: 5px solid var(--active-borderbottom);

@@ -34,8 +34,10 @@ export class TyreService {
         if (tyre.price) tyre.price = +tyre.price
         if (!tyre.monthDOT) tyre.monthDOT = 0
         if (!tyre.yearDOT) tyre.yearDOT = 0
+        tyre.itemType = +tyre.itemType!
         if (!tyre.mainPicture) tyre.mainPicture = ''
         tyre.modifiedTime = Date.now()
+        tyre.rimWidth = 0
         tyre.mainImageId = +tyre.mainImageId!
         if (update === UpdateEnum.Update) {
             return this.updateItem(tyre)
@@ -45,10 +47,10 @@ export class TyreService {
     }
 
     addItem(item: RimWithTyre): Observable<DisplayPartView> {
-        return this.http.post<DisplayPartView>(`${environment.restAPI}/rimWithTyre/${item.rimWithTyreId}`, item, this.httpHeader).pipe(map((item) => Enrich(item, this.staticService)))
+        return this.http.post<DisplayPartView>(`${environment.restAPI}/rimWithTyre`, item, this.httpHeader).pipe(map((item) => Enrich(item, this.staticService)))
     }
     updateItem(item: RimWithTyre): Observable<DisplayPartView> {
-        return this.http.patch<DisplayPartView>(`${environment.restAPI}/rimWithTyre/${item.rimWithTyreId}`, item, this.httpHeader).pipe(map((item) => Enrich(item, this.staticService)))
+        return this.http.patch<DisplayPartView>(`${environment.restAPI}/rimWithTyre`, item, this.httpHeader).pipe(map((item) => Enrich(item, this.staticService)))
     }
 
     deleteItem(tyreId: number): Observable<boolean> {

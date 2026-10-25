@@ -115,11 +115,11 @@
         </div>
     </div>
 } @else if ($addCarFlag()) {
-    <app-addcar [addCarParam]="{ carId: id, bus: 0, add: $addCarFlag() }" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
+    <app-addcar [addItemParam]="{ bus: 0, add: $addCarFlag() }" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
 } @else if ($addBusFlag()) {
-    <app-addcar [addCarParam]="{ carId: id, bus: 1, add: $addCarFlag()}" [bus]=1 (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
+    <app-addcar [addItemParam]="{ bus: 1, add: $addCarFlag()}" [bus]=1 (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
 } @else if ($addPartFlag()) {
-    <app-addpart [partIdNew]="id" [bus]="bus()" [add]="$addPartFlag()" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
+    <app-addpart [addItemParam]="{ bus: 1, add: $addPartFlag()}" [partIdNew]="id" [bus]="bus()" [add]="$addPartFlag()" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
 } @else if ($updateCarFlag()) {
     <app-updatecar [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
 } @else if ($updateBusFlag()) {

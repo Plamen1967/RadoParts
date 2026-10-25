@@ -1,5 +1,5 @@
 //#region imports
-import { AfterViewInit, Component, ElementRef, HostListener, inject, OnInit, ChangeDetectionStrategy, input, effect, output, computed, signal } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, HostListener, inject, OnInit, ChangeDetectionStrategy, input, effect, output, computed, signal, untracked } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -8,7 +8,6 @@ import { UpdateEnum } from '@model/enum/update.enum'
 import { SelectOption } from '@model/selectOption'
 import { CarService } from '@services/car.service'
 import { ModificationService } from '@services/company-model-modification/modification.service'
-import { NextIdService } from '@services/nextId.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { Car } from '@model/car/car'
@@ -31,7 +30,7 @@ import { DisplayPartView } from '@model/displayPartView'
 import { ImageData } from '@model/imageData'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
-import { AddCarParam } from './addCarParam'
+import { AddItemParam } from './addCarParam'
 import { form, FormField, maxLength, min, minLength, validate } from '@angular/forms/signals'
 import { NextId } from '@model/nextId'
 import { httpResource } from '@angular/common/http'
@@ -74,7 +73,7 @@ interface addCarFormModelInterface {
         ModificationChoiceComponent,
         ToolBarComponent,
         FormField,
-        InputStringComponent
+        InputStringComponent,
     ],
 })
 //#endregion
@@ -101,45 +100,43 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     addCarForm = form(this.addCarFormModel, (schema) => {
         min(schema.companyId, 1, {
             error: { kind: 'not-selected', message: 'Моля изберете фирма' },
-        });
+        })
         min(schema.modelId, 1, {
             error: { kind: 'not-selected', message: 'Моля изберете модел' },
-        });
+        })
         min(schema.modificationId, 1, {
             when: () => !this.bus(),
             error: { kind: 'not-selected', message: 'Моля изберете модификация' },
-        });
+        })
         minLength(schema.vin, 17, {
             when: () => this.addCarFormModel().vin.length !== 0,
             error: { kind: 'not-selected', message: 'VIN трябва да е 17 символа' },
-        });
+        })
         maxLength(schema.vin, 17, {
             when: () => this.addCarFormModel().vin.length !== 0,
             error: { kind: 'not-selected', message: 'VIN трябва да е 17 символа' },
-        });
-        minLength(schema.regNumber, 3, 
-            {
-                error: { kind: 'not-selected', message: 'Моля въведете регистрационен номер с най-малко 3 символа'  }
-            });
-        validate(schema.regNumber, ({value}) => {
-                if (value().length < 3) {
-                    return {
-                            kind: 'https',
-                            message: 'Моля въведете регистрационен номер с най-малко 3 символа',
-                            };
+        })
+        minLength(schema.regNumber, 3, {
+            error: { kind: 'not-selected', message: 'Моля въведете регистрационен номер с най-малко 3 символа' },
+        })
+        validate(schema.regNumber, ({ value }) => {
+            if (value().length < 3) {
+                return {
+                    kind: 'https',
+                    message: 'Моля въведете регистрационен номер с най-малко 3 символа',
                 }
-                return null;
-            });        
+            }
+            return null
+        })
     })
 
     //#endregion form
-    
+
     //#region services
     public carService: CarService = inject(CarService)
     public modificationService: ModificationService = inject(ModificationService)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
-    private nextIdService: NextIdService = inject(NextIdService)
     private router: Router = inject(Router)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private homeService: HomeService = inject(HomeService)
@@ -156,8 +153,9 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     update = input<boolean>(false)
     mode = input<UpdateEnum>(UpdateEnum.New)
     ad = input<string>('')
-    addCarParam = input.required<AddCarParam>()
+    addItemParam = input.required<AddItemParam>()
     time = signal(0)
+    query = input<number>()
 
     noChange = output<number | undefined>()
     saved = output<number>()
@@ -181,32 +179,41 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     car?: CarView
     formInitialValues: object
     mainImageId?: number = 0
-    query = 0
     images: ImageData[] = []
     saving = signal(false)
     submitted = signal<boolean>(false)
     $userId = signal(0)
     $yearTo = signal(0)
     $yearFrom = signal(this.labels.YEAR_START)
-
+    newItemId = signal(0)
     //#endregion
 
     //#region computed
-    $carId = computed(() => this.addCarParam().carId ?? this.carId())
+    $itemId = computed(() => {
+        if (this.addItemParam()?.id && this.addItemParam()?.id != 0) return this.addItemParam()?.id
+        if (this.carId() && this.carId() != 0) return this.carId()
+        return this.newItemId()
+    })
     $canUpdate = computed(() => {
+        console.log(`Mode is ${this.$mode()} ${this.add()} ${this.addItemParam()?.add}`)
         return this.$mode() === UpdateEnum.Update || this.$mode() === UpdateEnum.New
     })
 
-    $mode = computed(() => this.addCarParam().mode ?? this.mode())
+    $mode = computed(() => {
+        let mode: UpdateEnum = UpdateEnum.View
+        if (this.addItemParam()?.add) mode = UpdateEnum.New
+        else if (this.addItemParam()?.mode) mode = this.addItemParam().mode!
+        else if (this.mode()) mode = this.mode()
+        else if (this.ad() == 'new') mode = UpdateEnum.New
 
-    $typeMessage = computed(() => (this.bus() ? 'Буса' : 'Колата'))
+        return mode
+    })
 
     $contentMessage = computed(() => {
         const modeMessage = this.mode() === UpdateEnum.Update ? 'записана' : 'добавена'
         return `${this.$typeMessage()} е успешно ${modeMessage}`
     })
 
-    $labelMessage = computed(() => this.bus() ? 'Име на бус' : 'Име на кола')
     $actionMessage = computed(() => {
         if (this.mode() == UpdateEnum.Update) {
             return this.labels.UPDATE
@@ -214,6 +221,37 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             return this.labels.SAVE
         }
     })
+
+    $newItemId = computed<number>(() => this.nextResource.value()?.nextId ?? 0)
+
+    nextResource = httpResource<NextId>(
+        () => {
+            console.log(`Resource called ${this.$mode()} ${this.$mode() != 0} ${this.newItemId()}`)
+            const mode: UpdateEnum = this.$mode()
+            const check = mode === UpdateEnum.New
+            if (check && this.newItemId() == 0) {
+                untracked(() => this.newItemId.set(-1))
+                return {
+                    url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}`,
+                }
+            } else {
+                return undefined
+            }
+        },
+        {
+            parse: (rawResponse: unknown): NextId => {
+                const nextId = rawResponse as NextId
+                this.newItemId.set(nextId.nextId!)
+                console.log(`Ne Id: ${this.newItemId()}`)
+                return nextId
+            },
+            defaultValue: { nextId: 0, error: '' },
+        }
+    )
+
+    $typeMessage = computed(() => (this.bus() ? 'Буса' : 'Колата'))
+
+    $labelMessage = computed(() => (this.bus() ? 'Име на бус' : 'Име на кола'))
 
     $years = computed(() => {
         const result: SelectOption[] = []
@@ -225,20 +263,95 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         }
         return result
     })
-
-    $newCarId = computed(() => {
-        return this.nextResource.value()?.nextId;
-    })
-
     //#endregion
 
     //#region resources
 
-    nextResource = httpResource<NextId>(() => ({
-        url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}&time=${this.time()}`,
-    }))
+
+    // nextResource = httpResource<NextId>(
+    //     () => ({
+    //         url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}&time=${this.time()}`
+    //     }),
+    //     {
+    //         parse: (rawResponse: unknown): NextId => rawResponse as NextId,
+    //         defaultValue: { nextId: 0, error: '' }
+    //     }
+    // );
+
+    //     parse: (rawResponse:): UserViewModel => {
+    //         const dto = rawResponse as UserDto;
+    //         return {
+    //             id: dto.id,
+    //             fullName: `${dto.first_name} ${dto.last_name}`
+    //         };
+    //         },
+    // //     userResource2 = httpResource<NextId>(() => {
+    // //         if (true) return undefined
+
+    //         return {
+    //             url: '',
+    //             params: {
+    //                 levelId: 1
+    //             }
+    //         }
+    //     })
+
+    // readonly userResource = httpResource<UserViewModel>(() => ({
+    //     url: `/api/users/${this.userId()}`,
+    //     method: 'GET'
+    //   }), {
+    //     // Transform or map raw DTO data into a ViewModel
+    //     parse: (rawResponse: unknown): UserViewModel => {
+    //       const dto = rawResponse as UserDto;
+    //       return {
+    //         id: dto.id,
+    //         fullName: `${dto.first_name} ${dto.last_name}`
+    //       };
+    //     },
+    //     defaultValue: { id: 0, fullName: 'Loading...' }
+    //   });
+    //     myResource = httpResource<User[]>(() => {
+    //   const shouldFetchData = this.shouldFetchData(); // Custom condition
+    //   return shouldFetchData ? `${RESOURCE_URL}${this.query()}` : undefined;
+    // });
+    //     userResource = httpResource<NextId>(() =>
+    //     (
+    //         {
+    //             if (this.mode() !== UpdateEnum.New)
+    //                 return undefined
+
+    //             return `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}`,
+    //         }
+    //             ,
+    //     //     params: {
+    //     //     },
+
+    //     // {
+    //     //     defaultValue: {nextId: 0, error: ''},
+    //     //     parse: (raw) => {
+    //     //         const nextId = raw as NextId
+    //     //         if (nextId.error?.length) {
+    //     //             throw new Error("Invalid user data received");
+    //     //         }
+    //     //         this.newCarId.set(nextId.nextId?? 0)
+    //     //         return nextId;
+    //     //     },
+    // });
+    // nextResource = httpResource(
+    // {
+    //     params: () => {itemType: ItemType.OnlyCar},
+    //     loader: async ({ params, abortSignal }) => {
+    //                     const response = await fetch(`/api/users/${params}`, {
+    //                     signal: abortSignal,
+    //                     });
+    //     if (!response.ok) {
+    //           throw new Error(`Failed to load user ${params}`);
+    //     }
+    //     return response.json();
+    // }
+    // })
     //#endregion
-    
+
     //#region constructor
     constructor() {
         super()
@@ -248,19 +361,18 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
         //#region effect
         effect(() => {
-            console.log(`New car ID: ${this.$carId()} ${this.carId()} ${this.bus()}`)
+            console.log(`Car ID: ${this.$itemId()}`)
         })
 
         // effect(() => {
         //     console.log(`Add Car Errors: ${this.addCarForm().errors()}`)
         // })
-        // effect(() => {
-        //     console.log(`Add Car Bus: ${this.bus()}`)
-        // })
+        effect(() => {
+            console.log(`Add Car Bus: ${this.$itemId()}`)
+        })
         // effect(() => {
         //     console.log('Add Car Form:', this.addCarForm().errors()[0])
         // })
-
 
         // effect(() => {
         //     this.addCarFormModel().powerkWh = this.addCarForm.powerBHP().value()
@@ -280,10 +392,15 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     //#region ngfunctions
     ngOnInit() {
+        // let id = 0
+        // if (this.$mode() === UpdateEnum.New)
+        //     id = this.$newCarId()
+        // console.log(`Local ${id}`)
+        const check = this.$mode() == UpdateEnum.Update
+        if (check) this.loadCar()
+
         this.activatedRoute.queryParamMap.subscribe((param) => {
             this.parseQueryParams(param)
-            if (this.queryParams.query) this.query = +this.queryParams.query
-            this.loadCar()
         })
     }
 
@@ -344,14 +461,14 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         if (newValue != this.addCarFormModel().powerkWh) this.addCarFormModel.set({ ...this.addCarFormModel(), powerkWh: newValue })
     }
     //#endregion
-    
+
     showMessageNotFound() {
         this.popupService.openWithTimeout('Съобщение', 'Частта вече не е налична!').subscribe(() => this.goBack())
     }
 
     loadCar() {
-        if (this.$carId() && this.$mode() == UpdateEnum.Update) {
-            this.carService.fetchCar(this.$carId()!).subscribe({
+        if (this.$itemId() && this.$mode() == UpdateEnum.Update) {
+            this.carService.fetchCar(this.$itemId()!).subscribe({
                 next: (res) => {
                     this.car = { ...res }
                     this.mainImageId = this.car.mainImageId
@@ -367,7 +484,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
                     return
                 },
             })
-        } 
+        }
         // else {
         //     this.nextIdService.getNextId(this.bus() ? ItemType.OnlyBus : ItemType.OnlyCar).subscribe({
         //         next: (id) => {
@@ -400,7 +517,6 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     addCar(update: UpdateEnum = UpdateEnum.New) {
         const formModel = this.addCarFormModel()
-        const carId = (this.$mode() === UpdateEnum.New) ? this.$newCarId() : this.$carId() 
         const carUpdated: Car = Object.assign({}, formModel, {
             modelId: Number(formModel.modelId),
             modificationId: Number(formModel.modificationId),
@@ -409,7 +525,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             millage: Number(formModel.millage),
             mainImageId: Number(formModel.mainImageId),
             bus: this.bus(),
-            carId: carId,
+            carId: this.$itemId(),
             userId: this.$userId(),
         })
         this.saving.set(true)
@@ -453,7 +569,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     goBack() {
-        this.noChange.emit(this.$carId())
+        this.noChange.emit(this.$itemId())
     }
 
     cancel() {

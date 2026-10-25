@@ -46,6 +46,8 @@ import { toSignal } from '@angular/core/rxjs-interop'
 import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
 import { CarNameId } from '@model/carNameId'
+import { AddItemParam } from '@app/data/cars/addCar/addCarParam'
+import { NextId } from '@model/nextId'
 //#endregion
 //#region interface
 interface addPartFormInterface {
@@ -226,7 +228,14 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     displayPartView = input<DisplayPartView | undefined>()
     saved = output<number>()
     noChange = output<number>()
+    carId = input<number | undefined>(undefined)
+    update = input<boolean>(false)
+    addItemParam = input.required<AddItemParam>()
+    time = signal(0)
+    query = input<number>()
     description = ''
+    newItemId = signal(0)
+
     //#endregion
     //#region
     private carService: CarService = inject(CarService)
@@ -246,8 +255,71 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
     $selectedCarResource = httpResource<CarView>(() => `${environment.restAPI}/car/${this.addPartForm.carId().value()}`)
 
+    $itemId = computed(() => {
+        if (this.addItemParam()?.id && this.addItemParam()?.id != 0) return this.addItemParam()?.id
+        if (this.carId() && this.carId() != 0) return this.carId()
+        return this.newItemId()
+    })
+    $canUpdate = computed(() => {
+        console.log(`Mode is ${this.$mode()} ${this.add()} ${this.addItemParam()?.add}`)
+        return this.$mode() === UpdateEnum.Update || this.$mode() === UpdateEnum.New
+    })
+
+    $mode = computed(() => {
+        let mode: UpdateEnum = UpdateEnum.View
+        if (this.addItemParam()?.add) mode = UpdateEnum.New
+        else if (this.addItemParam()?.mode) mode = this.addItemParam().mode!
+        else if (this.mode()) mode = this.mode()
+        else if (this.ad() == 'new') mode = UpdateEnum.New
+
+        return mode
+    })
+
+    $contentMessage = computed(() => {
+        const modeMessage = this.mode() === UpdateEnum.Update ? 'записана' : 'добавена'
+        return `${this.$typeMessage()} е успешно ${modeMessage}`
+    })
+
+    $actionMessage = computed(() => {
+        if (this.mode() == UpdateEnum.Update) {
+            return this.labels.UPDATE
+        } else {
+            return this.labels.SAVE
+        }
+    })
+
+    $newItemId = computed<number>(() => this.nextResource.value()?.nextId ?? 0)
+    $typeMessage = computed(() => (this.bus() ? 'Буса' : 'Колата'))
+
+    nextResource = httpResource<NextId>(
+        () => {
+            console.log(`Resource called ${this.$mode()} ${this.$mode() != 0} ${this.newItemId()}`)
+            const mode: UpdateEnum = this.$mode()
+            const check = mode === UpdateEnum.New
+            if (check && this.newItemId() == 0) {
+                untracked(() => this.newItemId.set(-1))
+                return {
+                    url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}`,
+                }
+            } else {
+                return undefined
+            }
+        },
+        {
+            parse: (rawResponse: unknown): NextId => {
+                const nextId = rawResponse as NextId
+                this.newItemId.set(nextId.nextId!)
+                console.log(`Ne Id: ${this.newItemId()}`)
+                return nextId
+            },
+            defaultValue: { nextId: 0, error: '' },
+        }
+    )
+    
+    
     $choice = computed(() => {
-        return this.bus() ? 'бус' : 'кола'
+        console.log(`Is bus: ${this.bus()}`)
+        return this.bus() == 1 ? 'бус' : 'кола'
     })
 
     $description = computed(() => {
@@ -270,15 +342,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         return cars ?? []
     })
 
-    $mode = computed(() => {
-        if (this.ad() == 'new') return UpdateEnum.New
-
-        if (this.mode() == UpdateEnum.Update) return UpdateEnum.Update
-        else if (this.mode() == UpdateEnum.View) return UpdateEnum.View
-
-        return UpdateEnum.Update
-    })
-
     $carId = computed(() => this.partCarId())
     $add = computed(() => this.add())
     $action = computed(() => {
@@ -289,14 +352,14 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         }
     })
 
-    $partId = computed(() => {
-        console.log(this.partyId(), this.id(), this.partIdNew())
-        if (this.partyId()) return this.partyId()
-        else if (this.partIdNew()) return +this.partIdNew()!
-        else if (this.id()) return this.id()
-        else if (this.displayPartView() && this.displayPartView()?.id) return this.displayPartView()?.id
-        else return 0
-    })
+    // $partId = computed(() => {
+    //     console.log(this.partyId(), this.id(), this.partIdNew())
+    //     if (this.partyId()) return this.partyId()
+    //     else if (this.partIdNew()) return +this.partIdNew()!
+    //     else if (this.id()) return this.id()
+    //     else if (this.displayPartView() && this.displayPartView()?.id) return this.displayPartView()?.id
+    //     else return 0
+    // })
 
     constructor() {
         //#endregion
@@ -318,13 +381,13 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         })
 
         effect(() => {
-            console.log(`Part Id: ${this.$partId()} ${this.addPartForm.categoryId().value()}}`)
+            console.log(`Part Id: ${this.$itemId()} ${this.addPartForm.categoryId().value()}}`)
         })
         effect(() => {
             console.log(`Car Id change: ${this.addPartForm.carId().value()}`)
         })
         effect(() => {
-            if (this.$mode() != UpdateEnum.New && this.$partId()) {
+            if (this.$mode() != UpdateEnum.New && this.$itemId()) {
                 untracked(() => {
                     this.loadPart()
                 })
@@ -528,7 +591,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     //#endregion
 
     loadPart() {
-        this.partService.fetch(this.$partId()!).subscribe({
+        this.partService.fetch(this.$itemId()!).subscribe({
             next: (res) => {
                 this.addPartFormModel.update((value) => ({ ...value, carId: res.carId ?? 0 }))
                 this.partView = { ...res }
@@ -568,7 +631,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         if (this.addPartForm().touched()) {
             this.changeMessage()
         } else {
-            this.noChange.emit(this.$partId()!)
+            this.noChange.emit(this.$itemId()!)
             this.goBack()
         }
     }
@@ -585,7 +648,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             return
         }
         const part: Part = { ...this.addPartForm().value(), powerkWh: +this.addPartFormModel().powerkWh, powerBHP: +this.addPartFormModel().powerBHP, millage: +this.addPartFormModel().millage }
-        part.partId = this.$partId()
+        part.partId = this.$itemId()
         part.bus = this.bus()
         this.saving.set(true)
 

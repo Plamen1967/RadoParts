@@ -99,9 +99,9 @@
         </div>
     }
     <div class="row mt-3" style="position: relative">
-        <app-imagelist [itemId]="$carId() ?? $newCarId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+        <app-imagelist [itemId]="$itemId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
         <div class="d-inline-flex justify-content-end position-buttons w-100">
-            <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="$canUpdate()" [saveName]="$actionMessage()" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
+            <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="true" [saveName]="$actionMessage()" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div>
     </div>
 </div>

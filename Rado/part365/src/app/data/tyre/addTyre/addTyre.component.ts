@@ -294,11 +294,8 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     params?: QueryParam
     viewId = input<number>(0)
-    displayTyre?: boolean
-    displayRim?: boolean
     goHome = false
     tyreDescription?: string
-    initValue
     numberOfPartsPerUser?: number
     _displayPartView?: DisplayPartView
     updateFlag = true
@@ -316,8 +313,26 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         { label: 'Джанти', id: 4 },
         { label: 'Джанти с гуми', id: 5 },
     ]
-    currentitemType = ItemType.Tyre
+    currentitemType = computed(() => { if (this.itemType()) return this.itemType()
+        return ItemType.Tyre
+    })
     //#endregion
+    $displayTyre = computed(() => 
+        {
+            const itemType = this.currentitemType()
+            if ( itemType == ItemType.Tyre || itemType == ItemType.RimWithTyre
+        ) return true;
+        return false;
+    })
+
+    $displayRim = computed(() => {
+            const itemType = this.currentitemType()
+            if (itemType == ItemType.Rim || itemType == ItemType.RimWithTyre)
+            return true;
+
+        return false;
+    })
+
 
     constructor() {
         super()
@@ -334,12 +349,14 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.rimMaterial = [{ value: 0, text: 'Избери материал' }, ...this.staticSelectionService.RimMaterial]
         this.rimWidth = [{ value: 0, text: 'Избери джанта ширина ' }, ...this.staticSelectionService.RimWidth]
         this.regions = [{ value: 0, text: 'Избери регион' }, ...this.staticSelectionService.Region]
-        this.initValue = this.addTyreFormModel()
 
         effect(() => {
             this.time.set(Date.now())
         })
 
+        effect(() => {
+            console.log(`Item Id: ${this.itemId()}`)
+        })
         effect(() => {
             console.log(`Tyre Component Form ${JSON.stringify(this.addTyreForm().value())}`)
         })
@@ -359,9 +376,15 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             }
         })
 
+        effect(() => {console.log(`Current Item Type: ${this.currentitemType()}`)})
+
         effect(() => {console.log(`Item Id: ${this.itemId()}`)})
         effect(() => {
             this.onItemTypeChange(this.addTyreForm.itemType().value())
+        })
+
+        effect(() => {
+            console.log(`Dispay : ${this.$displayTyre()} Rim: ${this.$displayRim()}`)
         })
 
         effect(() => {
@@ -395,21 +418,19 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
 
     displaySections() {
-        this.tyreDescription = this.currentitemType === ItemType.Tyre ? 'Гума' : this.currentitemType === ItemType.Rim ? 'Джанта' : 'Гума с Джанта'
-        this.displayTyre = this.currentitemType === ItemType.Tyre || this.currentitemType === ItemType.RimWithTyre
-        this.displayRim = this.currentitemType === ItemType.Rim || this.currentitemType === ItemType.RimWithTyre
+        this.tyreDescription = this.currentitemType() === ItemType.Tyre ? 'Гума' : this.currentitemType() === ItemType.Rim ? 'Джанта' : 'Гума с Джанта'
     }
 
     ngOnInit() {
         this.mode = this.mode ?? UpdateEnum.New
 
         if (this.$seller())
-            if (this.params?.ad) {
-                this.currentitemType = ItemType.Tyre
-            }
+            // if (this.params?.ad) {
+            //     this.currentitemType = ItemType.Tyre
+            // }
 
-        if (this.currentitemType)
-            this.addTyreFormModel.set({ ...this.addTyreFormModel(), itemType: this.currentitemType! })
+        if (this.currentitemType())
+            this.addTyreFormModel.set({ ...this.addTyreFormModel(), itemType: this.currentitemType()! })
         this.displaySections()
 
         if (this.mode() === UpdateEnum.Update || this.mode() === UpdateEnum.View) {
@@ -426,7 +447,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             if (this.itemId()) {
                 this.loadTyre(this.itemId())
             } else if (!this.id()) {
-                this.nextIdService.getNextId(this.currentitemType!).subscribe({
+                this.nextIdService.getNextId(this.currentitemType()!).subscribe({
                     next: (nextId) => {
                         if (nextId.error) {
                             this.popupService.openWithTimeout('Съобщение', nextId.error, 2000).subscribe(() => {
@@ -447,9 +468,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
                     },
                 })
             }
-            if (this.params.itemType) {
-                this.currentitemType = +this.params.itemType
-            }
         })
     }
 
@@ -458,8 +476,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
 
     onItemTypeChange(event: ItemType) {
-        if (this.currentitemType  !== event) {
-            this.currentitemType = event
+        console.log(event)
             this.displaySections()
             this.addTyreFormModel.update((value) => ({
                 ...value,
@@ -482,7 +499,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
                 price: 0,
                 mainImageId: 0,
             }))
-        }
     }
 
     get dataManager() {
@@ -501,14 +517,11 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.tyreService.getItem(id).subscribe({
             next: (tyre) => {
                 this.currentItem = tyre
-                this.currentitemType = tyre.itemType ?? ItemType.Tyre
+                //this.currentitemType = tyre.itemType ?? ItemType.Tyre
                 this.displaySections()
                 this.addTyreFormModel.update((value) => ({ ...value, ...this.currentItem }))
                 this.mainImageId = this.currentItem.mainImageId
-                this.displayTyre = this.currentitemType === ItemType.Tyre || this.currentitemType === ItemType.RimWithTyre
-                this.displayRim = this.currentitemType === ItemType.Rim || this.currentitemType === ItemType.RimWithTyre
 
-                this.initValue = this.addTyreForm().value()
                 if (tyre.rimWithTyreId)
                 this.imageService.getMinImages(tyre.rimWithTyreId!).subscribe((res) => {
                     this.images = res

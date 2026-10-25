@@ -63,7 +63,7 @@ export class ImageListComponent extends HelperComponent implements OnInit {
             console.log(`Main image: ${this.$mainImage()} ${this.mainImageId()}`)
         })
         effect(() => {
-            console.log(`Item Id: ${this.itemId()} ${this.mainImage()}`)
+            console.log(`Images Item Id: ${this.itemId()} ${this.mainImage()}`)
         })
         effect(() => {
             if (this.images()) {

@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="tyre mb-2" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
+        <div class="tyre mb-2" [ngClass]="{ show: $displayTyre(), noShow: !$displayTyre() }">
             <h5>Гума</h5>
             <div class="row">
                 <div class="col-sm-2 min150px">
@@ -47,7 +47,7 @@
                         (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
-                @if (currentitemType === 3) {
+                @if ($displayTyre()) {
                     <div class="col-sm-1 min150px">
                         <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [isRequired]="true"></app-input>
                     </div>
@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-        @if (currentitemType === 3 || currentitemType === 5) {
+        @if ($displayTyre() || $displayRim()) {
             <div class="row mb-2">
                 <div class="d-inline-flex align-items-end">
                     <div class="col-sm-1 control min50px max100px me-2">
@@ -83,11 +83,11 @@
                 </div>
             </div>
         }
-        <div class="rim mb-2" [ngClass]="{ show: displayRim, noShow: !displayRim }">
+        <div class="rim mb-2" [ngClass]="{ show: $displayRim(), noShow: !$displayRim() }">
             <h5>Джанта</h5>
             <div class="row">
                 <div class="col-sm-4 control max250px">
-                    <app-company-choise id="companyId" [formField]="addTyreForm.companyId" data-cy="companyId" [config]="{ all: true, bus: 0, userId: userId(), itemType: currentitemType, showCount: false }" (onCloseEvent)="focus($event)">
+                    <app-company-choise id="companyId"  [formField]="addTyreForm.companyId" data-cy="companyId" [config]="{ all: true, bus: 0, userId: userId() , itemType: currentitemType(), showCount: false }" (onCloseEvent)="focus($event)">
                     </app-company-choise>
                 </div>
                 @if (this.companyId) {
@@ -105,7 +105,7 @@
                 }
             </div>
             <div class="row">
-                @if (currentitemType === 4) {
+                @if ($displayRim()) {
                     <div class="col-sm-2 min150px">
                         <app-select
                             [formField]="addTyreForm.tyreRadius"
@@ -183,7 +183,7 @@
                         [submitted]="submitted">
                     </app-select>
                 </div>
-                @if (currentitemType !== 3) {
+                @if (currentitemType() !== 3) {
                     <div class="col-sm-1 min150px">
                         <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [isRequired]="true"></app-input>
                     </div>
@@ -217,7 +217,7 @@
             <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div> -->
         <div class="row mt-3" style="position: relative">
-            <app-imagelist [id]="itemId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
+            <app-imagelist [itemId]="itemId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
                 <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="$canUpdate()" [saveName]="$actionMessage()" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>

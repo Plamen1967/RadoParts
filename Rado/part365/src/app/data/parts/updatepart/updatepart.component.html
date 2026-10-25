@@ -1,1 +1,1 @@
-<app-addpart [mode]="mode" [id]="id()!" [displayPartView]="displayPartView()!" (saved)="savedEvent($event)" (noChange)="backEvent($event)">
+<app-addpart [addItemParam]="{id: id()!, mode: mode}" [mode]="mode" [id]="id()!" [displayPartView]="displayPartView()!" (saved)="savedEvent($event)" (noChange)="backEvent($event)">

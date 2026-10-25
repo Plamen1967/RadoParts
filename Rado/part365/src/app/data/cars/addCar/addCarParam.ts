@@ -1,9 +1,9 @@
 import { DisplayPartView } from "@model/displayPartView"
 import { UpdateEnum } from "@model/enum/update.enum"
 
-export  class AddCarParam {
+export  class AddItemParam {
     bus? : number | undefined
-    carId? : number | undefined
+    id? : number | undefined
     add?  = false
     update?  = false
     mode? : UpdateEnum = UpdateEnum.New

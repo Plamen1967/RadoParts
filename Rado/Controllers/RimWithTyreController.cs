@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utility;
+using Utility.Validation;
 using Controller = Rado.Controllers.Admin.Controller;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -26,6 +27,7 @@ namespace Rado.Controllers
         // POST api/<PartController>
         [HttpPost]
         [EnableCors("testingApp")]
+        [ServiceFilter(typeof(ModelValidation))]
         public async Task<DisplayPartView> Post([FromBody] RimWithTyre rimWithTyre)
         {
             rimWithTyre.UserId = UserId;
@@ -41,21 +43,21 @@ namespace Rado.Controllers
         }
 
         // PUT api/<PartController>/5
-        [HttpPost("{id}")]
-        [EnableCors("testingApp")]
-        public async Task<DisplayPartView> Post(long id, RimWithTyre rimWithTyre)
-        {
-            try
-            {
-                rimWithTyre.UserId = UserId;
-                return await RimWithTyreDbSet.AddRimWithTyreAsync(rimWithTyre);
-            }
-            catch (Exception exception)
-            {
-                LoggerUtil.LogException(exception);
-                throw;
-            }
-        }
+        //[HttpPost()]
+        //[EnableCors("testingApp")]
+        //public async Task<DisplayPartView> Post([FromBody] RimWithTyre rimWithTyre)
+        //{
+        //    try
+        //    {
+        //        rimWithTyre.UserId = UserId;
+        //        return await RimWithTyreDbSet.AddRimWithTyreAsync(rimWithTyre);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        LoggerUtil.LogException(exception);
+        //        throw;
+        //    }
+        //}
 
         [HttpPatch("{id}")]
         public async Task<DisplayPartView> Patch(long id, [FromBody] RimWithTyre rimWithTyre)
