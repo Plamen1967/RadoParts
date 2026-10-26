@@ -12,8 +12,8 @@
                 <div class="rowCar" id="top">
                     <div class="d-flex justify-content-center text-center mb-1 mt-1 filter-button">
                         @if (!userId_) {
-                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goBack()">{{ labels.GOHOME }}</button>
-                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goSearch()">{{ labels.TOSEARCH }}</button>
+                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" style="padding: 8px 16px" (click)="goBack()">{{ labels.GOHOME }}</button>
+                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" style="padding: 8px 16px" (click)="goSearch()">{{ labels.TOSEARCH }}</button>
                         }
                     </div>
                     @if (numberPages() > 1) {
@@ -52,8 +52,8 @@
 
                     @if (!userId_) {
                         <div class="d-flex justify-content-center text-center mb-1 mt-1">
-                            <button type="button" class="button btn-primary btn-sm active me-2 button-style" (click)="goBack()">{{ labels.GOHOME }}</button>
-                            <button type="button" class="button btn-primary btn-sm active button-style" (click)="goSearch()">{{ labels.TOSEARCH }}</button>
+                            <button type="button" class="button btn-primary btn-sm active me-2 button-style"  style="padding: 8px 16px" (click)="goBack()">{{ labels.GOHOME }}</button>
+                            <button type="button" class="button btn-primary btn-sm active button-style"  style="padding: 8px 16px" (click)="goSearch()">{{ labels.TOSEARCH }}</button>
                         </div>
                     }
                 </div>

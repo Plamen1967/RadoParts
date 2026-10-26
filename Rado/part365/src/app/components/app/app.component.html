@@ -39,8 +39,14 @@
                                     ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави част за бус</div></a
                                 >
                             }
-                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' }"
-                                ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави Гума/Джанта</div></a
+                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', bus: 1 }"
+                                ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави гума</div></a
+                            >
+                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' , bus: 1}"
+                                ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави джанта</div></a
+                            >
+                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', bus: 1 }"
+                                ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави гума джанта</div></a
                             >
                         </div>
                     </div>

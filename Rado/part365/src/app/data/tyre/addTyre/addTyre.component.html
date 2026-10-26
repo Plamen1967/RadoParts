@@ -22,7 +22,14 @@
             <h5>Гума</h5>
             <div class="row">
                 <div class="col-sm-2 min150px">
-                    <app-select [formField]="addTyreForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" [submitted]="submitted" [isRequired]="true" data-cy="tyreWidth" [data]="tyreWidth" (onCloseEvent)="focus($event)">
+                    <app-select
+                        [formField]="addTyreForm.tyreWidth"
+                        label="{{ labels.TYRE_WIDTH }}"
+                        [submitted]="submitted"
+                        [isRequired]="true"
+                        data-cy="tyreWidth"
+                        [data]="tyreWidth"
+                        (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
                 <div class="col-sm-2 min200px">
@@ -37,23 +44,27 @@
                     </app-select>
                 </div>
                 <div class="col-sm-2 min150px">
-                    <app-select
-                        [formField]="addTyreForm.tyreRadius"
-                        label="{{ labels.TYRE_RADIUS }}"
-                        [submitted]="submitted"
-                        [isRequired]="true"
-                        data-cy="tyreRadius"
-                        [data]="tyreRadius"
-                        (onCloseEvent)="focus($event)">
-                    </app-select>
+                    @if (!$displayTyre()) {
+                        <app-select
+                            [formField]="addTyreForm.tyreRadius"
+                            label="{{ labels.TYRE_RADIUS }}"
+                            [submitted]="submitted"
+                            [isRequired]="true"
+                            data-cy="tyreRadius"
+                            [data]="tyreRadius"
+                            (onCloseEvent)="focus($event)">
+                        </app-select>
+                    }
                 </div>
-                @if ($displayTyre()) {
-                    <div class="col-sm-1 min150px">
-                        <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [isRequired]="true"></app-input>
-                    </div>
-                }
                 <div class="col-sm-2 min150px">
-                    <app-select [formField]="addTyreForm.tyreType" label="{{ labels.TYRE_TYPE }}" [submitted]="submitted" data-cy="tyreType" [data]="tyreTypes" (onCloseEvent)="focus($event)" [isRequired]="true">
+                    <app-select
+                        [formField]="addTyreForm.tyreType"
+                        label="{{ labels.TYRE_TYPE }}"
+                        [submitted]="submitted"
+                        data-cy="tyreType"
+                        [data]="tyreTypes"
+                        (onCloseEvent)="focus($event)"
+                        [isRequired]="true">
                     </app-select>
                 </div>
                 <div class="col-sm-3 min200px">
@@ -68,13 +79,26 @@
                         [isRequired]="false">
                     </app-select>
                 </div>
+                @if (!$displayRim()) {
+                    <div class="col-sm-1 min150px">
+                        <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [isRequired]="true"></app-input>
+                    </div>
+                }
             </div>
         </div>
-        @if ($displayTyre() || $displayRim()) {
+        @if ($displayTyre() || ($displayTyre() && $displayRim())) {
             <div class="row mb-2">
                 <div class="d-inline-flex align-items-end">
                     <div class="col-sm-1 control min50px max100px me-2">
-                        <app-select id="month" tooltip="'Mесец DOT'" [formField]="addTyreForm.monthDOT" data-cy="month" label="DOT" [data]="months" (onCloseEvent)="focus($event)" [submitted]="submitted">
+                        <app-select
+                            id="month"
+                            tooltip="'Mесец DOT'"
+                            [formField]="addTyreForm.monthDOT"
+                            data-cy="month"
+                            label="DOT"
+                            [data]="months"
+                            (onCloseEvent)="focus($event)"
+                            [submitted]="submitted">
                         </app-select>
                     </div>
                     <div class="col-sm-1 control min50px max100px">
@@ -87,7 +111,12 @@
             <h5>Джанта</h5>
             <div class="row">
                 <div class="col-sm-4 control max250px">
-                    <app-company-choise id="companyId"  [formField]="addTyreForm.companyId" data-cy="companyId" [config]="{ all: true, bus: 0, userId: userId() , itemType: currentitemType(), showCount: false }" (onCloseEvent)="focus($event)">
+                    <app-company-choise
+                        id="companyId"
+                        [formField]="addTyreForm.companyId"
+                        data-cy="companyId"
+                        [config]="{ all: true, bus: 0, userId: userId(), required: true, itemType: currentitemType(), showCount: false }"
+                        (onCloseEvent)="focus($event)">
                     </app-company-choise>
                 </div>
                 @if (this.companyId) {
@@ -128,6 +157,7 @@
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimMaterial"
+                        [isRequired]="true"
                         (onCloseEvent)="focus($event)"
                         [submitted]="submitted">
                     </app-select>
@@ -183,16 +213,21 @@
                         [submitted]="submitted">
                     </app-select>
                 </div>
-                @if (currentitemType() !== 3) {
-                    <div class="col-sm-1 min150px">
-                        <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [isRequired]="true"></app-input>
-                    </div>
-                }
+                <div class="col-sm-1 min150px">
+                    <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted" label="Брой" data-cy="count" [isRequired]="true"></app-input>
+                </div>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-sm-4">
-                <app-select [formField]="addTyreForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" data-cy="region" [data]="regions" (onCloseEvent)="focus($event)" [submitted]="submitted">
+                <app-select
+                    [formField]="addTyreForm.regionId"
+                    label="{{ labels.REGION }}"
+                    [submitted]="submitted"
+                    data-cy="region"
+                    [data]="regions"
+                    (onCloseEvent)="focus($event)"
+                    [submitted]="submitted">
                 </app-select>
             </div>
         </div>
@@ -219,7 +254,14 @@
         <div class="row mt-3" style="position: relative">
             <app-imagelist [itemId]="itemId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
-                <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="$canUpdate()" [saveName]="$actionMessage()" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
+                <app-toolbar
+                    [canCancel]="true"
+                    [isChanged]="true"
+                    [canSave]="$canUpdate()"
+                    [saveName]="$actionMessage()"
+                    [cancelName]="labels.GOBACK"
+                    (Save)="onSubmit()"
+                    (Cancel)="cancel()"></app-toolbar>
             </div>
         </div>
     </form>

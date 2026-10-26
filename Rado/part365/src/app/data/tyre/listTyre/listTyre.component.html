@@ -10,11 +10,11 @@
         <form>
             <div class="custom-flex">
                 <div class="ps-0 mt-2" [ngStyle]="{ display: 'flex' }">
-                    <app-radiogrouplist [style]="2" [radios]="radioTypes" controlName="category" [formField]="searchForm.category"></app-radiogrouplist>
+                    <app-radiogrouplist [style]="2" [radios]="radioTypes" controlName="category" [formField]="searchForm.category" (changeRadioGroup)="categoryChanged($event)"></app-radiogrouplist>
                 </div>
             </div>
-            @if (displayTyre) {
-                <div class="tyre" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
+            @if ($displayTyre()) {
+                <div class="tyre" [ngClass]="{ show: $displayTyre(), noShow: !$displayTyre() }">
                     <h5>Гума</h5>
                     <div class="row">
                         <div class="col-sm-2 min250px">
@@ -47,12 +47,12 @@
                 </div>
             }
 
-            @if (displayRim) {
-                <div class="rim" [ngClass]="{ show: displayRim, noShow: !displayRim }">
+            @if ($displayRim()) {
+                <div class="rim" [ngClass]="{ show: $displayRim(), noShow: !$displayRim() }">
                     <h5>Джанта</h5>
                     <div class="row">
                         <div class="max250px">
-                            <app-company-choise [config]="{ all: true, bus: 0, userId: userId!, itemType: itemType }" [formField]="searchForm.companyId"> </app-company-choise>
+                            <app-company-choise [config]="{ all: true, bus: 0, userId: userId!, itemType: itemType() }" [formField]="searchForm.companyId"> </app-company-choise>
                         </div>
                         @if (this.companyId) {
                             <div class="col-sm-5 control min300px">
@@ -141,18 +141,23 @@
                 <button type="button" #submit class="btn btnSearch me-2" data-cy="search" (click)="clear()">Изчисти</button>
             </div>
             <div>
-            <app-buttonmenu appOutside [menuOptions]="menuOptions" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu>
+                <app-buttonmenu appOutside [menuOptions]="$menuOptions()" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu>
 
                 <div class="d-flex justify-content-start ms-2" class="option-menu">
-                    @if (searchForm.category().value() === 3 || searchForm.category().value() === 7) {
-                        <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(3)">Добави Гума</button>
-                    }
-                    @if (searchForm.category().value() === 4 || searchForm.category().value() === 7) {
-                        <button type="button" class="btn btnAdd me-2" data-cy="addtyre" (click)="newTyre(4)">Добави Джанта</button>
-                    }
-                    @if (searchForm.category().value() === 5 || searchForm.category().value() === 7) {
-                        <button type="button" class="btn btnAdd" data-cy="addtyre" (click)="newTyre(5)">Добави Джанта с гума</button>
-                    }
+                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: $displayTyre() === true ? 'block' : 'none' }" (click)="newTyre(3)">
+                        Добави Гума
+                    </button>
+                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: $displayRim() === true || $displayAll() === true ? 'block' : 'none' }" (click)="newTyre(4)">
+                        Добави Джанта
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btnAdd"
+                        data-cy="addtyre"
+                        [ngStyle]="{ display: ($displayRim() === true && $displayTyre() === true) || $displayAll() === true ? 'block' : 'none' }"
+                        (click)="newTyre(5)">
+                        Добави Джанта с гума
+                    </button>
                 </div>
             </div>
         </div>
@@ -179,8 +184,8 @@
         }
     </div>
 } @else if ($addTyreFlag()) {
-    <app-addtyre [itemType]= "type()" (saved)="saved($event)" (noChange)="back($event!)"></app-addtyre>
+    <app-addtyre [itemType]="itemType()" (saved)="saved($event)" (noChange)="back($event!)"></app-addtyre>
 } @else if ($updateTyreFlag()) {
-    <app-updatetyre [id]= "id()" (saved)="saved($event)" (noChange)="back($event)"></app-updatetyre>
+    <app-updatetyre [id]="id()" (saved)="saved($event)" (noChange)="back($event)"></app-updatetyre>
 }
 <app-gotop></app-gotop>

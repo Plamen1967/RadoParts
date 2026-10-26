@@ -357,12 +357,12 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         effect(() => {
             console.log(`Item Id: ${this.itemId()}`)
         })
-        effect(() => {
-            console.log(`Tyre Component Form ${JSON.stringify(this.addTyreForm().value())}`)
-        })
-        effect(() => {
-            console.log(`Tyre Component ${this.regionId()}`)
-        })
+        // effect(() => {
+        //     console.log(`Tyre Component Form ${JSON.stringify(this.addTyreForm().value())}`)
+        // })
+        // effect(() => {
+        //     console.log(`Tyre Component ${this.regionId()}`)
+        // })
         effect(() => {
             if (this.id())
                 this.itemId.set(this.id()!)

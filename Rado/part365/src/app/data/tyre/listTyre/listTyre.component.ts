@@ -153,14 +153,9 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     regions: SelectOption[] = []
     tyreTypes: SelectOption[] = []
     inialState?: object
-    itemType: ItemType = ItemType.AllTyre
+    itemType = signal<ItemType>(ItemType.AllTyre)
     params?: QueryParam
     userCount$: Observable<UserCount | undefined>
-    menuOptions: MenuOption[] = [
-        { menuId: 1, menu: 'Добави Гума' },
-        { menuId: 2, menu: 'Добави Джанта' },
-        { menuId: 3, menu: 'Добави Джанта с гума' },
-    ]
 
     radioTypes: RadioButton[] = [
         { label: 'Всички', id: 7 },
@@ -192,7 +187,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     $updateTyreFlag = signal(false)
     $updateRimFlag = signal(false)
     $updateRimWithTyreFlag = signal(false)
-    type = signal<ItemType>(ItemType.Tyre)
+    type = input<ItemType>(ItemType.Tyre)
     addTyre = input(0)
     addRim = input(0)
     addRimWithTyre = input(0)
@@ -205,11 +200,40 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
     id = signal(0)
     currentId = signal(0)
+    $displayTyre = computed(() => {
+        const value = this.type()
+        const result = (value == ItemType.Tyre || value == ItemType.RimWithTyre) ? true : false
+        return result
+    })
+
+    $displayRim = computed(() => {
+        const value = this.type()
+        const result = (value == ItemType.Rim || value == ItemType.RimWithTyre) ? true : false
+        return result
+    })
+
+    $displayAll = computed(() => {
+        const value = this.type()
+        return value == 7;
+    })
 
     $update = computed(() => {
         if (this.$addTyreFlag() || this.$updateRimFlag()) return true
         if (this.updateTyre() || this.updateRim() || this.updateRimWithTyre() || this.addTyre() || this.addRim() || this.addRimWithTyre()) return true
         return false
+    })
+
+    $menuOptions = computed(() => {
+        const type = this.type()
+        const options: MenuOption[] = [] 
+        if (type === ItemType.Tyre || type === undefined)
+            options.push({ menuId: 1, menu: 'Добави Гума' })
+        if (type === ItemType.Rim || type === undefined)
+            options.push({ menuId: 2, menu: 'Добави Джанта' })
+        if (type === ItemType.RimWithTyre || type === undefined)
+            options.push({ menuId: 3, menu: 'Добави Джанта с гума' })
+
+        return options
     })
 
     $pageItems = computed(() => {
@@ -223,6 +247,13 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
     constructor() {
         super()
+
+        effect(() => {
+            console.log(`Display Rim ${this.$displayRim()}  Display Tyre ${this.$displayTyre()} Display All ${this.$displayAll()}`)
+        })
+        effect(() => {
+            console.log(`Type ${this.type()}`)
+        })
 
         effect(() => {
             console.log(`Tyre Resource: ${JSON.stringify(this.$tyreResource.value())}`)
@@ -328,43 +359,38 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         // }
     }
 
-    public get displayTyre(): boolean {
-        const value = this.selectedCategory === ItemType.Tyre || this.selectedCategory === ItemType.RimWithTyre ? true : false
-        return value
-    }
-
-    public get displayRim(): boolean {
-        const value = this.selectedCategory == ItemType.Rim || this.selectedCategory === ItemType.RimWithTyre ? true : false
-        return value
-    }
-
     categoryChanged(f: number) {
-        this.menuOptions = []
-        this.selectedCategory = f
-        if (this.selectedCategory === 3 || this.selectedCategory === 7) {
-            this.menuOptions.push({ menuId: 1, menu: 'Добави Гума' })
-        }
-        if (this.selectedCategory === 4 || this.selectedCategory === 7) {
-            this.menuOptions.push({ menuId: 2, menu: 'Добави Джанта' })
-        }
-        if (this.selectedCategory === 5 || this.selectedCategory === 7) {
-            this.menuOptions.push({ menuId: 3, menu: 'Добави Джанта с гума' })
-        }
+        const queryParams = { type: f}
+        if (f == 7)
+            this.router.navigate(['/data/tyres'])
+        else
+            this.router.navigate(['/data/tyres'], { queryParams: queryParams})
+        // this.menuOptions = []
+        // this.selectedCategory = f
+        // if (this.selectedCategory === 3 || this.selectedCategory === 7) {
+        //     this.menuOptions.push({ menuId: 1, menu: 'Добави Гума' })
+        // }
+        // if (this.selectedCategory === 4 || this.selectedCategory === 7) {
+        //     this.menuOptions.push({ menuId: 2, menu: 'Добави Джанта' })
+        // }
+        // if (this.selectedCategory === 5 || this.selectedCategory === 7) {
+        //     this.menuOptions.push({ menuId: 3, menu: 'Добави Джанта с гума' })
+        // }
 
-        this.updateData([])
-        this.itemType = f
+        // this.updateData([])
+        this.itemType.set(f)
     }
 
     search() {
         const filter: FilterRimWithTyre = Object.assign({}, this.searchFormModel())
-        filter.itemType = this.itemType
+        filter.itemType = this.itemType()
         filter.userId = this.user?.userId
         this._autoSearch$.next(filter)
     }
 
     newTyre(itemType: ItemType) {
-        this.type.set(itemType)
         this.$addTyreFlag.set(true)
+        this.itemType.set(itemType)
         // const queryParams = { itemType: itemType, view: 'list' }
         // this.router.navigate(['/data/addTyre'], { queryParams: queryParams })
     }
@@ -456,10 +482,10 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
     get addButtonName() {
         let buttonName = ''
-        if (this.itemType === ItemType.Tyre) buttonName = 'гума'
-        else if (this.itemType === ItemType.Rim) buttonName = 'джанта'
-        else if (this.itemType === ItemType.RimWithTyre) buttonName = 'джанта с гума'
-        else if (this.itemType === ItemType.AllTyre) return undefined
+        if (this.itemType() === ItemType.Tyre) buttonName = 'гума'
+        else if (this.itemType() === ItemType.Rim) buttonName = 'джанта'
+        else if (this.itemType() === ItemType.RimWithTyre) buttonName = 'джанта с гума'
+        else if (this.itemType() === ItemType.AllTyre) return undefined
 
         return `Добави ${buttonName}`
     }

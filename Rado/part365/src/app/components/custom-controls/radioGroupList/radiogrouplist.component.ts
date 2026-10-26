@@ -20,7 +20,9 @@ updateSelectValue(event: Event, id: number|undefined) {
     this.value.update(() => {
         const selectItem = this.radios().find((item) => item.id === id)
         console.log(selectItem)
+        this.changeRadioGroup.emit(selectItem?.id ?? 0)
         return selectItem?.id ?? 0
+
     })
 }
 

@@ -1,14 +1,23 @@
-<div [ngClass]="{ paddingClass: positionEnd() === 1 ? true : false, positionEnd: positionEnd() === 0 ? true : false }" [ngClass]="{ 'min-width': '1.8em' }" role="none">
+<div
+    [ngClass]="{ paddingClass: positionEnd() === 1 ? true : false, positionEnd: positionEnd() === 0 ? true : false }"
+    [ngClass]="{ 'min-width': '1.8em', 'pading-left': '2px', 'pading-right': '2px' }"
+    role="none">
     @if (isSaved) {
-        <div>
+        <div style="display: flex; flex-direction: column;">
             <button data-toggle="tooltip" data-placement="top" title="Отмени запазена обява" class="favoirite saved" (click)="unsave()">
-                <span class="material-icons"> favorite </span>
+                <span class="material-icons" style="font-size: 28px"> favorite </span>
+            </button>
+            <button data-toggle="tooltip" data-placement="top" title="Отмени запазена обява" class="favoirite saved" (click)="unsave()">
+                <span class="material-symbols-outlined" style="font-size: 28px"> star </span>
             </button>
         </div>
     } @else {
-        <div>
+        <div style="display: flex; flex-direction: column;">
             <button data-toggle="tooltip" data-placement="top" title="Запази обява" class="favoirite unSaved" (click)="save()">
-                <span class="material-icons"> favorite_border </span>
+                <span class="material-icons" style="font-size: 28px"> favorite_border </span>
+            </button>
+            <button data-toggle="tooltip" data-placement="top" title="Отмени запазена обява" class="favoirite saved" (click)="unsave()">
+                <span class="material-symbols-outlined" style="font-size: 30px"> star_border </span>
             </button>
         </div>
     }

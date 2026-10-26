@@ -24,6 +24,7 @@ export class SelectComponent implements FormValueControl<number> {
     submitted = input(false)
     id = input('selectId')
     data = input.required<SelectOption[]>();
+    valueChanged = output<number>()
     // readonly error = input(ValidationErrors | null);
 
    

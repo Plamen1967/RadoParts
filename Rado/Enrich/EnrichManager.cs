@@ -699,7 +699,7 @@ namespace Rado.Enrich
             if (modelName.Length > 0)
                 displayPartView.ModelName = modelName;
             EnrichDisplay(displayPartView);
-
+            displayPartView.Normalize();
             return displayPartView;
         }
 

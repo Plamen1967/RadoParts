@@ -78,10 +78,10 @@
 
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="addAdvert">
-                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави кола</a>
-                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new',  bus: '1' }">Добави бус</a>
-                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }">Добави част за кола</a>
-                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new',  bus: '1' }">Добави част за бус</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }"><span class="material-symbols-outlined me-2"> directions_car </span>Добави кола</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new',  bus: '1' }"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави бус</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }"><span class="material-symbols-outlined me-2"> directions_car </span>Добави част за кола</a>
+                                    <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new',  bus: '1' }"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави част за бус</a>
                                     <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', itemType: '3'}">Добави гума</a>
                                     <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', itemType: '4'}">Добави джанта</a>
                                     <a class="dropdown-item nav-link navbar-dark text-dark" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', itemType: '5'}">Добави гума с джанта</a>
@@ -229,14 +229,14 @@
                         <li class="dropdown-content" id="advert" (click)="removeMenu('advert')" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass" [ngStyle]="{ 'z-index': '2' }">
                                 @if (logged && $seller() && !admin) {
-                                    <a [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }">Добави Кола</a>
+                                    <a [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }"><span class="material-symbols-outlined me-2"> directions_car </span>Добави Кола</a>
                                 }
                                 @if (logged && $seller() && !admin) {
-                                    <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new', bus: 1 }"><img class="tabSvg" src="images/svg/van.svg" alt="" />Добави Бус</a>
+                                    <a [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new', bus: 1 }"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави Бус</a>
                                 }
-                                <a (click)="addPart()" role="presentation">Добави част за кола</a>
+                                <a (click)="addPart()" role="presentation"><span class="material-symbols-outlined me-2"> directions_car </span>Добави част за кола</a>
                                 @if (logged && !admin) {
-                                    <a (click)="addPart(1)" role="presentation"><img class="tabSvg" src="images/svg/van.svg" alt="" />Добави част за бус</a>
+                                    <a (click)="addPart(1)" role="presentation"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави част за бус</a>
                                     <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', 'itemType': 3 }"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Добави Гума</a>
                                     <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', 'itemType': 4 }"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Добави Джанта</a>
                                     <a [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', 'itemType': 5 }"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Добави Гума с джанта</a>

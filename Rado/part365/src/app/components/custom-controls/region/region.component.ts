@@ -15,6 +15,9 @@ import { FormValueControl } from '@angular/forms/signals'
     imports: [SelectComponent, TooltipDirective, ReactiveFormsModule],
 })
 export class RegionComponent extends HelperComponent implements FormValueControl<number>, OnInit {
+    valueChanged($event: number | undefined) {
+        this.value.set($event ?? 0)
+    }
     isDisabled = false
     regionForm: FormGroup
     regions: SelectOption[] = []
@@ -30,7 +33,7 @@ export class RegionComponent extends HelperComponent implements FormValueControl
             region_int: [0],
         })
     }
-    
+
     ngOnInit() {
         this.regions = [...[{ value: 0, text: ' Всички' }], ...this.staticSelectionService.Region]
     }

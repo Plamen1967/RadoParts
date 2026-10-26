@@ -791,7 +791,6 @@ export class StaticSelectionService {
 
     public get RimBoltCount(): SelectOption[] {
         return [
-            { value: undefined, text: '' },
             { value: 3, text: '3' },
             { value: 4, text: '4' },
             { value: 5, text: '5' },
