@@ -94,6 +94,8 @@ html {
 
 .menu-burger {
     cursor: pointer;
+    font-size: 32px;
+    border: 1px solid black;
 }
 
 .menu-burger:hover {
@@ -610,7 +612,7 @@ nav {
     display: none;
     position: absolute;
     top: 16px;
-    left: 10px;
+    left: 12px;
     z-index: 1000;
     background-color: transparent;
     border: none;

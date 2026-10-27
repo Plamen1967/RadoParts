@@ -10,12 +10,12 @@
         <div class="shadow p-2 rounded card card-form-spec mt-4">
             <form>
                 <div class="row g-3">
-                    <div class="row g-2 mt-2">
-                        <div class="col-sm-2">
-                            <app-select [formField]="listForm.carId" label="{{ label }}" [data]="carsList" (onCloseEvent)="focus()"> </app-select>
+                    <div class="g-2 mt-2">
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <app-select [formField]="listForm.carId" label="{{ $label() }}" [data]="carsList" (onCloseEvent)="focus()"> </app-select>
                         </div>
                     </div>
-                    <div class="max300px">
+                    <div class="max300px col-sm-4 col-md-4 col-lg-4">
                         <app-company-choise [config]="{ itemType: $itemType(), userId: userId!, bus: bus(), showCount: true, all: true }" [formField]="listForm.companyId"> </app-company-choise>
                     </div>
                     @if (companyId) {
@@ -51,9 +51,11 @@
                         }
                     }
 
-                    <div class="max150px">
-                        <app-year [formField]="listForm.year" [period]="{ yearFrom: yearFrom, yearTo: yearTo }"></app-year>
-                    </div>
+                    @if (!this.bus()) {
+                        <div class="max150px">
+                            <app-year [formField]="listForm.year" [period]="{ yearFrom: yearFrom, yearTo: yearTo }"></app-year>
+                        </div>
+                    }
                 </div>
                 <div class="d-flex flex-row mt-2">
                     <div class="d-flex flex-row mb-2 me-2">
@@ -117,9 +119,9 @@
 } @else if ($addCarFlag()) {
     <app-addcar [addItemParam]="{ bus: 0, add: $addCarFlag() }" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
 } @else if ($addBusFlag()) {
-    <app-addcar [addItemParam]="{ bus: 1, add: $addCarFlag()}" [bus]=1 (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
+    <app-addcar [addItemParam]="{ bus: 1, add: $addBusFlag() }" [bus]="1" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
 } @else if ($addPartFlag()) {
-    <app-addpart [addItemParam]="{ bus: 1, add: $addPartFlag()}" [partIdNew]="id" [bus]="bus()" [add]="$addPartFlag()" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
+    <app-addpart [addItemParam]="{ bus: 1, add: $addPartFlag() }" [partIdNew]="id" [bus]="bus()" [add]="$addPartFlag()" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
 } @else if ($updateCarFlag()) {
     <app-updatecar [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
 } @else if ($updateBusFlag()) {

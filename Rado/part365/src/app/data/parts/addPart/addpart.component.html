@@ -92,10 +92,18 @@
                                             </div>
                                         }
                                     }
-                                    <div class="col-sm-3 col-md-3 col-lg-3 min200px">
-                                        <app-select [formField]="addPartForm.year" label="{{ labels.YEAR }}" [data]="years ?? []" data-cy="year" [submitted]="$submitted()" (onCloseEvent)="focus($event)">
-                                        </app-select>
-                                    </div>
+                                    @if (!this.bus()) {
+                                        <div class="col-sm-3 col-md-3 col-lg-3 min200px">
+                                            <app-select
+                                                [formField]="addPartForm.year"
+                                                label="{{ labels.YEAR }}"
+                                                [data]="years ?? []"
+                                                data-cy="year"
+                                                [submitted]="$submitted()"
+                                                (onCloseEvent)="focus($event)">
+                                            </app-select>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -110,6 +118,7 @@
                                     label="{{ labels.POWERBHP }}"
                                     placeHolder="{{ labels.POWERBHP }}"
                                     [submitted]="$submitted()"
+                                     (change)="powerBHPChanged()"
                                     data-cy="powerBHP">
                                 </app-input>
                             </div>
@@ -120,6 +129,7 @@
                                     label="{{ labels.POWERKWH }}"
                                     placeHolder="{{ labels.POWERKWH }}"
                                     [submitted]="$submitted()"
+                                     (change)="powerkWhChanged()"
                                     data-cy="powerkWh">
                                 </app-input>
                             </div>
@@ -285,14 +295,7 @@
         <div class="row mt-3" style="position: relative">
             <app-imagelist [itemId]="$itemId()!" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
-                <app-toolbar
-                    [canCancel]="true"
-                    [isChanged]="true"
-                    [canSave]="true"
-                    [saveName]="$action()"
-                    [cancelName]="labels.GOBACK"
-                    (Save)="onSubmit()"
-                    (Cancel)="cancel()"></app-toolbar>
+                <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="true" [saveName]="$action()" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>
         </div>
     }

@@ -122,7 +122,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     modificationId = 0
     userId?: number
     id?: number
-    label = 'Избери кола'
     $addCarFlag = signal(false)
     $addPartFlag = signal(false)
     $addBusFlag = signal(false)

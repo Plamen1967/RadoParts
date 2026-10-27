@@ -63,9 +63,11 @@
                             </app-modification-choice>
                         </div>
                     }
-                    <div class="col-sm-2">
-                        <app-select [formField]="searchForm.year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" (onCloseEvent)="focus()"> </app-select>
-                    </div>
+                    @if (!this.bus()) {
+                        <div class="col-sm-2">
+                            <app-select [formField]="searchForm.year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" (onCloseEvent)="focus()"> </app-select>
+                        </div>
+                    }
                 </div>
                 <div class="row g-3">
                     <div class="col-sm-2 min350px">
@@ -81,11 +83,11 @@
                             placeHolder="Избери категория">
                         </app-category-choise>
                     </div>
-                    @if (categoriesId && categoriesId.length) {
+                    @if (searchForm.categoryId().value() && searchForm.categoryId().value().toString().length) {
                         <div class="col-sm-2 min350px">
                             <app-subcategory-choise
                                 [formField]="searchForm.subCategoryId"
-                                [categoriesId]="categoriesId!"
+                                [categoriesId]="searchForm.categoryId().value().toString()"
                                 [multiselection]="false"
                                 data-cy="subCategoryId"
                                 title="{{ labels.SUBCATEGORY }}">
@@ -147,12 +149,17 @@
             }
         }
     </div>
-} @else if (this.update())
-{
+} @else if (this.update()) {
     <app-updatepart [id]="$getId()" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-updatepart>
-}
-@else
-{
-    <app-addpart [addItemParam]="{id: $getId(), bus: bus()}" [partIdNew]="$getId()" [bus]="bus()" [add]="addPartFlag" [ad]="'new'" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-addpart>
+} @else {
+    <app-addpart
+        [addItemParam]="{ id: $getId(), bus: bus() }"
+        [partIdNew]="$getId()"
+        [bus]="bus()"
+        [add]="addPartFlag"
+        [ad]="'new'"
+        (saved)="saved($event)"
+        data-cy="addPart"
+        (noChange)="back($event)"></app-addpart>
 }
 <app-gotop></app-gotop>

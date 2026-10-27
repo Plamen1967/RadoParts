@@ -1,5 +1,5 @@
 .btnAdd {
-    background-color: rgb(100, 221, 23);
+    background-color: blue;
     color: white;
 }
 
@@ -22,10 +22,10 @@
     border-radius: 5px;
 }
 
-.option-menu {
+/* .option-menu {
     display: none;
 }
-
+ */
 .button-menu {
     display: block;
 }

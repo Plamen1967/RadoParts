@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component, HostListener, inject, OnInit, input, effect, output } from '@angular/core'
+import { Component, HostListener, inject, OnInit, input, effect, output, signal } from '@angular/core'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { LocalStorageService } from '@services/storage/localStorage.service'
 
@@ -22,26 +22,26 @@ export class FavouriteComponent implements OnInit {
     id = input<number | undefined>() 
 
     unchecked = output<number>()
-    isSaved?: boolean
+    isSaved = signal<boolean>(false)
 
 
     constructor() {
         effect(() => {
 
             if (this.id()) {
-                this.isSaved = this.localStorageService.isSaved(this.id()!)
+                this.isSaved.set(this.localStorageService.isSaved(this.id()!))
             }
         })
     }
 
     ngOnInit() {
-        this.isSaved = this.localStorageService.isSaved(this.id()!)
+        this.isSaved.set(this.localStorageService.isSaved(this.id()!))
     }
 
     unsave() {
         this.localStorageService.removeSavedItem(this.id()!)
         this.unchecked.emit(this.id()!)
-        this.isSaved = this.localStorageService.isSaved(this.id()!)
+        this.isSaved.set(this.localStorageService.isSaved(this.id()!))
     }
 
     save() {
@@ -52,6 +52,6 @@ export class FavouriteComponent implements OnInit {
         }
 
         this.localStorageService.addSavedItem(this.id()!)
-        this.isSaved = this.localStorageService.isSaved(this.id()!)
+        this.isSaved.set(this.localStorageService.isSaved(this.id()!))
     }
 }

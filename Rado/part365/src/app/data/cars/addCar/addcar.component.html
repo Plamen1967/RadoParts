@@ -8,9 +8,9 @@
         </div>
     } @else {
         <div>
-            @if(bus()) {
+            @if (bus()) {
                 <div class="title">Бус на части</div>
-            }@else {
+            } @else {
                 <div class="title">Кола на части</div>
             }
         </div>
@@ -18,12 +18,13 @@
             <form autocomplete="off">
                 <div class="row g-3">
                     <div class="col-sm-2 min200px">
-                        <app-company-choise testId="companyId" [config]="{ required: true, submitted: submitted(), userId: $userId(), bus: bus(), all: true }" [formField]="addCarForm.companyId"> </app-company-choise>
+                        <app-company-choise testId="companyId" [config]="{ required: true, submitted: submitted(), userId: $userId(), bus: bus(), all: true }" [formField]="addCarForm.companyId">
+                        </app-company-choise>
                     </div>
                     @if (addCarForm.companyId().value()) {
                         <div class="col-sm-3 col-md-3 col-lg-3 min300px" style="min-width: 300px">
                             <app-model-choice
-                                [isRequired]=true
+                                [isRequired]="true"
                                 [formField]="addCarForm.modelId"
                                 [userId]="$userId()"
                                 [all]="true"
@@ -44,22 +45,25 @@
                                     [userId]="$userId()"
                                     [all]="true"
                                     [multiselection]="false"
-                                    [submitted]="submitted()"   
+                                    [submitted]="submitted()"
                                     [formField]="addCarForm.modificationId"
                                     (modifcationChange)="modificatioChanged($event)"
                                     (onCloseEvent)="focus()">
                                     >
                                 </app-modification-choice>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3 min150px">
-                                <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="$years()" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-select>
-                            </div>
+                            @if (!this.bus()) {
+                                <div class="col-sm-3 col-md-3 col-lg-3 min150px">
+                                    <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="$years()" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-select>
+                                </div>
+                            }
                         }
                     }
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-md-3 col-lg-3">
-                        <app-input-string [formField]="addCarForm.regNumber" label="{{ $labelMessage() }}" placeHolder="{{ $labelMessage() }}" [submitted]="submitted()" [isRequired]="true"> </app-input-string>
+                        <app-input-string [formField]="addCarForm.regNumber" label="{{ $labelMessage() }}" placeHolder="{{ $labelMessage() }}" [submitted]="submitted()" [isRequired]="true">
+                        </app-input-string>
                     </div>
                 </div>
                 <div class="row">
@@ -67,11 +71,23 @@
                         <app-input [formField]="addCarForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-input>
                     </div>
                     <div class="col-sm-3 col-md-3 col-lg-3">
-                        <app-input [formField]="addCarForm.powerBHP" type="number" label="{{ labels.POWERBHP }}" placeHolder="{{ labels.POWERBHP }}" [submitted]="submitted()" (change)="powerBHPChanged()">
+                        <app-input
+                            [formField]="addCarForm.powerBHP"
+                            type="number"
+                            label="{{ labels.POWERBHP }}"
+                            placeHolder="{{ labels.POWERBHP }}"
+                            [submitted]="submitted()"
+                            (change)="powerBHPChanged()">
                         </app-input>
                     </div>
                     <div class="col-sm-3 col-md-3 col-lg-3">
-                        <app-input [formField]="addCarForm.powerkWh" type="number" label="{{ labels.POWERKWH }}" placeHolder="{{ labels.POWERKWH }}" [submitted]="submitted()" (change)="powerkWhChanged()">
+                        <app-input
+                            [formField]="addCarForm.powerkWh"
+                            type="number"
+                            label="{{ labels.POWERKWH }}"
+                            placeHolder="{{ labels.POWERKWH }}"
+                            [submitted]="submitted()"
+                            (change)="powerkWhChanged()">
                         </app-input>
                     </div>
                     <div class="col-sm-2 col-md-2 col-lg-2">

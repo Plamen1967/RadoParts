@@ -59,8 +59,8 @@ interface addPartFormInterface {
     modificationId: number
     year: number
     vin: string
-    powerkWh: string
-    powerBHP: string
+    powerkWh: number | string
+    powerBHP: number | string
     millage: string
     engineType: number
     engineModel: string
@@ -155,7 +155,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         })
         min(path.modificationId, 1, {
             message: 'Моля изебрете модификация',
-            when: ({ valueOf }) => valueOf(path.partForCar) == 'part' && this.bus() == 1,
+            when: () => this.bus() == 0,
         })
         min(path.categoryId, 1, {
             message: 'Моля въведете категория',
@@ -315,8 +315,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             defaultValue: { nextId: 0, error: '' },
         }
     )
-    
-    
+
     $choice = computed(() => {
         console.log(`Is bus: ${this.bus()}`)
         return this.bus() == 1 ? 'бус' : 'кола'
@@ -451,15 +450,16 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         })
 
         effect(() => {
-            this.calculateBHP(this.addPartFormModel().powerkWh)
-        })
-
-        effect(() => {
             console.log(`Errors : ${this.addPartForm().errors()}`)
         })
-        effect(() => {
-            this.calculatekWh(this.addPartFormModel().powerBHP)
-        })
+
+        // effect(() => {
+        //     this.calculateBHP(this.addPartForm.powerkWh().value())
+        // })
+
+        // effect(() => {
+        //     this.calculatekWh(this.addPartForm.powerBHP().value())
+        // })
         //#endregion
     }
     ngOnInit(): void {
@@ -524,14 +524,22 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         // else this.addPartFormModel.update((value) => ({ ...value, carId: 0 }))
     }
 
-    calculateBHP(value: string) {
+    calculateBHP(value: number) {
         const newValue = Math.ceil(Number(value) * this.labels.KWH_TO_BHP)
-        if (newValue != +this.addPartForm.powerBHP().value()) this.addPartForm.powerBHP().value.set(newValue.toString())
+        if (newValue != this.addPartFormModel().powerBHP) this.addPartFormModel.set({ ...this.addPartFormModel(), powerBHP: newValue })
     }
 
-    calculatekWh(value: string) {
+    calculatekWh(value: number) {
         const newValue = Math.floor(Number(value) / this.labels.KWH_TO_BHP)
-        if (newValue != +this.addPartFormModel().powerkWh) this.addPartForm.powerkWh().value.set(newValue.toString())
+        if (newValue != this.addPartFormModel().powerkWh) this.addPartFormModel.set({ ...this.addPartFormModel(), powerkWh: newValue })
+    }
+
+    powerkWhChanged() {
+    this.calculateBHP(+this.addPartFormModel().powerkWh)
+    }
+
+    powerBHPChanged() {
+    this.calculatekWh(+this.addPartFormModel().powerBHP)
     }
 
     // Events

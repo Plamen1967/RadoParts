@@ -39,7 +39,6 @@ import { ModelChoiceComponent } from '@app/component-main/model-choice/model-cho
 import { goToPosition } from '@app/functions/functions'
 import { UserCountService } from '@services/userCount.service'
 import { UserCount } from '@model/userCount'
-import { ButtonMenuComponent } from '@components/custom-controls/buttonMenu/buttonMenu.component'
 import { MenuOption } from '@model/menuOption'
 import { form, FormField } from '@angular/forms/signals'
 import AddTyreComponent from '../addTyre/addTyre.component'
@@ -84,7 +83,6 @@ interface searchFormInterface {
         CompanyChoiseComponent,
         ListTitleComponent,
         RegionComponent,
-        ButtonMenuComponent,
         FormField,
         AddTyreComponent,
         UpdateTyreComponent,

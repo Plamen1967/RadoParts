@@ -146,7 +146,6 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     numberOfParts?: Numberparts
     userId?: number
     addPartFlag = false
-    categoriesId!: string
     id_?: number
     id = input<number | undefined>()
     public todos$?: Observable<CarView[]>
@@ -532,7 +531,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     }
 
     onCategoryChange(categoryId: string) {
-        this.categoriesId = categoryId.toString()
+        console.log(categoryId)
     }
 
     onBusChange(f: number) {

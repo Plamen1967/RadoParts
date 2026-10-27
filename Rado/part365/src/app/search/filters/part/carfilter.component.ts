@@ -485,6 +485,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         this.modificationStr = this.categoryStr = this.subCategoryStr = ''
         this.dataManager?.clearData()
         this.router.navigate(['/'])
+        this.carFilterForm().reset()
     }
     //#endregion
 

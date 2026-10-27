@@ -9,6 +9,7 @@
         data-cy="companyId"
         [useFilter]="true"
         [errors]="errors()"
+        [submitted]="config().submitted ?? false"
         [isRequired]="config().required ?? false"
         [submitted]="config().submitted ?? false"
         [data]="$companies()"

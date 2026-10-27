@@ -82,6 +82,9 @@
                                 [data]="rimWidth">
                             </app-select>
                         </div>
+                        <div class="col-sm-2 min200px">
+                            <app-select [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
+                        </div>
                         <div class="col-sm-3 control min200px">
                             <app-select
                                 id="rimMaterial"
@@ -141,13 +144,13 @@
                 <button type="button" #submit class="btn btnSearch me-2" data-cy="search" (click)="clear()">Изчисти</button>
             </div>
             <div>
-                <app-buttonmenu appOutside [menuOptions]="$menuOptions()" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu>
+                <!-- <app-buttonmenu appOutside [menuOptions]="$menuOptions()" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu> -->
 
                 <div class="d-flex justify-content-start ms-2" class="option-menu">
-                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: $displayTyre() === true ? 'block' : 'none' }" (click)="newTyre(3)">
+                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: ($displayTyre() === true && $displayRim() === false) ? 'block' : 'none' }" (click)="newTyre(3)">
                         Добави Гума
                     </button>
-                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: $displayRim() === true || $displayAll() === true ? 'block' : 'none' }" (click)="newTyre(4)">
+                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: ($displayRim() === true && $displayTyre() === false) || $displayAll() === true ? 'block' : 'none' }" (click)="newTyre(4)">
                         Добави Джанта
                     </button>
                     <button

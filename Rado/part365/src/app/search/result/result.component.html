@@ -6,7 +6,7 @@
     <app-updateadd [displayPartView]="updateItem" (saved)="savedEvent($event)" (noChange)="backEvent($event)"></app-updateadd>
 } @else {
     @if (hasParts) {
-        <div style="display: grid; grid-template-columns: auto auto auto">
+        <div style="display: grid; grid-template-columns: auto auto auto" class="ng-view" autoscroll>
             <div></div>
             <div class="top" style="max-width: 920px; justify-content: center; display: flex">
                 <div class="rowCar" id="top">
@@ -68,4 +68,5 @@
         </div>
     }
 }
-<app-topbar #topbar></app-topbar>
+<app-topbar></app-topbar>
+<div appGotop></div>

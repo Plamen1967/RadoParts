@@ -28,13 +28,14 @@ import { PartServiceService } from '@services/part/partService.service'
 import { LoggerService } from '@services/authentication/logger.service'
 import { goTop, goToPosition } from '@app/functions/functions'
 import { UpdateAddComponent } from '@components/updateAdd/updateadd.component'
+import { GotopDirective } from '@app/directive/gotop.directive'
 //#endregion
 //#region component
 @Component({
     selector: 'app-result',
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss'],
-    imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent],
+    imports: [NavigatorComponent, TopBarComponent, DisplayPartComponent, GoTopComponent, UpdateAddComponent, GotopDirective],
 })
 //#endregion
 export class ResultComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -100,7 +101,10 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     constructor() {
         super()
 
-        goTop()
+        this.document.addEventListener("DOMContentLoaded", function () {
+            goTop()
+        })
+
         effect(() => {
             console.log(`ResultComponent: label() : ${this.label()}`)
         })
@@ -147,6 +151,9 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     ngOnInit() {
+        window.addEventListener("load", function () {
+  goTop()
+});
         console.log(`ResultComponent: ngOnInit() : query() : ${this.query()} userId() : ${this.userId()} id() : ${this.id()} currentId() : ${this.showDealer()}`)
         setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0)
         this.notPositioned = true
@@ -197,6 +204,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
     }
 
     ngAfterViewInit() {
+        goTop()
         if (this.highlighted) {
             goToPosition(this.highlighted, 0)
             //            this.setHighlight(0)

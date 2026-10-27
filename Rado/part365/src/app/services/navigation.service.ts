@@ -1,7 +1,8 @@
 //#region imports
 import { inject, Injectable } from '@angular/core'
-import { NavigationEnd, Router } from '@angular/router'
+import { NavigationEnd, NavigationStart, Router } from '@angular/router'
 import { Location } from '@angular/common'
+import { goTop } from '@functions/functions'
 //#endregion
 //#region service
 @Injectable({
@@ -17,9 +18,13 @@ export class NavigationService {
     
     public startSaveHistory(): void {
         this.router.events.subscribe((event) => {
+            if (event instanceof NavigationStart) {
+                goTop()
+            }
             if (event instanceof NavigationEnd) {
                 this.history.push(event.urlAfterRedirects)
                 console.log(event.urlAfterRedirects)
+                goTop()
             }
         })
     }

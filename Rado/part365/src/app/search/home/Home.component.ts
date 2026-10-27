@@ -94,12 +94,10 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     @Inject(DOCUMENT) private document: Document = inject(DOCUMENT)
     //#endregion
 
-    checoutItems = computed(() => this.checkOutService.checkout());
+    checoutItems = computed(() => this.checkOutService.checkout())
     showParts = computed(() => {
-        if (this.selection())
-            return this.selection()
-        else 
-            return 1;
+        if (this.selection()) return this.selection()
+        else return 1
     })
     //#region constructor
     constructor() {
@@ -113,7 +111,6 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     ngOnDestroy(): void {
         let subscription: Subscription
         for (subscription of this.subscriptions) subscription.unsubscribe()
-
         this.document.body.style.overflow = ''
     }
 
@@ -169,7 +166,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     }
 
     typeClick(select: number) {
-        this.router.navigate([`/`], { queryParams: { selection: select}});
+        this.router.navigate([`/`], { queryParams: { selection: select } })
         // if (this.selection === selection) return
         // if (this.query()) {
         //     this.router.navigate(['/'])
@@ -179,9 +176,9 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
 
     setSelection(itemType?: ItemType) {
         if (itemType === ItemType.OnlyCar || itemType === ItemType.CarPart || itemType === ItemType.OnlyBus || itemType === ItemType.BusPart || itemType === ItemType.AllCarAndPart) {
-        this.router.navigate([`/`]);
+            this.router.navigate([`/`])
         } else if (itemType === ItemType.Rim || itemType === ItemType.Tyre || itemType === ItemType.RimWithTyre || itemType === ItemType.AllTyre) {
-        this.router.navigate([`/?selection=2`]);
+            this.router.navigate([`/?selection=2`])
         }
     }
 
@@ -202,7 +199,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     goToResult(filter: Filter) {
         this.loadingService.open('Зареждане на резултатите')
         filter.loaded = 0
-        console.log("filter", filter)
+        console.log('filter', filter)
         this.searchService.search(filter).subscribe({
             next: (res) => {
                 const dataManager = this.homeService.updateData(res.filter?.id ?? 0, filter)
@@ -211,6 +208,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
                 if (dataManager.noParts()) {
                     this.confirmationService.OK('Съобщение', this.labels.NORESULTS)
                 } else {
+                    goTop()
                     this.router.navigate(['/results'], { queryParams: { query: res.filter!.id, page: 1 } })
                 }
             },

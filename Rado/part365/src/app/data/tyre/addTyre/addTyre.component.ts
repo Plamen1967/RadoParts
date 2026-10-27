@@ -1,7 +1,7 @@
 //#region import
 import { NgClass, NgStyle } from '@angular/common'
 import { AfterViewInit, Component, computed, effect, HostListener, inject, input, OnInit, output, signal } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { InputComponent } from '@components/custom-controls/input/input.component'
@@ -40,6 +40,7 @@ import { form, FormField, min } from '@angular/forms/signals'
 import { httpResource } from '@angular/common/http'
 import { NextId } from '@model/nextId'
 import { environment } from '@env/environment'
+import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 //#endregion
 interface AddTyreFormInterface {
     itemType: number
@@ -121,32 +122,56 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     addTyreForm = form(this.addTyreFormModel, (path) => {
         min(path.tyreWidth, 1, {
             message: 'Моля изберете широчината на гумата',
-            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre,
-        });
+            when: ({ valueOf }) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre,
+        })
         min(path.tyreHeight, 1, {
             message: 'Моля изберете височината на гумата',
-            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreHeight) == 0,
-        });
+            when: ({ valueOf }) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre,
+        })
         min(path.tyreRadius, 1, {
             message: 'Моля изберете радиуса на гумата',
-            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreRadius) == 0,
-        });
+        })
         min(path.tyreType, 1, {
             message: 'Моля изберете сезонността',
-            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.tyreRadius) == 0,
-        });
+            when: ({ valueOf }) => valueOf(path.itemType) == ItemType.Tyre || valueOf(path.itemType) == ItemType.RimWithTyre,
+        })
         min(path.companyId, 1, {
             message: 'Моля изберете марката на джантата',
-            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.companyId) == 0,
-        });
+            when: ({ valueOf }) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre,
+        })
+        // validate(path.companyId, ({ value, valueOf }) => {
+        //     const check = valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre
+        //     console.log(check)
+        //     if (value() < 1) {
+        //         return {
+        //             kind: 'https',
+        //             message: 'Моля изберете марката на джантата',
+        //         }
+        //     }
+        //     return null
+        // })
+
+        min(path.rimMaterial, 1, {
+            message: 'Моля изберете материал на джантата',
+            when: ({ valueOf }) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre,
+        })
         min(path.rimBoltCount, 1, {
-            message: 'rimBoltCount',
-            when: ({valueOf}) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre && valueOf(path.rimBoltCount) == 0,
-        });
+            message: 'Моля въведете броя на болтовете',
+            when: ({ valueOf }) => valueOf(path.itemType) == ItemType.Rim || valueOf(path.itemType) == ItemType.RimWithTyre,
+        })
+        min(path.count, 1, {
+            message: 'Моля въведете броя',
+        })
         min(path.price, 0.01, {
             message: 'Моля въведете цена.',
         })
     })
+
+    // checkCompany(companyId: number, itemType: ItemType) {
+    //     console.log(`Company path: ${companyId}`)
+    //     const check =
+    //     return check
+    // }
     // controlRimWithTyre() {
     //     // this.addForm.controls['tyreWidth'].setValidators([Validators.required, Validators.min(1)])
     //     // this.addForm.controls['tyreHeight'].setValidators([Validators.required, Validators.min(1)])
@@ -200,8 +225,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     //     this.addForm.controls['tyreType'].updateValueAndValidity()
     // }
 
-
-
     //#endregion
     //#region input/output
     id = input<number | undefined>()
@@ -215,24 +238,18 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     time = signal(0)
     mode = computed(() => {
-        if (this.update() === true)
-            return UpdateEnum.Update
-        if (this.view() === true)
-            return UpdateEnum.View
-        else if (this.ad() === 'ad')
-            return UpdateEnum.New
+        if (this.update() === true) return UpdateEnum.Update
+        if (this.view() === true) return UpdateEnum.View
+        else if (this.ad() === 'ad') return UpdateEnum.New
         return UpdateEnum.New
     })
-    
+
     nextResource = httpResource<NextId>(() => ({
         url: `${environment.restAPI}/users/GetNextId?itemType=${ItemType.OnlyBus}&time=${this.time()}`,
     }))
     $newCarId = computed(() => {
-        return this.nextResource.value()?.nextId;
+        return this.nextResource.value()?.nextId
     })
-
-
-
 
     saved = output<number>()
     noChange = output<number>()
@@ -249,10 +266,10 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         }
     })
 
-
     //#region services
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
-    private formBuilder: FormBuilder = inject(FormBuilder)
+    private toastService: ToastService = inject(ToastService)
+
     private popupService: PopUpService = inject(PopUpService)
     private tyreService: TyreService = inject(TyreService)
     private activatedRoute: ActivatedRoute = inject(ActivatedRoute)
@@ -270,7 +287,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     //#region members
     itemId = signal<number>(0)
-    submitted = false
+    submitted = signal<boolean>(false)
     saving = false
     images: ImageData[] = []
     message = ''
@@ -313,26 +330,23 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         { label: 'Джанти', id: 4 },
         { label: 'Джанти с гуми', id: 5 },
     ]
-    currentitemType = computed(() => { if (this.itemType()) return this.itemType()
+    currentitemType = computed(() => {
+        if (this.itemType()) return this.itemType()
         return ItemType.Tyre
     })
     //#endregion
-    $displayTyre = computed(() => 
-        {
-            const itemType = this.currentitemType()
-            if ( itemType == ItemType.Tyre || itemType == ItemType.RimWithTyre
-        ) return true;
-        return false;
+    $displayTyre = computed(() => {
+        const itemType = this.currentitemType()
+        if (itemType == ItemType.Tyre || itemType == ItemType.RimWithTyre) return true
+        return false
     })
 
     $displayRim = computed(() => {
-            const itemType = this.currentitemType()
-            if (itemType == ItemType.Rim || itemType == ItemType.RimWithTyre)
-            return true;
+        const itemType = this.currentitemType()
+        if (itemType == ItemType.Rim || itemType == ItemType.RimWithTyre) return true
 
-        return false;
+        return false
     })
-
 
     constructor() {
         super()
@@ -355,6 +369,10 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         })
 
         effect(() => {
+            console.log(`Errors : ${this.addTyreForm().errors()}`)
+        })
+
+        effect(() => {
             console.log(`Item Id: ${this.itemId()}`)
         })
         // effect(() => {
@@ -364,8 +382,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         //     console.log(`Tyre Component ${this.regionId()}`)
         // })
         effect(() => {
-            if (this.id())
-                this.itemId.set(this.id()!)
+            if (this.id()) this.itemId.set(this.id()!)
         })
         effect(() => {
             if (this.displayPartView()) {
@@ -376,9 +393,13 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             }
         })
 
-        effect(() => {console.log(`Current Item Type: ${this.currentitemType()}`)})
+        effect(() => {
+            console.log(`Current Item Type: ${this.currentitemType()}`)
+        })
 
-        effect(() => {console.log(`Item Id: ${this.itemId()}`)})
+        effect(() => {
+            console.log(`Item Id: ${this.itemId()}`)
+        })
         effect(() => {
             this.onItemTypeChange(this.addTyreForm.itemType().value())
         })
@@ -389,6 +410,10 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
         effect(() => {
             this.onCompanyChange(this.addTyreForm.companyId().value())
+        })
+
+        effect(() => {
+            console.log(`Add Tyre Company Id: ${this.addTyreForm.companyId().value()}`)
         })
 
         effect(() => {
@@ -425,12 +450,12 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.mode = this.mode ?? UpdateEnum.New
 
         if (this.$seller())
-            // if (this.params?.ad) {
-            //     this.currentitemType = ItemType.Tyre
-            // }
+            if (this.currentitemType())
+                // if (this.params?.ad) {
+                //     this.currentitemType = ItemType.Tyre
+                // }
 
-        if (this.currentitemType())
-            this.addTyreFormModel.set({ ...this.addTyreFormModel(), itemType: this.currentitemType()! })
+                this.addTyreFormModel.set({ ...this.addTyreFormModel(), itemType: this.currentitemType()! })
         this.displaySections()
 
         if (this.mode() === UpdateEnum.Update || this.mode() === UpdateEnum.View) {
@@ -477,28 +502,28 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
 
     onItemTypeChange(event: ItemType) {
         console.log(event)
-            this.displaySections()
-            this.addTyreFormModel.update((value) => ({
-                ...value,
-                tyreWidth: 0,
-                tyreHeight: 0,
-                tyreRadius: 0,
-                tyreType: 0,
-                tyreCompanyId: 0,
-                companyId: 0,
-                modelId: 0,
-                rimMaterial: 0,
-                rimOffset: 0,
-                rimBoltCount: 0,
-                rimBoltDistance: 0,
-                rimCenter: 0,
-                count: 0,
-                monthDOT: 0,
-                yearDOT: 0,
-                description: '',
-                price: 0,
-                mainImageId: 0,
-            }))
+        this.displaySections()
+        this.addTyreFormModel.update((value) => ({
+            ...value,
+            tyreWidth: 0,
+            tyreHeight: 0,
+            tyreRadius: 0,
+            tyreType: 0,
+            tyreCompanyId: 0,
+            companyId: 0,
+            modelId: 0,
+            rimMaterial: 0,
+            rimOffset: 0,
+            rimBoltCount: 0,
+            rimBoltDistance: 0,
+            rimCenter: 0,
+            count: 0,
+            monthDOT: 0,
+            yearDOT: 0,
+            description: '',
+            price: 0,
+            mainImageId: 0,
+        }))
     }
 
     get dataManager() {
@@ -509,8 +534,8 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.addTyreForm.mainImageId().value.set(imageId)
     }
     $tyreResource = httpResource<RimWithTyre>(() => {
-            if (this.id()) return `${environment.restAPI}/rimWithTyre/${this.id()}`
-            else return undefined
+        if (this.id()) return `${environment.restAPI}/rimWithTyre/${this.id()}`
+        else return undefined
     })
 
     loadTyre(id: number) {
@@ -523,9 +548,9 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
                 this.mainImageId = this.currentItem.mainImageId
 
                 if (tyre.rimWithTyreId)
-                this.imageService.getMinImages(tyre.rimWithTyreId!).subscribe((res) => {
-                    this.images = res
-                })
+                    this.imageService.getMinImages(tyre.rimWithTyreId!).subscribe((res) => {
+                        this.images = res
+                    })
             },
             error: () => {
                 return
@@ -537,9 +562,14 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
 
     onSubmit() {
-        this.submitted = true
+        this.submitted.set(true)
         if (this.addTyreForm().invalid()) {
-            this.showError('Моля попълнете задължителните полета!')
+            const snackBarRef = this.toastService.showToast('Моля попълнете задължителните полета!', 2)
+            snackBarRef.afterDismissed().subscribe(() => {
+                return
+            })
+            console.log(`Errors ${JSON.stringify(this.addTyreForm().errors())}`)
+            console.log(this.addTyreForm().errorSummary())
             return
         }
 
@@ -551,10 +581,14 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             else message = `Обявата е успешно добавена`
             this.userCountService.refresh()
             this.saved.emit(item.rimWithTyreId!)
-            this.popupService.openWithTimeout(this.labels.MESSAGE, message)
-            setTimeout(() => {
+            const snackBarRef = this.toastService.showToast(message, 2)
+
+            snackBarRef.afterDismissed().subscribe(() => {
                 this.goBack()
-            }, 2000)
+            })
+            // this.popupService.openWithTimeout(this.labels.MESSAGE, message)
+            // setTimeout(() => {
+            // }, 2000)
         })
     }
 
