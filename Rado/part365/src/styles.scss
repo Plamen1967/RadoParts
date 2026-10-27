@@ -81,6 +81,11 @@ lib-ngx-image-zoom img {
     --radiogrouplist-bg-color: #2626e0;
 }
 
+.invalid-feedback-error {
+    color: red;
+    font-size: 1rem;
+    font-weight: 400;
+}
 :root {
     --bs-breakpoint-xs: 0;
     --bs-breakpoint-sm: 576px;

@@ -47,7 +47,7 @@
                         </div>
                     }
                     <!-- @if (submitted && controls['password'].errors) {
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback-error">
                             @if (controls['password'].errors['required']) {
                                 <div data-cy="passwordRequiredError">{{ labels.PASSWORDREQUIRED }}</div>
                             }
@@ -106,7 +106,7 @@
                         </label>
                     </div>
                     @if (submitted && controls['contract'].errors) {
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback-error">
                             @if (controls['contract'].errors) {
                                 <div data-cy="contractError">Моля съгласете се с условията и политиката за защита на личните данни.!</div>
                             }

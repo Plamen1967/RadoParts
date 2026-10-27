@@ -3,7 +3,7 @@
         <div [ngClass]="{ select__field: border }">
             <textarea class="form-control" rows="{{ rows() }}" [value]="value()" placeholder="{{ placeHolder() }}" maxlength="length" [(ngModel)]="inputValue" id="{{contolName}}" (input)="onTextChange()"></textarea>
             @if (submitted() && IsInvalid) {
-                <div class="invalid-feedback d-block">
+                <div class="invalid-feedback-error d-block">
                     <small>{{ errorMessage }}</small>
                 </div>
             }
@@ -14,7 +14,7 @@
                 }
             </div>
             @if (submitted() && IsInvalid) {
-                <div class="invalid-feedback d-block">
+                <div class="invalid-feedback-error d-block">
                     <small>{{ errorMessage }}</small>
                 </div>
             }

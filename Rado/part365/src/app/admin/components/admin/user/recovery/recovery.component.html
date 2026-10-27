@@ -22,7 +22,7 @@
                                 placeholder="{{ labels.USERNAME }}"
                                 [ngClass]="{ 'is-invalid': submitted && recoveryForm.userName().errors()}" />
                             @if (submitted && recoveryForm.userName().errors()) {
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback-error">
                                     <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                                 </div>
                             }
@@ -40,7 +40,7 @@
                                 [ngClass]="{ 'is-invalid': submitted && recoveryForm.password().errors() }" />
                             <span class="input-group-text"><i class="las" [ngClass]="{ 'la-eye': showFlag, 'la-eye-slash': !showFlag }" (click)="show()" role="none"></i></span>
                             @if (submitted && recoveryForm.password().errors()) {
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback-error">
                                     @if (recoveryForm.password().errors()) {
                                         <div data-cy="passwordRequired">{{ labels.PASSWORDREQUIRED }}</div>
                                     }
@@ -59,7 +59,7 @@
                                 [ngClass]="{ 'is-invalid': submitted && recoveryForm.confirmPassword().errors() }" />
                             <span class="input-group-text"><i class="las" [ngClass]="{ 'la-eye': showFlag2, 'la-eye-slash': !showFlag2 }" (click)="show2()" role="none"></i></span>
                             @if (submitted && recoveryForm.confirmPassword().errors()) {
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback-error">
                                     @if (recoveryForm.confirmPassword().errors()) {
                                         <div data-cy="passwordRequired2">{{ labels.PASSWORDREQUIRED }}</div>
                                     }

@@ -49,7 +49,7 @@
                     </app-input>
                 </div>
                 @if (submitted && userForm.companyName().errors()) {
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback-error">
                         @if (userForm.companyName().errors()) { 
                             <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                         }
@@ -59,7 +59,7 @@
                 <div class="col-sm-3">
                     <app-input [formField]="userForm.firstName" label="{{ labels.FIRSTNAME }}" placeHolder="{{ labels.FIRSTNAME }}" [submitted]="submitted" [IsRequired]="true"> </app-input>
                     @if (submitted && userForm.firstName().errors()) {
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback-error">
                             @if (userForm.firstName().errors()) {
                                 <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                             }
@@ -75,7 +75,7 @@
             <div class="col-sm-3">
                 <app-select [formField]="userForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="regions" [submitted]="submitted" [IsRequired]="true"> </app-select>
                 @if (submitted && userForm.regionId().errors()) {
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback-error">
                         @if (userForm.regionId().errors()) {
                             <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                         }
@@ -85,7 +85,7 @@
             <div class="col-sm-3">
                 <app-input [formField]="userForm.address" label="{{ labels.ADDRESS }}" placeHolder="{{ labels.ADDRESS }}" [submitted]="submitted"> </app-input>
                 @if (submitted && userForm.address().errors()) {
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback-error">
                         @if (userForm.address().errors()) {
                             <div data-cy="userNameRequired">{{ labels.USERNAMEREQUIRED }}</div>
                         }

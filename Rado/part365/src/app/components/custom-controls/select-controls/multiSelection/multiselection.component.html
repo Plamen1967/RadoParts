@@ -11,7 +11,7 @@
                 <app-buttongroup data-testid="button-group" [active]="active" [placeholder]="placeHolder()" [clearBox]="clearBox()" [selection]="selection" [useFilter]="false" (clickSelect)="clickSelect()" (clear)="clear()">
                 </app-buttongroup>
                 @if (submitted() && IsInvalid()) {
-                    <div class="invalid-feedback d-block">
+                    <div class="invalid-feedback-error d-block">
                         <small>{{ errorMessage }}</small>
                     </div>
                 }
