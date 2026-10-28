@@ -23,6 +23,8 @@ import { DisplayPartView } from '@model/displayPartView'
 import { PartServiceService } from '@services/part/partService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { goToPosition } from '@app/functions/functions'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
 //#endregion
 //#region component
 @Component({
@@ -66,9 +68,22 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
     })
 
 
+    carId = signal<number>(0)
+    partresource = httpResource<PartView[]>(() => {
+        if (this.carId() != 0)
+            return `${environment.restAPI}/Part/GetPartsByCarId?carId=${this.carId()}`
+        else 
+            return undefined
+    })
+
+    partsPerCar = computed(() => this.partresource.value())
+
 
     constructor() {
         super()
+        effect(() => {
+            console.log(`Parts: ${JSON.stringify(this.partsPerCar())}`)
+        })
         effect(() => {
             if (this.carView()) {
                 this.id.set(this.carView()!.carId!)
@@ -100,11 +115,11 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
     }
 
     displayParts(event: number) {
-        if (!this.showParts)
-            this.carService.getPartsByCarId(event).subscribe((parts_: PartView[]) => {
-                this.parts = parts_
-            })
         this.showParts = !this.showParts
+        if (this.showParts)
+            this.carId.set(event)
+        else
+            this.carId.set(0)
     }
 
     label() {

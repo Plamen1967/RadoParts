@@ -5,7 +5,7 @@ AS
 	SELECT 
 		* 
 	FROM 
-		dbo.Parts
+		dbo.PartView
 	WHERE 
 		carId = @carId AND 
 		userId = @userId AND 

@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="parts">
-                    @for (part of parts; track part.partId) {
+                    @for (part of this.partsPerCar(); track part.partId) {
                         <div class="car_part">
                             <app-dealerview [showPart]="true" [partView]="part" [allowUpdate]="true" (action)="actionPart($event)"> </app-dealerview>
                         </div>
