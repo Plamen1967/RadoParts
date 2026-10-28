@@ -39,7 +39,6 @@ import { ItemType } from '@model/enum/itemType.enum'
 import AddPartComponent from '../addPart/addpart.component'
 import { Modification } from '@model/static-data/modification'
 import { GoTopComponent } from '../../../components/custom-controls/goTop/goTop.component'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { OptionItem } from '@model/optionitem'
 import { SubcategoryChoiseComponent } from '../../../category-main/subcategory-choise/subcategory-choise.component'
 import { CategoryChoiseComponent } from '@app/category-main/category-choise/category-choise.component'
@@ -52,6 +51,7 @@ import { environment } from '@env/environment'
 import { httpResource } from '@angular/common/http'
 import { NextId } from '@model/nextId'
 import UpdatePartComponent from '../updatepart/updatepart.component';
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 //#region interface
 interface searchFormInterface {
@@ -86,13 +86,13 @@ interface searchFormInterface {
     AddPartComponent,
     GoTopComponent,
     CategoryChoiseComponent,
-    TooltipDirective,
     SubcategoryChoiseComponent,
     ListTitleComponent,
     AsyncPipe,
     FormField,
     FormField,
-    UpdatePartComponent
+    UpdatePartComponent,
+    MatTooltipModule
 ],
 })
 
@@ -148,6 +148,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     addPartFlag = false
     id_?: number
     id = input<number | undefined>()
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public todos$?: Observable<CarView[]>
     public todosPart$?: Observable<PartView[]>
     private readonly _autoSearch$: Subject<Filter>

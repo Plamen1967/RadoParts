@@ -7,10 +7,14 @@
     <div class="card w-100 pt-1">
         <div class="d-flex" style="justify-content: flex-end">
             <div class="d-flex justify-content-center" style="width: 100%">
-                <button class="btn btn-primary carClass tabClass" [ngClass]="{ active: showParts }" (click)="typeClick(1)"><img class="tabSvg" src="images/svg/part.svg" alt="" />Части</button>
-                <button class="btn btn-primary tyreClass tabClass" [ngClass]="{ active: !showParts }" (click)="typeClick(2)"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Гуми</button>
+                <button class="btn btn-primary carClass tabClass" [ngClass]="{ active: selection() == 1 || !selection() }" (click)="typeClick(1)"><img class="tabSvg" src="images/svg/part.svg" alt="" />Части</button>
+                <button class="btn btn-primary tyreClass tabClass" [ngClass]="{ active: selection() == 2 }" (click)="typeClick(2)"><img class="tabSvg" src="images/svg/tyre.svg" alt="" />Гуми</button>
             </div>
-            <div class="d-flex justify-content-end me-2" [appToolTip]="'Последни търсения'">
+            <div class="d-flex justify-content-end me-2" 
+                        #tooltip="matTooltip"
+                        matTooltip="Последни търсения"
+                        [matTooltipPosition]="positionOptions[0]"
+            >
                 <button class="tabClass btn button-style w-auto d-flex justify-content-center align-items-center" [style]="{'background-color':'#822EFF', 'color': 'yellow'}" (click)="showFilter()" role="none">
                     <span class="material-symbols-outlined">manage_search</span>Последни
                 </button>
@@ -28,7 +32,11 @@
     <div class="footer space-evenly test">
         @if (!admin) {
             @if (showCategory()) {
-                <div [appToolTip]="'Категории'" class="linkClass categoryElement ps-2 pe-2">
+                <div 
+                        #tooltip="matTooltip"
+                        matTooltip="Категории"
+                        [matTooltipPosition]="positionOptions[0]"
+                    class="linkClass categoryElement ps-2 pe-2">
                     <div name="categories" #categoryButton (click)="clickCategory($event)" role="presentation">
                         <div class="element conversation align-items-center">
                             <span class="material-symbols-outlined"> list_alt </span>
@@ -36,7 +44,11 @@
                         </div>
                     </div>
                 </div>
-                <a routerLink="/info/contact" [appToolTip]="'Контакт'" class="linkClass">
+                <a routerLink="/info/contact" 
+                        #tooltip="matTooltip"
+                        matTooltip="Контакт"
+                        [matTooltipPosition]="positionOptions[0]"
+                class="linkClass">
                     <div class="element conversation">
                         <span class="material-symbols-outlined"> call_log </span>
                         <span class="text text-body-small-pale">Контакти</span>
@@ -46,19 +58,31 @@
         }
 
         @if (admin) {
-            <a [routerLink]="['/users']" name="users" [appToolTip]="'Потребители'" class="linkClass">
+            <a [routerLink]="['/users']" name="users" 
+                        #tooltip="matTooltip"
+                        matTooltip="Потребители"
+                        [matTooltipPosition]="positionOptions[0]"
+                    class="linkClass">
                 <div class="element conversation">
                     <span class="icon"><i class="las la-user iconSize"></i></span>
                     <span class="text text-body-small-pale"> Потребители </span>
                 </div>
             </a>
-            <a [routerLink]="['/model']" name="users" [appToolTip]="'Модели'" class="linkClass">
+            <a [routerLink]="['/model']" name="users" 
+                        #tooltip="matTooltip"
+                        matTooltip="Модели"
+                        [matTooltipPosition]="positionOptions[0]"
+            class="linkClass">
                 <div class="element conversation">
                     <span class="icon"><i class="las la-list iconSize"></i></span>
                     <span class="text text-body-small-pale"> Модели </span>
                 </div>
             </a>
-            <a [routerLink]="['/modification']" name="modification" [appToolTip]="'Модификации'" class="linkClass">
+            <a [routerLink]="['/modification']" name="modification" 
+                        #tooltip="matTooltip"
+                        matTooltip="Модификации"
+                        [matTooltipPosition]="positionOptions[0]"
+            class="linkClass">
                 <div class="element conversation">
                     <span class="icon"><i class="las la-list iconSize"></i></span>
                     <span class="text text-body-small-pale"> Модификации </span>

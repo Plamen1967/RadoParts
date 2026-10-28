@@ -2,7 +2,7 @@
 import { AfterViewInit, Component, DestroyRef, effect, inject, input, model, signal } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { FormValueControl, ValidationError } from '@angular/forms/signals'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 import { companyToOptionItem } from '@app/functions/function-chain'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { CompanyControlConfig } from '@model/companyControlConfig'
@@ -17,7 +17,7 @@ import { switchMap } from 'rxjs'
     selector: 'app-company-choise',
     templateUrl: './company-choise.component.html',
     styleUrls: ['./company-choise.component.css'],
-    imports: [CustomSelectComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, ReactiveFormsModule, MatTooltipModule],
 })
 //#endregion
 export class CompanyChoiseComponent implements FormValueControl<number>, AfterViewInit{
@@ -25,6 +25,7 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
     value = model<number>(0)
 
     companies = model<OptionItem[]>([])
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     companyId = 0
     isDisabled = false
     _bus = 0
@@ -60,7 +61,6 @@ export class CompanyChoiseComponent implements FormValueControl<number>, AfterVi
         // })
         effect(() => {
             if (!this.oldConfig || this.oldConfig.itemType != this.config().itemType || this.oldConfig.bus != this.config().bus) {
-                console.log(`Configure`)
                 this.itemType_ = this.oldConfig?.itemType ?? ItemType.All
                 this.all_ =  this.oldConfig?.all ?? false
                 this.initCompanies()

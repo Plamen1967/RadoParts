@@ -44,30 +44,30 @@
             </div>
 
             <div class="row" [ngClass]="{ show: displayAll, noShow: !displayAll }">
-                <div class="col-4 col-md-4 col-lg-4 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px max200px">
                     <app-select [formField]="filterForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px max200px">
                     <app-select [formField]="filterForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px max200px">
                     <app-select [formField]="filterForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
             </div>
             <div class="row" [ngClass]="{ show: displayTyre, noShow: !displayTyre }">
-                <div class="col-4 col-md-4 col-lg-4 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px max200px">
                     <app-select [formField]="filterForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px max200px">
                     <app-select [formField]="filterForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px max200px">
                     <app-select [formField]="filterForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 min140px">
+                <div class="col-4 col-md-4 col-lg-4 min140px max200px">
                     <app-select [formField]="filterForm.tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes" (onCloseEvent)="focus()"> </app-select>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 min200px">
+                <div class="col-4 col-md-4 col-lg-4 min250px max350px">
                     <app-customselect
                         [formField]="filterForm.tyreCompanyId"
                         [useFilter]="true"
@@ -101,26 +101,31 @@
                 <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select
                         id="rimWidth"
-                        [appToolTip]="'Широчина'"
                         [formField]="filterForm.rimWidth"
                         data-cy="rimWidth"
                         label="Широчина"
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimWidth"
+                        #tooltip="matTooltip"
+                        matTooltip="Широчина"
+                        [matTooltipPosition]="positionOptions[0]"
                         (onCloseEvent)="focus()">
                     </app-select>
                 </div>
                 <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select
                         id="rimMaterial"
-                        [appToolTip]="'Материал'"
                         [formField]="filterForm.rimMaterial"
                         data-cy="rimMaterial"
                         label="Материал"
                         displayProperty="text"
                         valueProperty="value"
                         [data]="rimMaterial"
+                        #tooltip="matTooltip"
+                        matTooltip="Материал"
+                        [matTooltipPosition]="positionOptions[0]"
+
                         (onCloseEvent)="focus()">
                     </app-select>
                 </div>
@@ -138,7 +143,6 @@
                 <div class="col-4 col-md-4 col-lg-4 min140px">
                     <app-select
                         id="rimOffset"
-                        [appToolTip]="''"
                         [formField]="filterForm.rimOffset"
                         data-cy="rimOffset"
                         label="Офсет"

@@ -3,7 +3,6 @@ import { NgClass } from '@angular/common'
 import { AfterViewInit, Component, HostListener, inject, OnInit, Optional, input, effect, signal, computed } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { isMobile, sortUser } from '@app/functions/functions'
 import { CategoriesFooterComponent } from '@components/custom-controls/categoriesFooter/categoriesfooter.component'
 import { RadioGroupListComponent } from '@components/custom-controls/radioGroupList/radiogrouplist.component'
@@ -35,6 +34,7 @@ import { HomeComponent } from '@app/search/home/Home.component'
 import { form, FormField } from '@angular/forms/signals'
 import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 interface filterFormInterface {
     itemType: ItemType
@@ -68,7 +68,6 @@ interface filterFormInterface {
         FormsModule,
         ReactiveFormsModule,
         SelectComponent,
-        TooltipDirective,
         CategoriesFooterComponent,
         RadioGroupListComponent,
         CompanyChoiseComponent,
@@ -76,6 +75,7 @@ interface filterFormInterface {
         CategoriesComponent,
         ModelChoiceComponent,
         FormField,
+        MatTooltipModule
     ],
 })
 //#endregion
@@ -111,6 +111,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         { value: 3, text: 'Джанти с гуми' },
     ]
     models: SelectOption[] = []
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     selectedCategory: ItemType = ItemType.AllTyre
     hideFilter = false
     initialState

@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { Component, effect, input, model, output, signal } from '@angular/core'
+import { Component, input, model, output, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
@@ -41,11 +41,5 @@ updateSelectValue(event: Event, id: number|undefined) {
     isDisabled = false
     controlName =input.required<string>()
     selection: SelectOption[] = []
-
-    constructor() {
-        effect(() => {
-            console.log(`Radio list Initial: ${this.value()}`)
-        })
-    }
 
 }

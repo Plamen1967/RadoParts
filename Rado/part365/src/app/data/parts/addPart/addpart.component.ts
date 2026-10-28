@@ -27,7 +27,6 @@ import { CompanyChoiseComponent } from '@app/component-main/company-choise/compa
 import { ModelChoiceComponent } from '@app/component-main/model-choice/model-choice.component'
 import { ModificationChoiceComponent } from '@app/component-main/modification-choice/modification-choice.component'
 import { Modification } from '@model/static-data/modification'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { OptionItem } from '@model/optionitem'
 import { CategoryChoiseComponent } from '@app/category-main/category-choise/category-choise.component'
 import { DealersubcategoryChoiceComponent } from '@app/category-main/dealersubcategory-choice/dealersubcategory-choice.component'
@@ -48,6 +47,7 @@ import { environment } from '@env/environment'
 import { CarNameId } from '@model/carNameId'
 import { AddItemParam } from '@app/data/cars/addCar/addCarParam'
 import { NextId } from '@model/nextId'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 //#region interface
 interface addPartFormInterface {
@@ -75,6 +75,7 @@ interface addPartFormInterface {
     frontBackPosition: number
     dealerSubCategoryName: string
     mainImageId: number
+    bus: number
 }
 //#endregion
 //#region component
@@ -88,7 +89,6 @@ interface addPartFormInterface {
         TextAreaComponent,
         SelectComponent,
         InputComponent,
-        TooltipDirective,
         CompanyChoiseComponent,
         ModelChoiceComponent,
         ModificationChoiceComponent,
@@ -96,6 +96,7 @@ interface addPartFormInterface {
         DealersubcategoryChoiceComponent,
         ToolBarComponent,
         FormField,
+        MatTooltipModule,
     ],
 })
 //#endregion
@@ -135,7 +136,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         frontBackPosition: 0,
         dealerSubCategoryName: '',
         mainImageId: 0,
+        bus: 0,
     })
+    //#endregion
+
+    //#region validation
     addPartForm = form(this.addPartFormModel, (path) => {
         min(path.carId, 1, {
             message: 'Моля изберете бус',
@@ -155,7 +160,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         })
         min(path.modificationId, 1, {
             message: 'Моля изебрете модификация',
-            when: () => this.bus() == 0,
+            when: () => {
+                if (this.$mode() === UpdateEnum.Update && this.addPartForm().value().bus === 1) return false
+                if (this.bus() == 1) return false
+                return true
+            },
         })
         min(path.categoryId, 1, {
             message: 'Моля въведете категория',
@@ -170,7 +179,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             message: 'Моля въведете цена.',
         })
     })
+    //#endregion
 
+    //#region #members
     $submitted = signal(false)
     cars = signal<SelectOption[]>([])
     car?: CarView
@@ -200,6 +211,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     models: SelectOption[] = []
     modifications: SelectOption[] = []
     dealerSubCategories: OptionItem[] = []
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right']
 
     companyId = computed(() => this.addPartForm.companyId().value())
     modelId = computed(() => this.addPartForm.modelId().value())
@@ -214,6 +226,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     updateFlag = false
     _displayPartView?: DisplayPartView
     //#endregion
+
     //#region input/output
     viewPartId = input<number | undefined>()
     partCarId = input<number | undefined>()
@@ -237,6 +250,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     newItemId = signal(0)
 
     //#endregion
+
     //#region
     private carService: CarService = inject(CarService)
     private partService: PartServiceService = inject(PartServiceService)
@@ -535,11 +549,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     }
 
     powerkWhChanged() {
-    this.calculateBHP(+this.addPartFormModel().powerkWh)
+        this.calculateBHP(+this.addPartFormModel().powerkWh)
     }
 
     powerBHPChanged() {
-    this.calculatekWh(+this.addPartFormModel().powerBHP)
+        this.calculatekWh(+this.addPartFormModel().powerBHP)
     }
 
     // Events

@@ -251,13 +251,13 @@ export class LoginComponent extends HelperComponent implements AfterViewInit {
 
         // stop here if form is invalid
         if (this.loginForm().invalid()) {
-            console.log('E-mail is valid', this.loginForm.email().valid())
-            console.log('Username is valid', this.loginForm.userName().valid())
-            console.log('Password is valid', this.loginForm.password().valid())
-            console.log('Password2 is valid', this.loginForm.confirmPassword().valid())
-            console.log('Phone is valid', this.loginForm.phone().valid())
-            console.log('Dealer is valid', this.loginForm.dealer().valid())
-            console.log('Form is invalid', this.loginForm().errors().length)
+            // console.log('E-mail is valid', this.loginForm.email().valid())
+            // console.log('Username is valid', this.loginForm.userName().valid())
+            // console.log('Password is valid', this.loginForm.password().valid())
+            // console.log('Password2 is valid', this.loginForm.confirmPassword().valid())
+            // console.log('Phone is valid', this.loginForm.phone().valid())
+            // console.log('Dealer is valid', this.loginForm.dealer().valid())
+            // console.log('Form is invalid', this.loginForm().errors().length)
             return
         }
 

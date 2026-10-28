@@ -27,11 +27,9 @@ test.describe('Car API testing', () => {
         const modification = await request.get(`${api}/modification/GetModificationByName?modification=${car.modificationName}`, { headers: { Authorization: `Bearer ${jwt}` } })
         await expect(modification.ok()).toBeTruthy()
         const resultNext = await request.get(`${api}/users/GetNextId`, { headers: { Authorization: `Bearer ${jwt}` } })
-        console.log(resultNext.status())
         expect(resultNext.status()).toBe(200)
         expect(resultNext.ok()).toBeTruthy()
         const id = await resultNext.json()
-        console.log(id)
         const modificationId = await modification.json()
         const result = await request.post(`${api}/car`, {
             data: {

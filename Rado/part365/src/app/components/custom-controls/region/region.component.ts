@@ -5,14 +5,14 @@ import { ErrorService } from '@services/error.service'
 import { SelectOption } from '@model/selectOption'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { HelperComponent } from '../helper/helper.component'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { FormValueControl } from '@angular/forms/signals'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 
 @Component({
     selector: 'app-region',
     templateUrl: './region.component.html',
     styleUrls: ['./region.component.css'],
-    imports: [SelectComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [SelectComponent, ReactiveFormsModule, MatTooltipModule],
 })
 export class RegionComponent extends HelperComponent implements FormValueControl<number>, OnInit {
     valueChanged($event: number | undefined) {
@@ -22,6 +22,7 @@ export class RegionComponent extends HelperComponent implements FormValueControl
     regionForm: FormGroup
     regions: SelectOption[] = []
     value = model<number>(0)
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
 
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
     public errorService: ErrorService = inject(ErrorService)

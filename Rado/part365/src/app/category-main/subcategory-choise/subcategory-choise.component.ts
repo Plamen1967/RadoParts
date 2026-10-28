@@ -2,7 +2,6 @@
 import { Component, DestroyRef, inject, OnInit, Self, model, input } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { NgControl, ReactiveFormsModule } from '@angular/forms'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
 import { SubCategory } from '@model/category-subcategory/subCategory'
@@ -10,13 +9,14 @@ import { OptionItem } from '@model/optionitem'
 import { SubCategoryService } from '@services/category-subcategory/subCategory.service'
 import { ErrorService } from '@services/error.service'
 import { FormValueControl, ValidationError } from '@angular/forms/signals'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 //#region component
 @Component({
     selector: 'app-subcategory-choise',
     templateUrl: './subcategory-choise.component.html',
     styleUrls: ['./subcategory-choise.component.css'],
-    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
+    imports: [MultiSelectionComponent, CustomSelectComponent, ReactiveFormsModule, MatTooltipModule],
 })
 //#endregion
 export class SubcategoryChoiseComponent implements FormValueControl<string | number>, OnInit {
@@ -35,6 +35,7 @@ export class SubcategoryChoiseComponent implements FormValueControl<string | num
     @Self() public control: NgControl
     public errorService: ErrorService
     private destroyRef: DestroyRef
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     //#endregion
     //#endregion
 

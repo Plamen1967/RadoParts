@@ -2,7 +2,6 @@
         data-testid="customer-selectid"
         id="companyId"
         [label]="label() ?? 'Марка'"
-        [appToolTip]="'Избери марката'"
         [placeHolder]="'Избери марка'"
         [value]="value()"
         [select]="companyId"
@@ -15,5 +14,9 @@
         [data]="$companies()"
         [showCount]="config().showCount ?? false"
         (changeOption)="value.set(+$event)"
+        #tooltip="matTooltip"
+        matTooltip="Избери марката"
+        [matTooltipPosition]="positionOptions[0]"
+
     />
     

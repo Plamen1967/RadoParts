@@ -1,7 +1,6 @@
 //#region imports
 import { Component, inject, model, input, effect } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
 import { ItemType } from '@model/enum/itemType.enum'
@@ -9,13 +8,14 @@ import { OptionItem } from '@model/optionitem'
 import { ModelService } from '@services/company-model-modification/model.service'
 import { ErrorService } from '@services/error.service'
 import { FormValueControl, ValidationError } from '@angular/forms/signals'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 //#region component
 @Component({
     selector: 'app-model-choice',
     templateUrl: './model-choice.component.html',
     styleUrls: ['./model-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, MultiSelectionComponent, ReactiveFormsModule, MatTooltipModule],
 })
 //#endregion
 
@@ -41,6 +41,7 @@ export class ModelChoiceComponent implements FormValueControl<number | string> {
     showCount = input<boolean>(false)
     itemType = input<ItemType>(ItemType.All)
     errors = input<readonly ValidationError.WithOptionalFieldTree[]>([])
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     //#region services
     public modelService: ModelService = inject(ModelService)
     public errorService: ErrorService = inject(ErrorService)
@@ -48,11 +49,10 @@ export class ModelChoiceComponent implements FormValueControl<number | string> {
     //#endregion
     constructor() {
 
+        // effect(() => {
+        //     console.log(`Model Choice groupDisabled Value is: ${this.groupDisabled()}`)
+        // })
         effect(() => {
-            console.log(`Model Choice groupDisabled Value is: ${this.groupDisabled()}`)
-        })
-        effect(() => {
-            console.log(`Model Choise ${this.value()}`)
             if (this.multiselection()) {
                 this.value.set(this.value().toString())
             } else {

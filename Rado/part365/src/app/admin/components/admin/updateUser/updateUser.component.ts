@@ -1,5 +1,5 @@
 //#region Imports
-import { AfterViewInit, Component, DestroyRef, inject, OnInit, input, effect, signal, computed } from '@angular/core'
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, input, signal, computed } from '@angular/core'
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Location, NgStyle } from '@angular/common'
@@ -128,9 +128,9 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
     constructor() {
         super()
 
-        effect(() => {
-            console.log(`This form value: ${JSON.stringify(this.userForm().value())}`)
-        })
+        // effect(() => {
+        //     console.log(`This form value: ${JSON.stringify(this.userForm().value())}`)
+        // })
         this.regions = [...this.staticSelectionService.Region]
         // this.userForm = this.formBuilder.group({
         //     userName: ['', [Validators.maxLength(50), Validators.required]],

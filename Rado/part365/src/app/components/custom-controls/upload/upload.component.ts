@@ -1,6 +1,6 @@
 //#region import
 import { HttpEventType } from '@angular/common/http'
-import { Component, DestroyRef, effect, inject, input, OnInit, output } from '@angular/core'
+import { Component, DestroyRef, inject, input, OnInit, output } from '@angular/core'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { ImageService } from '@services/image.service'
 import { WebcamImage } from 'ngx-webcam'
@@ -44,10 +44,10 @@ export class UploadComponent extends HelperComponent implements OnInit {
     constructor() {
         super()
 
-        effect(() => {
-            console.log(`Upload Component id: ${this.id()}`)
-            console.log(`Upload Component businessCard: ${this.businessCard()}`)
-        })
+        // effect(() => {
+        //     console.log(`Upload Component id: ${this.id()}`)
+        //     console.log(`Upload Component businessCard: ${this.businessCard()}`)
+        // })
     }
     ngOnInit(): void {
         this.updateCount()

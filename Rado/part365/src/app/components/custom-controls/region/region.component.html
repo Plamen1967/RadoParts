@@ -1,1 +1,7 @@
-    <app-select style="cursor: pointer;" [appToolTip]="'Избери регион'" [value]="value()" data-cy="regionId" label="{{ labels.REGION }}" [data]="regions" (changeOption)="valueChanged($event)"> </app-select>
+<app-select style="cursor: pointer" 
+        #tooltip="matTooltip"
+        matTooltip="Избери регион"
+        [matTooltipPosition]="positionOptions[0]"
+
+        [value]="value()" data-cy="regionId" label="{{ labels.REGION }}" [data]="regions" (changeOption)="valueChanged($event)">
+</app-select>

@@ -21,7 +21,6 @@ import { Filter } from '@model/filters/filter'
 import { SearchBy } from '@model/enum/searchBy.enum'
 import { Subscription } from 'rxjs'
 import { TyreFilterComponent } from '../filters/tyre/tyrefilter.component'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
 import { SelectOption } from '@model/selectOption'
 import { goTop, isMobile } from '@app/functions/functions'
@@ -31,13 +30,15 @@ import { MatDialog } from '@angular/material/dialog'
 import { CategoriesMinComponent } from '@components/categoriesMin/categoriesMin.component'
 import { FilterComponent } from '@components/custom-controls/filter/filter.component'
 import { SaveSearchService } from '@services/saveSearch.service'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 //#region component declaration
 @Component({
     selector: 'app-home',
     templateUrl: './Home.component.html',
     styleUrls: ['./Home.component.css'],
-    imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, TooltipDirective, GoTopComponent],
+    imports: [TyreFilterComponent, CarFilterComponent, NgClass, RouterLink, GoTopComponent,
+    MatTooltipModule],
 })
 //#endregion
 export class HomeComponent extends HelperComponent implements OnInit, OnDestroy {
@@ -55,6 +56,8 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
     currentCategory = undefined
     showCategory = signal<boolean>(true)
     filters: { id: number; text: string }[] = []
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
+
     filter: Filter = {
         id: 0,
     }
@@ -197,6 +200,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
 
     //#endregion
     goToResult(filter: Filter) {
+        goTop()
         this.loadingService.open('Зареждане на резултатите')
         filter.loaded = 0
         console.log('filter', filter)

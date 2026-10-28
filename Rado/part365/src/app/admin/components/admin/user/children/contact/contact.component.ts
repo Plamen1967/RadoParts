@@ -20,7 +20,6 @@ export default class ContactComponent implements OnInit {
     user?: User = this.parent?.user
     //#endregion
     ngOnInit() {
-        console.log(this.user)
         return
     }
 }

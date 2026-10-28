@@ -209,6 +209,7 @@ export class ResultComponent extends HelperComponent implements OnInit, OnDestro
             goToPosition(this.highlighted, 0)
             //            this.setHighlight(0)
         } else goTop()
+        
         return
     }
 

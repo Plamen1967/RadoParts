@@ -2,7 +2,6 @@
 import { Component, DestroyRef, inject, model, input, effect, output } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
 import { ItemType } from '@model/enum/itemType.enum'
@@ -12,13 +11,14 @@ import { Modification } from '@model/static-data/modification'
 import { ModificationService } from '@services/company-model-modification/modification.service'
 import { ErrorService } from '@services/error.service'
 import { FormValueControl, ValidationError } from '@angular/forms/signals'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 //#region component
 @Component({
     selector: 'app-modification-choice',
     templateUrl: './modification-choice.component.html',
     styleUrls: ['./modification-choice.component.css'],
-    imports: [CustomSelectComponent, MultiSelectionComponent, TooltipDirective, ReactiveFormsModule],
+    imports: [CustomSelectComponent, MultiSelectionComponent, ReactiveFormsModule, MatTooltipModule],
 })
 //#endregion
 export class ModificationChoiceComponent implements FormValueControl<number | string > {
@@ -28,6 +28,7 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
     modificationsId_int = ''
     isDisabled = false
     originalModification: Modification[] = []
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
 
     value = model<number | string>(0)
 

@@ -59,12 +59,12 @@ export class ImageListComponent extends HelperComponent implements OnInit {
 
     constructor() {
         super()
-        effect(() => {
-            console.log(`Main image: ${this.$mainImage()} ${this.mainImageId()}`)
-        })
-        effect(() => {
-            console.log(`Images Item Id: ${this.itemId()} ${this.mainImage()}`)
-        })
+        // effect(() => {
+        //     console.log(`Main image: ${this.$mainImage()} ${this.mainImageId()}`)
+        // })
+        // effect(() => {
+        //     console.log(`Images Item Id: ${this.itemId()} ${this.mainImage()}`)
+        // })
         effect(() => {
             if (this.images()) {
                 this.images_.set([...this.images()])

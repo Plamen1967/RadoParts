@@ -261,12 +261,20 @@ input[type='checkbox'] {
 }
 
 .tyreClass {
-    background-color: rgb(14, 222, 191);
+    background-color: white;
+    color: blue;
+}
+.tyreClass.active {
+    background-color: blue;
     color: white;
 }
 
 .carClass {
-    background-color: rgb(60, 51, 220);
+    background-color: white;
+    color: blue;
+}
+.carClass.active {
+    background-color: blue;
     color: white;
 }
 

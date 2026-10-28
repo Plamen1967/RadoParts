@@ -32,7 +32,6 @@ import { NgStyle } from '@angular/common'
 import { SelectComponent } from '@components/custom-controls/select-controls/select/select.component'
 import { RadioGroupListComponent } from '@components/custom-controls/radioGroupList/radiogrouplist.component'
 import { InputComponent } from '@components/custom-controls/input/input.component'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CompanyComponent } from '@components/custom-controls/select-controls/company/company.component'
 import { OptionItem } from '@model/optionitem'
 import { TypeItem } from '@model/enum/typeItem'
@@ -57,7 +56,7 @@ import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
 import { CompanyControlConfig } from '@model/companyControlConfig'
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
-//#endregion
+import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
 
 //#region interface
 interface CarFilter {
@@ -97,7 +96,6 @@ interface CarFilter {
         RadioGroupComponent,
         SelectComponent,
         InputComponent,
-        TooltipDirective,
         NgStyle,
         CategoriesFooterComponent,
         ReactiveFormsModule,
@@ -112,7 +110,9 @@ interface CarFilter {
         FormField,
         FormRoot,
         RadioGroupListComponent,
-    ],
+        ReactiveFormsModule,
+        MatTooltipModule,
+]
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -158,6 +158,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion form
 
     //#region members
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     header?: string
     companies?: Company[]
     models?: Model[]

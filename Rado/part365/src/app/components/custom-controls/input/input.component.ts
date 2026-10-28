@@ -41,9 +41,6 @@ export class InputComponent implements FormValueControl<string | number> {
         return this.label() || this.placeHolder() || ''
     }
 
-    constructor() {
-        console.log(`Input Error : ${this.errors()}`)
-    }
     inputFunc(event: Event) {
         const inputElement = event.target as HTMLInputElement
         let inputValue: string | number = inputElement.value

@@ -220,8 +220,6 @@ export function goToPosition(id: string | number | undefined, timeout = 2000): v
             })
         }
     }, timeout)
-
-    console.log(`goToPosition ${id}`)
 }
 
 export function goTop(): void {

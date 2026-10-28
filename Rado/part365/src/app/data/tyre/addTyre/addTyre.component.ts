@@ -368,13 +368,13 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             this.time.set(Date.now())
         })
 
-        effect(() => {
-            console.log(`Errors : ${this.addTyreForm().errors()}`)
-        })
+        // effect(() => {
+        //     console.log(`Errors : ${this.addTyreForm().errors()}`)
+        // })
 
-        effect(() => {
-            console.log(`Item Id: ${this.itemId()}`)
-        })
+        // effect(() => {
+        //     console.log(`Item Id: ${this.itemId()}`)
+        // })
         // effect(() => {
         //     console.log(`Tyre Component Form ${JSON.stringify(this.addTyreForm().value())}`)
         // })
@@ -393,31 +393,28 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             }
         })
 
-        effect(() => {
-            console.log(`Current Item Type: ${this.currentitemType()}`)
-        })
+        // effect(() => {
+        //     console.log(`Current Item Type: ${this.currentitemType()}`)
+        // })
 
         effect(() => {
-            console.log(`Item Id: ${this.itemId()}`)
-        })
-        effect(() => {
-            this.onItemTypeChange(this.addTyreForm.itemType().value())
+            this.onItemTypeChange()
         })
 
-        effect(() => {
-            console.log(`Dispay : ${this.$displayTyre()} Rim: ${this.$displayRim()}`)
-        })
+        // effect(() => {
+        //     console.log(`Dispay : ${this.$displayTyre()} Rim: ${this.$displayRim()}`)
+        // })
 
         effect(() => {
             this.onCompanyChange(this.addTyreForm.companyId().value())
         })
 
-        effect(() => {
-            console.log(`Add Tyre Company Id: ${this.addTyreForm.companyId().value()}`)
-        })
+        // effect(() => {
+        //     console.log(`Add Tyre Company Id: ${this.addTyreForm.companyId().value()}`)
+        // })
 
         effect(() => {
-            this.onItemTypeChange(this.addTyreForm.itemType().value())
+            this.onItemTypeChange()
             if (this.itemId() && this.mode() === UpdateEnum.Update) {
                 this.loadTyre(this.itemId()!)
             }
@@ -500,8 +497,7 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         return Date.now()
     }
 
-    onItemTypeChange(event: ItemType) {
-        console.log(event)
+    onItemTypeChange() {
         this.displaySections()
         this.addTyreFormModel.update((value) => ({
             ...value,

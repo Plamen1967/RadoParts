@@ -11,7 +11,7 @@
                     <app-radiogroup [radios]="radioBus" [formField]="carFilterForm.bus" data-cy="bus"></app-radiogroup>
                 </div>
                 <div class="mb-1">
-                    <app-radiogrouplist [formField]="carFilterForm.itemType" [controlName]="'itemTypeName'"  [radios]="radioTypes()" [all]="true" [style]="2" data-cy="itemType"></app-radiogrouplist>
+                    <app-radiogrouplist [formField]="carFilterForm.itemType" [controlName]="'itemTypeName'" [radios]="radioTypes()" [all]="true" [style]="2" data-cy="itemType"></app-radiogrouplist>
                 </div>
                 <div class="row mb-1">
                     @if (admin) {
@@ -52,13 +52,16 @@
                         <div class="row">
                             <div class="max450px">
                                 <app-searchinput
-                                    [appToolTip]="'Търсене по номер на частта'"
                                     label="Търсене по номер на частта"
                                     [formField]="carFilterForm.partNumber"
                                     placeHolder="{{ labels.PART_NUMBER }}"
                                     [border]="true"
                                     data-cy="partNumber"
-                                    (Search)="onSearchByNumber()">
+                                    (Search)="onSearchByNumber()"
+                                    #tooltip="matTooltip"
+                                    matTooltip="Търсене по номер на частта"
+                                    [matTooltipPosition]="positionOptions[0]"
+                                        >
                                 </app-searchinput>
                             </div>
                             <!-- <div class="border border-light min200px">
@@ -75,12 +78,25 @@
                             </div>
                         </div> -->
                         </div>
+                        <!-- <button
+                            matButton="elevated"
+                            #tooltip="matTooltip"
+                            matTooltip="Info about the action"
+                            [matTooltipPosition]= positionOptions[3]
+                            matTooltipHideDelay="1000"
+                            aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+                            class="example-button">
+                            Action
+                        </button> -->
                         <div class="row">
                             <div class="row modell-1000px">
                                 <div class="col-sm-3 min200px max300px mb-1">
                                     <app-company-choise
                                         data-testid="companyId"
                                         [config]="this.config()"
+                                        #tooltip="matTooltip"
+                                        matTooltip="Изберете марка"
+                                        [matTooltipPosition]="positionOptions[0]"
                                         [formField]="carFilterForm.companyId"
                                         [submitted]="submitted()"
                                         data-cy="companyId">
@@ -121,7 +137,7 @@
                         </div>
                     </div>
                     <div [hidden]="extendedSearch" class="row mt-2">
-                        <div class="col-sm-8" [ngStyle]="{'padding-left':'25px'}" (click)="extendedSearch_ = !extendedSearch_" aria-hidden="true">
+                        <div class="col-sm-8" [ngStyle]="{ 'padding-left': '25px' }" (click)="extendedSearch_ = !extendedSearch_" aria-hidden="true">
                             <span class="btn btn-sm extended ps-2 pe-5" data-cy="extendSearch"><i class="las la-angle-down me-2"></i>{{ labels.EXTENDED_SERARCH }}</span>
                         </div>
                     </div>
@@ -183,7 +199,7 @@
                         </div>
                     </div>
                     <div class="row ms-1 mt-1">
-                        <div class="col-sm-3 form-check control checkboxClass" [ngStyle]="{'padding-left':'35px'}">
+                        <div class="col-sm-3 form-check control checkboxClass" [ngStyle]="{ 'padding-left': '35px' }">
                             <label class="form-check-label" for="hasImages">{{ labels.WITHIMAGES }}</label>
                             <input type="checkbox" class="form-check-input" [formField]="carFilterForm.hasImages" id="hasImages" data-cy="hasImages" />
                         </div>

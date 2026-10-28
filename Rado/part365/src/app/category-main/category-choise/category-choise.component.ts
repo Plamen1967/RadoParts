@@ -1,7 +1,6 @@
 //#region imports
 import { Component, inject, OnInit, model, input, effect, computed } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
-import { TooltipDirective } from '@app/directive/tooltip.directive'
 import { CustomSelectComponent } from '@components/custom-controls/x-custom-select/customSelect.component'
 import { MultiSelectionComponent } from '@components/custom-controls/select-controls/multiSelection/multiselection.component'
 import { Category } from '@model/category-subcategory/category'
@@ -11,13 +10,15 @@ import { ErrorService } from '@services/error.service'
 import { FormValueControl, ValidationError } from '@angular/forms/signals'
 import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
+import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 //#endregion
 //#region component
 @Component({
     selector: 'app-category-choise',
     templateUrl: './category-choise.component.html',
     styleUrls: ['./category-choise.component.css'],
-    imports: [MultiSelectionComponent, TooltipDirective, CustomSelectComponent, ReactiveFormsModule],
+    imports: [MultiSelectionComponent, CustomSelectComponent, ReactiveFormsModule,
+    MatTooltipModule],
 })
 //#endregion
 export class CategoryChoiseComponent implements FormValueControl<string | number>, OnInit {
@@ -29,6 +30,8 @@ export class CategoryChoiseComponent implements FormValueControl<string | number
     multiselection = input<boolean>(true)
     submitted = input<boolean>(false)
     isRequired = input<boolean>(false)
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
+
     readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
     //#region services
     public categoryService: CategoryService

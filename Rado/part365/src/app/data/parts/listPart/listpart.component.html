@@ -73,14 +73,17 @@
                     <div class="col-sm-2 min350px">
                         <app-category-choise
                             id="categoryId"
-                            [appToolTip]="'Избери категория'"
                             [formField]="searchForm.categoryId"
                             data-cy="categoryId"
                             data-bs-toggle="tooltip"
                             data-bs-placement="right"
                             title="Избери категория"
                             [multiselection]="false"
-                            placeHolder="Избери категория">
+                            placeHolder="Избери категория"
+                            #tooltip="matTooltip"
+                            matTooltip="Избери категория"
+                            [matTooltipPosition]="positionOptions[0]"
+                            >
                         </app-category-choise>
                     </div>
                     @if (searchForm.categoryId().value() && searchForm.categoryId().value().toString().length) {
@@ -129,7 +132,7 @@
             </div>
         } @else {
             @if (parts()) {
-                <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
+                <app-navigator [numberPages]="getNumberPages()" [currentPage]="currentPage" (moveToPage)="moveToPage($event)" id="top" class="me-2"> </app-navigator>
                 @if (parts().length) {
                     @for (part of parts(); track part.partId) {
                         <div id="{{ part.partId }}" class="part-style">

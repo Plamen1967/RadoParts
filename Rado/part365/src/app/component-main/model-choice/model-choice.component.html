@@ -4,7 +4,6 @@
         label="Модел"
         [value]=value()
         placeHolder="Избери модел"
-        [appToolTip]="'Избери модела'"
         [showGroup]="showGroup()"
         [data]="models()"
         [showLetter]="showLetter()"
@@ -20,7 +19,11 @@
         data-bs-toggle="tooltip"
         data-bs-placement="right"
         (changeOption)="value.set($event)"
-        (onCloseEvent)="focus()">
+        (onCloseEvent)="focus()"
+        #tooltip="matTooltip"
+        matTooltip="Избери модела"
+        [matTooltipPosition]="positionOptions[0]"
+        >
     </app-multiselection>
 } @else {
     <app-customselect
@@ -33,11 +36,13 @@
         [groupDisabled]="groupDisabled()"
         [placeHolder]="'Избери модел'"
         [errors]="errors()" 
-        [appToolTip]="'Избери модел'"
         [useFilter]="useFilter()"
         [submitted]="submitted()"
         [showCount]="showCount()"
         (changeOption)="value.set($event)"
+        #tooltip="matTooltip"
+        matTooltip="Избери модела"
+        [matTooltipPosition]="positionOptions[0]"
         data-cy="modelsId"
         data-bs-toggle="tooltip"
         data-bs-placement="right">

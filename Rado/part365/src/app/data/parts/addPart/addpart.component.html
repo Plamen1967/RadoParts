@@ -189,7 +189,6 @@
                     <div class="col-sm-3 col-md-3 col-lg-3 min350px">
                         <app-category-choise
                             id="categoryId"
-                            [appToolTip]="'Избери категория'"
                             [formField]="addPartForm.categoryId"
                             data-cy="categoryId"
                             data-bs-toggle="tooltip"
@@ -198,7 +197,11 @@
                             [isRequired]="true"
                             [multiselection]="false"
                             [submitted]="$submitted()"
-                            placeHolder="Избери категория">
+                            placeHolder="Избери категория"
+                            #tooltip="matTooltip"
+                            matTooltip="Избери категория"
+                            [matTooltipPosition]="positionOptions[0]"
+                            >
                         </app-category-choise>
                     </div>
                     @if (addPartForm.categoryId().value()) {

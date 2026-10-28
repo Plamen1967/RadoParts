@@ -1,6 +1,14 @@
 @import 'styles/image.css';
 @import 'styles/displayPart.css';
 @import 'styles/tooltip.css';
+// @use '@angular/material' as mat;
+
+// :root {
+//   @include mat.tooltip-overrides((
+//     container-color: orange,
+//     supporting-text-color: red,
+//   ));
+// }
 
 .ngxImageZoomThumbnail {
     width: inherit !important;
@@ -77,7 +85,7 @@ lib-ngx-image-zoom img {
     --side-bar-bgcolor: whitesmoke;
     --side-bag-color: black;
     --radiogroup-color: whitesmoke;
-    --radiogroup-bg-color: #1e7545;
+    --radiogroup-bg-color: #2626e0;
     --radiogrouplist-bg-color: #2626e0;
 }
 
@@ -285,8 +293,8 @@ body {
  }
 
  @media (max-width: 750px) {
-  }  
- 
+  }
+
 .toast-style  .mat-mdc-button {
         // background-color: #6654da;
         // color: white!important;

@@ -61,8 +61,6 @@ test('add part', async () => {
         },
     })
 
-    console.log(newPart);
-
     expect(newPart.ok()).toBeTruthy()
 })
 

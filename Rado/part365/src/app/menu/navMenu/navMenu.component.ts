@@ -1,5 +1,5 @@
 //#region import
-import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, OnInit, effect, computed } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef, OnDestroy, DOCUMENT, OnInit, computed } from '@angular/core'
 import { NavigationEnd, NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
@@ -96,9 +96,9 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
 
     constructor() {
 
-        effect(() => {
-            console.log('showBackgroundImage', this.homeService.showBackgroundImage())
-        })
+        // effect(() => {
+        //     console.log('showBackgroundImage', this.homeService.showBackgroundImage())
+        // })
         
         super()
         this.userService.userPage.subscribe((userId) => {
@@ -117,7 +117,6 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
          this.router.events.subscribe((event) => {
         if (event instanceof NavigationStart) {
         const value = event.url == '/' || event.url.startsWith('/?') ? true : false
-        console.log('navMenu', event.url, value)
         this.homeService.showBackgroundImage.set(value)
         document.body.scrollTop = 0
         this.goTop()

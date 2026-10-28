@@ -6,7 +6,6 @@
         [value]="value()"
         placeHolder="Избери подкатегория"
         [errors]="errors()"
-        [appToolTip]="'Избери подкатегория'"
         [data]="subCategories"
         [multiSelection]="multiselection()"
         data-cy="subCategoriesId_int"
@@ -14,6 +13,9 @@
         data-bs-placement="right"
         (changeOption)="value.set($event)"
         [submitted]="submitted()"
+        #tooltip="matTooltip"
+        matTooltip="Избери подкатегория"
+        [matTooltipPosition]="positionOptions[0]"
         title="Избери подкатегория">
     </app-multiselection>
 } @else {
@@ -28,9 +30,11 @@
         [data]="subCategories"
         [showGroup]="false"
         [groupDisabled]="false"
-        [appToolTip]="'Избери подкатегория'"
         [submitted]="submitted()"
         (changeOption)="value.set(+$event)"
+        #tooltip="matTooltip"
+        matTooltip="Избери подкатегория"
+        [matTooltipPosition]="positionOptions[0]"
         data-cy="subCategoriesId"
         data-bs-toggle="tooltip"
         data-bs-placement="right">
