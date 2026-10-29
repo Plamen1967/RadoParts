@@ -2,11 +2,11 @@
     display: block;
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
     .show-text {
         display: none;
     }
-}
+} */
 
 .cancel-button {
     background-color: aliceblue;

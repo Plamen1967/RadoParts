@@ -109,7 +109,7 @@
                                 @if ($seller()) {
                                     <li>
                                         
-                                        <a class="nav-link menuButton2 d-inline-flex" (click)="cars()" routerLink="/data/cars" routerLinkActive="active-link" data-cy="carsUrl" role="presentation">
+                                        <a class="nav-link menuButton2 d-inline-flex justify-content-between" (click)="cars()" routerLink="/data/cars" routerLinkActive="active-link" data-cy="carsUrl" role="presentation">
                                             <div><img class="tabSvg" src="images/svg/car.svg" alt="" />Коли</div>
                                             @if (userCount$ | async; as userCount) {
                                                 @if (userCount && userCount.carCount) {
@@ -119,7 +119,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="nav-link menuButton2 d-inline-flex" data-cy="cars" routerLink="/data/bus" (click)="bus()" routerLinkActive="active-link" role="presentation">
+                                        <a class="nav-link menuButton2 d-inline-flex justify-content-between" data-cy="cars" routerLink="/data/bus" (click)="bus()" routerLinkActive="active-link" role="presentation">
                                             <div><img class="tabSvg" src="images/svg/van.svg" alt="" />Бусове</div>
                                             @if (userCount$ | async; as userCount) {
                                                 @if (userCount && userCount.busCount) {
@@ -130,7 +130,7 @@
                                     </li>
                                 }
                                 <li>
-                                    <a class="nav-link menuButton2" data-cy="parts" routerLink="/data/parts" (click)="parts()" routerLinkActive="active-link" role="presentation"
+                                    <a class="nav-link menuButton2 d-inline-flex justify-content-between" data-cy="parts" routerLink="/data/parts" (click)="parts()" routerLinkActive="active-link" role="presentation"
                                         >Части
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount && userCount.partCarCount + userCount.partBusCount) {
@@ -139,8 +139,8 @@
                                         }
                                     </a>                                </li>
                                 <li>
-                                    <a class="nav-item nav-link menuButton2" data-cy="tyres" routerLink="/data/tyres" (click)="tyres()" routerLinkActive="active-link" role="presentation"
-                                        >Гуми/Джанти
+                                    <a class="nav-item nav-link menuButton2 d-inline-flex justify-content-between" data-cy="tyres" routerLink="/data/tyres" (click)="tyres()" routerLinkActive="active-link" role="presentation"
+                                        ><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Гуми/Джанти
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount && userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {
                                                 <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>
@@ -253,14 +253,14 @@
                         <li class="dropdown-content" [ngStyle]="{ 'min-width': '180px' }" id="changeAdvert" (click)="removeMenu('changeAdvert')" role="presentation">
                             <ul aria-labelledby="admin" class="ulClass">
                                 @if ($seller()) {
-                                    <a (click)="cars()" role="presentation" class="menu d-inline-flex"><div><img class="tabSvg" src="images/svg/car.svg" alt="" />Коли</div>
+                                    <a (click)="cars()" role="presentation" class="menu d-inline-flex justify-content-between"><div><img class="tabSvg" src="images/svg/car.svg" alt="" />Коли</div>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount?.carCount) {
                                                 <span class="count">{{ userCount.carCount }}</span>
                                             }
                                         }
                                     </a>
-                                    <a (click)="bus()" role="presentation" class="menu d-inline-flex"
+                                    <a (click)="bus()" role="presentation" class="menu d-inline-flex justify-content-between"
                                         ><div><img class="tabSvg" src="images/svg/van.svg" alt="" />Бусове</div>
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount?.busCount) {
@@ -269,7 +269,7 @@
                                         }
                                     </a>
                                 }
-                                <a (click)="parts()" role="presentation" class="menu"
+                                <a (click)="parts()" role="presentation" class="menu d-inline-flex justify-content-between"
                                     >Части
                                     @if (userCount$ | async; as userCount) {
                                         @if (userCount && userCount.partCarCount + userCount.partBusCount) {
@@ -278,7 +278,7 @@
                                     }
                                 </a>
                                 @if ($seller()) {
-                                    <a (click)="tyres()" role="presentation" class="menu"
+                                    <a (click)="tyres()" role="presentation" class="menu d-inline-flex justify-content-between"
                                         >Гуми/Джанти
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {

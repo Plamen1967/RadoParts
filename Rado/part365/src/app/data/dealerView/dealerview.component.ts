@@ -186,6 +186,7 @@ savedPart($event: number) {
     }
 
     addPart(event: number) {
+        console.log(`Part Id: ${event}`)
             this.addPartFlag.set(true)
 //        this.action.emit({ action: UpdateEnum.New, id: event, car: false })
     }

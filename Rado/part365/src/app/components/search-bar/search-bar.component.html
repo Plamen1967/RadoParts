@@ -5,11 +5,11 @@
             <app-clearbutton (clickButton)="clearFilter()"></app-clearbutton>
         </div>
     </div>
-        <div class="pt-0 min100px flex-end ms-1 pb-3 pt-1">
-            <div class="d-inline-flexd-flex-inline bg-error flex-end">
-                <div class="flex-item">
-                    <app-select data-cy="orderBy" id="sortForm" label="{{ labels.SORTBY }}" [data]="sort" [value]="value()"> </app-select>
-                </div>
+    <div class="pt-0 min150px flex-end pb-3 pt-1">
+        <div class="d-inline-flexd-flex-inline bg-error flex-end">
+            <div class="flex-item">
+                <app-select data-cy="orderBy" id="sortForm" label="{{ labels.SORTBY }}" [data]="sort" [value]="value()"> </app-select>
             </div>
         </div>
+    </div>
 </div>

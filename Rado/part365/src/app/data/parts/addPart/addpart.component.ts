@@ -161,9 +161,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         min(path.modificationId, 1, {
             message: 'Моля изебрете модификация',
             when: () => {
-                if (this.$mode() === UpdateEnum.Update && this.addPartForm().value().bus === 1) return false
-                if (this.bus() == 1) return false
-                return true
+                return this.check()
             },
         })
         min(path.categoryId, 1, {
@@ -721,6 +719,20 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             },
         })
     }
+    check(): boolean 
+    {
+        if (this.addPartForm().value().partForCar === 'car')
+            return false
+
+        const mode = this.$mode()
+        const bus = this.addPartForm().value().bus
+        const bus_1 = this.bus()
+
+        if (mode === UpdateEnum.Update && bus === 1) return false
+        if (bus_1 == 1) return false
+            return true
+    }
 
     //#endregion
 }
+
