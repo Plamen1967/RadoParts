@@ -1,5 +1,5 @@
 @if (carView() || partView() || rimWithTyreView()) {
-    <div [ngClass]="{ card: true, highlighted: isHighlighted(), showPart: showParts === true }" style="background-color: inherit; border: inherit; border-radius: 8px">
+    <div [ngClass]="{ card: true, highlighted: isHighlighted(), showPart: $showParts() === true }"  style="background-color: inherit; border: inherit; border-radius: 8px" [ngStyle]="{ display: addPartFlag() ? 'none' : '' }" >
         <div class="d-flex flex-row part-row">
             <div class="data w-100">
                 <div class="image-order image-style" style="position: relative;">
@@ -15,7 +15,7 @@
                     @if (partView()) {
                         <app-rowpartdealer [part]="partView()!" (action)="actionPart($event)"></app-rowpartdealer>
                     } @else if (carView()) {
-                        <app-dealerviewcar [carView]="carView()!" [showParts]="showParts"></app-dealerviewcar>
+                        <app-dealerviewcar [carView]="carView()!" [showParts]="$showParts()"></app-dealerviewcar>
                     } @else if (rimWithTyreView()) {
                         <app-dealerviewtyre [item]="rimWithTyreView()!" (action)="actionPart($event)"></app-dealerviewtyre>
                     }
@@ -38,20 +38,20 @@
                 }
             </div>
         </div>
-        @if (parts && this.showParts) {
+        @if (this.$showParts()) {
             <div class="part-card">
                 <div class="d-inline-flex justify-content-center w-100" style="position: relative">
                     <div class="title">Части</div>
                     <div
                         class="part-close-arrow"
                         role="none"
-                        (click)="showParts = false">
+                        (click)="displayParts(carId())">
                         <span class="material-symbols-outlined"> keyboard_arrow_up </span>
                     </div>
                 </div>
                 <div class="parts">
                     @for (part of this.partsPerCar(); track part.partId) {
-                        <div class="car_part">
+                        <div class="car_part" id="{{part.partId}}">
                             <app-dealerview [showPart]="true" [partView]="part" [allowUpdate]="true" (action)="actionPart($event)"> </app-dealerview>
                         </div>
                     }
@@ -59,4 +59,7 @@
             </div>
         }
     </div>
+}
+@if (addPartFlag()) {
+    <app-addpart [addItemParam]="{ bus: carView()?.bus!, add: true, carId: carView()?.carId }" [bus]="carView()?.bus!" [add]="true" (saved)="savedPart($event)" (noChange)="back($event!)"></app-addpart>
 }

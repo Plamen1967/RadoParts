@@ -1,7 +1,7 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal, computed } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal, computed, viewChildren } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, NgStyle } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { SelectOption } from '@model/selectOption'
 import { UpdateEnum } from '@model/enum/update.enum'
@@ -26,7 +26,6 @@ import { ModificationChoiceComponent } from '@app/component-main/modification-ch
 import { ItemType } from '@model/enum/itemType.enum'
 import AddCarComponent from '../addCar/addcar.component'
 import { GoTopComponent } from '@components/custom-controls/goTop/goTop.component'
-import AddPartComponent from '@app/data/parts/addPart/addpart.component'
 import { YearComponent } from '@components/custom-controls/year/year.component'
 import { Modification } from '@model/static-data/modification'
 import { ListTitleComponent } from '@components/custom-controls/listtitle/listtitle.component'
@@ -65,14 +64,14 @@ interface listFormInterface {
     ModificationChoiceComponent,
     AddCarComponent,
     GoTopComponent,
-    AddPartComponent,
     YearComponent,
     ListTitleComponent,
     UpdateCarComponent,
     UpdatePartComponent,
     AsyncPipe,
     FormField,
-    UpdateBusComponent
+    UpdateBusComponent,
+    NgStyle
 ],
 })
 
@@ -112,7 +111,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     allCars: CarView[] = []
     carsList: SelectOption[] = []
     addPartCarId?: number
-    currentPartId?: number
     updateCars?: boolean = true
     numberPages = 0
     currentPage = 0
@@ -143,6 +141,8 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     addCar = input(0)
     addBus = input(0)
     addPart = input(0)
+    children = viewChildren(DealerViewComponent);
+    currentPartId = signal(0)
     update = input<number | string>()
     ad = input<number | string>()
     bus = input<number>(0)
@@ -177,6 +177,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     private userCountService: UserCountService = inject(UserCountService)
     private destroyRef = inject(DestroyRef)
 
+    $selected = computed(() => this.children().find((child) => child.hasPartId(this.currentPartId())))
     constructor() {
         super()
 
@@ -313,24 +314,24 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     actionCar(action: DealerActionType) {
         this.mode = action.action!
-        this.currentPartId = action.id
+        this.currentPartId.set(action.id!)
         if (this.mode === UpdateEnum.New) {
             if (action.car) this.addCarFunc()
             else {
-                this.currentPartId = action.id
+                this.currentPartId.set(action.id!)
                 this.newPart(action.id!)
             }
         } else if (this.mode === UpdateEnum.Update) {
             if (action.car) this.updateCarFunc(action.id!)
             else if (!action.car) this.updatePartFunc(0, action.id!)
-            else this.currentPartId = action.id
+            else this.currentPartId.set(action.id!)
         } else if (action.car && this.mode === UpdateEnum.Delete) {
             this.deleteCar(action.id!)
         }
     }
 
     backUpdatePart() {
-        this.currentPartId = undefined
+        this.currentPartId.set(0)
     }
     updateCarFunc(carId: number) {
         this.currentCarId = carId
@@ -447,8 +448,12 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         else this.router.navigate(['/data/cars'], { queryParams: { addPart: true, carId: carId } })
     }
 
-    savedPart(pratId: number) {
-        console.log(`Part id : ${pratId}`)
+    savedPart(partId: number) {
+        console.log(`Part id : ${partId}`)
+        this.$updatePartFlag.set(false)
+        this.currentPartId.set(partId!)
+        this.$selected()?.reload()
+        goToPosition(partId)
         return
     }
     //#endregion
@@ -577,6 +582,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.$updateCarFlag.set(params.get('updateCar') ? true : false)
         this.$updateBusFlag.set(params.get('updateBus') ? true : false)
         this.$updatePartFlag.set(params.get('updatePart') ? true : false)
-        this.currentPartId = params.get('currentPartId') ? +params.get('currentPartId')! : undefined
+        this.currentPartId.set(params.get('currentPartId') ? +params.get('currentPartId')! : 0)
     }
 }

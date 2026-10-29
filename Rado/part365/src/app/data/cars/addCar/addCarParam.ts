@@ -6,6 +6,7 @@ export  class AddItemParam {
     id? : number | undefined
     add?  = false
     update?  = false
+    carId? : number
     mode? : UpdateEnum = UpdateEnum.New
     displayPartView? : DisplayPartView | undefined
 }    

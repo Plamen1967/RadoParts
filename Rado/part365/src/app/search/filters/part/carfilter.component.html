@@ -8,7 +8,7 @@
         <div class="w-100">
             <div class="shadow mb-5 rounded card card-form-spec mb-2 homeForm">
                 <div class="mb-1 d-flex justify-content-center">
-                    <app-radiogroup [radios]="radioBus" [formField]="carFilterForm.bus" data-cy="bus"></app-radiogroup>
+                    <app-radiogroup [radios]="radioBus" [formField]="carFilterForm.bus" data-cy="bus" (panelClosed)="typeChanged($event)"></app-radiogroup>
                 </div>
                 <div class="mb-1">
                     <app-radiogrouplist [formField]="carFilterForm.itemType" [controlName]="'itemTypeName'" [radios]="radioTypes()" [all]="true" [style]="2" data-cy="itemType"></app-radiogrouplist>
@@ -16,7 +16,7 @@
                 <div class="row mb-1">
                     @if (admin) {
                         <div class="row">
-                            <div class="col-sm-4 control">
+                            <div class="col-sm-4 col-md-4 col-lg-4 control">
                                 <app-select
                                     id="user"
                                     [formField]="carFilterForm.userId"
@@ -28,7 +28,7 @@
                                     displayProperty="text">
                                 </app-select>
                             </div>
-                            <div class="col-sm-3 control">
+                            <div class="col-sm-3 col-md-3 col-lg-3 control">
                                 <app-select
                                     id="user"
                                     [formField]="carFilterForm.itemType"
@@ -40,7 +40,7 @@
                                     displayProperty="value">
                                 </app-select>
                             </div>
-                            <div class="col-sm-3 control">
+                            <div class="col-sm-3 col-md-3 col-lg-3 control">
                                 <app-select id="approved" [formField]="carFilterForm.approved" data-cy="approvedType" label="{{ labels.APPROVEAD }}" [data]="approvedTypes" (onCloseEvent)="focus()">
                                 </app-select>
                             </div>
@@ -90,7 +90,7 @@
                         </button> -->
                         <div class="row">
                             <div class="row modell-1000px">
-                                <div class="col-sm-3 min200px max300px mb-1">
+                                <div class="col-sm-3 col-md-3 col-lg-3 min200px max300px mb-1">
                                     <app-company-choise
                                         data-testid="companyId"
                                         [config]="this.config()"
@@ -103,7 +103,7 @@
                                     </app-company-choise>
                                 </div>
                                 @if (carFilterForm.companyId().value()) {
-                                    <div class="col-sm-3 min300px mb-1">
+                                    <div class="col-sm-3 col-md-3 col-lg-3 min300px mb-1">
                                         <app-model-choice
                                             data-testid="modelId"
                                             [all]="true"
@@ -118,7 +118,7 @@
                                     </div>
                                 }
                                 @if (!carFilterForm.bus().value() && carFilterModel().modelsId) {
-                                    <div class="col-sm-3 min300px mb-1">
+                                    <div class="col-sm-3 col-md-3 col-lg-3 min300px mb-1">
                                         <app-modification-choice
                                             data-testid="modificationId"
                                             [all]="true"
@@ -143,7 +143,7 @@
                     </div>
                     @if (extendedSearch_) {
                         <div>
-                            <div class="d-flex-column col-sm-7 me-2">
+                            <div class="d-flex-column col-sm-7 col-md-7 col-lg-7 me-2">
                                 <app-category-choise [formField]="carFilterForm.categoryId"> </app-category-choise>
                                 @if (categoriesId.length) {
                                     <div class="col-sm-10 mt-1 control">
@@ -152,12 +152,12 @@
                                 }
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 control" [ngStyle]="{ 'margin-top': '30px' }">
+                                <div class="col-sm-6 col-md-6 col-lg-6 control" [ngStyle]="{ 'margin-top': '30px' }">
                                     <app-input [formField]="carFilterForm.keyword" data-cy="keyword" placeHolder="{{ labels.KEYWORD }}" [keyword]="true"> </app-input>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-2 control min200px">
+                                <div class="col-sm-2 col-md-2 col-lg-2 control min200px">
                                     <app-select
                                         id="engineType"
                                         [formField]="carFilterForm.engineType"
@@ -167,7 +167,7 @@
                                         (onCloseEvent)="focus()">
                                     </app-select>
                                 </div>
-                                <div class="col-sm-3 control">
+                                <div class="col-sm-3 col-md-3 col-lg-3 control">
                                     <app-input
                                         [formField]="carFilterForm.engineModel"
                                         data-cy="engineModel"
@@ -176,7 +176,7 @@
                                         placeHolder="{{ labels.CODE_ENGINE }}">
                                     </app-input>
                                 </div>
-                                <div class="col-sm-2 control min150px">
+                                <div class="col-sm-2 col-md-2 col-lg-2 control min150px">
                                     <app-input [formField]="carFilterForm.powerBHP" data-cy="powerBHP" label="{{ labels.POWERBHP }}" (onCloseEvent)="focus()" placeHolder="К.С."> </app-input>
                                 </div>
                                 <div class="col-sm-4 control">
@@ -194,12 +194,12 @@
                     }
 
                     <div class="row mt-1">
-                        <div class="col-sm-3 max250px control">
+                        <div class="col-sm-4 col-md-4 col-lg-4 max250px control">
                             <app-region [formField]="carFilterForm.regionId"></app-region>
                         </div>
                     </div>
                     <div class="row ms-1 mt-1">
-                        <div class="col-sm-3 form-check control checkboxClass" [ngStyle]="{ 'padding-left': '35px' }">
+                        <div class="col-sm-3 col-md-3 col-lg-3 form-check control checkboxClass" [ngStyle]="{ 'padding-left': '35px' }">
                             <label class="form-check-label" for="hasImages">{{ labels.WITHIMAGES }}</label>
                             <input type="checkbox" class="form-check-input" [formField]="carFilterForm.hasImages" id="hasImages" data-cy="hasImages" />
                         </div>

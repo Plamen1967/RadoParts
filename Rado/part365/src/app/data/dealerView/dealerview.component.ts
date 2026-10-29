@@ -1,5 +1,5 @@
 //#region imports
-import { NgClass } from '@angular/common'
+import { NgClass, NgStyle } from '@angular/common'
 import { AfterViewInit, Component, inject, input, output, effect, computed, signal } from '@angular/core'
 import { Router } from '@angular/router'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
@@ -25,22 +25,29 @@ import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { goToPosition } from '@app/functions/functions'
 import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
+import AddPartComponent from '../parts/addPart/addpart.component';
 //#endregion
 //#region component
 @Component({
     selector: 'app-dealerview',
     templateUrl: './dealerview.component.html',
     styleUrls: ['./dealerview.component.css'],
-    imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent],
+    imports: [NgClass, RowPartDealerComponent, ImageComponent, DealerViewCarComponent, MatBadgeModule, MatIconModule, DealerViewTyreComponent, AddPartComponent, NgStyle],
 })
 //#endregion
 export class DealerViewComponent extends HelperComponent implements AfterViewInit {
+back(arg0: number) {
+    console.log(`${arg0}`)
+}
+savedPart($event: number) {
+    console.log(`${$event}`)
+}
     //#region variables and services
     parts: PartView[] = []
-    showParts = false
     mode: UpdateEnum = UpdateEnum.View
     currentPartId?: number
     _carView?: CarView
+    addPartFlag = signal(false)
     id = signal<number>(0)
     getOnlyNumbers = signal<number>(0)
     carView = input<CarView>()
@@ -52,6 +59,7 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
     showPart = input<boolean>(false)
     action = output<DealerActionType>()
     addPartCarId = output<number>()
+    displayPartsEvent = output<number>()
     private authernticationService: AuthenticationService = inject(AuthenticationService)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private router: Router = inject(Router)
@@ -76,8 +84,20 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
             return undefined
     })
 
+    $showParts = computed(() => 
+        {
+            console.log(`${this.partService.showParts()} ${this.id()}`)
+            return this.partService.showParts() != 0 && this.partService.showParts() === this.id()
+        })
     partsPerCar = computed(() => this.partresource.value())
 
+    hasPartId(partId: number): boolean {
+        const array = this.partsPerCar()?.find((part) => part.partId === partId)
+        if (array && Array.length > 0)
+            return true
+
+        return false;
+    }
 
     constructor() {
         super()
@@ -115,15 +135,24 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
     }
 
     displayParts(event: number) {
-        this.showParts = !this.showParts
-        if (this.showParts)
+        if (this.partService.showParts() === event )
+        {
+            this.partService.showParts.set(0)
+        }
+        else 
+            {
             this.carId.set(event)
-        else
-            this.carId.set(0)
+            this.partService.showParts.set(this.id())
+        }
+
+        // if (this.$showParts())
+        //     this.carId.set(event)
+        // else
+        //     this.carId.set(0)
     }
 
     label() {
-        if (!this.showParts) return this.labels.SHOWPARTS
+        if (!this.$showParts()) return this.labels.SHOWPARTS
         else return this.labels.HIDEPARTS
     }
 
@@ -133,8 +162,7 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
             next: (res) => {
                 this.currentPartId = undefined
                 if (res) {
-                    const carIndex = this.parts.findIndex((x) => x.partId === partId)
-                    this.parts.splice(carIndex, 1)
+                    this.partresource.reload()
                 }
             },
             error: (error) => {
@@ -152,14 +180,19 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
         if (event.action === UpdateEnum.Delete) {
             this.deletePart(this.currentPartId!)
         } else {
-            this.action.emit({ action: event.action, id: this.currentPartId, car: false })
+            this.addPartFlag.set(true)
+            //this.action.emit({ action: event.action, id: this.currentPartId, car: false })
         }
     }
 
     addPart(event: number) {
-        this.action.emit({ action: UpdateEnum.New, id: event, car: false })
+            this.addPartFlag.set(true)
+//        this.action.emit({ action: UpdateEnum.New, id: event, car: false })
     }
 
+    reload() {
+        this.partresource.reload();
+    }
     refreshPart(part: PartView) {
         if (part) {
             if (this.parts) {

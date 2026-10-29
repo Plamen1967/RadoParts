@@ -56,7 +56,7 @@ import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
 import { CompanyControlConfig } from '@model/companyControlConfig'
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
-import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
+import { TooltipPosition, MatTooltipModule } from '@angular/material/tooltip'
 
 //#region interface
 interface CarFilter {
@@ -112,7 +112,7 @@ interface CarFilter {
         RadioGroupListComponent,
         ReactiveFormsModule,
         MatTooltipModule,
-]
+    ],
 })
 //#endregion
 export class CarFilterComponent extends HelperComponent implements OnInit, AfterViewInit {
@@ -158,7 +158,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     //#endregion form
 
     //#region members
-    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right']
     header?: string
     companies?: Company[]
     models?: Model[]
@@ -352,8 +352,8 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#endregion
 
-    query$ = toObservable(this.carFilterModel).pipe((distinctUntilChanged()))
-    $query = toSignal(this.query$);
+    query$ = toObservable(this.carFilterModel).pipe(distinctUntilChanged())
+    $query = toSignal(this.query$)
 
     constructor() {
         super()
@@ -614,6 +614,13 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     get mobile() {
         return isMobile()
+    }
+
+    typeChanged(event: number) {
+        if (event === 0)
+            this.carFilterModel.update((value) => ({ ...value, itemType: ItemType.AllCarAndPart }))
+        else 
+            this.carFilterModel.update((value) => ({ ...value, itemType: ItemType.AllBusAndPart }))
     }
 
     get dataManager() {

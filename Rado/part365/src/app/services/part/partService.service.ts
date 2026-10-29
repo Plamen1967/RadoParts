@@ -1,6 +1,6 @@
 //#region imports
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable, inject } from '@angular/core'
+import { Injectable, inject, signal } from '@angular/core'
 import { Part } from '@model/part/part'
 import { Observable, of, Subject } from 'rxjs'
 import { catchError, first, tap, map } from 'rxjs/operators'
@@ -23,7 +23,7 @@ export class PartServiceService {
     private http = inject(HttpClient)
     private loggerService = inject(LoggerService)
     private staticService = inject(StaticSelectionService)
-
+    public showParts = signal(0)
     httpHeader = {
         headers: new HttpHeaders({
             'content-type': 'application/json',
