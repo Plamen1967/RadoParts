@@ -155,6 +155,9 @@ namespace Rado.Datasets
                     if (rimWithTyre.MainPicture == null) rimWithTyre.MainPicture = "";
                     if (rimWithTyre.Description == null) rimWithTyre.Description = "";
                     DateTime dateTime = DateTime.Now;
+                    var resultImageCount = ImageManager.GetImageCount(rimWithTyre.RimWithTyreId);
+                    resultImageCount.Wait();
+                    int imageCount = resultImageCount.Result;
                     using (SqlCommand command = new SqlCommand(storeProcedureName, connection))
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
@@ -183,6 +186,7 @@ namespace Rado.Datasets
                         command.Parameters.Add("@count", System.Data.SqlDbType.Int).Value = rimWithTyre.Count;
                         command.Parameters.Add("@month", System.Data.SqlDbType.Int).Value = rimWithTyre.MonthDOT;
                         command.Parameters.Add("@year", System.Data.SqlDbType.Int).Value = rimWithTyre.YearDOT;
+                        command.Parameters.Add("@imageCount", SqlDbType.Int).Value = imageCount;
 
                         if (!update) command.Parameters.Add("@itemType", System.Data.SqlDbType.Int).Value = rimWithTyre.ItemType;
 

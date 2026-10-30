@@ -539,9 +539,9 @@ namespace Rado.Datasets
 
                         CategoriesDbSet.Refresh();
 
+                        LoggerUtil.LogToSqlFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                         return rows != 0;
                     }
-                    LoggerUtil.LogToSqlFile($"end storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
 
                 }
             }

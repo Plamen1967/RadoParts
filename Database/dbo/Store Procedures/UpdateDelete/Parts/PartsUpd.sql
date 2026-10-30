@@ -22,7 +22,8 @@
     @dealerSubCategoryName  NVARCHAR(50),
     @mainPicture            NVARCHAR(200),
     @mainImageId        INT,
-    @approved           INT
+    @approved           INT,
+	@imageCount			INT
 
 AS
 
@@ -49,7 +50,8 @@ AS
      mainPicture        = @mainPicture,
      approved           = @approved,
      mainImageId        = @mainImageId,
-     keyword            = LOWER(CONCAT(@partNumber, @description, @dealerSubCategoryName))
+     keyword            = LOWER(CONCAT(@partNumber, @description, @dealerSubCategoryName)),
+     @imageCount		= imageCount
   WHERE partId       = @partId AND userId = @userId
 
 RETURN @@ROWCOUNT

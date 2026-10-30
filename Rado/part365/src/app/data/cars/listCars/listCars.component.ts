@@ -1,6 +1,6 @@
 //#region import
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal, computed, viewChildren } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
+import { AfterViewInit, Component, OnDestroy, OnInit, inject, DestroyRef, input, effect, signal, computed, viewChildren } from '@angular/core'
+import { ReactiveFormsModule } from '@angular/forms'
 import { AsyncPipe, NgStyle } from '@angular/common'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { SelectOption } from '@model/selectOption'
@@ -38,6 +38,8 @@ import { UserCount } from '@model/userCount'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { form, FormField } from '@angular/forms/signals'
 import UpdateBusComponent from '@app/data/bus/updateBus/updatebus.component'
+import { httpResource } from '@angular/common/http'
+import { environment } from '@env/environment'
 //#endregion
 //#region interface
 interface listFormInterface {
@@ -75,15 +77,8 @@ interface listFormInterface {
 ],
 })
 
-// interface ListCarParam {
-//     addCar?: boolean;
-//     addBus?: boolean;
-//     addPart?: boolean;
-//     updateCar?: boolean;
-//     updatePart?: boolean;
-// };
-
 //#endregion
+
 export default class ListCarsComponent extends HelperComponent implements OnInit, AfterViewInit, OnDestroy {
     listFormModel = signal<listFormInterface>({
             carId: 0,
@@ -96,7 +91,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     listForm = form(this.listFormModel)
     //#region members
-    submitElement?: ElementRef<HTMLInputElement>
     display = 'none'
     deleteCarId?: number
     adCarFlag?: boolean
@@ -164,7 +158,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     //#endregion
 
     //#region c'tor
-    private formBuilder: FormBuilder = inject(FormBuilder)
     public modificationService: ModificationService = inject(ModificationService)
     private nextIdService: NextIdService = inject(NextIdService)
     private carService: CarService = inject(CarService)
@@ -196,14 +189,14 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         effect(() => {
             console.log(`List Car Car Id: ${this.carId()}`)
         })
-        effect(() => this.onCompanyChange(this.listForm.companyId().value()))
-        effect(() => this.onModelChange(this.listForm.modelId().value()))
         effect(() => this.search(this.listForm().value()))
 
         // effect(() => {
         //     console.log(`Bus: ${this.$update()} ${this.addBus()} ${this.ad()}`)
         // })
     }
+
+    loadCarResource = httpResource<CarView>(() => (`${environment.restAPI}/car/${this.carId()}`))
 
     //#endregion
     ngOnDestroy(): void {
@@ -290,16 +283,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     }
 
     //#region events
-    onCompanyChange(companyId: number) {
-        this.companyId = companyId
-        this.listForm.carId().value.set(0)
-    }
-
-    onModelChange(modelId: number) {
-        this.modelId = modelId
-        this.listForm.carId().value.set(0)
-    }
-
     modificatioChanged(modification: Modification) {
         this.yearFrom = modification?.yearFrom ?? this.labels.YEAR_START
         this.yearTo = modification?.yearTo ?? 2025
@@ -506,7 +489,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         return userCount.carCount
     }
     focus() {
-        this.submitElement?.nativeElement.focus()
+        return
     }
 
     loadCar(id: number) {

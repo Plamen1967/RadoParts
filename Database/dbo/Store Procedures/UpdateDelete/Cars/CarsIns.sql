@@ -19,7 +19,8 @@
     @mainPicture    NVARCHAR(200),
     @mainImageId    INT,
     @approved       INT,
-    @bus            INT
+    @bus            INT,
+	@imageCount		INT
 
 AS
 	INSERT INTO [Cars]
@@ -46,7 +47,8 @@ AS
         mainImageId,
         deleted,
         approved,
-        bus
+        bus,
+		imageCount
     ) 
     VALUES (
         @carId,
@@ -71,7 +73,8 @@ AS
         @mainImageId,
         0,
         @approved,
-        @bus
+        @bus,
+		@imageCount
     )
 
 RETURN @@ROWCOUNT

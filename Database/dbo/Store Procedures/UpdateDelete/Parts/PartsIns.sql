@@ -23,7 +23,8 @@
     @mainPicture            NVARCHAR(200),
     @mainImageId            INT,
     @approved               INT,
-    @bus                    INT
+    @bus                    INT,
+	@imageCount				INT
 
 AS
 
@@ -57,7 +58,8 @@ AS
         deleted,
         approved,
         bus,
-        keyword
+        keyword,
+		imageCount
     ) 
     VALUES 
     (
@@ -88,7 +90,8 @@ AS
         0,
         @approved,
         @bus,
-        LOWER(CONCAT(@partNumber, @description, @dealerSubCategoryName))
+        LOWER(CONCAT(@partNumber, @description, @dealerSubCategoryName)),
+	    @imageCount
     )
 
 RETURN @@ROWCOUNT

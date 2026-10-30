@@ -24,7 +24,7 @@
                             [itemType]="$itemType()"
                             [all]="true"
                             [userId]="userId!"
-                            [companyId]="companyId!"
+                            [companyId]="listForm.companyId().value()"
                             [showGroup]="false"
                             [groupDisabled]="false"
                             [multiselection]="false"
@@ -37,7 +37,7 @@
                             <app-modification-choice
                                 [itemType]="$itemType()"
                                 [userId]="userId!"
-                                [modelsId]="modelId"
+                                [modelsId]="listForm.modelId().value()"
                                 [all]="true"
                                 [multiselection]="false"
                                 [formField]="listForm.modificationId"

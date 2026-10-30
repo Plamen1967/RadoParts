@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
 using Models.Enums;
 using Models.Helper;
 using Models.Models;
@@ -51,9 +52,7 @@ namespace Rado.Enrich
                 rimView.SellerWebPage = user.WebPage;
             }
 
-            var imageResult = ImageManager.GetImageCount(rimView.RimId);
-            imageResult.Wait();
-            rimView.NumberImages = imageResult.Result;
+            rimView.NumberImages = rimView.ImageCont;
 
             return rimView;
         }
@@ -91,7 +90,7 @@ namespace Rado.Enrich
 
             if (rimWithTyreView.MainImageId != 0)
             {
-                ImageManager.CheckImageExists(rimWithTyreView.RimWithTyreId, rimWithTyreView.MainImageId);
+//                ImageManager.CheckImageExists(rimWithTyreView.RimWithTyreId, rimWithTyreView.MainImageId);
                 rimWithTyreView.MainPicture = ImageManager.GenerateImageHRef(rimWithTyreView.RimWithTyreId, rimWithTyreView.MainImageId, true);
             }
 
@@ -112,9 +111,9 @@ namespace Rado.Enrich
                 }
             }
 
-            var imageResult = ImageManager.GetImageCount(rimWithTyreView.RimWithTyreId);
-            imageResult.Wait();
-            rimWithTyreView.NumberImages = imageResult.Result;
+            //var imageResult = ImageManager.GetImageCount(rimWithTyreView.RimWithTyreId);
+            //imageResult.Wait();
+            //rimWithTyreView.NumberImages = imageResult.Result;
 
             return rimWithTyreView;
         }
@@ -135,19 +134,6 @@ namespace Rado.Enrich
             }
 
             return null;
-        }
-
-        public static TyreView EnrichTyreView(SqlDataReader sqlDataReader)
-        {
-            TyreView tyreView = new TyreView();
-            Loader.LoadTyre(tyreView, sqlDataReader);
-            tyreView.TraderDetails = GetTraderDetails(tyreView.UserId);
-
-            var imageResult = ImageManager.GetImageCount(tyreView.TyreId);
-            imageResult.Wait();
-            tyreView.NumberImages = imageResult.Result;
-
-            return tyreView;
         }
 
         public static PartView EnrichPartView(SqlDataReader sqlDataReader)
@@ -246,18 +232,18 @@ namespace Rado.Enrich
             LoggerUtil.LogFunctionInfo("*** CheckImageExists 1");
             if (partView.MainImageId != 0)
             {
-                ImageManager.CheckImageExists(partView.PartId, partView.MainImageId);
+//                ImageManager.CheckImageExists(partView.PartId, partView.MainImageId);
                 partView.MainPicture = ImageManager.GenerateImageHRef(partView.PartId, partView.MainImageId, true);
             }
-            var imageResult = ImageManager.GetImageCount(partView.PartId);
-            imageResult.Wait();
+            //var imageResult = ImageManager.GetImageCount(partView.PartId);
+            //imageResult.Wait();
+            //partView.NumberImages = imageResult.Result;
 
             stopwatch.Stop();
             LoggerUtil.LogFunctionInfo($"*** CheckImageExists 1 {stopwatch.ElapsedMilliseconds}");
             stopwatch.Start();
 
 
-            partView.NumberImages = imageResult.Result;
             stopwatch.Stop();
 
             LoggerUtil.Log($"Part:InitFromRow Elapsed Time is {stopwatch.ElapsedMilliseconds} ms").Wait();
@@ -340,13 +326,12 @@ namespace Rado.Enrich
             displayPartView.ItemTypeStr = ConverterToString.ItemTypeStr(displayPartView.ItemType);
             displayPartView.Id = displayPartView.IsCar ? part_.CarId.Value : part_.PartId;
             displayPartView.Price = part_.Price;
-            var imageResult = ImageManager.GetImageCount(displayPartView.Id);
+//            var imageResult = ImageManager.GetImageCount(displayPartView.Id);
 
-            imageResult.Wait();
+//            imageResult.Wait();
             var imageData = ImageManager.GetImagesAsync(displayPartView.Id);
             imageData.Wait();
             displayPartView.Images = imageData.Result;
-            displayPartView.NumberImages = imageResult.Result;
             displayPartView.UserId = part_.UserId;
             displayPartView.RegionId = part_.RegionId;
             displayPartView.RegionStr = ConverterToString.RegionString(displayPartView.RegionId);
@@ -452,10 +437,10 @@ namespace Rado.Enrich
                 }
             }
 
-            var imageResult = ImageManager.GetImageCount(carView.CarId);
-            imageResult.Wait();
+            //var imageResult = ImageManager.GetImageCount(carView.CarId);
+            //imageResult.Wait();
+            //part.NumberImages = imageResult.Result;
 
-            part.NumberImages = imageResult.Result;
             part.MainImageDataClass = carView.MainImageData;
             part.ModifiedTime = carView.ModifiedTime;
             part.Approved = carView.Approved;

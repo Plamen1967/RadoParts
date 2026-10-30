@@ -27,6 +27,7 @@ namespace Utility
             item.Approved = Int32("approved", sqlDataReader);
             item.CreatedTime = Int64("createdTime", sqlDataReader);
             item.ModifiedTime = Int64("modifiedTime", sqlDataReader);
+            item.ImageCont = Int32("imageCount", sqlDataReader);
         }
 
         #endregion

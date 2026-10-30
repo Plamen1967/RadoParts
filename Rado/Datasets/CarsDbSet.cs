@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Enums;
 using Models.Models;
 using Models.Models.Authentication;
+using Models.Models.Utility;
 using Rado.Abuse;
 using Rado.Enrich;
 using Rado.Enums;
@@ -68,6 +69,10 @@ namespace Rado.Datasets
                     await connection.OpenAsync();
 
                     DateTime dateTime = DateTime.Now;
+                    var resultImageCount = ImageManager.GetImageCount(car.CarId);
+                    resultImageCount.Wait();
+                    int imageCount = resultImageCount.Result;
+
                     using (SqlCommand command = new SqlCommand(storeProcedure, connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
@@ -90,6 +95,7 @@ namespace Rado.Datasets
                         SqlParameter gearboxTypeParam = command.Parameters.Add("@gearboxType", SqlDbType.Int);
                         SqlParameter modifiedTimeParam = command.Parameters.Add("@modifiedTime", SqlDbType.BigInt);
                         SqlParameter mainPictureParam = command.Parameters.Add("@mainPicture", SqlDbType.NVarChar);
+                        command.Parameters.Add("@imageCount", SqlDbType.NVarChar).Value = car.CarId;
                         command.Parameters.Add("@approved", SqlDbType.Int).Value = approved;
                         command.Parameters.Add("@mainImageId", SqlDbType.NVarChar).Value = car.MainImageId;
 

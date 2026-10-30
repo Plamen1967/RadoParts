@@ -27,5 +27,7 @@
     [deleted] INT NOT NULL DEFAULT 0, 
     [count] INT NOT NULL DEFAULT 0, 
     [month] INT NOT NULL DEFAULT 0, 
-    [year] INT NOT NULL DEFAULT 0
-)
+    [year] INT NOT NULL DEFAULT 0,
+    imageCount INT NOT NULL DEFAULT 0,
+
+    )

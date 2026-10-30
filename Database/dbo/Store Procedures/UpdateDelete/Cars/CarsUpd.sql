@@ -18,7 +18,8 @@
     @modifiedTime   BIGINT,
     @mainPicture    NVARCHAR(200),
     @mainImageId    INT,
-    @approved       INT
+    @approved       INT,
+	@imageCount		INT
 AS
 	UPDATE Cars SET 
         modelId         = @modelId, 
@@ -38,7 +39,8 @@ AS
         modifiedTime    = @modifiedTime,
         mainPicture     = @mainPicture,
         mainImageId     = @mainImageId,
-        approved        = @approved
+        approved        = @approved,
+        imageCount		= @imageCount
     WHERE carId = @carId AND 
           userId = @userId
 

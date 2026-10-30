@@ -22,7 +22,8 @@
     @modifiedTime BIGINT,
     @count INT,
     @month INT,
-    @year INT 
+    @year INT,
+	@imageCount	INT 
 AS
 	UPDATE RimWithTyre 
     SET

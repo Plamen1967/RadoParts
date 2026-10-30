@@ -23,7 +23,8 @@
     @modifiedTime BIGINT,
     @count INT,
     @month INT,
-    @year INT 
+    @year INT,
+	@imageCount		INT 
 AS
 	INSERT INTO RimWithTyre 
     (
@@ -53,7 +54,8 @@ AS
         modifiedTime,
         [count],
         [month],
-        [year]
+        [year],
+		imageCount
     )
     VALUES
     (
@@ -83,6 +85,7 @@ AS
         @modifiedTime,
         @count,
         @month,
-        @year
+        @year,
+		@imageCount
     )
 RETURN 0

@@ -1,8 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Enums;
 using Models.Models;
+using NuGet.Protocol;
 using Rado.Abuse;
 using Rado.Enrich;
 using Rado.Enums;
@@ -15,8 +14,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using NuGet.Protocol;
 using Utility;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using String = System.String;
 
 namespace Rado.Datasets
 {
@@ -296,7 +296,7 @@ namespace Rado.Datasets
                 {
                     _ = Task.Run(async () =>
                     {
-                        await LoggerUtil.Log(String.Format("PartDbSet::GetParts SQL {0}", Program.ConnectionString));
+                        await LoggerUtil.Log($"PartDbSet::GetParts SQL {Program.ConnectionString}");
                     });
 
                     LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
@@ -631,6 +631,10 @@ namespace Rado.Datasets
 
                 part = Validation.RemoveInvalidWord(part);
 
+                var resultImageCount = ImageManager.GetImageCount(part.PartId);
+                resultImageCount.Wait();
+                int imageCount = resultImageCount.Result;
+
                 LoggerUtil.LogToSqlFile($"start storedProcedure: {storedProcedure} {DateTime.Now.ToLongTimeString()}");
                 await using SqlConnection connection = new SqlConnection(Program.ConnectionString);
                 await connection.OpenAsync();
@@ -667,7 +671,8 @@ namespace Rado.Datasets
 
                 command.Parameters.Add("@approved",         SqlDbType.Int).Value = approved;
                 command.Parameters.Add("@modifiedTime"  , SqlDbType.BigInt).Value = part.ModifiedTime;
-                command.Parameters.Add("@userId"        , SqlDbType.Int).Value = part.UserId;
+                command.Parameters.Add("@userId", SqlDbType.Int).Value = part.UserId;
+                command.Parameters.Add("@imageCount", SqlDbType.Int).Value = imageCount;
                 if (!update)
                     command.Parameters.Add("@bus", SqlDbType.Int).Value = part.Bus;
 

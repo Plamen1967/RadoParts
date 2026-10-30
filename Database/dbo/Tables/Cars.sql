@@ -22,7 +22,8 @@
     [deleted] INT NOT NULL DEFAULT 0, 
     [deleteDateTime] datetime NOT NULL DEFAULT 0, 
     [approved] INT NOT NULL DEFAULT 0, 
-    [bus] INT NOT NULL DEFAULT 0
+    [bus] INT NOT NULL DEFAULT 0,
+	[imageCount] INT NOT NULL DEFAULT 0,
 );
 GO
 

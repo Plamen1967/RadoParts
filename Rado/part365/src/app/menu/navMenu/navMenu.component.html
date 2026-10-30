@@ -140,7 +140,7 @@
                                     </a>                                </li>
                                 <li>
                                     <a class="nav-item nav-link menuButton2 d-inline-flex justify-content-between" data-cy="tyres" routerLink="/data/tyres" (click)="tyres()" routerLinkActive="active-link" role="presentation"
-                                        ><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Гуми/Джанти
+                                        >Гуми/Джанти
                                         @if (userCount$ | async; as userCount) {
                                             @if (userCount && userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount) {
                                                 <span class="count">{{ userCount.rimWithTyreCount + userCount.tyreCount + userCount.rimCount }}</span>

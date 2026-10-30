@@ -74,14 +74,14 @@
     <Folder Include="dbo\Indexes" />
     <Folder Include="dbo\Store Procedures\UpdateDelete\Messages" />
     <Folder Include="dbo\Store Procedures\UpdateDelete\Images" />
-    <Folder Include="dbo\Store Procedures\NewFolder1\" />
     <Folder Include="dbo\Store Procedures\UpdateDelete\GroupModel" />
     <Folder Include="dbo\Store Procedures\UpdateDelete\Tyre" />
     <Folder Include="dbo\Store Procedures\UpdateDelete\BusinessCard" />
     <Folder Include="dbo\Store Procedures\UpdateDelete\FilterPart" />
-    <Folder Include="dbo\Store Procedures\UpdateDelete\Rim" />
     <Folder Include="dbo\Store Procedures\UpdateDelete\RimWithTyre" />
     <Folder Include="dbo\Number" />
+    <Folder Include="dbo\Views\Main Views" />
+    <Folder Include="dbo\Views\Static Data" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Cars.sql" />
@@ -91,10 +91,6 @@
     <Build Include="dbo\Tables\Categories.sql" />
     <Build Include="dbo\Tables\SubCategories.sql" />
     <Build Include="dbo\Tables\Years.sql" />
-    <Build Include="dbo\Views\YearView.sql" />
-    <Build Include="dbo\Views\ModelView.sql" />
-    <Build Include="dbo\Views\CarView.sql" />
-    <Build Include="dbo\Views\PartView.sql" />
     <Build Include="dbo\Views\AllCarView.sql" />
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Tables\AuditTrail.sql" />
@@ -205,7 +201,6 @@
     <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\TyreIns.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\TyreDel.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\Tyre\TyreUpd.sql" />
-    <Build Include="dbo\Views\ModificationView.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\Cars\CarById.sql" />
     <Build Include="dbo\Indexes\PartsDeletedIndex.sql" />
     <Build Include="dbo\Indexes\CarsDeletedIndex.sql" />
@@ -226,18 +221,10 @@
     <Build Include="dbo\Store Procedures\UpdateDelete\User\GetUserCount.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\Admin\ApproveAd.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreById.sql" />
-    <Build Include="dbo\Tables\Rim.sql" />
     <Build Include="dbo\Tables\RimWithTyre.sql" />
-    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimIns.sql" />
-    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimUpd.sql" />
-    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimDel.sql" />
-    <Build Include="dbo\Store Procedures\UpdateDelete\Rim\RimById.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreIns.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreUpd.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\RimWithTyreDel.sql" />
-    <Build Include="dbo\Views\RimView.sql" />
-    <Build Include="dbo\Views\RimWithTyreView.sql" />
-    <Build Include="dbo\Views\TyreView.sql" />
     <Build Include="dbo\Tables\Details.sql" />
     <Build Include="dbo\Store Procedures\GetItemType.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\Admin\UserStats.sql" />
@@ -249,8 +236,16 @@
     <Build Include="dbo\Store Procedures\UpdateDelete\Cars\ValidateCarName.sql" />
     <Build Include="dbo\Store Procedures\UpdateDelete\RimWithTyre\UpdateMainPictureTyre.sql" />
     <Build Include="dbo\Number\NumberParts.sql" />
-    <Build Include="dbo\Views\SubcategoryView.sql" />
     <Build Include="dbo\Number\NumberCars.sql" />
+    <Build Include="dbo\Views\Main Views\CarView.sql" />
+    <Build Include="dbo\Views\Main Views\PartView.sql" />
+    <Build Include="dbo\Views\Main Views\TyreView.sql" />
+    <Build Include="dbo\Views\Static Data\ModelView.sql" />
+    <Build Include="dbo\Views\Static Data\ModificationView.sql" />
+    <Build Include="dbo\Views\Static Data\SubcategoryView.sql" />
+    <Build Include="dbo\Views\Static Data\YearView.sql" />
+    <Build Include="dbo\Views\Main Views\RimWithTyreView.sql" />
+    <Build Include="dbo\Store Procedures\UpdateImageCount.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Database.refactorlog" />
