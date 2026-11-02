@@ -304,6 +304,15 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         return this.convertResult(this.$category.value() ?? [])
     })
 
+    onCompanyChange(companyId: number) {
+        this.carFilterModel.update((value) => ({
+            ...value,
+            companyId: companyId,
+            modelsId: '',
+            modificationsId: '',
+        }))
+    }
+    
     itemType_ = computed(() => {
         let itemType = this.carFilterForm.itemType().value()
         const bus = this.carFilterForm.bus().value()

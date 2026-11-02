@@ -99,6 +99,7 @@
                                         [matTooltipPosition]="positionOptions[0]"
                                         [formField]="carFilterForm.companyId"
                                         [submitted]="submitted()"
+                                        (valueChange)="onCompanyChange($event)"
                                         data-cy="companyId">
                                     </app-company-choise>
                                 </div>
