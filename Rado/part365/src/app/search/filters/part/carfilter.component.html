@@ -144,7 +144,7 @@
                     @if (extendedSearch_) {
                         <div>
                             <div class="d-flex-column col-sm-7 col-md-7 col-lg-7 me-2">
-                                <app-category-choise [formField]="carFilterForm.categoryId"> </app-category-choise>
+                                <app-category-choise [formField]="carFilterForm.categoryId" (valueChange)="categoriesIdChanged($event.toString())"> </app-category-choise>
                                 @if (categoriesId.length) {
                                     <div class="col-sm-10 mt-1 control">
                                         <app-subcategory-choise [formField]="carFilterForm.subCategoryId" [categoriesId]="categoriesId"></app-subcategory-choise>
