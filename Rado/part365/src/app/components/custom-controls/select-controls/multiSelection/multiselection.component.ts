@@ -139,7 +139,7 @@ export class MultiSelectionComponent implements FormValueControl<string | number
                 value: this.initialIDs?.().join(',') ?? '',
                 multiSelection: true,
                 groupDisabled: this.groupDisabled() ?? false,
-                placeHolder: this.placeHolder,
+                placeHolder: this.placeHolder(),
             },
         })
         dialogRef
