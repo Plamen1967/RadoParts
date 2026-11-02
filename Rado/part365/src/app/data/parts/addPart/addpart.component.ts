@@ -245,7 +245,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     query = input<number>()
     description = ''
     newItemId = signal(0)
-    $yearTo = signal(0)
+    $yearTo = signal(2026)
     $yearFrom = signal(this.labels.YEAR_START)
     
     //#endregion

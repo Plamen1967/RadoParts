@@ -52,11 +52,11 @@
                                     >
                                 </app-modification-choice>
                             </div>
-                            @if (addCarForm.modificationId().value()) {
-                                <div class="col-sm-3 col-md-3 col-lg-3 min150px">
-                                    <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="$years()" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-select>
-                                </div>
-                            }
+                        }
+                        @if (addCarForm.modificationId().value() || (bus() && addCarForm.modelId().value())) {
+                            <div class="col-sm-3 col-md-3 col-lg-3 min150px">
+                                <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="$years()" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-select>
+                            </div>
                         }
                     }
                 </div>
