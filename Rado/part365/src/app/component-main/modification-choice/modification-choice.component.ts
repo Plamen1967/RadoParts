@@ -22,6 +22,13 @@ import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip'
 })
 //#endregion
 export class ModificationChoiceComponent implements FormValueControl<number | string > {
+changeOption($event: string | number): void {
+    this.value.set($event)
+    if (!this.multiselection()) {
+        const modification = this.originalModification.find((modification) => modification.modificationId == $event)
+        this.modifcationChange.emit(modification!)
+    }
+}
     //#region variables and services
     modifications = model<OptionItem[]>([])
     models_Id = ''
@@ -100,6 +107,8 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
                                 .map((modification) => {
                                     return {
                                         id: modification.modificationId,
+                                        yearFrom: modification.yearFrom,
+                                        yearTo: modification.yearTo,
                                         description: modification.modificationDisplayName,
                                         count: modification.countParts + modification.countCars,
                                         countParts: modification.countParts,
@@ -118,6 +127,8 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
                     modifications.map((modification) => {
                         return {
                             id: modification.modificationId,
+                            yearFrom: modification.yearFrom,
+                            yearTo: modification.yearTo,
                             description: modification.modificationDisplayName,
                             count: modification.countParts + modification.countCars,
                             countParts: modification.countParts,
@@ -151,6 +162,8 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
                                 .map((modification) => {
                                     return {
                                         id: modification.modificationId,
+                                        yearFrom: modification.yearFrom,
+                                        yearTo: modification.yearTo,
                                         description: modification.modificationDisplayName,
                                         count: modification.countParts + modification.countCars,
                                         countParts: modification.countParts,
@@ -169,6 +182,8 @@ export class ModificationChoiceComponent implements FormValueControl<number | st
                     modifications.map((modification) => {
                         return {
                             id: modification.modificationId,
+                            yearFrom: modification.yearFrom,
+                            yearTo: modification.yearTo,
                             description: modification.modificationDisplayName,
                             count: modification.countParts + modification.countCars,
                             countParts: modification.countParts,

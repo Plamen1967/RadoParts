@@ -118,7 +118,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         companyId: 0,
         modelId: 0,
         modificationId: 0,
-        year: 2021,
+        year: 0,
         vin: '',
         powerkWh: '',
         powerBHP: '',
@@ -187,7 +187,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     partView?: PartView
     yearFrom = this.labels.YEAR_START
     yearTo = 2021
-    years?: SelectOption[]
     browserRefresh = false
     partForCar = computed(() => this.addPartForm.partForCar().value() === 'car')
     engineTypeName?: string
@@ -246,7 +245,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     query = input<number>()
     description = ''
     newItemId = signal(0)
-
+    $yearTo = signal(0)
+    $yearFrom = signal(this.labels.YEAR_START)
+    
     //#endregion
 
     //#region
@@ -351,6 +352,22 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         cars?.unshift({ value: 0, text: `Избери ${this.$choice()}` })
         console.log(`Cars: ${cars}`)
         return cars ?? []
+    })
+
+    $years = computed(() => {
+        const result: SelectOption[] = []
+
+        for (let i = this.$yearFrom(); i <= this.$yearTo(); i++) {
+            result.push({
+                value: i,
+                text: i.toString(),
+            })
+        }
+        result.unshift({
+            value: 0,
+            text: 'Моля изберете година',
+        })
+        return result
     })
 
     $carId = computed(() => this.partCarId())
@@ -475,7 +492,6 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         //#endregion
     }
     ngOnInit(): void {
-        this.populateData()
         this.updateNumberParts()
     }
 
@@ -589,23 +605,13 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
     //#endregion
     //#region populate dialog
-    populateData() {
-        this.setYears()
-    }
-
-    setYears() {
-        const result: SelectOption[] = []
-        for (let i = this.yearFrom; i <= this.yearTo; i++) {
-            result.push({ value: i, text: i.toString() })
-        }
-        this.years = result
-    }
-
+    
     modificatioChanged(modification: Modification) {
-        this.yearFrom = modification.yearFrom ?? this.labels.YEAR_START
-        this.yearTo = modification.yearTo ?? 2025
-        this.setYears()
-        this.addPartForm.year().value.set(this.yearFrom)
+        if (!modification) {
+            this.addPartFormModel.update((value) => ({ ...value, year: 0 }))
+        }
+        this.$yearFrom.set(modification?.yearFrom ?? this.labels.YEAR_START)
+        this.$yearTo.set(modification?.yearTo ?? 2026)
     }
 
     //#endregion

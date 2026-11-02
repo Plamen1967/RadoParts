@@ -42,15 +42,16 @@ namespace Rado.Controllers
             return ImageManager.DeleteBusinessCard(UserId);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpPost]
+        [Route("DeleteImage")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [Authorize]
-        public async Task<bool> DeleteImage(int id)
+        public async Task<bool> DeleteImage([FromBody] DeleteImage deleteImage)
         {
             try
             {
-                return await ImageManager.DeleteImageAsync(UserId, id); 
+                return await ImageManager.DeleteImageAsync(UserId, deleteImage.imageId, deleteImage.mainImageId, deleteImage.objectId); 
             }
             catch (Exception exception)
             {

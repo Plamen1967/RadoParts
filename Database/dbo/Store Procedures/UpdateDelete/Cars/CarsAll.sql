@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[CarsAll]
     @carId              BIGINT = NULL
 AS 
-	SELECT * FROM dbo.Cars
+	SELECT * FROM dbo.CarView
     WITH (NOLOCK) 
 	WHERE   carId               = @carId AND
             deleted  = 0

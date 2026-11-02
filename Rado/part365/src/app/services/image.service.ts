@@ -108,8 +108,9 @@ export class ImageService {
     //     )
     // }
 
-    deleteImage(imageId: number): Observable<boolean> {
-        return this.http.delete<boolean>(`${environment.restAPI}/image/${imageId}`).pipe(first())
+    deleteImage(imageId: number, objectId: number, mainImageId: number): Observable<boolean> {
+        const param = { imageId, objectId, mainImageId }
+        return this.http.post<boolean>(`${environment.restAPI}/image/deleteimage`, param).pipe(first())
     }
 
     getCatcha(): Observable<Catcha> {

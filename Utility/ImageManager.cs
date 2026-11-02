@@ -13,6 +13,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 using Image = System.Drawing.Image;
 
 namespace Utility
@@ -438,7 +440,7 @@ namespace Utility
             
         }
         #region delete image
-        public static async Task<bool> DeleteImageAsync(int userId, int imageId)
+        public static async Task<bool> DeleteImageAsync(int userId, long imageId, long mainImageId, long objectId)
         {
             string storeProcedureName = "ImageDataDel";
             try
@@ -449,19 +451,21 @@ namespace Utility
                 sqlCommand.CommandType = CommandType.StoredProcedure;
 
                 sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
-                sqlCommand.Parameters.Add("@imageId", SqlDbType.Int).Value = imageId;
-                var objectIdParam = sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt);
-                objectIdParam.Direction = ParameterDirection.Output;
+                sqlCommand.Parameters.Add("@deleteImageId", SqlDbType.Int).Value = imageId;
+                sqlCommand.Parameters.Add("@mainImageId", SqlDbType.Int).Value = mainImageId;
+                sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = objectId;
 
                 await sqlConnection.OpenAsync();
 
                 var result = await sqlCommand.ExecuteNonQueryAsync();
-                var objectId = (long)objectIdParam.Value;
 
                 await sqlConnection.CloseAsync();
 
                 DeleteFromDiscSpace(objectId, imageId);
+                if (mainImageId != 0 && objectId != 0)
+                {
 
+                }
                 if (result != 1)
                 {
                     throw new AppException($"Снимката не може да бъде изтрита");
@@ -476,7 +480,7 @@ namespace Utility
 
             return true;
         }
-        static void DeleteFromDiscSpace(long objectId, int imageId)
+        static void DeleteFromDiscSpace(long objectId, long imageId)
         {
             string imageSrc = GenerateImageSrc(objectId, imageId);
             string imageMinSrc = GenerateMinImageSrc(objectId, imageId);

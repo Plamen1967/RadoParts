@@ -18,11 +18,12 @@
         data-cy="modificationId"
         data-bs-toggle="tooltip"
         data-bs-placement="right"
+        (changeOption)="changeOption($event)"
         [isRequired]="isRequired()"
         [submitted]="submitted()"
         [showCount]="showCount()"
         (onCloseEvent)="focus()">
-        (changeOption)="value.set($event)"
+        
     </app-multiselection>
 } @else {
     <app-customselect
@@ -36,7 +37,7 @@
         [isRequired]="isRequired()"
         [submitted]="submitted()"
         [showCount]="showCount()"
-        (changeOption)="value.set($event)"
+        (changeOption)="changeOption($event)"
         #tooltip="matTooltip"
         matTooltip="Избери модификация"
         [matTooltipPosition]="positionOptions[0]"

@@ -83,7 +83,7 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
         companyId: 0,
         modelId: 0,
         modificationId: 0,
-        year: 2021,
+        year: 0,
         regNumber: '',
         powerkWh: '',
         powerBHP: '',
@@ -255,18 +255,22 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
 
     $years = computed(() => {
         const result: SelectOption[] = []
+
         for (let i = this.$yearFrom(); i <= this.$yearTo(); i++) {
             result.push({
                 value: i,
                 text: i.toString(),
             })
         }
+        result.unshift({
+            value: 0,
+            text: 'Моля изберете година',
+        })
         return result
     })
     //#endregion
 
     //#region resources
-
 
     // nextResource = httpResource<NextId>(
     //     () => ({
@@ -424,8 +428,11 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     }
 
     modificatioChanged(modification: Modification) {
+        if (!modification) {
+            this.addCarFormModel.update((value) => ({ ...value, year: 0 }))
+        }
         this.$yearFrom.set(modification?.yearFrom ?? this.labels.YEAR_START)
-        this.$yearTo.set(modification?.yearTo ?? 2025)
+        this.$yearTo.set(modification?.yearTo ?? 2026)
     }
 
     focus() {

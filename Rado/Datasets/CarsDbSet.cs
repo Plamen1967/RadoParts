@@ -95,7 +95,7 @@ namespace Rado.Datasets
                         SqlParameter gearboxTypeParam = command.Parameters.Add("@gearboxType", SqlDbType.Int);
                         SqlParameter modifiedTimeParam = command.Parameters.Add("@modifiedTime", SqlDbType.BigInt);
                         SqlParameter mainPictureParam = command.Parameters.Add("@mainPicture", SqlDbType.NVarChar);
-                        command.Parameters.Add("@imageCount", SqlDbType.NVarChar).Value = car.CarId;
+                        command.Parameters.Add("@imageCount", SqlDbType.Int).Value = imageCount;
                         command.Parameters.Add("@approved", SqlDbType.Int).Value = approved;
                         command.Parameters.Add("@mainImageId", SqlDbType.NVarChar).Value = car.MainImageId;
 

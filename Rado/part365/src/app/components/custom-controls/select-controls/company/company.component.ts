@@ -83,10 +83,15 @@ export class CompanyComponent extends SelectBase implements OnInit {
     }
 
     close() {
+        if (this.selections().length > 0) {
+            const selected = this.selections().filter((item) => item != 0)
+            this.selections.update(() => selected ?? [])
+        }
         this.dialogRef.close(this.selections())
         return
     }
 
+    
     clickItem($event: Event, item: InternalValue) {
         if (!item.isSelectable) return
 
@@ -98,7 +103,7 @@ export class CompanyComponent extends SelectBase implements OnInit {
             this.selections.update((current) => [...current, item.id!])
             item.isSelected = !item.isSelected
             if (!this.multiSelection) {
-                this.dialogRef.close(this.selections())
+                this.close()
             }
         }
     }

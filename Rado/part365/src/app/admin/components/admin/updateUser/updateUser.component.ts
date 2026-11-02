@@ -308,7 +308,7 @@ export default class UpdateUserComponent extends HelperComponent implements OnIn
 
     ok() {
         this.imageService
-            .deleteImage(this.currentImageId!)
+            .deleteImage(this.currentImageId!, 0, 0)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 const index = this.images.findIndex((image) => image.imageId === this.currentImageId)

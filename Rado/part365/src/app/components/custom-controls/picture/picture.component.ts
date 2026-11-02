@@ -73,7 +73,7 @@ export class PictureComponent extends HelperComponent {
 
     deleteImage(imageId: number) {
         this.imageService
-            .deleteImage(imageId)
+            .deleteImage(imageId, this.id()!, this.currentMainImageId_ ?? 0)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {

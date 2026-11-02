@@ -4,7 +4,6 @@ import { ImageData } from '@model/imageData'
 import { FormsModule } from '@angular/forms'
 import { UploadComponent } from '../upload/upload.component'
 import { ImageService } from '@services/image.service'
-import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
@@ -29,7 +28,6 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     defaultImageEvent = output<number>()
 
     private imageService: ImageService = inject(ImageService)
-    private popupService: PopUpService = inject(PopUpService)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     private toastService: ToastService = inject(ToastService)
 
@@ -127,7 +125,18 @@ export class ImageListComponent extends HelperComponent implements OnInit {
         this.confirmService.OKCancel('Съобщение', 'Потвърдете, че желаете да изтиете снмката').subscribe({
             next: (res) => {
                 if (res === OKCancelOption.OK) {
-                    this.imageService.deleteImage(image.imageId!).subscribe({
+                    const currentImages = [...this.images_()]
+                    const index = currentImages.findIndex((item) => item.imageId === +image.imageId!)
+
+                    if (index !== -1) {
+                        currentImages.splice(index, 1)
+                    }
+
+                    let mainImageId = 0
+                    if (this.mainImageId() == image.imageId!)
+                        if (currentImages.length > 0)  mainImageId = currentImages[0].imageId!
+
+                    this.imageService.deleteImage(image.imageId!, this.itemId()!, mainImageId).subscribe({
                         next: () => {
                             this.toastService.show('Снимката е успешно изтрита', 2)
                             const currentImages = [...this.images_()]
