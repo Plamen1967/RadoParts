@@ -13,6 +13,6 @@ namespace Rado.Models
         public long CreatedTime { get; set; }
         public long ModifiedTime { get; set; }
         public int RegionId { get; set; }
-        public int ImageCont { get; set; }
+        public int ImageCount { get; set; }
     }
 }

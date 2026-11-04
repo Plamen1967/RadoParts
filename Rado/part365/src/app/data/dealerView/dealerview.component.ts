@@ -1,7 +1,6 @@
 //#region imports
 import { NgClass, NgStyle } from '@angular/common'
 import { AfterViewInit, Component, inject, input, output, effect, computed, signal } from '@angular/core'
-import { Router } from '@angular/router'
 import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { ImageComponent } from '@components/custom-controls/image/image.component'
@@ -11,8 +10,6 @@ import { UpdateEnum } from '@model/enum/update.enum'
 import { PartView } from '@model/part/partView'
 import { AlertService } from '@services/alert.service'
 import { AuthenticationService } from '@services/authentication/authentication.service'
-import { CarService } from '@services/car.service'
-import { NextIdService } from '@services/nextId.service'
 import { RowPartDealerComponent } from '../parts/rowPartDealer/rowPartDealer.component'
 import { HelperComponent } from '@components/custom-controls/helper/helper.component'
 import { DealerViewCarComponent } from '../cars/dealerViewCar/dealerviewcar.component'
@@ -62,10 +59,7 @@ savedPart($event: number) {
     displayPartsEvent = output<number>()
     private authernticationService: AuthenticationService = inject(AuthenticationService)
     private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
-    private router: Router = inject(Router)
     private partService: PartServiceService = inject(PartServiceService)
-    private nextIdService: NextIdService = inject(NextIdService)
-    private carService: CarService = inject(CarService)
     private alertService: AlertService = inject(AlertService)
     private popupService: PopUpService = inject(PopUpService)
     //#endregion
@@ -104,16 +98,22 @@ savedPart($event: number) {
         effect(() => {
             console.log(`Parts: ${JSON.stringify(this.partsPerCar())}`)
         })
+
+        effect(() => {
+            console.log(`Show Numbers: ${this.getOnlyNumbers()} ${this.partService.showParts()} ${this.id()}`)
+        })
         effect(() => {
             if (this.carView()) {
                 this.id.set(this.carView()!.carId!)
-                this.getOnlyNumbers.set(this.carView()?.numberImages || 0)
+
+                this.getOnlyNumbers.set(this.carView()?.imageCount ?? 0)
             } else if (this.partView()) {
                 this.id.set(this.partView()!.partId!)
-                this.getOnlyNumbers.set(this.partView()!.numberImages || 0)
+                const imageCount = this.partView()!.imageCount ?? 0
+                this.getOnlyNumbers.set(imageCount)
             } else if (this.rimWithTyreView()) {
                 this.id.set(this.rimWithTyreView()!.id!)
-                this.getOnlyNumbers.set(this.rimWithTyreView()!.numberImages || 0)
+                this.getOnlyNumbers.set(this.rimWithTyreView()!.imageCount ?? 0)
             }
         })
     }

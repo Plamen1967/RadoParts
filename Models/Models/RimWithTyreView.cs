@@ -6,7 +6,6 @@ namespace Models.Models
 {
     public class RimWithTyreView : RimWithTyre
     {
-        public int NumberImages { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public ImageDataClass MainImageData { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

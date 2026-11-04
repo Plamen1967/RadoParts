@@ -91,7 +91,7 @@ AS
         @approved,
         @bus,
         LOWER(CONCAT(@partNumber, @description, @dealerSubCategoryName)),
-	    @imageCount
+        (SELECT count(*)  FROM ImageData WHERE  objectId = @partId and deleted = 0)
     )
 
 RETURN @@ROWCOUNT

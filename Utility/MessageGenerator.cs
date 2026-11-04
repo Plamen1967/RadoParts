@@ -228,7 +228,7 @@ string body = $@"<body style='{Body}'>
             bodyMessage = bodyMessage.Replace("{{ViewID}}", displayPartView.Id.ToString());
             bodyMessage = bodyMessage.Replace("{{Description}}", displayPartView.DescriptionModel);
             bodyMessage = bodyMessage.Replace("{{Image}}", displayPartView.MainPicture);
-            bodyMessage = bodyMessage.Replace("{{NumberPhotos}}", displayPartView.NumberImages.ToString());
+            bodyMessage = bodyMessage.Replace("{{NumberPhotos}}", displayPartView.ImageCount.ToString());
             bodyMessage = bodyMessage.Replace("{{Dealer}}", displayPartView.SellerName);
             bodyMessage = bodyMessage.Replace("{{Tags}}", tags);
 

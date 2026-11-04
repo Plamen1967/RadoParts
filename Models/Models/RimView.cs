@@ -14,7 +14,6 @@ namespace Rado.Models
         public string SellerViber { get; set; }
         public string SellerWhats { get; set; }
         public string SellerWebPage { get; set; }
-        public int NumberImages { get; set; }
         public ImageDataClass MainImageDataClass { get; set; }
 
     }

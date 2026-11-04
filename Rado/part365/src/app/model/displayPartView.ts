@@ -19,7 +19,7 @@ export class DisplayPartView {
   sellerWebPage?    : string;
   // extra
   ngImages?         : NgxGalleryImage[] = [];
-  numberImages?     : number;
+  imageCount?       : number;
   mainImageData?    : ImageData;
   images?           : ImageData[];
   mainImage?        : NgxGalleryImage;

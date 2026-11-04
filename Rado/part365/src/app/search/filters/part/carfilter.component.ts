@@ -199,7 +199,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     params?: object
     _itemType: ItemType = ItemType.All
     stage = 1
-    modificationStr?: string
     categoryStr?: string
     subCategoryStr?: string
     showCategory?: boolean = true
@@ -312,7 +311,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
             modificationsId: '',
         }))
     }
-    
+
     itemType_ = computed(() => {
         let itemType = this.carFilterForm.itemType().value()
         const bus = this.carFilterForm.bus().value()
@@ -476,10 +475,6 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     //#endregion
 
-    clear() {
-        goTop()
-    }
-
     itemTypeChanged() {
         console.log('Item Type changed')
     }
@@ -488,25 +483,45 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
 
     clearFilter() {
         this.extendedSearch_ = false
-        this.clear()
-        this.stage = 1
-        this.modificationStr = this.categoryStr = this.subCategoryStr = ''
-        this.stage = 1
-        this.modificationStr = this.categoryStr = this.subCategoryStr = ''
+        this.goTop()
         this.dataManager?.clearData()
+        this.carFilterModel.set({
+            bus: 0,
+            userId: 0,
+            result: [],
+            selectedCategories: [],
+            itemType: ItemType.AllCarAndPart,
+            approved: 3,
+            companyId: 0,
+            modelsId: '',
+            modificationsId: '',
+            engineType: 0,
+            engineModel: '',
+            gearboxType: 0,
+            powerBHP: 0,
+            regionId: 0,
+            partNumber: '',
+            orderBy: 0,
+            keyword: '',
+            hasImages: false,
+            categoryId: 0,
+            subCategoryId: 0,
+            categoriesId: '',
+            subCategoriesId: '',
+        })
         this.router.navigate(['/'])
         this.carFilterForm().reset()
     }
     //#endregion
 
     //#region categories events
-    onUnSelection() {
-        this.dispayCategory = false
-        console.log('mouse out')
-        const element = document.getElementById(`categoriesMinElem`)
-        if (!element) return
-        element.style.display = 'none'
-    }
+    // onUnSelection() {
+    //     this.dispayCategory = false
+    //     console.log('mouse out')
+    //     const element = document.getElementById(`categoriesMinElem`)
+    //     if (!element) return
+    //     element.style.display = 'none'
+    // }
 
     showResult(categoryId?: number, subCategoryId?: number) {
         if (!categoryId && !subCategoryId) return
@@ -626,10 +641,8 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
     }
 
     typeChanged(event: number) {
-        if (event === 0)
-            this.carFilterModel.update((value) => ({ ...value, itemType: ItemType.AllCarAndPart }))
-        else 
-            this.carFilterModel.update((value) => ({ ...value, itemType: ItemType.AllBusAndPart }))
+        if (event === 0) this.carFilterModel.update((value) => ({ ...value, itemType: ItemType.AllCarAndPart }))
+        else this.carFilterModel.update((value) => ({ ...value, itemType: ItemType.AllBusAndPart }))
     }
 
     get dataManager() {

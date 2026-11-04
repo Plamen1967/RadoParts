@@ -307,7 +307,7 @@ namespace Rado.Datasets
 
                 if (filterPart.HasImages)
                 {
-                    items = items.Where(x => x.NumberImages > 0).ToList();
+                    items = items.Where(x => x.ImageCount > 0).ToList();
                 }
             }
             catch (Exception exception)

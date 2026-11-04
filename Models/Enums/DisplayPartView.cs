@@ -39,7 +39,7 @@ namespace Models.Enums
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string? SellerWebPage { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public int NumberImages { get; set; }
+        public int ImageCount { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int UserId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

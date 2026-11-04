@@ -74,7 +74,7 @@ AS
         0,
         @approved,
         @bus,
-		@imageCount
-    )
+        (SELECT count(*)  FROM ImageData WHERE  objectId = @carId and deleted = 0)
+     )
 
 RETURN @@ROWCOUNT

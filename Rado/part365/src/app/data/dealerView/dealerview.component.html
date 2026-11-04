@@ -3,13 +3,7 @@
         <div class="d-flex flex-row part-row">
             <div class="data w-100">
                 <div class="image-order image-style" style="position: relative;">
-                    <app-imagecomponent [showImage]="mainPicture()!" [displayMain]="true" class="image-component"></app-imagecomponent>
-                    @if(getOnlyNumbers()) {
-                        <div class="image-number-absolute">
-                            <span class="material-symbols-outlined image-icon"> photo_camera </span>
-                            <div class="image-text-absolute">{{ getOnlyNumbers() }}</div>
-                        </div>
-                    }
+                    <app-imagecomponent [showImage]="mainPicture()!" [showAsIcon]="true" [imageNumbers]="getOnlyNumbers()" [showNumberPhotos]="false" [displayMain]="true" class="image-component"></app-imagecomponent>
                 </div>
                 <div class="info-order w-100 mt-1 mb-1">
                     @if (partView()) {

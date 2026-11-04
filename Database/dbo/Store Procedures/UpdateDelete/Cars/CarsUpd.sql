@@ -40,7 +40,7 @@ AS
         mainPicture     = @mainPicture,
         mainImageId     = @mainImageId,
         approved        = @approved,
-        imageCount		= @imageCount
+        imageCount		= (SELECT count(*)  FROM ImageData WHERE  objectId = @carId and deleted = 0)
     WHERE carId = @carId AND 
           userId = @userId
 

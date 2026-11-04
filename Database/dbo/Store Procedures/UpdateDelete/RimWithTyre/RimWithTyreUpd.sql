@@ -48,6 +48,8 @@ AS
         modifiedTime = @modifiedTime,
         [count] = @count,
         [month] = @month, 
-        [year] = @year
+        [year] = @year,
+		imageCount = (SELECT count(*)  FROM ImageData WHERE  objectId = @rimWithTyreId and deleted = 0)
+
 	WHERE rimWithTyreId = @rimWithTyreId AND userId = @userId
 RETURN 0

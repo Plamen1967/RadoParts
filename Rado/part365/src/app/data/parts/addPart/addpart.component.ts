@@ -144,11 +144,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     addPartForm = form(this.addPartFormModel, (path) => {
         min(path.carId, 1, {
             message: 'Моля изберете бус',
-            when: ({ valueOf }) => valueOf(path.partForCar) == 'car' && this.bus() == 1,
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'car' && this.bus() == 1 && this.$mode() === UpdateEnum.New,
         })
         min(path.carId, 1, {
             message: 'Моля изберете кола',
-            when: ({ valueOf }) => valueOf(path.partForCar) == 'car' && this.bus() == 0,
+            when: ({ valueOf }) => valueOf(path.partForCar) == 'car' && this.bus() == 0 && this.$mode() === UpdateEnum.New,
         })
         min(path.companyId, 1, {
             message: 'Моля изберете компания',
@@ -188,7 +188,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     yearFrom = this.labels.YEAR_START
     yearTo = 2021
     browserRefresh = false
-    partForCar = computed(() => this.addPartForm.partForCar().value() === 'car')
+    partForCar = computed(() => 
+        {
+            return this.addPartForm.partForCar().value() === 'car' || this.addPartForm.carId().value() != 0
+        })
+
     engineTypeName?: string
     initialState?: addPartFormInterface
     dealerSubCategoryId?: number
@@ -198,6 +202,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     ngbModuleRef?: object
     closeResult?: string
     saving = signal<boolean>(false)
+    isCar = signal<boolean>(false)
     numberOfPartsPerUser = 0
     imgURL?: string
     message?: string
@@ -619,6 +624,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     loadPart() {
         this.partService.fetch(this.$itemId()!).subscribe({
             next: (res) => {
+                this.isCar.set(res.isCar!);
                 this.addPartFormModel.update((value) => ({ ...value, carId: res.carId ?? 0 }))
                 this.partView = { ...res }
                 this.dealerSubCategoryName = this.partView.dealerSubCategoryName

@@ -14,7 +14,6 @@ namespace Rado.Models
         public string RegNumber { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Vin { get; set; }
-        public int NumberImages { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string YearName { get; set; }
         public ImageDataClass MainImageDataClass { get; set; }

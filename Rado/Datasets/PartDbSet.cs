@@ -1052,7 +1052,7 @@ namespace Rado.Datasets
                 if (filterPart.HasImages)
                 {
                     test = test + " Message ";
-                    parts = parts.Where(x => x.NumberImages > 0).ToList();
+                    parts = parts.Where(x => x.ImageCount > 0).ToList();
                 }
 
                 await LoggerUtil.Log(String.Format("PartDbSet::GetParts Read all cars is {0} ms", Environment.TickCount - startTime));

@@ -1,9 +1,8 @@
-import { Component, DestroyRef, inject, input, effect, output } from '@angular/core'
+import { Component, DestroyRef, inject, input, effect, output, computed, signal } from '@angular/core'
 import { NgxGalleryImage } from '@app/ngx-gallery/models/ngx-gallery-image.model'
 import { ImageService } from '@services/image.service'
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
 import { NgxGalleryHelperService } from '@app/ngx-gallery/services/ngx-gallery-helper.service'
-import { convertImage, convertImages, isMobile } from '@app/functions/functions'
+import { convertImage, convertImages } from '@app/functions/functions'
 import { DisplayPartView } from '@model/displayPartView'
 import { NgClass, NgStyle } from '@angular/common'
 import { AlertService } from '@services/alert.service'
@@ -19,67 +18,93 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
     providers: [NgxGalleryHelperService, MatBadgeModule, MatIconModule, MatButtonModule],
 })
 export class ImageComponent {
-    images: NgxGalleryImage[] = []
-    public mainImage?: NgxGalleryImage
-    numberImages?: number
-    _partId?: number
-    showIcon = false
-    noImage = false
-    private sanitization: DomSanitizer = inject(DomSanitizer)
+    images = signal<NgxGalleryImage[]>([])
+    mainImage = signal<NgxGalleryImage | undefined>(undefined)
+    imageCount = signal(0)
+    _partId = signal(0)
+    showIcon = signal(false)
+    noImage = signal(false)
     private imageService: ImageService = inject(ImageService)
-    private helperService: NgxGalleryHelperService = inject(NgxGalleryHelperService)
     private alertService: AlertService = inject(AlertService)
     private destroyRef: DestroyRef = inject(DestroyRef)
 
     // @Input() height = '8em'
     // @Input() width = '6em'
+    showAsIcon = input<boolean>(false)
     showDetails = input<boolean>(true)
     id = input<number | undefined>()
-    showNumberPhotos = input<boolean>(false)
-    numberPhotos = input<number>(0)
+    showNumberPhotos = input<boolean>(true)
     showImage = input<string>()
     dispayPartView = input<DisplayPartView>()
     imageNumbers = input<number>(0)
     displayMain = input<boolean>(false)
-    mainImageLoaded = output<NgxGalleryImage>() 
+    mainImageLoaded = output<NgxGalleryImage>()
     imagesLoaded = output<NgxGalleryImage[]>()
 
     partId = input<number>(0)
 
+    $imageCount = computed(() => {
+        return this.imageNumbers() === 0 ? this.imageCount() : this.imageNumbers()
+    })
+    imageCountStr = computed(() => {
+        if (this.$imageCount()) {
+            if (this.$imageCount() === 1) return `${this.$imageCount()} снимка`
+
+            return `${this.$imageCount()} снимки`
+        }
+
+        return ''
+    })
+    image = computed(() => {
+        if (this.mainImage() && this.mainImage()?.medium != 'null') {
+            return this.mainImage()?.medium
+        }
+        return undefined
+    })
+
+    details = computed(() => {
+        if (this.mainImage() && this.mainImage()!.medium != 'null') return 'Повече детайли и ' + this.imageCountStr()
+
+        return ''
+    })
+
     constructor() {
         effect(() => {
             if (this.id()) {
-                this.showIcon = this.id() === this._partId
+                this.showIcon.set(this.id() === this._partId())
             }
             if (this.showImage()) {
-                this.mainImage = { small: this.showImage(), medium: this.showImage(), big: this.showImage() }
+                this.mainImage.set({ small: this.showImage(), medium: this.showImage(), big: this.showImage() })
             }
             if (this.dispayPartView()) {
                 this.updateDisplayPartView(this.dispayPartView()!)
             }
             if (this.partId()) {
                 this.updatePartId(this.partId()!)
-            }   
+            }
+        })
+
+        effect(() => {
+            console.log(`Image Count ${this.imageCount()} ${this.$imageCount()} ${this.showAsIcon()} ${this.showNumberPhotos()}`)
         })
     }
 
     updatePartId(value: number) {
-        if (this._partId === value) return
+        if (this._partId() === value) return
 
         if (value === 0) {
-            this.imagesLoaded.emit(this.images)
+            this.imagesLoaded.emit(this.images())
             return
         }
 
-        this._partId = value
-
+        this._partId.set(value)
         this.imageService
             .getMainPicture(this.partId())
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
                 if (res) {
-                    this.mainImage = convertImage(res)
-                    this.mainImageLoaded.emit(this.mainImage!)
+                    this.mainImage.set(convertImage(res))
+                    this.mainImageLoaded.emit(this.mainImage()!)
                 }
 
                 setTimeout(() => {
@@ -88,80 +113,41 @@ export class ImageComponent {
             })
     }
     updateDisplayPartView(value: DisplayPartView) {
-            this._partId = value.id
-        this.mainImage = value.mainImage
-        this.numberImages = value.numberImages
+        this._partId.set(value.id!)
+        this.mainImage.set(value.mainImage)
+        this.imageCount.set(value.imageCount ?? 0)
         if (value.mainPicture) {
-            this.mainImage = {}
-            this.mainImage.medium = value.mainPicture
-            this.mainImage.small = value.mainPicture
-            this.mainImage.big = value.mainPicture
+            this.mainImage.set({ medium: value.mainPicture, small: value.mainPicture, big: value.mainPicture })
         } else if (value.mainImageData) {
-            this.mainImage = convertImage(value.mainImageData)
+            this.mainImage.set(convertImage(value.mainImageData))
         } else {
-            if (!this.mainImage && value.numberImages) {
-                this.alertService.error(`Main image missing ${this._partId}`)
+            if (!this.mainImage() && value.imageCount) {
+                this.alertService.error(`Main image missing ${this._partId()} ${value.imageCount}`)
                 this.imageService
-                    .getMainPicture(this._partId!)
+                    .getMainPicture(this._partId())
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe((res) => {
                         if (res !== null) {
-                            this.mainImage = convertImage(res!)
-                            this.mainImageLoaded.emit(this.mainImage!)
+                            this.mainImage.set(convertImage(res!))
+                            this.mainImageLoaded.emit(this.mainImage()!)
                         }
-                        // if (!value.images && value.numberImages)
-                        //   setTimeout(() => { this.restImages() }, 1000);
                     })
             }
         }
-        this.images = value.ngImages!
+        this.images.set(value.ngImages!)
     }
-    background(image: NgxGalleryImage) {
-        const str = "{'background-image': 'url(" + `"${image.medium}"` + ")'}"
-        return str
-    }
-
-    getSafeUrl(image: string): SafeStyle {
-        return this.sanitization.bypassSecurityTrustStyle(this.helperService.getBackgroundUrl(image))
-    }
-
-    get image() {
-        if (this.mainImage && this.mainImage.medium != 'null') return this.mainImage.medium
-        this.noImage = true
-        return 'assets/NoImage.jpg'
-    }
+    // background(image: NgxGalleryImage) {
+    //     const str = "{'background-image': 'url(" + `"${image.medium}"` + ")'}"
+    //     return str
+    // }
 
     restImages() {
         this.imageService
             .getImages(this.partId())
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
-                this.images = convertImages(res!)
-                this.imagesLoaded.emit(this.images)
+                this.images.set(convertImages(res!))
+                this.imagesLoaded.emit(this.images())
             })
-    }
-
-    get getNumberImages() {
-        if (this.numberImages) {
-            if (this.numberImages === 1) return `${this.numberImages} снимка`
-
-            return `${this.numberImages} снимки`
-        }
-
-        return ''
-    }
-    get getOnlyNumbers() {
-        if (this.numberImages) return `${this.numberImages}`
-
-        return ''
-    }
-
-    get details() {
-        if (this.mainImage && this.mainImage.medium != 'null') return 'Повече детайли и ' + this.getNumberImages
-
-        return ''
-    }
-    get mobile() {
-        return isMobile()
     }
 }

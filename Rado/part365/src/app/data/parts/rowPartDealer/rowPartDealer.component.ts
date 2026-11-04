@@ -127,7 +127,7 @@ export class RowPartDealerComponent extends HelperComponent {
         this.lines.push({ label: 'Model', value: this.description, price: false })
         if (this.partView_.description) this.lines.push({ label: this.labels.PART_DETAILS, value: this.partView_.description, price: false })
         if (this.partView_.partNumber) this.lines.push({ label: this.labels.PART_NUMBER, value: this.partView_.partNumber, price: false })
-        if (this.partView_.numberImages) this.lines.push({ label: 'Брой снимки', value: this.partView_.numberImages, price: false })
+        if (this.partView_.imageCount) this.lines.push({ label: 'Брой снимки', value: this.partView_.imageCount, price: false })
         if (this.partView_.engineType) this.lines.push({ label: this.labels.TYPE_ENGINE, value: this.engineTypeDesc, price: false })
         if (this.partView_.engineModel) this.lines.push({ label: this.labels.CODE_ENGINE, value: this.partView_.engineModel, price: false })
         if (this.partView_.gearboxType) this.lines.push({ label: this.labels.TYPE_GEARBOX, value: this.gearboxDesc, price: false })

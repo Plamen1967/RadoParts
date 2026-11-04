@@ -89,7 +89,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
 
     nextArrow: boolean | undefined = undefined
     previousArrow: boolean | undefined = undefined
-    numberImages?: number
+    imageCount?: number
     approvedStatus?: number
     isPart?: boolean
     isTyre?: boolean
@@ -158,7 +158,7 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         effect(() => {
             this.item.set({ ...this.part() })
             this.approvedStatus = this.item().approved
-            this.numberImages = this.item().numberImages
+            this.imageCount = this.item().imageCount
             this.isSaved = this.localStorageService.isSaved(this.item().id!)
 
             this.description = this.item().description
@@ -226,15 +226,15 @@ export class DisplayPartComponent extends HelperComponent implements OnInit, OnD
         this.notLoaded = false
         if (this.item) {
             this.item().ngImages = $event
-            this.numberImages = this.item().numberImages
+            this.imageCount = this.item().imageCount
         }
     }
 
-    get getNumberImages() {
-        if (this.numberImages) {
-            if (this.numberImages === 1) return `и ${this.numberImages} снимка`
+    get getImageCount() {
+        if (this.imageCount) {
+            if (this.imageCount === 1) return `и ${this.imageCount} снимка`
 
-            return `и ${this.numberImages} снимки`
+            return `и ${this.imageCount} снимки`
         }
 
         return ''

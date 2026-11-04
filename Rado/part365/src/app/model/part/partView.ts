@@ -15,6 +15,6 @@ export class PartView extends Part{
     sellerPhone2?    : string
     sellerViber?     : string
     sellerWebPage?   : string;
-    numberImages?    : number;
+    imageCount?    : number;
     yearName?        : string;
 }

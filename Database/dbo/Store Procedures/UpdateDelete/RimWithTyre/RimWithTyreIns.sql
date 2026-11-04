@@ -86,6 +86,6 @@ AS
         @count,
         @month,
         @year,
-		@imageCount
+        (SELECT count(*)  FROM ImageData WHERE  objectId = @rimWithTyreId and deleted = 0)
     )
 RETURN 0

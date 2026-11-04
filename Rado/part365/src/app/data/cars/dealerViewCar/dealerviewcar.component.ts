@@ -83,7 +83,7 @@ export class DealerViewCarComponent extends HelperComponent implements OnInit {
         if (this.carView.powerBHP) this.lines.push({ label: this.labels.POWERBHP, value: this.carView.powerBHP.toString() + ' hp', price: false })
         if (this.carView.description) this.lines.push({ label: this.labels.DESCRIPTION_CAR, value: this.carView.description, price: false })
         if (this.carView.countParts) this.lines.push({ label: this.labels.PARTCOUNTS, value: this.carView.countParts, price: false })
-        if (this.carView.numberImages) this.lines.push({ label: 'Брой снимки', value: this.carView.numberImages, price: false })
+        if (this.carView.imageCount) this.lines.push({ label: 'Брой снимки', value: this.carView.imageCount, price: false })
         if (this.carView.year) this.lines.push({ label: 'Година', value: this.carView.year, price: false })
         if (this.carView.vin) this.lines.push({ label: 'VIN', value: this.carView.vin, price: false })
         if (this.carView.engineType) this.lines.push({ label: 'Двигател', value: this.staticService.EngineType[this.carView.engineType].text!, price: false })

@@ -259,7 +259,7 @@ namespace Rado.Datasets
 
                 if (filterPart.HasImages)
                 {
-                    partsAll = partsAll.Where(x => x.NumberImages > 0).ToList();
+                    partsAll = partsAll.Where(x => x.ImageCount > 0).ToList();
                 }
 
                 if (filterPart.AdminRun)

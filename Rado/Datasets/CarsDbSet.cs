@@ -437,14 +437,14 @@ namespace Rado.Datasets
             {
                 List<string> where = new List<string>();
                 if (filter.Bus == 0 || filter.Bus == 1)
-                    where.Add(string.Format("bus = {0}", filter.Bus));
+                    where.Add($"bus = {filter.Bus}");
 
                 if (filter.CarId != 0)
-                    where.Add(string.Format("carId = {0}", filter.CarId));
+                    where.Add($"carId = {filter.CarId}");
 
                 if (filter.ModificationId != 0)
                 {
-                    where.Add(string.Format("modificationId = {0}", filter.ModificationId));
+                    where.Add($"modificationId = {filter.ModificationId}");
                 }
                 else if (filter.ModelId != 0)
                 {

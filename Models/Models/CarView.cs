@@ -25,7 +25,6 @@ namespace Rado.Models
         public string? SellerWhats { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? SellerWebPage { get; set; }
-        public int NumberImages { get; set; }
         public ImageDataClass? MainImageData { get; set; }
         public string UserCompanyName { get; set; }
         public string UserName { get; set; }

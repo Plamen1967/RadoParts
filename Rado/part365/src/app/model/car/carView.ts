@@ -6,7 +6,7 @@ export class CarView extends Car {
     modelName?          : string
     modificationName?   : string
     countParts?         : number
-    numberImages?       : number
+    imageCount?       : number
     sellerName?         : string
     sellerWhats?        : string
 }
