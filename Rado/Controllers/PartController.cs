@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utility;
+using Utility.Validation;
 using Controller = Rado.Controllers.Admin.Controller;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -26,6 +27,7 @@ namespace Rado.Controllers
         #region Private API
         // POST api/<PartController>
         [HttpPost]
+        [ServiceFilter(typeof(ModelValidation))]
         public async Task<DisplayPartView> Post([FromBody] Part part)
         {
             try

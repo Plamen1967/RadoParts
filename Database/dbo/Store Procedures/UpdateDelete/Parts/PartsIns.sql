@@ -3,7 +3,7 @@
     @carId                  BIGINT,
     @description            NVARCHAR (500),
     @partNumber             NVARCHAR (50),
-    @price                  DECIMAL (18),
+    @price                  DECIMAL (10,2),
     @leftRightPosition      INT,
     @frontBackPosition      INT,
     @engineType             INT,

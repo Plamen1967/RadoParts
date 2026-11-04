@@ -631,6 +631,11 @@ namespace Rado.Datasets
 
                 part = Validation.RemoveInvalidWord(part);
 
+                if (part.MainImageId != 0)
+                    part.MainPicture = ImageManager.GenerateMinImageSrc(part.PartId, part.MainImageId);
+                else
+                    part.MainPicture = "";
+
                 var resultImageCount = ImageManager.GetImageCount(part.PartId);
                 resultImageCount.Wait();
                 int imageCount = resultImageCount.Result;
@@ -654,7 +659,7 @@ namespace Rado.Datasets
 
                 command.Parameters.Add("@partNumber"    , SqlDbType.NVarChar).Value = part.PartNumber;
                 command.Parameters.Add("@description"   , SqlDbType.NVarChar).Value = part.Description;
-                command.Parameters.Add("@price"         , SqlDbType.Decimal).Value = part.Price;
+                command.Parameters.Add(new SqlParameter("@price", SqlDbType.Decimal) { Precision = 10, Scale = 2 }).Value = part.Price;
                 command.Parameters.Add("@leftRightPosition", SqlDbType.Int).Value = part.LeftRightPosition ?? 0;
                 command.Parameters.Add("@frontBackPosition", SqlDbType.Int).Value = part.FrontBackPosition ?? 0;
 
@@ -666,7 +671,7 @@ namespace Rado.Datasets
                 command.Parameters.Add("@millage"        , SqlDbType.Int).Value = part.Millage ?? 0;
 
                 command.Parameters.Add("@regionId"      , SqlDbType.Int).Value = part.RegionId;
-                command.Parameters.Add("@mainPicture", SqlDbType.NVarChar).Value = part.MainPicture ?? "";
+                command.Parameters.Add("@mainPicture", SqlDbType.NVarChar).Value = part.MainPicture;
                 command.Parameters.Add("@mainImageId", SqlDbType.BigInt).Value = part.MainImageId;
 
                 command.Parameters.Add("@approved",         SqlDbType.Int).Value = approved;

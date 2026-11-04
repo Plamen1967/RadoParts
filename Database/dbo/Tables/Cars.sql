@@ -3,7 +3,7 @@
     [vin]         NVARCHAR (20)  NOT NULL,
     [regNumber]   NVARCHAR (50)  NOT NULL,
     [description] NVARCHAR (500) NOT NULL,
-    [price]       DECIMAL (18)   DEFAULT ((0)) NOT NULL,
+    [price]       DECIMAL(10,2)   DEFAULT ((0)) NOT NULL,
     [powerkWh]    INT            DEFAULT ((0)) NOT NULL,
     [powerBHP]    INT            DEFAULT ((0)) NOT NULL,
     [year]        INT            DEFAULT ((0)) NOT NULL,

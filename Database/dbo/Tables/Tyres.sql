@@ -6,7 +6,7 @@
     [tyreHeight] INT NOT NULL, 
     [tyreRadius] INT NOT NULL, 
     [tyreType] INT NOT NULL, 
-    [price] DECIMAL NOT NULL, 
+    [price] DECIMAL(10,2) NOT NULL, 
     [description] NVARCHAR(500) NOT NULL, 
     [mainImageId] INT NOT NULL,
     [mainPicture] NVARCHAR(200) NOT NULL DEFAULT '', 

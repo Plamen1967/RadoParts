@@ -52,7 +52,7 @@
                 </div>
             }
             <div class="card p-2 mt-2" style="background-color: honeydew">
-                @if (!partForCar() || ($mode() === 1 && isCar() === false)) {
+                @if (addPartForm.partForCar().value() === 'part') {
                     <div>
                         <div class="row g-3">
                             <div class="row mb-1">

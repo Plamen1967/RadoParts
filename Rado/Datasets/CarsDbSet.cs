@@ -84,7 +84,7 @@ namespace Rado.Datasets
                         SqlParameter vinParam = command.Parameters.Add("@vin", SqlDbType.NVarChar);
                         SqlParameter regNumberParam = command.Parameters.Add("@regNumber", SqlDbType.NVarChar);
                         SqlParameter descriptionParam = command.Parameters.Add("@description", SqlDbType.NVarChar);
-                        SqlParameter priceParam = command.Parameters.Add("@price", SqlDbType.Decimal);
+                        SqlParameter priceParam = command.Parameters.Add(new SqlParameter("@price", SqlDbType.Decimal) { Precision = 10, Scale = 2 });
                         SqlParameter powerkWhParam = command.Parameters.Add("@powerkWh", SqlDbType.Int);
                         SqlParameter powerBHPParam = command.Parameters.Add("@powerBHP", SqlDbType.Int);
                         SqlParameter engineTypeParam = command.Parameters.Add("@engineType", SqlDbType.Int);

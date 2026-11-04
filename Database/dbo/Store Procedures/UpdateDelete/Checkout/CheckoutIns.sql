@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[CheckoutIns]
 	@partId bigint,
 	@userId int,
-	@price decimal(18, 0),
+	@price decimal(10,2),
     @captureTime datetime
 AS
 	INSERT INTO Checkout( 

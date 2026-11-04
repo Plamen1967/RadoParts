@@ -210,7 +210,11 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
     })
 
     $contentMessage = computed(() => {
-        const modeMessage = this.mode() === UpdateEnum.Update ? 'записана' : 'добавена'
+        let modeMessage = this.mode() === UpdateEnum.Update ? 'записан' : 'добавен'
+        if (!this.bus()) {
+            modeMessage = `${modeMessage}а`
+        }
+
         return `${this.$typeMessage()} е успешно ${modeMessage}`
     })
 

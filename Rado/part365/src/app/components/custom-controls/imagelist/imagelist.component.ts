@@ -32,49 +32,26 @@ export class ImageListComponent extends HelperComponent implements OnInit {
     private toastService: ToastService = inject(ToastService)
 
     $mainImage = computed(() => {
-        if (this.mainImageId() != 0)
-            return this.mainImageId()
+        if (this.mainImageId() != 0) return this.mainImageId()
         return this.mainImage()
     })
     imageResource = httpResource<ImageData[]>(() => ({
-            url: `${environment.restAPI}/image/GetImages?id=${this.itemId()}`,
-            defaultValue: [],
-            parse: (res: ImageData[]) => {
-                    this.images_.set([...res])
-                    this.setDefaultImageById(this.mainImage())
-                    return res
-            },
+        url: `${environment.restAPI}/image/GetImages?id=${this.itemId()}`,
+        defaultValue: [],
+        parse: (res: ImageData[]) => {
+            this.images_.set([...res])
+            this.setDefaultImageById(this.mainImage())
+            return res
+        },
     }))
-
-
-// }
-
-// resource = httpResource<UserList>(() => ({
-//     url: "api/schools/collection/filter",
-//     method: "POST",
-//     body: {pageSize: this.pageSize(), page: this.page()}
-//   }));
 
     constructor() {
         super()
-        // effect(() => {
-        //     console.log(`Main image: ${this.$mainImage()} ${this.mainImageId()}`)
-        // })
-        // effect(() => {
-        //     console.log(`Images Item Id: ${this.itemId()} ${this.mainImage()}`)
-        // })
         effect(() => {
             if (this.images()) {
                 this.images_.set([...this.images()])
             }
         })
-        // effect(() => {
-        //     if (this.mainImage()) {
-        //         this.mainImageId = this.mainImage()
-        //         this.setDefaultImageById(this.mainImage())
-        //     }
-
-        // })
     }
 
     ngOnInit(): void {
@@ -99,6 +76,7 @@ export class ImageListComponent extends HelperComponent implements OnInit {
 
         if (currentImages.length) {
             this.mainImageId.set(currentImages[0].imageId!)
+            this.defaultImageEvent.emit(currentImages[0].imageId!)
         }
     }
 
@@ -133,10 +111,12 @@ export class ImageListComponent extends HelperComponent implements OnInit {
                     }
 
                     let mainImageId = 0
-                    if (this.mainImageId() == image.imageId!)
-                        if (currentImages.length > 0)  mainImageId = currentImages[0].imageId!
+                    if (this.mainImageId() == image.imageId!) {
+                        if (currentImages.length > 0) mainImageId = currentImages[0].imageId!
+                        this.mainImageId.set(mainImageId)
+                    }
 
-                    this.imageService.deleteImage(image.imageId!, this.itemId()!, mainImageId).subscribe({
+                    this.imageService.deleteImage(image.imageId!, +this.itemId()!, mainImageId).subscribe({
                         next: () => {
                             this.toastService.show('Снимката е успешно изтрита', 2)
                             const currentImages = [...this.images_()]

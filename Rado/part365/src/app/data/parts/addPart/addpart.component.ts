@@ -39,7 +39,7 @@ import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
 import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 import { ItemType } from '@model/enum/itemType.enum'
-import { form, FormField, min, minLength } from '@angular/forms/signals'
+import { form, FormField, min, minLength, validate } from '@angular/forms/signals'
 import { Part } from '@model/part/part'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { httpResource } from '@angular/common/http'
@@ -173,8 +173,22 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         minLength(path.dealerSubCategoryName, 1, {
             message: 'Моля въведете име дилърска категория',
         })
+        validate(path.price, ({ value }) => { 
+            const strValue = value()?.toString() ?? ''
+            
+            const test = /^(([1-9](\d*|\d{0,2}(,\d{3})*))|0)(\.\d{1,2})?$/i.test(strValue)
+
+            if (test === false) {
+                return {
+                    kind: 'Price',
+                    message: 'Моля въведете коректна цена.',
+                }
+            }
+            return null
+        })
+
         min(path.price, 0.01, {
-            message: 'Моля въведете цена.',
+            message: 'Моля въведете коректна цена.',
         })
     })
     //#endregion
@@ -188,10 +202,10 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     yearFrom = this.labels.YEAR_START
     yearTo = 2021
     browserRefresh = false
-    partForCar = computed(() => 
-        {
-            return this.addPartForm.partForCar().value() === 'car' || this.addPartForm.carId().value() != 0
-        })
+    partForCar = computed(() => {
+        console.log(`Part for car: ${this.addPartForm.partForCar().value()} ${this.addPartForm.carId().value()}`)
+        return this.addPartForm.partForCar().value() === 'car' || this.addPartForm.carId().value() !== 0
+    })
 
     engineTypeName?: string
     initialState?: addPartFormInterface
@@ -252,7 +266,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     newItemId = signal(0)
     $yearTo = signal(2026)
     $yearFrom = signal(this.labels.YEAR_START)
-    
+
     //#endregion
 
     //#region
@@ -354,8 +368,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                 text: car.regNumber,
             }
         })
-        cars?.unshift({ value: 0, text: `Избери ${this.$choice()}` })
         console.log(`Cars: ${cars}`)
+        cars?.sort((a, b) => (a.text ?? '').localeCompare(b.text ?? ''))
+        cars?.unshift({ value: 0, text: `Избери ${this.$choice()}` })
         return cars ?? []
     })
 
@@ -406,6 +421,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             }
         })
 
+        effect(() => {
+            console.log(`Is it part without car: ${this.partForCar()} ${this.$mode()} ${this.isCar()}`)
+        })
         this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId() }))
         //#region effect
         effect(() => {
@@ -610,7 +628,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
     //#endregion
     //#region populate dialog
-    
+
     modificatioChanged(modification: Modification) {
         if (!modification) {
             this.addPartFormModel.update((value) => ({ ...value, year: 0 }))
@@ -624,7 +642,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     loadPart() {
         this.partService.fetch(this.$itemId()!).subscribe({
             next: (res) => {
-                this.isCar.set(res.isCar!);
+                this.isCar.set(res.isCar!)
+                if (res.carId === 0) this.addPartFormModel.update((value) => ({ ...value, partForCar: 'part' }))
+                else this.addPartFormModel.update((value) => ({ ...value, partForCar: 'car' }))
                 this.addPartFormModel.update((value) => ({ ...value, carId: res.carId ?? 0 }))
                 this.partView = { ...res }
                 this.dealerSubCategoryName = this.partView.dealerSubCategoryName
@@ -731,10 +751,8 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             },
         })
     }
-    check(): boolean 
-    {
-        if (this.addPartForm().value().partForCar === 'car')
-            return false
+    check(): boolean {
+        if (this.addPartForm().value().partForCar === 'car') return false
 
         const mode = this.$mode()
         const bus = this.addPartForm().value().bus
@@ -742,9 +760,8 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
 
         if (mode === UpdateEnum.Update && bus === 1) return false
         if (bus_1 == 1) return false
-            return true
+        return true
     }
 
     //#endregion
 }
-

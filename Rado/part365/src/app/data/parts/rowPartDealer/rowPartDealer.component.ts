@@ -123,8 +123,10 @@ export class RowPartDealerComponent extends HelperComponent {
     generatelines() {
         if (!this.partView_) return
         this.lines = []
+        const label = this.partView_.bus ? "Име на бус" : "Име на кола" 
         this.description = `${this.partView_.companyName} ${this.partView_.modelName} ${this.partView_.modificationName ?? ''} ${this.partView_.year}`
         this.lines.push({ label: 'Model', value: this.description, price: false })
+        if (this.partView_.regNumber) this.lines.push({ label: `${label}`, value: this.partView_.regNumber, price: false })
         if (this.partView_.description) this.lines.push({ label: this.labels.PART_DETAILS, value: this.partView_.description, price: false })
         if (this.partView_.partNumber) this.lines.push({ label: this.labels.PART_NUMBER, value: this.partView_.partNumber, price: false })
         if (this.partView_.imageCount) this.lines.push({ label: 'Брой снимки', value: this.partView_.imageCount, price: false })

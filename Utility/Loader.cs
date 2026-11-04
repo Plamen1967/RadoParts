@@ -211,8 +211,8 @@ namespace Utility
             part.Whats = ToString("whats", sqlDataReader);
             part.Dealer = Int32("dealer", sqlDataReader); ;
             part.City = ToString("city", sqlDataReader); ;
-            part.WebPage = ToString("webPage", sqlDataReader); ;
-
+            part.WebPage = ToString("webPage", sqlDataReader); 
+            part.RegNumber = ToString("regNumber", sqlDataReader);
         }
 
         public static Tyre LoadTyre(SqlDataReader sqlDataReader)

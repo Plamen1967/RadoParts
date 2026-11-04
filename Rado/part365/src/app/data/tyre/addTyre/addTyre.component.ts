@@ -36,7 +36,7 @@ import { goTop } from '@app/functions/functions'
 import { LoggerService } from '@services/authentication/logger.service'
 import { UserCountService } from '@services/userCount.service'
 import { DisplayPartView } from '@model/displayPartView'
-import { form, FormField, min } from '@angular/forms/signals'
+import { form, FormField, min, validate } from '@angular/forms/signals'
 import { httpResource } from '@angular/common/http'
 import { NextId } from '@model/nextId'
 import { environment } from '@env/environment'
@@ -162,8 +162,22 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         min(path.count, 1, {
             message: 'Моля въведете броя',
         })
+        validate(path.price, ({ value }) => { 
+            const strValue = value()?.toString() ?? ''
+            
+            const test = /^(([1-9](\d*|\d{0,2}(,\d{3})*))|0)(\.\d{1,2})?$/i.test(strValue)
+
+            if (test === false) {
+                return {
+                    kind: 'Price',
+                    message: 'Моля въведете коректна цена.',
+                }
+            }
+            return null
+        })
+
         min(path.price, 0.01, {
-            message: 'Моля въведете цена.',
+            message: 'Моля въведете коректна цена.',
         })
     })
 

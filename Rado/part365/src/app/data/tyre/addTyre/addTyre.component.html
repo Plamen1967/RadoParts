@@ -21,7 +21,7 @@
         <div class="tyre mb-2" [ngClass]="{ show: $displayTyre(), noShow: !$displayTyre() }">
             <h5>Гума</h5>
             <div class="row">
-                <div class="col-sm-2 min150px">
+                <div class="col-2 col-md-2 col-lg-2 min150px">
                     <app-select
                         [formField]="addTyreForm.tyreWidth"
                         label="{{ labels.TYRE_WIDTH }}"
@@ -32,7 +32,7 @@
                         (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
-                <div class="col-sm-2 min200px">
+                <div class="col-2 col-md-2 col-lg-2 min200px">
                     <app-select
                         [formField]="addTyreForm.tyreHeight"
                         label="{{ labels.TYRE_HEIGHT }}"
@@ -43,7 +43,7 @@
                         (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
-                <div class="col-sm-2 min150px">
+                <div class="col-2 col-md-2 col-lg-2 min150px">
                     <app-select
                         [formField]="addTyreForm.tyreRadius"
                         label="{{ labels.TYRE_RADIUS }}"
@@ -54,7 +54,7 @@
                         (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
-                <div class="col-sm-2 min150px">
+                <div class="col-2 col-md-2 col-lg-2 min150px">
                     <app-select
                         [formField]="addTyreForm.tyreType"
                         label="{{ labels.TYRE_TYPE }}"
@@ -65,7 +65,7 @@
                         [isRequired]="true">
                     </app-select>
                 </div>
-                <div class="col-sm-3 min200px">
+                <div class="col-3 col-md-3 col-lg-3 min200px">
                     <app-select
                         id="tyreCompanyId"
                         [formField]="addTyreForm.tyreCompanyId"
@@ -82,7 +82,7 @@
         @if ($displayTyre() || ($displayTyre() && $displayRim())) {
             <div class="row mb-2">
                 <div class="d-inline-flex align-items-end">
-                    <div class="col-sm-2 col-md-2 col-lg-2 control min50px max100px me-2">
+                    <div class="col-4 col-md-4 col-lg-4 control min50px max100px me-2">
                         <app-select
                             id="month"
                             tooltip="'Mесец DOT'"
@@ -94,7 +94,7 @@
                             [submitted]="submitted()">
                         </app-select>
                     </div>
-                    <div class="col-sm-2 col-md-2 col-lg-2 control min50px max100px">
+                    <div class="col-4 col-md-4 col-lg-4 control min50px max100px">
                         <app-select id="year" [formField]="addTyreForm.yearDOT" data-cy="year" [data]="years" (onCloseEvent)="focus($event)" [submitted]="submitted()"> </app-select>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
         <div class="rim mb-2" [ngClass]="{ show: $displayRim(), noShow: !$displayRim() }">
             <h5>Джанта</h5>
             <div class="row">
-                <div class="col-sm-4 control max250px">
+                <div class="col-4 col-md-4 col-lg-4 control max250px">
                     <app-company-choise
                         id="companyId"
                         [formField]="addTyreForm.companyId"
@@ -114,7 +114,7 @@
                     </app-company-choise>
                 </div>
                 @if (this.companyId) {
-                    <div class="col-sm-5 control min300px">
+                    <div class="col-5 col-md-5 col-lg-5 control min300px">
                         <app-model-choice
                             [formField]="addTyreForm.modelId"
                             [showCount]="false"
@@ -129,7 +129,7 @@
             </div>
             <div class="row">
                 @if (!$displayTyre()) {
-                    <div class="col-sm-2 min150px">
+                    <div class="col-2 col-md-2 col-lg-2 min150px">
                         <app-select
                             [formField]="addTyreForm.tyreRadius"
                             label="{{ labels.TYRE_RADIUS }}"
@@ -142,7 +142,7 @@
                     </div>
                 }
                 @if ($displayRim()) {}
-                <div class="col-sm-3 control min250px">
+                <div class="col-3 col-md-3 col-lg-3 control min250px">
                     <app-select
                         id="rimMaterial"
                         tooltip="'Материал'"
@@ -157,7 +157,7 @@
                         [submitted]="submitted()">
                     </app-select>
                 </div>
-                <div class="col-sm-3 control min150px">
+                <div class="col-3 col-md-3 col-lg-3 control min150px">
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Брой Болтове'"
@@ -171,7 +171,7 @@
                     </app-select>
                 </div>
 
-                <div class="col-sm-3 control min250px">
+                <div class="col-3 col-md-3 col-lg-3 control min250px">
                     <app-select
                         id="rimOffset"
                         tooltip="''"
@@ -185,7 +185,7 @@
                         [submitted]="submitted()">
                     </app-select>
                 </div>
-                <div class="col-sm-3 control min250px">
+                <div class="col-3 col-md-3 col-lg-3 control min250px">
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Междуболтово разстояние'"
@@ -198,7 +198,7 @@
                     </app-select>
                 </div>
 
-                <div class="col-sm-3 control min150px">
+                <div class="col-3 col-md-3 col-lg-3 control min150px">
                     <app-select
                         id="rimBoltCount"
                         tooltip="'Брой Болтове'"
@@ -213,10 +213,10 @@
             </div>
         </div>
         <div class="row mb-2">
-            <div class="col-sm-1 min150px">
+            <div class="col-1 col-md-1 col-lg-1 min150px">
                 <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted()" label="Брой" data-cy="count" [isRequired]="true"></app-input>
             </div>
-            <div class="col-sm-4">
+            <div class="col-6 col-md-6 col-lg-6  ">
                 <app-select
                     [formField]="addTyreForm.regionId"
                     label="{{ labels.REGION }}"
@@ -237,6 +237,7 @@
                     [formField]="addTyreForm.price"
                     placeHolder="{{ labels.PRICE }}"
                     [IsPrice]="true"
+                    [number]="true"
                     [submitted]="submitted()"
                     label="{{ labels.PRICE }}"
                     data-cy="price"
@@ -254,7 +255,7 @@
                 <app-toolbar
                     [canCancel]="true"
                     [isChanged]="true"
-                    [canSave]="$canUpdate()"
+                    [canSave]="true"
                     [saveName]="$actionMessage()"
                     [cancelName]="labels.GOBACK"
                     (Save)="onSubmit()"

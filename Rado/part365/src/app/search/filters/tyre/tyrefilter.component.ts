@@ -16,13 +16,11 @@ import { Filter } from '@model/filters/filter'
 import { RadioButton } from '@model/radioButton'
 import { SelectOption } from '@model/selectOption'
 import { User } from '@model/user'
-import { HomeService } from '@services/home.service'
 import { LoadingService } from '@services/loading.service'
 import { SearchPartService } from '@services/searchPart.service'
 import { StaticSelectionService } from '@services/staticSelection.service'
 import { TyreService } from '@services/tyre/tyre.service'
 import { UserService } from '@services/user.service'
-import { ConfirmServiceService } from '@app/dialog/services/confirmService.service'
 import { OptionItem } from '@model/optionitem'
 import { CompanyChoiseComponent } from '@app/component-main/company-choise/company-choise.component'
 import { SearchBarComponent } from '@components/search-bar/search-bar.component'
@@ -75,7 +73,7 @@ interface filterFormInterface {
         CategoriesComponent,
         ModelChoiceComponent,
         FormField,
-        MatTooltipModule
+        MatTooltipModule,
     ],
 })
 //#endregion
@@ -111,7 +109,7 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         { value: 3, text: 'Джанти с гуми' },
     ]
     models: SelectOption[] = []
-    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
+    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right']
     selectedCategory: ItemType = ItemType.AllTyre
     hideFilter = false
     initialState
@@ -172,38 +170,35 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
         }
     }
     //#region services
-    private homeService: HomeService = inject(HomeService)
     private userService: UserService = inject(UserService)
     public loadingService: LoadingService = inject(LoadingService)
     public searchPartService: SearchPartService = inject(SearchPartService)
     private router: Router = inject(Router)
     private tyreService: TyreService = inject(TyreService)
     public staticSelectionService: StaticSelectionService = inject(StaticSelectionService)
-    private confirmService: ConfirmServiceService = inject(ConfirmServiceService)
     public parent: HomeComponent = inject(HomeComponent, { optional: true }) as HomeComponent
     @Optional() public home?: HomeComponent
     //#endregion
     //#endregion
     // filterresource = httpResource<Filter>(() => ({
-    // url: 
+    // url:
     // })
     // );
 
-       filterresource = httpResource<Filter>(() => {
+    filterresource = httpResource<Filter>(() => {
         if (this.query()) return `${environment.restAPI}/Search/GetFilter?query=${this.query()}`
         else return undefined
     })
- 
+
     filter = computed(() => {
         return this.filterresource.value() ?? undefined
     })
-        // let params = new HttpParams()
-        // params = params.set('query', `${query}`)
-        // return this.http.get<Filter>(`${environment.restAPI}/Search/GetFilter`, { params }).pipe(
-        //     tap(() => this.loggerService.log('getFilter')),
-        //     catchError(this.handleError<Filter>('fetch getFilter', undefined))
-        // )
-
+    // let params = new HttpParams()
+    // params = params.set('query', `${query}`)
+    // return this.http.get<Filter>(`${environment.restAPI}/Search/GetFilter`, { params }).pipe(
+    //     tap(() => this.loggerService.log('getFilter')),
+    //     catchError(this.handleError<Filter>('fetch getFilter', undefined))
+    // )
 
     // filter = computed(() => {
     //     console.log(`Query Value:`, this.query())
@@ -298,7 +293,30 @@ export class TyreFilterComponent extends HelperComponent implements OnInit, Afte
     }
 
     clearFilter() {
-        this.filterFormModel.update((value) => ({ ...value, ...this.initialState }))
+        this.filterFormModel.set({
+            itemType: ItemType.AllTyre,
+            userId: 0,
+            approved: 3,
+            tyreCompanyId: 0,
+            tyreWidth: 0,
+            tyreHeight: 0,
+            tyreRadius: 0,
+            tyreType: 0,
+            regionId: 0,
+            companyId: 0,
+            modelId: 0,
+            rimWidth: 0,
+            rimMaterial: 0,
+            rimOffset: 0,
+            rimBoltCount: 0,
+            rimBoltDistance: 0,
+            rimCenter: 0,
+            orderBy: 0,
+            hasImages: false,
+        })
+        this.goTop()
+        this.router.navigate(['/'], { queryParams: { selection: 2 } })
+        this.filterForm().reset()
     }
 
     //#region Search

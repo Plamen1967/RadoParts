@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enums;
 using Models.Models;
 using Models.Models.Utility;
+using Rado.Authorization;
 using Rado.Datasets;
 using Rado.Enrich;
 using Rado.Models;
@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utility;
+using Utility.Authorization;
 using Utility.Validation;
 using Controller = Rado.Controllers.Admin.Controller;
 
@@ -21,6 +22,7 @@ namespace Rado.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("testingApp")]
+    [Authorize]
     public class RimWithTyreController : Controller
     {
         #region Private Api
@@ -60,7 +62,9 @@ namespace Rado.Controllers
         //}
 
         [HttpPatch("{id}")]
-        public async Task<DisplayPartView> Patch(long id, [FromBody] RimWithTyre rimWithTyre)
+        [EnableCors("testingApp")]
+        [Authorize]
+        public async Task<DisplayPartView> Execute(long id, [FromBody] RimWithTyre rimWithTyre)
         {
             try
             {

@@ -66,7 +66,7 @@ namespace Rado.Datasets
 
                         SqlParameter partIdParam = command.Parameters.Add("@partId", System.Data.SqlDbType.BigInt);
                         SqlParameter userIdParam = command.Parameters.Add("@userId", System.Data.SqlDbType.Int);
-                        SqlParameter priceParam = command.Parameters.Add("@price", System.Data.SqlDbType.Decimal);
+                        SqlParameter priceParam = command.Parameters.Add(new SqlParameter("@price", System.Data.SqlDbType.Decimal) { Precision = 10, Scale = 2 });
                         SqlParameter captureTimeParam = command.Parameters.Add("@captureTime", System.Data.SqlDbType.DateTime);
 
                         partIdParam.Value = item.PartId;

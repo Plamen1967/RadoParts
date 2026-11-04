@@ -4,7 +4,7 @@
     [modificationId]    INT NOT NULL DEFAULT 0, 
     [dealerSubCategoryId] INT NOT NULL DEFAULT 0, 
     [description]          NVARCHAR(500) NOT NULL,
-    [price]             DECIMAL (18)   DEFAULT ((0)) NOT NULL,
+    [price]             DECIMAL(10,2)   DEFAULT ((0)) NOT NULL,
     [leftRightPosition] INT            DEFAULT ((0)) NOT NULL,
     [frontBackPosition] INT            DEFAULT ((0)) NOT NULL,
     [partNumber]        NVARCHAR(50)     NOT NULL,

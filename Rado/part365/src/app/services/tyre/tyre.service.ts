@@ -50,7 +50,7 @@ export class TyreService {
         return this.http.post<DisplayPartView>(`${environment.restAPI}/rimWithTyre`, item, this.httpHeader).pipe(map((item) => Enrich(item, this.staticService)))
     }
     updateItem(item: RimWithTyre): Observable<DisplayPartView> {
-        return this.http.patch<DisplayPartView>(`${environment.restAPI}/rimWithTyre?id=${item.rimWithTyreId}`, item, this.httpHeader).pipe(map((item) => Enrich(item, this.staticService)))
+        return this.http.patch<DisplayPartView>(`${environment.restAPI}/rimWithTyre/${item.rimWithTyreId}`, item, this.httpHeader).pipe(map((item) => Enrich(item, this.staticService)))
     }
 
     deleteItem(tyreId: number): Observable<boolean> {

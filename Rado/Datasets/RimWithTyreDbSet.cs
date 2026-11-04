@@ -176,7 +176,7 @@ namespace Rado.Datasets
                         command.Parameters.Add("@rimBoltCount", System.Data.SqlDbType.Int).Value = rimWithTyre.RimBoltCount;
                         command.Parameters.Add("@rimBoltDistance", System.Data.SqlDbType.Int).Value = rimWithTyre.RimBoltDistance;
                         command.Parameters.Add("@rimCenter", System.Data.SqlDbType.Int).Value = rimWithTyre.RimCenter;
-                        command.Parameters.Add("@price", System.Data.SqlDbType.Decimal).Value = rimWithTyre.Price;
+                        command.Parameters.Add(new SqlParameter("@price", System.Data.SqlDbType.Decimal){ Precision = 10, Scale = 2 }).Value = rimWithTyre.Price;
                         command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar).Value = rimWithTyre.Description;
                         command.Parameters.Add("@mainImageId", System.Data.SqlDbType.Int).Value = rimWithTyre.MainImageId;
                         command.Parameters.Add("@mainPicture", System.Data.SqlDbType.NVarChar).Value = rimWithTyre.MainPicture;

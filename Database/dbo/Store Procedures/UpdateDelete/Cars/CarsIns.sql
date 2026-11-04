@@ -6,7 +6,7 @@
     @vin            NVARCHAR (20),
     @regNumber      NVARCHAR (50),
     @description    NVARCHAR (100),
-    @price          DECIMAL (18),
+    @price          DECIMAL (10,2),
     @powerkWh       INT,
     @powerBHP       INT,
     @engineType     INT,

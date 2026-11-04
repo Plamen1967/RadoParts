@@ -13,7 +13,7 @@
     @rimBoltCount INT,
     @rimBoltDistance INT,
     @rimCenter INT,
-    @price DECIMAL, 
+    @price DECIMAL(10,2), 
     @description NVARCHAR(500), 
     @mainImageId INT,
     @regionId INT,

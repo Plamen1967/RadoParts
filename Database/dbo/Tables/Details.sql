@@ -2,7 +2,7 @@
 (
 	[Id] BIGINT NOT NULL PRIMARY KEY,
     [typeId]  INT NOT NULL DEFAULT 0,
-    [price] DECIMAL NOT NULL DEFAULT 0, 
+    [price] DECIMAL(10,2) NOT NULL DEFAULT 0, 
     [description] NVARCHAR(500) NOT NULL DEFAULT '', 
     [mainImageId] INT NOT NULL DEFAULT 0,
     [mainPicture] NVARCHAR(200) NOT NULL DEFAULT '', 
