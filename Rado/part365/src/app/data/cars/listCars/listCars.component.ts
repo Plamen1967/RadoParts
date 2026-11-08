@@ -43,11 +43,11 @@ import { environment } from '@env/environment'
 //#endregion
 //#region interface
 interface listFormInterface {
-    carId: number,
-    companyId: number,
-    modelId: number,
-    modificationId: number,
-    year: number,
+    carId: number
+    companyId: number
+    modelId: number
+    modificationId: number
+    year: number
     bus: number
 }
 //#endregion
@@ -57,36 +57,35 @@ interface listFormInterface {
     templateUrl: './listcars.component.html',
     styleUrls: ['./listCars.component.css'],
     imports: [
-    SelectComponent,
-    DealerViewComponent,
-    ReactiveFormsModule,
-    NavigatorComponent,
-    CompanyChoiseComponent,
-    ModelChoiceComponent,
-    ModificationChoiceComponent,
-    AddCarComponent,
-    GoTopComponent,
-    YearComponent,
-    ListTitleComponent,
-    UpdateCarComponent,
-    UpdatePartComponent,
-    AsyncPipe,
-    FormField,
-    UpdateBusComponent,
-    NgStyle
-],
+        SelectComponent,
+        DealerViewComponent,
+        ReactiveFormsModule,
+        NavigatorComponent,
+        CompanyChoiseComponent,
+        ModelChoiceComponent,
+        ModificationChoiceComponent,
+        AddCarComponent,
+        GoTopComponent,
+        YearComponent,
+        ListTitleComponent,
+        UpdateCarComponent,
+        UpdatePartComponent,
+        AsyncPipe,
+        FormField,
+        UpdateBusComponent,
+        NgStyle,
+    ],
 })
 
 //#endregion
-
 export default class ListCarsComponent extends HelperComponent implements OnInit, AfterViewInit, OnDestroy {
     listFormModel = signal<listFormInterface>({
-            carId: 0,
-            companyId: 0,
-            modelId: 0,
-            modificationId: 0,
-            year: 0,
-            bus: 0,
+        carId: 0,
+        companyId: 0,
+        modelId: 0,
+        modificationId: 0,
+        year: 0,
+        bus: 0,
     })
 
     listForm = form(this.listFormModel)
@@ -135,25 +134,21 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     addCar = input(0)
     addBus = input(0)
     addPart = input(0)
-    children = viewChildren(DealerViewComponent);
+    children = viewChildren(DealerViewComponent)
     currentPartId = signal(0)
     update = input<number | string>()
     ad = input<number | string>()
     bus = input<number>(0)
     $update = computed(() => {
         if (this.ad() || this.update()) return true
-        if (this.updateBus() || this.updateCar() || this.updatePart())
-            return true
-        if (this.addBus() || this.addCar() || this.addPart())
-            return true
+        if (this.updateBus() || this.updateCar() || this.updatePart()) return true
+        if (this.addBus() || this.addCar() || this.addPart()) return true
         return false
     })
 
-    $itemType = computed<ItemType>(() =>
-        this.$addCarFlag() ? ItemType.OnlyCar : this.$addBusFlag() ? ItemType.OnlyBus : this.bus() ? ItemType.BusPart : ItemType.CarPart
-    )
-    $title = computed(() =>  this.bus() ? 'Бусове' : 'Коли')
-    $label = computed(() => this.bus() ? 'Избери бус' : 'Избери кола')
+    $itemType = computed<ItemType>(() => (this.$addCarFlag() ? ItemType.OnlyCar : this.$addBusFlag() ? ItemType.OnlyBus : this.bus() ? ItemType.BusPart : ItemType.CarPart))
+    $title = computed(() => (this.bus() ? 'Бусове' : 'Коли'))
+    $label = computed(() => (this.bus() ? 'Избери бус' : 'Избери кола'))
 
     //#endregion
 
@@ -196,7 +191,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         // })
     }
 
-    loadCarResource = httpResource<CarView>(() => (`${environment.restAPI}/car/${this.carId()}`))
+    loadCarResource = httpResource<CarView>(() => `${environment.restAPI}/car/${this.carId()}`)
 
     //#endregion
     ngOnDestroy(): void {
@@ -416,12 +411,12 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     // #endregion
     //#region actions
     addBusFunc() {
-        this.$addBusFlag.set(true);
-        this.router.navigate(['/data/bus'], { queryParams: {  ad: 'new', addBus: true } })
+        this.$addBusFlag.set(true)
+        this.router.navigate(['/data/bus'], { queryParams: { ad: 'new', addBus: true } })
     }
 
     addCarFunc() {
-        this.$addCarFlag.set(true);
+        this.$addCarFlag.set(true)
         this.router.navigate(['/data/cars'], { queryParams: { ad: 'new', addCar: true } })
     }
 
@@ -452,7 +447,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
                     this.loading.set(true)
                     this.cars.set([])
                     Filter.userId = this.userId
-                    return this.carService.fetchCars(Filter).pipe(tap(() => (this.loading.set(false))))
+                    return this.carService.fetchCars(Filter).pipe(tap(() => this.loading.set(false)))
                 }),
                 takeUntil(this._destroy$)
             )
@@ -549,10 +544,8 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     back(event: number) {
         if (this.$addCarFlag() || this.$addBusFlag() || this.$updateCarFlag() || this.$updateBusFlag()) this.id = undefined
-        if (this.bus())
-            this.router.navigate(['/data/bus']);
-        else 
-            this.router.navigate(['/data/cars']);
+        if (this.bus()) this.router.navigate(['/data/bus'])
+        else this.router.navigate(['/data/cars'])
         this.currentCarId = event
         goToPosition(event)
         this.currentCarId = event
@@ -566,5 +559,9 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.$updateBusFlag.set(params.get('updateBus') ? true : false)
         this.$updatePartFlag.set(params.get('updatePart') ? true : false)
         this.currentPartId.set(params.get('currentPartId') ? +params.get('currentPartId')! : 0)
+    }
+
+    cleanOther() {
+        this.listFormModel.update((value) => ({ ...value, companyId: 0, modelId: 0, modificationId: 0, year: 0 }))
     }
 }

@@ -15,9 +15,11 @@
             </div>
             @if ($displayTyre()) {
                 <div class="tyre" [ngClass]="{ show: $displayTyre(), noShow: !$displayTyre() }">
-                    <h5>Гума</h5>
+                    <div class="d-flex flex-row mt-2 mb-2 justify-content-center">
+                        <h5>Гума</h5>
+                    </div>
                     <div class="row">
-                        <div class="col-sm-2 min250px">
+                        <div class="col-5 col-md-4 col-lg-3 min250px">
                             <div class="col-sm-3 min200px">
                                 <app-select
                                     id="tyreCompanyId"
@@ -31,16 +33,16 @@
                                 </app-select>
                             </div>
                         </div>
-                        <div class="col-sm-2 min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px">
                             <app-select [formField]="searchForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth"> </app-select>
                         </div>
-                        <div class="col-sm-2 min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px">
                             <app-select [formField]="searchForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight"> </app-select>
                         </div>
-                        <div class="col-sm-2 min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px">
                             <app-select [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
                         </div>
-                        <div class="col-sm-2 min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px">
                             <app-select [formField]="searchForm.tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes"> </app-select>
                         </div>
                     </div>
@@ -49,13 +51,15 @@
 
             @if ($displayRim()) {
                 <div class="rim" [ngClass]="{ show: $displayRim(), noShow: !$displayRim() }">
-                    <h5>Джанта</h5>
+                    <div class="d-flex flex-row mt-2 mb-2 justify-content-center">
+                        <h5>Джанта</h5>
+                    </div>
                     <div class="row">
-                        <div class="max250px">
+                        <div class="col-5 col-md-4 col-lg-3 max250px">
                             <app-company-choise [config]="{ all: true, bus: 0, userId: userId!, itemType: itemType() }" [formField]="searchForm.companyId"> </app-company-choise>
                         </div>
                         @if (this.companyId) {
-                            <div class="col-sm-5 control min300px">
+                            <div class="col-5 col-md-4 col-lg-3 min300px">
                                 <app-model-choice
                                     [formField]="searchForm.modelId"
                                     [userId]="userId"
@@ -69,7 +73,7 @@
                                 </app-model-choice>
                             </div>
                         }
-                        <div class="col-sm-3 control min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px control">
                             <app-select
                                 id="rimWidth"
                                 tooltip="'Широчина'"
@@ -82,10 +86,10 @@
                                 [data]="rimWidth">
                             </app-select>
                         </div>
-                        <div class="col-sm-2 min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px">
                             <app-select [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
                         </div>
-                        <div class="col-sm-3 control min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px control">
                             <app-select
                                 id="rimMaterial"
                                 tooltip="'Материал'"
@@ -98,7 +102,7 @@
                                 [data]="rimMaterial">
                             </app-select>
                         </div>
-                        <div class="col-sm-3 control min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px control">
                             <app-select
                                 id="rimOffset"
                                 tooltip="''"
@@ -111,11 +115,14 @@
                                 [data]="rimOffset">
                             </app-select>
                         </div>
-                        <div class="col-sm-3 control min200px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px control">
                             <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="searchForm.rimBoltCount" data-cy="rimBoltCount" [type]="1" label="Брой Болтове" [data]="rimBoltCount">
                             </app-select>
                         </div>
-                        <div class="col-sm-3 control min250px">
+                        <div class="col-5 col-md-4 col-lg-3 min150px control">
+                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="searchForm.rimCenter" data-cy="rimCenter" [type]="1" label="Център" [data]="rimCenters"> </app-select>
+                        </div>
+                        <div class="col-5 col-md-4 col-lg-3 min250px control">
                             <app-select
                                 id="rimBoltCount"
                                 tooltip="'Междуболтово разстояние'"
@@ -126,14 +133,11 @@
                                 [data]="boltDistances">
                             </app-select>
                         </div>
-                        <div class="col-sm-3 control">
-                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="searchForm.rimCenter" data-cy="rimCenter" [type]="1" label="Център" [data]="rimCenters"> </app-select>
-                        </div>
                     </div>
                 </div>
             }
             <div class="row">
-                <div class="max250px">
+                <div class="col-5 col-md-4 col-lg-2 min200px">
                     <app-region [formField]="searchForm.regionId"> </app-region>
                 </div>
             </div>
@@ -147,10 +151,15 @@
                 <!-- <app-buttonmenu appOutside [menuOptions]="$menuOptions()" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu> -->
 
                 <div class="d-flex justify-content-start ms-2" class="option-menu">
-                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: ($displayTyre() === true && $displayRim() === false) ? 'block' : 'none' }" (click)="newTyre(3)">
+                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: $displayTyre() === true && $displayRim() === false ? 'block' : 'none' }" (click)="newTyre(3)">
                         Добави Гума
                     </button>
-                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: ($displayRim() === true && $displayTyre() === false) || $displayAll() === true ? 'block' : 'none' }" (click)="newTyre(4)">
+                    <button
+                        type="button"
+                        class="btn btnAdd me-2"
+                        data-cy="addtyre"
+                        [ngStyle]="{ display: ($displayRim() === true && $displayTyre() === false) || $displayAll() === true ? 'block' : 'none' }"
+                        (click)="newTyre(4)">
                         Добави Джанта
                     </button>
                     <button

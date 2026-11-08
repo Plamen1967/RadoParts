@@ -19,9 +19,11 @@
             </div>
         </div>
         <div class="tyre mb-2" [ngClass]="{ show: $displayTyre(), noShow: !$displayTyre() }">
-            <h5>Гума</h5>
+            <div class="d-flex flex-row mt-2 mb-2 justify-content-center">
+                <h5>Гума</h5>
+            </div>
             <div class="row">
-                <div class="col-2 col-md-2 col-lg-2 min150px">
+                <div class="col-5 col-md-3 col-lg-2 min150px">
                     <app-select
                         [formField]="addTyreForm.tyreWidth"
                         label="{{ labels.TYRE_WIDTH }}"
@@ -32,7 +34,7 @@
                         (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
-                <div class="col-2 col-md-2 col-lg-2 min200px">
+                <div class="col-5 col-md-3 col-lg-2 min150px">
                     <app-select
                         [formField]="addTyreForm.tyreHeight"
                         label="{{ labels.TYRE_HEIGHT }}"
@@ -43,7 +45,7 @@
                         (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
-                <div class="col-2 col-md-2 col-lg-2 min150px">
+                <div class="col-5 col-md-3 col-lg-2 min150px">
                     <app-select
                         [formField]="addTyreForm.tyreRadius"
                         label="{{ labels.TYRE_RADIUS }}"
@@ -54,7 +56,7 @@
                         (onCloseEvent)="focus($event)">
                     </app-select>
                 </div>
-                <div class="col-2 col-md-2 col-lg-2 min150px">
+                <div class="col-5 col-md-4 col-lg-3 min200px">
                     <app-select
                         [formField]="addTyreForm.tyreType"
                         label="{{ labels.TYRE_TYPE }}"
@@ -65,7 +67,7 @@
                         [isRequired]="true">
                     </app-select>
                 </div>
-                <div class="col-3 col-md-3 col-lg-3 min200px">
+                <div class="col-5 col-md-3 col-lg-3 min150px">
                     <app-select
                         id="tyreCompanyId"
                         [formField]="addTyreForm.tyreCompanyId"
@@ -82,7 +84,7 @@
         @if ($displayTyre() || ($displayTyre() && $displayRim())) {
             <div class="row mb-2">
                 <div class="d-inline-flex align-items-end">
-                    <div class="col-4 col-md-4 col-lg-4 control min50px max100px me-2">
+                    <div class="col-4 col-md-3 col-lg-2 control min50px max100px me-2">
                         <app-select
                             id="month"
                             tooltip="'Mесец DOT'"
@@ -94,22 +96,23 @@
                             [submitted]="submitted()">
                         </app-select>
                     </div>
-                    <div class="col-4 col-md-4 col-lg-4 control min50px max100px">
+                    <div class="col-4 col-md-3 col-lg-2 control min50px max100px">
                         <app-select id="year" [formField]="addTyreForm.yearDOT" data-cy="year" [data]="years" (onCloseEvent)="focus($event)" [submitted]="submitted()"> </app-select>
                     </div>
                 </div>
             </div>
         }
         <div class="rim mb-2" [ngClass]="{ show: $displayRim(), noShow: !$displayRim() }">
-            <h5>Джанта</h5>
+            <div class="d-flex flex-row mt-2 mb-2 justify-content-center">
+                <h5>Джанта</h5>
+            </div>
             <div class="row">
-                <div class="col-4 col-md-4 col-lg-4 control max250px">
+                <div class="col-8 col-md-8 col-lg-4 control max250px">
                     <app-company-choise
                         id="companyId"
                         [formField]="addTyreForm.companyId"
                         data-cy="companyId"
-                        [config]="{ all: true, bus: 0, userId: userId(), required: true, 
-                            itemType: currentitemType(), showCount: false, submitted: submitted() }"
+                        [config]="{ all: true, bus: 0, userId: userId(), required: true, itemType: currentitemType(), showCount: false, submitted: submitted() }"
                         (onCloseEvent)="focus($event)">
                     </app-company-choise>
                 </div>
@@ -129,7 +132,7 @@
             </div>
             <div class="row">
                 @if (!$displayTyre()) {
-                    <div class="col-2 col-md-2 col-lg-2 min150px">
+                    <div class="col-4 col-md-4 col-lg-4 min150px">
                         <app-select
                             [formField]="addTyreForm.tyreRadius"
                             label="{{ labels.TYRE_RADIUS }}"
@@ -141,98 +144,93 @@
                         </app-select>
                     </div>
                 }
-                @if ($displayRim()) {}
-                <div class="col-3 col-md-3 col-lg-3 control min250px">
-                    <app-select
-                        id="rimMaterial"
-                        tooltip="'Материал'"
-                        [formField]="addTyreForm.rimMaterial"
-                        data-cy="rimMaterial"
-                        label="Материал"
-                        displayProperty="text"
-                        valueProperty="value"
-                        [data]="rimMaterial"
-                        [isRequired]="true"
-                        (onCloseEvent)="focus($event)"
-                        [submitted]="submitted()">
-                    </app-select>
-                </div>
-                <div class="col-3 col-md-3 col-lg-3 control min150px">
-                    <app-select
-                        id="rimBoltCount"
-                        tooltip="'Брой Болтове'"
-                        [formField]="addTyreForm.rimBoltCount"
-                        data-cy="rimBoltCount"
-                        label="Брой Болтове"
-                        [data]="rimBoltCount"
-                        (onCloseEvent)="focus($event)"
-                        [isRequired]="true"
-                        [submitted]="submitted()">
-                    </app-select>
-                </div>
+                @if ($displayRim()) {
+                    <div class="col-4 col-md-4 col-lg-3 control min150px">
+                        <app-select
+                            id="rimMaterial"
+                            tooltip="'Материал'"
+                            [formField]="addTyreForm.rimMaterial"
+                            data-cy="rimMaterial"
+                            label="Материал"
+                            displayProperty="text"
+                            valueProperty="value"
+                            [data]="rimMaterial"
+                            [isRequired]="true"
+                            (onCloseEvent)="focus($event)"
+                            [submitted]="submitted()">
+                        </app-select>
+                    </div>
+                    <div class="col-3 col-md-2 col-lg-2 control min150px">
+                        <app-select
+                            id="rimBoltCount"
+                            tooltip="'Брой Болтове'"
+                            [formField]="addTyreForm.rimBoltCount"
+                            data-cy="rimBoltCount"
+                            label="Брой Болтове"
+                            [data]="rimBoltCount"
+                            (onCloseEvent)="focus($event)"
+                            [isRequired]="true"
+                            [submitted]="submitted()">
+                        </app-select>
+                    </div>
 
-                <div class="col-3 col-md-3 col-lg-3 control min250px">
-                    <app-select
-                        id="rimOffset"
-                        tooltip="''"
-                        [formField]="addTyreForm.rimOffset"
-                        data-cy="rimOffset"
-                        label="Офсет"
-                        displayProperty="text"
-                        valueProperty="value"
-                        [data]="rimOffset"
-                        (onCloseEvent)="focus($event)"
-                        [submitted]="submitted()">
-                    </app-select>
-                </div>
-                <div class="col-3 col-md-3 col-lg-3 control min250px">
-                    <app-select
-                        id="rimBoltCount"
-                        tooltip="'Междуболтово разстояние'"
-                        [formField]="addTyreForm.rimBoltDistance"
-                        data-cy="rimBoltDistance"
-                        label="Междуболтово разстояние"
-                        [data]="rimBoltDistances"
-                        (onCloseEvent)="focus($event)"
-                        [submitted]="submitted()">
-                    </app-select>
-                </div>
+                    <div class="col-4 col-md-3 col-lg-2 control min150px">
+                        <app-select
+                            id="rimOffset"
+                            tooltip="''"
+                            [formField]="addTyreForm.rimOffset"
+                            data-cy="rimOffset"
+                            label="Офсет"
+                            displayProperty="text"
+                            valueProperty="value"
+                            [data]="rimOffset"
+                            (onCloseEvent)="focus($event)"
+                            [submitted]="submitted()">
+                        </app-select>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 col-md-6 col-lg-3 control min250px">
+                            <app-select
+                                id="rimBoltCount"
+                                tooltip="'Междуболтово разстояние'"
+                                [formField]="addTyreForm.rimBoltDistance"
+                                data-cy="rimBoltDistance"
+                                label="Междуболтово разстояние"
+                                [data]="rimBoltDistances"
+                                (onCloseEvent)="focus($event)"
+                                [submitted]="submitted()">
+                            </app-select>
+                        </div>
 
-                <div class="col-3 col-md-3 col-lg-3 control min150px">
-                    <app-select
-                        id="rimBoltCount"
-                        tooltip="'Брой Болтове'"
-                        [formField]="addTyreForm.rimCenter"
-                        data-cy="rimCenter"
-                        label="Център"
-                        [data]="rimCenters"
-                        (onCloseEvent)="focus($event)"
-                        [submitted]="submitted()">
-                    </app-select>
-                </div>
+                        <div class="col-4 col-md-3 col-lg-2 control min200px">
+                            <app-select
+                                id="rimBoltCount"
+                                tooltip="'Брой Болтове'"
+                                [formField]="addTyreForm.rimCenter"
+                                data-cy="rimCenter"
+                                label="Център"
+                                [data]="rimCenters"
+                                (onCloseEvent)="focus($event)"
+                                [submitted]="submitted()">
+                            </app-select>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-        <div class="row mb-2">
-            <div class="col-1 col-md-1 col-lg-1 min150px">
+        <div class="row g-3">
+            <div class="col-2 col-md-2 col-lg-2 min150px">
                 <app-input [formField]="addTyreForm.count" [number]="true" [inline]="true" [submitted]="submitted()" label="Брой" data-cy="count" [isRequired]="true"></app-input>
             </div>
-            <div class="col-6 col-md-6 col-lg-6  ">
-                <app-select
-                    [formField]="addTyreForm.regionId"
-                    label="{{ labels.REGION }}"
-                    [submitted]="submitted()"
-                    data-cy="region"
-                    [data]="regions"
-                    (onCloseEvent)="focus($event)">
-                </app-select>
+            <div class="col-5 col-md-4 col-lg-2 min150px">
+                <app-select [formField]="addTyreForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted()" data-cy="region" [data]="regions" (onCloseEvent)="focus($event)"> </app-select>
             </div>
         </div>
         <div class="row form-floating mb-2">
-            <app-textarea [formField]="addTyreForm.description" placeHolder="{{ labels.PART_DETAILS }}" data-cy="description"
-             [submitted]="submitted()"> </app-textarea>
+            <app-textarea [formField]="addTyreForm.description" placeHolder="{{ labels.PART_DETAILS }}" data-cy="description" [submitted]="submitted()"> </app-textarea>
         </div>
         <div class="row g-3">
-            <div class="d-inline">
+            <div class="col-5 col-md-4 col-lg-2 min250px">
                 <app-input
                     [formField]="addTyreForm.price"
                     placeHolder="{{ labels.PRICE }}"
@@ -245,21 +243,13 @@
                     [isRequired]="true"></app-input>
             </div>
         </div>
-
         <!-- <div class="d-inline-flex justify-content-end">
             <app-toolbar [canCancel]="true" [changed]="changed" [canSave]="updateFlag" [saveName]="action" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
         </div> -->
         <div class="row mt-3" style="position: relative">
             <app-imagelist [itemId]="itemId()" [UpdateFlag]="true" [mainImage]="mainImageId!" (defaultImageEvent)="defaultImageChanged($event)"></app-imagelist>
             <div class="d-inline-flex justify-content-end position-buttons w-100">
-                <app-toolbar
-                    [canCancel]="true"
-                    [isChanged]="true"
-                    [canSave]="true"
-                    [saveName]="$actionMessage()"
-                    [cancelName]="labels.GOBACK"
-                    (Save)="onSubmit()"
-                    (Cancel)="cancel()"></app-toolbar>
+                <app-toolbar [canCancel]="true" [isChanged]="true" [canSave]="true" [saveName]="$actionMessage()" [cancelName]="labels.GOBACK" (Save)="onSubmit()" (Cancel)="cancel()"></app-toolbar>
             </div>
         </div>
     </form>
