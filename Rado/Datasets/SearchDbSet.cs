@@ -160,7 +160,7 @@ namespace Rado.Datasets
         private static async Task<SearchResult> SearchForTyres(Filter filterPart)
         {
             EnrichManager.EnrichFilter(filterPart);
-            SearchResult searchResult = RimWithTyreDbSet.SearchForRimTyres(filterPart); ;
+            SearchResult searchResult = RimWithTyreDbSet.SearchForRimTyres(filterPart); 
             return await Task.FromResult<SearchResult>(searchResult);
         }
 
@@ -445,7 +445,9 @@ namespace Rado.Datasets
                         return await Task.FromResult<SearchResult>(searchResult);
                     }
                 case ItemType.None:
-                    {
+                {
+                        long id = filterPart.Id;
+                        searchResult.filter = filterPart;
                         Task< SearchResult> tyreResult = SearchDbSet.SearchForTyres(filterPart);
                         filterPart.Id = 0;
                         Task<SearchResult> partResult =  SearchDbSet.SearchForParts(filterPart);
@@ -455,11 +457,11 @@ namespace Rado.Datasets
                         List<DisplayPartView> data2 = partResult.Result.data.ToList();
                         var dataNew = new[] { data, data2 }.SelectMany(x => x);
 
+                        searchResult.filter.Id = id;
                         searchResult.duration = Environment.TickCount - startTime;
                         searchResult.data = dataNew.ToArray();
                         foreach (var item in searchResult.data) item.Normalize();
                         searchResult.size = searchResult.data.Count();
-                        searchResult.filter = filterPart;
 
                         _ = Task.Run(() => LoggerUtil.Log(
                             $"All SearchController::Search Elapsed Time is {searchResult.duration} ms"));

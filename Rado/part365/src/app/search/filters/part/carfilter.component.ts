@@ -559,6 +559,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         const filter: Filter = Object.assign(
             { ...this.carFilterModel() },
             { searchBy: SearchBy.Filter },
+            { partNumber: undefined },
             { adminRun: this.admin ? true : false },
             { extendedSearch: this.extendedSearch_ },
             { selectedCategories: undefined }
@@ -574,12 +575,12 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         }
 
         this.submitted.set(true)
-        const filter: Filter = Object.assign(this.carFilterModel(), { SearchBy: SearchBy.PartNumber }, { extendedSearch_: this.extendedSearch_ }, { id: 0 })
+        const filter: Filter = Object.assign({partNumber: this.carFilterModel().partNumber, itemType: ItemType.CarPart, hasImage: this.carFilterModel().hasImages, searchBy: SearchBy.PartNumber }, { id: 0 })
         this.goToResult(filter)
     }
 
     categoryClick(categoryId: number) {
-        const filter: Filter = Object.assign(this.carFilterModel(), { selectedCategories: [] }, { extendedSearch: this.extendedSearch_ }, { categoryId: categoryId }, { id: 0 })
+        const filter: Filter = Object.assign(this.carFilterModel(), {partNumber: undefined, selectedCategories: [] }, { extendedSearch: this.extendedSearch_ }, { categoryId: categoryId }, { id: 0 })
         this.goToResult(filter)
     }
 
