@@ -173,9 +173,9 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         minLength(path.dealerSubCategoryName, 1, {
             message: 'Моля въведете име дилърска категория',
         })
-        validate(path.price, ({ value }) => { 
+        validate(path.price, ({ value }) => {
             const strValue = value()?.toString() ?? ''
-            
+
             const test = /^(([1-9](\d*|\d{0,2}(,\d{3})*))|0)(\.\d{1,2})?$/i.test(strValue)
 
             if (test === false) {
@@ -257,6 +257,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
     displayPartView = input<DisplayPartView | undefined>()
     saved = output<number>()
     noChange = output<number>()
+    savedDisplayPart = output<DisplayPartView>()
     carId = input<number | undefined>(undefined)
     update = input<boolean>(false)
     addItemParam = input.required<AddItemParam>()
@@ -297,6 +298,12 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         return this.$mode() === UpdateEnum.Update || this.$mode() === UpdateEnum.New
     })
 
+    $addItemParam = computed(() => {
+        console.log(`Add Item Param: ${this.addItemParam()?.carId} ${this.addItemParam()?.id} ${this.addItemParam()?.add}`)
+
+        this.addPartFormModel.update((value) => ({ ...value, carId: this.addItemParam()?.carId ?? 0 }))
+        return this.addItemParam()
+    })
     $mode = computed(() => {
         let mode: UpdateEnum = UpdateEnum.View
         if (this.addItemParam()?.add) mode = UpdateEnum.New
@@ -419,6 +426,11 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             if (event instanceof NavigationStart) {
                 this.browserRefresh = !this.router.navigated
             }
+        })
+
+        effect(() => {
+            console.log(`Add Item Param: ${this.addItemParam()?.carId} ${this.addItemParam()?.id} ${this.addItemParam()?.add}`)
+            this.addPartFormModel.update((value) => ({ ...value, carId: this.addItemParam()?.carId ?? 0 }))
         })
 
         effect(() => {
@@ -715,6 +727,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                     this.homeService.updateItem(part.id!, part)
                 } else this.message = 'Частта е добавена'
                 this.userCountService.fetchUserCount()
+                this.savedDisplayPart.emit(part)
                 const snackBarRef = this.toastService.showToast(this.message!, 1)
 
                 snackBarRef.afterDismissed().subscribe(() => {

@@ -85,10 +85,10 @@
                     <app-dealerview
                         id="{{ car.carId }}"
                         [mainPicture]="car.mainPicture"
-                        [highlighted]="currentCarId"
+                        [highlighted]="currentCarId()"
                         [carView]="car"
                         [allowUpdate]="true"
-                        [showPart]="showParts"
+                        [showPart]="showParts()"
                         (action)="actionCar($event)"
                         (addPartCarId)="addPartFunc($event)">
                     </app-dealerview>
@@ -115,15 +115,25 @@
         }
     </div>
 </div>
-@if ($addCarFlag()) {
-    <app-addcar [addItemParam]="{ bus: 0, add: $addCarFlag() }" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
-} @else if ($addBusFlag()) {
-    <app-addcar [addItemParam]="{ bus: 1, add: $addBusFlag() }" [bus]="1" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
-} @else if ($updateCarFlag()) {
-    <app-updatecar [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
-} @else if ($updateBusFlag()) {
-    <app-updatebus [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatebus>
-} @else if ($updatePartFlag()) {
-    <app-updatepart [id]="partId()" (saved)="savedPart($event)" (noChange)="back($event)"></app-updatepart>
+@if ($update() === true) {
+    @if ($addCarFlag()) {
+        <app-addcar [addItemParam]="{ bus: 0, add: $addCarFlag() }" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
+    } @else if ($addBusFlag()) {
+        <app-addcar [addItemParam]="{ bus: 1, add: $addBusFlag() }" [bus]="1" (saved)="saved($event)" (noChange)="back($event!)"></app-addcar>
+    } @else if ($updateCarFlag()) {
+        <app-updatecar [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatecar>
+    } @else if ($updateBusFlag()) {
+        <app-updatebus [carId]="carId()" (saved)="saved($event)" (noChange)="back($event)"></app-updatebus>
+    } @else if ($addPartFlag() === true) {
+        <app-addpart 
+                [add]="$addPartFlag()" 
+                (saved)="savedPart($event)" 
+                (noChange)="back($event)" 
+                [addItemParam]="{add: true, bus: this.bus(), carId: this.carId(), mode: this.mode}"
+                (savedDisplayPart)="addDisplayPart($event)">
+        </app-addpart>
+    } @else if ($updatePartFlag()) {
+        <app-updatepart [id]="partId()" (saved)="savedPart($event)" (noChange)="back($event)"></app-updatepart>
+    }
 }
 <app-gotop></app-gotop>

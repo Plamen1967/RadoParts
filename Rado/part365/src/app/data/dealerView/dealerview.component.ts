@@ -22,7 +22,8 @@ import { OKCancelOption } from '@app/dialog/model/confirmDialogData'
 import { goToPosition } from '@app/functions/functions'
 import { httpResource } from '@angular/common/http'
 import { environment } from '@env/environment'
-import AddPartComponent from '../parts/addPart/addpart.component';
+import AddPartComponent from '../parts/addPart/addpart.component'
+import { Router } from '@angular/router'
 //#endregion
 //#region component
 @Component({
@@ -33,12 +34,12 @@ import AddPartComponent from '../parts/addPart/addpart.component';
 })
 //#endregion
 export class DealerViewComponent extends HelperComponent implements AfterViewInit {
-back(arg0: number) {
-    console.log(`${arg0}`)
-}
-savedPart($event: number) {
-    console.log(`${$event}`)
-}
+    back(arg0: number) {
+        console.log(`${arg0}`)
+    }
+    savedPart($event: number) {
+        console.log(`${$event}`)
+    }
     //#region variables and services
     parts: PartView[] = []
     mode: UpdateEnum = UpdateEnum.View
@@ -62,35 +63,31 @@ savedPart($event: number) {
     private partService: PartServiceService = inject(PartServiceService)
     private alertService: AlertService = inject(AlertService)
     private popupService: PopUpService = inject(PopUpService)
+    private router = inject(Router)
     //#endregion
 
     isHighlighted = computed(() => {
         // console.log(`Is Highlighted ${(this.highlighted() ?? 0) === this.id()} ${this.id()} ${this.highlighted()}`)
-        return (this.highlighted()) == this.id()
+        return this.highlighted() == this.id()
     })
-
 
     carId = signal<number>(0)
     partresource = httpResource<PartView[]>(() => {
-        if (this.carId() != 0)
-            return `${environment.restAPI}/Part/GetPartsByCarId?carId=${this.carId()}`
-        else 
-            return undefined
+        if (this.carId() != 0) return `${environment.restAPI}/Part/GetPartsByCarId?carId=${this.carId()}`
+        else return undefined
     })
 
-    $showParts = computed(() => 
-        {
-            console.log(`${this.partService.showParts()} ${this.id()}`)
-            return this.partService.showParts() != 0 && this.partService.showParts() === this.id()
-        })
+    $showParts = computed(() => {
+        console.log(`${this.partService.showParts()} ${this.id()}`)
+        return this.partService.showParts() != 0 && this.partService.showParts() === this.id()
+    })
     partsPerCar = computed(() => this.partresource.value())
 
     hasPartId(partId: number): boolean {
         const array = this.partsPerCar()?.find((part) => part.partId === partId)
-        if (array && Array.length > 0)
-            return true
+        if (array && Array.length > 0) return true
 
-        return false;
+        return false
     }
 
     constructor() {
@@ -135,12 +132,9 @@ savedPart($event: number) {
     }
 
     displayParts(event: number) {
-        if (this.partService.showParts() === event )
-        {
+        if (this.partService.showParts() === event) {
             this.partService.showParts.set(0)
-        }
-        else 
-            {
+        } else {
             this.carId.set(event)
             this.partService.showParts.set(this.id())
         }
@@ -186,13 +180,17 @@ savedPart($event: number) {
     }
 
     addPart(event: number) {
+        this.carId.set(this.carView()!.carId!)
+        this.partService.showParts.set(this.carView()!.carId!)
+
         console.log(`Part Id: ${event}`)
-            this.addPartFlag.set(true)
-//        this.action.emit({ action: UpdateEnum.New, id: event, car: false })
+        this.router.navigate(['/data/cars'], { queryParams: { addPart: true, carId: event } })
+        //  this.addPartFlag.set(true)
+        //        this.action.emit({ action: UpdateEnum.New, id: event, car: false })
     }
 
     reload() {
-        this.partresource.reload();
+        this.partresource.reload()
     }
     refreshPart(part: PartView) {
         if (part) {
