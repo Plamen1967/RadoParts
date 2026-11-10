@@ -8,7 +8,7 @@
     <div class="pt-0 min150px flex-end pb-3 pt-1">
         <div class="d-inline-flexd-flex-inline bg-error flex-end">
             <div class="flex-item">
-                <app-select data-cy="orderBy" id="sortForm" label="{{ labels.SORTBY }}" [data]="sort" [value]="value()"> </app-select>
+                <app-select data-cy="orderBy" id="sortForm" label="{{ labels.SORTBY }}" [data]="sort()" [value]="value()" (valueChanged)="this.value.set($event)"> </app-select>
             </div>
         </div>
     </div>

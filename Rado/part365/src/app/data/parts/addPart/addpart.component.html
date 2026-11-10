@@ -20,7 +20,7 @@
                                     <label class="custom-control-label" for="PartForCar">Част за {{ $choice() }}</label>
                                 </div>
                                 @if (addPartForm.partForCar().value() === 'car') {
-                                    <div class="ms-2align-items-center min250px" style="max-width: 400px">
+                                    <div class="ms-2 align-items-center min250px" style="max-width: 400px">
                                         <div class="min250px">
                                             <app-select
                                                 id="car"
@@ -51,23 +51,23 @@
                     }
                 </div>
             }
-            <div class="card p-2 mt-2" style="background-color: honeydew">
+            <div class="card p-2 mt-3" style="background-color: honeydew">
                 @if (addPartForm.partForCar().value() === 'part') {
                     <div>
                         <div class="row g-3">
                             <div class="row mb-1">
                                 <div class="row modell-1000px">
-                                    <div class="col-sm-3 col-md-3 col-lg-3 min300px">
+                                    <div class="col-5 col-md-3 col-lg-2 min250px">
                                         <app-company-choise [config]="{ bus: bus(), all: true, required: true, submitted: $submitted() }" [formField]="addPartForm.companyId" data-cy="companyid">
                                         </app-company-choise>
                                     </div>
-                                    @if (companyId()) {
-                                        <div class="col-sm-3 col-md-3 col-lg-3 min350px">
+                                    @if (addPartForm.companyId().value()) {
+                                        <div class="col-5 col-md-5 col-lg-4 min250px">
                                             <app-model-choice
                                                 [formField]="addPartForm.modelId"
                                                 [all]="true"
                                                 [isRequired]="true"
-                                                [companyId]="companyId()"
+                                                [companyId]="addPartForm.companyId().value()"
                                                 [showGroup]="true"
                                                 [groupDisabled]="true"
                                                 [multiselection]="false"
@@ -75,10 +75,10 @@
                                                 (onCloseEvent)="focus($event)">
                                             </app-model-choice>
                                         </div>
-                                        @if (!bus() && modelId()) {
-                                            <div class="col-sm-3 min350px">
+                                        @if (!bus() && addPartForm.modelId().value()) {
+                                            <div class="col-5 col-md-5 col-lg-5  min400px">
                                                 <app-modification-choice
-                                                    [modelsId]="modelId()"
+                                                    [modelsId]="addPartForm.modelId().value()"
                                                     [all]="true"
                                                     [isRequired]="true"
                                                     [multiselection]="false"
@@ -93,7 +93,7 @@
                                         }
                                     }
                                     @if (addPartForm.modificationId().value() || (bus() && addPartForm.modelId().value())) {
-                                        <div class="col-sm-3 col-md-3 col-lg-3 min200px">
+                                        <div class="col-3 col-md-2 col-lg-2 min200px">
                                             <app-select
                                                 [formField]="addPartForm.year"
                                                 label="{{ labels.YEAR }}"
@@ -108,10 +108,10 @@
                             </div>
                         </div>
                         <div class="row g-3 mb-1">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-3 col-lg-3">
                                 <app-input [formField]="addPartForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" data-cy="vin" [submitted]="$submitted()"> </app-input>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-2 col-lg-2">
                                 <app-input
                                     [formField]="addPartForm.powerBHP"
                                     type="number"
@@ -122,7 +122,7 @@
                                     data-cy="powerBHP">
                                 </app-input>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-2 col-lg-2">
                                 <app-input
                                     [formField]="addPartForm.powerkWh"
                                     type="number"
@@ -133,13 +133,13 @@
                                     data-cy="powerkWh">
                                 </app-input>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-3 col-lg-3">
                                 <app-input [formField]="addPartForm.millage" type="number" label="{{ labels.MILLAGE }}" data-cy="millage" placeHolder="{{ labels.MILLAGE }}" [submitted]="$submitted()">
                                 </app-input>
                             </div>
                         </div>
                         <div class="row mb-1">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-3 col-lg-3">
                                 <app-select
                                     [formField]="addPartForm.engineType"
                                     label="{{ labels.TYPE_ENGINE }}"
@@ -149,7 +149,7 @@
                                     (onCloseEvent)="focus($event)">
                                 </app-select>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-3 col-lg-3">
                                 <app-input
                                     [formField]="addPartForm.engineModel"
                                     label="{{ labels.CODE_ENGINE }}"
@@ -159,7 +159,7 @@
                                     (onCloseEvent)="focus($event)">
                                 </app-input>
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-3 col-lg-3">
                                 <app-select
                                     [formField]="addPartForm.gearboxType"
                                     label="{{ labels.TYPE_GEARBOX }}"
@@ -171,7 +171,7 @@
                             </div>
                         </div>
                         <div class="row mb-1">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-3 col-md-3 col-lg-3">
                                 <app-select
                                     [formField]="addPartForm.regionId"
                                     label="{{ labels.REGION }}"
@@ -186,7 +186,7 @@
                 }
 
                 <div class="row">
-                    <div class="col-sm-3 col-md-3 col-lg-3 min350px">
+                    <div class="col-5 col-md-4 col-lg-2 min350px">
                         <app-category-choise
                             id="categoryId"
                             [formField]="addPartForm.categoryId"
@@ -205,7 +205,7 @@
                         </app-category-choise>
                     </div>
                     @if (addPartForm.categoryId().value()) {
-                        <div class="col-sm-3 col-md-3 col-lg-3 min350px">
+                        <div class="col-5 col-md-4 col-lg-2 min300px">
                             <app-dealersubcategory-choice
                                 [categoryId]="addPartForm.categoryId().value()"
                                 [formField]="addPartForm.dealerSubCategoryId"
@@ -219,7 +219,7 @@
                             </app-dealersubcategory-choice>
                         </div>
                         @if (addPartForm.dealerSubCategoryId().value() !== 0) {
-                            <div class="col-sm-3 col-md-3 col-lg-3 min350px">
+                            <div class="col-3 col-md-2 col-lg-2 min300px">
                                 <app-input
                                     [formField]="addPartForm.dealerSubCategoryName"
                                     label="{{ labels.DEALERSUBCATEGORYHELP }}"
@@ -233,7 +233,7 @@
                     }
                 </div>
                 <div class="row">
-                    <div class="col-sm-3 col-md-3 col-lg-3 min350px">
+                    <div class="col-3 col-md-3 col-lg-3 min350px">
                         <app-input [formField]="addPartForm.partNumber" label="{{ labels.PART_NUMBER }}" [submitted]="$submitted()" data-cy="partNumber" placeHolder="{{ labels.PART_NUMBER }}">
                         </app-input>
                     </div>

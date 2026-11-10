@@ -57,6 +57,7 @@ export class SelectComponent implements FormValueControl<number> {
     changeSelectOption(obj: number) {
         this.selectedValue24 = obj
         this.value.set(obj)
+        this.valueChanged.emit(obj)
     }
 
     onChangeSelect() {

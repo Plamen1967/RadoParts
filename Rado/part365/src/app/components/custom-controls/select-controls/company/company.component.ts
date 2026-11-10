@@ -1,5 +1,5 @@
 //#region @Component
-import { Component, HostListener, inject, Inject, OnInit } from '@angular/core'
+import { Component, HostListener, inject, Inject, OnInit, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog'
 import { SelectBase } from '@components/custom-controls/selectBase'
 import { NgClass } from '@angular/common'
@@ -26,6 +26,8 @@ export class CompanyComponent extends SelectBase implements OnInit {
         return true
     }
     //#region members
+    @ViewChild('SearchInputComponent') searchInput: SearchInputComponent | undefined
+
     _index = 0
     showAll = true
     placeHolder?: string
@@ -75,6 +77,9 @@ export class CompanyComponent extends SelectBase implements OnInit {
         this.clear()
         this._data.forEach((item) => (item.isSelected = false))
         this.updateData()
+
+        const searchInput = this.searchInput as (SearchInputComponent & { clear?: () => void }) | undefined
+        searchInput?.clear?.()
     }
 
     filterChange(value: string) {

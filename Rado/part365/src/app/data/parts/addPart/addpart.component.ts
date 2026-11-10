@@ -646,7 +646,8 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
             this.addPartFormModel.update((value) => ({ ...value, year: 0 }))
         }
         this.$yearFrom.set(modification?.yearFrom ?? this.labels.YEAR_START)
-        this.$yearTo.set(modification?.yearTo ?? 2026)
+        if (modification?.yearTo === 0) this.$yearTo.set(this.currentYear)
+        else this.$yearTo.set(modification?.yearTo ?? this.currentYear)    
     }
 
     //#endregion

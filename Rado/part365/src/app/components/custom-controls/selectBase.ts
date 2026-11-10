@@ -26,7 +26,7 @@ export class SelectBase {
     firstLetters: string[] = []
     letterSelected?: string
     showCountOnly = 0
-    found?: InternalValue[]
+    found = signal<InternalValue[]>([])
     //#region get/set invernal values
 
     selectedItems = computed(() => {
@@ -113,9 +113,9 @@ export class SelectBase {
         //     return true
         // })
 
-        this.found = this._data.filter((item) => {
+        this.found.set(this._data.filter((item) => {
             return item.showItem
-        })
+        }))
 
         if (this.value() && this.value().length)
             this.selections.set(

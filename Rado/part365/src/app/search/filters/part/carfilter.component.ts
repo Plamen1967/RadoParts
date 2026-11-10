@@ -575,7 +575,7 @@ export class CarFilterComponent extends HelperComponent implements OnInit, After
         }
 
         this.submitted.set(true)
-        const filter: Filter = Object.assign({partNumber: this.carFilterModel().partNumber, itemType: ItemType.CarPart, hasImage: this.carFilterModel().hasImages, searchBy: SearchBy.PartNumber }, { id: 0 })
+        const filter: Filter = Object.assign({partNumber: this.carFilterModel().partNumber, itemType: this.carFilterModel().itemType, hasImage: this.carFilterModel().hasImages, searchBy: SearchBy.PartNumber }, { id: 0 })
         this.goToResult(filter)
     }
 

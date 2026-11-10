@@ -30,7 +30,7 @@ export class SearchBarComponent extends HelperComponent implements FormValueCont
     sortForm = form(this.searchModel)
     //#region variables and services
     value = model<number>(0)
-    sort: SelectOption[] = []
+    sort = signal<SelectOption[]>([])
     isDisabled?: boolean
     submitEvent = output<void>()
     clearEvent = output<void>()
@@ -47,7 +47,7 @@ export class SearchBarComponent extends HelperComponent implements FormValueCont
         effect(() => {
             this.value.set(this.searchModel().orderBy)
         })
-        this.sort = this.staticSelectionService.Sort
+        this.sort.set(this.staticSelectionService.Sort)
     }
 
     submit() {

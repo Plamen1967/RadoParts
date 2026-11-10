@@ -207,7 +207,7 @@ export class HomeComponent extends HelperComponent implements OnInit, OnDestroy 
         this.searchService.search(filter).subscribe({
             next: (res) => {
                 const dataManager = this.homeService.updateData(res.filter?.id ?? 0, filter)
-
+                
                 dataManager.updateData(res)
                 if (dataManager.noParts()) {
                     this.confirmationService.OK('Съобщение', this.labels.NORESULTS)

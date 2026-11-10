@@ -19,7 +19,6 @@ export class SearchInputComponent implements FormValueControl<string> {
 
     filterChanged = output<string>()
     Search = output<string>()
-
     constructor() {
         effect(() => {
             this.clearBox = this.value() ? true : false
