@@ -16,10 +16,10 @@
         </div>
         @if (imageData) {
             <div class="row catchaRow">
-                <div class="col-sm-6 pe-0" [ngStyle]="{ height: 'inherit' }">
+                <div class="col-6 pe-0" [ngStyle]="{ height: 'inherit' }">
                     <app-catcha [imageData]="imageData"></app-catcha>
                 </div>
-                <div class="col-sm-6 ps-0">
+                <div class="col-6 ps-0">
                     <app-input [formField]="requestByEmail.catcha" [border]="false" type="text" placeHolder="{{ labels.CATCHA }}" [submitted]="submitted"> </app-input>
                 </div>
             </div>

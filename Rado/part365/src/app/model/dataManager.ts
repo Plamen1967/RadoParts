@@ -124,6 +124,7 @@ export class DataManager {
         if (result) {
             this.searched = true
             this.searchResult = result
+            this.sortType = result.filter?.orderBy ?? SortType.PriceAsc
             this.allParts = [...result?.data ?? []]
             this.allParts.sort((a, b) => sortPart(this.sortType, a, b))
             this.filterData.sort((a, b) => sortPart(this.sortType, a, b))

@@ -4,4 +4,5 @@ export class DealerActionType {
     action? : UpdateEnum;
     car?: boolean;
     id?: number;
+    carId?: number;
 }

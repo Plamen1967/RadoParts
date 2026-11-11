@@ -10,12 +10,12 @@
         <form>
             <div class="row g-3">
                 <div class="g-2 mt-2">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-4 col-md-4 col-lg-4">
                         <app-select [formField]="listForm.carId" label="{{ $label() }}" [data]="carsList" (onCloseEvent)="focus()" (changeOption)="cleanOther()"> </app-select>
                     </div>
                 </div>
                 @if (listForm.carId().value() === 0) {
-                    <div class="max300px col-sm-4 col-md-4 col-lg-4">
+                    <div class="max300px col-4 col-md-4 col-lg-4">
                         <app-company-choise [config]="{ itemType: $itemType(), userId: userId!, bus: bus(), showCount: true, all: true }" [formField]="listForm.companyId"> </app-company-choise>
                     </div>
                     @if (listForm.companyId().value() > 0) {
@@ -85,9 +85,10 @@
                     <app-dealerview
                         id="{{ car.carId }}"
                         [mainPicture]="car.mainPicture"
-                        [highlighted]="currentCarId()"
+                        [highlighted]="currentCarId() ?? selectedCarId()"
                         [carView]="car"
                         [allowUpdate]="true"
+                        [highlightedPartId]="currentPartId()"
                         [showPart]="showParts()"
                         (action)="actionCar($event)"
                         (addPartCarId)="addPartFunc($event)">

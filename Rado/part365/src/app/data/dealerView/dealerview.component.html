@@ -46,7 +46,7 @@
                 <div class="parts">
                     @for (part of this.partsPerCar(); track part.partId) {
                         <div class="car_part" id="{{part.partId}}">
-                            <app-dealerview [showPart]="true" [partView]="part" [allowUpdate]="true" (action)="actionPart($event)"> </app-dealerview>
+                            <app-dealerview [showPart]="true" [partView]="part" [allowUpdate]="true" [highlighted]="highlightedPartId()" [id]="part.partId" (action)="actionPart($event)"> </app-dealerview>
                         </div>
                     }
                 </div>

@@ -54,6 +54,7 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
     rimWithTyreView = input<DisplayPartView | undefined>()
     mainPicture = input<string | undefined>()
     highlighted = input<number | undefined>()
+    highlightedPartId = input<number | undefined>()
     showPart = input<boolean>(false)
     action = output<DealerActionType>()
     addPartCarId = output<number>()
@@ -67,7 +68,12 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
     //#endregion
 
     isHighlighted = computed(() => {
-        // console.log(`Is Highlighted ${(this.highlighted() ?? 0) === this.id()} ${this.id()} ${this.highlighted()}`)
+        if (this.partView() && this.highlighted()) {
+            const isHighlighted = this.highlighted() === this.partView()?.partId
+            console.log(`Is Part Highlighted  ${isHighlighted} ${this.partView()?.partId} ${this.highlighted()}`)
+            return isHighlighted
+        }
+        console.log(`Is Highlighted ${(this.highlighted() ?? 0) === this.id()} ${this.id()} ${this.highlighted()}`)
         return this.highlighted() == this.id()
     })
 
@@ -138,7 +144,7 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
             this.carId.set(event)
             this.partService.showParts.set(this.id())
         }
-
+        // this.router.navigate(['/data/cars'], { queryParams: { showParts: true, selectedCarId: event } })
         // if (this.$showParts())
         //     this.carId.set(event)
         // else
@@ -174,8 +180,7 @@ export class DealerViewComponent extends HelperComponent implements AfterViewIni
         if (event.action === UpdateEnum.Delete) {
             this.deletePart(this.currentPartId!)
         } else {
-            this.addPartFlag.set(true)
-            //this.action.emit({ action: event.action, id: this.currentPartId, car: false })
+            this.action.emit({ action: event.action, id: this.currentPartId, car: false, carId: event.carId })
         }
     }
 

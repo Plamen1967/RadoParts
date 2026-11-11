@@ -40,7 +40,7 @@
                     }
                     @if (item().id) {
                         <div class="itemContainer">
-                            <div class="description col-sm-6 border-container">
+                            <div class="description col-6 border-container">
                                 <div class="position-relative">
                                     @if (showFavourite) {
                                         <app-favourite [id]="item().id"></app-favourite>
@@ -102,7 +102,7 @@
                                     }
                                     @if (phones && !isMobile) {
                                         <app-datarow label="{{ labels.PHONE }}">
-                                            <div class="param col-sm-7">
+                                            <div class="param col-7">
                                                 @if (phone1) {
                                                     <div>
                                                         <small data-cy="sellerName" class="me-2"><i class="las la-phone-volume"></i> {{ phone1 }} </small>
@@ -136,7 +136,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="dealer col-sm-3">
+                            <div class="dealer col-3">
                                 <div class="mt-2">
                                     <app-usercard [viewItem]="item()"></app-usercard>
                                 </div>

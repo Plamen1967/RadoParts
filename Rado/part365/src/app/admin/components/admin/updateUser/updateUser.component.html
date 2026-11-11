@@ -21,10 +21,10 @@
 
     <form>
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-2">
                 <app-input [formField]="userForm.userName" label="{{ labels.USERNAME }}" placeHolder="{{ labels.USERNAME }}" [isRequired]="true" [submitted]="submitted"> </app-input>
             </div>
-            <div class="col-sm-6 mt-4">
+            <div class="col-6 mt-4">
                 @if (isDealer) {
                     <div class="btn dealerBtn" (click)="userPrivate()" role="none">Стани частно лице</div>
                 }
@@ -35,7 +35,7 @@
         </div>
         <div class="row">
             @if (isDealer) {
-                <div class="col-sm-2">
+                <div class="col-2">
                     <app-input [formField]="userForm.companyName" label="{{ labels.COMPANYNAME }}" placeHolder="{{ labels.COMPANYNAME }}" [submitted]="submitted" [isRequired]="true"> </app-input>
                 </div>
                 @if (submitted && !userForm.companyName().valid()) {
@@ -46,7 +46,7 @@
                     </div>
                 }
             } @else {
-                <div class="col-sm-2">
+                <div class="col-2">
                     <app-input [formField]="userForm.firstName" label="{{ labels.FIRSTNAME }}" placeHolder="{{ labels.FIRSTNAME }}" [submitted]="submitted" [isRequired]="true"> </app-input>
                     @if (submitted && !userForm.firstName().valid()) {
                         <div class="invalid-feedback-error">
@@ -56,13 +56,13 @@
                         </div>
                     }
                 </div>
-                <div class="col-sm-2">
+                <div class="col-2">
                     <app-input [formField]="userForm.lastName" label="{{ labels.LASTNAME }}" placeHolder="{{ labels.LASTNAME }}" [submitted]="submitted"> </app-input>
                 </div>
             }
         </div>
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-2">
                 <app-select [formField]="userForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted" [data]="regions" [submitted]="submitted" [isRequired]="true"> </app-select>
                 @if (submitted && !userForm.regionId().valid()) {
                     <div class="invalid-feedback-error">
@@ -72,7 +72,7 @@
                     </div>
                 }
             </div>
-            <div class="col-sm-3">
+            <div class="col-3">
                 <app-input [formField]="userForm.address" label="{{ labels.ADDRESS }}" placeHolder="{{ labels.ADDRESS }}" [submitted]="submitted"> </app-input>
                 @if (submitted && !userForm.address().valid()) {
                     <div class="invalid-feedback-error">
@@ -82,31 +82,31 @@
                     </div>
                 }
             </div>
-            <div class="col-sm-2">
+            <div class="col-2">
                 <app-input [formField]="userForm.city" label="{{ labels.CITY }}" placeHolder="{{ labels.CITY }}" [submitted]="submitted"> </app-input>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-2">
                 <app-input [formField]="userForm.phone" label="{{ labels.PHONE }}" [isRequired]="true" placeHolder="{{ labels.PHONE }}" [submitted]="submitted"> </app-input>
             </div>
-            <div class="col-sm-2">
+            <div class="col-2">
                 <app-input [formField]="userForm.phone2" label="{{ labels.PHONE2 }}" placeHolder="{{ labels.PHONE2 }}" [submitted]="submitted"> </app-input>
             </div>
-            <div class="col-sm-2">
+            <div class="col-2">
                 <app-input [formField]="userForm.viber" label="{{ labels.VIBER }}" placeHolder="{{ labels.VIBER }}" [submitted]="submitted"> </app-input>
             </div>
-            <div class="col-sm-2">
+            <div class="col-2">
                 <app-input [formField]="userForm.whats" label="{{ labels.WHATS }}" placeHolder="{{ labels.WHATS }}" [submitted]="submitted"> </app-input>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-4">
                 <app-input [formField]="userForm.email" label="{{ labels.EMAIL }}" placeHolder="{{ labels.EMAIL }}" [isRequired]="true" [submitted]="submitted"> </app-input>
             </div>
 
             @if (dealer) {
-                <div class="col-sm-3">
+                <div class="col-3">
                     <app-input
                         [formField]="userForm.webPage"
                         label="{{ labels.WEBPAGE }}"

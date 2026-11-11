@@ -152,6 +152,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     addBus = input(0)
     addPart = input(0)
     children = viewChildren(DealerViewComponent)
+    selectedCarId = input<number>()
     currentPartId = signal(0)
     update = input<number | string>()
     ad = input<number | string>()
@@ -160,12 +161,18 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         if (this.ad() || this.update()) return true
         if (this.updateBus() || this.updateCar() || this.updatePart()) return true
         if (this.addBus() || this.addCar() || this.addPart()) return true
+        if (this.$addCarFlag() || this.$addBusFlag() || this.$addPartFlag() || this.$updateCarFlag() || this.$updateBusFlag() || this.$updatePartFlag()) return true
         return false
     })
 
     $itemType = computed<ItemType>(() => (this.$addCarFlag() ? ItemType.OnlyCar : this.$addBusFlag() ? ItemType.OnlyBus : this.bus() ? ItemType.BusPart : ItemType.CarPart))
     $title = computed(() => (this.bus() ? 'Бусове' : 'Коли'))
     $label = computed(() => (this.bus() ? 'Избери бус' : 'Избери кола'))
+    $highlighted = computed(() => {
+        return this.currentCarId() === this.selectedCarId() || this.selectedCarId() === this.carId()
+    })
+
+
 
     //#endregion
 
@@ -191,6 +198,10 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this._debounce = 1500
         this._destroy$ = new Subject<boolean>()
         this.userId = this.authenticationService.user?.userId
+
+        effect(() => {
+            console.log(`Selected Car Id: ${this.selectedCarId()} ${this.currentCarId()}`)
+        })  
 
         effect(() => {
             console.log(`Bus is: ${this.showParts()} ${this.currentCarId()}`)
@@ -322,16 +333,13 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
             }
         } else if (this.mode === UpdateEnum.Update) {
             if (action.car) this.updateCarFunc(action.id!)
-            else if (!action.car) this.updatePartFunc(0, action.id!)
+            else if (!action.car) this.updatePartFunc(action.carId!, action.id!)
             else this.currentPartId.set(action.id!)
         } else if (action.car && this.mode === UpdateEnum.Delete) {
             this.deleteCar(action.id!)
         }
     }
 
-    backUpdatePart() {
-        this.currentPartId.set(0)
-    }
     updateCarFunc(carId: number) {
         this.currentCarId.set(carId)
         if (this.bus()) this.router.navigate(['/data/bus'], { queryParams: { updateBus: true, carId: carId } })
@@ -340,7 +348,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
 
     updatePartFunc(carId: number, partId: number) {
         if (this.bus()) this.router.navigate(['/data/bus'], { queryParams: { updatePart: true, partId: partId } })
-        else this.router.navigate(['/data/cars'], { queryParams: { updatePart: true, partId: partId } })
+        else this.router.navigate(['/data/cars'], { queryParams: { updatePart: true, partId: partId, carId: carId } })
     }
     get modeType() {
         return this.mode
@@ -495,10 +503,6 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     // #endregion
 
     //#region  save Car
-    highlighted(carId?: number): boolean {
-        return this.currentCarId() === carId
-    }
-
     getValue(userCount: UserCount) {
         if (this.bus()) return userCount.busCount
 

@@ -9,7 +9,7 @@
             <div class="row mb-1">
                 @if (admin) {
                     <div class="row">
-                        <div class="col-sm-4 control min150px">
+                        <div class="col-4 control min150px">
                             <app-select
                                 id="user"
                                 [formField]="filterForm.userId"
@@ -21,7 +21,7 @@
                                 displayProperty="userName">
                             </app-select>
                         </div>
-                        <div class="col-sm-3 control min150px">
+                        <div class="col-3 control min150px">
                             <app-select
                                 id="approved"
                                 [formField]="filterForm.approved"
@@ -176,7 +176,7 @@
                 </div>
             </div>
             <div class="row ms-1 mt-1">
-                <div class="col-sm-3 form-check control checkboxClass">
+                <div class="col-3 form-check control checkboxClass">
                     <label class="form-check-label" for="hasImages">{{ labels.WITHIMAGES }}</label>
                     <input type="checkbox" class="form-check-input" [formField]="filterForm.hasImages" id="hasImages" data-cy="hasImages" />
                 </div>

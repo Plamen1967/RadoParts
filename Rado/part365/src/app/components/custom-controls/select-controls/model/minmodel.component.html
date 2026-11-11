@@ -10,7 +10,7 @@
             <app-searchinput (filterChanged)="filterChange($event)" (Search)="filterChange($event)"></app-searchinput>
         }
         @if (useLetter) {
-            <div class="letter-container col-sm-5">
+            <div class="letter-container col-5">
                 @for (letter of firstLetters; track letter) {
                     <div id="Item{{ letter }}" class="option form-select-sm" [ngClass]="{ group: false, disable: false, letter: true, 'selected-option': letter === this.letterSelected }">
                         <div class="d-inline-flex">

@@ -64,13 +64,13 @@
                         </div>
                     }
                     @if (!this.bus()) {
-                        <div class="col-sm-2">
+                        <div class="col-2">
                             <app-select [formField]="searchForm.year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" (onCloseEvent)="focus()"> </app-select>
                         </div>
                     }
                 </div>
                 <div class="row g-3">
-                    <div class="col-sm-2 min350px">
+                    <div class="col-2 min350px">
                         <app-category-choise
                             id="categoryId"
                             [formField]="searchForm.categoryId"
@@ -87,7 +87,7 @@
                         </app-category-choise>
                     </div>
                     @if (searchForm.categoryId().value() && searchForm.categoryId().value().toString().length) {
-                        <div class="col-sm-2 min350px">
+                        <div class="col-2 min350px">
                             <app-subcategory-choise
                                 [formField]="searchForm.subCategoryId"
                                 [categoriesId]="searchForm.categoryId().value().toString()"
@@ -99,7 +99,7 @@
                     }
                 </div>
                 <div class="row mt-1">
-                    <div class="col-sm-3">
+                    <div class="col-3">
                         <app-input [formField]="searchForm.partNumber" placeHolder="{{ labels.PART_NUMBER }}" data-cy="partNumber"> </app-input>
                     </div>
                 </div>

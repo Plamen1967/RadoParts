@@ -1,9 +1,9 @@
 @if (authernticationService.admin) {
     <div class="row justify-content-start align-items-center">
-        <div class="col-sm-5 pe-0">
+        <div class="col-5 pe-0">
             <app-select [(ngModel)]="approvedStatus" [data]="approvedTypes" valueProperty="id" displayProperty="value"> </app-select>
         </div>
-        <div class="col-sm-5 ps-0 pt-1">
+        <div class="col-5 ps-0 pt-1">
             <button class="btn btn-primary  ms-2" (click)="updateApprovedStatus()">Актуализирай</button>
         </div>
     </div>
