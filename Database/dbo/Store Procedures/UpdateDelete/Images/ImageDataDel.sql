@@ -10,10 +10,10 @@ AS
 		userId = @userId AND 
 		imageId = @deleteImageId
 
-	update cars set mainImageId = @mainImageId
+	update Cars set mainImageId = @mainImageId
 	where carId = @objectId and userId = @userId AND @mainImageId = @deleteImageId 
 
-	update parts set mainImageId = @mainImageId
+	update Parts set mainImageId = @mainImageId
 	where partId = @objectId and userId = @userId AND @mainImageId = @deleteImageId
 
 	update RimWithTyre set mainImageId = @mainImageId
