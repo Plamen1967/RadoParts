@@ -173,6 +173,26 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         minLength(path.dealerSubCategoryName, 1, {
             message: 'Моля въведете име дилърска категория',
         })
+        validate(path.vin, ({ value }) => {
+            const strValue = value()?.toString() ?? ''
+            if (strValue.length === 0) return null
+            if (strValue.length !== 17) {
+                return {
+                    kind: 'VIN',
+                    message: 'VIN трябва да бъде с 17 символа.',
+                }
+            }
+            const test = /^[a-zA-Z0-9]+$/i.test(strValue)
+
+            if (test === false) {
+                return {
+                    kind: 'VIN',
+                    message: 'Моля въведете коректен VIN.',
+                }
+            }
+            return null
+        })
+
         validate(path.price, ({ value }) => {
             const strValue = value()?.toString() ?? ''
 

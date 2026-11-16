@@ -40,10 +40,10 @@ export default class AddNewComponent implements OnInit {
     }
 
     addCar() {
-        this.router.navigate(['/data/addCar'], { queryParams: { ad: `new` } })
+        this.router.navigate(['/data/cars'], { queryParams: { ad: `new`, addCar :true } })
     }
     addBus() {
-        this.router.navigate(['/data/addCar'], { queryParams: { ad: `new`, bus: 1 } })
+        this.router.navigate(['/data/bus'], { queryParams: { ad: `new`, bus: 1 } })
     }
     addCarPart() {
         this.router.navigate(['/data/addPart'], { queryParams: { ad: `new` } })

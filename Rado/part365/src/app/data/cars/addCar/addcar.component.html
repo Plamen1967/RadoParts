@@ -16,8 +16,8 @@
         </div>
         <div class="card p-2" style="background-color: khaki">
             <form autocomplete="off">
-                <div class="row g-3">
-                    <div class="col-2 min200px">
+                <div class="row g-3 d-flex justify-content-start">
+                    <div class="col-2 min250px">
                         <app-company-choise testId="companyId" [config]="{ required: true, submitted: submitted(), userId: $userId(), bus: bus(), all: true }" [formField]="addCarForm.companyId">
                         </app-company-choise>
                     </div>
@@ -54,23 +54,23 @@
                             </div>
                         }
                         @if (addCarForm.modificationId().value() || (bus() && addCarForm.modelId().value())) {
-                            <div class="col-3 col-md-3 col-lg-3 min150px">
+                            <div class="col-3 col-md-3 col-lg-3 min250px">
                                 <app-select [formField]="addCarForm.year" label="{{ labels.YEAR }}" [data]="$years()" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-select>
                             </div>
                         }
                     }
                 </div>
-                <div class="row">
-                    <div class="col-3 col-md-3 col-lg-3">
+                <div class="row d-flex justify-content-start">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-input-string [formField]="addCarForm.regNumber" label="{{ $labelMessage() }}" placeHolder="{{ $labelMessage() }}" [submitted]="submitted()" [isRequired]="true">
                         </app-input-string>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-3 col-md-3 col-lg-3">
+                <div class="row d-flex justify-content-start">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-input [formField]="addCarForm.vin" label="{{ labels.VIN }}" placeHolder="{{ labels.VIN }}" [submitted]="submitted()" (onCloseEvent)="focus()"> </app-input>
                     </div>
-                    <div class="col-3 col-md-3 col-lg-3">
+                    <div class="col-3 col-md-3 col-lg-3 min250px">
                         <app-input
                             [formField]="addCarForm.powerBHP"
                             type="number"
@@ -80,7 +80,7 @@
                             (change)="powerBHPChanged()">
                         </app-input>
                     </div>
-                    <div class="col-3 col-md-3 col-lg-3">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-input
                             [formField]="addCarForm.powerkWh"
                             type="number"
@@ -90,21 +90,21 @@
                             (change)="powerkWhChanged()">
                         </app-input>
                     </div>
-                    <div class="col-2 col-md-2 col-lg-2">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-input [formField]="addCarForm.millage" type="number" label="{{ labels.MILLAGE }}" placeHolder="{{ labels.MILLAGE }}" [submitted]="submitted()"> </app-input>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-3 col-md-3 col-lg-3">
+                <div class="row d-flex justify-content-start   ">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-select [formField]="addCarForm.engineType" label="{{ labels.TYPE_ENGINE }}" [submitted]="submitted()" [data]="staticSelectionService.EngineType"> </app-select>
                     </div>
-                    <div class="col-3 col-md-3 col-lg-3">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-input [formField]="addCarForm.engineModel" label="{{ labels.CODE_ENGINE }}" placeHolder="{{ labels.CODE_ENGINE }}" [submitted]="submitted()"> </app-input>
                     </div>
-                    <div class="col-3 col-md-3 col-lg-3">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-select [formField]="addCarForm.gearboxType" label="{{ labels.TYPE_GEARBOX }}" [submitted]="submitted()" [data]="staticSelectionService.GearboxType"> </app-select>
                     </div>
-                    <div class="col-2 col-md-2 col-lg-2">
+                    <div class="col-5 col-md-3 col-lg-3 min250px">
                         <app-select [formField]="addCarForm.regionId" label="{{ labels.REGION }}" [submitted]="submitted()" [data]="staticSelectionService.Region"> </app-select>
                     </div>
                 </div>

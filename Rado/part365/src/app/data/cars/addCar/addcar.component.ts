@@ -116,6 +116,26 @@ export default class AddCarComponent extends HelperComponent implements OnInit, 
             when: () => this.addCarFormModel().vin.length !== 0,
             error: { kind: 'not-selected', message: 'VIN трябва да е 17 символа' },
         })
+        validate(schema.vin, ({ value }) => {
+            const strValue = value()?.toString() ?? ''
+            if (strValue.length === 0) return null
+            if (strValue.length !== 17) {
+                return {
+                    kind: 'VIN',
+                    message: 'VIN трябва да бъде с 17 символа.',
+                }
+            }
+            const test = /^[a-zA-Z0-9]+$/i.test(strValue)
+
+            if (test === false) {
+                return {
+                    kind: 'VIN',
+                    message: 'Моля въведете коректен VIN.',
+                }
+            }
+            return null
+        })
+
         minLength(schema.regNumber, 3, {
             error: { kind: 'not-selected', message: 'Моля въведете регистрационен номер с най-малко 3 символа' },
         })

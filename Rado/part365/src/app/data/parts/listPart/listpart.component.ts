@@ -566,14 +566,14 @@ export default class ListPartComponent extends HelperComponent implements OnInit
                 this.numberOfPartsPerUser = numberOfParts.bus + numberOfParts.car
                 if (this.numberOfPartsPerUser < this.maxNumberParts!) {
                     this.nextId.set(this.nextResource.value()?.nextId ?? 0)
-                    this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', id: this.nextId() } })
+                    this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', bus: this.bus() } })
                 } else {
                     this.confirmService.OK('Съобщение', this.allowanceMessage)
                 }
             })
         } else {
             this.nextId.set(this.nextResource.value()?.nextId ?? 0)
-            this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', id: this.nextId() } })
+            this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', bus: this.bus() } })
         }
     }
 }

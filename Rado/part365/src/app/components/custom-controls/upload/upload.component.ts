@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { PopUpService } from '@app/dialog/services/popUpService.service'
 import { CONSTANT } from '@app/constant/globalLabels'
 import { ErrorService } from '@services/error.service'
+import { ToastService } from '@services/dialog-api/ToastService/toast.service'
 //#endregion
 //#region component
 @Component({
@@ -40,6 +41,7 @@ export class UploadComponent extends HelperComponent implements OnInit {
     private destroyRef: DestroyRef = inject(DestroyRef)
     private popupService: PopUpService = inject(PopUpService)
     private errorService: ErrorService = inject(ErrorService)
+    toastService: ToastService = inject(ToastService)
 
     constructor() {
         super()
@@ -116,12 +118,18 @@ export class UploadComponent extends HelperComponent implements OnInit {
                                     this.message = ''
                                 }, 5000)
                                 this.images = [...event.body!]
+                                const unloadedImages: ImageData[] = this.images.filter((image) => image.imageId == 0)
+                                const imageName = unloadedImages.map((image) => image.imageSrc).join(', ')
+                                if (unloadedImages.length > 0) {
+                                    this.toastService.showToast(`Снимките ${imageName} не могат да бъдат качени. Вече са качени.`, 10)
+                                }
+                                this.images = this.images.filter((image) => image.imageId !== 0)
                                 this.uploadFinished.emit(this.images)
                                 this.updateCount()
                             }
                         },
                         error: (error) => {
-                            this.popupService.openWithTimeout(CONSTANT.MESSAGE, error.error.message)
+                            this.toastService.showToast(error.error.message, 10000)
                         },
                     })
             } catch (error) {
