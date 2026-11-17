@@ -120,8 +120,13 @@ export class UploadComponent extends HelperComponent implements OnInit {
                                 this.images = [...event.body!]
                                 const unloadedImages: ImageData[] = this.images.filter((image) => image.imageId == 0)
                                 const imageName = unloadedImages.map((image) => image.imageSrc).join(', ')
-                                if (unloadedImages.length > 0) {
+                                if (unloadedImages.length > 1) {
                                     this.toastService.showToast(`Снимките ${imageName} не могат да бъдат качени. Вече са качени.`, 10)
+                                } else if (unloadedImages.length === 1) {
+                                    this.toastService.showToast(`Снимката ${imageName} не може да бъде качена. Вече е качена.`, 10)
+                                }
+                                else if (unloadedImages.length === 0) {
+                                    this.toastService.showToast(`Снимките са качени успешно.`, 10)
                                 }
                                 this.images = this.images.filter((image) => image.imageId !== 0)
                                 this.uploadFinished.emit(this.images)

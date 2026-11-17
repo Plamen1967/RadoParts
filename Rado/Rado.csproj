@@ -29,6 +29,8 @@
     <StartupObject>Rado.Program</StartupObject>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <PublishTrimmed>False</PublishTrimmed>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackAsTool>False</PackAsTool>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
