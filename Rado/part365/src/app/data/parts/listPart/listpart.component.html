@@ -12,11 +12,11 @@
                 <div class="mb-3"></div>
                 <div class="d-inline-flex justify-content-between">
                     <div class="d-inline-flex pe-2">
-                        <input id="car" type="radio" class="custom-control-input" value="car" data-cy="car" [formField]="searchForm.bus" />
+                        <input id="car" type="radio" class="custom-control-input" value="car" data-cy="car" [formField]="searchForm.bus" (change)="itemChaged(0)"/>
                         <label class="custom-control-label ps-2" for="car">{{ labels.CAR }}</label>
                     </div>
                     <div class="d-inline-flex pe-2">
-                        <input id="бус" type="radio" class="custom-control-input" value="bus" data-cy="bus" [formField]="searchForm.bus" />
+                        <input id="бус" type="radio" class="custom-control-input" value="bus" data-cy="bus" [formField]="searchForm.bus" (change)="itemChaged(1)" />
                         <label class="custom-control-label ps-2" for="bus">{{ labels.BUS }}</label>
                     </div>
                 </div>
@@ -64,13 +64,13 @@
                         </div>
                     }
                     @if (!this.bus()) {
-                        <div class="col-2">
+                        <div class="col-2 col-md-2 col-lg-2 min150px">
                             <app-select [formField]="searchForm.year" label="{{ labels.YEAR }}" [data]="years" data-cy="year" (onCloseEvent)="focus()"> </app-select>
                         </div>
                     }
                 </div>
                 <div class="row g-3">
-                    <div class="col-2 min350px">
+                    <div class="col-2 col-md-2 col-lg-2 min350px">
                         <app-category-choise
                             id="categoryId"
                             [formField]="searchForm.categoryId"
@@ -87,7 +87,7 @@
                         </app-category-choise>
                     </div>
                     @if (searchForm.categoryId().value() && searchForm.categoryId().value().toString().length) {
-                        <div class="col-2 min350px">
+                        <div class="col-2 col-md-2 col-lg-2 min350px">
                             <app-subcategory-choise
                                 [formField]="searchForm.subCategoryId"
                                 [categoriesId]="searchForm.categoryId().value().toString()"
@@ -99,7 +99,7 @@
                     }
                 </div>
                 <div class="row mt-1">
-                    <div class="col-3">
+                    <div class="col-3 col-md-3 col-lg-3 min350px">
                         <app-input [formField]="searchForm.partNumber" placeHolder="{{ labels.PART_NUMBER }}" data-cy="partNumber"> </app-input>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
     <app-updatepart [id]="$getId()" (saved)="saved($event)" data-cy="addPart" (noChange)="back($event)"></app-updatepart>
 } @else {
     <app-addpart
-        [addItemParam]="{ id: $getId(), bus: bus() }"
+        [addItemParam]="{ id: $getId(), bus: bus(), add: this.ad() === 'new'}"
         [partIdNew]="$getId()"
         [bus]="bus()"
         [add]="addPartFlag"

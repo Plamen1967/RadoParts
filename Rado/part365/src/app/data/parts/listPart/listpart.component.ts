@@ -98,6 +98,18 @@ interface searchFormInterface {
 
 //#endregion
 export default class ListPartComponent extends HelperComponent implements OnInit, OnDestroy, AfterViewInit {
+itemChaged(f: number) {
+    if (f == 1) 
+    {
+        this.searchFormModel.update((value) => ({ ...value, bus: 'bus' }))
+        this.router.navigate(['/data/parts'], { queryParams: { bus: 1 } })
+    }
+    else
+    {
+        this.searchFormModel.update((value) => ({ ...value, bus: 'car' }))
+        this.router.navigate(['/data/parts'])
+    }
+}
     searchFormModel = signal<searchFormInterface>({
         bus: 'car',
         companyId: 0,
@@ -148,6 +160,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
     addPartFlag = false
     id_?: number
     id = input<number | undefined>()
+    bus = input<number>(0)
     positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public todos$?: Observable<CarView[]>
     public todosPart$?: Observable<PartView[]>
@@ -204,10 +217,10 @@ export default class ListPartComponent extends HelperComponent implements OnInit
 
     nextId = signal<number>(0)
 
-    bus = computed(() => {
-        if (this.searchFormModel().bus == 'car') return 0
-        return 1
-    })
+    // bus = computed(() => {
+    //     if (this.searchFormModel().bus == 'car') return 0
+    //     return 1
+    // })
     constructor() {
         super()
 
@@ -227,7 +240,7 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         })
         effect(() => {
             console.log(`Bus: ${this.bus()}`)
-            if (this.bus() == 1) this.searchFormModel.update((value) => ({ ...value, bus: 'bus' }))
+            if (this.bus()) this.searchFormModel.update((value) => ({ ...value, bus: 'bus' }))
             else this.searchFormModel.update((value) => ({ ...value, bus: 'car' }))
         })
 
@@ -545,6 +558,10 @@ export default class ListPartComponent extends HelperComponent implements OnInit
         this.loadPart(event)
         this.currentId = event
         goToPosition(event)
+        if (this.bus()) 
+            this.router.navigate(['/data/parts'], { queryParams: { bus: 1 } })
+        else
+            this.router.navigate(['/data/parts'])
     }
 
     back(id: number) {

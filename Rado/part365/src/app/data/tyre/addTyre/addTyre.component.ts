@@ -326,7 +326,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     params?: QueryParam
     viewId = input<number>(0)
     goHome = false
-    tyreDescription?: string
     numberOfPartsPerUser?: number
     _displayPartView?: DisplayPartView
     updateFlag = true
@@ -362,6 +361,13 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         return false
     })
 
+    tyreDescription = computed(() => {
+        if (this.currentitemType() == ItemType.Tyre) return 'Гума'
+        else if (this.currentitemType() == ItemType.Rim) return 'Джанта'
+        else if (this.currentitemType() == ItemType.RimWithTyre) return 'Гума с Джанта'
+        return ''
+    })
+   
     constructor() {
         super()
         this.tyreWidth = [{ value: 0, text: 'Избери ширина' }, ...this.staticSelectionService.TyreWidth]
@@ -453,9 +459,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         goTop()
     }
 
-    displaySections() {
-        this.tyreDescription = this.currentitemType() === ItemType.Tyre ? 'Гума' : this.currentitemType() === ItemType.Rim ? 'Джанта' : 'Гума с Джанта'
-    }
 
     ngOnInit() {
         this.mode = this.mode ?? UpdateEnum.New
@@ -467,13 +470,11 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
                 // }
 
                 this.addTyreFormModel.set({ ...this.addTyreFormModel(), itemType: this.currentitemType()! })
-        this.displaySections()
 
         if (this.mode() === UpdateEnum.Update || this.mode() === UpdateEnum.View) {
             this.loadTyre(this.itemId!())
         }
 
-        this.displaySections()
         window.scroll(0, 0)
         this.activatedRoute.queryParams.subscribe((params) => {
             this.params = params
@@ -512,7 +513,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
     }
 
     onItemTypeChange() {
-        this.displaySections()
         this.addTyreFormModel.update((value) => ({
             ...value,
             tyreWidth: 0,
@@ -553,7 +553,6 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
             next: (tyre) => {
                 this.currentItem = tyre
                 //this.currentitemType = tyre.itemType ?? ItemType.Tyre
-                this.displaySections()
                 this.addTyreFormModel.update((value) => ({ ...value, ...this.currentItem }))
                 this.mainImageId = this.currentItem.mainImageId
 

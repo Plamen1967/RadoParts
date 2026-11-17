@@ -133,9 +133,9 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     allItems = signal<DisplayPartView[]>([])
     currentTyreId?: number
     deleteTyreId?: number
-    currentPage = 0
+    currentPage = signal(1)
     searched = false
-    numberPages = 0
+    numberPages = signal(0)
     userId = 0
     companyId?: number
     tyreCompanies: SelectOption[] = []
@@ -239,7 +239,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     })
 
     $getPageData = computed(() => {
-        return this.allItems().slice((this.currentPage - 1) * 10, this.currentPage * 10)
+        return this.allItems().slice((this.currentPage() - 1) * 10, this.currentPage() * 10)
     })
 
 
@@ -394,29 +394,25 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     moveToPage(event: number) {
-        this.currentPage = +event
+        this.currentPage.set(+event)
         goToPosition('top')
     }
 
     updateData(res: DisplayPartView[]) {
         this.searched = true
         this.allItems.set(res)
-        this.currentPage = 1
+        this.currentPage.set(1)
         if (this.currentId && this.allItems) {
             const index = this.allItems().findIndex((item) => item.id === this.currentId())
-            if (index != -1) this.currentPage = Math.floor(index / 10) + 1
+            if (index != -1) this.currentPage.set(Math.floor(index / 10) + 1)
         }
 
-        this.numberPages = Math.ceil(this.allItems.length / 10)
+        this.numberPages.set(Math.ceil(this.allItems().length / 10))
         if (this.currentId) {
             goToPosition(this.currentId())
         } else {
             this.goTop()
         }
-    }
-
-    getNumberPages() {
-        return this.numberPages
     }
 
     getValue(userCount: UserCount) {

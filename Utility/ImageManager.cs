@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Primitives;
 using Models.Models;
@@ -13,8 +14,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Net.Http.Headers;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using Image = System.Drawing.Image;
 
 namespace Utility
@@ -911,7 +912,7 @@ namespace Utility
             g.Dispose();
             return b;
         }
-        public static async Task<ImageDataClass[]> UploadFiles(HttpRequest httpRequest, int userId)
+        public static async Task<ImageDataClass[]?> UploadFiles(HttpRequest httpRequest, int userId)
         {
             try
             {
@@ -948,6 +949,7 @@ namespace Utility
                     return images.ToArray();
                 }
 
+                List<string> alreadyExist = new List<string>();
                 foreach (var file in files)
                 {
                     if (count >= ProgramSettings.MaxPictures)
@@ -959,19 +961,38 @@ namespace Utility
                     string fullPath = GetPhotosPath(objectIdList[0]);
                     Directory.CreateDirectory(fullPath);
 
-                    fullPath = fullPath + fileName;
+                    fullPath += fileName;
 
                     await using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
                     }
 
-                    ImageDataClass? image = await SaveImageAsync(fullPath, userId, objectIdList[0].ToString());
-                    if (image != null)
-                        images.Add(image);
+                    long itemId = Int64.Parse(objectIdList[0].ToString());
+
+                    bool checkForUniqueness = await CheckForUniqueness(userId, fullPath, itemId);
+                    if (checkForUniqueness)
+                    {
+                        if (fileName != null)
+                        {
+                            ImageDataClass image = new ImageDataClass()
+                            {
+                                ImageSrc = fileName,
+                                ImageId = 0
+                            };
+
+                            images.Add(image);
+                        }
+                    }
                     else
                     {
-                        throw new Exception("Failed to save image");
+                        ImageDataClass? image = await SaveImageAsync(fullPath, userId, objectIdList[0].ToString());
+                        if (image != null)
+                            images.Add(image);
+                        else
+                        {
+                            throw new Exception("Failed to save image");
+                        }
                     }
                     File.Delete(fullPath);
                     count++;
@@ -992,6 +1013,35 @@ namespace Utility
                 LoggerUtil.LogException(exception.Message);
                 throw new Exception(exception.Message);
             }
+        }
+
+        private static async Task<bool> CheckForUniqueness(int userId, string fullPath, long itemId)
+        {
+
+            try
+            {
+                string storedProcedureName = "IsImageUnique";
+                await using SqlConnection sqlConnection = new SqlConnection(ProgramSettings.ConnectionString);
+                await using SqlCommand sqlCommand = new SqlCommand(storedProcedureName, sqlConnection);
+
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlCommand.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+                sqlCommand.Parameters.Add("@objectId", SqlDbType.BigInt).Value = itemId;
+                sqlCommand.Parameters.Add("@imageFile", SqlDbType.VarChar).Value = fullPath;
+                sqlCommand.Parameters.Add("@count_image", SqlDbType.Int).Direction = ParameterDirection.Output;
+                await sqlConnection.OpenAsync();
+                await sqlCommand.ExecuteNonQueryAsync();
+                int count = (int)sqlCommand.Parameters["@count_image"].Value;
+
+                return count > 0;
+            }
+            catch (Exception exception)
+            {
+                LoggerUtil.LogException(exception);
+            }
+
+            return false;
         }
 
         #region catcha

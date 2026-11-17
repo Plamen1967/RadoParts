@@ -266,7 +266,7 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
 
     addPart(bus = 0) {
         if (this.$seller()) {
-            this.router.navigate(['/data/addPart'], { queryParams: { ad: 'new', bus: bus } })
+            this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', bus: bus } })
             this.partService.resetCurrentId()
         } else {
             this.userService.numberOfPartsPerUser().subscribe((numberOfParts) => {
@@ -275,7 +275,7 @@ export class NavMenuComponent extends HelperComponent implements OnDestroy, OnIn
                 //   this.confirmationService.funcOk = this.onOk.bind(this);
                 //   this.confirmationService.open("Съобщение", `Вие достигнахте лимита от ${this.staticSelectionService.maxNumberParts} части.`);
                 // } else {
-                this.router.navigate(['/data/addPart'], { queryParams: { ad: 'new' } })
+                this.router.navigate(['/data/parts'], { queryParams: { ad: 'new', bus: bus } })
                 this.partService.resetCurrentId()
             })
         }

@@ -24,28 +24,28 @@
                         </div>
                         <div class="dropdown-content menu-container element" role="presentation">
                             @if (seller) {
-                                <a class="element" [routerLink]="['/data/addCar']" [queryParams]="{ ad: 'new' }"
+                                <a class="element" [routerLink]="['/data/cars']" [queryParams]="{ ad: 'new', addCar: true }"
                                     ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span>Добави Кола</div></a
                                 >
-                                <a class="element" [routerLink]="['/data/addBus']" [queryParams]="{ ad: 'new', bus: 1 }"
+                                <a class="element" [routerLink]="['/data/bus']" [queryParams]="{ ad: 'new', addBus: true }"
                                     ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави Бус</div></a
                                 >
                             }
-                            <a class="element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new' }"
+                            <a class="element" [routerLink]="['/data/parts']" [queryParams]="{ ad: 'new' }"
                                 ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_car </span>Добави част за кола</div></a
                             >
                             @if (seller) {
-                                <a class="element" [routerLink]="['/data/addPart']" [queryParams]="{ ad: 'new', bus: 1 }"
+                                <a class="element" [routerLink]="['/data/parts']" [queryParams]="{ ad: 'new', bus: 1 }"
                                     ><div class="d-flex align-items-center"><span class="material-symbols-outlined me-2"> directions_bus </span>Добави част за бус</div></a
                                 >
                             }
-                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', bus: 1 }"
+                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', 'itemType': 3 }"
                                 ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави гума</div></a
                             >
-                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new' , bus: 1}"
+                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', 'itemType': 4 }"
                                 ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави джанта</div></a
                             >
-                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', bus: 1 }"
+                            <a class="element" [routerLink]="['/data/addTyre']" [queryParams]="{ ad: 'new', 'itemType': 5 }"
                                 ><div class="d-flex align-items-center"><img src="images/svg/tyre.svg" class="tabSvg me-2" alt="Добави Гума/Джанта" />Добави гума джанта</div></a
                             >
                         </div>

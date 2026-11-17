@@ -7,7 +7,7 @@
             </button>
         </div>
     }
-    <div class="title">{{ tyreDescription }}</div>
+    <div class="title">{{ tyreDescription() }}</div>
     <form class="p-2" style="background-color: rgb(11, 245, 233)" autocomplete="off">
         <div class="custom-flex">
             <div [ngClass]="homeService.showBackgroundImage() ? 'show' : 'noShow'">
@@ -67,7 +67,7 @@
                         [isRequired]="true">
                     </app-select>
                 </div>
-                <div class="col-5 col-md-3 col-lg-3 min150px">
+                <div class="col-5 col-md-3 col-lg-3 min250px">
                     <app-select
                         id="tyreCompanyId"
                         [formField]="addTyreForm.tyreCompanyId"

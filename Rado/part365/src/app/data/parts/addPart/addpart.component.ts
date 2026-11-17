@@ -454,6 +454,10 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         })
 
         effect(() => {
+            console.log(`Part For Car is bus: ${this.bus()}`)
+        })
+
+        effect(() => {
             console.log(`Is it part without car: ${this.partForCar()} ${this.$mode()} ${this.isCar()}`)
         })
         this.addPartFormModel.update((value) => ({ ...value, regionId: this.regionId() }))
@@ -667,7 +671,7 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
         }
         this.$yearFrom.set(modification?.yearFrom ?? this.labels.YEAR_START)
         if (modification?.yearTo === 0) this.$yearTo.set(this.currentYear)
-        else this.$yearTo.set(modification?.yearTo ?? this.currentYear)    
+        else this.$yearTo.set(modification?.yearTo ?? this.currentYear)
     }
 
     //#endregion
@@ -763,8 +767,13 @@ export default class AddPartComponent extends HelperComponent implements AfterVi
                         if (partForCar === 'car') this.addPartForm.partForCar().value.set('car')
                         else this.addPartForm.partForCar().value.set('part')
                         this.numberOfPartsPerUser++
-                        this.saved.emit(part.id!)
-                        this.goBack()
+                        if (this.addItemParam()?.add) {
+                            this.addItemParam().add = false
+                            this.addItemParam().id = part.id!
+                            this.saved.emit(part.id!)
+                        } else {
+                            this.goBack()
+                        }
                         this.resetScreen()
                     } else {
                         this.saved.emit(part.id!)
