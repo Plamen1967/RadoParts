@@ -111,8 +111,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     loading = signal<boolean>(false)
 
     $tyreResource = httpResource<DisplayPartView>(() => {
-        if (this.currentId()) 
-            return `${environment.restAPI}/rimWithTyre/GetDisplayTyreView/?rimWithTyreId=${this.currentId()}`
+        if (this.currentId()) return `${environment.restAPI}/rimWithTyre/GetDisplayTyreView/?rimWithTyreId=${this.currentId()}`
         else return undefined
     })
 
@@ -151,7 +150,6 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     regions: SelectOption[] = []
     tyreTypes: SelectOption[] = []
     inialState?: object
-    itemType = signal<ItemType>(ItemType.AllTyre)
     params?: QueryParam
     userCount$: Observable<UserCount | undefined>
 
@@ -179,15 +177,15 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     private confirmService: ConfirmServiceService
     private alertService: AlertService
     private userCountService: UserCountService
-    $addTyreFlag = signal(false)
     $addRimFlag = signal(false)
     $addRimWithTyreFlag = signal(false)
     $updateTyreFlag = signal(false)
     $updateRimFlag = signal(false)
     $updateRimWithTyreFlag = signal(false)
-    type = input<ItemType>(ItemType.Tyre)
+    itemType = input<ItemType>(ItemType.Tyre)
     addTyre = input(0)
     addRim = input(0)
+    ad = input()
     addRimWithTyre = input(0)
     updateTyre = input(0)
     updateRim = input(0)
@@ -199,20 +197,25 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     id = signal(0)
     currentId = signal(0)
     $displayTyre = computed(() => {
-        const value = this.type()
-        const result = (value == ItemType.Tyre || value == ItemType.RimWithTyre) ? true : false
+        const value = this.itemType()
+        const result = value == ItemType.Tyre || value == ItemType.RimWithTyre ? true : false
         return result
     })
 
     $displayRim = computed(() => {
-        const value = this.type()
-        const result = (value == ItemType.Rim || value == ItemType.RimWithTyre) ? true : false
+        const value = this.itemType()
+        const result = value == ItemType.Rim || value == ItemType.RimWithTyre ? true : false
         return result
     })
 
+    $addTyreFlag = computed(() => {
+        if (this.ad() === 'new') return true
+        return false
+    })
+
     $displayAll = computed(() => {
-        const value = this.type()
-        return value == 7;
+        const value = this.itemType()
+        return value == 7
     })
 
     $update = computed(() => {
@@ -222,14 +225,11 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     })
 
     $menuOptions = computed(() => {
-        const type = this.type()
-        const options: MenuOption[] = [] 
-        if (type === ItemType.Tyre || type === undefined)
-            options.push({ menuId: 1, menu: 'Добави Гума' })
-        if (type === ItemType.Rim || type === undefined)
-            options.push({ menuId: 2, menu: 'Добави Джанта' })
-        if (type === ItemType.RimWithTyre || type === undefined)
-            options.push({ menuId: 3, menu: 'Добави Джанта с гума' })
+        const type = this.itemType()
+        const options: MenuOption[] = []
+        if (type === ItemType.Tyre || type === undefined) options.push({ menuId: 1, menu: 'Добави Гума' })
+        if (type === ItemType.Rim || type === undefined) options.push({ menuId: 2, menu: 'Добави Джанта' })
+        if (type === ItemType.RimWithTyre || type === undefined) options.push({ menuId: 3, menu: 'Добави Джанта с гума' })
 
         return options
     })
@@ -242,7 +242,6 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         return this.allItems().slice((this.currentPage() - 1) * 10, this.currentPage() * 10)
     })
 
-
     constructor() {
         super()
 
@@ -250,13 +249,21 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
             console.log(`Display Rim ${this.$displayRim()}  Display Tyre ${this.$displayTyre()} Display All ${this.$displayAll()}`)
         })
         effect(() => {
-            console.log(`Type ${this.type()}`)
+            console.log(`Item Type ${this.itemType()}`)
         })
 
         effect(() => {
+            if (this.itemType()) {
+                //this.itemType.set(this.type())
+                this.searchFormModel.update((value) => ({ ...value, category: +this.itemType() }))
+            } else {
+                this.searchFormModel.update((value) => ({ ...value, category: ItemType.AllTyre }))
+            }
+        })
+        effect(() => {
             console.log(`Tyre Resource: ${JSON.stringify(this.$tyreResource.value())}`)
             untracked(() => {
-                this.refreshTyre(this.$tyreResource.value()!);
+                this.refreshTyre(this.$tyreResource.value()!)
             })
         })
         effect(() => {
@@ -358,11 +365,9 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     categoryChanged(f: number) {
-        const queryParams = { type: f}
-        if (f == 7)
-            this.router.navigate(['/data/tyres'])
-        else
-            this.router.navigate(['/data/tyres'], { queryParams: queryParams})
+        const queryParams = { itemType: f }
+        if (f == 7) this.router.navigate(['/data/tyres'])
+        else this.router.navigate(['/data/tyres'], { queryParams: queryParams })
         // this.menuOptions = []
         // this.selectedCategory = f
         // if (this.selectedCategory === 3 || this.selectedCategory === 7) {
@@ -376,7 +381,6 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         // }
 
         // this.updateData([])
-        this.itemType.set(f)
     }
 
     search() {
@@ -387,10 +391,8 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     newTyre(itemType: ItemType) {
-        this.$addTyreFlag.set(true)
-        this.itemType.set(itemType)
-        // const queryParams = { itemType: itemType, view: 'list' }
-        // this.router.navigate(['/data/addTyre'], { queryParams: queryParams })
+        const queryParams = { ad: 'new', itemType: itemType }
+        this.router.navigate(['/data/tyres'], { queryParams: queryParams })
     }
 
     moveToPage(event: number) {
@@ -402,13 +404,13 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
         this.searched = true
         this.allItems.set(res)
         this.currentPage.set(1)
-        if (this.currentId && this.allItems) {
+        if (this.currentId() && this.allItems().length > 0) {
             const index = this.allItems().findIndex((item) => item.id === this.currentId())
             if (index != -1) this.currentPage.set(Math.floor(index / 10) + 1)
         }
 
         this.numberPages.set(Math.ceil(this.allItems().length / 10))
-        if (this.currentId) {
+        if (this.currentId()) {
             goToPosition(this.currentId())
         } else {
             this.goTop()
@@ -445,7 +447,7 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
 
     ok() {
         this.currentTyreId = undefined
-        const allitems =  [...this.allItems()]
+        const allitems = [...this.allItems()]
         this.tyreService.deleteItem(this.deleteTyreId!).subscribe({
             next: (res) => {
                 if (res) {
@@ -506,14 +508,12 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
     //#endregion
     saved(event: number) {
-        this.$addTyreFlag.set(false)
         this.$updateTyreFlag.set(false)
         this.loadTyre(event!)
     }
 
     back(event: number) {
         if (this.$addTyreFlag() || this.$updateTyreFlag()) {
-            this.$addTyreFlag.set(false)
             this.$updateTyreFlag.set(false)
         }
         this.router.navigate(['/data/tyres'])
@@ -526,8 +526,8 @@ export default class ListTyreComponent extends HelperComponent implements OnInit
     }
 
     refreshTyre(item: DisplayPartView) {
-        if (!item.id) return;
-        item = {...Enrich(item, this.staticSelectionService)}
+        if (!item.id) return
+        item = { ...Enrich(item, this.staticSelectionService) }
         const items = [...this.allItems()]
         const index = items.findIndex((x) => x.id === item.id)
         if (index != -1) items[index] = Object.assign({}, item)

@@ -631,6 +631,11 @@ export default class AddTyreComponent extends HelperComponent implements OnInit,
         this.stateServce.currentId = this.id()
         if (this.mode() == UpdateEnum.New) {
             if (this.params?.ad) {
+                if (this.itemType() == ItemType.Tyre) this.router.navigate(['/data/tyres'], { queryParams: ({ itemType: 3 }) })
+                else if (this.itemType() == ItemType.Rim) this.router.navigate(['/data/tyres'], { queryParams: ({ itemType: 4 }) })
+                else if (this.itemType() == ItemType.RimWithTyre) this.router.navigate(['/data/tyres'], { queryParams: ({ itemType: 5 }) })
+                return
+            } else {
                 this.router.navigate(['/data/tyres'])
                 return
             }
