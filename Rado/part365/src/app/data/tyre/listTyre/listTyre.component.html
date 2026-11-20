@@ -2,21 +2,20 @@
     <div class="container">
         @if (userCount$ | async; as userCount) {
             @if (userCount && userCount.partCarCount + userCount.partBusCount) {
-                <app-listtitle [title]="'Гуми / Джанти'" [number]="getValue(userCount)"></app-listtitle>
-
-                <span class="count"></span>
+                <app-listtitle id="title" [title]="'Гуми / Джанти'" [number]="getValue(userCount)"></app-listtitle>
+                <span id="count" class="count"></span>
             }
         }
         <form>
             <div class="custom-flex">
                 <div class="ps-0 mt-2" [ngStyle]="{ display: 'flex' }">
-                    <app-radiogrouplist [style]="2" [radios]="radioTypes" controlName="category" [formField]="searchForm.category" (changeRadioGroup)="categoryChanged($event)"></app-radiogrouplist>
+                    <app-radiogrouplist id="category" [style]="2" [radios]="radioTypes" controlName="category" [formField]="searchForm.category" (changeRadioGroup)="categoryChanged($event)"></app-radiogrouplist>
                 </div>
             </div>
             @if ($displayTyre()) {
                 <div class="tyre" [ngClass]="{ show: $displayTyre(), noShow: !$displayTyre() }">
                     <div class="d-flex flex-row mt-2 mb-2 justify-content-center">
-                        <h5>Гума</h5>
+                        <h5 id="tyre-title">Гума</h5>
                     </div>
                     <div class="row">
                         <div class="col-5 col-md-4 col-lg-3 min250px">
@@ -34,16 +33,16 @@
                             </div>
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min150px">
-                            <app-select [formField]="searchForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth"> </app-select>
+                            <app-select id="tyreWidth" [formField]="searchForm.tyreWidth" label="{{ labels.TYRE_WIDTH }}" data-cy="engineType" [data]="tyreWidth"> </app-select>
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min150px">
-                            <app-select [formField]="searchForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight"> </app-select>
+                            <app-select id="tyreHeight" [formField]="searchForm.tyreHeight" label="{{ labels.TYRE_HEIGHT }}" data-cy="engineType" [data]="tyreHeight"> </app-select>
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min150px">
-                            <app-select [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
+                            <app-select id="tyreRadius" [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min150px">
-                            <app-select [formField]="searchForm.tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes"> </app-select>
+                            <app-select id="tyreType" [formField]="searchForm.tyreType" label="{{ labels.TYRE_TYPE }}" data-cy="engineType" [data]="tyreTypes"> </app-select>
                         </div>
                     </div>
                 </div>
@@ -52,7 +51,7 @@
             @if ($displayRim()) {
                 <div class="rim" [ngClass]="{ show: $displayRim(), noShow: !$displayRim() }">
                     <div class="d-flex flex-row mt-2 mb-2 justify-content-center">
-                        <h5>Джанта</h5>
+                        <h5 id="rim-title">Джанта</h5>
                     </div>
                     <div class="row">
                         <div class="col-5 col-md-4 col-lg-3 min250px">
@@ -87,7 +86,7 @@
                             </app-select>
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min150px">
-                            <app-select [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
+                            <app-select id="tyreRadius" [formField]="searchForm.tyreRadius" label="{{ labels.TYRE_RADIUS }}" data-cy="engineType" [data]="tyreRadius"> </app-select>
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min150px control">
                             <app-select
@@ -120,11 +119,11 @@
                             </app-select>
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min150px control">
-                            <app-select id="rimBoltCount" tooltip="'Брой Болтове'" [formField]="searchForm.rimCenter" data-cy="rimCenter" [type]="1" label="Център" [data]="rimCenters"> </app-select>
+                            <app-select id="rimCenter" tooltip="'Център'" [formField]="searchForm.rimCenter" data-cy="rimCenter" [type]="1" label="Център" [data]="rimCenters"> </app-select>   
                         </div>
                         <div class="col-5 col-md-4 col-lg-3 min250px control">
                             <app-select
-                                id="rimBoltCount"
+                                id="rimBoltDistance"
                                 tooltip="'Междуболтово разстояние'"
                                 [formField]="searchForm.rimBoltDistance"
                                 data-cy="rimBoltDistance"
@@ -138,24 +137,25 @@
             }
             <div class="row">
                 <div class="col-5 col-md-4 col-lg-2 min200px">
-                    <app-region [formField]="searchForm.regionId"> </app-region>
+                    <app-region id="region" [formField]="searchForm.regionId"> </app-region>
                 </div>
             </div>
         </form>
         <div class="d-flex mt-2 mb-2 justify-content-between">
             <div>
-                <button type="submit" #submit class="btn btnSearch me-2" data-cy="search" (click)="search()">{{ labels.SEARCH }}</button>
-                <button type="button" #submit class="btn btnSearch me-2" data-cy="search" (click)="clear()">Изчисти</button>
+                <button type="submit" id="searchButton" #submit class="btn btnSearch me-2" data-cy="search" (click)="search()">{{ labels.SEARCH }}</button>
+                <button type="button" id="clearButton" class="btn btnSearch me-2" data-cy="search" (click)="clear()">Изчисти</button>
             </div>
             <div>
                 <!-- <app-buttonmenu appOutside [menuOptions]="$menuOptions()" [justify]="true" (menuSelectedEvent)="action($event)" class="button-menu"></app-buttonmenu> -->
 
                 <div class="d-flex justify-content-start ms-2" class="option-menu">
-                    <button type="button" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: $displayTyre() === true && $displayRim() === false ? 'block' : 'none' }" (click)="newTyre(3)">
+                    <button type="button" id="addTyreButton" class="btn btnAdd me-2" data-cy="addtyre" [ngStyle]="{ display: $displayTyre() === true && $displayRim() === false ? 'block' : 'none' }" (click)="newTyre(3)">
                         Добави Гума
                     </button>
                     <button
                         type="button"
+                        id="addRimButton"
                         class="btn btnAdd me-2"
                         data-cy="addtyre"
                         [ngStyle]="{ display: ($displayRim() === true && $displayTyre() === false) || $displayAll() === true ? 'block' : 'none' }"
@@ -164,6 +164,7 @@
                     </button>
                     <button
                         type="button"
+                        id="addRimWithTyreButton"
                         class="btn btnAdd"
                         data-cy="addtyre"
                         [ngStyle]="{ display: ($displayRim() === true && $displayTyre() === true) || $displayAll() === true ? 'block' : 'none' }"
@@ -180,7 +181,7 @@
             </button>
         } @else {
             <div class="mb-2">
-                <app-navigator [numberPages]="numberPages()" [currentPage]="currentPage()" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
+                <app-navigator id="navigator-top" [numberPages]="numberPages()" [currentPage]="currentPage()" (moveToPage)="moveToPage($event)" id="top"> </app-navigator>
             </div>
             <div id="data-container">
                 @for (item of $pageItems(); track item.id) {
@@ -191,7 +192,7 @@
                 }
             </div>
             <div class="mt-2">
-                <app-navigator [numberPages]="numberPages()" [currentPage]="currentPage()" (moveToPage)="moveToPage($event)"> </app-navigator>
+                <app-navigator id="navigator-bottom" [numberPages]="numberPages()" [currentPage]="currentPage()" (moveToPage)="moveToPage($event)"> </app-navigator>
             </div>
         }
     </div>

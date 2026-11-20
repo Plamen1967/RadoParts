@@ -85,7 +85,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
     @ViewChildren(DealerViewComponent) listDealerView!: QueryList<DealerViewComponent>
 
     addDisplayPart($event: DisplayPartView) {
-     const elem = this.listDealerView.find((item) => item.carId() === this.carId()!)
+     const elem = this.listDealerView.find((item) => item.carId() === +this.carId()!)
      elem?.reload()   
      this.currentCarId.set(this.carId())
      this.$addPartFlag.set(false)
@@ -95,6 +95,9 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
      this.$addCarFlag.set(false)
      this.$addBusFlag.set(false)
      this.showParts.set(true)
+     this.router.navigate(['/data/cars'], { queryParams: { carId: this.carId(), partId: $event.id } })
+     this.showParts.set(true)
+     goToPosition($event.id!)
 }
     listFormModel = signal<listFormInterface>({
         carId: 0,
@@ -460,6 +463,7 @@ export default class ListCarsComponent extends HelperComponent implements OnInit
         this.$updatePartFlag.set(false)
         this.currentPartId.set(partId!)
         this.$selected()?.reload()
+        this.router.navigate(['/data/cars'], { queryParams: { carId: this.currentCarId(), partId: partId } })
         goToPosition(partId)
         return
     }

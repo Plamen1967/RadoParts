@@ -16,7 +16,7 @@ export default class AddNewComponent implements OnInit {
     private router: Router = inject(Router)
     private authenticationService: AuthenticationService = inject(AuthenticationService)
     choices = [
-        { name: 'Добави Кола', page: '/data/addPart' },
+        { name: 'Добави Кола', page: '/data/part' },
         { name: 'Добави Част за кола', page: '/data/addpart' },
         { name: 'Добави Част за бус', page: '/data/addpart?bus=1' },
         { name: 'Добави Бус', page: '/data/addCar?bus=true' },
@@ -52,6 +52,12 @@ export default class AddNewComponent implements OnInit {
         this.router.navigate(['/data/parts'], { queryParams: { ad: `new`, bus: true } })
     }
     addTyre() {
-        this.router.navigate(['/data/addTyre'], { queryParams: { ad: `new` } })
+        this.router.navigate(['/data/addTyre'], { queryParams: { ad: `new` , itemType: 3} })
+    }
+    addRim() {
+        this.router.navigate(['/data/addTyre'], { queryParams: { ad: `new` , itemType: 4} })
+    }
+    addRimWithTyre() {
+        this.router.navigate(['/data/addTyre'], { queryParams: { ad: `new` , itemType: 5} })
     }
 }

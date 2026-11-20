@@ -9,7 +9,6 @@
         data-cy="partRow"
         [ngClass]="{ blocked: approved === 2, approved: approved === 1, notApproved: approved === 0, normal: approved === -1, highlighted: isHeighligthed }">
         <div
-            class="pe-1"
             (click)="view()"
             [ngClass]="{ imageClass: !this.dealerWebPage, imageDealerWebPage: this.dealerWebPage }"
             data-toggle="tooltip"

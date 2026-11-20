@@ -7,13 +7,14 @@
                 }
                 <input
                     [value]="value()"
-                    [type]="number() ? 'number' : 'text'"
+                    [type]="number()|| IsPrice() ? 'number' : 'text'"
                     autocomplete="{{ autocomplete() }}"
                     placeholder="{{ placeHolder() }}"
                     pattern= "{{$pattern()}}"
                     min="0"
                     max="20"
                     step="1"
+                    [attr.inputmode]="number() || IsPrice() ? 'numeric' : 'text'"
                     class="form-control shadow active"
                     [ngClass]="{ keywordClass: keyword() === true, 'is-invalid': submitted() && IsInvalid(), currency: IsPrice(), 'form-control': true,  active: true }"
                     (input)="inputFunc($event)"
